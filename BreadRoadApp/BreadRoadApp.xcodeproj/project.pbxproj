@@ -372,7 +372,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.BreadRoadApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "BreadRoad dev";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.BreadRoadApp";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -392,7 +392,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.BreadRoadApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "BreadRoad dist";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.BreadRoadApp";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
