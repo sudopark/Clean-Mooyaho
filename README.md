@@ -48,7 +48,6 @@
 - TBD
 
 
-
 ## Test
 
 ------
@@ -57,13 +56,17 @@
 - stub 기반의 classic 한 테스트 방식을 이용
 
 
+## 코드 컨벤션
+------
+- 초기에는 원맨쑈이지만 [뱅크샐러드의 코드리뷰 문화](https://blog.banksalad.com/tech/banksalad-code-review-culture/)를 참고
+
 
 ## CI/CD
 
 ------
 
-- github actions를 이용하고 로컬머신 구축 예정
-- 테스트 배포는 TestFlight를 이용
+- CI는 github actions를 이용하고 로컬머신 구축 예정
+- 테스트 배포는 TestFlight를 이용 예정
 
 
 
