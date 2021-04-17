@@ -1,0 +1,74 @@
+name: Swift
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: macos-latest
+    strategy:
+        matrix:
+          xcode: [12.0]
+          destination: ['platform=iOS Simulator,name=iPhone 11']
+    
+    steps:
+      - run: swift --version
+      - name: Checkout
+        uses: actions/checkout@master
+        
+      - name: Domain Unit Tests
+        id: test_domin
+        run: |
+          xcodebuild clean build \
+          -workspace BreadRoadCodeBase.xcworkspace \
+          -scheme BizTalk\ iOS \
+          -destination "${destination}" \
+          -configuration Test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+          
+          
+      - name: DataStore Unit Tests
+        id: test_data_store
+        run: |
+          xcodebuild clean build \
+          -workspace BreadRoadCodeBase.xcworkspace \
+          -scheme DataStore \
+          -destination "${destination}" \
+          -configuration Test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+          
+      
+      - name: iOS App Unit Tests
+        id: test_ios_app
+        run: |
+          xcodebuild clean build \
+          -workspace BreadRoadCodeBase.xcworkspace \
+          -scheme BreadRoadApp \
+          -destination "${destination}" \
+          -configuration Test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+      
+      - name: Check Tests Domain
+        if: steps.test_ios_app.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+          
+      - name: Check Tests DataStore
+        if: steps.test_data_store.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+          
+      - name: Check Tests iOS App
+        if: steps.test_ios_app.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
