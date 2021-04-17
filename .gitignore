@@ -89,3 +89,8 @@ fastlane/Matchfile
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+
+# App Environments
+appEnv/private_env.json
+
