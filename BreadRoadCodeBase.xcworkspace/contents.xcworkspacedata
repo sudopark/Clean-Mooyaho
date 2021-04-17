@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:BreadRoadApp/BreadRoadApp.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Domain/Domain.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:DataStore/DataStore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:BreadRoadApp/BreadRoadApp.xcodeproj">
    </FileRef>
 </Workspace>
