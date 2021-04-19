@@ -6,11 +6,10 @@
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
-import XCTest
 @testable import Domain
+import XCTest
 
 class DomainTests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
