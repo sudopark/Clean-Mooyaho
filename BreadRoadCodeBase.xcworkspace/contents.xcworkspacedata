@@ -10,4 +10,7 @@
    <FileRef
       location = "group:DataStore/DataStore.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:UnitTestHelpKit/UnitTestHelpKit.xcodeproj">
+   </FileRef>
 </Workspace>
