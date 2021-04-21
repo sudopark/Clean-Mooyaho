@@ -254,6 +254,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B79FC67262B640F0006291F /* Build configuration list for PBXNativeTarget "BreadRoadApp" */;
 			buildPhases = (
+				2BA405D02630220A000CC122 /* Copy Fake Google Plist for Test */,
 				2B79FC44262B640C0006291F /* Sources */,
 				2B79FC45262B640C0006291F /* Frameworks */,
 				2B79FC46262B640C0006291F /* Resources */,
@@ -349,6 +350,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2BA405D02630220A000CC122 /* Copy Fake Google Plist for Test */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Fake Google Plist for Test";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nconfiguration=${CONFIGURATION}\nif [ ${configuration:0:4} != \"Test\" ]; then\n    exit 0\nfi\n\nDEST=${SRCROOT}/BreadRoadApp/GoogleService-Info.plist\nif test -f \"$DEST\"; then\n    echo \"$DEST exists.\"\n    exit 0\nfi\n\necho GooglePlist copy ${FAKE_FIR_PLIST}\ncp -rf \"${FAKE_FIR_PLIST}\" \"$DEST\"\n";
+		};
 		2BF94582262FF22F007BF713 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -532,6 +551,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				FAKE_FIR_PLIST = "";
 				INFOPLIST_FILE = BreadRoadApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -555,6 +575,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				FAKE_FIR_PLIST = "";
 				INFOPLIST_FILE = BreadRoadApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -682,6 +703,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				FAKE_FIR_PLIST = "${SRCROOT}/BreadRoadApp/fake_GoogleService-Info.plist";
 				INFOPLIST_FILE = BreadRoadApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
