@@ -25,13 +25,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
-      - name: Cache SPM
-        uses: actions/cache@v1
-        with:
-          path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
+#       - name: Cache SPM
+#         uses: actions/cache@v1
+#         with:
+#           path: .build
+#           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+#           restore-keys: |
+#             ${{ runner.os }}-spm-
         
       - name: Domain Unit Tests
         id: test_domin
