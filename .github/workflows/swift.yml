@@ -16,6 +16,12 @@ jobs:
       - run: swift --version
       - name: Checkout
         uses: actions/checkout@master
+      - uses: actions/cache@v1
+        with: 
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
         
       - name: Domain Unit Tests
         id: test_domin
