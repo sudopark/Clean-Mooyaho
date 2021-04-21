@@ -13,4 +13,7 @@
    <FileRef
       location = "group:UnitTestHelpKit/UnitTestHelpKit.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>
