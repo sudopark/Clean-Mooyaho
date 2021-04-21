@@ -16,12 +16,22 @@ jobs:
       - run: swift --version
       - name: Checkout
         uses: actions/checkout@master
-      - uses: actions/cache@v1
+            
+      - name: Cache Cocoapods
+        uses: actions/cache@v1
         with: 
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
+
+      - name: Cache SPM
+        uses: actions/cache@v1
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
         
       - name: Domain Unit Tests
         id: test_domin
