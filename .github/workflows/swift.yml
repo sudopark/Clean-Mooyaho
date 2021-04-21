@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     name: Test
-    runs-on: macos-latest
+    runs-on: self-hosted
     strategy:
         matrix:
           xcode: [12.0]
