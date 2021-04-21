@@ -6,10 +6,10 @@ on:
 jobs:
   test:
     name: Test
-    runs-on: self-hosted
+    runs-on: [self-hosted, macOS]
     strategy:
         matrix:
-          xcode: [12.4]
+          xcode: [12.0]
           destination: ['platform=iOS Simulator,name=iPhone 11']
     
     steps:
@@ -17,13 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
             
-      - name: Cache Cocoapods
-        uses: actions/cache@v1
-        with: 
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
+#       - name: Cache Cocoapods
+#         uses: actions/cache@v1
+#         with: 
+#           path: Pods
+#           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pods-
 
 #       - name: Cache SPM
 #         uses: actions/cache@v1
