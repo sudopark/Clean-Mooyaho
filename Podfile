@@ -14,7 +14,6 @@ target "BreadRoadApp" do
     pod 'Firebase/Crashlytics'
 
     pod 'Firebase/Firestore'
-    pod 'FirebaseFirestoreSwift'
     # pod 'Firebase/AdMob'
     # pod 'Firebase/Messaging'
 
