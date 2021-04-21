@@ -33,7 +33,6 @@
 		2BBD9E7B26300BE600409FEA /* leveldb-library.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E7426300BE100409FEA /* leveldb-library.xcframework */; };
 		2BBD9E7C26300BE600409FEA /* gRPC-Core.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E7526300BE400409FEA /* gRPC-Core.xcframework */; };
 		2BBD9E7D26300BE600409FEA /* abseil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E7626300BE600409FEA /* abseil.xcframework */; };
-		2BBD9E8126300BF800409FEA /* GTMSessionFetcher.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E7F26300BF700409FEA /* GTMSessionFetcher.xcframework */; };
 		2BBD9E8226300BF800409FEA /* FirebaseStorage.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E8026300BF800409FEA /* FirebaseStorage.xcframework */; };
 		2BF00BFB262B872A00E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BFA262B872A00E235C0 /* DataStore.framework */; };
 		2BF00BFC262B872A00E235C0 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BFA262B872A00E235C0 /* DataStore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -99,7 +98,6 @@
 		2BBD9E7426300BE100409FEA /* leveldb-library.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "leveldb-library.xcframework"; sourceTree = "<group>"; };
 		2BBD9E7526300BE400409FEA /* gRPC-Core.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "gRPC-Core.xcframework"; sourceTree = "<group>"; };
 		2BBD9E7626300BE600409FEA /* abseil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = abseil.xcframework; sourceTree = "<group>"; };
-		2BBD9E7F26300BF700409FEA /* GTMSessionFetcher.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GTMSessionFetcher.xcframework; path = ../../../../../../../../../Downloads/Firebase/FirebaseStorage/GTMSessionFetcher.xcframework; sourceTree = "<group>"; };
 		2BBD9E8026300BF800409FEA /* FirebaseStorage.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseStorage.xcframework; sourceTree = "<group>"; };
 		2BBD9E8426300C5E00409FEA /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		2BBD9E8526300C6A00409FEA /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 				2BBD9E5926300B5800409FEA /* FirebaseInstallations.xcframework in Frameworks */,
 				2BBD9E5F26300B5800409FEA /* GoogleUtilities.xcframework in Frameworks */,
 				2BBD9E7726300BE600409FEA /* FirebaseFirestore.xcframework in Frameworks */,
-				2BBD9E8126300BF800409FEA /* GTMSessionFetcher.xcframework in Frameworks */,
 				2BBD9E6526300BA900409FEA /* FirebaseAuth.xcframework in Frameworks */,
 				2BBD9E5D26300B5800409FEA /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				2BBD9E7C26300BE600409FEA /* gRPC-Core.xcframework in Frameworks */,
@@ -199,7 +196,6 @@
 				2BBD9E8526300C6A00409FEA /* module.modulemap */,
 				2BBD9E8426300C5E00409FEA /* Firebase.h */,
 				2BBD9E8026300BF800409FEA /* FirebaseStorage.xcframework */,
-				2BBD9E7F26300BF700409FEA /* GTMSessionFetcher.xcframework */,
 				2BBD9E7626300BE600409FEA /* abseil.xcframework */,
 				2BBD9E7026300BDE00409FEA /* BoringSSL-GRPC.xcframework */,
 				2BBD9E6F26300BDC00409FEA /* FirebaseFirestore.xcframework */,
