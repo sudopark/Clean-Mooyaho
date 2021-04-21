@@ -9,22 +9,28 @@
 import Foundation
 
 import Firebase
+import FirebaseAuth
 
 
-protocol FirebaseServiceInterface {
-    
-    func setup()
-}
-
-
-class FirebaseService: FirebaseServiceInterface {
+class FirebaseService {
     
     func setup() {
+        
         FirebaseApp.configure()
         
 //        // make crash
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 //            fatalError()
 //        }
+    }
+}
+
+
+extension FirebaseService {
+    
+    func signInAnonymously() {
+        Auth.auth().signInAnonymously { result, error in
+            print("result: \(result?.user.uid) and error: \(error)")
+        }
     }
 }
