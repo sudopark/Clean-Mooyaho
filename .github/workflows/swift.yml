@@ -32,6 +32,19 @@ jobs:
 #           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
 #           restore-keys: |
 #             ${{ runner.os }}-spm-
+
+
+      - name: iOS App Unit Tests
+        id: test_ios_app
+        run: |
+          xcodebuild clean build \
+          -workspace BreadRoadCodeBase.xcworkspace \
+          -scheme BreadRoadApp \
+          -destination "${destination}" \
+          -configuration Test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
         
       - name: Domain Unit Tests
         id: test_domin
@@ -52,19 +65,6 @@ jobs:
           xcodebuild clean build \
           -workspace BreadRoadCodeBase.xcworkspace \
           -scheme DataStore \
-          -destination "${destination}" \
-          -configuration Test \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
-        env: 
-          destination: ${{ matrix.destination }}
-          
-      
-      - name: iOS App Unit Tests
-        id: test_ios_app
-        run: |
-          xcodebuild clean build \
-          -workspace BreadRoadCodeBase.xcworkspace \
-          -scheme BreadRoadApp \
           -destination "${destination}" \
           -configuration Test \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
