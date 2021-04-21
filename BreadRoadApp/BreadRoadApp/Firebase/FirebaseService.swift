@@ -21,5 +21,10 @@ class FirebaseService: FirebaseServiceInterface {
     
     func setup() {
         FirebaseApp.configure()
+        
+//        // make crash
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//            fatalError()
+//        }
     }
 }
