@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     strategy:
         matrix:
-          xcode: [12.0]
+          xcode: [12.4]
           destination: ['platform=iOS Simulator,name=iPhone 11']
     
     steps:
