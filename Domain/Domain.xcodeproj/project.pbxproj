@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2BBD9E97263012DF00409FEA /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E96263012DF00409FEA /* UnitTestHelpKit.framework */; };
+		2BBD9EA32630160500409FEA /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9EA22630160500409FEA /* UnitTestHelpKit.framework */; };
 		2BF00BC5262B7DF400E235C0 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BBB262B7DF400E235C0 /* Domain.framework */; };
 		2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BC9262B7DF400E235C0 /* DomainTests.swift */; };
 		2BF00BCC262B7DF400E235C0 /* Domain.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BBE262B7DF400E235C0 /* Domain.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		2BBD9E96263012DF00409FEA /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BBD9EA22630160500409FEA /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BBB262B7DF400E235C0 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BBE262B7DF400E235C0 /* Domain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Domain.h; sourceTree = "<group>"; };
 		2BF00BBF262B7DF400E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -46,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BBD9E97263012DF00409FEA /* UnitTestHelpKit.framework in Frameworks */,
+				2BBD9EA32630160500409FEA /* UnitTestHelpKit.framework in Frameworks */,
 				2BF00BC5262B7DF400E235C0 /* Domain.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +95,7 @@
 		2BF00C25262D71F100E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BBD9EA22630160500409FEA /* UnitTestHelpKit.framework */,
 				2BBD9E96263012DF00409FEA /* UnitTestHelpKit.framework */,
 				2BF00C26262D71F100E235C0 /* UnitTestHelpKit.framework */,
 			);
