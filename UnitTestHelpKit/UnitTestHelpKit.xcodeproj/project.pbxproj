@@ -26,6 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2BA406BF26315E2E000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00C15262D588C00E235C0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00C18262D588C00E235C0 /* UnitTestHelpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnitTestHelpKit.h; sourceTree = "<group>"; };
 		2BF00C19262D588C00E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		2BF00C20262D58BE00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BA406BF26315E2E000CC122 /* Common3rdParty.framework */,
 				2BF00C21262D58BE00E235C0 /* XCTest.framework */,
 			);
 			name = Frameworks;
@@ -132,6 +134,8 @@
 			dependencies = (
 			);
 			name = UnitTestHelpKit;
+			packageProductDependencies = (
+			);
 			productName = UnitTestHelpKit;
 			productReference = 2BF00C15262D588C00E235C0 /* UnitTestHelpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -182,6 +186,8 @@
 				Base,
 			);
 			mainGroup = 2BF00C0B262D588C00E235C0;
+			packageReferences = (
+			);
 			productRefGroup = 2BF00C16262D588C00E235C0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

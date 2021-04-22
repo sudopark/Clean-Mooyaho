@@ -18,6 +18,8 @@
 		2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062226315507000CC122 /* ApplicationViewModel.swift */; };
 		2BA40627263156F8000CC122 /* ApplicationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRouter.swift */; };
 		2BA4062A26315721000CC122 /* Application+DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062926315721000CC122 /* Application+DIContainer.swift */; };
+		2BA406BC26315E21000CC122 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA406BB26315E21000CC122 /* Common3rdParty.framework */; };
+		2BA406BD26315E21000CC122 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA406BB26315E21000CC122 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2BBD9E5926300B5800409FEA /* FirebaseInstallations.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */; };
 		2BBD9E5A26300B5800409FEA /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */; };
 		2BBD9E5B26300B5800409FEA /* FirebaseAnalytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */; };
@@ -67,6 +69,7 @@
 			files = (
 				2BF00C00262B873300E235C0 /* Domain.framework in Embed Frameworks */,
 				2BF00BFC262B872A00E235C0 /* DataStore.framework in Embed Frameworks */,
+				2BA406BD26315E21000CC122 /* Common3rdParty.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,6 +92,7 @@
 		2BA4062226315507000CC122 /* ApplicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModel.swift; sourceTree = "<group>"; };
 		2BA40626263156F8000CC122 /* ApplicationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRouter.swift; sourceTree = "<group>"; };
 		2BA4062926315721000CC122 /* Application+DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Application+DIContainer.swift"; sourceTree = "<group>"; };
+		2BA406BB26315E21000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseInstallations.xcframework; sourceTree = "<group>"; };
 		2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
 		2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseAnalytics.xcframework; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 			files = (
 				2BBD9E7826300BE600409FEA /* BoringSSL-GRPC.xcframework in Frameworks */,
 				2BBD9E5E26300B5800409FEA /* PromisesObjC.xcframework in Frameworks */,
+				2BA406BC26315E21000CC122 /* Common3rdParty.framework in Frameworks */,
 				2BBD9E8226300BF800409FEA /* FirebaseStorage.xcframework in Frameworks */,
 				2BBD9E6126300B5900409FEA /* FirebaseCore.xcframework in Frameworks */,
 				2BBD9E7A26300BE600409FEA /* gRPC-C++.xcframework in Frameworks */,
@@ -181,9 +186,9 @@
 		2B79FC4A262B640C0006291F /* BreadRoadApp */ = {
 			isa = PBXGroup;
 			children = (
-				2BA4060B263142A4000CC122 /* Application */,
 				2BA406112631473E000CC122 /* DIContainers */,
 				2BA4061726314FDD000CC122 /* Scene+Router */,
+				2BA4060B263142A4000CC122 /* Application */,
 				2BA4062C26315936000CC122 /* Presentations */,
 				2BF9457C262FF143007BF713 /* Firebase */,
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
@@ -282,6 +287,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BA406BB26315E21000CC122 /* Common3rdParty.framework */,
 				2BF00BFE262B873300E235C0 /* Domain.framework */,
 				2BF00BFA262B872A00E235C0 /* DataStore.framework */,
 			);
@@ -315,6 +321,8 @@
 			dependencies = (
 			);
 			name = BreadRoadApp;
+			packageProductDependencies = (
+			);
 			productName = BreadRoadApp;
 			productReference = 2B79FC48262B640C0006291F /* BreadRoadApp.app */;
 			productType = "com.apple.product-type.application";
@@ -365,6 +373,8 @@
 				Base,
 			);
 			mainGroup = 2B79FC3F262B640C0006291F;
+			packageReferences = (
+			);
 			productRefGroup = 2B79FC49262B640C0006291F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
