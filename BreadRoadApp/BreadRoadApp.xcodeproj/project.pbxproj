@@ -8,11 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
-		2B79FC50262B640C0006291F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4F262B640C0006291F /* ViewController.swift */; };
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
 		2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC56262B640F0006291F /* LaunchScreen.storyboard */; };
 		2B79FC63262B640F0006291F /* BreadRoadAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */; };
 		2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4060C263142BD000CC122 /* AppEnvironment.swift */; };
+		2BA406132631487D000CC122 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA406122631487D000CC122 /* DIContainer.swift */; };
+		2BA4061926315016000CC122 /* Scene+Scenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4061826315016000CC122 /* Scene+Scenable.swift */; };
+		2BA4061E26315243000CC122 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4061D26315243000CC122 /* Routable.swift */; };
+		2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062226315507000CC122 /* ApplicationViewModel.swift */; };
+		2BA40627263156F8000CC122 /* ApplicationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRouter.swift */; };
+		2BA4062A26315721000CC122 /* Application+DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062926315721000CC122 /* Application+DIContainer.swift */; };
 		2BBD9E5926300B5800409FEA /* FirebaseInstallations.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */; };
 		2BBD9E5A26300B5800409FEA /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */; };
 		2BBD9E5B26300B5800409FEA /* FirebaseAnalytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */; };
@@ -71,7 +76,6 @@
 /* Begin PBXFileReference section */
 		2B79FC48262B640C0006291F /* BreadRoadApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreadRoadApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC4B262B640C0006291F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2B79FC4F262B640C0006291F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2B79FC54262B640F0006291F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B79FC57262B640F0006291F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B79FC59262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,6 +83,12 @@
 		2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadRoadAppTests.swift; sourceTree = "<group>"; };
 		2B79FC64262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BA4060C263142BD000CC122 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		2BA406122631487D000CC122 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		2BA4061826315016000CC122 /* Scene+Scenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+Scenable.swift"; sourceTree = "<group>"; };
+		2BA4061D26315243000CC122 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
+		2BA4062226315507000CC122 /* ApplicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModel.swift; sourceTree = "<group>"; };
+		2BA40626263156F8000CC122 /* ApplicationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRouter.swift; sourceTree = "<group>"; };
+		2BA4062926315721000CC122 /* Application+DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Application+DIContainer.swift"; sourceTree = "<group>"; };
 		2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseInstallations.xcframework; sourceTree = "<group>"; };
 		2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
 		2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseAnalytics.xcframework; sourceTree = "<group>"; };
@@ -172,7 +182,9 @@
 			isa = PBXGroup;
 			children = (
 				2BA4060B263142A4000CC122 /* Application */,
-				2B79FC4F262B640C0006291F /* ViewController.swift */,
+				2BA406112631473E000CC122 /* DIContainers */,
+				2BA4061726314FDD000CC122 /* Scene+Router */,
+				2BA4062C26315936000CC122 /* Presentations */,
 				2BF9457C262FF143007BF713 /* Firebase */,
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
 				2B79FC56262B640F0006291F /* LaunchScreen.storyboard */,
@@ -195,10 +207,37 @@
 		2BA4060B263142A4000CC122 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				2B79FC4B262B640C0006291F /* AppDelegate.swift */,
 				2BA4060C263142BD000CC122 /* AppEnvironment.swift */,
+				2B79FC4B262B640C0006291F /* AppDelegate.swift */,
+				2BA4062226315507000CC122 /* ApplicationViewModel.swift */,
+				2BA40626263156F8000CC122 /* ApplicationRouter.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		2BA406112631473E000CC122 /* DIContainers */ = {
+			isa = PBXGroup;
+			children = (
+				2BA406122631487D000CC122 /* DIContainer.swift */,
+				2BA4062926315721000CC122 /* Application+DIContainer.swift */,
+			);
+			path = DIContainers;
+			sourceTree = "<group>";
+		};
+		2BA4061726314FDD000CC122 /* Scene+Router */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4061826315016000CC122 /* Scene+Scenable.swift */,
+				2BA4061D26315243000CC122 /* Routable.swift */,
+			);
+			path = "Scene+Router";
+			sourceTree = "<group>";
+		};
+		2BA4062C26315936000CC122 /* Presentations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presentations;
 			sourceTree = "<group>";
 		};
 		2BBD9E4D26300B2600409FEA /* frameworks */ = {
@@ -385,10 +424,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B79FC50262B640C0006291F /* ViewController.swift in Sources */,
+				2BA4061926315016000CC122 /* Scene+Scenable.swift in Sources */,
+				2BA40627263156F8000CC122 /* ApplicationRouter.swift in Sources */,
+				2BA4061E26315243000CC122 /* Routable.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				2BF9457F262FF152007BF713 /* FirebaseService.swift in Sources */,
+				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
+				2BA4062A26315721000CC122 /* Application+DIContainer.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
+				2BA406132631487D000CC122 /* DIContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
