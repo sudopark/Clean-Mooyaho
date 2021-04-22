@@ -12,6 +12,7 @@
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
 		2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC56262B640F0006291F /* LaunchScreen.storyboard */; };
 		2B79FC63262B640F0006291F /* BreadRoadAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */; };
+		2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4060C263142BD000CC122 /* AppEnvironment.swift */; };
 		2BBD9E5926300B5800409FEA /* FirebaseInstallations.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */; };
 		2BBD9E5A26300B5800409FEA /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */; };
 		2BBD9E5B26300B5800409FEA /* FirebaseAnalytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */; };
@@ -77,6 +78,7 @@
 		2B79FC5E262B640F0006291F /* BreadRoadAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadRoadAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadRoadAppTests.swift; sourceTree = "<group>"; };
 		2B79FC64262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2BA4060C263142BD000CC122 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseInstallations.xcframework; sourceTree = "<group>"; };
 		2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
 		2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseAnalytics.xcframework; sourceTree = "<group>"; };
@@ -169,7 +171,7 @@
 		2B79FC4A262B640C0006291F /* BreadRoadApp */ = {
 			isa = PBXGroup;
 			children = (
-				2B79FC4B262B640C0006291F /* AppDelegate.swift */,
+				2BA4060B263142A4000CC122 /* Application */,
 				2B79FC4F262B640C0006291F /* ViewController.swift */,
 				2BF9457C262FF143007BF713 /* Firebase */,
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
@@ -188,6 +190,15 @@
 				2B79FC64262B640F0006291F /* Info.plist */,
 			);
 			path = BreadRoadAppTests;
+			sourceTree = "<group>";
+		};
+		2BA4060B263142A4000CC122 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				2B79FC4B262B640C0006291F /* AppDelegate.swift */,
+				2BA4060C263142BD000CC122 /* AppEnvironment.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		2BBD9E4D26300B2600409FEA /* frameworks */ = {
@@ -365,7 +376,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${SRCROOT}/BreadRoadApp/Firebase/frameworks/run\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ ${CONFIGURATION} != \"Test\" ]; then\n    echo \"🎯 run Crashlytics script\"\n    \"${SRCROOT}/BreadRoadApp/Firebase/frameworks/run\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -375,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B79FC50262B640C0006291F /* ViewController.swift in Sources */,
+				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				2BF9457F262FF152007BF713 /* FirebaseService.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
 			);
@@ -538,6 +550,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.BreadRoadApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.BreadRoadApp";
@@ -561,6 +574,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-D RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.BreadRoadApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.BreadRoadApp";
@@ -688,6 +702,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-D TEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.BreadRoadApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.BreadRoadApp";
