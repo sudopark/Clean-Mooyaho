@@ -93,5 +93,6 @@ iOSInjectionProject/
 
 # App Environments
 appEnv/private_env.json
-BreadRoadApp/BreadRoadApp/GoogleService-Info.plist
+appEnv/GoogleService-Info.plist
+# BreadRoadApp/BreadRoadApp/GoogleService-Info.plist
 

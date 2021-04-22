@@ -254,6 +254,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B79FC67262B640F0006291F /* Build configuration list for PBXNativeTarget "BreadRoadApp" */;
 			buildPhases = (
+				2BA4060026312B6D000CC122 /* [CP] Replace GoogleServiceInfo.plist if exists */,
 				2B79FC44262B640C0006291F /* Sources */,
 				2B79FC45262B640C0006291F /* Frameworks */,
 				2B79FC46262B640C0006291F /* Resources */,
@@ -349,6 +350,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2BA4060026312B6D000CC122 /* [CP] Replace GoogleServiceInfo.plist if exists */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Replace GoogleServiceInfo.plist if exists";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nSOURCE_FILE=${SRCROOT}/../appEnv/GoogleService-Info.plist\nDEST=${SRCROOT}/BreadRoadApp/GoogleService-Info.plist\n\nif [ -f \"$SOURCE_FILE\" ]; then\n    echo \"🤖 real GoogleService exists. -> will replace\"\n    cp -rf \"${SOURCE_FILE}\" \"$DEST\"\nfi\n";
+		};
 		2BF94582262FF22F007BF713 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
