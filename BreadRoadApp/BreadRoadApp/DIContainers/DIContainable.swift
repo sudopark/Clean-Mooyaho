@@ -1,25 +1,26 @@
 //
-//  Factory.swift
+//  DIContainable.swift
 //  BreadRoadApp
 //
-//  Created by ParkHyunsoo on 2021/04/22.
+//  Created by ParkHyunsoo on 2021/04/23.
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
 import Foundation
 
 
-public protocol DIContainer {
+// MARK: - DIContainable
+
+public protocol DIContainable {
     
     associatedtype Dependency
     
     init(dependency: Dependency)
 }
 
-
-extension DIContainer where Dependency == Void {
+extension DIContainable where Dependency == Void {
     
-    init(dependency: Dependency) {
+    public init(dependency: Dependency) {
         self.init(dependency: ())
     }
 }

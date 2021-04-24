@@ -7,19 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B0D84CF2632C65A009CDC7D /* Buildable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84CE2632C65A009CDC7D /* Buildable.swift */; };
+		2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5E26336C91000E4152 /* MainTabRouter.swift */; };
+		2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5F26336C91000E4152 /* MainTabViewController.swift */; };
+		2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6026336C91000E4152 /* MainTabBuilder.swift */; };
+		2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6126336C91000E4152 /* MainTabViewModel.swift */; };
+		2B41AF7E26336EEA000E4152 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF7C26336EEA000E4152 /* Executor.swift */; };
+		2B41AF7F26336EEA000E4152 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF7D26336EEA000E4152 /* LeakDetector.swift */; };
+		2B4FD22C2632768300A99624 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD22B2632768300A99624 /* BaseViewController.swift */; };
+		2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DIContainers.swift */; };
+		2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2532632B07E00A99624 /* DIContainable.swift */; };
+		2B6140AE263344E60091460D /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140AD263344E60091460D /* Presentable.swift */; };
+		2B6140C6263350250091460D /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140C5263350250091460D /* Test.swift */; };
+		2B6140D2263361C50091460D /* Sceneable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140D1263361C50091460D /* Sceneable.swift */; };
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
 		2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC56262B640F0006291F /* LaunchScreen.storyboard */; };
 		2B79FC63262B640F0006291F /* BreadRoadAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */; };
+		2B96BC0B2631765A00BC8EC5 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B96BC0A2631765A00BC8EC5 /* Common3rdParty.framework */; };
+		2B96BC1026326E5000BC8EC5 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B96BC0F26326E5000BC8EC5 /* UnitTestHelpKit.framework */; };
 		2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4060C263142BD000CC122 /* AppEnvironment.swift */; };
-		2BA406132631487D000CC122 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA406122631487D000CC122 /* DIContainer.swift */; };
-		2BA4061926315016000CC122 /* Scene+Scenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4061826315016000CC122 /* Scene+Scenable.swift */; };
 		2BA4061E26315243000CC122 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4061D26315243000CC122 /* Routable.swift */; };
 		2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062226315507000CC122 /* ApplicationViewModel.swift */; };
-		2BA40627263156F8000CC122 /* ApplicationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRouter.swift */; };
-		2BA4062A26315721000CC122 /* Application+DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062926315721000CC122 /* Application+DIContainer.swift */; };
+		2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */; };
 		2BA406BC26315E21000CC122 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA406BB26315E21000CC122 /* Common3rdParty.framework */; };
 		2BA406BD26315E21000CC122 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA406BB26315E21000CC122 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */; };
+		2BA4074E26316FBC000CC122 /* WaitObservableEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */; };
 		2BBD9E5926300B5800409FEA /* FirebaseInstallations.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */; };
 		2BBD9E5A26300B5800409FEA /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */; };
 		2BBD9E5B26300B5800409FEA /* FirebaseAnalytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */; };
@@ -77,6 +91,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2B0D84CE2632C65A009CDC7D /* Buildable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buildable.swift; sourceTree = "<group>"; };
+		2B41AF5E26336C91000E4152 /* MainTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabRouter.swift; sourceTree = "<group>"; };
+		2B41AF5F26336C91000E4152 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
+		2B41AF6026336C91000E4152 /* MainTabBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBuilder.swift; sourceTree = "<group>"; };
+		2B41AF6126336C91000E4152 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
+		2B41AF7C26336EEA000E4152 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
+		2B41AF7D26336EEA000E4152 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
+		2B4FD22B2632768300A99624 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		2B4FD24B2632A7BA00A99624 /* DIContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainers.swift; sourceTree = "<group>"; };
+		2B4FD2532632B07E00A99624 /* DIContainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainable.swift; sourceTree = "<group>"; };
+		2B6140AD263344E60091460D /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		2B6140C5263350250091460D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		2B6140D1263361C50091460D /* Sceneable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sceneable.swift; sourceTree = "<group>"; };
 		2B79FC48262B640C0006291F /* BreadRoadApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreadRoadApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC4B262B640C0006291F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B79FC54262B640F0006291F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -85,14 +112,17 @@
 		2B79FC5E262B640F0006291F /* BreadRoadAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadRoadAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadRoadAppTests.swift; sourceTree = "<group>"; };
 		2B79FC64262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B96BC0A2631765A00BC8EC5 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B96BC0F26326E5000BC8EC5 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4060C263142BD000CC122 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
-		2BA406122631487D000CC122 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
-		2BA4061826315016000CC122 /* Scene+Scenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+Scenable.swift"; sourceTree = "<group>"; };
 		2BA4061D26315243000CC122 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		2BA4062226315507000CC122 /* ApplicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModel.swift; sourceTree = "<group>"; };
-		2BA40626263156F8000CC122 /* ApplicationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRouter.swift; sourceTree = "<group>"; };
-		2BA4062926315721000CC122 /* Application+DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Application+DIContainer.swift"; sourceTree = "<group>"; };
+		2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRootRouter.swift; sourceTree = "<group>"; };
 		2BA406BB26315E21000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModelTests.swift; sourceTree = "<group>"; };
+		2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitObservableEvents.swift; sourceTree = "<group>"; };
+		2BA40751263170AA000CC122 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BA4075E2631712D000CC122 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBD9E5026300B5500409FEA /* FirebaseInstallations.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseInstallations.xcframework; sourceTree = "<group>"; };
 		2BBD9E5126300B5600409FEA /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
 		2BBD9E5226300B5600409FEA /* FirebaseAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FirebaseAnalytics.xcframework; sourceTree = "<group>"; };
@@ -158,12 +188,64 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B96BC1026326E5000BC8EC5 /* UnitTestHelpKit.framework in Frameworks */,
+				2B96BC0B2631765A00BC8EC5 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B41AF7B26336EDE000E4152 /* LeakDetector */ = {
+			isa = PBXGroup;
+			children = (
+				2B41AF7C26336EEA000E4152 /* Executor.swift */,
+				2B41AF7D26336EEA000E4152 /* LeakDetector.swift */,
+			);
+			path = LeakDetector;
+			sourceTree = "<group>";
+		};
+		2B4FD22A2632767700A99624 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B6140D1263361C50091460D /* Sceneable.swift */,
+				2B0D84CE2632C65A009CDC7D /* Buildable.swift */,
+				2BA4061D26315243000CC122 /* Routable.swift */,
+				2B4FD22B2632768300A99624 /* BaseViewController.swift */,
+				2B6140AD263344E60091460D /* Presentable.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B4FD2522632B04600A99624 /* DIContainers */ = {
+			isa = PBXGroup;
+			children = (
+				2B4FD2532632B07E00A99624 /* DIContainable.swift */,
+				2B4FD24B2632A7BA00A99624 /* DIContainers.swift */,
+			);
+			path = DIContainers;
+			sourceTree = "<group>";
+		};
+		2B6140B026334F100091460D /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2B41AF5E26336C91000E4152 /* MainTabRouter.swift */,
+				2B41AF5F26336C91000E4152 /* MainTabViewController.swift */,
+				2B41AF6026336C91000E4152 /* MainTabBuilder.swift */,
+				2B41AF6126336C91000E4152 /* MainTabViewModel.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2B6140D4263363A60091460D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2B41AF7B26336EDE000E4152 /* LeakDetector */,
+				2B6140C5263350250091460D /* Test.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		2B79FC3F262B640C0006291F = {
 			isa = PBXGroup;
 			children = (
@@ -186,11 +268,11 @@
 		2B79FC4A262B640C0006291F /* BreadRoadApp */ = {
 			isa = PBXGroup;
 			children = (
-				2BA406112631473E000CC122 /* DIContainers */,
-				2BA4061726314FDD000CC122 /* Scene+Router */,
-				2BA4060B263142A4000CC122 /* Application */,
+				2B4FD2522632B04600A99624 /* DIContainers */,
 				2BA4062C26315936000CC122 /* Presentations */,
+				2B6140D4263363A60091460D /* Utils */,
 				2BF9457C262FF143007BF713 /* Firebase */,
+				2BA4060C263142BD000CC122 /* AppEnvironment.swift */,
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
 				2B79FC56262B640F0006291F /* LaunchScreen.storyboard */,
 				2BF94577262FF0A5007BF713 /* GoogleService-Info.plist */,
@@ -203,46 +285,48 @@
 		2B79FC61262B640F0006291F /* BreadRoadAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				2BA4074C26316F48000CC122 /* Utills */,
+				2BA4074726316F24000CC122 /* Application */,
 				2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */,
 				2B79FC64262B640F0006291F /* Info.plist */,
 			);
 			path = BreadRoadAppTests;
 			sourceTree = "<group>";
 		};
-		2BA4060B263142A4000CC122 /* Application */ = {
+		2BA4060B263142A4000CC122 /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				2BA4060C263142BD000CC122 /* AppEnvironment.swift */,
 				2B79FC4B262B640C0006291F /* AppDelegate.swift */,
+				2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */,
 				2BA4062226315507000CC122 /* ApplicationViewModel.swift */,
-				2BA40626263156F8000CC122 /* ApplicationRouter.swift */,
 			);
-			path = Application;
-			sourceTree = "<group>";
-		};
-		2BA406112631473E000CC122 /* DIContainers */ = {
-			isa = PBXGroup;
-			children = (
-				2BA406122631487D000CC122 /* DIContainer.swift */,
-				2BA4062926315721000CC122 /* Application+DIContainer.swift */,
-			);
-			path = DIContainers;
-			sourceTree = "<group>";
-		};
-		2BA4061726314FDD000CC122 /* Scene+Router */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4061826315016000CC122 /* Scene+Scenable.swift */,
-				2BA4061D26315243000CC122 /* Routable.swift */,
-			);
-			path = "Scene+Router";
+			path = Root;
 			sourceTree = "<group>";
 		};
 		2BA4062C26315936000CC122 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
+				2B4FD22A2632767700A99624 /* Common */,
+				2BA4060B263142A4000CC122 /* Root */,
+				2B6140B026334F100091460D /* Main */,
 			);
 			path = Presentations;
+			sourceTree = "<group>";
+		};
+		2BA4074726316F24000CC122 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		2BA4074C26316F48000CC122 /* Utills */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */,
+			);
+			path = Utills;
 			sourceTree = "<group>";
 		};
 		2BBD9E4D26300B2600409FEA /* frameworks */ = {
@@ -287,6 +371,10 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B96BC0F26326E5000BC8EC5 /* UnitTestHelpKit.framework */,
+				2B96BC0A2631765A00BC8EC5 /* Common3rdParty.framework */,
+				2BA4075E2631712D000CC122 /* UnitTestHelpKit.framework */,
+				2BA40751263170AA000CC122 /* UnitTestHelpKit.framework */,
 				2BA406BB26315E21000CC122 /* Common3rdParty.framework */,
 				2BF00BFE262B873300E235C0 /* Domain.framework */,
 				2BF00BFA262B872A00E235C0 /* DataStore.framework */,
@@ -434,15 +522,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BA4061926315016000CC122 /* Scene+Scenable.swift in Sources */,
-				2BA40627263156F8000CC122 /* ApplicationRouter.swift in Sources */,
+				2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */,
+				2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */,
+				2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */,
+				2B6140D2263361C50091460D /* Sceneable.swift in Sources */,
+				2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */,
+				2B4FD22C2632768300A99624 /* BaseViewController.swift in Sources */,
+				2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */,
+				2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */,
 				2BA4061E26315243000CC122 /* Routable.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				2BF9457F262FF152007BF713 /* FirebaseService.swift in Sources */,
+				2B0D84CF2632C65A009CDC7D /* Buildable.swift in Sources */,
+				2B41AF7F26336EEA000E4152 /* LeakDetector.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
-				2BA4062A26315721000CC122 /* Application+DIContainer.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
-				2BA406132631487D000CC122 /* DIContainer.swift in Sources */,
+				2B41AF7E26336EEA000E4152 /* Executor.swift in Sources */,
+				2B6140AE263344E60091460D /* Presentable.swift in Sources */,
+				2B6140C6263350250091460D /* Test.swift in Sources */,
+				2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,7 +548,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BA4074E26316FBC000CC122 /* WaitObservableEvents.swift in Sources */,
 				2B79FC63262B640F0006291F /* BreadRoadAppTests.swift in Sources */,
+				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
