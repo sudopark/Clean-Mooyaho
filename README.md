@@ -33,7 +33,7 @@
 ### PresentationLayer(in app project)
 
 - Each Presentations
-    - 각 화면은 Rx + MVVM 패턴으로 구성
+    - 각 화면은 Rx + MVVM 패턴으로 구성 -> [MVVM+Router Template](https://github.com/sudopark/MVVM-Router-Template)로 Scene Module
     - view는 코드로 구성
 - CommonPresentation
   - UI Extensions
