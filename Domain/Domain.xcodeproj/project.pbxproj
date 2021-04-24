@@ -68,6 +68,27 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		2B9F275F2633E5BB00FEBCE3 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		2B9F27602633E5C700FEBCE3 /* Usecases */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Usecases;
+			sourceTree = "<group>";
+		};
+		2B9F27612633E5CF00FEBCE3 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
 		2BF00BB1262B7DF400E235C0 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +111,9 @@
 		2BF00BBD262B7DF400E235C0 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				2B9F275F2633E5BB00FEBCE3 /* Entities */,
+				2B9F27602633E5C700FEBCE3 /* Usecases */,
+				2B9F27612633E5CF00FEBCE3 /* Repositories */,
 				2B4FD236263291D300A99624 /* Extensions */,
 				2BF00BBE262B7DF400E235C0 /* Domain.h */,
 				2BF00BBF262B7DF400E235C0 /* Info.plist */,
