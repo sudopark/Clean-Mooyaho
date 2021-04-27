@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 
 import Domain
+import CommonPresenting
 
 // MARK: - MainTabScene
 

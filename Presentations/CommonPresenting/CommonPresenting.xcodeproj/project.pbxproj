@@ -10,6 +10,14 @@
 		2B39E25926387B6A003EE954 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */; };
 		2B39E25E26387B6A003EE954 /* CommonPresentingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */; };
 		2B39E26026387B6A003EE954 /* CommonPresenting.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B39E25226387B6A003EE954 /* CommonPresenting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B39E27A26387BCB003EE954 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27526387BCB003EE954 /* Routable.swift */; };
+		2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27626387BCB003EE954 /* Sceneable.swift */; };
+		2B39E27C26387BCB003EE954 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27726387BCB003EE954 /* Presentable.swift */; };
+		2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27826387BCB003EE954 /* BaseViewController.swift */; };
+		2B39E27E26387BCB003EE954 /* Buildable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27926387BCB003EE954 /* Buildable.swift */; };
+		2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E28426387BEC003EE954 /* Common3rdParty.framework */; };
+		2B39E28926387BFB003EE954 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E28826387BFB003EE954 /* UnitTestHelpKit.framework */; };
+		2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E28C26387C14003EE954 /* Domain.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +37,15 @@
 		2B39E25826387B6A003EE954 /* CommonPresentingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommonPresentingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonPresentingTests.swift; sourceTree = "<group>"; };
 		2B39E25F26387B6A003EE954 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B39E27526387BCB003EE954 /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
+		2B39E27626387BCB003EE954 /* Sceneable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sceneable.swift; sourceTree = "<group>"; };
+		2B39E27726387BCB003EE954 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		2B39E27826387BCB003EE954 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		2B39E27926387BCB003EE954 /* Buildable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buildable.swift; sourceTree = "<group>"; };
+		2B39E28426387BEC003EE954 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B39E28826387BFB003EE954 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B39E28A26387C05003EE954 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B39E28C26387C14003EE954 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
+				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B39E28926387BFB003EE954 /* UnitTestHelpKit.framework in Frameworks */,
 				2B39E25926387B6A003EE954 /* CommonPresenting.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,6 +76,7 @@
 				2B39E25126387B6A003EE954 /* CommonPresenting */,
 				2B39E25C26387B6A003EE954 /* CommonPresentingTests */,
 				2B39E25026387B6A003EE954 /* Products */,
+				2B39E28326387BEC003EE954 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +92,8 @@
 		2B39E25126387B6A003EE954 /* CommonPresenting */ = {
 			isa = PBXGroup;
 			children = (
+				2B39E27226387BB0003EE954 /* BaseComponents */,
+				2B39E29226387C95003EE954 /* Extensions */,
 				2B39E25226387B6A003EE954 /* CommonPresenting.h */,
 				2B39E25326387B6A003EE954 /* Info.plist */,
 			);
@@ -84,6 +107,36 @@
 				2B39E25F26387B6A003EE954 /* Info.plist */,
 			);
 			path = CommonPresentingTests;
+			sourceTree = "<group>";
+		};
+		2B39E27226387BB0003EE954 /* BaseComponents */ = {
+			isa = PBXGroup;
+			children = (
+				2B39E27826387BCB003EE954 /* BaseViewController.swift */,
+				2B39E27926387BCB003EE954 /* Buildable.swift */,
+				2B39E27726387BCB003EE954 /* Presentable.swift */,
+				2B39E27526387BCB003EE954 /* Routable.swift */,
+				2B39E27626387BCB003EE954 /* Sceneable.swift */,
+			);
+			path = BaseComponents;
+			sourceTree = "<group>";
+		};
+		2B39E28326387BEC003EE954 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B39E28C26387C14003EE954 /* Domain.framework */,
+				2B39E28A26387C05003EE954 /* Domain.framework */,
+				2B39E28826387BFB003EE954 /* UnitTestHelpKit.framework */,
+				2B39E28426387BEC003EE954 /* Common3rdParty.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B39E29226387C95003EE954 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,6 +200,7 @@
 				TargetAttributes = {
 					2B39E24E26387B6A003EE954 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 					2B39E25726387B6A003EE954 = {
 						CreatedOnToolsVersion = 12.4;
@@ -194,6 +248,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
+				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
+				2B39E27A26387BCB003EE954 /* Routable.swift in Sources */,
+				2B39E27E26387BCB003EE954 /* Buildable.swift in Sources */,
+				2B39E27C26387BCB003EE954 /* Presentable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +400,7 @@
 		2B39E26426387B6A003EE954 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -357,6 +417,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.CommonPresenting;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -365,6 +426,7 @@
 		2B39E26526387B6A003EE954 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -389,6 +451,7 @@
 		2B39E26726387B6A003EE954 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = CommonPresentingTests/Info.plist;
@@ -407,6 +470,7 @@
 		2B39E26826387B6A003EE954 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = CommonPresentingTests/Info.plist;
@@ -489,6 +553,7 @@
 		2B39E26C26387B70003EE954 /* Test */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -505,6 +570,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.CommonPresenting;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -513,6 +579,7 @@
 		2B39E26D26387B70003EE954 /* Test */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = CommonPresentingTests/Info.plist;
