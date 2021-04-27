@@ -8,6 +8,8 @@
 
 import UIKit
 
+import CommonPresenting
+
 
 public protocol ApplicationRootRouting: Routing {
     

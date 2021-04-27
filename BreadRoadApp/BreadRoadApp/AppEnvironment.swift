@@ -22,7 +22,7 @@ public struct AppEnvironment {
         #if DEBUG
             return .debug
         #elseif RELEASE
-            return .relase
+            return .release
         #else
             return .test
         #endif

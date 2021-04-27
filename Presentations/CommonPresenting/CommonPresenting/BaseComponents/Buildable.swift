@@ -14,5 +14,3 @@ public protocol Buildable { }
 
 public protocol EmptyBuilder: Buildable { }
 
-
-extension DIContainers: EmptyBuilder { }

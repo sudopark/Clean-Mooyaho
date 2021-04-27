@@ -8,6 +8,8 @@
 
 import Foundation
 
+import CommonPresenting
+
 
 // MARK: - DIContainers
 
@@ -15,3 +17,5 @@ public final class DIContainers {
     
     
 }
+
+extension DIContainers: EmptyBuilder { }

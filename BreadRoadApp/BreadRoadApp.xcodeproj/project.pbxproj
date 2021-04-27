@@ -7,24 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B0D84CF2632C65A009CDC7D /* Buildable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84CE2632C65A009CDC7D /* Buildable.swift */; };
 		2B39E221263877AE003EE954 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E21F263877AE003EE954 /* UserMessagingPlatform.xcframework */; };
 		2B39E223263877AE003EE954 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E220263877AE003EE954 /* GoogleMobileAds.xcframework */; };
 		2B39E22C2638784F003EE954 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */; };
 		2B39E22D2638784F003EE954 /* FirebaseCrashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */; };
 		2B39E22E2638784F003EE954 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */; };
+		2B39E29626387CAB003EE954 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E29526387CAB003EE954 /* CommonPresenting.framework */; };
+		2B39E29726387CAB003EE954 /* CommonPresenting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E29526387CAB003EE954 /* CommonPresenting.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5E26336C91000E4152 /* MainTabRouter.swift */; };
 		2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5F26336C91000E4152 /* MainTabViewController.swift */; };
 		2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6026336C91000E4152 /* MainTabBuilder.swift */; };
 		2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6126336C91000E4152 /* MainTabViewModel.swift */; };
 		2B41AF7E26336EEA000E4152 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF7C26336EEA000E4152 /* Executor.swift */; };
 		2B41AF7F26336EEA000E4152 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF7D26336EEA000E4152 /* LeakDetector.swift */; };
-		2B4FD22C2632768300A99624 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD22B2632768300A99624 /* BaseViewController.swift */; };
 		2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DIContainers.swift */; };
 		2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2532632B07E00A99624 /* DIContainable.swift */; };
-		2B6140AE263344E60091460D /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140AD263344E60091460D /* Presentable.swift */; };
 		2B6140C6263350250091460D /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140C5263350250091460D /* Test.swift */; };
-		2B6140D2263361C50091460D /* Sceneable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140D1263361C50091460D /* Sceneable.swift */; };
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
 		2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC56262B640F0006291F /* LaunchScreen.storyboard */; };
@@ -32,13 +30,14 @@
 		2B96BC0B2631765A00BC8EC5 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B96BC0A2631765A00BC8EC5 /* Common3rdParty.framework */; };
 		2B96BC1026326E5000BC8EC5 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B96BC0F26326E5000BC8EC5 /* UnitTestHelpKit.framework */; };
 		2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4060C263142BD000CC122 /* AppEnvironment.swift */; };
-		2BA4061E26315243000CC122 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4061D26315243000CC122 /* Routable.swift */; };
 		2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062226315507000CC122 /* ApplicationViewModel.swift */; };
 		2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */; };
 		2BA406BC26315E21000CC122 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA406BB26315E21000CC122 /* Common3rdParty.framework */; };
 		2BA406BD26315E21000CC122 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA406BB26315E21000CC122 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */; };
 		2BA4074E26316FBC000CC122 /* WaitObservableEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */; };
+		2BC299CC2638820F007A752D /* FirebaseService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BC299CB2638820F007A752D /* FirebaseService.framework */; };
+		2BC299CD2638820F007A752D /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BC299CB2638820F007A752D /* FirebaseService.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2BF00BFB262B872A00E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BFA262B872A00E235C0 /* DataStore.framework */; };
 		2BF00BFC262B872A00E235C0 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BFA262B872A00E235C0 /* DataStore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2BF00BFF262B873300E235C0 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BFE262B873300E235C0 /* Domain.framework */; };
@@ -65,7 +64,9 @@
 			files = (
 				2BF00C00262B873300E235C0 /* Domain.framework in Embed Frameworks */,
 				2BF00BFC262B872A00E235C0 /* DataStore.framework in Embed Frameworks */,
+				2B39E29726387CAB003EE954 /* CommonPresenting.framework in Embed Frameworks */,
 				2BA406BD26315E21000CC122 /* Common3rdParty.framework in Embed Frameworks */,
+				2BC299CD2638820F007A752D /* FirebaseService.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,25 +74,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2B0D84CE2632C65A009CDC7D /* Buildable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buildable.swift; sourceTree = "<group>"; };
 		2B39E2102638722E003EE954 /* FirebaseCrashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCrashlytics.framework; path = ../Carthage/Build/iOS/FirebaseCrashlytics.framework; sourceTree = "<group>"; };
 		2B39E21F263877AE003EE954 /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = "../../../../../../Downloads/Firebase/Google-Mobile-Ads-SDK/UserMessagingPlatform.xcframework"; sourceTree = "<group>"; };
 		2B39E220263877AE003EE954 /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "../../../../../../Downloads/Firebase/Google-Mobile-Ads-SDK/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
 		2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = ../other_static_frameworks/GoogleMobileAds.xcframework; sourceTree = "<group>"; };
 		2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCrashlytics.framework; path = ../other_static_frameworks/FirebaseCrashlytics.framework; sourceTree = "<group>"; };
 		2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = ../other_static_frameworks/UserMessagingPlatform.xcframework; sourceTree = "<group>"; };
+		2B39E29526387CAB003EE954 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B41AF5E26336C91000E4152 /* MainTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabRouter.swift; sourceTree = "<group>"; };
 		2B41AF5F26336C91000E4152 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
 		2B41AF6026336C91000E4152 /* MainTabBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBuilder.swift; sourceTree = "<group>"; };
 		2B41AF6126336C91000E4152 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
 		2B41AF7C26336EEA000E4152 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		2B41AF7D26336EEA000E4152 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
-		2B4FD22B2632768300A99624 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DIContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainers.swift; sourceTree = "<group>"; };
 		2B4FD2532632B07E00A99624 /* DIContainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainable.swift; sourceTree = "<group>"; };
-		2B6140AD263344E60091460D /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		2B6140C5263350250091460D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
-		2B6140D1263361C50091460D /* Sceneable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sceneable.swift; sourceTree = "<group>"; };
 		2B79FC48262B640C0006291F /* BreadRoadApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreadRoadApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC4B262B640C0006291F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B79FC54262B640F0006291F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 		2B96BC0A2631765A00BC8EC5 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B96BC0F26326E5000BC8EC5 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4060C263142BD000CC122 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
-		2BA4061D26315243000CC122 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		2BA4062226315507000CC122 /* ApplicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModel.swift; sourceTree = "<group>"; };
 		2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRootRouter.swift; sourceTree = "<group>"; };
 		2BA406BB26315E21000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +108,7 @@
 		2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitObservableEvents.swift; sourceTree = "<group>"; };
 		2BA40751263170AA000CC122 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4075E2631712D000CC122 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BC299CB2638820F007A752D /* FirebaseService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BFA262B872A00E235C0 /* DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BFE262B873300E235C0 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF94577262FF0A5007BF713 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -124,11 +122,13 @@
 				2BA406BC26315E21000CC122 /* Common3rdParty.framework in Frameworks */,
 				2B39E22C2638784F003EE954 /* GoogleMobileAds.xcframework in Frameworks */,
 				2B39E22D2638784F003EE954 /* FirebaseCrashlytics.framework in Frameworks */,
+				2B39E29626387CAB003EE954 /* CommonPresenting.framework in Frameworks */,
 				2B39E22E2638784F003EE954 /* UserMessagingPlatform.xcframework in Frameworks */,
 				2B39E223263877AE003EE954 /* GoogleMobileAds.xcframework in Frameworks */,
 				2B39E221263877AE003EE954 /* UserMessagingPlatform.xcframework in Frameworks */,
 				2BF00BFF262B873300E235C0 /* Domain.framework in Frameworks */,
 				2BF00BFB262B872A00E235C0 /* DataStore.framework in Frameworks */,
+				2BC299CC2638820F007A752D /* FirebaseService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,18 +151,6 @@
 				2B41AF7D26336EEA000E4152 /* LeakDetector.swift */,
 			);
 			path = LeakDetector;
-			sourceTree = "<group>";
-		};
-		2B4FD22A2632767700A99624 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2B6140D1263361C50091460D /* Sceneable.swift */,
-				2B0D84CE2632C65A009CDC7D /* Buildable.swift */,
-				2BA4061D26315243000CC122 /* Routable.swift */,
-				2B4FD22B2632768300A99624 /* BaseViewController.swift */,
-				2B6140AD263344E60091460D /* Presentable.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		2B4FD2522632B04600A99624 /* DIContainers */ = {
@@ -252,7 +240,6 @@
 		2BA4062C26315936000CC122 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
-				2B4FD22A2632767700A99624 /* Common */,
 				2BA4060B263142A4000CC122 /* Root */,
 				2B6140B026334F100091460D /* Main */,
 			);
@@ -278,6 +265,8 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BC299CB2638820F007A752D /* FirebaseService.framework */,
+				2B39E29526387CAB003EE954 /* CommonPresenting.framework */,
 				2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */,
 				2B39E220263877AE003EE954 /* GoogleMobileAds.xcframework */,
 				2B39E21F263877AE003EE954 /* UserMessagingPlatform.xcframework */,
@@ -426,19 +415,14 @@
 				2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */,
 				2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */,
 				2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */,
-				2B6140D2263361C50091460D /* Sceneable.swift in Sources */,
 				2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */,
-				2B4FD22C2632768300A99624 /* BaseViewController.swift in Sources */,
 				2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */,
 				2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */,
-				2BA4061E26315243000CC122 /* Routable.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
-				2B0D84CF2632C65A009CDC7D /* Buildable.swift in Sources */,
 				2B41AF7F26336EEA000E4152 /* LeakDetector.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
 				2B41AF7E26336EEA000E4152 /* Executor.swift in Sources */,
-				2B6140AE263344E60091460D /* Presentable.swift in Sources */,
 				2B6140C6263350250091460D /* Test.swift in Sources */,
 				2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */,
 			);
