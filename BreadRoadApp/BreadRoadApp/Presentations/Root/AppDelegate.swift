@@ -11,6 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import FirebaseService
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

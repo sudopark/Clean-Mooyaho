@@ -11,6 +11,9 @@
       location = "group:DataStore/DataStore.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:FirebaseService/FirebaseService.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:UnitTestHelpKit/UnitTestHelpKit.xcodeproj">
    </FileRef>
    <FileRef
