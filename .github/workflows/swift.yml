@@ -18,13 +18,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
             
-      - name: Cache Cocoapods
-        uses: actions/cache@v1
-        with: 
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
+      # - name: Cache Cocoapods
+      #   uses: actions/cache@v1
+      #   with: 
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
 
       - name: Cache SPM
         uses: actions/cache@v1
@@ -33,19 +33,6 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ runner.os }}-spm-
-
-
-      - name: iOS App Unit Tests
-        id: test_ios_app
-        run: |
-          xcodebuild clean build \
-          -workspace BreadRoadCodeBase.xcworkspace \
-          -scheme BreadRoadApp \
-          -destination "${destination}" \
-          -configuration Test \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
-        env: 
-          destination: ${{ matrix.destination }}
         
       - name: Domain Unit Tests
         id: test_domin
@@ -71,6 +58,30 @@ jobs:
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
+
+      - name: FirebaseService Unit Tests
+        id: test_fb
+        run: |
+          xcodebuild clean build \
+          -workspace BreadRoadCodeBase.xcworkspace \
+          -scheme FirebaseService \
+          -destination "${destination}" \
+          -configuration Test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
+      - name: iOS App Unit Tests
+        id: test_ios_app
+        run: |
+          xcodebuild clean build \
+          -workspace BreadRoadCodeBase.xcworkspace \
+          -scheme BreadRoadApp \
+          -destination "${destination}" \
+          -configuration Test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
       
       - name: Check Tests Domain
         if: steps.test_ios_app.outputs.result != 0
@@ -79,6 +90,11 @@ jobs:
           
       - name: Check Tests DataStore
         if: steps.test_data_store.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests FirebaseService
+        if: steps.test_fb.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
           
