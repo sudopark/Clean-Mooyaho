@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Builder + DI Container Extension
 
-public protocol MainTabSceneBuilable: Buildable {
+public protocol MainTabSceneBuilable {
     
     func makeMainTabScene() -> MainTabScene
 }

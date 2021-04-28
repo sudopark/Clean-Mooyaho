@@ -22,9 +22,8 @@ public protocol MainTabRouting: Routing { }
 
 // MARK: - Routers
 
-public typealias MainTabBuilders = EmptyBuilder
 
-public final class MainTabRouter: Router<MainTabBuilders>, MainTabRouting { }
+public final class MainTabRouter: Router<EmptyBuilder>, MainTabRouting { }
 
 
 extension MainTabRouter {

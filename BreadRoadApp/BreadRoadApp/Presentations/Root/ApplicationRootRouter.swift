@@ -18,12 +18,11 @@ public protocol ApplicationRootRouting: Routing {
 
 // MARK: - builders
 
-public typealias ApplicationRootRouterBuildings = MainTabSceneBuilable
+public typealias ApplicationRootRouterBuildables = MainTabSceneBuilable
 
 // MARK: - Router
 
-public final class ApplicationRootRouter: Router<ApplicationRootRouterBuildings>, ApplicationRootRouting {
-    
+public final class ApplicationRootRouter: Router<ApplicationRootRouterBuildables>, ApplicationRootRouting {
 
     private var window: UIWindow!
 }
@@ -33,7 +32,7 @@ extension ApplicationRootRouter {
     
     public func routeMain() {
         
-        guard let main = self.nextSceneBuilders?.makeMainTabScene() else { return }
+        guard let main = self.nextScenesBuilder?.makeMainTabScene() else { return }
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window.rootViewController = main
         self.window.makeKeyAndVisible()

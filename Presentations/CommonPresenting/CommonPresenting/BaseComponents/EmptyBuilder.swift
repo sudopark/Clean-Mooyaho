@@ -1,5 +1,5 @@
 //
-//  Builder.swift
+//  EmptyBuilder.swift
 //  BreadRoadApp
 //
 //  Created by ParkHyunsoo on 2021/04/23.
@@ -8,9 +8,4 @@
 
 import Foundation
 
-
-public protocol Buildable { }
-
-
-public protocol EmptyBuilder: Buildable { }
-
+public protocol EmptyBuilder { }

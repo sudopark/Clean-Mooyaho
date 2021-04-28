@@ -14,7 +14,7 @@ import RxRelay
 
 // MARK: - MainTabViewModel
 
-public protocol MainTabViewModel: class {
+public protocol MainTabViewModel: AnyObject {
 
     // interactor
     
@@ -26,14 +26,18 @@ public protocol MainTabViewModel: class {
 
 public final class MainTabViewModelImple: MainTabViewModel {
     
-    public let router: MainTabRouting
+    fileprivate final class Subjects {
+        // TODO: define subjects
+    }
+    
+    private let router: MainTabRouting
+    private let subjects = Subjects()
+    private let disposeBag = DisposeBag()
+    
     
     public init(router: MainTabRouting) {
         self.router = router
     }
-    
-    
-    private let disposeBag = DisposeBag()
 }
 
 
