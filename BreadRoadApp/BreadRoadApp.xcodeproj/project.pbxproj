@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B39E22D2638784F003EE954 /* FirebaseCrashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */; };
 		2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5E26336C91000E4152 /* MainTabRouter.swift */; };
 		2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5F26336C91000E4152 /* MainTabViewController.swift */; };
 		2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6026336C91000E4152 /* MainTabBuilder.swift */; };
@@ -18,12 +17,13 @@
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
 		2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC56262B640F0006291F /* LaunchScreen.storyboard */; };
+		2B8AC403263C5C78002BA1AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8AC402263C5C78002BA1AC /* GoogleService-Info.plist */; };
+		2B8AC408263C5D7F002BA1AC /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC406263C5D7F002BA1AC /* UserMessagingPlatform.xcframework */; };
+		2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC407263C5D7F002BA1AC /* GoogleMobileAds.xcframework */; };
 		2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4060C263142BD000CC122 /* AppEnvironment.swift */; };
 		2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062226315507000CC122 /* ApplicationViewModel.swift */; };
 		2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */; };
 		2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */; };
-		2BE97869263960E70000C0C6 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */; };
-		2BE9786A263960E70000C0C6 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */; };
 		2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786B263961EC0000C0C6 /* Domain.framework */; };
 		2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786B263961EC0000C0C6 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786E263961F10000C0C6 /* DataStore.framework */; };
@@ -36,7 +36,6 @@
 		2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */; };
 		2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */; };
-		2BF94578262FF0A5007BF713 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2BF94577262FF0A5007BF713 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +84,9 @@
 		2B79FC59262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B79FC5E262B640F0006291F /* BreadRoadAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadRoadAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC64262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B8AC402263C5C78002BA1AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B8AC406263C5D7F002BA1AC /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = UserMessagingPlatform.xcframework; sourceTree = "<group>"; };
+		2B8AC407263C5D7F002BA1AC /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleMobileAds.xcframework; sourceTree = "<group>"; };
 		2BA4060C263142BD000CC122 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		2BA4062226315507000CC122 /* ApplicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModel.swift; sourceTree = "<group>"; };
 		2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRootRouter.swift; sourceTree = "<group>"; };
@@ -96,7 +98,6 @@
 		2BE97877263962080000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2BF94577262FF0A5007BF713 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,12 +107,11 @@
 			files = (
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
 				2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */,
-				2B39E22D2638784F003EE954 /* FirebaseCrashlytics.framework in Frameworks */,
-				2BE97869263960E70000C0C6 /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
+				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
+				2B8AC408263C5D7F002BA1AC /* UserMessagingPlatform.xcframework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
-				2BE9786A263960E70000C0C6 /* UserMessagingPlatform.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,10 +180,11 @@
 				2B4FD2522632B04600A99624 /* DIContainers */,
 				2BA4062C26315936000CC122 /* Presentations */,
 				2B6140D4263363A60091460D /* Utils */,
+				2B8AC404263C5D42002BA1AC /* EmbedFrameworks */,
 				2BA4060C263142BD000CC122 /* AppEnvironment.swift */,
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
 				2B79FC56262B640F0006291F /* LaunchScreen.storyboard */,
-				2BF94577262FF0A5007BF713 /* GoogleService-Info.plist */,
+				2B8AC402263C5C78002BA1AC /* GoogleService-Info.plist */,
 				2B79FC59262B640F0006291F /* Info.plist */,
 			);
 			path = BreadRoadApp;
@@ -196,6 +197,23 @@
 				2B79FC64262B640F0006291F /* Info.plist */,
 			);
 			path = BreadRoadAppTests;
+			sourceTree = "<group>";
+		};
+		2B8AC404263C5D42002BA1AC /* EmbedFrameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */,
+			);
+			path = EmbedFrameworks;
+			sourceTree = "<group>";
+		};
+		2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */ = {
+			isa = PBXGroup;
+			children = (
+				2B8AC406263C5D7F002BA1AC /* UserMessagingPlatform.xcframework */,
+				2B8AC407263C5D7F002BA1AC /* GoogleMobileAds.xcframework */,
+			);
+			path = "Google-Mobile-Ads-SDK";
 			sourceTree = "<group>";
 		};
 		2BA4060B263142A4000CC122 /* Root */ = {
@@ -331,7 +349,7 @@
 			files = (
 				2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */,
 				2B79FC55262B640F0006291F /* Assets.xcassets in Resources */,
-				2BF94578262FF0A5007BF713 /* GoogleService-Info.plist in Resources */,
+				2B8AC403263C5C78002BA1AC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,7 +555,8 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../other_static_frameworks\"";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = BreadRoadApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -564,7 +583,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../other_static_frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = BreadRoadApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

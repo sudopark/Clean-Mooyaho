@@ -24,4 +24,10 @@ public struct AppEnvironment {
             return .release
         #endif
     }
+    
+    public static var isTestBuild: Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        #endif
+    }
 }

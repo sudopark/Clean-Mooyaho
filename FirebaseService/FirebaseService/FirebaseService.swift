@@ -8,7 +8,7 @@
 
 import Foundation
 
-import Firebase
+//import Firebase
 
 public class FirebaseService {
     

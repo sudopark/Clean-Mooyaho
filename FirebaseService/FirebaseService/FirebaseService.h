@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Firebase.h"
 
 //! Project version number for FirebaseService.
 FOUNDATION_EXPORT double FirebaseServiceVersionNumber;
@@ -14,5 +15,4 @@ FOUNDATION_EXPORT double FirebaseServiceVersionNumber;
 FOUNDATION_EXPORT const unsigned char FirebaseServiceVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <FirebaseService/PublicHeader.h>
-
 

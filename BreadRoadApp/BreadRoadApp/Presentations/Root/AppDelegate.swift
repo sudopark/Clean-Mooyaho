@@ -31,17 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
-        self.firebaseService.setup()
-        self.firebaseService.signInAnonymously()
-        
-//        self.window = UIWindow(frame: UIScreen.main.bounds)
-//
-//        let viewController = ViewController()
-//        self.window?.rootViewController = viewController
-//        self.window?.makeKeyAndVisible()
-        
+        if AppEnvironment.isTestBuild == false {
+            self.firebaseService.setup()
+            self.firebaseService.signInAnonymously()
+        }
+
         self.applicationViewModel.appDidLaunched()
         return true
     }
