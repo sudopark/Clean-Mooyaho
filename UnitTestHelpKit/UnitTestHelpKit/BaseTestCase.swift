@@ -10,7 +10,7 @@ import XCTest
 
 open class BaseTestCase: XCTestCase {
     
-    public var timeout: TimeInterval = 10
-    public var timeout_long: TimeInterval = 100
-    public var timeout_veryLong: TimeInterval = 500
+    public var timeout: TimeInterval = 10 * 0.001
+    public var timeout_long: TimeInterval = 100 * 0.001
+    public var timeout_veryLong: TimeInterval = 500 * 0.001
 }

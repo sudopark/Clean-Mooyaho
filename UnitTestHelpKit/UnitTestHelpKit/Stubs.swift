@@ -20,7 +20,7 @@ private var baseContainerKey: String = "base_container"
 
 // MARK: - Containable
 
-public protocol Containable: class { }
+public protocol Containable: AnyObject { }
 
 extension Containable {
     
@@ -60,6 +60,10 @@ extension Stubbable {
     public func register<R>(key: String, resultProvider: @escaping () -> R) {
         self.put(key: key.withStubPrefix, value: resultProvider)
     }
+    
+    public func register<R>(type: R.Type, key: String, resultProvider: @escaping () -> R) {
+        self.put(key: key.withStubPrefix, value: resultProvider)
+    }
 }
 
 // MARK: Stub for resolve
@@ -74,9 +78,9 @@ extension Stubbable {
         return provider()
     }
     
-    public func resolve<R>(key: String, defaultResult: R) -> R {
-        return self.resolve(key: key.withStubPrefix) ?? defaultResult
-    }
+//    public func resolve<R>(key: String, defaultResult: R) -> R {
+//        return self.resolve(key: key) ?? defaultResult
+//    }
 }
 
 // MARK: - Stub for register and invoke verify

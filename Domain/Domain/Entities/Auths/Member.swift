@@ -11,8 +11,6 @@ import Foundation
 
 public protocol Member {
     
-    var isAnonymous: Bool { get }
-    
     var memberID: String { get }
     
     var realName: String? { get set }
@@ -22,11 +20,4 @@ public protocol Member {
     var email: String? { get set }
     
     var imageSource: ImageSource? { get set }
-    
-    var verifiedPhoneNumber: String? { get set }
-}
-
-extension Member {
-    
-    public var isAnonymous: Bool { false }
 }

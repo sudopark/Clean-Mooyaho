@@ -25,8 +25,6 @@ public struct Staff: Seller {
     
     public var imageSource: ImageSource?
     
-    public var verifiedPhoneNumber: String?
-    
     public init(storeID: String, memberID: String) {
         self.storeID = storeID
         self.memberID = memberID
