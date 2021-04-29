@@ -12,7 +12,6 @@ import Foundation
 public enum BuildMode {
     case debug
     case release
-    case test
 }
 
 
@@ -23,8 +22,6 @@ public struct AppEnvironment {
             return .debug
         #elseif RELEASE
             return .release
-        #else
-            return .test
         #endif
     }
 }
