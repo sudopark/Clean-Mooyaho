@@ -1,5 +1,5 @@
 //
-//  Customer.swift
+//  Visitor.swift
 //  Domain
 //
 //  Created by ParkHyunsoo on 2021/04/24.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct Customer: Member {
+public struct ServiceMember: Member {
     
     public let memberID: String
     
@@ -20,8 +20,6 @@ public struct Customer: Member {
     public var email: String?
     
     public var imageSource: ImageSource?
-    
-    public var verifiedPhoneNumber: String?
     
     public init(memberID: String) {
         self.memberID = memberID

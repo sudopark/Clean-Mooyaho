@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+import RxSwift
+
+public protocol AuthRepository {
+    
+    func fetchLastSignInMember() -> Maybe<Member?>
+    
+    func signIn(using result: OAuth2Result) -> Maybe<Member>
+}
