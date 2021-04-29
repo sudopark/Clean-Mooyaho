@@ -12,8 +12,6 @@
 		2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5F26336C91000E4152 /* MainTabViewController.swift */; };
 		2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6026336C91000E4152 /* MainTabBuilder.swift */; };
 		2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6126336C91000E4152 /* MainTabViewModel.swift */; };
-		2B41AF7E26336EEA000E4152 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF7C26336EEA000E4152 /* Executor.swift */; };
-		2B41AF7F26336EEA000E4152 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF7D26336EEA000E4152 /* LeakDetector.swift */; };
 		2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DIContainers.swift */; };
 		2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2532632B07E00A99624 /* DIContainable.swift */; };
 		2B6140C6263350250091460D /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140C5263350250091460D /* Test.swift */; };
@@ -79,8 +77,6 @@
 		2B41AF5F26336C91000E4152 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
 		2B41AF6026336C91000E4152 /* MainTabBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBuilder.swift; sourceTree = "<group>"; };
 		2B41AF6126336C91000E4152 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
-		2B41AF7C26336EEA000E4152 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
-		2B41AF7D26336EEA000E4152 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DIContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainers.swift; sourceTree = "<group>"; };
 		2B4FD2532632B07E00A99624 /* DIContainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainable.swift; sourceTree = "<group>"; };
 		2B6140C5263350250091460D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -135,15 +131,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2B41AF7B26336EDE000E4152 /* LeakDetector */ = {
-			isa = PBXGroup;
-			children = (
-				2B41AF7C26336EEA000E4152 /* Executor.swift */,
-				2B41AF7D26336EEA000E4152 /* LeakDetector.swift */,
-			);
-			path = LeakDetector;
-			sourceTree = "<group>";
-		};
 		2B4FD2522632B04600A99624 /* DIContainers */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,7 +154,6 @@
 		2B6140D4263363A60091460D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				2B41AF7B26336EDE000E4152 /* LeakDetector */,
 				2B6140C5263350250091460D /* Test.swift */,
 			);
 			path = Utils;
@@ -405,10 +391,8 @@
 				2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */,
 				2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
-				2B41AF7F26336EEA000E4152 /* LeakDetector.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
-				2B41AF7E26336EEA000E4152 /* Executor.swift in Sources */,
 				2B6140C6263350250091460D /* Test.swift in Sources */,
 				2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */,
 			);
