@@ -1,85 +1,17 @@
 //
-//  WaitObservableEvents.swift
-//  BreadRoadAppTests
+//  WaitObservableEventTests.swift
+//  UnitTestHelpKitTests
 //
-//  Created by ParkHyunsoo on 2021/04/22.
+//  Created by ParkHyunsoo on 2021/04/29.
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
 import XCTest
 
 import RxSwift
-import UnitTestHelpKit
 
+@testable import UnitTestHelpKit
 
-protocol WaitObservableEvents: class {
-    
-    var disposeBag: DisposeBag! { get set }
-}
-
-
-extension WaitObservableEvents where Self: BaseTestCase {
-    
-    func waitElements<E>(_ expect: XCTestExpectation,
-                         for observable: Observable<E>,
-                         skip: Int = 0,
-                         timeout: TimeInterval? = nil,
-                         action: @escaping () -> Void) -> [E] {
-        // given
-        var elements = [E]()
-        
-        observable
-            .skip(skip)
-            .subscribe(onNext: { element in
-                elements.append(element)
-                expect.fulfill()
-            })
-            .disposed(by: self.disposeBag)
-        
-        // when
-        action()
-        self.wait(for: [expect], timeout: timeout ?? self.timeout)
-        
-        // then
-        return elements
-    }
-    
-    func waitFirstElement<E>(_ expect: XCTestExpectation,
-                             for observable: Observable<E>,
-                             skip: Int = 0,
-                             timeout: TimeInterval? = nil,
-                             action: @escaping () -> Void) -> E? {
-        // given
-        // when + then
-        return self.waitElements(expect, for: observable, skip: skip, timeout: timeout, action: action).first
-    }
-    
-    func waitError<E>(_ expect: XCTestExpectation,
-                      for observable: Observable<E>,
-                      timeout: TimeInterval? = nil,
-                      action: @escaping () -> Void) -> Error? {
-        // given
-        var occurError: Error?
-        
-        observable
-            .subscribe(onError: { error in
-                occurError = error
-                expect.fulfill()
-            })
-            .disposed(by: self.disposeBag)
-        
-        // when
-        action()
-        self.wait(for: [expect], timeout: timeout ?? self.timeout)
-        
-        // then
-        return occurError
-    }
-}
-
-
-
-// TEST
 
 class WaitObservableEventTests: BaseTestCase, WaitObservableEvents {
     

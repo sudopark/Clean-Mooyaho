@@ -18,24 +18,22 @@
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
 		2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC56262B640F0006291F /* LaunchScreen.storyboard */; };
-		2B79FC63262B640F0006291F /* BreadRoadAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */; };
 		2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4060C263142BD000CC122 /* AppEnvironment.swift */; };
 		2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4062226315507000CC122 /* ApplicationViewModel.swift */; };
 		2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */; };
 		2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */; };
-		2BA4074E26316FBC000CC122 /* WaitObservableEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */; };
 		2BE97869263960E70000C0C6 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */; };
 		2BE9786A263960E70000C0C6 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */; };
 		2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786B263961EC0000C0C6 /* Domain.framework */; };
-		2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786B263961EC0000C0C6 /* Domain.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786B263961EC0000C0C6 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786E263961F10000C0C6 /* DataStore.framework */; };
-		2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786E263961F10000C0C6 /* DataStore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786E263961F10000C0C6 /* DataStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97871263961F60000C0C6 /* FirebaseService.framework */; };
-		2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97871263961F60000C0C6 /* FirebaseService.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97871263961F60000C0C6 /* FirebaseService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97874263961FF0000C0C6 /* CommonPresenting.framework */; };
-		2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97874263961FF0000C0C6 /* CommonPresenting.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97874263961FF0000C0C6 /* CommonPresenting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; };
-		2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */; };
 		2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */; };
 		2BF94578262FF0A5007BF713 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2BF94577262FF0A5007BF713 /* GoogleService-Info.plist */; };
@@ -86,13 +84,11 @@
 		2B79FC57262B640F0006291F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B79FC59262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B79FC5E262B640F0006291F /* BreadRoadAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadRoadAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadRoadAppTests.swift; sourceTree = "<group>"; };
 		2B79FC64262B640F0006291F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BA4060C263142BD000CC122 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		2BA4062226315507000CC122 /* ApplicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModel.swift; sourceTree = "<group>"; };
 		2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationRootRouter.swift; sourceTree = "<group>"; };
 		2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewModelTests.swift; sourceTree = "<group>"; };
-		2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitObservableEvents.swift; sourceTree = "<group>"; };
 		2BE9786B263961EC0000C0C6 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9786E263961F10000C0C6 /* DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE97871263961F60000C0C6 /* FirebaseService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,9 +192,7 @@
 		2B79FC61262B640F0006291F /* BreadRoadAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				2BA4074C26316F48000CC122 /* Utills */,
 				2BA4074726316F24000CC122 /* Application */,
-				2B79FC62262B640F0006291F /* BreadRoadAppTests.swift */,
 				2B79FC64262B640F0006291F /* Info.plist */,
 			);
 			path = BreadRoadAppTests;
@@ -229,14 +223,6 @@
 				2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		2BA4074C26316F48000CC122 /* Utills */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4074D26316FBC000CC122 /* WaitObservableEvents.swift */,
-			);
-			path = Utills;
 			sourceTree = "<group>";
 		};
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
@@ -402,8 +388,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BA4074E26316FBC000CC122 /* WaitObservableEvents.swift in Sources */,
-				2B79FC63262B640F0006291F /* BreadRoadAppTests.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

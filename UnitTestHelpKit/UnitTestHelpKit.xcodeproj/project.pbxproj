@@ -13,6 +13,10 @@
 		2BF00C33262D746E00E235C0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00C15262D588C00E235C0 /* UnitTestHelpKit.framework */; };
 		2BF00C3A262D7E9D00E235C0 /* StubsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C39262D7E9D00E235C0 /* StubsTests.swift */; };
 		2BF00C3C262D85E000E235C0 /* BaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */; };
+		2BFB481C263AED7A00FB025F /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BFB481B263AED7A00FB025F /* Common3rdParty.framework */; };
+		2BFB4820263AEDC700FB025F /* WaitObservableEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */; };
+		2BFB4822263AEDF800FB025F /* WaitObservableEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB4821263AEDF800FB025F /* WaitObservableEventTests.swift */; };
+		2BFB4824263AEE6600FB025F /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BFB4823263AEE6600FB025F /* Common3rdParty.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,10 @@
 		2BF00C32262D746E00E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BF00C39262D7E9D00E235C0 /* StubsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubsTests.swift; sourceTree = "<group>"; };
 		2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTestCase.swift; sourceTree = "<group>"; };
+		2BFB481B263AED7A00FB025F /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitObservableEvents.swift; sourceTree = "<group>"; };
+		2BFB4821263AEDF800FB025F /* WaitObservableEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitObservableEventTests.swift; sourceTree = "<group>"; };
+		2BFB4823263AEE6600FB025F /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFB481C263AED7A00FB025F /* Common3rdParty.framework in Frameworks */,
 				2BF00C22262D58BE00E235C0 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFB4824263AEE6600FB025F /* Common3rdParty.framework in Frameworks */,
 				2BF00C33262D746E00E235C0 /* UnitTestHelpKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +94,7 @@
 				2BF00C19262D588C00E235C0 /* Info.plist */,
 				2BF00C23262D5BAD00E235C0 /* Stubs.swift */,
 				2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */,
+				2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */,
 			);
 			path = UnitTestHelpKit;
 			sourceTree = "<group>";
@@ -91,6 +102,8 @@
 		2BF00C20262D58BE00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BFB4823263AEE6600FB025F /* Common3rdParty.framework */,
+				2BFB481B263AED7A00FB025F /* Common3rdParty.framework */,
 				2BA406BF26315E2E000CC122 /* Common3rdParty.framework */,
 				2BF00C21262D58BE00E235C0 /* XCTest.framework */,
 			);
@@ -102,6 +115,7 @@
 			children = (
 				2BF00C32262D746E00E235C0 /* Info.plist */,
 				2BF00C39262D7E9D00E235C0 /* StubsTests.swift */,
+				2BFB4821263AEDF800FB025F /* WaitObservableEventTests.swift */,
 			);
 			path = UnitTestHelpKitTests;
 			sourceTree = "<group>";
@@ -220,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFB4820263AEDC700FB025F /* WaitObservableEvents.swift in Sources */,
 				2BF00C3C262D85E000E235C0 /* BaseTestCase.swift in Sources */,
 				2BF00C24262D5BAD00E235C0 /* Stubs.swift in Sources */,
 			);
@@ -230,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BF00C3A262D7E9D00E235C0 /* StubsTests.swift in Sources */,
+				2BFB4822263AEDF800FB025F /* WaitObservableEventTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
