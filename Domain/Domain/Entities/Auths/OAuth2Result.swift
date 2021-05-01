@@ -9,7 +9,10 @@
 import Foundation
 
 
-public protocol OAuth2Credential { }
+public protocol OAuth2Credential {
+    
+    var uniqueIdentifier: String { get }
+}
 
 public protocol OAuth2AdditionalUserInfo { }
 

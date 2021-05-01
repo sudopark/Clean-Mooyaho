@@ -1,5 +1,5 @@
 //
-//  KakaoService + OAuth2RepositoryImple.swift
+//  KakaoService+OAuth2RepositoryImple.swift
 //  MooyahoApp
 //
 //  Created by ParkHyunsoo on 2021/05/01.
@@ -51,22 +51,9 @@ public struct KakaoOAuthResult: OAuth2Result {
 
 // MARK: - KakaoOAuth2Repository signin
 
-public protocol KakaoOAuth2Repository: AnyObject, OAuth2Repository {
-    
-    func canHandleURL(_ url: URL) -> Bool
-    
-    func handle(url: URL) -> Bool
-}
+public protocol KakaoOAuth2Repository: AnyObject, OAuth2Repository { }
 
 extension KakaoOAuth2Repository {
-    
-    public func canHandleURL(_ url: URL) -> Bool {
-        return AuthApi.isKakaoTalkLoginUrl(url)
-    }
-    
-    public func handle(url: URL) -> Bool {
-        return AuthController.handleOpenUrl(url: url)
-    }
     
     public func requestSignIn() -> Maybe<OAuth2Result> {
         

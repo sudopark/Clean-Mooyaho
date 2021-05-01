@@ -11,7 +11,9 @@ import Foundation
 import RxSwift
 import RxRelay
 
+import Domain
 import FirebaseService
+
 
 public final class ApplicationViewModel {
     
@@ -42,6 +44,13 @@ extension ApplicationViewModel {
         guard AppEnvironment.isTestBuild == false else { return }
         self.firebaseService.setupService()
         self.kakaoService.setupService()
+    }
+    
+    func handleOpenURL(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]?) -> Bool {
+        if self.kakaoService.canHandleURL(url) {
+            return self.kakaoService.handle(url: url)
+        }
+        return false
     }
 }
 

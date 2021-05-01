@@ -35,3 +35,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
+
+
+// MARK: - handle application lifeCycle
+
+extension AppDelegate {
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        
+    }
+}
+
+
+// MARK: - handle URL
+
+extension AppDelegate {
+    
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return self.applicationViewModel.handleOpenURL(url: url, options: options)
+    }
+}
