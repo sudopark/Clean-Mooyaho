@@ -148,7 +148,9 @@ extension AuthUsecaseTests {
     
     struct DummyOAuthResult: OAuth2Result {
         
-        struct DummyCredential: OAuth2Credential {}
+        struct DummyCredential: OAuth2Credential {
+            let uniqueIdentifier: String = "dummy"
+        }
         
         let credential: OAuth2Credential
         let additionalInfo: OAuth2AdditionalUserInfo?

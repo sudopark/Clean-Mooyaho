@@ -11,11 +11,16 @@ import Foundation
 import Domain
 
 import KakaoSDKCommon
+import KakaoSDKAuth
 
 
-public protocol KakaoService: KakaoOAuth2Repository {
+public protocol KakaoService {
     
     func setupService()
+    
+    func canHandleURL(_ url: URL) -> Bool
+    
+    func handle(url: URL) -> Bool
 }
 
 
@@ -31,5 +36,13 @@ public final class KakaoServiceImple: KakaoService {
     public func setupService() {
         guard let nativeKey = self.loadNativeAppkey() else { return }
         KakaoSDKCommon.initSDK(appKey: nativeKey)
+    }
+    
+    public func canHandleURL(_ url: URL) -> Bool {
+        return AuthApi.isKakaoTalkLoginUrl(url)
+    }
+    
+    public func handle(url: URL) -> Bool {
+        return AuthController.handleOpenUrl(url: url)
     }
 }

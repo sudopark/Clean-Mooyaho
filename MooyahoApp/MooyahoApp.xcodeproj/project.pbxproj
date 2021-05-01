@@ -11,6 +11,9 @@
 		2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5F26336C91000E4152 /* MainTabViewController.swift */; };
 		2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6026336C91000E4152 /* MainTabBuilder.swift */; };
 		2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6126336C91000E4152 /* MainTabViewModel.swift */; };
+		2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */; };
+		2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */; };
+		2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22E263D3012003F25D1 /* StubKakaoService.swift */; };
 		2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DIContainers.swift */; };
 		2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2532632B07E00A99624 /* DIContainable.swift */; };
 		2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56932B263D10F5009F85E1 /* KakaoService.swift */; };
@@ -77,6 +80,9 @@
 		2B41AF5F26336C91000E4152 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
 		2B41AF6026336C91000E4152 /* MainTabBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBuilder.swift; sourceTree = "<group>"; };
 		2B41AF6126336C91000E4152 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
+		2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KakaoService+OAuth2RepositoryImple.swift"; sourceTree = "<group>"; };
+		2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFirebaseService.swift; sourceTree = "<group>"; };
+		2B47B22E263D3012003F25D1 /* StubKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubKakaoService.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DIContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainers.swift; sourceTree = "<group>"; };
 		2B4FD2532632B07E00A99624 /* DIContainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainable.swift; sourceTree = "<group>"; };
 		2B56932B263D10F5009F85E1 /* KakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoService.swift; sourceTree = "<group>"; };
@@ -139,6 +145,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B47B22B263D2FB5003F25D1 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */,
+				2B47B22E263D3012003F25D1 /* StubKakaoService.swift */,
+			);
+			path = Stubs;
+			sourceTree = "<group>";
+		};
 		2B4FD2522632B04600A99624 /* DIContainers */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				2B56932B263D10F5009F85E1 /* KakaoService.swift */,
+				2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */,
 			);
 			path = KakaoServices;
 			sourceTree = "<group>";
@@ -201,7 +217,7 @@
 				2B4FD2522632B04600A99624 /* DIContainers */,
 				2BA4062C26315936000CC122 /* Presentations */,
 				2B6140D4263363A60091460D /* Utils */,
-				2B8AC404263C5D42002BA1AC /* EmbedFrameworks */,
+				2B8AC404263C5D42002BA1AC /* ExternalServices */,
 				2BA4060C263142BD000CC122 /* AppEnvironment.swift */,
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
 				2B79FC56262B640F0006291F /* LaunchScreen.storyboard */,
@@ -214,19 +230,20 @@
 		2B79FC61262B640F0006291F /* MooyahoAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				2B47B22B263D2FB5003F25D1 /* Stubs */,
 				2BA4074726316F24000CC122 /* Application */,
 				2B79FC64262B640F0006291F /* Info.plist */,
 			);
 			path = MooyahoAppTests;
 			sourceTree = "<group>";
 		};
-		2B8AC404263C5D42002BA1AC /* EmbedFrameworks */ = {
+		2B8AC404263C5D42002BA1AC /* ExternalServices */ = {
 			isa = PBXGroup;
 			children = (
 				2B56932A263D10E4009F85E1 /* KakaoServices */,
 				2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */,
 			);
-			path = EmbedFrameworks;
+			path = ExternalServices;
 			sourceTree = "<group>";
 		};
 		2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */ = {
@@ -493,6 +510,7 @@
 				2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
+				2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
 				2B6140C6263350250091460D /* Test.swift in Sources */,
 				2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */,
@@ -503,7 +521,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
+				2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

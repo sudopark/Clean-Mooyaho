@@ -19,23 +19,33 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     
     var disposeBag: DisposeBag!
     var spyRouter: SpyRouter!
+    var stubFirebaseService: StubFirebaseService!
+    var stubKakaoService: StubKakaoService!
     var viewModel: ApplicationViewModel!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = DisposeBag()
         self.spyRouter = SpyRouter()
-        self.viewModel = ApplicationViewModel(router: self.spyRouter)
+        self.stubFirebaseService = .init()
+        self.stubKakaoService = .init()
+        self.viewModel = ApplicationViewModel(firebaseService: self.stubFirebaseService,
+                                              kakaoService: self.stubKakaoService,
+                                              router: self.spyRouter)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.spyRouter = nil
+        self.stubFirebaseService = nil
+        self.stubKakaoService = nil
         self.viewModel = nil
         super.tearDown()
     }
 }
 
+
+// MARK: - test application level routing
 
 extension ApplicationViewModelTests {
     
@@ -55,6 +65,23 @@ extension ApplicationViewModelTests {
     }
 }
 
+
+// MARK: - test handle urls
+
+extension ApplicationViewModelTests {
+    
+    func testViewModel_ifOpenURLIsKakaoURL_handleURL() {
+        // given
+        self.stubKakaoService.register(key: "canHandleURL") { true }
+        self.stubKakaoService.register(key: "handle:url") { true }
+        
+        // when
+        let handled = self.viewModel.handleOpenURL(url: URL(string: "dummy.url")!, options: nil)
+        
+        // then
+        XCTAssertEqual(handled, true)
+    }
+}
 
 
 extension ApplicationViewModelTests {

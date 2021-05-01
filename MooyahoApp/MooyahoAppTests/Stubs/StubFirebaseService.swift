@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+import RxSwift
+
+import UnitTestHelpKit
+import FirebaseService
+
+@testable import MooyahoApp
+
+
+class StubFirebaseService: FirebaseService, Stubbable {
+    
+    func setupService() {
+        self.verify(key: "setupService")
+    }
+}
