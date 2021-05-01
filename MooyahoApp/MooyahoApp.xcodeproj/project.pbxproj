@@ -13,6 +13,7 @@
 		2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6126336C91000E4152 /* MainTabViewModel.swift */; };
 		2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DIContainers.swift */; };
 		2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2532632B07E00A99624 /* DIContainable.swift */; };
+		2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56932B263D10F5009F85E1 /* KakaoService.swift */; };
 		2B6140C6263350250091460D /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140C5263350250091460D /* Test.swift */; };
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
 		2B79FC55262B640F0006291F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B79FC54262B640F0006291F /* Assets.xcassets */; };
@@ -36,6 +37,8 @@
 		2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */; };
 		2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */; };
+		B29F456DF5E2F677B71E4127 /* Pods_MooyahoAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D7138C59E95898D127D7225 /* Pods_MooyahoAppTests.framework */; };
+		D0B2ABC9E99EEC6D68CFB9E1 /* Pods_MooyahoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F19396CB2C3DA290A50C038 /* Pods_MooyahoApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +79,7 @@
 		2B41AF6126336C91000E4152 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DIContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainers.swift; sourceTree = "<group>"; };
 		2B4FD2532632B07E00A99624 /* DIContainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainable.swift; sourceTree = "<group>"; };
+		2B56932B263D10F5009F85E1 /* KakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoService.swift; sourceTree = "<group>"; };
 		2B6140C5263350250091460D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		2B79FC48262B640C0006291F /* MooyahoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MooyahoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC4B262B640C0006291F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +102,12 @@
 		2BE97877263962080000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F19396CB2C3DA290A50C038 /* Pods_MooyahoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MooyahoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		741762DE698C223D7C49079A /* Pods-MooyahoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MooyahoApp.release.xcconfig"; path = "Target Support Files/Pods-MooyahoApp/Pods-MooyahoApp.release.xcconfig"; sourceTree = "<group>"; };
+		7D7138C59E95898D127D7225 /* Pods_MooyahoAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MooyahoAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DF2651C063ADF0A314220AB /* Pods-MooyahoAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MooyahoAppTests.release.xcconfig"; path = "Target Support Files/Pods-MooyahoAppTests/Pods-MooyahoAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		D73E5D3DFC7B8DD0CDDEF15A /* Pods-MooyahoAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MooyahoAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MooyahoAppTests/Pods-MooyahoAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E9D34708137359566C8ABD7F /* Pods-MooyahoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MooyahoApp.debug.xcconfig"; path = "Target Support Files/Pods-MooyahoApp/Pods-MooyahoApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +122,7 @@
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
 				2B8AC408263C5D7F002BA1AC /* UserMessagingPlatform.xcframework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
+				D0B2ABC9E99EEC6D68CFB9E1 /* Pods_MooyahoApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +132,7 @@
 			files = (
 				2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */,
 				2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */,
+				B29F456DF5E2F677B71E4127 /* Pods_MooyahoAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +146,14 @@
 				2B4FD24B2632A7BA00A99624 /* DIContainers.swift */,
 			);
 			path = DIContainers;
+			sourceTree = "<group>";
+		};
+		2B56932A263D10E4009F85E1 /* KakaoServices */ = {
+			isa = PBXGroup;
+			children = (
+				2B56932B263D10F5009F85E1 /* KakaoService.swift */,
+			);
+			path = KakaoServices;
 			sourceTree = "<group>";
 		};
 		2B6140B026334F100091460D /* Main */ = {
@@ -150,6 +170,7 @@
 		2B6140D4263363A60091460D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2B56932A263D10E4009F85E1 /* KakaoServices */,
 				2B6140C5263350250091460D /* Test.swift */,
 			);
 			path = Utils;
@@ -162,6 +183,7 @@
 				2B79FC61262B640F0006291F /* MooyahoAppTests */,
 				2B79FC49262B640C0006291F /* Products */,
 				2BF00BF9262B872A00E235C0 /* Frameworks */,
+				BA060EE10E63965FD907BFE4 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -256,8 +278,22 @@
 				2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */,
 				2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */,
 				2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */,
+				5F19396CB2C3DA290A50C038 /* Pods_MooyahoApp.framework */,
+				7D7138C59E95898D127D7225 /* Pods_MooyahoAppTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BA060EE10E63965FD907BFE4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E9D34708137359566C8ABD7F /* Pods-MooyahoApp.debug.xcconfig */,
+				741762DE698C223D7C49079A /* Pods-MooyahoApp.release.xcconfig */,
+				D73E5D3DFC7B8DD0CDDEF15A /* Pods-MooyahoAppTests.debug.xcconfig */,
+				7DF2651C063ADF0A314220AB /* Pods-MooyahoAppTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,19 +303,19 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B79FC67262B640F0006291F /* Build configuration list for PBXNativeTarget "MooyahoApp" */;
 			buildPhases = (
+				373235B106E1891178CA2565 /* [CP] Check Pods Manifest.lock */,
 				2B79FC44262B640C0006291F /* Sources */,
 				2B79FC45262B640C0006291F /* Frameworks */,
 				2B79FC46262B640C0006291F /* Resources */,
 				2BF00BFD262B872A00E235C0 /* Embed Frameworks */,
 				2B4ED8B5263D022B004B8C88 /* Run FB crashlytics */,
+				89ABB233D138AD5C5DAEC745 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = MooyahoApp;
-			packageProductDependencies = (
-			);
 			productName = BreadRoadApp;
 			productReference = 2B79FC48262B640C0006291F /* MooyahoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -288,6 +324,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B79FC6A262B640F0006291F /* Build configuration list for PBXNativeTarget "MooyahoAppTests" */;
 			buildPhases = (
+				FF0367DF6F0930BA2A835E43 /* [CP] Check Pods Manifest.lock */,
 				2B79FC5A262B640F0006291F /* Sources */,
 				2B79FC5B262B640F0006291F /* Frameworks */,
 				2B79FC5C262B640F0006291F /* Resources */,
@@ -330,8 +367,6 @@
 				Base,
 			);
 			mainGroup = 2B79FC3F262B640C0006291F;
-			packageReferences = (
-			);
 			productRefGroup = 2B79FC49262B640C0006291F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -381,6 +416,67 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ ${CONFIGURATION} != \"Test\" ]; then\n    echo \"🎯 run Crashlytics script\"\n    \"${SRCROOT}/../FirebaseService/FirebaseService/run\"\nfi\n\n";
 		};
+		373235B106E1891178CA2565 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MooyahoApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		89ABB233D138AD5C5DAEC745 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MooyahoApp/Pods-MooyahoApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MooyahoApp/Pods-MooyahoApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MooyahoApp/Pods-MooyahoApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF0367DF6F0930BA2A835E43 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MooyahoAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -393,6 +489,7 @@
 				2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */,
 				2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */,
 				2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */,
+				2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */,
 				2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
@@ -548,6 +645,7 @@
 		};
 		2B79FC68262B640F0006291F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9D34708137359566C8ABD7F /* Pods-MooyahoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -556,14 +654,15 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MooyahoApp/Info.plist;
+				KO_NATIVE_APPKEY = kakaofbe253ae0b9de02f2082e15be8c0c3d7;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "";
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS";
@@ -577,20 +676,22 @@
 		};
 		2B79FC69262B640F0006291F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 741762DE698C223D7C49079A /* Pods-MooyahoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MooyahoApp/Info.plist;
+				KO_NATIVE_APPKEY = kakaofbe253ae0b9de02f2082e15be8c0c3d7;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "";
-				OTHER_SWIFT_FLAGS = "-D RELEASE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS";
@@ -603,6 +704,7 @@
 		};
 		2B79FC6B262B640F0006291F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D73E5D3DFC7B8DD0CDDEF15A /* Pods-MooyahoAppTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -625,6 +727,7 @@
 		};
 		2B79FC6C262B640F0006291F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DF2651C063ADF0A314220AB /* Pods-MooyahoAppTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
