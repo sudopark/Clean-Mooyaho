@@ -13,11 +13,7 @@ public protocol Member {
     
     var memberID: String { get }
     
-    var realName: String? { get set }
-    
     var nickName: String? { get }
     
-    var email: String? { get set }
-    
-    var imageSource: ImageSource? { get set }
+    var icon: ImageSource? { get set }
 }

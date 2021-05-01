@@ -41,9 +41,9 @@ extension AuthUsecaseImple {
     func requestSocialSignIn() -> Maybe<Member> {
         
         let requestOAuth2signIn = self.oauth2Repository.requestSignIn()
-        let thenSignInService: (OAuth2Result) -> Maybe<Member> = { [weak self] result in
+        let thenSignInService: (Credential) -> Maybe<Member> = { [weak self] credential in
             guard let self = self else { return .empty() }
-            return self.authRepository.signIn(using: result)
+            return self.authRepository.signIn(using: credential)
         }
         
         return requestOAuth2signIn
