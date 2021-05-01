@@ -10,12 +10,22 @@ import Foundation
 
 import CommonPresenting
 
+import FirebaseService
+
 
 // MARK: - DIContainers
 
 public final class DIContainers {
     
+    public class Shared {
+        
+        fileprivate init() {}
+        
+        public let firebaseService: FirebaseService = FirebaseServiceImple()
+        public let kakaoService: KakaoService = KakaoServiceImple()
+    }
     
+    public let shared: Shared = Shared()
 }
 
 extension DIContainers: EmptyBuilder { }

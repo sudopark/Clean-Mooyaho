@@ -11,13 +11,19 @@ import Foundation
 import RxSwift
 import RxRelay
 
+import FirebaseService
 
 public final class ApplicationViewModel {
     
-    
+    private let firebaseService: FirebaseService
+    private let kakaoService: KakaoService
     private let router: ApplicationRootRouting
     
-    public init(router: ApplicationRootRouting) {
+    public init(firebaseService: FirebaseService,
+                kakaoService: KakaoService,
+                router: ApplicationRootRouting) {
+        self.firebaseService = firebaseService
+        self.kakaoService = kakaoService
         self.router = router
     }
     
@@ -29,8 +35,13 @@ extension ApplicationViewModel {
     
     func appDidLaunched() {
         
-        // TODO: route to main
-        self.router.routeMain()
+        defer {
+            self.router.routeMain()
+        }
+        
+        guard AppEnvironment.isTestBuild == false else { return }
+        self.firebaseService.setupService()
+        self.kakaoService.setupService()
     }
 }
 

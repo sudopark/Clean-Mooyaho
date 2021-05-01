@@ -170,7 +170,6 @@
 		2B6140D4263363A60091460D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				2B56932A263D10E4009F85E1 /* KakaoServices */,
 				2B6140C5263350250091460D /* Test.swift */,
 			);
 			path = Utils;
@@ -224,6 +223,7 @@
 		2B8AC404263C5D42002BA1AC /* EmbedFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B56932A263D10E4009F85E1 /* KakaoServices */,
 				2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */,
 			);
 			path = EmbedFrameworks;

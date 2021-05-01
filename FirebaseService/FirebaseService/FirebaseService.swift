@@ -8,24 +8,18 @@
 
 import Foundation
 
-//import Firebase
 
-public class FirebaseService {
+public protocol FirebaseService {
+    
+    func setupService()
+}
+
+public class FirebaseServiceImple: FirebaseService {
     
     public init() {}
     
-    public func setup() {
+    public func setupService() {
         
         FirebaseApp.configure()
-    }
-}
-
-
-extension FirebaseService {
-    
-    public func signInAnonymously() {
-        Auth.auth().signInAnonymously { result, error in
-            print("result: \(result?.user.uid) and error: \(error)")
-        }
     }
 }
