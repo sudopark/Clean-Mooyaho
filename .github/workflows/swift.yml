@@ -17,100 +17,64 @@ jobs:
       - run: swift --version
       - name: Checkout
         uses: actions/checkout@master
-      - name: Cache Cocoapods
-        uses: actions/cache@v1
-        with: 
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
 
-      # - name: Cache SPM
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: .build
-      #     key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-spm-
+      # - name: iOS App Unit Tests
+      #   id: test_ios_app
+      #   run: |
+      #     xcodebuild clean test \
+      #     -workspace Clean-Mooyaho-Codebase.xcworkspace \
+      #     -scheme Mooyaho\ iOS \
+      #     -destination "${destination}" \
+      #     -configuration Debug \
+      #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      #   env: 
+      #     destination: ${{ matrix.destination }}
 
-      - name: iOS App Unit Tests
-        id: test_ios_app
-        run: |
-          xcodebuild clean test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme Mooyaho\ iOS \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
-
-      - name: Domain Unit Tests
-        id: test_domin
-        run: |
-          xcodebuild clean test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme Domain \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
+      # - name: Domain Unit Tests
+      #   id: test_domin
+      #   run: |
+      #     xcodebuild clean test \
+      #     -workspace Clean-Mooyaho-Codebase.xcworkspace \
+      #     -scheme Domain \
+      #     -destination "${destination}" \
+      #     -configuration Debug \
+      #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      #   env: 
+      #     destination: ${{ matrix.destination }}
           
           
-      - name: DataStore Unit Tests
-        id: test_data_store
-        run: |
-          xcodebuild clean test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme DataStore \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
-
-      - name: FirebaseService Unit Tests
-        id: test_fb
-        run: |
-          xcodebuild clean test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme FirebaseService \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
-
-      # - name: Check Tests Domain
-      #   if: steps.test_ios_app.outputs.result != 0
+      # - name: DataStore Unit Tests
+      #   id: test_data_store
       #   run: |
-      #     echo "Domain Tests Failed"; exit 1
-    
-          
-      # - name: Check Tests DataStore
-      #   if: steps.test_data_store.outputs.result != 0
-      #   run: |
-      #     echo "DataStore Tests Failed"; exit 1
+      #     xcodebuild clean test \
+      #     -workspace Clean-Mooyaho-Codebase.xcworkspace \
+      #     -scheme DataStore \
+      #     -destination "${destination}" \
+      #     -configuration Debug \
+      #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      #   env: 
+      #     destination: ${{ matrix.destination }}
 
-      # - name: Check Tests FirebaseService
-      #   if: steps.test_fb.outputs.result != 0
+      # - name: FirebaseService Unit Tests
+      #   id: test_fb
       #   run: |
-      #     echo "FirebaseService Tests Failed"; exit 1
-          
-      # - name: Check Tests iOS App
-      #   if: steps.test_ios_app.outputs.result != 0
-      #   run: |
-      #     echo "iOS App Tests Failed"; exit 1
+      #     xcodebuild clean test \
+      #     -workspace Clean-Mooyaho-Codebase.xcworkspace \
+      #     -scheme FirebaseService \
+      #     -destination "${destination}" \
+      #     -configuration Debug \
+      #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      #   env: 
+      #     destination: ${{ matrix.destination }}
 
-      - name: Check test results - post fail message or not
-        if: steps.test_ios_app.outputs.result != 0 || steps.test_domin.outputs.result != 0 || steps.test_data_store.outputs.result != 0 || steps.test_fb.outputs.result != 0
-        run: |
-          curl -X POST 'https://kakaowork.com/bots/hook/et6hmif1uwyy' -H 'Content-Type: application/json' -d '{ "text": "실패 메세지", "blocks": [ { "type": "header", "text": "🤬 Actions 실패", "style": "red" }, { "type": "text", "text": "${{ github.event.pull_request.title }}", "markdown": true}, { "type": "button", "text": "자세히 보기 👉", "action_type": "open_system_browser", "value": "${{ github.event.pull_request.html_url }}" } ] }' \
-          exit 1
+      # - name: Check test results - post fail message or not
+      #   if: steps.test_ios_app.outputs.result != 0 || steps.test_domin.outputs.result != 0 || steps.test_data_store.outputs.result != 0 || steps.test_fb.outputs.result != 0
+      #   run: |
+      #     curl -X POST 'https://kakaowork.com/bots/hook/e1y16mw1wcyy' -H 'Content-Type: application/json' -d '{ "text": "실패 메세지", "blocks": [ { "type": "header", "text": "🤬 Actions 실패", "style": "red" }, { "type": "text", "text": "${{ github.event.pull_request.title }}", "markdown": true}, { "type": "button", "text": "자세히 보기 👉", "action_type": "open_system_browser", "value": "${{ github.event.pull_request.html_url }}" } ] }' \
+      #     exit 1
 
       - name: Post success message
         run: |
-          curl -X POST 'https://kakaowork.com/bots/hook/et6hmif1uwyy' -H 'Content-Type: application/json' -d '{ "text": "성공 메세지", "blocks": [ { "type": "header", "text": "🤪 Actions 성공", "style": "blue" }, { "type": "text", "text": "${{ github.event.pull_request.title }}", "markdown": true }, { "type": "button", "text": "자세히 보기 👉", "action_type": "open_system_browser", "value": "${{ github.event.pull_request.html_url }}" } ] }'
+          curl -X POST 'https://kakaowork.com/bots/hook/e1y16mw1wcyy' -H 'Content-Type: application/json' -d '{ "text": "Push alarm message", "blocks": [ { "type": "header", "text": "🤪 Actions 성공", "style": "blue" }, { "type": "text", "text": "${{ github.event.pull_request.title }}", "markdown": true }, { "type": "button", "text": "자세히 보기 👉", "action_type": "open_system_browser", "value": "${{ github.event.pull_request.html_url }}" } ] }'
 
 
