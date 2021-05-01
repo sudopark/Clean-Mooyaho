@@ -33,11 +33,23 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-spm-
 
+      - name: iOS App Unit Tests
+        id: test_ios_app
+        run: |
+          xcodebuild clean test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme Mooyaho\ iOS \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        env: 
+          destination: ${{ matrix.destination }}
+
       - name: Domain Unit Tests
         id: test_domin
         run: |
           xcodebuild clean test \
-          -workspace BreadRoadCodeBase.xcworkspace \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme Domain \
           -destination "${destination}" \
           -configuration Debug \
@@ -50,7 +62,7 @@ jobs:
         id: test_data_store
         run: |
           xcodebuild clean test \
-          -workspace BreadRoadCodeBase.xcworkspace \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme DataStore \
           -destination "${destination}" \
           -configuration Debug \
@@ -62,20 +74,8 @@ jobs:
         id: test_fb
         run: |
           xcodebuild clean test \
-          -workspace BreadRoadCodeBase.xcworkspace \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme FirebaseService \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
-
-      - name: iOS App Unit Tests
-        id: test_ios_app
-        run: |
-          xcodebuild clean test \
-          -workspace BreadRoadCodeBase.xcworkspace \
-          -scheme BreadRoadApp \
           -destination "${destination}" \
           -configuration Debug \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO

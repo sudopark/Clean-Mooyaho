@@ -12,7 +12,7 @@ import RxSwift
 
 import UnitTestHelpKit
 
-@testable import BreadRoadApp
+@testable import MooyahoApp
 
 
 class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {

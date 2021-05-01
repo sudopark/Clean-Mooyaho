@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2B79FC47262B640C0006291F"
-               BuildableName = "BreadRoadApp.app"
-               BlueprintName = "BreadRoadApp"
-               ReferencedContainer = "container:BreadRoadApp.xcodeproj">
+               BuildableName = "MooyahoApp.app"
+               BlueprintName = "MooyahoApp"
+               ReferencedContainer = "container:MooyahoApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,9 +35,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2B79FC5D262B640F0006291F"
-               BuildableName = "BreadRoadAppTests.xctest"
-               BlueprintName = "BreadRoadAppTests"
-               ReferencedContainer = "container:BreadRoadApp.xcodeproj">
+               BuildableName = "MooyahoAppTests.xctest"
+               BlueprintName = "MooyahoAppTests"
+               ReferencedContainer = "container:MooyahoApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B79FC47262B640C0006291F"
-            BuildableName = "BreadRoadApp.app"
-            BlueprintName = "BreadRoadApp"
-            ReferencedContainer = "container:BreadRoadApp.xcodeproj">
+            BuildableName = "MooyahoApp.app"
+            BlueprintName = "MooyahoApp"
+            ReferencedContainer = "container:MooyahoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -74,9 +74,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B79FC47262B640C0006291F"
-            BuildableName = "BreadRoadApp.app"
-            BlueprintName = "BreadRoadApp"
-            ReferencedContainer = "container:BreadRoadApp.xcodeproj">
+            BuildableName = "MooyahoApp.app"
+            BlueprintName = "MooyahoApp"
+            ReferencedContainer = "container:MooyahoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
