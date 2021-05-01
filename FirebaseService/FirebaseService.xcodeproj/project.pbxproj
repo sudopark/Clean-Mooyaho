@@ -40,6 +40,7 @@
 		2BD54F5C263D4AB4004B3EB0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F5B263D4AB4004B3EB0 /* DataStore.framework */; };
 		2BD54F5F263D4B09004B3EB0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F5E263D4B09004B3EB0 /* UnitTestHelpKit.framework */; };
 		2BD54F61263D4B14004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F60263D4B14004B3EB0 /* Common3rdParty.framework */; };
+		2BD54F71263DB37D004B3EB0 /* Remote+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F70263DB37D004B3EB0 /* Remote+Auth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,7 @@
 		2BD54F5B263D4AB4004B3EB0 /* DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F5E263D4B09004B3EB0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F60263D4B14004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BD54F70263DB37D004B3EB0 /* Remote+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+Auth.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,7 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8AC38B263BB147002BA1AC /* FirebaseFrameworks */,
-				2BD54F54263D4A02004B3EB0 /* Remote+Firebase */,
+				2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */,
 				2B39E17226386CEC003EE954 /* FirebaseService.h */,
 				2B39E17326386CEC003EE954 /* Info.plist */,
 				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
@@ -338,11 +340,12 @@
 			path = FirebaseCrashlytics;
 			sourceTree = "<group>";
 		};
-		2BD54F54263D4A02004B3EB0 /* Remote+Firebase */ = {
+		2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */ = {
 			isa = PBXGroup;
 			children = (
+				2BD54F70263DB37D004B3EB0 /* Remote+Auth.swift */,
 			);
-			path = "Remote+Firebase";
+			path = "RemoteImple+FirebaseService";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -458,6 +461,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BD54F71263DB37D004B3EB0 /* Remote+Auth.swift in Sources */,
 				2B39E2002638708D003EE954 /* FirebaseService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
