@@ -13,4 +13,13 @@ import RxSwift
 import Domain
 
 
+public enum RemoteErrors: Error {
+    
+    case notSupportCredential(_ type: String)
+    case loadFail(_ type: String, reason: Error?)
+    case saveFail(_ type: String, reason: Error?)
+    case mappingFail(_ type: String)
+}
+
+
 public protocol Remote: AuthRemote { }

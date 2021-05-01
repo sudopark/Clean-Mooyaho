@@ -41,6 +41,9 @@
 		2BD54F5F263D4B09004B3EB0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F5E263D4B09004B3EB0 /* UnitTestHelpKit.framework */; };
 		2BD54F61263D4B14004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F60263D4B14004B3EB0 /* Common3rdParty.framework */; };
 		2BD54F71263DB37D004B3EB0 /* Remote+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F70263DB37D004B3EB0 /* Remote+Auth.swift */; };
+		2BD54F83263DCA5E004B3EB0 /* FireStore+Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */; };
+		2BD54F85263DCBB7004B3EB0 /* DataMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F84263DCBB7004B3EB0 /* DataMapping.swift */; };
+		2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +126,9 @@
 		2BD54F5E263D4B09004B3EB0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F60263D4B14004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F70263DB37D004B3EB0 /* Remote+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+Auth.swift"; sourceTree = "<group>"; };
+		2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FireStore+Collections.swift"; sourceTree = "<group>"; };
+		2BD54F84263DCBB7004B3EB0 /* DataMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMapping.swift; sourceTree = "<group>"; };
+		2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +150,7 @@
 				2B8AC3EF263BB229002BA1AC /* FirebaseMessaging.xcframework in Frameworks */,
 				2B8AC3EB263BB229002BA1AC /* FirebaseCore.xcframework in Frameworks */,
 				2B8AC3E0263BB229002BA1AC /* leveldb-library.xcframework in Frameworks */,
+				2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */,
 				2B8AC3F1263BB229002BA1AC /* FirebaseStorage.xcframework in Frameworks */,
 				2B8AC3EC263BB229002BA1AC /* GoogleDataTransport.xcframework in Frameworks */,
 				2B8AC3DE263BB229002BA1AC /* gRPC-Core.xcframework in Frameworks */,
@@ -213,6 +220,7 @@
 		2B39E19026386F0E003EE954 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */,
 				2BD54F60263D4B14004B3EB0 /* Common3rdParty.framework */,
 				2BD54F5E263D4B09004B3EB0 /* UnitTestHelpKit.framework */,
 				2BD54F5B263D4AB4004B3EB0 /* DataStore.framework */,
@@ -343,6 +351,8 @@
 		2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */ = {
 			isa = PBXGroup;
 			children = (
+				2BD54F84263DCBB7004B3EB0 /* DataMapping.swift */,
+				2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */,
 				2BD54F70263DB37D004B3EB0 /* Remote+Auth.swift */,
 			);
 			path = "RemoteImple+FirebaseService";
@@ -461,7 +471,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BD54F83263DCA5E004B3EB0 /* FireStore+Collections.swift in Sources */,
 				2BD54F71263DB37D004B3EB0 /* Remote+Auth.swift in Sources */,
+				2BD54F85263DCBB7004B3EB0 /* DataMapping.swift in Sources */,
 				2B39E2002638708D003EE954 /* FirebaseService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

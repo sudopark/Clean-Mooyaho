@@ -16,10 +16,13 @@ public protocol FirebaseService {
 
 public class FirebaseServiceImple: FirebaseService {
     
+    var fireStoreDB: Firestore!
+    
     public init() {}
     
     public func setupService() {
         
         FirebaseApp.configure()
+        self.fireStoreDB = Firestore.firestore()
     }
 }
