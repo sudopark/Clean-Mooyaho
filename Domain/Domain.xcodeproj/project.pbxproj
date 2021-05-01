@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B1A36E6263D08A50062BC49 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */; };
 		2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2372632946000A99624 /* Expression+Extensions.swift */; };
 		2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27862633E91100FEBCE3 /* AuthRepository.swift */; };
 		2B9F278B2633E91D00FEBCE3 /* OAuth2Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B4FD2372632946000A99624 /* Expression+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expression+Extensions.swift"; sourceTree = "<group>"; };
 		2B9F27862633E91100FEBCE3 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Repository.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B1A36E6263D08A50062BC49 /* UnitTestHelpKit.framework in Frameworks */,
 				2BFB4826263AEF1F00FB025F /* Common3rdParty.framework in Frameworks */,
 				2BF00BC5262B7DF400E235C0 /* Domain.framework in Frameworks */,
 			);
@@ -206,6 +209,7 @@
 		2BF00C25262D71F100E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */,
 				2BFB4825263AEF1F00FB025F /* Common3rdParty.framework */,
 				2BA406C626315E3E000CC122 /* Common3rdParty.framework */,
 				2BBD9EA22630160500409FEA /* UnitTestHelpKit.framework */,

@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:BreadRoadApp/BreadRoadApp.xcodeproj">
+      location = "group:MooyahoApp/MooyahoApp.xcodeproj">
    </FileRef>
    <Group
       location = "container:"
