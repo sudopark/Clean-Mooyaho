@@ -25,37 +25,25 @@ public enum KakaoOAuthErrors: Error {
 }
 
 
-// MARK: - Kakao OAuth Credential and Result
+// MARK: - Kakao OAuth Credential
 
-public struct KakaoOAuthCredential: OAuth2Credential {
+public struct KakaoOAuthCredential: OAuthCredential {
     
-    private let serviceProviderKey = "KAKAO"
-    public let uniqueIdentifier: String
+    public let kakaoUserID: Int
     
     public init(userID: Int) {
-        self.uniqueIdentifier = "\(serviceProviderKey)-\(userID)"
-    }
-}
-
-public struct KakaoOAuthResult: OAuth2Result {
-    
-    public let credential: OAuth2Credential
-    public let additionalInfo: OAuth2AdditionalUserInfo?
-    
-    public init(credential: KakaoOAuthCredential) {
-        self.credential = credential
-        self.additionalInfo = nil
+        self.kakaoUserID = userID
     }
 }
 
 
 // MARK: - KakaoOAuth2Repository signin
 
-public protocol KakaoOAuth2Repository: AnyObject, OAuth2Repository { }
+public protocol KakaoOAuth2Repository: AnyObject, OAuthRepository { }
 
 extension KakaoOAuth2Repository {
     
-    public func requestSignIn() -> Maybe<OAuth2Result> {
+    public func requestSignIn() -> Maybe<OAuthCredential> {
         
         let requestKakaoSignIn = UserApi.isKakaoTalkLoginAvailable()
             ? self.requestKakaoTalkSignIn() : self.requestKakaoAccountSignIn()
@@ -63,15 +51,17 @@ extension KakaoOAuth2Repository {
         let thenRequestUserInfo: () -> Maybe<User> = { [weak self] in
             return self?.requestKakaoUserInfo() ?? .empty()
         }
-        let asOAuth2Result: (User) throws -> KakaoOAuthResult = { user in
-            guard let userID = user.id else { throw KakaoOAuthErrors.invalidUserID }
-            let credential = KakaoOAuthCredential(userID: Int(userID))
-            return KakaoOAuthResult(credential: credential)
+        let asOAuth2Credentail: (User) throws -> KakaoOAuthCredential = { user in
+            
+            guard let userID = user.id else {
+                throw KakaoOAuthErrors.invalidUserID
+            }
+            return KakaoOAuthCredential(userID: Int(userID))
         }
         
         return requestKakaoSignIn
             .flatMap(thenRequestUserInfo)
-            .map(asOAuth2Result)
+            .map(asOAuth2Credentail)
     }
     
     private func requestKakaoTalkSignIn() -> Maybe<Void> {
