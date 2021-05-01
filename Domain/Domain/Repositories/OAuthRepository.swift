@@ -1,5 +1,5 @@
 //
-//  Credential+AdditionalUserInfo.swift
+//  SocialAuthRepository.swift
 //  Domain
 //
 //  Created by ParkHyunsoo on 2021/04/24.
@@ -8,8 +8,10 @@
 
 import Foundation
 
+import RxSwift
 
-public protocol Credential { }
 
-
-public protocol AdditionalUserInfo { }
+public protocol OAuthRepository {
+    
+    func requestSignIn() -> Maybe<OAuthCredential>
+}

@@ -9,7 +9,7 @@
 import Foundation
 
 
-public protocol Seller: Member {
-    
-    var storeID: String { get }
-}
+//public protocol Seller: Member {
+//    
+//    var storeID: String { get }
+//}

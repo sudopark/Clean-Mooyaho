@@ -21,7 +21,11 @@ class StubAuthRepository: AuthRepository, Stubbable {
         return self.resolve(key: "fetchLastSignInMember") ?? .empty()
     }
     
-    func signIn(using result: OAuth2Result) -> Maybe<Member> {
-        return self.resolve(key: "signIn:using") ?? .empty()
+    func requestSignIn(using secret: EmailBaseSecret) -> Maybe<Member> {
+        self.resolve(key: "requestSignIn:secret") ?? .empty()
+    }
+    
+    func requestSignIn(using credential: OAuthCredential) -> Maybe<Member> {
+        self.resolve(key: "requestSignIn:credential") ?? .empty()
     }
 }

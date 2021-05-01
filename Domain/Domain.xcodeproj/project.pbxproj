@@ -10,10 +10,10 @@
 		2B1A36E6263D08A50062BC49 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */; };
 		2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2372632946000A99624 /* Expression+Extensions.swift */; };
 		2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27862633E91100FEBCE3 /* AuthRepository.swift */; };
-		2B9F278B2633E91D00FEBCE3 /* OAuth2Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */; };
-		2B9F27932633F0E300FEBCE3 /* Credential+AdditionalUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27922633F0E300FEBCE3 /* Credential+AdditionalUserInfo.swift */; };
+		2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */; };
+		2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27922633F0E300FEBCE3 /* Credentials.swift */; };
 		2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27962633F0F700FEBCE3 /* Member.swift */; };
-		2B9F279B2633F10200FEBCE3 /* ServiceMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F279A2633F10200FEBCE3 /* ServiceMember.swift */; };
+		2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F279A2633F10200FEBCE3 /* Customer.swift */; };
 		2B9F279F2633F11800FEBCE3 /* Staff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F279E2633F11800FEBCE3 /* Staff.swift */; };
 		2B9F27A32633F17500FEBCE3 /* Seller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27A22633F17500FEBCE3 /* Seller.swift */; };
 		2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27A82633F1CB00FEBCE3 /* Manager.swift */; };
@@ -22,7 +22,6 @@
 		2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B8502635019600FE5243 /* OwnerShips.swift */; };
 		2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA93778263B1C0B00276876 /* StubAuthRepository.swift */; };
 		2BA9377B263B1C1800276876 /* StubOAuth2Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9377A263B1C1800276876 /* StubOAuth2Repository.swift */; };
-		2BD9DC31263C7577002EF343 /* OAuth2Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD9DC30263C7577002EF343 /* OAuth2Result.swift */; };
 		2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD9DC32263C793B002EF343 /* AuthErrors.swift */; };
 		2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978BC263AE91B0000C0C6 /* AuthUsecase.swift */; };
 		2BE978C0263AEA630000C0C6 /* AuthUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978BF263AEA630000C0C6 /* AuthUsecaseTests.swift */; };
@@ -46,10 +45,10 @@
 		2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B4FD2372632946000A99624 /* Expression+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expression+Extensions.swift"; sourceTree = "<group>"; };
 		2B9F27862633E91100FEBCE3 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
-		2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Repository.swift; sourceTree = "<group>"; };
-		2B9F27922633F0E300FEBCE3 /* Credential+AdditionalUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Credential+AdditionalUserInfo.swift"; sourceTree = "<group>"; };
+		2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthRepository.swift; sourceTree = "<group>"; };
+		2B9F27922633F0E300FEBCE3 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		2B9F27962633F0F700FEBCE3 /* Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
-		2B9F279A2633F10200FEBCE3 /* ServiceMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceMember.swift; sourceTree = "<group>"; };
+		2B9F279A2633F10200FEBCE3 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		2B9F279E2633F11800FEBCE3 /* Staff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Staff.swift; sourceTree = "<group>"; };
 		2B9F27A22633F17500FEBCE3 /* Seller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seller.swift; sourceTree = "<group>"; };
 		2B9F27A82633F1CB00FEBCE3 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
@@ -60,7 +59,6 @@
 		2BA9377A263B1C1800276876 /* StubOAuth2Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubOAuth2Repository.swift; sourceTree = "<group>"; };
 		2BBD9E96263012DF00409FEA /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBD9EA22630160500409FEA /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2BD9DC30263C7577002EF343 /* OAuth2Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Result.swift; sourceTree = "<group>"; };
 		2BD9DC32263C793B002EF343 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		2BE978BC263AE91B0000C0C6 /* AuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUsecase.swift; sourceTree = "<group>"; };
 		2BE978BF263AEA630000C0C6 /* AuthUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUsecaseTests.swift; sourceTree = "<group>"; };
@@ -104,10 +102,23 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		2B9A1A96263E714500B6CE69 /* draft */ = {
+			isa = PBXGroup;
+			children = (
+				2B9F279A2633F10200FEBCE3 /* Customer.swift */,
+				2BA7B8502635019600FE5243 /* OwnerShips.swift */,
+				2B9F27A22633F17500FEBCE3 /* Seller.swift */,
+				2B9F279E2633F11800FEBCE3 /* Staff.swift */,
+				2B9F27A82633F1CB00FEBCE3 /* Manager.swift */,
+			);
+			path = draft;
+			sourceTree = "<group>";
+		};
 		2B9F275F2633E5BB00FEBCE3 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				2B9F27AC2633F31800FEBCE3 /* Auths */,
+				2BD54F6D263DA695004B3EB0 /* Members */,
 				2B9F27AD2633F33400FEBCE3 /* ImageSource.swift */,
 			);
 			path = Entities;
@@ -125,7 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				2B9F27862633E91100FEBCE3 /* AuthRepository.swift */,
-				2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */,
+				2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -133,14 +144,7 @@
 		2B9F27AC2633F31800FEBCE3 /* Auths */ = {
 			isa = PBXGroup;
 			children = (
-				2B9F27922633F0E300FEBCE3 /* Credential+AdditionalUserInfo.swift */,
-				2BD9DC30263C7577002EF343 /* OAuth2Result.swift */,
-				2B9F27962633F0F700FEBCE3 /* Member.swift */,
-				2B9F279A2633F10200FEBCE3 /* ServiceMember.swift */,
-				2BA7B8502635019600FE5243 /* OwnerShips.swift */,
-				2B9F27A22633F17500FEBCE3 /* Seller.swift */,
-				2B9F279E2633F11800FEBCE3 /* Staff.swift */,
-				2B9F27A82633F1CB00FEBCE3 /* Manager.swift */,
+				2B9F27922633F0E300FEBCE3 /* Credentials.swift */,
 				2BD9DC32263C793B002EF343 /* AuthErrors.swift */,
 			);
 			path = Auths;
@@ -153,6 +157,15 @@
 				2BA9377A263B1C1800276876 /* StubOAuth2Repository.swift */,
 			);
 			path = Stubs;
+			sourceTree = "<group>";
+		};
+		2BD54F6D263DA695004B3EB0 /* Members */ = {
+			isa = PBXGroup;
+			children = (
+				2B9A1A96263E714500B6CE69 /* draft */,
+				2B9F27962633F0F700FEBCE3 /* Member.swift */,
+			);
+			path = Members;
 			sourceTree = "<group>";
 		};
 		2BE978BE263AEA590000C0C6 /* Usecases */ = {
@@ -333,9 +346,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BD9DC31263C7577002EF343 /* OAuth2Result.swift in Sources */,
-				2B9F278B2633E91D00FEBCE3 /* OAuth2Repository.swift in Sources */,
-				2B9F279B2633F10200FEBCE3 /* ServiceMember.swift in Sources */,
+				2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */,
+				2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */,
 				2B9F279F2633F11800FEBCE3 /* Staff.swift in Sources */,
 				2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */,
 				2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */,
@@ -343,7 +355,7 @@
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
-				2B9F27932633F0E300FEBCE3 /* Credential+AdditionalUserInfo.swift in Sources */,
+				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
 				2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */,
 				2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */,
