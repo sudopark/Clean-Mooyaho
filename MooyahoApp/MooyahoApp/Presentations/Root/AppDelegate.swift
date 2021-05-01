@@ -11,32 +11,26 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-import FirebaseService
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private var applicationViewModel: ApplicationViewModel!
     private let diContainers: DIContainers
-    private let firebaseService: FirebaseService = FirebaseService()
     
     private let disposeBag = DisposeBag()
     
     override init() {
         self.diContainers = DIContainers()
         let router = ApplicationRootRouter(nextSceneBuilders: self.diContainers)
-        self.applicationViewModel = ApplicationViewModel(router: router)
+        self.applicationViewModel = ApplicationViewModel(firebaseService: self.diContainers.shared.firebaseService,
+                                                         kakaoService: self.diContainers.shared.kakaoService,
+                                                         router: router)
     }
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        if AppEnvironment.isTestBuild == false {
-            self.firebaseService.setup()
-            self.firebaseService.signInAnonymously()
-        }
-
         self.applicationViewModel.appDidLaunched()
         return true
     }
