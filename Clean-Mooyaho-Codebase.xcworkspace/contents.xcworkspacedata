@@ -26,4 +26,7 @@
    <FileRef
       location = "group:Common3rdParty/Common3rdParty.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>
