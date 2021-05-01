@@ -81,23 +81,36 @@ jobs:
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
         env: 
           destination: ${{ matrix.destination }}
-      
-      - name: Check Tests Domain
-        if: steps.test_ios_app.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
-          
-      - name: Check Tests DataStore
-        if: steps.test_data_store.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
 
-      - name: Check Tests FirebaseService
-        if: steps.test_fb.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
+      # - name: Check Tests Domain
+      #   if: steps.test_ios_app.outputs.result != 0
+      #   run: |
+      #     echo "Domain Tests Failed"; exit 1
+    
           
-      - name: Check Tests iOS App
-        if: steps.test_ios_app.outputs.result != 0
+      # - name: Check Tests DataStore
+      #   if: steps.test_data_store.outputs.result != 0
+      #   run: |
+      #     echo "DataStore Tests Failed"; exit 1
+
+      # - name: Check Tests FirebaseService
+      #   if: steps.test_fb.outputs.result != 0
+      #   run: |
+      #     echo "FirebaseService Tests Failed"; exit 1
+          
+      # - name: Check Tests iOS App
+      #   if: steps.test_ios_app.outputs.result != 0
+      #   run: |
+      #     echo "iOS App Tests Failed"; exit 1
+
+      - name: Check test results - post fail message or not
+        if: steps.test_ios_app.outputs.result != 0 || steps.test_domin.outputs.result != 0 || steps.test_data_store.outputs.result != 0 || steps.test_fb.outputs.result != 0
         run: |
-          echo "Tests Failed"; exit 1
+          curl -X POST 'https://kakaowork.com/bots/hook/et6hmif1uwyy' -H 'Content-Type: application/json' -d '{ "text": "실패 메세지", "blocks": [ { "type": "header", "text": "🤬 Actions 실패", "style": "red" }, { "type": "text", "text": "${{ github.event.pull_request.title }}", "markdown": true}, { "type": "button", "text": "자세히 보기 👉", "action_type": "open_system_browser", "value": "${{ github.event.pull_request.html_url }}" } ] }' \
+          exit 1
+
+      - name: Post success message
+        run: |
+          curl -X POST 'https://kakaowork.com/bots/hook/et6hmif1uwyy' -H 'Content-Type: application/json' -d '{ "text": "성공 메세지", "blocks": [ { "type": "header", "text": "🤪 Actions 성공", "style": "blue" }, { "type": "text", "text": "${{ github.event.pull_request.title }}", "markdown": true }, { "type": "button", "text": "자세히 보기 👉", "action_type": "open_system_browser", "value": "${{ github.event.pull_request.html_url }}" } ] }'
+
+
