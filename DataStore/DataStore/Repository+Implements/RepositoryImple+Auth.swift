@@ -13,8 +13,9 @@ import RxSwift
 import Domain
 
 
-public protocol AuthRepositoryDefImpleDependency {
+public protocol AuthRepositoryDefImpleDependency: AnyObject {
     
+    var disposeBag: DisposeBag { get }
     var remote: Remote { get }
     var local: Local { get }
 }
@@ -23,10 +24,21 @@ public protocol AuthRepositoryDefImpleDependency {
 extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
     
     public func fetchLastSignInMember() -> Maybe<Member?> {
+        // TODO:
         return .empty()
     }
     
     public func signIn(using credential: Credential) -> Maybe<Member> {
-        return .empty()
+        
+        let requestSignIn = self.remote.requestSignIn(using: credential)
+        let andSaveMemberInfo: (Member) -> Void = { [weak self] member in
+            guard let self = self else { return }
+            self.local.saveSignedIn(member: member)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        return requestSignIn
+            .do(onNext: andSaveMemberInfo)
     }
 }

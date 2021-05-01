@@ -8,10 +8,9 @@
 
 import Foundation
 
+import RxSwift
 
-public protocol Remote { }
+import Domain
 
 
-public protocol AuthRemote {
-    
-}
+public protocol Remote: AuthRemote { }

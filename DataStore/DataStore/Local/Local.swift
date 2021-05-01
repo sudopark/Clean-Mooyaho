@@ -8,5 +8,15 @@
 
 import Foundation
 
+import RxSwift
 
-public protocol Local { }
+import Domain
+
+
+public protocol Local: AuthLocal { }
+
+
+public protocol AuthLocal {
+    
+    func saveSignedIn(member: Member) -> Maybe<Void>
+}
