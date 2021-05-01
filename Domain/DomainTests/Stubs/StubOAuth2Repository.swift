@@ -17,7 +17,7 @@ import UnitTestHelpKit
 
 class StubOAuth2Repository: OAuth2Repository, Stubbable {
     
-    func requestSignIn() -> Maybe<OAuth2Result> {
+    func requestSignIn() -> Maybe<OAuth2Credential> {
         return self.resolve(key: "requestSignIn") ?? .empty()
     }
 }

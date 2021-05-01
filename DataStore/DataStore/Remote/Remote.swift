@@ -10,3 +10,8 @@ import Foundation
 
 
 public protocol Remote { }
+
+
+public protocol AuthRemote {
+    
+}

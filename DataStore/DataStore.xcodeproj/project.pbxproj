@@ -13,6 +13,10 @@
 		2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */; };
 		2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F277C2633E7D500FEBCE3 /* EncryptedStorage.swift */; };
 		2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA4070526315F21000CC122 /* Common3rdParty.framework */; };
+		2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F62263D4C29004B3EB0 /* Domain.framework */; };
+		2BD54F67263D4C33004B3EB0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */; };
+		2BD54F69263D4C3D004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */; };
+		2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */; };
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,6 +41,10 @@
 		2BA406CB26315E48000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4070526315F21000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4071326315F5F000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BD54F62263D4C29004B3EB0 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Auth.swift"; sourceTree = "<group>"; };
 		2BF00BDF262B7E1300E235C0 /* DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BE2262B7E1300E235C0 /* DataStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataStore.h; sourceTree = "<group>"; };
 		2BF00BE3262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +67,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BD54F69263D4C3D004B3EB0 /* Common3rdParty.framework in Frameworks */,
+				2BD54F67263D4C33004B3EB0 /* UnitTestHelpKit.framework in Frameworks */,
 				2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,11 +113,22 @@
 		2BA406CA26315E48000CC122 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */,
+				2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */,
+				2BD54F62263D4C29004B3EB0 /* Domain.framework */,
 				2BA4071326315F5F000CC122 /* Common3rdParty.framework */,
 				2BA4070526315F21000CC122 /* Common3rdParty.framework */,
 				2BA406CB26315E48000CC122 /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2BD54F6A263D4C4B004B3EB0 /* Repository+Implements */ = {
+			isa = PBXGroup;
+			children = (
+				2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */,
+			);
+			path = "Repository+Implements";
 			sourceTree = "<group>";
 		};
 		2BF00BD5262B7E1300E235C0 = {
@@ -131,6 +153,7 @@
 		2BF00BE1262B7E1300E235C0 /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
+				2BD54F6A263D4C4B004B3EB0 /* Repository+Implements */,
 				2B9F27662633E62300FEBCE3 /* DataModels */,
 				2B9F27642633E5F700FEBCE3 /* Remote */,
 				2B9F27652633E60B00FEBCE3 /* Local */,
@@ -266,6 +289,7 @@
 				2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */,
 				2B9F27682633E64900FEBCE3 /* APIEndPoints.swift in Sources */,
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
+				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* Local.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,
 			);

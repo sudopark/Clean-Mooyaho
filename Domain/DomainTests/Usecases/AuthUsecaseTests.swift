@@ -49,7 +49,7 @@ extension AuthUsecaseTests {
         // given
         let expect = expectation(description: "멤버정보 로드")
         self.stubAuthRepo.register(key: "fetchLastSignInMember") {
-            return Maybe<Member?>.just(ServiceMember(memberID: "uuid"))
+            return Maybe<Member?>.just(Customer(memberID: "uuid"))
         }
         
         // when
@@ -78,10 +78,10 @@ extension AuthUsecaseTests {
         let expect = expectation(description: "소셜 로그인 요청 이후에 서비스 로그인 성공시 새로운 멤버 정보 반환")
         
         self.stubOAuth2Repo.register(key: "requestSignIn") {
-            return Maybe<OAuth2Result>.just(DummyOAuthResult())
+            return Maybe<OAuth2Credential>.just(DummyOAuth2Credentail())
         }
         self.stubAuthRepo.register(key: "signIn:using") {
-            return Maybe<Member>.just(ServiceMember(memberID: "new_uuid"))
+            return Maybe<Member>.just(Customer(memberID: "new_uuid"))
         }
         
         // when
@@ -96,7 +96,7 @@ extension AuthUsecaseTests {
         let expect = expectation(description: "소셜 로그인 실패시에 로그인 실패")
         struct DummyError: Error {}
         self.stubOAuth2Repo.register(key: "requestSignIn") {
-            return Maybe<OAuth2Result>.error(AuthErrors.oauth2Fail(DummyError()))
+            return Maybe<OAuth2Credential>.error(AuthErrors.oauth2Fail(DummyError()))
         }
         
         // when
@@ -116,7 +116,7 @@ extension AuthUsecaseTests {
         let expect = expectation(description: "소셜 로그인 성공 이후에 서비스 로그인 실패")
         
         self.stubOAuth2Repo.register(key: "requestSignIn") {
-            return Maybe<OAuth2Result>.just(DummyOAuthResult())
+            return Maybe<OAuth2Credential>.just(DummyOAuth2Credentail())
         }
         struct DummyError: Error {}
         self.stubAuthRepo.register(key: "signIn:using") {
@@ -146,18 +146,5 @@ extension AuthUsecaseTests {
 
 extension AuthUsecaseTests {
     
-    struct DummyOAuthResult: OAuth2Result {
-        
-        struct DummyCredential: OAuth2Credential {
-            let uniqueIdentifier: String = "dummy"
-        }
-        
-        let credential: OAuth2Credential
-        let additionalInfo: OAuth2AdditionalUserInfo?
-        
-        init() {
-            self.credential = DummyCredential()
-            self.additionalInfo = nil
-        }
-    }
+    struct DummyOAuth2Credentail: OAuth2Credential { }
 }

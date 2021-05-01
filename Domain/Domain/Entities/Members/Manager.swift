@@ -17,13 +17,9 @@ public struct Manager: Seller {
     // member properties
     public let memberID: String
     
-    public var realName: String?
-    
     public var nickName: String?
     
-    public var email: String?
-    
-    public var imageSource: ImageSource?
+    public var icon: ImageSource?
     
     public init(storeID: String, memberID: String) {
         self.storeID = storeID
