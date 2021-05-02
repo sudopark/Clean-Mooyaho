@@ -27,7 +27,7 @@ public enum KakaoOAuthErrors: Error {
 
 // MARK: - Kakao OAuth Credential
 
-public struct KakaoOAuthCredential: OAuth2Credential {
+public struct KakaoOAuthCredential: OAuthCredential {
     
     public let kakaoUserID: Int
     
@@ -39,11 +39,11 @@ public struct KakaoOAuthCredential: OAuth2Credential {
 
 // MARK: - KakaoOAuth2Repository signin
 
-public protocol KakaoOAuth2Repository: AnyObject, OAuth2Repository { }
+public protocol KakaoOAuth2Repository: AnyObject, OAuthRepository { }
 
 extension KakaoOAuth2Repository {
     
-    public func requestSignIn() -> Maybe<OAuth2Credential> {
+    public func requestSignIn() -> Maybe<OAuthCredential> {
         
         let requestKakaoSignIn = UserApi.isKakaoTalkLoginAvailable()
             ? self.requestKakaoTalkSignIn() : self.requestKakaoAccountSignIn()

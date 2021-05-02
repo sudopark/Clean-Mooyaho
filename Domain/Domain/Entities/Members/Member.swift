@@ -9,11 +9,17 @@
 import Foundation
 
 
-public protocol Member {
+public struct Member {
     
-    var memberID: String { get }
+    public let uid: String
     
-    var nickName: String? { get }
+    public var nickName: String?
     
-    var icon: ImageSource? { get set }
+    public var icon: ImageSource?
+    
+    public init(uid: String, nickName: String? = nil, icon: ImageSource? = nil) {
+        self.uid = uid
+        self.nickName = nickName
+        self.icon = icon
+    }
 }

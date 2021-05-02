@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A1A99263E795E00B6CE69 /* DataModels.swift */; };
 		2B9F27682633E64900FEBCE3 /* APIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27672633E64900FEBCE3 /* APIEndPoints.swift */; };
 		2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F276B2633E69200FEBCE3 /* Remote.swift */; };
 		2B9F27722633E77900FEBCE3 /* Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27712633E77900FEBCE3 /* Local.swift */; };
@@ -21,7 +22,7 @@
 		2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F76263DB58F004B3EB0 /* StubRemote.swift */; };
 		2BD54F79263DB59E004B3EB0 /* StubLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F78263DB59E004B3EB0 /* StubLocal.swift */; };
 		2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F7C263DB826004B3EB0 /* Dummies.swift */; };
-		2BD54F7F263DBA2A004B3EB0 /* AuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F7E263DBA2A004B3EB0 /* AuthRemote.swift */; };
+		2BD54F7F263DBA2A004B3EB0 /* Remote+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F7E263DBA2A004B3EB0 /* Remote+Auth.swift */; };
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B9A1A99263E795E00B6CE69 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		2B9F27672633E64900FEBCE3 /* APIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoints.swift; sourceTree = "<group>"; };
 		2B9F276B2633E69200FEBCE3 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		2B9F27712633E77900FEBCE3 /* Local.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Local.swift; sourceTree = "<group>"; };
@@ -54,7 +56,7 @@
 		2BD54F76263DB58F004B3EB0 /* StubRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRemote.swift; sourceTree = "<group>"; };
 		2BD54F78263DB59E004B3EB0 /* StubLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLocal.swift; sourceTree = "<group>"; };
 		2BD54F7C263DB826004B3EB0 /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
-		2BD54F7E263DBA2A004B3EB0 /* AuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRemote.swift; sourceTree = "<group>"; };
+		2BD54F7E263DBA2A004B3EB0 /* Remote+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+Auth.swift"; sourceTree = "<group>"; };
 		2BF00BDF262B7E1300E235C0 /* DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BE2262B7E1300E235C0 /* DataStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataStore.h; sourceTree = "<group>"; };
 		2BF00BE3262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,7 +93,7 @@
 			children = (
 				2B9F27672633E64900FEBCE3 /* APIEndPoints.swift */,
 				2B9F276B2633E69200FEBCE3 /* Remote.swift */,
-				2BD54F7E263DBA2A004B3EB0 /* AuthRemote.swift */,
+				2BD54F7E263DBA2A004B3EB0 /* Remote+Auth.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -105,11 +107,12 @@
 			path = Local;
 			sourceTree = "<group>";
 		};
-		2B9F27662633E62300FEBCE3 /* DataModels */ = {
+		2B9F27662633E62300FEBCE3 /* DataModel+Mapping */ = {
 			isa = PBXGroup;
 			children = (
+				2B9A1A99263E795E00B6CE69 /* DataModels.swift */,
 			);
-			path = DataModels;
+			path = "DataModel+Mapping";
 			sourceTree = "<group>";
 		};
 		2B9F27772633E79800FEBCE3 /* Storages+Implements */ = {
@@ -183,7 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F6A263D4C4B004B3EB0 /* Repository+Implements */,
-				2B9F27662633E62300FEBCE3 /* DataModels */,
+				2B9F27662633E62300FEBCE3 /* DataModel+Mapping */,
 				2B9F27642633E5F700FEBCE3 /* Remote */,
 				2B9F27652633E60B00FEBCE3 /* Local */,
 				2BF00BE2262B7E1300E235C0 /* DataStore.h */,
@@ -318,10 +321,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */,
-				2BD54F7F263DBA2A004B3EB0 /* AuthRemote.swift in Sources */,
+				2BD54F7F263DBA2A004B3EB0 /* Remote+Auth.swift in Sources */,
 				2B9F27682633E64900FEBCE3 /* APIEndPoints.swift in Sources */,
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
+				2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* Local.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,
 			);

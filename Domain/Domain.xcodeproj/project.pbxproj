@@ -10,7 +10,7 @@
 		2B1A36E6263D08A50062BC49 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */; };
 		2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2372632946000A99624 /* Expression+Extensions.swift */; };
 		2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27862633E91100FEBCE3 /* AuthRepository.swift */; };
-		2B9F278B2633E91D00FEBCE3 /* OAuth2Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */; };
+		2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */; };
 		2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27922633F0E300FEBCE3 /* Credentials.swift */; };
 		2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27962633F0F700FEBCE3 /* Member.swift */; };
 		2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F279A2633F10200FEBCE3 /* Customer.swift */; };
@@ -45,7 +45,7 @@
 		2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B4FD2372632946000A99624 /* Expression+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expression+Extensions.swift"; sourceTree = "<group>"; };
 		2B9F27862633E91100FEBCE3 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
-		2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Repository.swift; sourceTree = "<group>"; };
+		2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthRepository.swift; sourceTree = "<group>"; };
 		2B9F27922633F0E300FEBCE3 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		2B9F27962633F0F700FEBCE3 /* Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		2B9F279A2633F10200FEBCE3 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
@@ -102,6 +102,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		2B9A1A96263E714500B6CE69 /* draft */ = {
+			isa = PBXGroup;
+			children = (
+				2B9F279A2633F10200FEBCE3 /* Customer.swift */,
+				2BA7B8502635019600FE5243 /* OwnerShips.swift */,
+				2B9F27A22633F17500FEBCE3 /* Seller.swift */,
+				2B9F279E2633F11800FEBCE3 /* Staff.swift */,
+				2B9F27A82633F1CB00FEBCE3 /* Manager.swift */,
+			);
+			path = draft;
+			sourceTree = "<group>";
+		};
 		2B9F275F2633E5BB00FEBCE3 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,7 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				2B9F27862633E91100FEBCE3 /* AuthRepository.swift */,
-				2B9F278A2633E91D00FEBCE3 /* OAuth2Repository.swift */,
+				2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -150,12 +162,8 @@
 		2BD54F6D263DA695004B3EB0 /* Members */ = {
 			isa = PBXGroup;
 			children = (
+				2B9A1A96263E714500B6CE69 /* draft */,
 				2B9F27962633F0F700FEBCE3 /* Member.swift */,
-				2B9F279A2633F10200FEBCE3 /* Customer.swift */,
-				2BA7B8502635019600FE5243 /* OwnerShips.swift */,
-				2B9F27A22633F17500FEBCE3 /* Seller.swift */,
-				2B9F279E2633F11800FEBCE3 /* Staff.swift */,
-				2B9F27A82633F1CB00FEBCE3 /* Manager.swift */,
 			);
 			path = Members;
 			sourceTree = "<group>";
@@ -338,7 +346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B9F278B2633E91D00FEBCE3 /* OAuth2Repository.swift in Sources */,
+				2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */,
 				2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */,
 				2B9F279F2633F11800FEBCE3 /* Staff.swift in Sources */,
 				2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */,

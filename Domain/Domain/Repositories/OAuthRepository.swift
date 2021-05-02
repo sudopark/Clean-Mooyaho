@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol OAuth2Repository {
+public protocol OAuthRepository {
     
-    func requestSignIn() -> Maybe<OAuth2Credential>
+    func requestSignIn() -> Maybe<OAuthCredential>
 }

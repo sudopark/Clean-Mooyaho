@@ -17,6 +17,7 @@ public protocol Local: AuthLocal { }
 
 
 public protocol AuthLocal {
-    
+
+    func fetchCurrentMember() -> Maybe<Member?>
     func saveSignedIn(member: Member) -> Maybe<Void>
 }

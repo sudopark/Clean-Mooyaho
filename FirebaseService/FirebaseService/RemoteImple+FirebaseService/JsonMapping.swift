@@ -14,11 +14,6 @@ import DataStore
 
 typealias JSON = [String: Any]
 
-protocol JSONMappable {
-    
-    init?(json: JSON)
-}
-
 extension JSON {
     
     func childJson(for key: String) -> JSON? {
@@ -34,31 +29,28 @@ extension JSON {
 // MARK: - map member
 
 
-extension ImageSource: JSONMappable {
+extension DataModels.Icon {
     
     init?(json: JSON) {
-        
         if let pathValue = json["path"] as? String {
-            self = .path(pathValue)
+            self.init(path: pathValue)
+            
         } else if let referenceJson = json["reference"] as? [String: Any],
                   let pathValue = referenceJson["path"] as? String {
             let description = referenceJson["description"] as? String
-            self = .reference(pathValue, description: description)
+            self.init(external: pathValue, description: description)
+            
         } else {
             return nil
         }
     }
 }
 
-extension DocumentSnapshot {
+extension DataModels.Member {
     
-    
-    func asMember() -> Member? {
-        
-        guard let json = self.data() else { return nil }
-        var customer = Customer(memberID: self.documentID)
-        customer.nickName = json.string(for: "nickName")
-        customer.icon = json.childJson(for: "icon").flatMap(ImageSource.init(json:))
-        return customer
+    init(docuID: String, json: JSON) {
+        self.init(uid: docuID)
+        self.nickName = json.string(for: "nick_name")
+        self.icon = json.childJson(for: "icon").flatMap(DataModels.Icon.init(json:))
     }
 }

@@ -24,21 +24,52 @@ public protocol AuthRepositoryDefImpleDependency: AnyObject {
 extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
     
     public func fetchLastSignInMember() -> Maybe<Member?> {
-        // TODO:
-        return .empty()
+        
+        let preparePermissionIfNeed: (Member?) -> Void = { [weak self] member in
+            member.whenNotExists {
+                self?.signInAnonymouslyForPrepareDataAcessPermission()
+            }
+        }
+        
+        return self.local.fetchCurrentMember()
+            .do(onNext: preparePermissionIfNeed)
     }
     
-    public func signIn(using credential: Credential) -> Maybe<Member> {
+    private func signInAnonymouslyForPrepareDataAcessPermission() {
+        self.remote.requestSignInAnonymously()
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func requestSignIn(using secret: EmailBaseSecret) -> Maybe<Member> {
+        let signing = self.remote.requestSignIn(withEmail: secret.email, password: secret.password)
+        return self.requestSignInAndSaveMemberInfo(signing)
+    }
+    
+    public func requestSignIn(using credential: OAuthCredential) -> Maybe<Member> {
         
-        let requestSignIn = self.remote.requestSignIn(using: credential)
+        let signing = self.remote.requestSignIn(using: credential.toParameter())
+        return self.requestSignInAndSaveMemberInfo(signing)
+    }
+    
+    private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<DataModels.Member>) -> Maybe<Member> {
         let andSaveMemberInfo: (Member) -> Void = { [weak self] member in
             guard let self = self else { return }
             self.local.saveSignedIn(member: member)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
-        
-        return requestSignIn
+        return signingAction
+            .map(Member.init(model:))
             .do(onNext: andSaveMemberInfo)
+    }
+}
+
+
+// TOOD: 구현 및 공통로직 추출 필요
+extension OAuthCredential {
+    
+    func toParameter() -> ReqParams.OAuthCredential {
+        return .init()
     }
 }

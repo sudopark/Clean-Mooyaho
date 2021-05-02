@@ -21,9 +21,9 @@ public protocol AuthUsecase {
 public final class AuthUsecaseImple {
     
     private let authRepository: AuthRepository
-    private let oauth2Repository: OAuth2Repository
+    private let oauth2Repository: OAuthRepository
     
-    public init(authRepository: AuthRepository, socialAuthRepository: OAuth2Repository) {
+    public init(authRepository: AuthRepository, socialAuthRepository: OAuthRepository) {
         self.authRepository = authRepository
         self.oauth2Repository = socialAuthRepository
     }
@@ -38,12 +38,16 @@ extension AuthUsecaseImple {
         return self.authRepository.fetchLastSignInMember()
     }
     
+    func requestSignIn(emailBaseSecret secret: EmailBaseSecret) -> Maybe<Member> {
+        return self.authRepository.requestSignIn(using: secret)
+    }
+    
     func requestSocialSignIn() -> Maybe<Member> {
         
         let requestOAuth2signIn = self.oauth2Repository.requestSignIn()
-        let thenSignInService: (Credential) -> Maybe<Member> = { [weak self] credential in
+        let thenSignInService: (OAuthCredential) -> Maybe<Member> = { [weak self] credential in
             guard let self = self else { return .empty() }
-            return self.authRepository.signIn(using: credential)
+            return self.authRepository.requestSignIn(using: credential)
         }
         
         return requestOAuth2signIn

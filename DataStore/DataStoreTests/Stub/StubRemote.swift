@@ -18,7 +18,16 @@ import UnitTestHelpKit
 
 class StubRemote: Remote, Stubbable {
     
-    func requestSignIn(using credential: Credential) -> Maybe<Member> {
-        return self.resolve(key: "requestSignIn") ?? .empty()
+    func requestSignInAnonymously() -> Maybe<Void> {
+        self.verify(key: "requestSignInAnonymously")
+        return self.resolve(key: "requestSignInAnonymously") ?? .empty()
+    }
+    
+    func requestSignIn(withEmail email: String, password: String) -> Maybe<DataModels.Member> {
+        return self.resolve(key: "requestSignIn:withEmail") ?? .empty()
+    }
+    
+    func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.Member> {
+        return self.resolve(key: "requestSignIn:credential") ?? .empty()
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Credentials.swift
+//  Secrets+OauthCredentials.swift
 //  Domain
 //
 //  Created by ParkHyunsoo on 2021/04/24.
@@ -9,12 +9,9 @@
 import Foundation
 
 
-// MARK: - Credential Protocol and EmailBaseCredential
+// MARK: - Secrets and Credentials
 
-public protocol Credential { }
-
-
-public struct EmailBaseCredential: Credential {
+public struct EmailBaseSecret {
     
     public let email: String
     public let password: String
@@ -26,6 +23,6 @@ public struct EmailBaseCredential: Credential {
 }
 
 
-// MARK: OAuth2 Credeintial protocol
+// MARK: OAuthCredential protocol
 
-public protocol OAuth2Credential: Credential { }
+public protocol OAuthCredential { }
