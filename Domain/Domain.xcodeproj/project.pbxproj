@@ -39,6 +39,11 @@
 		2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BC9262B7DF400E235C0 /* DomainTests.swift */; };
 		2BF00BCC262B7DF400E235C0 /* Domain.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BBE262B7DF400E235C0 /* Domain.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2BFB4826263AEF1F00FB025F /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BFB4825263AEF1F00FB025F /* Common3rdParty.framework */; };
+		2BFF240626405A78008C52EB /* SuggestPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF240526405A78008C52EB /* SuggestPlaceUsecase.swift */; };
+		2BFF240926405B7C008C52EB /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF240826405B7C008C52EB /* Tags.swift */; };
+		2BFF240D26406190008C52EB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF240C26406190008C52EB /* Place.swift */; };
+		2BFF240F2640736F008C52EB /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF240E2640736F008C52EB /* Builder.swift */; };
+		2BFF24122640776B008C52EB /* NewPlaceFormBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF24112640776B008C52EB /* NewPlaceFormBuilderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +95,11 @@
 		2BF00BCB262B7DF400E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BF00C26262D71F100E235C0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BFB4825263AEF1F00FB025F /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BFF240526405A78008C52EB /* SuggestPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceUsecase.swift; sourceTree = "<group>"; };
+		2BFF240826405B7C008C52EB /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
+		2BFF240C26406190008C52EB /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		2BFF240E2640736F008C52EB /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		2BFF24112640776B008C52EB /* NewPlaceFormBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceFormBuilderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,13 +142,14 @@
 			path = Locations;
 			sourceTree = "<group>";
 		};
-		2B4FD236263291D300A99624 /* Extensions */ = {
+		2B4FD236263291D300A99624 /* Extensions+Utils */ = {
 			isa = PBXGroup;
 			children = (
 				2B4FD2372632946000A99624 /* Expression+Extensions.swift */,
 				2B40BF92263F15060031C7A6 /* Units.swift */,
+				2BFF240E2640736F008C52EB /* Builder.swift */,
 			);
-			path = Extensions;
+			path = "Extensions+Utils";
 			sourceTree = "<group>";
 		};
 		2B9A1A96263E714500B6CE69 /* draft */ = {
@@ -159,6 +170,7 @@
 				2B9F27AC2633F31800FEBCE3 /* Auths */,
 				2BD54F6D263DA695004B3EB0 /* Members */,
 				2B40BF85263F09990031C7A6 /* Locations */,
+				2BFF240726405B70008C52EB /* Places */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -166,8 +178,9 @@
 		2B9F27602633E5C700FEBCE3 /* Usecases */ = {
 			isa = PBXGroup;
 			children = (
-				2BE978BC263AE91B0000C0C6 /* AuthUsecase.swift */,
-				2B40BF7E263F06FB0031C7A6 /* UserLocationUsecase.swift */,
+				2BFF240226405A28008C52EB /* Auth+Member */,
+				2BFF240326405A33008C52EB /* Place */,
+				2BFF240426405A64008C52EB /* Suggest+Search */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -247,7 +260,7 @@
 				2B9F27602633E5C700FEBCE3 /* Usecases */,
 				2B9F27612633E5CF00FEBCE3 /* Repositories */,
 				2B40BF82263F09300031C7A6 /* Services */,
-				2B4FD236263291D300A99624 /* Extensions */,
+				2B4FD236263291D300A99624 /* Extensions+Utils */,
 				2BF00BBE262B7DF400E235C0 /* Domain.h */,
 				2BF00BBF262B7DF400E235C0 /* Info.plist */,
 			);
@@ -258,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA93777263B1BFC00276876 /* Stubs */,
+				2BFF24102640775A008C52EB /* Entities */,
 				2BE978BE263AEA590000C0C6 /* Usecases */,
 				2BF00BC9262B7DF400E235C0 /* DomainTests.swift */,
 				2BF00BCB262B7DF400E235C0 /* Info.plist */,
@@ -276,6 +290,47 @@
 				2BF00C26262D71F100E235C0 /* UnitTestHelpKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2BFF240226405A28008C52EB /* Auth+Member */ = {
+			isa = PBXGroup;
+			children = (
+				2BE978BC263AE91B0000C0C6 /* AuthUsecase.swift */,
+			);
+			path = "Auth+Member";
+			sourceTree = "<group>";
+		};
+		2BFF240326405A33008C52EB /* Place */ = {
+			isa = PBXGroup;
+			children = (
+				2B40BF7E263F06FB0031C7A6 /* UserLocationUsecase.swift */,
+			);
+			path = Place;
+			sourceTree = "<group>";
+		};
+		2BFF240426405A64008C52EB /* Suggest+Search */ = {
+			isa = PBXGroup;
+			children = (
+				2BFF240526405A78008C52EB /* SuggestPlaceUsecase.swift */,
+			);
+			path = "Suggest+Search";
+			sourceTree = "<group>";
+		};
+		2BFF240726405B70008C52EB /* Places */ = {
+			isa = PBXGroup;
+			children = (
+				2BFF240826405B7C008C52EB /* Tags.swift */,
+				2BFF240C26406190008C52EB /* Place.swift */,
+			);
+			path = Places;
+			sourceTree = "<group>";
+		};
+		2BFF24102640775A008C52EB /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				2BFF24112640776B008C52EB /* NewPlaceFormBuilderTests.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -400,18 +455,22 @@
 				2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */,
 				2B40BF8B263F0D070031C7A6 /* UserLocation.swift in Sources */,
 				2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */,
+				2BFF240626405A78008C52EB /* SuggestPlaceUsecase.swift in Sources */,
+				2BFF240926405B7C008C52EB /* Tags.swift in Sources */,
 				2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */,
 				2B9F27A32633F17500FEBCE3 /* Seller.swift in Sources */,
 				2B40BF84263F09800031C7A6 /* LocationMonitoringService.swift in Sources */,
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				2B40BF93263F15060031C7A6 /* Units.swift in Sources */,
+				2BFF240D26406190008C52EB /* Place.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
 				2B40BF8D263F0E400031C7A6 /* LocationMonitoringOption.swift in Sources */,
 				2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */,
 				2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */,
+				2BFF240F2640736F008C52EB /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +484,7 @@
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,
 				2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */,
 				2BE978C0263AEA630000C0C6 /* AuthUsecaseTests.swift in Sources */,
+				2BFF24122640776B008C52EB /* NewPlaceFormBuilderTests.swift in Sources */,
 				2B40BF91263F10350031C7A6 /* StubPlaceRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
