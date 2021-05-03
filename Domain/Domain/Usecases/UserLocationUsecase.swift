@@ -17,16 +17,15 @@ public protocol UserLocationUsecase { }
 
 public final class UserLocationUsecaseImple {
     
-    private let locationService: LocationService
-    private let locationRepository: LocationRepository
+    private let locationMonitoringService: LocationMonitoringService
+    private let placeRepository: PlaceRepository
     
-    public init(locationService: LocationService, locationRepository: LocationRepository) {
-        self.locationService = locationService
-        self.locationRepository = locationRepository
+    public init(locationMonitoringService: LocationMonitoringService,
+                placeRepository: PlaceRepository) {
+        self.locationMonitoringService = locationMonitoringService
+        self.placeRepository = placeRepository
     }
     
-    
-    private let currentMember = BehaviorRelay<Member?>(value: nil)
     private let disposeBag = DisposeBag()
     private var locationMonitoring: Disposable?
 }
@@ -37,11 +36,11 @@ public final class UserLocationUsecaseImple {
 extension UserLocationUsecaseImple {
     
     public func checkHasPermission() -> Maybe<LocationServiceAccessPermission> {
-        return self.locationService.checkHasPermission()
+        return self.locationMonitoringService.checkHasPermission()
     }
     
     public func requestPermission() -> Maybe<Bool> {
-        return self.locationService.requestPermission()
+        return self.locationMonitoringService.requestPermission()
     }
 }
 
@@ -52,24 +51,23 @@ extension UserLocationUsecaseImple {
 extension UserLocationUsecaseImple {
     
     public func startUploadUserLocation(with option: LocationMonitoringOption, for member: Member) {
-        self.currentMember.accept(member)
         self.locationMonitoring?.dispose()
         
         let memberID = member.uid
         let uploadLocations: (LastLocation) -> Maybe<Void> = { [weak self] lastLocation in
             guard let self = self else { return .empty() }
             let location = UserLocation(userID: memberID, lastLocation: lastLocation)
-            return self.locationRepository.uploadLocation(location)
+            return self.placeRepository.uploadLocation(location)
                 .catchAndReturn(())
         }
         
-        self.locationMonitoring = self.locationService
+        self.locationMonitoring = self.locationMonitoringService
             .currentUserLocation
             .throttle(.milliseconds(option.throttlingInterval), latest: true, scheduler: MainScheduler.instance)
             .flatMapLatest(uploadLocations)
             .subscribe()
         
-        self.locationService.startMonitoring(with: option)
+        self.locationMonitoringService.startMonitoring(with: option)
     }
     
     public func stopUplocationUserLocation() {
@@ -77,6 +75,6 @@ extension UserLocationUsecaseImple {
     }
     
     public var monitoringError: Observable<Error> {
-        return self.locationService.occurError
+        return self.locationMonitoringService.occurError
     }
 }
