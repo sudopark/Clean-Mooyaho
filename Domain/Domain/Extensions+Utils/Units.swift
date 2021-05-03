@@ -15,4 +15,6 @@ public typealias Seconds = Int
 
 public typealias Meters = Double
 
+public typealias TimeSeconds = TimeInterval
+
 
