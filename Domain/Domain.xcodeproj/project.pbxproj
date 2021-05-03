@@ -10,13 +10,13 @@
 		2B1A36E6263D08A50062BC49 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */; };
 		2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF7E263F06FB0031C7A6 /* UserLocationUsecase.swift */; };
 		2B40BF81263F08EA0031C7A6 /* UserLocationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF80263F08EA0031C7A6 /* UserLocationUsecaseTests.swift */; };
-		2B40BF84263F09800031C7A6 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF83263F09800031C7A6 /* LocationService.swift */; };
+		2B40BF84263F09800031C7A6 /* LocationMonitoringService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */; };
 		2B40BF87263F09AF0031C7A6 /* LocationServiceAccessPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF86263F09AF0031C7A6 /* LocationServiceAccessPermission.swift */; };
-		2B40BF89263F0A1D0031C7A6 /* StubLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF88263F0A1D0031C7A6 /* StubLocationService.swift */; };
+		2B40BF89263F0A1D0031C7A6 /* StubLocationMonitoringService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF88263F0A1D0031C7A6 /* StubLocationMonitoringService.swift */; };
 		2B40BF8B263F0D070031C7A6 /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF8A263F0D070031C7A6 /* UserLocation.swift */; };
 		2B40BF8D263F0E400031C7A6 /* LocationMonitoringOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF8C263F0E400031C7A6 /* LocationMonitoringOption.swift */; };
-		2B40BF8F263F0FD70031C7A6 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF8E263F0FD70031C7A6 /* LocationRepository.swift */; };
-		2B40BF91263F10350031C7A6 /* StubLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF90263F10350031C7A6 /* StubLocationRepository.swift */; };
+		2B40BF8F263F0FD70031C7A6 /* PlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF8E263F0FD70031C7A6 /* PlaceRepository.swift */; };
+		2B40BF91263F10350031C7A6 /* StubPlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF90263F10350031C7A6 /* StubPlaceRepository.swift */; };
 		2B40BF93263F15060031C7A6 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40BF92263F15060031C7A6 /* Units.swift */; };
 		2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2372632946000A99624 /* Expression+Extensions.swift */; };
 		2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27862633E91100FEBCE3 /* AuthRepository.swift */; };
@@ -55,13 +55,13 @@
 		2B1A36E5263D08A50062BC49 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B40BF7E263F06FB0031C7A6 /* UserLocationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationUsecase.swift; sourceTree = "<group>"; };
 		2B40BF80263F08EA0031C7A6 /* UserLocationUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationUsecaseTests.swift; sourceTree = "<group>"; };
-		2B40BF83263F09800031C7A6 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMonitoringService.swift; sourceTree = "<group>"; };
 		2B40BF86263F09AF0031C7A6 /* LocationServiceAccessPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceAccessPermission.swift; sourceTree = "<group>"; };
-		2B40BF88263F0A1D0031C7A6 /* StubLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLocationService.swift; sourceTree = "<group>"; };
+		2B40BF88263F0A1D0031C7A6 /* StubLocationMonitoringService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLocationMonitoringService.swift; sourceTree = "<group>"; };
 		2B40BF8A263F0D070031C7A6 /* UserLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocation.swift; sourceTree = "<group>"; };
 		2B40BF8C263F0E400031C7A6 /* LocationMonitoringOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMonitoringOption.swift; sourceTree = "<group>"; };
-		2B40BF8E263F0FD70031C7A6 /* LocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRepository.swift; sourceTree = "<group>"; };
-		2B40BF90263F10350031C7A6 /* StubLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLocationRepository.swift; sourceTree = "<group>"; };
+		2B40BF8E263F0FD70031C7A6 /* PlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceRepository.swift; sourceTree = "<group>"; };
+		2B40BF90263F10350031C7A6 /* StubPlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlaceRepository.swift; sourceTree = "<group>"; };
 		2B40BF92263F15060031C7A6 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		2B4FD2372632946000A99624 /* Expression+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Expression+Extensions.swift"; sourceTree = "<group>"; };
 		2B9F27862633E91100FEBCE3 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 		2B40BF82263F09300031C7A6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				2B40BF83263F09800031C7A6 /* LocationService.swift */,
+				2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -177,7 +177,7 @@
 			children = (
 				2B9F27862633E91100FEBCE3 /* AuthRepository.swift */,
 				2B9F278A2633E91D00FEBCE3 /* OAuthRepository.swift */,
-				2B40BF8E263F0FD70031C7A6 /* LocationRepository.swift */,
+				2B40BF8E263F0FD70031C7A6 /* PlaceRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -196,8 +196,8 @@
 			children = (
 				2BA93778263B1C0B00276876 /* StubAuthRepository.swift */,
 				2BA9377A263B1C1800276876 /* StubOAuth2Repository.swift */,
-				2B40BF88263F0A1D0031C7A6 /* StubLocationService.swift */,
-				2B40BF90263F10350031C7A6 /* StubLocationRepository.swift */,
+				2B40BF88263F0A1D0031C7A6 /* StubLocationMonitoringService.swift */,
+				2B40BF90263F10350031C7A6 /* StubPlaceRepository.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -392,7 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B40BF8F263F0FD70031C7A6 /* LocationRepository.swift in Sources */,
+				2B40BF8F263F0FD70031C7A6 /* PlaceRepository.swift in Sources */,
 				2B40BF87263F09AF0031C7A6 /* LocationServiceAccessPermission.swift in Sources */,
 				2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */,
 				2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */,
@@ -402,7 +402,7 @@
 				2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */,
 				2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */,
 				2B9F27A32633F17500FEBCE3 /* Seller.swift in Sources */,
-				2B40BF84263F09800031C7A6 /* LocationService.swift in Sources */,
+				2B40BF84263F09800031C7A6 /* LocationMonitoringService.swift in Sources */,
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				2B40BF93263F15060031C7A6 /* Units.swift in Sources */,
@@ -421,11 +421,11 @@
 			files = (
 				2BA9377B263B1C1800276876 /* StubOAuth2Repository.swift in Sources */,
 				2B40BF81263F08EA0031C7A6 /* UserLocationUsecaseTests.swift in Sources */,
-				2B40BF89263F0A1D0031C7A6 /* StubLocationService.swift in Sources */,
+				2B40BF89263F0A1D0031C7A6 /* StubLocationMonitoringService.swift in Sources */,
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,
 				2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */,
 				2BE978C0263AEA630000C0C6 /* AuthUsecaseTests.swift in Sources */,
-				2B40BF91263F10350031C7A6 /* StubLocationRepository.swift in Sources */,
+				2B40BF91263F10350031C7A6 /* StubPlaceRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
