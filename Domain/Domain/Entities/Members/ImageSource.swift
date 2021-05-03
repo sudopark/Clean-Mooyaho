@@ -22,3 +22,15 @@ public enum ImageSource {
         }
     }
 }
+
+
+extension ImageSource: Equatable {
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case let (.path(p1), .path(p2)): return p1 == p2
+        case let (.reference(p1, d1), .reference(p2, d2)): return p1 == p2 && d1 == d2
+        default: return false
+        }
+    }
+}
