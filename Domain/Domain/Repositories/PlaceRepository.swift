@@ -1,5 +1,5 @@
 //
-//  LocationRepository.swift
+//  PlaceRepository.swift
 //  Domain
 //
 //  Created by ParkHyunsoo on 2021/05/03.
@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol LocationRepository {
+public protocol PlaceRepository {
     
     func uploadLocation(_ location: UserLocation) -> Maybe<Void>
 }

@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubLocationService: LocationService, Stubbable {
+class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
     
     func checkHasPermission() -> Maybe<LocationServiceAccessPermission> {
         return self.resolve(key: "checkHasPermission") ?? .empty()

@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubLocationRepository: LocationRepository, Stubbable {
+class StubPlaceRepository: PlaceRepository, Stubbable {
     
     func uploadLocation(_ location: UserLocation) -> Maybe<Void> {
         self.verify(key: "uploadLocation", with: location)

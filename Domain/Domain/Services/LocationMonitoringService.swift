@@ -1,5 +1,5 @@
 //
-//  LocationService.swift
+//  LocationMonitoringService.swift
 //  Domain
 //
 //  Created by ParkHyunsoo on 2021/05/03.
@@ -12,7 +12,7 @@ import RxSwift
 
 import CoreLocation
 
-public protocol LocationService {
+public protocol LocationMonitoringService {
     
     func checkHasPermission() -> Maybe<LocationServiceAccessPermission>
     
@@ -28,7 +28,7 @@ public protocol LocationService {
 }
 
 
-public final class LocationServiceImple: NSObject, LocationService {
+public final class LocationMonitoringServiceImple: NSObject, LocationMonitoringService {
     
     private var underlyingLocationManager: CLLocationManager?
     private var locationManager: CLLocationManager {
@@ -55,7 +55,7 @@ public final class LocationServiceImple: NSObject, LocationService {
 }
 
 
-extension LocationServiceImple {
+extension LocationMonitoringServiceImple {
     
     public func checkHasPermission() -> Maybe<LocationServiceAccessPermission> {
         return Maybe.create { callback in
@@ -95,7 +95,7 @@ extension LocationServiceImple {
     }
 }
 
-extension LocationServiceImple: CLLocationManagerDelegate {
+extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager,
                                 didChangeAuthorization status: CLAuthorizationStatus) {
@@ -117,7 +117,7 @@ extension LocationServiceImple: CLLocationManagerDelegate {
 }
 
 
-extension LocationServiceImple {
+extension LocationMonitoringServiceImple {
     
     public func startMonitoring(with option: LocationMonitoringOption) {
         self.locationManager.desiredAccuracy = option.accuracy.cLLAccuracy
