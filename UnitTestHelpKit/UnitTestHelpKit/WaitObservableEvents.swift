@@ -53,6 +53,14 @@ extension WaitObservableEvents where Self: BaseTestCase {
         return self.waitElements(expect, for: observable, skip: skip, timeout: timeout, action: action).first
     }
     
+    public func waitFirstElement<E>(_ expect: XCTestExpectation,
+                                    for observable: Observable<Optional<E>>,
+                                    skip: Int = 0,
+                                    timeout: TimeInterval? = nil,
+                                    action: @escaping () -> Void) -> E? {
+        return self.waitElements(expect, for: observable, skip: skip, timeout: timeout, action: action).first ?? nil
+    }
+    
     public func waitError<E>(_ expect: XCTestExpectation,
                              for observable: Observable<E>,
                              timeout: TimeInterval? = nil,
