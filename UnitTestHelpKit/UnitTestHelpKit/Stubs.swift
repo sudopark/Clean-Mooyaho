@@ -78,6 +78,13 @@ extension Stubbable {
         return provider()
     }
     
+    public func resolve<R>(_ type: R.Type, key: String) -> R? {
+        guard let provider = self.get(key: key.withStubPrefix, mapping: { $0 as? () -> R }) else {
+            return nil
+        }
+        return provider()
+    }
+    
 //    public func resolve<R>(key: String, defaultResult: R) -> R {
 //        return self.resolve(key: key) ?? defaultResult
 //    }

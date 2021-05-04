@@ -115,3 +115,29 @@ extension NewPlaceFormBuilder {
         return build(with: asserting)
     }
 }
+
+
+// MARK: - place suggest
+
+public struct SuggestPlaceResult {
+    
+    public let query: String?
+    public let places: [Place]
+    public let pageIndex: Int?
+    
+    public var isDefaultList: Bool {
+        return self.query == nil
+    }
+    
+    public init(query: String?, places: [Place], pageIndex: Int? = nil) {
+        self.query = query
+        self.places = places
+        self.pageIndex = pageIndex
+    }
+    
+    public init(default places: [Place], pageIndex: Int? = nil) {
+        self.query = nil
+        self.places = places
+        self.pageIndex = pageIndex
+    }
+}
