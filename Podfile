@@ -9,14 +9,30 @@ def kakao_sdk_modules
   pod 'KakaoSDKUser'
 end
 
+def networking
+  pod 'Alamofire', '~> 5.2'
+end
+
 workspace 'Clean-Mooyaho-Codebase'
 
 target 'MooyahoApp' do
   project 'MooyahoApp/MooyahoApp.xcodeproj'
   
   kakao_sdk_modules
+  networking
     
   target 'MooyahoAppTests' do
+      inherit! :search_paths
+  end
+end
+
+
+target 'DataStore' do
+  project 'DataStore/DataStore.xcodeproj'
+  
+  networking
+    
+  target 'DataStoreTests' do
       inherit! :search_paths
   end
 end

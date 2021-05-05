@@ -39,3 +39,31 @@ public enum ReqParams {
 // MARK: - Remote Protocol
 
 public protocol Remote: AuthRemote, PlaceRemote { }
+
+
+
+
+// MARK: - Auth remote
+
+public protocol AuthRemote {
+    
+    func requestSignInAnonymously() -> Maybe<Void>
+    
+    func requestSignIn(withEmail email: String, password: String) -> Maybe<DataModels.Member>
+    
+    func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.Member>
+}
+
+
+// MARK: - place remote
+
+public protocol PlaceRemote {
+    
+    func requesUpload(_ location: ReqParams.UserLocation) -> Maybe<Void>
+    
+    func requestLoadDefaultPlaceSuggest(in location: ReqParams.UserLocation) -> Maybe<DataModels.SuggestPlaceResult>
+    
+    func requestSuggestPlace(_ query: String,
+                             in location: ReqParams.UserLocation,
+                             page: Int?) -> Maybe<DataModels.SuggestPlaceResult>
+}
