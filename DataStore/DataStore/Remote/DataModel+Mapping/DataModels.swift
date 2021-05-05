@@ -56,6 +56,9 @@ extension ImageSource {
         }
     }
 }
+
+// MARK: - mapping
+
 extension Member {
 
     init(model: DataModels.Member) {

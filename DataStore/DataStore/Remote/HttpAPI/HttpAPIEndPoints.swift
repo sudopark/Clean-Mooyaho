@@ -24,14 +24,14 @@ enum HttpAPIMethods: String {
 protocol HttpAPIEndPoint {
     
     var path: String { get }
-    var header: [String: Any] { get }
+    var customHeader: [String: String]? { get }
     var method: HttpAPIMethods { get }
-    var defaultParams: [String: Any] { get }
+    var defaultParams: [String: Any]? { get }
 }
 
 extension HttpAPIEndPoint {
-    var header: [String: Any] { [:] }
-    var defaultParams: [String: Any] { [:] }
+    var customHeader: [String: String]? { nil }
+    var defaultParams: [String: Any]? { [:] }
 }
 
 
@@ -50,7 +50,7 @@ enum NaverMapPlaceAPIEndPoint: HttpAPIEndPoint {
         return .get
     }
     
-    var defaultParams: [String : Any] {
+    var defaultParams: [String : Any]? {
         return [
             "lang": "ko",
             "caller": "pcweb",
