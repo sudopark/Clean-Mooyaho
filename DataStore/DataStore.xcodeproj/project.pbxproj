@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */; };
 		2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A1A99263E795E00B6CE69 /* DataModels.swift */; };
-		2B9F27682633E64900FEBCE3 /* APIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27672633E64900FEBCE3 /* APIEndPoints.swift */; };
 		2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F276B2633E69200FEBCE3 /* Remote.swift */; };
 		2B9F27722633E77900FEBCE3 /* Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27712633E77900FEBCE3 /* Local.swift */; };
 		2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */; };
 		2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F277C2633E7D500FEBCE3 /* EncryptedStorage.swift */; };
 		2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA4070526315F21000CC122 /* Common3rdParty.framework */; };
+		2BABA28B26429E2E007E2D1E /* Remote+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA28A26429E2E007E2D1E /* Remote+Place.swift */; };
+		2BABA28D26429FAA007E2D1E /* RepositoryImple+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */; };
+		2BABA28F2642A0E7007E2D1E /* RepositoryTests_Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA28E2642A0E7007E2D1E /* RepositoryTests_Places.swift */; };
 		2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F62263D4C29004B3EB0 /* Domain.framework */; };
 		2BD54F67263D4C33004B3EB0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */; };
 		2BD54F69263D4C3D004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */; };
@@ -39,8 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpAPIEndPoints.swift; sourceTree = "<group>"; };
 		2B9A1A99263E795E00B6CE69 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
-		2B9F27672633E64900FEBCE3 /* APIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoints.swift; sourceTree = "<group>"; };
 		2B9F276B2633E69200FEBCE3 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		2B9F27712633E77900FEBCE3 /* Local.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Local.swift; sourceTree = "<group>"; };
 		2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultStorage.swift; sourceTree = "<group>"; };
@@ -48,6 +51,9 @@
 		2BA406CB26315E48000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4070526315F21000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4071326315F5F000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BABA28A26429E2E007E2D1E /* Remote+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+Place.swift"; sourceTree = "<group>"; };
+		2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Place.swift"; sourceTree = "<group>"; };
+		2BABA28E2642A0E7007E2D1E /* RepositoryTests_Places.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTests_Places.swift; sourceTree = "<group>"; };
 		2BD54F62263D4C29004B3EB0 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,12 +94,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B7157012642A5E900D0C186 /* HttpAPI */ = {
+			isa = PBXGroup;
+			children = (
+				2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */,
+			);
+			path = HttpAPI;
+			sourceTree = "<group>";
+		};
 		2B9F27642633E5F700FEBCE3 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
-				2B9F27672633E64900FEBCE3 /* APIEndPoints.swift */,
+				2B7157012642A5E900D0C186 /* HttpAPI */,
 				2B9F276B2633E69200FEBCE3 /* Remote.swift */,
 				2BD54F7E263DBA2A004B3EB0 /* Remote+Auth.swift */,
+				2BABA28A26429E2E007E2D1E /* Remote+Place.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -141,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */,
+				2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */,
 			);
 			path = "Repository+Implements";
 			sourceTree = "<group>";
@@ -159,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F74263DB51A004B3EB0 /* RepositoryTests+Auth.swift */,
+				2BABA28E2642A0E7007E2D1E /* RepositoryTests_Places.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -320,14 +337,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BABA28B26429E2E007E2D1E /* Remote+Place.swift in Sources */,
 				2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */,
 				2BD54F7F263DBA2A004B3EB0 /* Remote+Auth.swift in Sources */,
-				2B9F27682633E64900FEBCE3 /* APIEndPoints.swift in Sources */,
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
+				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
 				2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* Local.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,
+				2BABA28D26429FAA007E2D1E /* RepositoryImple+Place.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +357,7 @@
 				2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
 				2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */,
+				2BABA28F2642A0E7007E2D1E /* RepositoryTests_Places.swift in Sources */,
 				2BD54F75263DB51A004B3EB0 /* RepositoryTests+Auth.swift in Sources */,
 				2BD54F79263DB59E004B3EB0 /* StubLocal.swift in Sources */,
 			);
