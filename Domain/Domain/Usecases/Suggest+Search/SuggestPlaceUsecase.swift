@@ -12,7 +12,14 @@ import RxSwift
 import RxRelay
 
 
-public enum Query: Equatable {
+// MARK: SuggestPlaceUsecase
+
+public protocol SuggestPlaceUsecase { }
+
+
+// MARK: SuggestPlaceQuery requestParams
+
+public enum SuggestPlaceQuery: Equatable {
     
     case empty
     case some(_ string: String)
@@ -33,33 +40,69 @@ public enum Query: Equatable {
     }
 }
 
-public protocol SuggestPlaceUsecase { }
+public struct PlaceSuggestReqParams: SuggestReqParamType {
+    
+    public let query: SuggestPlaceQuery
+    public let location: UserLocation
+    public let pageIndex: Int?
+    
+    public init(query: SuggestPlaceQuery, location: UserLocation, pageIndex: Int? = nil) {
+        self.query = query
+        self.location = location
+        self.pageIndex = pageIndex
+    }
+    
+    // conform SuggestReqParamType
+    public typealias Cursor = Int
+    public var isEmpty: Bool {
+        guard case .empty = self.query else { return false }
+        return true
+    }
+    
+    public func appendNextPageCursor(_ cursor: Int) -> PlaceSuggestReqParams {
+        return .init(query: self.query, location: self.location, pageIndex: cursor)
+    }
+}
+
+
+// MARK: SuggestPlaceResult for SuggestResultCollectionType
+
+extension SuggestPlaceResult: SuggestResultCollectionType {
+    
+    public typealias Cursor = Int
+    
+    public var nextPageCursor: Int? {
+        guard let current = self.pageIndex else { return nil }
+        return current + 1
+    }
+    
+    public func append(_ next: SuggestPlaceResult) -> SuggestPlaceResult {
+        return .init(query: self.query,
+                     places: self.places + next.places,
+                     pageIndex: next.pageIndex)
+    }
+    
+    public static func distinguisForSuggest(_ lhs: SuggestPlaceResult, _ rhs: SuggestPlaceResult) -> Bool {
+        return lhs.pageIndex == rhs.pageIndex
+            && lhs.query == rhs.query
+            && lhs.places.map{ $0.uid } == rhs.places.map{ $0.uid }
+    }
+}
 
 
 public final class SuggestPlaceUsecaseImple {
-    
-    struct PlaceSuggestReqParams {
-        let query: Query
-        let location: UserLocation
-        let pageIndex: Int?
-        
-        init(query: Query, location: UserLocation, pageIndex: Int? = nil) {
-            self.query = query
-            self.location = location
-            self.pageIndex = pageIndex
-        }
-    }
-    
+
     private let placeRepository: PlaceRepository
+    private var internalSuggestUsecase: SuggestUsecase<PlaceSuggestReqParams, SuggestPlaceResult>!
+    
     public init(placeRepository: PlaceRepository) {
         self.placeRepository = placeRepository
-        self.internalBinding()
+        self.internalSuggestUsecase = .init { [weak self] params in
+            return self?.suggestByQuery(params) ?? .empty()
+        }
     }
-    
-    
+
     private let disposeBag: DisposeBag = DisposeBag()
-    private let suggestPlaceReqParamsRelay = BehaviorRelay<PlaceSuggestReqParams?>(value: nil)
-    private let suggestPlaceResultRelay = BehaviorRelay<SuggestPlaceResult?>(value: nil)
     private let cachedDefaultSuggestRelay = BehaviorRelay<SuggestPlaceResult?>(value: nil)
 }
 
@@ -68,26 +111,17 @@ public final class SuggestPlaceUsecaseImple {
 
 extension SuggestPlaceUsecaseImple {
     
-    
-    public func startSuggestPlace(for query: Query, in location: UserLocation) {
+    public func startSuggestPlace(for query: SuggestPlaceQuery, in location: UserLocation) {
         let params = PlaceSuggestReqParams(query: query, location: location)
-        self.suggestPlaceReqParamsRelay.accept(params)
+        self.internalSuggestUsecase.startSuggest(params)
     }
     
     public func finishPlaceSuggesting() {
-        self.suggestPlaceReqParamsRelay.accept(nil)
-        self.suggestPlaceResultRelay.accept(nil)
+        self.internalSuggestUsecase.stopSuggest()
     }
     
-    public func suggestMore() {
-        guard let params = self.suggestPlaceReqParamsRelay.value,
-              params.query != .empty,
-              let result = self.suggestPlaceResultRelay.value,
-              let currentPageIndex = result.pageIndex else { return }
-        
-        let nextPageIndex = currentPageIndex + 1
-        let newParams = PlaceSuggestReqParams(query: params.query, location: params.location, pageIndex: nextPageIndex)
-        self.suggestPlaceReqParamsRelay.accept(newParams)
+    public func loadMoreSuggestPages() {
+        self.internalSuggestUsecase.suggestMore()
     }
 }
 
@@ -97,33 +131,28 @@ extension SuggestPlaceUsecaseImple {
 extension SuggestPlaceUsecaseImple {
     
     private var isSuggesting: Observable<Bool> {
-        return self.suggestPlaceReqParamsRelay
-            .map{ $0 != nil }
+        return self.internalSuggestUsecase.isSuggesting
     }
     
     public var placeSuggestResult: Observable<SuggestPlaceResult?> {
-        
-        typealias Result = SuggestPlaceResult
-        
-        let accumulateOrFinishingPaging: (Result?, Result?) -> Result? = { accumulated, newResult in
-            switch (accumulated, newResult) {
-            case (.none, .none), (_, .none): return nil
-            case let (.none, .some(new)): return new
-            case let (.some(previous), .some(next)):
-                return previous.query != next.query ? next : previous.appended(next)
-            }
-        }
-        
-        return self.suggestPlaceResultRelay
-            .scan(nil, accumulator: accumulateOrFinishingPaging)
-            .distinctUntilChanged(Result.quickCompare)
+        return self.internalSuggestUsecase.suggestResult
     }
 }
 
 
 extension SuggestPlaceUsecaseImple {
     
-    private func loadDefaultSuggest(_ location: UserLocation) -> Observable<SuggestPlaceResult> {
+    private func suggestByQuery(_ params: PlaceSuggestReqParams) -> Maybe<SuggestPlaceResult> {
+        switch params.query {
+        case .empty:
+            return self.loadDefaultSuggest(params.location)
+            
+        case let .some(text):
+            return self.placeRepository.requestSuggestPlace(text, in: params.location, page: params.pageIndex)
+        }
+    }
+    
+    private func loadDefaultSuggest(_ location: UserLocation) -> Maybe<SuggestPlaceResult> {
         if let cachedValue = self.cachedDefaultSuggestRelay.value {
             return .just(cachedValue)
         }
@@ -132,57 +161,5 @@ extension SuggestPlaceUsecaseImple {
         }
         return self.placeRepository.reqeustLoadDefaultPlaceSuggest(in: location)
             .do(onNext: updateCache)
-            .catch{ _ in .empty() }
-            .asObservable()
-    }
-    
-    private func suggestPlace(_ params: PlaceSuggestReqParams) -> Observable<SuggestPlaceResult> {
-        return self.placeRepository
-            .requestSuggestPlace(params.query.string, in: params.location, page: params.pageIndex)
-            .catch{ _ in .empty() }
-            .asObservable()
-    }
-    
-    private func internalBinding() {
-        
-        let suggestOrShowDefault: (PlaceSuggestReqParams) -> Observable<SuggestPlaceResult?>
-        suggestOrShowDefault = { [weak self] params in
-            guard let self = self else { return .empty() }
-            let result = params.query == .empty
-                ? self.loadDefaultSuggest(params.location)
-                : self.suggestPlace(params)
-            return result.asOptional()
-        }
-        
-        self.suggestPlaceReqParamsRelay
-            .compactMap{ $0 }
-            .flatMapLatest(suggestOrShowDefault)
-            .subscribe(onNext: { [weak self] result in
-                self?.suggestPlaceResultRelay.accept(result)
-            })
-            .disposed(by: self.disposeBag)
-    }
-}
-
-private extension SuggestPlaceResult {
-    
-    static func quickCompare(_ lhs: Self?, _ rhs: Self?) -> Bool {
-        switch (lhs, rhs) {
-        case (.none, .none): return true
-        case let (.some(left), .some(right)): return left.isEqual(with: right)
-        default: return false
-        }
-    }
-    
-    func isEqual(with other: Self) -> Bool {
-        return self.pageIndex == other.pageIndex
-            && self.query == other.query
-            && self.places.map{ $0.uid } == other.places.map{ $0.uid }
-    }
-    
-    func appended(_ next: Self) -> Self {
-        return .init(query: self.query,
-                     places: self.places + next.places,
-                     pageIndex: next.pageIndex)
     }
 }

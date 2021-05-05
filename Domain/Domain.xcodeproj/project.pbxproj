@@ -32,6 +32,7 @@
 		2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B8502635019600FE5243 /* OwnerShips.swift */; };
 		2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA93778263B1C0B00276876 /* StubAuthRepository.swift */; };
 		2BA9377B263B1C1800276876 /* StubOAuth2Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9377A263B1C1800276876 /* StubOAuth2Repository.swift */; };
+		2BABA288264279D2007E2D1E /* SuggestUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA287264279D2007E2D1E /* SuggestUsecase.swift */; };
 		2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD9DC32263C793B002EF343 /* AuthErrors.swift */; };
 		2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978BC263AE91B0000C0C6 /* AuthUsecase.swift */; };
 		2BE978C0263AEA630000C0C6 /* AuthUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978BF263AEA630000C0C6 /* AuthUsecaseTests.swift */; };
@@ -86,6 +87,7 @@
 		2BA7B8502635019600FE5243 /* OwnerShips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerShips.swift; sourceTree = "<group>"; };
 		2BA93778263B1C0B00276876 /* StubAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubAuthRepository.swift; sourceTree = "<group>"; };
 		2BA9377A263B1C1800276876 /* StubOAuth2Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubOAuth2Repository.swift; sourceTree = "<group>"; };
+		2BABA287264279D2007E2D1E /* SuggestUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestUsecase.swift; sourceTree = "<group>"; };
 		2BBD9E96263012DF00409FEA /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBD9EA22630160500409FEA /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD9DC32263C793B002EF343 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 		2BFF240426405A64008C52EB /* Suggest+Search */ = {
 			isa = PBXGroup;
 			children = (
+				2BABA287264279D2007E2D1E /* SuggestUsecase.swift */,
 				2BFF240526405A78008C52EB /* SuggestPlaceUsecase.swift */,
 			);
 			path = "Suggest+Search";
@@ -461,6 +464,7 @@
 			files = (
 				2B40BF8F263F0FD70031C7A6 /* PlaceRepository.swift in Sources */,
 				2B40BF87263F09AF0031C7A6 /* LocationServiceAccessPermission.swift in Sources */,
+				2BABA288264279D2007E2D1E /* SuggestUsecase.swift in Sources */,
 				2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */,
 				2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */,
 				2B9F279F2633F11800FEBCE3 /* Staff.swift in Sources */,

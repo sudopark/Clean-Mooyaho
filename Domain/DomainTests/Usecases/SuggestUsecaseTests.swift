@@ -133,9 +133,9 @@ extension SuggestUsecaseTests {
         let results = self.waitElements(expect, for: self.usecase.placeSuggestResult, skip: 1) {
             self.usecase.startSuggestPlace(for: .some("q"), in: .dummy())
             (0..<10).forEach { _ in
-                self.usecase.suggestMore()
-                self.usecase.suggestMore()
-                self.usecase.suggestMore()
+                self.usecase.loadMoreSuggestPages()
+                self.usecase.loadMoreSuggestPages()
+                self.usecase.loadMoreSuggestPages()
             }
         }
         
@@ -165,7 +165,7 @@ extension SuggestUsecaseTests {
         // when
         let results = self.waitElements(expect, for: self.usecase.placeSuggestResult, skip: 1) {
             self.usecase.startSuggestPlace(for: .some("q"), in: .dummy())
-            self.usecase.suggestMore()
+            self.usecase.loadMoreSuggestPages()
             self.usecase.startSuggestPlace(for: .empty, in: .dummy())
         }
         
@@ -194,7 +194,7 @@ extension SuggestUsecaseTests {
         // when
         let results = self.waitElements(expect, for: self.usecase.placeSuggestResult, skip: 1) {
             self.usecase.startSuggestPlace(for: .some("q"), in: .dummy())
-            self.usecase.suggestMore()
+            self.usecase.loadMoreSuggestPages()
             self.usecase.finishPlaceSuggesting()
         }
         
@@ -226,10 +226,10 @@ extension SuggestUsecaseTests {
             
             struct DummyError: Error { }
             self.updateSuggestErrorStubbing(DummyError())
-            self.usecase.suggestMore()
+            self.usecase.loadMoreSuggestPages()
             
             self.updateSuggestErrorStubbing(nil)
-            self.usecase.suggestMore()
+            self.usecase.loadMoreSuggestPages()
         }
         
         // then
