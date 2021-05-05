@@ -31,9 +31,11 @@ public enum ReqParams {
     public struct OAuthCredential {
         public init() {}
     }
+    
+    public typealias UserLocation = Domain.UserLocation
 }
 
 
 // MARK: - Remote Protocol
 
-public protocol Remote: AuthRemote { }
+public protocol Remote: AuthRemote, PlaceRemote { }

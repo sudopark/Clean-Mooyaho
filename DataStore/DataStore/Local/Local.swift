@@ -21,3 +21,15 @@ public protocol AuthLocal {
     func fetchCurrentMember() -> Maybe<Member?>
     func saveSignedIn(member: Member) -> Maybe<Void>
 }
+
+
+public class FakeLocal: Local {
+    
+    public func fetchCurrentMember() -> Maybe<Member?> {
+        return .empty()
+    }
+    
+    public func saveSignedIn(member: Member) -> Maybe<Void> {
+        return .empty()
+    }
+}

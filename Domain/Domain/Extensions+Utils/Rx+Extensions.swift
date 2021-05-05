@@ -22,3 +22,18 @@ extension Observable {
         }
     }
 }
+
+extension Observable where Element == Void {
+    
+    public static func just() -> Observable<Element> {
+        return .just(())
+    }
+}
+
+
+extension Maybe where Element == Void {
+    
+    public static func just() -> Maybe<Element> {
+        return .just(())
+    }
+}
