@@ -18,6 +18,7 @@ import UnitTestHelpKit
 
 class StubRemote: Remote, Stubbable {
     
+    // auth
     func requestSignInAnonymously() -> Maybe<Void> {
         self.verify(key: "requestSignInAnonymously")
         return self.resolve(key: "requestSignInAnonymously") ?? .empty()
@@ -29,5 +30,19 @@ class StubRemote: Remote, Stubbable {
     
     func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.Member> {
         return self.resolve(key: "requestSignIn:credential") ?? .empty()
+    }
+    
+    // place
+    func requesUpload(_ location: ReqParams.UserLocation) -> Maybe<Void> {
+        return self.resolve(key: "requesUpload:location") ?? .empty()
+    }
+    
+    func requestLoadDefaultPlaceSuggest(in location: ReqParams.UserLocation) -> Maybe<DataModels.SuggestPlaceResult> {
+        return self.resolve(key: "requestLoadDefaultPlaceSuggest") ?? .empty()
+    }
+    
+    func requestSuggestPlace(_ query: String,
+                             in location: ReqParams.UserLocation, page: Int?) -> Maybe<DataModels.SuggestPlaceResult> {
+        return self.resolve(key: "requestSuggestPlace") ?? .empty()
     }
 }

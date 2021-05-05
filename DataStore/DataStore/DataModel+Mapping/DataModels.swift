@@ -41,28 +41,8 @@ public enum DataModels {
         }
     }
     
+    public typealias SuggestPlaceResult = Domain.SuggestPlaceResult
 }
-//
-//// MARK: - mapping member json
-//
-//public typealias JSON = [String: Any]
-//
-//extension ImageSource {
-//
-//    init?(json: JSON) {
-//
-//        if let pathValue = json["path"] as? String {
-//            self = .path(pathValue)
-//        } else if let referenceJson = json["reference"] as? [String: Any],
-//                  let pathValue = referenceJson["path"] as? String {
-//            let description = referenceJson["description"] as? String
-//            self = .reference(pathValue, description: description)
-//        } else {
-//            return nil
-//        }
-//    }
-//}
-//
 
 extension ImageSource {
     
