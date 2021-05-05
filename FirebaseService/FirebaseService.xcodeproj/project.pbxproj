@@ -199,11 +199,11 @@
 		2B39E17126386CEC003EE954 /* FirebaseService */ = {
 			isa = PBXGroup;
 			children = (
+				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
 				2B8AC38B263BB147002BA1AC /* FirebaseFrameworks */,
 				2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */,
 				2B39E17226386CEC003EE954 /* FirebaseService.h */,
 				2B39E17326386CEC003EE954 /* Info.plist */,
-				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
 			);
 			path = FirebaseService;
 			sourceTree = "<group>";
