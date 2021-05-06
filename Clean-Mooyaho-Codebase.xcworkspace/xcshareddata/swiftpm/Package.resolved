@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "f96b619bcb2383b43d898402283924b80e2c4bae",
+          "version": "5.4.3"
+        }
+      },
+      {
+        "package": "KakaoOpenSDK_V2",
+        "repositoryURL": "https://github.com/fbdlrghks123/KakaoSDK_SPM.git",
+        "state": {
+          "branch": null,
+          "revision": "b90479b2699d86a5e7f2f018fd21e758f7e7e191",
+          "version": "2.4.1"
+        }
+      },
+      {
         "package": "RxSwift",
         "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
         "state": {

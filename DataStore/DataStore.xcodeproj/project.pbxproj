@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,8 +28,7 @@
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B29FDABC3871DB79F19F3F4 /* Pods_DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27131194B45F304D2FBE19B3 /* Pods_DataStore.framework */; };
-		EA70FA600529A4F99DF04128 /* Pods_DataStoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF4AF7464386766AD479F8B /* Pods_DataStoreTests.framework */; };
+		F66BDB8E2644481D0043DEAA /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB8D2644481D0043DEAA /* SwiftPackageProductDependency */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,8 +42,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		25019A19C555BA13C5AB543D /* Pods-DataStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataStore.release.xcconfig"; path = "Target Support Files/Pods-DataStore/Pods-DataStore.release.xcconfig"; sourceTree = "<group>"; };
-		27131194B45F304D2FBE19B3 /* Pods_DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B074A892642AD5D00C94E71 /* HttpRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRemote.swift; sourceTree = "<group>"; };
 		2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpAPIEndPoints.swift; sourceTree = "<group>"; };
 		2B9A1A99263E795E00B6CE69 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
@@ -71,10 +68,6 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		85161B861FFFA68952059672 /* Pods-DataStoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataStoreTests.release.xcconfig"; path = "Target Support Files/Pods-DataStoreTests/Pods-DataStoreTests.release.xcconfig"; sourceTree = "<group>"; };
-		9DF4AF7464386766AD479F8B /* Pods_DataStoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DataStoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A66876394EB221C78AE25080 /* Pods-DataStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataStore.debug.xcconfig"; path = "Target Support Files/Pods-DataStore/Pods-DataStore.debug.xcconfig"; sourceTree = "<group>"; };
-		CA9378853492F51F8E529953 /* Pods-DataStoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataStoreTests.debug.xcconfig"; path = "Target Support Files/Pods-DataStoreTests/Pods-DataStoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +76,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
+				F66BDB8E2644481D0043DEAA /* BuildFile in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
-				6B29FDABC3871DB79F19F3F4 /* Pods_DataStore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +88,6 @@
 				2BD54F69263D4C3D004B3EB0 /* Common3rdParty.framework in Frameworks */,
 				2BD54F67263D4C33004B3EB0 /* UnitTestHelpKit.framework in Frameworks */,
 				2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */,
-				EA70FA600529A4F99DF04128 /* Pods_DataStoreTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,8 +148,6 @@
 				2BA4071326315F5F000CC122 /* Common3rdParty.framework */,
 				2BA4070526315F21000CC122 /* Common3rdParty.framework */,
 				2BA406CB26315E48000CC122 /* Common3rdParty.framework */,
-				27131194B45F304D2FBE19B3 /* Pods_DataStore.framework */,
-				9DF4AF7464386766AD479F8B /* Pods_DataStoreTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -197,7 +187,6 @@
 				2BF00BEC262B7E1300E235C0 /* DataStoreTests */,
 				2BF00BE0262B7E1300E235C0 /* Products */,
 				2BA406CA26315E48000CC122 /* Frameworks */,
-				5C3F787B742F47C2034EEEDF /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -233,18 +222,6 @@
 			path = DataStoreTests;
 			sourceTree = "<group>";
 		};
-		5C3F787B742F47C2034EEEDF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A66876394EB221C78AE25080 /* Pods-DataStore.debug.xcconfig */,
-				25019A19C555BA13C5AB543D /* Pods-DataStore.release.xcconfig */,
-				CA9378853492F51F8E529953 /* Pods-DataStoreTests.debug.xcconfig */,
-				85161B861FFFA68952059672 /* Pods-DataStoreTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = ../Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -263,7 +240,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2BF00BF3262B7E1300E235C0 /* Build configuration list for PBXNativeTarget "DataStore" */;
 			buildPhases = (
-				199F51D01693BA72580704A3 /* [CP] Check Pods Manifest.lock */,
 				2BF00BDA262B7E1300E235C0 /* Headers */,
 				2BF00BDB262B7E1300E235C0 /* Sources */,
 				2BF00BDC262B7E1300E235C0 /* Frameworks */,
@@ -274,6 +250,9 @@
 			dependencies = (
 			);
 			name = DataStore;
+			packageProductDependencies = (
+				F66BDB8D2644481D0043DEAA /* SwiftPackageProductDependency */,
+			);
 			productName = DataStore;
 			productReference = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */;
 			productType = "com.apple.product-type.framework";
@@ -282,7 +261,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2BF00BF6262B7E1300E235C0 /* Build configuration list for PBXNativeTarget "DataStoreTests" */;
 			buildPhases = (
-				08CC0A161BE1D9F703762FF2 /* [CP] Check Pods Manifest.lock */,
 				2BF00BE4262B7E1300E235C0 /* Sources */,
 				2BF00BE5262B7E1300E235C0 /* Frameworks */,
 				2BF00BE6262B7E1300E235C0 /* Resources */,
@@ -325,6 +303,9 @@
 				Base,
 			);
 			mainGroup = 2BF00BD5262B7E1300E235C0;
+			packageReferences = (
+				F66BDB8C2644481D0043DEAA /* RemoteSwiftPackageReference */,
+			);
 			productRefGroup = 2BF00BE0262B7E1300E235C0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -351,53 +332,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		08CC0A161BE1D9F703762FF2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DataStoreTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		199F51D01693BA72580704A3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DataStore-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2BF00BDB262B7E1300E235C0 /* Sources */ = {
@@ -562,7 +496,6 @@
 		};
 		2BF00BF4262B7E1300E235C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A66876394EB221C78AE25080 /* Pods-DataStore.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -589,7 +522,6 @@
 		};
 		2BF00BF5262B7E1300E235C0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 25019A19C555BA13C5AB543D /* Pods-DataStore.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -615,7 +547,6 @@
 		};
 		2BF00BF7262B7E1300E235C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CA9378853492F51F8E529953 /* Pods-DataStoreTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -635,7 +566,6 @@
 		};
 		2BF00BF8262B7E1300E235C0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 85161B861FFFA68952059672 /* Pods-DataStoreTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -684,6 +614,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F66BDB8C2644481D0043DEAA /* RemoteSwiftPackageReference */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F66BDB8D2644481D0043DEAA /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F66BDB8C2644481D0043DEAA /* RemoteSwiftPackageReference */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2BF00BD6262B7E1300E235C0 /* Project object */;
 }

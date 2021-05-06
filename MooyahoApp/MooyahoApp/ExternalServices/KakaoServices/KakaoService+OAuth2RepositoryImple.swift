@@ -52,11 +52,7 @@ extension KakaoOAuth2Repository {
             return self?.requestKakaoUserInfo() ?? .empty()
         }
         let asOAuth2Credentail: (User) throws -> KakaoOAuthCredential = { user in
-            
-            guard let userID = user.id else {
-                throw KakaoOAuthErrors.invalidUserID
-            }
-            return KakaoOAuthCredential(userID: Int(userID))
+            return KakaoOAuthCredential(userID: Int(user.id))
         }
         
         return requestKakaoSignIn

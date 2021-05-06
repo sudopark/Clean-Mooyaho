@@ -18,8 +18,8 @@ workspace 'Clean-Mooyaho-Codebase'
 target 'MooyahoApp' do
   project 'MooyahoApp/MooyahoApp.xcodeproj'
   
-  kakao_sdk_modules
-  networking
+#  kakao_sdk_modules
+#  networking
     
   target 'MooyahoAppTests' do
       inherit! :search_paths
@@ -30,7 +30,7 @@ end
 target 'DataStore' do
   project 'DataStore/DataStore.xcodeproj'
   
-  networking
+#  networking
     
   target 'DataStoreTests' do
       inherit! :search_paths
