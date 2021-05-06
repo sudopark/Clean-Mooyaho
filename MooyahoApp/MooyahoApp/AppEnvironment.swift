@@ -29,5 +29,6 @@ public struct AppEnvironment {
         #if DEBUG
         return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
         #endif
+        return false
     }
 }
