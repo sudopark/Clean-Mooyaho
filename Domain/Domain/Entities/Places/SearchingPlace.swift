@@ -39,7 +39,7 @@ public struct SearchingPlace {
 
 public struct SearchingPlaceCollection {
     
-    public let query: String?
+    public var query: String?
     public let currentPage: Int?
     public let places: [SearchingPlace]
     

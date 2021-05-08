@@ -42,7 +42,13 @@ class StubRemote: Remote, Stubbable {
     }
     
     func requestSuggestPlace(_ query: String,
-                             in location: ReqParams.UserLocation, page: Int?) -> Maybe<DataModels.SuggestPlaceResult> {
+                             in location: ReqParams.UserLocation,
+                             cursor: String?) -> Maybe<DataModels.SuggestPlaceResult> {
         return self.resolve(key: "requestSuggestPlace") ?? .empty()
+    }
+    
+    func requestSearchNewPlace(_ query: String, in location: ReqParams.UserLocation,
+                               of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection> {
+        return self.resolve(key: "requestSearchNewPlace") ?? .empty()
     }
 }

@@ -73,14 +73,14 @@ extension RepositoryTests_Places {
     func testRepo_requestPlaceSuggest() {
         // given
         let expect = expectation(description: "해당 장소 + 쿼리에 해당하는 서제스트 로드")
-        self.stubRemote.register(type: Maybe<SuggestPlaceResult>.self,key: "requestSuggestPlace") {
+        self.stubRemote.register(type: Maybe<DataModels.SuggestPlaceResult>.self,key: "requestSuggestPlace") {
             return .just(.init(query: "some", places: []))
         }
-        
+
         // when
         let location = UserLocation.dummy(0)
-        let result = self.waitFirstElement(expect, for: self.repository.requestSuggestPlace("some", in: location, page: nil).asObservable()) { }
-        
+        let result = self.waitFirstElement(expect, for: self.repository.requestSuggestPlace("some", in: location, cursor: nil).asObservable()) { }
+
         // then
         XCTAssertNotNil(result)
     }
