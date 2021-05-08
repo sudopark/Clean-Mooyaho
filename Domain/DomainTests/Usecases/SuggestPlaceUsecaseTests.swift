@@ -1,5 +1,5 @@
 //
-//  SuggestUsecaseTests.swift
+//  SuggestPlaceUsecaseTests.swift
 //  DomainTests
 //
 //  Created by ParkHyunsoo on 2021/05/05.
@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class SuggestUsecaseTests: BaseTestCase, WaitObservableEvents {
+class SuggestPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var stubPlaceRepository: StubPlaceRepository!
@@ -38,21 +38,22 @@ class SuggestUsecaseTests: BaseTestCase, WaitObservableEvents {
     private var dummyDefaultSuggestResult: SuggestPlaceResult {
         let places = [1, 3, 5].map{ Place.dummy($0) }
         
-        return .init(default: places, pageIndex: 0)
+        return .init(default: places)
     }
     
     private var dummyDetaultPlacesIDs: [String] {
         return self.dummyDefaultSuggestResult.places.map{ $0.uid }
     }
     
-    private func dummySuggestResult(range: Range<Int>, pageIndex: Int, query: String) -> SuggestPlaceResult {
+    private func dummySuggestResult(range: Range<Int>, hasNextCursor: Bool = true, query: String) -> SuggestPlaceResult {
         let places = range.map{ Place.dummy($0) }
-        return .init(query: query, places: places, pageIndex: pageIndex)
+        let cursor = hasNextCursor ? places.last?.title : nil
+        return .init(query: query, places: places, cursor: cursor)
     }
 }
 
 
-extension SuggestUsecaseTests {
+extension SuggestPlaceUsecaseTests {
     
     private func stubDefaultList(_ result: SuggestPlaceResult? = nil) {
         self.stubPlaceRepository.register(key: "reqeustLoadDefaultPlaceSuggest") {
@@ -60,18 +61,20 @@ extension SuggestUsecaseTests {
         }
     }
     
-    private func stubSuggestResult(_ query: String, result: SuggestPlaceResult, forPage page: Int? = nil) {
-        let key = "requestSuggestPlace:\(query)-\(String(describing: page))"
+    private func stubSuggestResult(_ query: String,
+                                   result: SuggestPlaceResult,
+                                   matching cursor: String? = nil) {
+        let key = "requestSuggestPlace:\(query)-\(String(describing: cursor))"
         self.stubPlaceRepository.register(key: key) {
             return Maybe<SuggestPlaceResult>.just(result)
         }
     }
     
-    private func updateSuggestErrorStubbing(_ error: Error?) {
+    private func updateOrClearSuggestErrorStubbing(_ error: Error?) {
         if let error = error {
-            self.stubPlaceRepository.register(type: Error.self, key: "requestSuggestPlace") { error }
+            self.stubPlaceRepository.register(key: "requestSuggestPlace") { error }
         } else {
-            self.stubPlaceRepository.register(type: SuggestPlaceResult.self, key: "requestSuggestPlace") { .init(default: []) }
+            self.stubPlaceRepository.clear(key: "requestSuggestPlace")
         }
     }
     
@@ -96,7 +99,7 @@ extension SuggestUsecaseTests {
         // given
         let expect = expectation(description: "서제스트시 일치하는 결과 출력")
         expect.expectedFulfillmentCount = 3
-        let stubResult = self.dummySuggestResult(range: 0..<10, pageIndex: 1, query: "some")
+        let stubResult = self.dummySuggestResult(range: 0..<10, query: "some")
         self.stubDefaultList()
         self.stubSuggestResult("some", result: stubResult)
         // stub
@@ -123,10 +126,11 @@ extension SuggestUsecaseTests {
         let expect = expectation(description: "서제스트 결과 페이징")
         expect.expectedFulfillmentCount = 3
         let stubResults = (0..<3).map {
-            return self.dummySuggestResult(range: $0*10..<$0*10+10, pageIndex: $0, query: "q")
+            return self.dummySuggestResult(range: $0*10..<$0*10+10, query: "q")
         }
         stubResults.enumerated().forEach { offset, result in
-            self.stubSuggestResult(result.query!, result: result, forPage: offset == 0 ? nil : offset)
+            let cursor = offset == 0 ? nil : stubResults[offset-1].places.last?.title
+            self.stubSuggestResult(result.query!, result: result, matching: cursor)
         }
         
         // when
@@ -152,14 +156,14 @@ extension SuggestUsecaseTests {
     // enter something + paging -> erase all -> show default list
     func testUsecase_whenSuggesingAndPagingThenEnterEmpty_showDefaultList() {
         // given
-        let expect = expectation(description: "서제스트 + 페이징 이후에 서제스트 종료")
+        let expect = expectation(description: "서제스트 + 페이징 이후에 입력 종료시 디폴트 리스트 노출")
         expect.expectedFulfillmentCount = 3
         let pages = [
-            self.dummySuggestResult(range: 0..<10, pageIndex: 1, query: "q"),
-            self.dummySuggestResult(range: 10..<20, pageIndex: 2, query: "q")
+            self.dummySuggestResult(range: 0..<10, query: "q"),
+            self.dummySuggestResult(range: 10..<20, query: "q")
         ]
         self.stubSuggestResult("q", result: pages[0])
-        self.stubSuggestResult("q", result: pages[1], forPage: 2)
+        self.stubSuggestResult("q", result: pages[1], matching: pages[0].places.last?.title)
         self.stubDefaultList()
         
         // when
@@ -185,11 +189,11 @@ extension SuggestUsecaseTests {
         let expect = expectation(description: "서제스트 종료 이후에 결과 클리어")
         expect.expectedFulfillmentCount = 3
         let pages = [
-            self.dummySuggestResult(range: 0..<10, pageIndex: 1, query: "q"),
-            self.dummySuggestResult(range: 10..<20, pageIndex: 2, query: "q")
+            self.dummySuggestResult(range: 0..<10, query: "q"),
+            self.dummySuggestResult(range: 10..<20, query: "q")
         ]
         self.stubSuggestResult("q", result: pages[0])
-        self.stubSuggestResult("q", result: pages[1], forPage: 2)
+        self.stubSuggestResult("q", result: pages[1], matching: pages[0].places.last?.title)
         
         // when
         let results = self.waitElements(expect, for: self.usecase.placeSuggestResult, skip: 1) {
@@ -214,21 +218,21 @@ extension SuggestUsecaseTests {
         let expect = expectation(description: "서제스트 중 에러 발생해도 무시하고 계속")
         expect.expectedFulfillmentCount = 2
         let pages = [
-            self.dummySuggestResult(range: 0..<10, pageIndex: 1, query: "q"),
-            self.dummySuggestResult(range: 10..<20, pageIndex: 2, query: "q")
+            self.dummySuggestResult(range: 0..<10, query: "q"),
+            self.dummySuggestResult(range: 10..<20, query: "q")
         ]
         self.stubSuggestResult("q", result: pages[0])
-        self.stubSuggestResult("q", result: pages[1], forPage: 2)
+        self.stubSuggestResult("q", result: pages[1], matching: pages[0].places.last?.title)
         
         // when
         let results = self.waitElements(expect, for: self.usecase.placeSuggestResult, skip: 1) {
             self.usecase.startSuggestPlace(for: .some("q"), in: .dummy())
             
             struct DummyError: Error { }
-            self.updateSuggestErrorStubbing(DummyError())
+            self.updateOrClearSuggestErrorStubbing(DummyError())
             self.usecase.loadMoreSuggestPages()
             
-            self.updateSuggestErrorStubbing(nil)
+            self.updateOrClearSuggestErrorStubbing(nil)
             self.usecase.loadMoreSuggestPages()
         }
         
@@ -245,7 +249,7 @@ extension SuggestUsecaseTests {
         // given
         let expect = expectation(description: "디폴트 리스트를 보여줄때는 캐시를 활용한다")
         expect.expectedFulfillmentCount = 3
-        let page = self.dummySuggestResult(range: 0..<10, pageIndex: 1, query: "q")
+        let page = self.dummySuggestResult(range: 0..<10, query: "q")
         self.stubSuggestResult("q", result: page)
         self.stubDefaultList()
         

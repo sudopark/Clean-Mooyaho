@@ -31,6 +31,8 @@ public protocol SuggestResultCollectionType {
 
     var nextPageCursor: Cursor? { get }
     
+    var isFinalPage: Bool { get }
+    
     func append(_ next: Self) -> Self
     
     static func distinguisForSuggest(_ lhs: Self, _ rhs: Self) -> Bool
@@ -72,6 +74,7 @@ extension SuggestUsecase {
         guard let params = self.requestParamsRelay.value,
               params.isEmpty == false,
               let result = self.resultRelay.value,
+              result.isFinalPage == false,
               let nextCursor = result.nextPageCursor else { return }
         let newParams = params.appendNextPageCursor(nextCursor)
         self.requestParamsRelay.accept(newParams)

@@ -45,10 +45,13 @@
 		2BFF240D26406190008C52EB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF240C26406190008C52EB /* Place.swift */; };
 		2BFF240F2640736F008C52EB /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF240E2640736F008C52EB /* Builder.swift */; };
 		2BFF24122640776B008C52EB /* NewPlaceFormBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF24112640776B008C52EB /* NewPlaceFormBuilderTests.swift */; };
-		2BFF24172641A546008C52EB /* SuggestUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF24162641A546008C52EB /* SuggestUsecaseTests.swift */; };
+		2BFF24172641A546008C52EB /* SuggestPlaceUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF24162641A546008C52EB /* SuggestPlaceUsecaseTests.swift */; };
 		2BFF24192641AA00008C52EB /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF24182641AA00008C52EB /* Dummies.swift */; };
 		2BFF241B2641BB04008C52EB /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF241A2641BB04008C52EB /* Array+Extensions.swift */; };
 		2BFF241D2641E009008C52EB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF241C2641E009008C52EB /* Rx+Extensions.swift */; };
+		F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA5722645A91E00F9A049 /* SearchingPlace.swift */; };
+		F6CFA5752646340300F9A049 /* SearchNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA5742646340300F9A049 /* SearchNewPlaceUsecase.swift */; };
+		F6CFA57726463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57626463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,10 +109,13 @@
 		2BFF240C26406190008C52EB /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		2BFF240E2640736F008C52EB /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 		2BFF24112640776B008C52EB /* NewPlaceFormBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceFormBuilderTests.swift; sourceTree = "<group>"; };
-		2BFF24162641A546008C52EB /* SuggestUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestUsecaseTests.swift; sourceTree = "<group>"; };
+		2BFF24162641A546008C52EB /* SuggestPlaceUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceUsecaseTests.swift; sourceTree = "<group>"; };
 		2BFF24182641AA00008C52EB /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		2BFF241A2641BB04008C52EB /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		2BFF241C2641E009008C52EB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
+		F6CFA5722645A91E00F9A049 /* SearchingPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingPlace.swift; sourceTree = "<group>"; };
+		F6CFA5742646340300F9A049 /* SearchNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceUsecase.swift; sourceTree = "<group>"; };
+		F6CFA57626463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceUsecaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,7 +249,8 @@
 			children = (
 				2BE978BF263AEA630000C0C6 /* AuthUsecaseTests.swift */,
 				2B40BF80263F08EA0031C7A6 /* UserLocationUsecaseTests.swift */,
-				2BFF24162641A546008C52EB /* SuggestUsecaseTests.swift */,
+				2BFF24162641A546008C52EB /* SuggestPlaceUsecaseTests.swift */,
+				F6CFA57626463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -327,6 +334,7 @@
 			children = (
 				2BABA287264279D2007E2D1E /* SuggestUsecase.swift */,
 				2BFF240526405A78008C52EB /* SuggestPlaceUsecase.swift */,
+				F6CFA5742646340300F9A049 /* SearchNewPlaceUsecase.swift */,
 			);
 			path = "Suggest+Search";
 			sourceTree = "<group>";
@@ -336,6 +344,7 @@
 			children = (
 				2BFF240826405B7C008C52EB /* Tags.swift */,
 				2BFF240C26406190008C52EB /* Place.swift */,
+				F6CFA5722645A91E00F9A049 /* SearchingPlace.swift */,
 			);
 			path = Places;
 			sourceTree = "<group>";
@@ -480,7 +489,9 @@
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				2B40BF93263F15060031C7A6 /* Units.swift in Sources */,
+				F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */,
 				2BFF241D2641E009008C52EB /* Rx+Extensions.swift in Sources */,
+				F6CFA5752646340300F9A049 /* SearchNewPlaceUsecase.swift in Sources */,
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
@@ -502,10 +513,11 @@
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,
 				2BFF24192641AA00008C52EB /* Dummies.swift in Sources */,
 				2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */,
+				F6CFA57726463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift in Sources */,
 				2BE978C0263AEA630000C0C6 /* AuthUsecaseTests.swift in Sources */,
 				2BFF24122640776B008C52EB /* NewPlaceFormBuilderTests.swift in Sources */,
 				2B40BF91263F10350031C7A6 /* StubPlaceRepository.swift in Sources */,
-				2BFF24172641A546008C52EB /* SuggestUsecaseTests.swift in Sources */,
+				2BFF24172641A546008C52EB /* SuggestPlaceUsecaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
