@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - methods
 
-enum HttpAPIMethods: String {
+public enum HttpAPIMethods: String {
     case get
     case post
     case patch
@@ -21,7 +21,7 @@ enum HttpAPIMethods: String {
 
 // MARK: - end points
 
-protocol HttpAPIEndPoint {
+public protocol HttpAPIEndPoint {
     
     var path: String { get }
     var customHeader: [String: String]? { get }
@@ -30,27 +30,27 @@ protocol HttpAPIEndPoint {
 }
 
 extension HttpAPIEndPoint {
-    var customHeader: [String: String]? { nil }
-    var defaultParams: [String: Any]? { [:] }
+    public var customHeader: [String: String]? { nil }
+    public var defaultParams: [String: Any]? { [:] }
 }
 
 
 // MARK: - naver place http endpoint
 
 
-enum NaverMapPlaceAPIEndPoint: HttpAPIEndPoint {
+public enum NaverMapPlaceAPIEndPoint: HttpAPIEndPoint {
     
     case places
     
-    var path: String {
+    public var path: String {
         return "https://map.naver.com/v5/api/search"
     }
     
-    var method: HttpAPIMethods {
+    public var method: HttpAPIMethods {
         return .get
     }
     
-    var defaultParams: [String : Any]? {
+    public var defaultParams: [String : Any]? {
         return [
             "lang": "ko",
             "caller": "pcweb",

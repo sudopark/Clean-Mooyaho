@@ -11,6 +11,7 @@ import Foundation
 
 enum FireStoreCollectionType: String {
     case member = "members"
+    case userLocation = "userlocations"
 }
 
 

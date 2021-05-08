@@ -40,9 +40,6 @@ public enum ReqParams {
 
 public protocol Remote: AuthRemote, PlaceRemote { }
 
-
-
-
 // MARK: - Auth remote
 
 public protocol AuthRemote {
@@ -65,5 +62,8 @@ public protocol PlaceRemote {
     
     func requestSuggestPlace(_ query: String,
                              in location: ReqParams.UserLocation,
-                             page: Int?) -> Maybe<DataModels.SuggestPlaceResult>
+                             cursor: String?) -> Maybe<DataModels.SuggestPlaceResult>
+    
+    func requestSearchNewPlace(_ query: String, in location: ReqParams.UserLocation,
+                               of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection>
 }
