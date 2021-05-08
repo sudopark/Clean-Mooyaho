@@ -12,7 +12,7 @@ import RxSwift
 import RxRelay
 
 
-// MARK: SuggestPlaceUsecase
+// MARK: - SuggestPlaceUsecase
 
 public protocol SuggestPlaceUsecase { }
 
@@ -44,23 +44,23 @@ public struct PlaceSuggestReqParams: SuggestReqParamType {
     
     public let query: SuggestPlaceQuery
     public let location: UserLocation
-    public let pageIndex: Int?
+    public let cursor: Cursor?
     
-    public init(query: SuggestPlaceQuery, location: UserLocation, pageIndex: Int? = nil) {
+    public init(query: SuggestPlaceQuery, location: UserLocation, cursor: String? = nil) {
         self.query = query
         self.location = location
-        self.pageIndex = pageIndex
+        self.cursor = cursor
     }
     
     // conform SuggestReqParamType
-    public typealias Cursor = Int
+    public typealias Cursor = String
     public var isEmpty: Bool {
         guard case .empty = self.query else { return false }
         return true
     }
     
-    public func appendNextPageCursor(_ cursor: Int) -> PlaceSuggestReqParams {
-        return .init(query: self.query, location: self.location, pageIndex: cursor)
+    public func appendNextPageCursor(_ cursor: String) -> PlaceSuggestReqParams {
+        return .init(query: self.query, location: self.location, cursor: cursor)
     }
 }
 
@@ -69,21 +69,24 @@ public struct PlaceSuggestReqParams: SuggestReqParamType {
 
 extension SuggestPlaceResult: SuggestResultCollectionType {
     
-    public typealias Cursor = Int
+    public typealias Cursor = String
     
-    public var nextPageCursor: Int? {
-        guard let current = self.pageIndex else { return nil }
-        return current + 1
+    public var nextPageCursor: String? {
+        return self.cursor
+    }
+    
+    public var isFinalPage: Bool {
+        return self.places.isEmpty
     }
     
     public func append(_ next: SuggestPlaceResult) -> SuggestPlaceResult {
         return .init(query: self.query,
                      places: self.places + next.places,
-                     pageIndex: next.pageIndex)
+                     cursor: next.cursor)
     }
     
     public static func distinguisForSuggest(_ lhs: SuggestPlaceResult, _ rhs: SuggestPlaceResult) -> Bool {
-        return lhs.pageIndex == rhs.pageIndex
+        return lhs.cursor == rhs.cursor
             && lhs.query == rhs.query
             && lhs.places.map{ $0.uid } == rhs.places.map{ $0.uid }
     }
@@ -143,12 +146,13 @@ extension SuggestPlaceUsecaseImple {
 extension SuggestPlaceUsecaseImple {
     
     private func suggestByQuery(_ params: PlaceSuggestReqParams) -> Maybe<SuggestPlaceResult> {
+        // empty 일때 페이징 지원
         switch params.query {
         case .empty:
             return self.loadDefaultSuggest(params.location)
             
         case let .some(text):
-            return self.placeRepository.requestSuggestPlace(text, in: params.location, page: params.pageIndex)
+            return self.placeRepository.requestSuggestPlace(text, in: params.location, cursor: params.cursor)
         }
     }
     

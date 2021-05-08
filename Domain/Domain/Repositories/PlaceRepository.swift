@@ -10,12 +10,14 @@ import Foundation
 
 import RxSwift
 
-
 public protocol PlaceRepository {
     
     func uploadLocation(_ location: UserLocation) -> Maybe<Void>
     
     func reqeustLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult>
     
-    func requestSuggestPlace(_ query: String, in location: UserLocation, page: Int?) -> Maybe<SuggestPlaceResult>
+    func requestSuggestPlace(_ query: String, in location: UserLocation, cursor: String?) -> Maybe<SuggestPlaceResult>
+    
+    func requestSearchNewPlace(_ query: String, in location: UserLocation,
+                               of pageIndex: Int?) -> Maybe<SearchingPlaceCollection>
 }

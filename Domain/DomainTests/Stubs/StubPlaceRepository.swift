@@ -26,13 +26,21 @@ class StubPlaceRepository: PlaceRepository, Stubbable {
         return self.resolve(key: "reqeustLoadDefaultPlaceSuggest") ?? .empty()
     }
     
-    func requestSuggestPlace(_ query: String, in location: UserLocation, page: Int?) -> Maybe<SuggestPlaceResult> {
-        
+    func requestSuggestPlace(_ query: String,
+                             in location: UserLocation,
+                             cursor: String?) -> Maybe<SuggestPlaceResult> {
         if let error = self.resolve(Error.self, key: "requestSuggestPlace") {
             return .error(error)
         }
         
-        return self.resolve(key: "requestSuggestPlace:\(query)-\(String(describing: page))")
+        let key = "requestSuggestPlace:\(query)-\(String(describing: cursor))"
+        return self.resolve(key: key)
             ?? .empty()
+    }
+    
+    func requestSearchNewPlace(_ query: String, in location: UserLocation,
+                               of pageIndex: Int?) -> Maybe<SearchingPlaceCollection> {
+        let key = "requestSearchNewPlace:\(query)-\(String(describing: pageIndex))"
+        return self.resolve(key: key) ?? .empty()
     }
 }
