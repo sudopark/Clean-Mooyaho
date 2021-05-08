@@ -46,6 +46,10 @@ extension Containable {
         }
         return mapping(anyValue)
     }
+    
+    fileprivate func clearContainer(for key: String) {
+        self.container.storage[key] = nil
+    }
 }
 
 
@@ -85,9 +89,19 @@ extension Stubbable {
         return provider()
     }
     
-//    public func resolve<R>(key: String, defaultResult: R) -> R {
-//        return self.resolve(key: key) ?? defaultResult
-//    }
+    public func resolve<R>(key: String, defaultResult: R) -> R {
+        guard let provider = self.get(key: key.withStubPrefix, mapping: { $0 as? () -> R }) else {
+            return defaultResult
+        }
+        return provider()
+    }
+}
+
+extension Stubbable {
+    
+    public func clear(key: String) {
+        self.clearContainer(for: key.withStubPrefix)
+    }
 }
 
 // MARK: - Stub for register and invoke verify
