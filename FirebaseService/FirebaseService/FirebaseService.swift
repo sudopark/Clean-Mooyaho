@@ -8,17 +8,21 @@
 
 import Foundation
 
+import DataStore
 
 public protocol FirebaseService {
     
     func setupService()
 }
 
-public class FirebaseServiceImple: FirebaseService {
+public final class FirebaseServiceImple: FirebaseService {
     
+    let httpRemote: HttpRemote
     var fireStoreDB: Firestore!
     
-    public init() {}
+    public init(httpRemote: HttpRemote) {
+        self.httpRemote = httpRemote
+    }
     
     public func setupService() {
         

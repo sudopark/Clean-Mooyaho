@@ -1,0 +1,1687 @@
+{
+    "result": {
+        "type": "place",
+        "metaInfo": {
+            "pageId": "6bd0a4b3-04e3-4fcc-805c-f0fe3571f12e",
+            "sessionId": null,
+            "rcode": null,
+            "searchedQuery": "커피",
+            "correction": null,
+            "displayCorrectAnswer": false
+        },
+        "address": null,
+        "place": {
+            "page": 1,
+            "totalCount": 87037,
+            "boundary": [
+                "127.1064748",
+                "37.5120152",
+                "127.1204950",
+                "37.5027218"
+            ],
+            "feedback": [
+                "전국에서 <strong>'커피'</strong>"
+            ],
+            "options": {
+                "sort": "0",
+                "toggleLocation": "0",
+                "rank": "1"
+            },
+            "filters": {},
+            "reSearch": null,
+            "isSiteSortAvailable": false,
+            "specializedSearch": null,
+            "hasPollingPlace": false,
+            "isAdultKeyword": false,
+            "containAdultContents": false,
+            "address": null,
+            "brandPromotion": null,
+            "list": [
+                {
+                    "index": "0",
+                    "rank": "1",
+                    "id": "1808312459",
+                    "name": "얼터너티브",
+                    "tel": "02-425-0120",
+                    "isCallLink": false,
+                    "virtualTel": "0507-1442-0291",
+                    "ppc": "1",
+                    "category": [
+                        "음식점",
+                        "카페,디저트"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220563"
+                        ],
+                        [
+                            "1004760",
+                            "1004452"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 131-25",
+                    "roadAddress": "서울특별시 송파구 백제고분로46길 26-1 신화빌딩 1층",
+                    "abbrAddress": "송파동 131-25",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "백제고분로46길 26-1",
+                        "신화빌딩 1층"
+                    ],
+                    "display": "얼터너티브",
+                    "telDisplay": "02-425-0120",
+                    "context": [],
+                    "reviewCount": 4,
+                    "ktCallMd": "0b58410894300959901c680074cc4f0f",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20200131_223/1580444685104xThfT_JPEG/eR9jMvGxhoVzkU27TFqyXUoc.jpeg.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1138569",
+                    "y": "37.5074968",
+                    "itemLevel": "8",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "kpcCIpZdSfKCxCDk0FahQQ==",
+                        "pan": "-120.23",
+                        "tilt": "6.19",
+                        "lng": "127.1138983",
+                        "lat": "37.5075724",
+                        "fov": "80"
+                    },
+                    "skyPanorama": {
+                        "id": "uL3jek6BLR4Ca9Xfs1F0AQ==",
+                        "pan": "128.10",
+                        "tilt": "-30.00",
+                        "lng": "127.1081220",
+                        "lat": "37.5119830",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://instagram.com/alternative.coffee",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.11387,
+                                "y": 37.507547
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.113863,
+                                "y": 37.507394
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "매일 11:00~23:00 월요일 휴무",
+                    "menuInfo": "아인슈패너 6,000 | 그레이아인슈패너(흑임자) 6,500 | 월.E (호두 아인슈패너) 6,500 | 노이즈가든(쑥) 6,500 | 바스크치즈케익 6,500 | 바스크 흑임자 케익 6,500 | 바스크 단호박 케익 6,500 | 바스크 쑥 케익 6,500 | 바스크 자색고구마 6,500 | 흑임자크림치즈 스콘 4,500 | 단호박 앙버터스콘 4,500 | 옥수수크림치즈 스콘 4,500",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "288.39",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "1",
+                    "rank": "2",
+                    "id": "276063843",
+                    "name": "이월로스터스 송파점",
+                    "tel": "070-8839-1004",
+                    "isCallLink": false,
+                    "virtualTel": "0507-1420-1005",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "카페"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220576",
+                            "221212"
+                        ],
+                        [
+                            "1004760",
+                            "1004452"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 51-7",
+                    "roadAddress": "서울특별시 송파구 백제고분로45길 14",
+                    "abbrAddress": "송파동 51-7",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "백제고분로45길 14"
+                    ],
+                    "display": "이월로스터스 송파점",
+                    "telDisplay": "070-8839-1004",
+                    "context": [
+                        "카페",
+                        "그린티라떼",
+                        "티라미수",
+                        "심플한",
+                        "사진찍기"
+                    ],
+                    "reviewCount": 277,
+                    "ktCallMd": "ff333a47cb197e1316027e61a7e8a128",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20170210_22/1486694533632FQNcV_JPEG/186158588061356_2.jpeg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1099678",
+                    "y": "37.5096759",
+                    "itemLevel": "12",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "iauvSIa8Hqf1dV1aFJ8GKg==",
+                        "pan": "144.76",
+                        "tilt": "10.00",
+                        "lng": "127.1099257",
+                        "lat": "37.5097355",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "SRcF9h3njMyqmAaNigX8fg==",
+                        "pan": "116.47",
+                        "tilt": "-30.00",
+                        "lng": "127.1070720",
+                        "lat": "37.5111140",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "https://www.instagram.com/february_roasters_songpa/",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.109999,
+                                "y": 37.509789
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.109999,
+                                "y": 37.509789
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "목요일 09:30~22:30 주문마감 22시 | 수요일 09:30~22:30 주문마감 22시 | 화요일 09:30~22:30 주문마감 22시 | 월요일 09:30~22:30 주문마감 22시 | 일요일 09:30~22:30 주문마감 22시 | 토요일 09:30~23:00 주문마감 22시 30분 | 금요일 09:30~23:00 주문마감 22시 30분",
+                    "menuInfo": "아메리카노 4,000 | 티라미수 6,500 | 브라우니 4,500 | 요거트치즈케잌 6,000 | 이달의커피 변동가격(업주문의)",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "666.07",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "2",
+                    "rank": "3",
+                    "id": "1505572690",
+                    "name": "코우키",
+                    "tel": "010-8010-0458",
+                    "isCallLink": false,
+                    "virtualTel": "0507-1354-0458",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "카페"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220576",
+                            "221212"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 95-27 1층",
+                    "roadAddress": "서울특별시 송파구 가락로17길 6 1층",
+                    "abbrAddress": "송파동 95-27 1층",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "가락로17길 6",
+                        "1층"
+                    ],
+                    "display": "코우키",
+                    "telDisplay": "010-8010-0458",
+                    "context": [],
+                    "reviewCount": 49,
+                    "ktCallMd": "c937c4664f3d1d27f06f5113767fe247",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20210416_210/1618576449452oYQcm_JPEG/_aMgTmsz2TMVnK0y3SZaoDjH.jpeg.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1102799",
+                    "y": "37.5027218",
+                    "itemLevel": "12",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "Ud3c8Ef9HPMb54IFgM6Hpg==",
+                        "pan": "-16.28",
+                        "tilt": "10.00",
+                        "lng": "127.1103073",
+                        "lat": "37.5026279",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "aYe26Cvm0eKOITcrVaPblA==",
+                        "pan": "149.00",
+                        "tilt": "-30.00",
+                        "lng": "127.1100006",
+                        "lat": "37.5031853",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://instagram.com/kouki_seoul",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.110369,
+                                "y": 37.502672
+                            },
+                            {
+                                "rep": false,
+                                "x": 127.110174,
+                                "y": 37.502676
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.110369,
+                                "y": 37.502672
+                            },
+                            {
+                                "rep": false,
+                                "x": 127.110174,
+                                "y": 37.502676
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "토요일 12:00~01:00 | 금요일 12:00~01:00 | 목요일 12:00~01:00 | 수요일 12:00~01:00 | 화요일 12:00~01:00 | 일요일 12:00~01:00 | 월요일 휴무",
+                    "menuInfo": "아메리카노 4,500",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "460.64",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "3",
+                    "rank": "4",
+                    "id": "1571643582",
+                    "name": "코히루",
+                    "tel": "070-8834-5252",
+                    "isCallLink": false,
+                    "virtualTel": "",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "카페"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220576",
+                            "221212"
+                        ],
+                        [
+                            "1004760",
+                            "1004452"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 48-16",
+                    "roadAddress": "서울특별시 송파구 오금로 148 2층",
+                    "abbrAddress": "송파동 48-16",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "오금로 148",
+                        "2층"
+                    ],
+                    "display": "코히루",
+                    "telDisplay": "070-8834-5252",
+                    "context": [],
+                    "reviewCount": 358,
+                    "ktCallMd": "d3e56102d37ba14197dded5083846b55",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20191124_298/1574525323346IKQ0L_JPEG/LSmUmBZCI7H2xazLtxXc5aOW.jpeg.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1111510",
+                    "y": "37.5104785",
+                    "itemLevel": "8",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "6xwi9S8jlaJEMwit6KZqUA==",
+                        "pan": "102.68",
+                        "tilt": "10.00",
+                        "lng": "127.1109300",
+                        "lat": "37.5105280",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "uL3jek6BLR4Ca9Xfs1F0AQ==",
+                        "pan": "116.47",
+                        "tilt": "-30.00",
+                        "lng": "127.1081220",
+                        "lat": "37.5119830",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://www.instagram.com/cafekohiru",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.111188,
+                                "y": 37.510574
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.111188,
+                                "y": 37.510574
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "매일 12:00~22:00 휴일 인스타 별도 공지",
+                    "menuInfo": "에스프레소 4,000 | 에스프레소 콘파냐 5,000 | 아메리카노 4,500 | 카페라떼 5,000 | 플랫화이트 5,000 | 말차 테린느 6,000",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "https://booking.naver.com/booking/6/bizes/286371",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": true,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": true,
+                        "table": false,
+                        "takeout": true
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": true,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "685.18",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "4",
+                    "rank": "5",
+                    "id": "1559781185",
+                    "name": "오금동커피",
+                    "tel": "070-8888-1011",
+                    "isCallLink": false,
+                    "virtualTel": "",
+                    "ppc": "1",
+                    "category": [
+                        "음식점",
+                        "카페,디저트"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220563"
+                        ],
+                        [
+                            "1004760",
+                            "1004380",
+                            "1002043"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 161 1층 1호",
+                    "roadAddress": "서울특별시 송파구 오금로24길 13 1층 1호 오금동커피",
+                    "abbrAddress": "송파동 161 1층 1호",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "오금로24길 13",
+                        "1층 1호 오금동커피"
+                    ],
+                    "display": "오금동<b>커피</b>",
+                    "telDisplay": "070-8888-1011",
+                    "context": [],
+                    "reviewCount": 11,
+                    "ktCallMd": "d9f7aa8120b4f1e0d0813eee5512b6e6",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20210122_133/1611282306305erJwt_JPEG/LmbGaTXreU7U6E3v4V_2YfdA.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1178367",
+                    "y": "37.5058046",
+                    "itemLevel": "12",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "ScwnAE1uNtVSKo4bJ047uA==",
+                        "pan": "139.15",
+                        "tilt": "10.00",
+                        "lng": "127.1177826",
+                        "lat": "37.5058670",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "EeZohC2CEPDTCv4qPzaGwQ==",
+                        "pan": "-93.06",
+                        "tilt": "-30.00",
+                        "lng": "127.1238861",
+                        "lat": "37.5061226",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "https://www.instagram.com/ogcr_coffee",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.118226,
+                                "y": 37.505697
+                            },
+                            {
+                                "rep": false,
+                                "x": 127.117718,
+                                "y": 37.505686
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.117936,
+                                "y": 37.505797
+                            },
+                            {
+                                "rep": false,
+                                "x": 127.117718,
+                                "y": 37.505686
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "매일 09:00~21:00",
+                    "menuInfo": "모닝커피 2,800 | 아메리카노 3,800 | 카페라떼 4,300 | 플랫화이트 4,300 | 바닐라라떼 4,800 | 헤이즐라떼 4,800 | 바닐라보틀 변동가격(업주문의) | 파우치커피 4,300",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "295.83",
+                    "marker": "nres://marker/00065-00038",
+                    "markerSelected": "nres://marker/00065-00191",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "5",
+                    "rank": "6",
+                    "id": "1653422763",
+                    "name": "gluck",
+                    "tel": "070-8775-1220",
+                    "isCallLink": false,
+                    "virtualTel": "",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "카페"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220576",
+                            "221212"
+                        ],
+                        [
+                            "1004760",
+                            "1004380",
+                            "1002043"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 42-6",
+                    "roadAddress": "서울특별시 송파구 백제고분로45길 15 3층",
+                    "abbrAddress": "송파동 42-6",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "백제고분로45길 15",
+                        "3층"
+                    ],
+                    "display": "gluck",
+                    "telDisplay": "070-8775-1220",
+                    "context": [],
+                    "reviewCount": 241,
+                    "ktCallMd": "7a7823ff5829788fa22f4c049c1abf45",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20200222_195/1582303212715EE2Mh_JPEG/N2BI5Fjt01cORTAWNgLaK1xD.jpeg.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1096876",
+                    "y": "37.5095912",
+                    "itemLevel": "8",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "PzddaXRO1vn1smy3DyjbiQ==",
+                        "pan": "-44.68",
+                        "tilt": "10.00",
+                        "lng": "127.1097550",
+                        "lat": "37.5095230",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "SRcF9h3njMyqmAaNigX8fg==",
+                        "pan": "120.27",
+                        "tilt": "-30.00",
+                        "lng": "127.1070720",
+                        "lat": "37.5111140",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://www.instagram.com/gluck.korea",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.109712,
+                                "y": 37.509518
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.109712,
+                                "y": 37.509518
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "매일 12:00~22:00 | 월요일 휴무 5월2일(일요일)임시휴무",
+                    "menuInfo": "아메리카노  4,500 | 라떼 5,000 | 넛넛크림 6,000 | 더블시나몬 6,000 | 스콘 3,500 | 쿠키 3,500",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "674.50",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [
+                        "석촌호수 송리단길 노트북 작업하기 좋은 카페",
+                        "잠실 송리단길 귀여운 카페",
+                        "방이동에서 송리단으로 이전한 이쁜 카페",
+                        "송리단길 깔끔하면서 힙스러운 카페",
+                        "여유를 느끼기 좋은 카페"
+                    ],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "6",
+                    "rank": "7",
+                    "id": "1297926005",
+                    "name": "명조커피앤베이커리",
+                    "tel": "02-425-3700",
+                    "isCallLink": false,
+                    "virtualTel": "0507-1441-3700",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "베이커리"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220564",
+                            "221161"
+                        ],
+                        [
+                            "1004760",
+                            "1004380",
+                            "1002043"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 방이동 110-14",
+                    "roadAddress": "서울특별시 송파구 오금로 161 1, 2층",
+                    "abbrAddress": "방이동 110-14",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "오금로 161",
+                        "1, 2층"
+                    ],
+                    "display": "명조<b>커피</b>앤베이커리",
+                    "telDisplay": "02-425-3700",
+                    "context": [],
+                    "reviewCount": 73,
+                    "ktCallMd": "b67191dafecb300610ce29a5af5ded39",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20190225_94/1551020997618KKek4_JPEG/xa46y8pH6_HixFuO-t0BRDF3.jpeg.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1128965",
+                    "y": "37.5102416",
+                    "itemLevel": "8",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "KS+DmcvkS4fIaNWCFGgqbg==",
+                        "pan": "25.16",
+                        "tilt": "10.00",
+                        "lng": "127.1128150",
+                        "lat": "37.5100680",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "uL3jek6BLR4Ca9Xfs1F0AQ==",
+                        "pan": "110.09",
+                        "tilt": "-30.00",
+                        "lng": "127.1081220",
+                        "lat": "37.5119830",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://www.instagram.com/myung.jo_cafe",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.112758,
+                                "y": 37.510199
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.112758,
+                                "y": 37.510199
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "일요일 09:00~21:00 | 화요일 09:00~22:00 | 월요일 09:00~22:00 | 토요일 09:00~22:00 | 금요일 09:00~22:00 | 목요일 09:00~22:00 | 수요일 09:00~22:00",
+                    "menuInfo": "아메리카노 4,000 | 카페라떼 4,500 | 바닐라라떼 5,000 | 식빵 변동가격(업주문의) | 마카다미아라떼 5,500 | 밀크티 5,500 | 소금버터빵  1,700",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "https://booking.naver.com/booking/6/bizes/463573",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": true,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": true,
+                        "table": false,
+                        "takeout": true
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": true,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "605.36",
+                    "marker": "nres://marker/00070-00013",
+                    "markerSelected": "nres://marker/00070-00167",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "7",
+                    "rank": "8",
+                    "id": "38531319",
+                    "name": "스타벅스 송파방이DT점",
+                    "tel": "1522-3232",
+                    "isCallLink": false,
+                    "virtualTel": "",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "카페"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220576",
+                            "221275"
+                        ],
+                        [
+                            "220036",
+                            "1003557"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 방이동 226-10",
+                    "roadAddress": "서울특별시 송파구 오금로 241",
+                    "abbrAddress": "방이동 226-10",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "오금로 241"
+                    ],
+                    "display": "스타벅스 송파방이DT점",
+                    "telDisplay": "1522-3232",
+                    "context": [
+                        "카페",
+                        "한지"
+                    ],
+                    "reviewCount": 71,
+                    "ktCallMd": "49c33ae4f4db41f5897a7bf10f00689f",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20190828_93/1566953601239OT9MQ_PNG/xX7Wv642gXMoTI0DAv0hRymS.png",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1204950",
+                    "y": "37.5065640",
+                    "itemLevel": "12",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "qN0glpfNuig9wxu8GWPIGw==",
+                        "pan": "43.61",
+                        "tilt": "10.00",
+                        "lng": "127.1203193",
+                        "lat": "37.5063794",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "EeZohC2CEPDTCv4qPzaGwQ==",
+                        "pan": "-82.63",
+                        "tilt": "-30.00",
+                        "lng": "127.1238861",
+                        "lat": "37.5061226",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": {
+                            "poiShapeType": "1",
+                            "shapeKey": {
+                                "typeName": "RELA",
+                                "wsid": "1.0",
+                                "shapeID": "38531319"
+                            },
+                            "boundary": {
+                                "minX": "117.9926027",
+                                "minY": "19.6944771",
+                                "maxX": "117.9926027",
+                                "maxY": "19.6944771"
+                            },
+                            "detail": [
+                                {
+                                    "type": "1",
+                                    "sid": "38644264",
+                                    "fullName": "스타벅스 송파방이DT점입구",
+                                    "name": "입구",
+                                    "category": "입구(사람+차량)",
+                                    "xPos": "127.1205874",
+                                    "yPos": "37.5064236"
+                                },
+                                {
+                                    "type": "3",
+                                    "sid": "1267091290",
+                                    "fullName": "스타벅스송파방이DT점출구",
+                                    "name": "출구",
+                                    "category": "출구(차량)",
+                                    "xPos": "127.1203645",
+                                    "yPos": "37.5065161"
+                                }
+                            ]
+                        },
+                        "hasRelation": true,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://www.starbucks.co.kr/",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.1205874,
+                                "y": 37.5064236
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.1205874,
+                                "y": 37.5064236
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "화요일 07:00~22:00 | 수요일 07:00~22:00 | 목요일 07:00~22:00 | 금요일 07:00~22:00 | 토요일 07:00~22:00 | 일요일 07:00~22:00 | 월요일 07:00~22:00",
+                    "menuInfo": "카페 아메리카노 4,100 | 카페 라떼 4,600 | 스타벅스 돌체 라떼 5,600 | 카라멜 마키아또 5,600 | 카푸치노 4,600 | 카페 모카 5,100 | 화이트 초콜릿 모카 5,600 | 콜드 브루 4,500 | 자몽 허니 블랙 티 5,300 | 아이스 자몽 허니 블랙 티 5,300 | 망고 바나나 블렌디드 6,300 | 에스프레소 프라푸치노 5,100 | 자바 칩 프라푸치노 6,100",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "https://booking.naver.com/booking/6/bizes/392625",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": true,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": true,
+                        "table": false,
+                        "takeout": true
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": true,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "545.21",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "8",
+                    "rank": "9",
+                    "id": "1087264919",
+                    "name": "달리는커피 방이1호점",
+                    "tel": "02-415-4422",
+                    "isCallLink": false,
+                    "virtualTel": "0507-1368-4422",
+                    "ppc": "1",
+                    "category": [
+                        "카페,디저트",
+                        "카페"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220576",
+                            "1000605"
+                        ],
+                        [
+                            "1004760",
+                            "1004380",
+                            "1002043"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 방이동 159-21",
+                    "roadAddress": "서울특별시 송파구 가락로 269 1층",
+                    "abbrAddress": "방이동 159-21",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "가락로 269",
+                        "1층"
+                    ],
+                    "display": "달리는<b>커피</b> 방이1호점",
+                    "telDisplay": "02-415-4422",
+                    "context": [],
+                    "reviewCount": 26,
+                    "ktCallMd": "59ccc90685a6ad269bc1e54fc2586c06",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20200907_300/1599466317873k6y2Q_JPEG/88ZpivYSLAFYvbAOxMeNOhFh.JPG.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1191616",
+                    "y": "37.5120152",
+                    "itemLevel": "12",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "cfhaDoudiK6q6lE/o693/A==",
+                        "pan": "-80.24",
+                        "tilt": "10.00",
+                        "lng": "127.1193168",
+                        "lat": "37.5119884",
+                        "fov": "120"
+                    },
+                    "skyPanorama": {
+                        "id": "FKA1ro/h9WIVIDzs4uRkww==",
+                        "pan": "-95.23",
+                        "tilt": "-30.00",
+                        "lng": "127.1238861",
+                        "lat": "37.5124435",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.119264,
+                                "y": 37.512056
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.119214,
+                                "y": 37.511954
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "평일 11:00~22:30 Break Time 14:30-15:30 | 주말 11:00~22:30 Break Time 14:30-15:30 | 공휴일 11:00~22:30 Break Time 14:30-15:30",
+                    "menuInfo": "아메리카노 2,500 | 헤이즐넛 3,000 | 카페라떼/카푸치노 3,500 | 콜드브루 4,000 | 대만흑설탕라떼 5,500 | 한끼주스 5,300 | 케이준치킨샐러드 6,300 | 연어샐러드 6,500 | 구운가지버섯샐러드 6,500 | 햄치즈샌드위치 5,500 | 치킨로스트샌드위치 6,000 | 에그샌드위치 6,300 | 게살샌드위치 6,500 | 케이준치킨샌드위치 6,500 | 베이컨올리브샌드위치 6,500 | 핫치킨로스트샌드위치 6,500 | 달커스페셜샌드위치 7,500 | 허니브래드 생크림 5,500 | 카야버터 토스트 3,900 | 이얼누텔라토스트 4,000 | 츄러스 3,900",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": false,
+                    "naverBookingUrl": "",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": false,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "878.14",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                },
+                {
+                    "index": "9",
+                    "rank": "10",
+                    "id": "1767062455",
+                    "name": "도리스커피",
+                    "tel": "070-8805-0056",
+                    "isCallLink": false,
+                    "virtualTel": "0507-1410-0056",
+                    "ppc": "1",
+                    "category": [
+                        "음식점",
+                        "카페,디저트"
+                    ],
+                    "categoryPath": [
+                        [
+                            "220036",
+                            "220052",
+                            "220563"
+                        ],
+                        [
+                            "1004760",
+                            "1004452"
+                        ]
+                    ],
+                    "address": "서울특별시 송파구 송파동 13-15",
+                    "roadAddress": "서울특별시 송파구 백제고분로41길 19-24 1층",
+                    "abbrAddress": "송파동 13-15",
+                    "shortAddress": [
+                        "서울 송파구",
+                        "백제고분로41길 19-24",
+                        "1층"
+                    ],
+                    "display": "도리스<b>커피</b>",
+                    "telDisplay": "070-8805-0056",
+                    "context": [],
+                    "reviewCount": 97,
+                    "ktCallMd": "3cd2a5b963e86c4a56d1cdd33c22aecb",
+                    "coupon": "0",
+                    "thumUrl": "https://ldb-phinf.pstatic.net/20210228_297/1614502999603RDaR6_JPEG/TA_6ncMfVMm6Gt07lmwwxC-0.jpeg.jpg",
+                    "type": "s",
+                    "isSite": "1",
+                    "posExact": "1",
+                    "x": "127.1064748",
+                    "y": "37.5071136",
+                    "itemLevel": "12",
+                    "isAdultBusiness": false,
+                    "streetPanorama": {
+                        "id": "qKPFxcAdBRXJiy6zmtv0qw==",
+                        "pan": "11.59",
+                        "tilt": "9.93",
+                        "lng": "127.1065142",
+                        "lat": "37.5070400",
+                        "fov": "80"
+                    },
+                    "skyPanorama": {
+                        "id": "XiyijatuNqogTMUruzRDFw==",
+                        "pan": "122.58",
+                        "tilt": "-30.00",
+                        "lng": "127.1039930",
+                        "lat": "37.5086960",
+                        "fov": "124"
+                    },
+                    "insidePanorama": null,
+                    "interiorPanorama": null,
+                    "indoorPanorama": null,
+                    "theme": null,
+                    "poiInfo": {
+                        "relation": null,
+                        "hasRelation": false,
+                        "road": {
+                            "poiShapeType": "1",
+                            "shapeKey": null,
+                            "boundary": null,
+                            "detail": null
+                        },
+                        "hasRoad": false,
+                        "land": null,
+                        "hasLand": false,
+                        "polygon": null,
+                        "hasPolygon": false
+                    },
+                    "homePage": "http://instagram.com/doriscoffee_",
+                    "description": "",
+                    "entranceCoords": {
+                        "car": [
+                            {
+                                "rep": true,
+                                "x": 127.106551,
+                                "y": 37.507112
+                            }
+                        ],
+                        "walk": [
+                            {
+                                "rep": true,
+                                "x": 127.106458,
+                                "y": 37.507042
+                            }
+                        ]
+                    },
+                    "isPollingPlace": false,
+                    "bizhourInfo": "매일 12:00~22:00 화요일휴무 /방문전 인스타그램 확인해주세요  ",
+                    "menuInfo": "아메리카노 3,800 | 자몽티 5,500 | 크로플 8,000 | 파인애플케일쥬스 5,800 | 레몬케이크 3,500 | 블루베리케이크 7,000 | 카야토스트 4,800 | 보틀음료  8,000 | 홀케이크  변동가격(업주문의)",
+                    "petrolInfo": null,
+                    "couponUrl": null,
+                    "couponUrlMobile": null,
+                    "hasCardBenefit": false,
+                    "menuExist": "1",
+                    "hasNaverBooking": true,
+                    "naverBookingUrl": "https://booking.naver.com/booking/6/bizes/313498",
+                    "naverEasyOrderUrl": null,
+                    "hasNaverSmartOrder": false,
+                    "reservationLabel": {
+                        "standard": true,
+                        "preOrder": false,
+                        "table": false,
+                        "takeout": false
+                    },
+                    "reservation": {
+                        "benefit": ""
+                    },
+                    "hasBroadcastInfo": false,
+                    "broadcastInfo": null,
+                    "shopWindowInfo": null,
+                    "hasNPay": false,
+                    "carWash": "",
+                    "parkingPrice": "-1",
+                    "card": "",
+                    "distance": "759.71",
+                    "marker": "nres://marker/00070-00038",
+                    "markerSelected": "nres://marker/00070-00192",
+                    "microReview": [],
+                    "michelinGuide": null,
+                    "indoor": null,
+                    "markerLabel": null,
+                    "subway": null,
+                    "evChargerInfo": {
+                        "summary": {
+                            "fastEvCharger": {
+                                "type": "급속",
+                                "typeCode": "1",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            },
+                            "standardEvCharger": {
+                                "type": "완속",
+                                "typeCode": "2",
+                                "status": "",
+                                "statusCode": "-1",
+                                "names": [],
+                                "nameCodes": []
+                            }
+                        },
+                        "evChargerList": []
+                    }
+                }
+            ]
+        },
+        "bus": null
+    }
+}

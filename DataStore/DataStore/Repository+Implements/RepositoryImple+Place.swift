@@ -30,7 +30,14 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
     
     public func requestSuggestPlace(_ query: String,
                                     in location: UserLocation,
-                                    page: Int?) -> Maybe<SuggestPlaceResult> {
-        return self.remote.requestSuggestPlace(query, in: location, page: page)
+                                    cursor: String?) -> Maybe<SuggestPlaceResult> {
+        return self.remote.requestSuggestPlace(query, in: location, cursor: cursor)
     }
+    
+    public func requestSearchNewPlace(_ query: String,
+                                      in location: UserLocation,
+                                      of pageIndex: Int?) -> Maybe<SearchingPlaceCollection> {
+        return self.remote.requestSearchNewPlace(query, in: location, of: pageIndex)
+    }
+    
 }
