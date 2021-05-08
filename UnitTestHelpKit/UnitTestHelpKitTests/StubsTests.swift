@@ -62,6 +62,19 @@ class StubsTests: XCTestCase {
         // then
         XCTAssertEqual(isCalled, true)
     }
+    
+    func testStub_stubAndClear() {
+        // given
+        let stub = Stub()
+        stub.register(key: "some") { 1 }
+        
+        // when
+        stub.clear(key: "some")
+        
+        // then
+        let resolved = stub.resolve(Int.self, key: "some")
+        XCTAssertNil(resolved)
+    }
 }
 
 
