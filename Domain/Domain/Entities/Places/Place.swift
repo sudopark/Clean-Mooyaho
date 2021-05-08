@@ -9,18 +9,19 @@
 import Foundation
 
 
-public struct Place {
+public struct Coordinate {
     
-    public struct Coordinate {
-        
-        public let latt: Double
-        public let long: Double
-        
-        public init(latt: Double, long: Double) {
-            self.latt = latt
-            self.long = long
-        }
+    public let latt: Double
+    public let long: Double
+    
+    public init(latt: Double, long: Double) {
+        self.latt = latt
+        self.long = long
     }
+}
+
+
+public struct Place {
     
     public enum RequireInfoProvider {
         case externalSearch
@@ -36,6 +37,7 @@ public struct Place {
     
     public let coordinate: Coordinate
     public let address: String
+    public let contact: String?
     
     public var placeCategoryTags: [PlaceCategoryTag]
     
@@ -49,7 +51,7 @@ public struct Place {
                 thumbnail: ImageSource? = nil,
                 externalSearchID: String? = nil,
                 detailLink: String? = nil,
-                coordinate: Coordinate, address: String,
+                coordinate: Coordinate, address: String, contact: String? = nil,
                 categoryTags: [PlaceCategoryTag], reporterID: String,
                 infoProvider: RequireInfoProvider, createdAt: TimeSeconds,
                 pickCount: Int, lastPickedAt: TimeSeconds) {
@@ -60,6 +62,7 @@ public struct Place {
         self.detailLink = detailLink
         self.coordinate = coordinate
         self.address = address
+        self.contact = contact
         self.placeCategoryTags = categoryTags
         self.reporterID = reporterID
         self.requireInfoProvider = infoProvider
@@ -69,7 +72,7 @@ public struct Place {
     }
 }
 
-extension Place.Coordinate: Equatable {
+extension Coordinate: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.latt == rhs.latt && lhs.long == rhs.long
@@ -88,8 +91,9 @@ public class NewPlaceForm {
     public var thumbnail: ImageSource?
     public var searchID: String?
     public var detailLink: String?
-    public var coordinate: Place.Coordinate!
+    public var coordinate: Coordinate!
     public var address: String = ""
+    public var contact: String?
     public var categoryTags: [PlaceCategoryTag] = []
     
     public init(reporterID: String, infoProvider: Place.RequireInfoProvider) {
@@ -123,21 +127,21 @@ public struct SuggestPlaceResult {
     
     public let query: String?
     public let places: [Place]
-    public let pageIndex: Int?
+    public let cursor: String?
     
     public var isDefaultList: Bool {
         return self.query == nil
     }
     
-    public init(query: String?, places: [Place], pageIndex: Int? = nil) {
+    public init(query: String?, places: [Place], cursor: String? = nil) {
         self.query = query
         self.places = places
-        self.pageIndex = pageIndex
+        self.cursor = cursor
     }
     
-    public init(default places: [Place], pageIndex: Int? = nil) {
+    public init(default places: [Place]) {
         self.query = nil
         self.places = places
-        self.pageIndex = pageIndex
+        self.cursor = nil
     }
 }

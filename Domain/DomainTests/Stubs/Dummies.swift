@@ -36,3 +36,15 @@ extension UserLocation {
                                          timeStamp: Double(int)))
     }
 }
+
+
+extension SearchingPlace {
+    
+    static func dummy(_ int: Int) -> SearchingPlace {
+        return SearchingPlace(uid: "uid:\(int)",
+                              title: "title:\(int)",
+                              coordinate: .init(latt: 0, long: 0),
+                              address: "address:\(int)",
+                              categories: [])
+    }
+}
