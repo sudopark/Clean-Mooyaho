@@ -88,7 +88,7 @@ extension SuggestPlaceResult: SuggestResultCollectionType {
     public static func distinguisForSuggest(_ lhs: SuggestPlaceResult, _ rhs: SuggestPlaceResult) -> Bool {
         return lhs.cursor == rhs.cursor
             && lhs.query == rhs.query
-            && lhs.places.map{ $0.uid } == rhs.places.map{ $0.uid }
+            && lhs.places.map{ $0.placeID } == rhs.places.map{ $0.placeID }
     }
 }
 

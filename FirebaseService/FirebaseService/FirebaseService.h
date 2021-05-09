@@ -7,6 +7,11 @@
 
 #import <Foundation/Foundation.h>
 #import "Firebase.h"
+#import "GFUtils.h"
+#import "GFBase32Utils.h"
+#import "GFGeoHash.h"
+#import "GFGeoHashQuery.h"
+#import "GFGeoQueryBounds.h"
 
 //! Project version number for FirebaseService.
 FOUNDATION_EXPORT double FirebaseServiceVersionNumber;
