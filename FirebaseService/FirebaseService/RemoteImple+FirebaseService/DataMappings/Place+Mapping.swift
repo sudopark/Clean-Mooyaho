@@ -98,7 +98,7 @@ extension SearchingPlaceCollection: Decodable {
         let pageIndex = try? placeContainer.decode(Int.self, forKey: .pageIndex)
         let list = (try? placeContainer.decode([SearchingPlace].self, forKey: .list)) ?? []
         
-        self = .init(query: nil, currentPage: pageIndex, places: list)
+        self = .init(query: "", currentPage: pageIndex, places: list, isFinalPage: list.isEmpty)
     }
 }
 
@@ -137,18 +137,17 @@ extension PlaceSnippet: DocumentMappable {
 extension PlaceCategoryTag: JSONMappable {
     
     init?(json: JSON) {
-        guard let type = json["type"] as? String,
-              let creatorID = json["creator_id"] as? String,
+        guard let typeValue = json["type"] as? String,
+              let type = TagType(rawValue: typeValue),
               let keyword = json["keyword"] as? String else {
             return nil
         }
-        self.init(type: type, creatorID: creatorID, keyword: keyword)
+        self.init(type: type, keyword: keyword)
     }
     
     func asJSON() -> JSON {
         return [
-            "type": self.tagType,
-            "creator_id": self.creatorID,
+            "type": self.tagType.rawValue,
             "keyword": self.keyword
         ]
     }

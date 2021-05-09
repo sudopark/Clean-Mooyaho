@@ -16,6 +16,8 @@ enum FireStoreCollectionType: String {
     case userLocation = "userlocations"
     case placeSnippet = "placesnpts"
     case place = "places"
+    case commentTag = "comments"
+    case feelingTag = "feelings"
 }
 
 

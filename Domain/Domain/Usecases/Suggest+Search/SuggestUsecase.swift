@@ -20,19 +20,17 @@ public protocol SuggestReqParamType {
     
     var isEmpty: Bool { get }
     
-    func appendNextPageCursor(_ cursor: Cursor) -> Self
+    func updateNextPageCursor(_ cursor: Cursor) -> Self
 }
 
 public protocol SuggestResultCollectionType {
     
     associatedtype Cursor: Equatable
     
-    var query: String? { get }
+    var query: String { get }
 
     var nextPageCursor: Cursor? { get }
-    
-    var isFinalPage: Bool { get }
-    
+
     func append(_ next: Self) -> Self
     
     static func distinguisForSuggest(_ lhs: Self, _ rhs: Self) -> Bool
@@ -44,7 +42,7 @@ public protocol SuggestResultCollectionType {
 open class SuggestUsecase<ReqType: SuggestReqParamType, ResultType: SuggestResultCollectionType>
     where ReqType.Cursor == ResultType.Cursor {
     
-    public typealias API = (ReqType) -> Maybe<ResultType>
+    public typealias API = (ReqType) -> Observable<ResultType>
     private let api: API
     
     public init(api: @escaping API) {
@@ -74,9 +72,8 @@ extension SuggestUsecase {
         guard let params = self.requestParamsRelay.value,
               params.isEmpty == false,
               let result = self.resultRelay.value,
-              result.isFinalPage == false,
               let nextCursor = result.nextPageCursor else { return }
-        let newParams = params.appendNextPageCursor(nextCursor)
+        let newParams = params.updateNextPageCursor(nextCursor)
         self.requestParamsRelay.accept(newParams)
     }
 }

@@ -11,12 +11,12 @@
 		2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */; };
 		2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A1A99263E795E00B6CE69 /* DataModels.swift */; };
 		2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F276B2633E69200FEBCE3 /* Remote.swift */; };
-		2B9F27722633E77900FEBCE3 /* Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27712633E77900FEBCE3 /* Local.swift */; };
+		2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27712633E77900FEBCE3 /* LocalStorage.swift */; };
 		2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */; };
 		2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F277C2633E7D500FEBCE3 /* EncryptedStorage.swift */; };
 		2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA4070526315F21000CC122 /* Common3rdParty.framework */; };
 		2BABA28D26429FAA007E2D1E /* RepositoryImple+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */; };
-		2BABA28F2642A0E7007E2D1E /* RepositoryTests_Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA28E2642A0E7007E2D1E /* RepositoryTests_Places.swift */; };
+		2BABA28F2642A0E7007E2D1E /* RepositoryTests+Places.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BABA28E2642A0E7007E2D1E /* RepositoryTests+Places.swift */; };
 		2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F62263D4C29004B3EB0 /* Domain.framework */; };
 		2BD54F67263D4C33004B3EB0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */; };
 		2BD54F69263D4C3D004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */; };
@@ -29,6 +29,8 @@
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F66BDB8E2644481D0043DEAA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB8D2644481D0043DEAA /* Alamofire */; };
+		F6A72A3D26483C8A006BE4BD /* RepositoryImple+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */; };
+		F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,14 +48,14 @@
 		2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpAPIEndPoints.swift; sourceTree = "<group>"; };
 		2B9A1A99263E795E00B6CE69 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		2B9F276B2633E69200FEBCE3 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
-		2B9F27712633E77900FEBCE3 /* Local.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Local.swift; sourceTree = "<group>"; };
+		2B9F27712633E77900FEBCE3 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultStorage.swift; sourceTree = "<group>"; };
 		2B9F277C2633E7D500FEBCE3 /* EncryptedStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedStorage.swift; sourceTree = "<group>"; };
 		2BA406CB26315E48000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4070526315F21000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA4071326315F5F000CC122 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Place.swift"; sourceTree = "<group>"; };
-		2BABA28E2642A0E7007E2D1E /* RepositoryTests_Places.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTests_Places.swift; sourceTree = "<group>"; };
+		2BABA28E2642A0E7007E2D1E /* RepositoryTests+Places.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Places.swift"; sourceTree = "<group>"; };
 		2BD54F62263D4C29004B3EB0 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +70,8 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Tags.swift"; sourceTree = "<group>"; };
+		F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Tag.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +120,7 @@
 		2B9F27652633E60B00FEBCE3 /* Local */ = {
 			isa = PBXGroup;
 			children = (
-				2B9F27712633E77900FEBCE3 /* Local.swift */,
+				2B9F27712633E77900FEBCE3 /* LocalStorage.swift */,
 				2B9F27772633E79800FEBCE3 /* Storages+Implements */,
 			);
 			path = Local;
@@ -157,6 +161,7 @@
 			children = (
 				2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */,
 				2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */,
+				F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */,
 			);
 			path = "Repository+Implements";
 			sourceTree = "<group>";
@@ -175,7 +180,8 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F74263DB51A004B3EB0 /* RepositoryTests+Auth.swift */,
-				2BABA28E2642A0E7007E2D1E /* RepositoryTests_Places.swift */,
+				2BABA28E2642A0E7007E2D1E /* RepositoryTests+Places.swift */,
+				F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -338,13 +344,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6A72A3D26483C8A006BE4BD /* RepositoryImple+Tags.swift in Sources */,
 				2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */,
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
 				2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
-				2B9F27722633E77900FEBCE3 /* Local.swift in Sources */,
+				2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,
 				2BABA28D26429FAA007E2D1E /* RepositoryImple+Place.swift in Sources */,
 			);
@@ -354,10 +361,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
 				2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
 				2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */,
-				2BABA28F2642A0E7007E2D1E /* RepositoryTests_Places.swift in Sources */,
+				2BABA28F2642A0E7007E2D1E /* RepositoryTests+Places.swift in Sources */,
 				2BD54F75263DB51A004B3EB0 /* RepositoryTests+Auth.swift in Sources */,
 				2BD54F79263DB59E004B3EB0 /* StubLocal.swift in Sources */,
 			);
