@@ -44,6 +44,18 @@
 		2BD54F83263DCA5E004B3EB0 /* FireStore+Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */; };
 		2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */; };
 		2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */; };
+		F6684DF82647CC1000820368 /* GFGeoHashQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6684DF92647CC1000820368 /* GFUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEF2647CC0F00820368 /* GFUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF02647CC0F00820368 /* GFGeoHash.m */; };
+		F6684DFB2647CC1000820368 /* GFGeoHashQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF12647CC0F00820368 /* GFGeoHashQuery.m */; };
+		F6684DFC2647CC1000820368 /* GFGeoQueryBounds.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF22647CC0F00820368 /* GFGeoQueryBounds.m */; };
+		F6684DFD2647CC1000820368 /* GFBase32Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DF32647CC0F00820368 /* GFBase32Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6684DFE2647CC1000820368 /* GFGeoHash.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DF42647CC0F00820368 /* GFGeoHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6684DFF2647CC1000820368 /* GFGeoQueryBounds.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DF52647CC1000820368 /* GFGeoQueryBounds.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6684E002647CC1000820368 /* GFBase32Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF62647CC1000820368 /* GFBase32Utils.m */; };
+		F6684E012647CC1000820368 /* GFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF72647CC1000820368 /* GFUtils.m */; };
+		F6684E042647E33400820368 /* Member+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E032647E33400820368 /* Member+Mapping.swift */; };
+		F6684E062647E38600820368 /* Place+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E052647E38600820368 /* Place+Mapping.swift */; };
 		F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */; };
 		F6CFA57B264660EA00F9A049 /* StubHttpRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57A264660EA00F9A049 /* StubHttpRemote.swift */; };
 		F6CFA57D2646659F00F9A049 /* FirebaseServiceImpleTest+PlaceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTest+PlaceRemote.swift */; };
@@ -133,6 +145,18 @@
 		2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FireStore+Collections.swift"; sourceTree = "<group>"; };
 		2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonMapping.swift; sourceTree = "<group>"; };
 		2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFGeoHashQuery.h; sourceTree = "<group>"; };
+		F6684DEF2647CC0F00820368 /* GFUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFUtils.h; sourceTree = "<group>"; };
+		F6684DF02647CC0F00820368 /* GFGeoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFGeoHash.m; sourceTree = "<group>"; };
+		F6684DF12647CC0F00820368 /* GFGeoHashQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFGeoHashQuery.m; sourceTree = "<group>"; };
+		F6684DF22647CC0F00820368 /* GFGeoQueryBounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFGeoQueryBounds.m; sourceTree = "<group>"; };
+		F6684DF32647CC0F00820368 /* GFBase32Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFBase32Utils.h; sourceTree = "<group>"; };
+		F6684DF42647CC0F00820368 /* GFGeoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFGeoHash.h; sourceTree = "<group>"; };
+		F6684DF52647CC1000820368 /* GFGeoQueryBounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFGeoQueryBounds.h; sourceTree = "<group>"; };
+		F6684DF62647CC1000820368 /* GFBase32Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFBase32Utils.m; sourceTree = "<group>"; };
+		F6684DF72647CC1000820368 /* GFUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFUtils.m; sourceTree = "<group>"; };
+		F6684E032647E33400820368 /* Member+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Member+Mapping.swift"; sourceTree = "<group>"; };
+		F6684E052647E38600820368 /* Place+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+Mapping.swift"; sourceTree = "<group>"; };
 		F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57A264660EA00F9A049 /* StubHttpRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubHttpRemote.swift; sourceTree = "<group>"; };
 		F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTest+PlaceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseServiceImpleTest+PlaceRemote.swift"; sourceTree = "<group>"; };
@@ -271,6 +295,7 @@
 		2B8AC38B263BB147002BA1AC /* FirebaseFrameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6684DED2647CBFA00820368 /* GeoFire+Utils */,
 				2B8AC3F7263C57C6002BA1AC /* FirebaseCrashlytics */,
 				2B8AC38C263BB167002BA1AC /* Firebase.h */,
 				2B8AC3F3263BB325002BA1AC /* module.modulemap */,
@@ -361,12 +386,39 @@
 		2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */ = {
 			isa = PBXGroup;
 			children = (
-				2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */,
+				F6684E022647E32400820368 /* DataMappings */,
 				2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */,
 				2BD54F70263DB37D004B3EB0 /* AuthRemote+Firebase.swift */,
 				F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */,
 			);
 			path = "RemoteImple+FirebaseService";
+			sourceTree = "<group>";
+		};
+		F6684DED2647CBFA00820368 /* GeoFire+Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F6684DF32647CC0F00820368 /* GFBase32Utils.h */,
+				F6684DF62647CC1000820368 /* GFBase32Utils.m */,
+				F6684DF42647CC0F00820368 /* GFGeoHash.h */,
+				F6684DF02647CC0F00820368 /* GFGeoHash.m */,
+				F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */,
+				F6684DF12647CC0F00820368 /* GFGeoHashQuery.m */,
+				F6684DF52647CC1000820368 /* GFGeoQueryBounds.h */,
+				F6684DF22647CC0F00820368 /* GFGeoQueryBounds.m */,
+				F6684DEF2647CC0F00820368 /* GFUtils.h */,
+				F6684DF72647CC1000820368 /* GFUtils.m */,
+			);
+			path = "GeoFire+Utils";
+			sourceTree = "<group>";
+		};
+		F6684E022647E32400820368 /* DataMappings */ = {
+			isa = PBXGroup;
+			children = (
+				2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */,
+				F6684E032647E33400820368 /* Member+Mapping.swift */,
+				F6684E052647E38600820368 /* Place+Mapping.swift */,
+			);
+			path = DataMappings;
 			sourceTree = "<group>";
 		};
 		F6CFA578264660CA00F9A049 /* PlaceRemote+Firebase */ = {
@@ -402,6 +454,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B39E18026386CED003EE954 /* FirebaseService.h in Headers */,
+				F6684DF92647CC1000820368 /* GFUtils.h in Headers */,
+				F6684DFE2647CC1000820368 /* GFGeoHash.h in Headers */,
+				F6684DFD2647CC1000820368 /* GFBase32Utils.h in Headers */,
+				F6684DF82647CC1000820368 /* GFGeoHashQuery.h in Headers */,
+				F6684DFF2647CC1000820368 /* GFGeoQueryBounds.h in Headers */,
 				2B8AC38D263BB167002BA1AC /* Firebase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,7 +513,7 @@
 				TargetAttributes = {
 					2B39E16E26386CEC003EE954 = {
 						CreatedOnToolsVersion = 12.4;
-						LastSwiftMigration = 1240;
+						LastSwiftMigration = 1250;
 					};
 					2B39E17726386CED003EE954 = {
 						CreatedOnToolsVersion = 12.4;
@@ -510,9 +567,16 @@
 			files = (
 				2BD54F83263DCA5E004B3EB0 /* FireStore+Collections.swift in Sources */,
 				2BD54F71263DB37D004B3EB0 /* AuthRemote+Firebase.swift in Sources */,
+				F6684DFB2647CC1000820368 /* GFGeoHashQuery.m in Sources */,
 				2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */,
+				F6684E012647CC1000820368 /* GFUtils.m in Sources */,
+				F6684E062647E38600820368 /* Place+Mapping.swift in Sources */,
 				F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */,
+				F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */,
+				F6684DFC2647CC1000820368 /* GFGeoQueryBounds.m in Sources */,
+				F6684E042647E33400820368 /* Member+Mapping.swift in Sources */,
 				2B39E2002638708D003EE954 /* FirebaseService.swift in Sources */,
+				F6684E002647CC1000820368 /* GFBase32Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

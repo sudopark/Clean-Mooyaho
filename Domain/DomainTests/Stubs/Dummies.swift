@@ -11,6 +11,15 @@ import Foundation
 @testable import Domain
 
 
+extension PlaceSnippet {
+    
+    static func dummy(_ int: Int) -> PlaceSnippet {
+        return PlaceSnippet(placeID: "uid:\(int)",
+                            title: "title:\(int)",
+                            latt: 0, long: 0)
+    }
+}
+
 extension Place {
     
     static func dummy(_ int: Int) -> Place {

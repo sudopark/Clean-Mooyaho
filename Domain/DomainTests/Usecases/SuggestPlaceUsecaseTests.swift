@@ -36,17 +36,17 @@ class SuggestPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
     }
     
     private var dummyDefaultSuggestResult: SuggestPlaceResult {
-        let places = [1, 3, 5].map{ Place.dummy($0) }
+        let places = [1, 3, 5].map{ PlaceSnippet.dummy($0) }
         
         return .init(default: places)
     }
     
     private var dummyDetaultPlacesIDs: [String] {
-        return self.dummyDefaultSuggestResult.places.map{ $0.uid }
+        return self.dummyDefaultSuggestResult.places.map{ $0.placeID }
     }
     
     private func dummySuggestResult(range: Range<Int>, hasNextCursor: Bool = true, query: String) -> SuggestPlaceResult {
-        let places = range.map{ Place.dummy($0) }
+        let places = range.map{ PlaceSnippet.dummy($0) }
         let cursor = hasNextCursor ? places.last?.title : nil
         return .init(query: query, places: places, cursor: cursor)
     }
@@ -90,7 +90,7 @@ extension SuggestPlaceUsecaseTests {
         }
         
         // then
-        let placeIDs = result?.places.map{ $0.uid }
+        let placeIDs = result?.places.map{ $0.placeID }
         XCTAssertEqual(placeIDs, self.dummyDetaultPlacesIDs)
     }
     
@@ -116,8 +116,8 @@ extension SuggestPlaceUsecaseTests {
             return
         }
         XCTAssertNil(results[0])
-        XCTAssertEqual(results[1]?.places.map{ $0.uid }, self.dummyDetaultPlacesIDs)
-        XCTAssertEqual(results[2]?.places.map{ $0.uid }, stubResult.places.map{ $0.uid })
+        XCTAssertEqual(results[1]?.places.map{ $0.placeID }, self.dummyDetaultPlacesIDs)
+        XCTAssertEqual(results[2]?.places.map{ $0.placeID }, stubResult.places.map{ $0.placeID })
     }
     
     // enter something + paging until end
@@ -278,7 +278,7 @@ extension SuggestPlaceUsecaseTests {
 private extension SuggestPlaceResult {
     
     var placeIDs: [String] {
-        return self.places.map{ $0.uid }
+        return self.places.map{ $0.placeID }
     }
 }
 
