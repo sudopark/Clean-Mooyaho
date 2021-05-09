@@ -17,11 +17,11 @@ public protocol FirebaseService {
 
 public final class FirebaseServiceImple: FirebaseService {
     
-    let httpRemote: HttpRemote
+    let httpAPI: HttpAPI
     var fireStoreDB: Firestore!
     
-    public init(httpRemote: HttpRemote) {
-        self.httpRemote = httpRemote
+    public init(httpAPI: HttpAPI) {
+        self.httpAPI = httpAPI
     }
     
     public func setupService() {

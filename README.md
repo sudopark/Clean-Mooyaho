@@ -8,6 +8,8 @@
 
 - 유저가 무야호를 외칠 수 있는 앱을 만들자를 제외하고는 구체적인게 없는 프로젝트
 
+- [서비스 기획 v0.1](/docs/무야호_v0.1.md)
+
   
 
 
@@ -48,13 +50,22 @@
 ## Test
 
 - view(+viewController)를 제외한 나머지 로직을 테스트하는것이 원칙
-- stub 기반의 classic 한 테스트 방식을 이용
+- stub 기반의 테스트 방식을 이용
+
+
+
+## 의존관리
+
+- 의존 주입 방식은 생성자 주입을 이용 + 구체타입 생성은 DIContainers에서 관리
+- Firebase는 프로젝트에 바로 임베딩 시킴 -> FirebaseService.framework
+- 그 외 필요한 서비스는 필요한 framework에서 spm으로 관리
 
 
 
 
-## 코드 컨벤션 및 리뷰
-- [뱅크샐러드의 코드리뷰 문화](https://blog.banksalad.com/tech/banksalad-code-review-culture/)를 참고
+## 코드 컨벤션
+- 프로토콜에 Protocol이나 Interface suffix는 제거 -> 구체타입에 Imple suffix 추가
+- 그 외 자유
 
 
 

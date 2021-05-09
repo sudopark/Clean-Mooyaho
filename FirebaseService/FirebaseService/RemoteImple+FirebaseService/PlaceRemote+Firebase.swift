@@ -58,7 +58,7 @@ extension FirebaseServiceImple: PlaceRemote {
             return collection
         }
         
-        return self.httpRemote
+        return self.httpAPI
             .requestData(ResultCollection.self,
                          endpoint: endpoint, parameters: params)
             .map(appendQueryAtResult)
