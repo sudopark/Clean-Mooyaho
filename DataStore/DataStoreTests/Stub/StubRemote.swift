@@ -51,4 +51,19 @@ class StubRemote: Remote, Stubbable {
                                of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection> {
         return self.resolve(key: "requestSearchNewPlace") ?? .empty()
     }
+    
+    // tag
+    func requestRegisterTag(_ tag: ReqParams.Tag) -> Maybe<Void> {
+        return self.resolve(key: "requestRegisterTag") ?? .empty()
+    }
+    
+    func requestLoadPlaceCommnetTags(_ keyword: String,
+                                     cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection> {
+        return self.resolve(key: "requestLoadPlaceCommnetTags") ?? .empty()
+    }
+    
+    func requestLoadUserFeelingTags(_ keyword: String,
+                                    cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection> {
+        return self.resolve(key: "requestLoadUserFeelingTags") ?? .empty()
+    }
 }

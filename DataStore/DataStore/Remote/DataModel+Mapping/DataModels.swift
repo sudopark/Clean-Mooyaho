@@ -44,6 +44,8 @@ public enum DataModels {
     public typealias SuggestPlaceResult = Domain.SuggestPlaceResult
     
     public typealias SearchingPlaceCollection = Domain.SearchingPlaceCollection
+    
+    public typealias SuggestTagResultCollection = Domain.SuggestTagResultCollection
 }
 
 extension ImageSource {

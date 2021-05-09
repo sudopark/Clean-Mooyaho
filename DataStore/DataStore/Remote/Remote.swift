@@ -23,6 +23,7 @@ public enum RemoteErrors: Error {
     case loadFail(_ type: String, reason: Error?)
     case saveFail(_ type: String, reason: Error?)
     case mappingFail(_ type: String)
+    case invalidRequest(_ reason: String?)
 }
 
 
@@ -33,12 +34,14 @@ public enum ReqParams {
     }
     
     public typealias UserLocation = Domain.UserLocation
+    
+    public typealias Tag = Domain.Tag
 }
 
 
 // MARK: - Remote Protocol
 
-public protocol Remote: AuthRemote, PlaceRemote { }
+public protocol Remote: AuthRemote, PlaceRemote, TagRemote { }
 
 // MARK: - Auth remote
 
@@ -66,4 +69,18 @@ public protocol PlaceRemote {
     
     func requestSearchNewPlace(_ query: String, in location: ReqParams.UserLocation,
                                of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection>
+}
+
+
+// MARK: - Tag remote
+
+public protocol TagRemote {
+    
+    func requestRegisterTag(_ tag: ReqParams.Tag) -> Maybe<Void>
+    
+    func requestLoadPlaceCommnetTags(_ keyword: String,
+                                     cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection>
+    
+    func requestLoadUserFeelingTags(_ keyword: String,
+                                    cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection>
 }

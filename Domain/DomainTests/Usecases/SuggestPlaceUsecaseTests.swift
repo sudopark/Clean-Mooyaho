@@ -130,7 +130,7 @@ extension SuggestPlaceUsecaseTests {
         }
         stubResults.enumerated().forEach { offset, result in
             let cursor = offset == 0 ? nil : stubResults[offset-1].places.last?.title
-            self.stubSuggestResult(result.query!, result: result, matching: cursor)
+            self.stubSuggestResult(result.query, result: result, matching: cursor)
         }
         
         // when

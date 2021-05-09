@@ -39,7 +39,7 @@ class SearchNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
         let size = isFinalPage ? 0 : 10
         let range = page*10..<page*10+size
         let places = range.map{ SearchingPlace.dummy($0) }
-        return .init(query: query, currentPage: page, places: places)
+        return .init(query: query, currentPage: page, places: places, isFinalPage: isFinalPage)
     }
     
     private func dummyResults(for query: String, size: Int) -> [SearchingPlaceCollection] {
