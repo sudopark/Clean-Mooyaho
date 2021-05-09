@@ -63,6 +63,7 @@ extension FirebaseServiceImple: AuthRemote {
     }
     
     private func selectSignInMethod(by credential: ReqParams.OAuthCredential) -> Maybe<FirebaseAuth.User> {
+        // TODO: 소셩 로그인 타입에 따라 분기
         return .empty()
     }
 }
@@ -74,7 +75,7 @@ extension FirebaseServiceImple {
     
     private func signInPostAction(user: FirebaseAuth.User) -> Maybe<DataModels.Member> {
         
-        let loadExistingMember = self.requestLoadExistingMember(for: user)
+        let loadExistingMember: Maybe<DataModels.Member?> = self.load(docuID: user.uid, in: .member)
         
         let thenSaveNewMemberIfNeed: (DataModels.Member?) -> Maybe<DataModels.Member>
         thenSaveNewMemberIfNeed = { [weak self] existingMember in
@@ -82,47 +83,13 @@ extension FirebaseServiceImple {
             if let member = existingMember {
                 return .just(member)
             } else {
-                return self.requestSaveNewMember(user.uid)
+                let newMember = DataModels.Member(uid: user.uid)
+                return self.save(newMember, at: .member)
+                    .map{ _ in newMember }
             }
         }
         
         return loadExistingMember
             .flatMap(thenSaveNewMemberIfNeed)
-    }
-    private func requestLoadExistingMember(for user: FirebaseAuth.User) -> Maybe<DataModels.Member?> {
-        return Maybe.create { [weak self] callback in
-            guard let db = self?.fireStoreDB else { return Disposables.create() }
-            
-            let documentID = user.uid
-            let documentRef = db.collection(.member).document(documentID)
-            documentRef.getDocument { snapShot, error in
-                guard error == nil, let snapShot = snapShot, let json = snapShot.data() else {
-                    let remoteError = RemoteErrors.loadFail("Member", reason: error)
-                    callback(.error(remoteError))
-                    return
-                }
-                let member = DataModels.Member(docuID: snapShot.documentID, json: json)
-                callback(.success(member))
-            }
-            
-            return Disposables.create()
-        }
-    }
-    
-    private func requestSaveNewMember(_ memberID: String) -> Maybe<DataModels.Member> {
-        return Maybe.create { [weak self] callback in
-            guard let db = self?.fireStoreDB else { return Disposables.create() }
-            
-            let documentRef = db.collection(.member).document(memberID)
-            documentRef.setData([:]) { error in
-                if let error = error {
-                    callback(.error(RemoteErrors.saveFail("Member", reason: error)))
-                } else {
-                    let newMember = DataModels.Member(uid: memberID)
-                    callback(.success(newMember))
-                }
-            }
-            return Disposables.create()
-        }
     }
 }
