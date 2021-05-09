@@ -31,22 +31,22 @@ public struct PlaceSnippet {
 
 public struct SuggestPlaceResult {
     
-    public let query: String?
+    public let query: String
     public let places: [PlaceSnippet]
     public let cursor: String?
     
     public var isDefaultList: Bool {
-        return self.query == nil
+        return self.query.isEmpty
     }
     
-    public init(query: String?, places: [PlaceSnippet], cursor: String? = nil) {
+    public init(query: String, places: [PlaceSnippet], cursor: String? = nil) {
         self.query = query
         self.places = places
         self.cursor = cursor
     }
     
     public init(default places: [PlaceSnippet]) {
-        self.query = nil
+        self.query = ""
         self.places = places
         self.cursor = nil
     }

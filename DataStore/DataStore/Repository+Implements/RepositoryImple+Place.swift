@@ -13,7 +13,7 @@ import RxSwift
 import Domain
 
 
-public protocol PlaceRepositoryDefImpleDependency: AnyObject {
+public protocol PlaceRepositoryDefImpleDependency {
     
     var remote: Remote { get }
 }

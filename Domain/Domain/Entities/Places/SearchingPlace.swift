@@ -39,13 +39,16 @@ public struct SearchingPlace {
 
 public struct SearchingPlaceCollection {
     
-    public var query: String?
+    public var query: String
     public let currentPage: Int?
     public let places: [SearchingPlace]
+    public let isFinalPage: Bool
     
-    public init(query: String?, currentPage: Int? = nil, places: [SearchingPlace]) {
+    public init(query: String, currentPage: Int? = nil,
+                places: [SearchingPlace], isFinalPage: Bool) {
         self.query = query
         self.currentPage = currentPage
         self.places = places
+        self.isFinalPage = isFinalPage
     }
 }

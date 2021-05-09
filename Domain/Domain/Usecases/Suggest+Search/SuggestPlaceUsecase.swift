@@ -59,7 +59,7 @@ public struct PlaceSuggestReqParams: SuggestReqParamType {
         return true
     }
     
-    public func appendNextPageCursor(_ cursor: String) -> PlaceSuggestReqParams {
+    public func updateNextPageCursor(_ cursor: String) -> PlaceSuggestReqParams {
         return .init(query: self.query, location: self.location, cursor: cursor)
     }
 }
@@ -75,14 +75,11 @@ extension SuggestPlaceResult: SuggestResultCollectionType {
         return self.cursor
     }
     
-    public var isFinalPage: Bool {
-        return self.places.isEmpty
-    }
-    
     public func append(_ next: SuggestPlaceResult) -> SuggestPlaceResult {
+        let nextPageCursor = next.places.isEmpty ? nil : next.places.last?.placeID
         return .init(query: self.query,
                      places: self.places + next.places,
-                     cursor: next.cursor)
+                     cursor: nextPageCursor)
     }
     
     public static func distinguisForSuggest(_ lhs: SuggestPlaceResult, _ rhs: SuggestPlaceResult) -> Bool {
@@ -101,7 +98,7 @@ public final class SuggestPlaceUsecaseImple {
     public init(placeRepository: PlaceRepository) {
         self.placeRepository = placeRepository
         self.internalSuggestUsecase = .init { [weak self] params in
-            return self?.suggestByQuery(params) ?? .empty()
+            return self?.suggestByQuery(params).asObservable() ?? .empty()
         }
     }
 
@@ -152,7 +149,9 @@ extension SuggestPlaceUsecaseImple {
             return self.loadDefaultSuggest(params.location)
             
         case let .some(text):
-            return self.placeRepository.requestSuggestPlace(text, in: params.location, cursor: params.cursor)
+            return self.placeRepository
+                .requestSuggestPlace(text, in: params.location, cursor: params.cursor)
+                .catch{ _ in .empty() }
         }
     }
     
@@ -165,5 +164,6 @@ extension SuggestPlaceUsecaseImple {
         }
         return self.placeRepository.reqeustLoadDefaultPlaceSuggest(in: location)
             .do(onNext: updateCache)
+            .catch{ _ in .empty() }
     }
 }

@@ -17,7 +17,7 @@ public protocol AuthRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
     var remote: Remote { get }
-    var local: Local { get }
+    var local: LocalStorage { get }
 }
 
 

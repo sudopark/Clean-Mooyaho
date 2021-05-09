@@ -56,6 +56,8 @@
 		F6684E012647CC1000820368 /* GFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF72647CC1000820368 /* GFUtils.m */; };
 		F6684E042647E33400820368 /* Member+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E032647E33400820368 /* Member+Mapping.swift */; };
 		F6684E062647E38600820368 /* Place+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E052647E38600820368 /* Place+Mapping.swift */; };
+		F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */; };
+		F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */; };
 		F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */; };
 		F6CFA57B264660EA00F9A049 /* StubHttpRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57A264660EA00F9A049 /* StubHttpRemote.swift */; };
 		F6CFA57D2646659F00F9A049 /* FirebaseServiceImpleTest+PlaceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTest+PlaceRemote.swift */; };
@@ -157,6 +159,8 @@
 		F6684DF72647CC1000820368 /* GFUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFUtils.m; sourceTree = "<group>"; };
 		F6684E032647E33400820368 /* Member+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Member+Mapping.swift"; sourceTree = "<group>"; };
 		F6684E052647E38600820368 /* Place+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+Mapping.swift"; sourceTree = "<group>"; };
+		F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Mapping.swift"; sourceTree = "<group>"; };
+		F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57A264660EA00F9A049 /* StubHttpRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubHttpRemote.swift; sourceTree = "<group>"; };
 		F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTest+PlaceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseServiceImpleTest+PlaceRemote.swift"; sourceTree = "<group>"; };
@@ -390,6 +394,7 @@
 				2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */,
 				2BD54F70263DB37D004B3EB0 /* AuthRemote+Firebase.swift */,
 				F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */,
+				F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */,
 			);
 			path = "RemoteImple+FirebaseService";
 			sourceTree = "<group>";
@@ -417,6 +422,7 @@
 				2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */,
 				F6684E032647E33400820368 /* Member+Mapping.swift */,
 				F6684E052647E38600820368 /* Place+Mapping.swift */,
+				F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */,
 			);
 			path = DataMappings;
 			sourceTree = "<group>";
@@ -566,8 +572,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BD54F83263DCA5E004B3EB0 /* FireStore+Collections.swift in Sources */,
+				F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */,
 				2BD54F71263DB37D004B3EB0 /* AuthRemote+Firebase.swift in Sources */,
 				F6684DFB2647CC1000820368 /* GFGeoHashQuery.m in Sources */,
+				F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */,
 				2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */,
 				F6684E012647CC1000820368 /* GFUtils.m in Sources */,
 				F6684E062647E38600820368 /* Place+Mapping.swift in Sources */,

@@ -38,7 +38,7 @@ public struct SearchNewPlaceReqParams: SuggestReqParamType {
         return true
     }
     
-    public func appendNextPageCursor(_ cursor: Int) -> SearchNewPlaceReqParams {
+    public func updateNextPageCursor(_ cursor: Int) -> SearchNewPlaceReqParams {
         return .init(query: query, location: location, currentPage: cursor)
     }
 }
@@ -51,18 +51,18 @@ extension SearchingPlaceCollection: SuggestResultCollectionType {
     public typealias Cursor = Int
     
     public var nextPageCursor: Int? {
-        guard let current = self.currentPage else { return nil }
+        guard let current = self.currentPage,
+              self.isFinalPage == false else { return nil }
+        
         return current + 1
     }
     
-    public var isFinalPage: Bool {
-        return self.places.isEmpty
-    }
     
     public func append(_ next: SearchingPlaceCollection) -> SearchingPlaceCollection {
         return .init(query: self.query,
                      currentPage: next.currentPage,
-                     places: self.places + next.places)
+                     places: self.places + next.places,
+                     isFinalPage: next.isFinalPage)
     }
     
     public static func distinguisForSuggest(_ lhs: SearchingPlaceCollection,
@@ -85,7 +85,7 @@ public final class SearchNewPlaceUsecaseImple: SearchNewPlaceUsecase {
     public init(placeRepository: PlaceRepository) {
         self.repository = placeRepository
         self.internalSuggestUsecase = .init { [weak self] params in
-            return self?.search(params) ?? .empty()
+            return self?.search(params).asObservable() ?? .empty()
         }
     }
     
@@ -94,6 +94,7 @@ public final class SearchNewPlaceUsecaseImple: SearchNewPlaceUsecase {
         let queryString = params.query.string
         return self.repository
             .requestSearchNewPlace(queryString, in: params.location, of: params.currentPage)
+            .catch{ _ in .empty() }
     }
 }
 
