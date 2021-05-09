@@ -22,7 +22,7 @@ public final class DIContainers {
         
         fileprivate init() {}
         
-        public let firebaseService: FirebaseService = FirebaseServiceImple(httpRemote: HttpRemoteImple())
+        public let firebaseService: FirebaseService = FirebaseServiceImple(httpAPI: HttpAPIImple())
         public let kakaoService: KakaoService = KakaoServiceImple()
     }
     
@@ -32,4 +32,4 @@ public final class DIContainers {
 extension DIContainers: EmptyBuilder { }
 
 
-class HttpRemoteImple: HttpRemote { }
+class HttpAPIImple: HttpAPI { }

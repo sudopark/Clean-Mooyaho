@@ -33,7 +33,7 @@ class StubSession: HttpSession, Stubbable {
     }
 }
 
-class FakeHttpRemote: HttpRemote {
+class FakeHttpAPI: HttpAPI {
     
     let session: HttpSession
     init(session: HttpSession) {

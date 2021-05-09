@@ -20,21 +20,21 @@ class FirebaseServiceImpleTest_PlaceRemote: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var stubSession: StubSession!
-    var fakeRemote: FakeHttpRemote!
+    var fakeHttpAPI: FakeHttpAPI!
     var service: FirebaseServiceImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
         self.stubSession = .init()
-        self.fakeRemote = FakeHttpRemote(session: self.stubSession)
-        self.service = FirebaseServiceImple(httpRemote: self.fakeRemote)
+        self.fakeHttpAPI = FakeHttpAPI(session: self.stubSession)
+        self.service = FirebaseServiceImple(httpAPI: self.fakeHttpAPI)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.stubSession = nil
-        self.fakeRemote = nil
+        self.fakeHttpAPI = nil
         self.service = nil
         super.tearDown()
     }

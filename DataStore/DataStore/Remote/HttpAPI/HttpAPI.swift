@@ -58,7 +58,7 @@ extension Session: HttpSession {
 
 // MARK: - HttpRemote Protocol
 
-public protocol HttpRemote: AnyObject {
+public protocol HttpAPI: AnyObject {
     
     var session: HttpSession { get }
     
@@ -68,7 +68,7 @@ public protocol HttpRemote: AnyObject {
                                    parameters: [String: Any]) -> Maybe<T>
 }
 
-extension HttpRemote {
+extension HttpAPI {
     
     public var session: HttpSession {
         
@@ -89,7 +89,7 @@ extension HttpAPIMethods {
     }
 }
 
-extension HttpRemote {
+extension HttpAPI {
     
     public func requestData<T: Decodable>(_ type: T.Type,
                                           endpoint: HttpAPIEndPoint) -> Maybe<T> {
