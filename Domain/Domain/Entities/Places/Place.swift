@@ -23,7 +23,7 @@ public struct Coordinate {
 
 public struct Place {
     
-    public enum RequireInfoProvider {
+    public enum RequireInfoProvider: String {
         case externalSearch
         case userDefine
         case placeOwner
@@ -117,31 +117,5 @@ extension NewPlaceFormBuilder {
             return true
         }
         return build(with: asserting)
-    }
-}
-
-
-// MARK: - place suggest
-
-public struct SuggestPlaceResult {
-    
-    public let query: String?
-    public let places: [Place]
-    public let cursor: String?
-    
-    public var isDefaultList: Bool {
-        return self.query == nil
-    }
-    
-    public init(query: String?, places: [Place], cursor: String? = nil) {
-        self.query = query
-        self.places = places
-        self.cursor = cursor
-    }
-    
-    public init(default places: [Place]) {
-        self.query = nil
-        self.places = places
-        self.cursor = nil
     }
 }
