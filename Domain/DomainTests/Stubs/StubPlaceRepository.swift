@@ -43,4 +43,17 @@ class StubPlaceRepository: PlaceRepository, Stubbable {
         let key = "requestSearchNewPlace:\(query)-\(String(describing: pageIndex))"
         return self.resolve(key: key) ?? .empty()
     }
+    
+    func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
+        return self.resolve(key: "fetchRegisterPendingNewPlaceForm") ?? .empty()
+    }
+    
+    func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
+        self.verify(key: "savePendingRegister")
+        return self.resolve(key: "savePendingRegister") ?? .empty()
+    }
+    
+    func requestUpload(newPlace form: NewPlaceForm) -> Maybe<Place> {
+        return self.resolve(key: "requestUpload") ?? .empty()
+    }
 }
