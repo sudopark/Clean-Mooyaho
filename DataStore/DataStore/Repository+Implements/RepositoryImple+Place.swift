@@ -40,4 +40,16 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
         return self.remote.requestSearchNewPlace(query, in: location, of: pageIndex)
     }
     
+    
+    public func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
+        return .empty()
+    }
+    
+    public func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    public func requestUpload(newPlace form: NewPlaceForm) -> Maybe<Place> {
+        return .empty()
+    }
 }
