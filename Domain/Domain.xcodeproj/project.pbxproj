@@ -49,6 +49,14 @@
 		2BFF24192641AA00008C52EB /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF24182641AA00008C52EB /* Dummies.swift */; };
 		2BFF241B2641BB04008C52EB /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF241A2641BB04008C52EB /* Array+Extensions.swift */; };
 		2BFF241D2641E009008C52EB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF241C2641E009008C52EB /* Rx+Extensions.swift */; };
+		F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615292A264D9BC6003BCB59 /* MemberUsecase.swift */; };
+		F615292D264D9CBE003BCB59 /* UserPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615292C264D9CBE003BCB59 /* UserPresence.swift */; };
+		F6152930264D9DB4003BCB59 /* Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615292F264D9DB4003BCB59 /* Hooray.swift */; };
+		F6152933264DA0C0003BCB59 /* HoorayPublisherUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152932264DA0C0003BCB59 /* HoorayPublisherUsecase.swift */; };
+		F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152934264DA313003BCB59 /* HoorayReceiveUsecase.swift */; };
+		F6152937264DA31A003BCB59 /* HoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152936264DA31A003BCB59 /* HoorayUsecase.swift */; };
+		F6152939264DA35A003BCB59 /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152938264DA35A003BCB59 /* MessageService.swift */; };
+		F615293D264DA999003BCB59 /* HoorayReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615293C264DA999003BCB59 /* HoorayReaction.swift */; };
 		F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E072647EE7D00820368 /* SuggestPlace.swift */; };
 		F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */; };
 		F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A362648217A006BE4BD /* TagRepository.swift */; };
@@ -121,6 +129,14 @@
 		2BFF24182641AA00008C52EB /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		2BFF241A2641BB04008C52EB /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		2BFF241C2641E009008C52EB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
+		F615292A264D9BC6003BCB59 /* MemberUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberUsecase.swift; sourceTree = "<group>"; };
+		F615292C264D9CBE003BCB59 /* UserPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPresence.swift; sourceTree = "<group>"; };
+		F615292F264D9DB4003BCB59 /* Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hooray.swift; sourceTree = "<group>"; };
+		F6152932264DA0C0003BCB59 /* HoorayPublisherUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayPublisherUsecase.swift; sourceTree = "<group>"; };
+		F6152934264DA313003BCB59 /* HoorayReceiveUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayReceiveUsecase.swift; sourceTree = "<group>"; };
+		F6152936264DA31A003BCB59 /* HoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayUsecase.swift; sourceTree = "<group>"; };
+		F6152938264DA35A003BCB59 /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
+		F615293C264DA999003BCB59 /* HoorayReaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayReaction.swift; sourceTree = "<group>"; };
 		F6684E072647EE7D00820368 /* SuggestPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlace.swift; sourceTree = "<group>"; };
 		F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTagUsecase.swift; sourceTree = "<group>"; };
 		F6A72A362648217A006BE4BD /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
@@ -160,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */,
+				F6152938264DA35A003BCB59 /* MessageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -206,6 +223,7 @@
 				2BD54F6D263DA695004B3EB0 /* Members */,
 				2B40BF85263F09990031C7A6 /* Locations */,
 				2BFF240726405B70008C52EB /* Places */,
+				F615292E264D9DA0003BCB59 /* Hooray */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -216,6 +234,7 @@
 				2BFF240226405A28008C52EB /* Auth+Member */,
 				2BFF240326405A33008C52EB /* Location+Place */,
 				2BFF240426405A64008C52EB /* Suggest+Search */,
+				F6152931264DA0AE003BCB59 /* Hooray */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -259,6 +278,7 @@
 				2B9A1A96263E714500B6CE69 /* draft */,
 				2B9F27AD2633F33400FEBCE3 /* ImageSource.swift */,
 				2B9F27962633F0F700FEBCE3 /* Member.swift */,
+				F615292C264D9CBE003BCB59 /* UserPresence.swift */,
 			);
 			path = Members;
 			sourceTree = "<group>";
@@ -338,6 +358,7 @@
 			isa = PBXGroup;
 			children = (
 				2BE978BC263AE91B0000C0C6 /* AuthUsecase.swift */,
+				F615292A264D9BC6003BCB59 /* MemberUsecase.swift */,
 			);
 			path = "Auth+Member";
 			sourceTree = "<group>";
@@ -379,6 +400,25 @@
 				2BFF24112640776B008C52EB /* NewPlaceFormBuilderTests.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		F615292E264D9DA0003BCB59 /* Hooray */ = {
+			isa = PBXGroup;
+			children = (
+				F615292F264D9DB4003BCB59 /* Hooray.swift */,
+				F615293C264DA999003BCB59 /* HoorayReaction.swift */,
+			);
+			path = Hooray;
+			sourceTree = "<group>";
+		};
+		F6152931264DA0AE003BCB59 /* Hooray */ = {
+			isa = PBXGroup;
+			children = (
+				F6152932264DA0C0003BCB59 /* HoorayPublisherUsecase.swift */,
+				F6152934264DA313003BCB59 /* HoorayReceiveUsecase.swift */,
+				F6152936264DA31A003BCB59 /* HoorayUsecase.swift */,
+			);
+			path = Hooray;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -504,9 +544,11 @@
 				2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */,
 				2BFF241B2641BB04008C52EB /* Array+Extensions.swift in Sources */,
 				2B40BF8B263F0D070031C7A6 /* UserLocation.swift in Sources */,
+				F6152930264D9DB4003BCB59 /* Hooray.swift in Sources */,
 				2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */,
 				F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */,
 				2BFF240626405A78008C52EB /* SuggestPlaceUsecase.swift in Sources */,
+				F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */,
 				2BFF240926405B7C008C52EB /* Tags.swift in Sources */,
 				F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */,
 				2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */,
@@ -515,15 +557,21 @@
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */,
+				F615292D264D9CBE003BCB59 /* UserPresence.swift in Sources */,
+				F6152933264DA0C0003BCB59 /* HoorayPublisherUsecase.swift in Sources */,
 				2B40BF93263F15060031C7A6 /* Units.swift in Sources */,
+				F6152937264DA31A003BCB59 /* HoorayUsecase.swift in Sources */,
 				F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */,
 				F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */,
 				2BFF241D2641E009008C52EB /* Rx+Extensions.swift in Sources */,
 				F6CFA5752646340300F9A049 /* SearchNewPlaceUsecase.swift in Sources */,
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
+				F6152939264DA35A003BCB59 /* MessageService.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
+				F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
+				F615293D264DA999003BCB59 /* HoorayReaction.swift in Sources */,
 				2B40BF8D263F0E400031C7A6 /* LocationMonitoringOption.swift in Sources */,
 				2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */,
 				2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */,
