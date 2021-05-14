@@ -57,3 +57,17 @@ extension SearchingPlace {
                               categories: [])
     }
 }
+
+
+extension Hooray {
+    
+    static func dummy(_ int: Int) -> Hooray {
+        return Hooray(uid: "uid:\(int)",
+                      placeID: "place:\(int)",
+                      publisherID: "pub:\(int)",
+                      location: .init(latt: 0, long: 0),
+                      timestamp: 0,
+                      ackUserIDs: [],
+                      spreadDistance: 100, aliveDuration: 100)
+    }
+}
