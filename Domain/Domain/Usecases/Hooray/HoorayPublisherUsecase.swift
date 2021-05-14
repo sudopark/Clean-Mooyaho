@@ -33,6 +33,13 @@ extension HoorayPublishUsecaseImple {
         // TODO: 새 후레이 생성해서 초기 수신받은 유저 아이디 목록 반영되어있음 + 유저별 지속시간, 영향 범위 담겨있음
         return .empty()
     }
+    
+    public func publish(newHooray hooray: NewHoorayForm,
+                        at newPlace: NewPlaceForm) -> Maybe<Hooray> {
+        
+        // TODO: 신규장소 등록과 함께 무야호
+        return .empty()
+    }
 }
 
 

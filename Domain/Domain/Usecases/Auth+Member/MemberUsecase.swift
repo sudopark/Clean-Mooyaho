@@ -20,18 +20,26 @@ public protocol MemberUsecase { }
 
 public final class MemberUsecaseImple: MemberUsecase {
     
+    private let disposeBag: DisposeBag = .init()
+    private let memberRepository: MemberRepository
     
+    public init(memberRepository: MemberRepository) {
+        self.memberRepository = memberRepository
+    }
 }
 
 
 extension MemberUsecaseImple {
     
-    public func updateUserIsOnline(_ userID: Int, isOnline: Bool) -> Maybe<Void> {
-        return .empty()
+    public func updateUserIsOnline(_ userID: Int, isOnline: Bool) {
+        self.memberRepository.requestUpdateUserPresence(userID, isOnline: isOnline)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
     
     
-    public func loadNearbyUserLocations(at location: Coordinate) -> Maybe<[UserPresence]> {
-        return .empty()
+    public func loadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {
+        return self.memberRepository
+            .requestLoadNearbyUsers(at: location)
     }
 }
