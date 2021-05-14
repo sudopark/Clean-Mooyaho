@@ -48,3 +48,8 @@ public struct NewHoorayForm {
         
     // TODO: define fields
 }
+
+
+// MARK: - lastest hooray
+
+public typealias LatestHooray = (id: String, time: TimeSeconds)
