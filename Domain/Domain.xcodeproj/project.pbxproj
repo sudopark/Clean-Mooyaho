@@ -60,6 +60,14 @@
 		F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615293E264ED95A003BCB59 /* MemberRepository.swift */; };
 		F6152941264EDA4A003BCB59 /* StubMemberRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152940264EDA4A003BCB59 /* StubMemberRepository.swift */; };
 		F6152943264EDA9E003BCB59 /* MemberUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152942264EDA9E003BCB59 /* MemberUsecaseTests.swift */; };
+		F6152945264EE1E7003BCB59 /* HoorayRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152944264EE1E7003BCB59 /* HoorayRepository.swift */; };
+		F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152948264EE3CC003BCB59 /* MemberShip.swift */; };
+		F615294B264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615294A264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift */; };
+		F615294D264EE7BC003BCB59 /* StubHoorayRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615294C264EE7BC003BCB59 /* StubHoorayRepository.swift */; };
+		F615294F264EED6A003BCB59 /* SharedDataStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */; };
+		F6152954264F0057003BCB59 /* SharedDataStoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */; };
+		F6152956264F08AD003BCB59 /* SharedDataKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152955264F08AD003BCB59 /* SharedDataKeys.swift */; };
+		F6152958264F0B0C003BCB59 /* ApplicationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */; };
 		F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E072647EE7D00820368 /* SuggestPlace.swift */; };
 		F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */; };
 		F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A362648217A006BE4BD /* TagRepository.swift */; };
@@ -143,6 +151,14 @@
 		F615293E264ED95A003BCB59 /* MemberRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberRepository.swift; sourceTree = "<group>"; };
 		F6152940264EDA4A003BCB59 /* StubMemberRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMemberRepository.swift; sourceTree = "<group>"; };
 		F6152942264EDA9E003BCB59 /* MemberUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberUsecaseTests.swift; sourceTree = "<group>"; };
+		F6152944264EE1E7003BCB59 /* HoorayRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayRepository.swift; sourceTree = "<group>"; };
+		F6152948264EE3CC003BCB59 /* MemberShip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberShip.swift; sourceTree = "<group>"; };
+		F615294A264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayPublisherUsecaseTests.swift; sourceTree = "<group>"; };
+		F615294C264EE7BC003BCB59 /* StubHoorayRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubHoorayRepository.swift; sourceTree = "<group>"; };
+		F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreService.swift; sourceTree = "<group>"; };
+		F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreServiceTests.swift; sourceTree = "<group>"; };
+		F6152955264F08AD003BCB59 /* SharedDataKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataKeys.swift; sourceTree = "<group>"; };
+		F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationErrors.swift; sourceTree = "<group>"; };
 		F6684E072647EE7D00820368 /* SuggestPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlace.swift; sourceTree = "<group>"; };
 		F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTagUsecase.swift; sourceTree = "<group>"; };
 		F6A72A362648217A006BE4BD /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
@@ -183,6 +199,7 @@
 			children = (
 				2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */,
 				F6152938264DA35A003BCB59 /* MessageService.swift */,
+				F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -241,6 +258,8 @@
 				2BFF240326405A33008C52EB /* Location+Place */,
 				2BFF240426405A64008C52EB /* Suggest+Search */,
 				F6152931264DA0AE003BCB59 /* Hooray */,
+				F6152955264F08AD003BCB59 /* SharedDataKeys.swift */,
+				F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -253,6 +272,7 @@
 				2B40BF8E263F0FD70031C7A6 /* PlaceRepository.swift */,
 				F6A72A362648217A006BE4BD /* TagRepository.swift */,
 				F615293E264ED95A003BCB59 /* MemberRepository.swift */,
+				F6152944264EE1E7003BCB59 /* HoorayRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -276,6 +296,7 @@
 				2B40BF90263F10350031C7A6 /* StubPlaceRepository.swift */,
 				F6A72A3A2648247B006BE4BD /* StubTagRespotiory.swift */,
 				F6152940264EDA4A003BCB59 /* StubMemberRepository.swift */,
+				F615294C264EE7BC003BCB59 /* StubHoorayRepository.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -287,6 +308,7 @@
 				2B9F27AD2633F33400FEBCE3 /* ImageSource.swift */,
 				2B9F27962633F0F700FEBCE3 /* Member.swift */,
 				F615292C264D9CBE003BCB59 /* UserPresence.swift */,
+				F6152948264EE3CC003BCB59 /* MemberShip.swift */,
 			);
 			path = Members;
 			sourceTree = "<group>";
@@ -301,6 +323,7 @@
 				F6A72A382648243D006BE4BD /* SuggestTagUsecaseTests.swift */,
 				F6E3F6082649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift */,
 				F6152942264EDA9E003BCB59 /* MemberUsecaseTests.swift */,
+				F615294A264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -344,6 +367,7 @@
 				2BA93777263B1BFC00276876 /* Stubs */,
 				2BFF24102640775A008C52EB /* Entities */,
 				2BE978BE263AEA590000C0C6 /* Usecases */,
+				F6152952264F0040003BCB59 /* Utils */,
 				2BF00BC9262B7DF400E235C0 /* DomainTests.swift */,
 				2BF00BCB262B7DF400E235C0 /* Info.plist */,
 			);
@@ -428,6 +452,14 @@
 				F6152936264DA31A003BCB59 /* HoorayUsecase.swift */,
 			);
 			path = Hooray;
+			sourceTree = "<group>";
+		};
+		F6152952264F0040003BCB59 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -563,7 +595,9 @@
 				2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */,
 				2B9F27A32633F17500FEBCE3 /* Seller.swift in Sources */,
 				2B40BF84263F09800031C7A6 /* LocationMonitoringService.swift in Sources */,
+				F6152958264F0B0C003BCB59 /* ApplicationErrors.swift in Sources */,
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
+				F615294F264EED6A003BCB59 /* SharedDataStoreService.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */,
 				F615292D264D9CBE003BCB59 /* UserPresence.swift in Sources */,
@@ -575,14 +609,17 @@
 				2BFF241D2641E009008C52EB /* Rx+Extensions.swift in Sources */,
 				F6CFA5752646340300F9A049 /* SearchNewPlaceUsecase.swift in Sources */,
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,
+				F6152956264F08AD003BCB59 /* SharedDataKeys.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
 				F6152939264DA35A003BCB59 /* MessageService.swift in Sources */,
 				F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */,
+				F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
 				F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
 				F615293D264DA999003BCB59 /* HoorayReaction.swift in Sources */,
 				2B40BF8D263F0E400031C7A6 /* LocationMonitoringOption.swift in Sources */,
+				F6152945264EE1E7003BCB59 /* HoorayRepository.swift in Sources */,
 				2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */,
 				2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */,
 				F6E3F60B264983E900DD4986 /* Location+Extension.swift in Sources */,
@@ -596,12 +633,15 @@
 			files = (
 				2BA9377B263B1C1800276876 /* StubOAuth2Repository.swift in Sources */,
 				2B40BF81263F08EA0031C7A6 /* UserLocationUsecaseTests.swift in Sources */,
+				F615294B264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift in Sources */,
 				2B40BF89263F0A1D0031C7A6 /* StubLocationMonitoringService.swift in Sources */,
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,
 				2BFF24192641AA00008C52EB /* Dummies.swift in Sources */,
 				F6E3F6092649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift in Sources */,
+				F6152954264F0057003BCB59 /* SharedDataStoreServiceTests.swift in Sources */,
 				2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */,
 				F6152943264EDA9E003BCB59 /* MemberUsecaseTests.swift in Sources */,
+				F615294D264EE7BC003BCB59 /* StubHoorayRepository.swift in Sources */,
 				F6A72A3B2648247B006BE4BD /* StubTagRespotiory.swift in Sources */,
 				F6CFA57726463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift in Sources */,
 				2BE978C0263AEA630000C0C6 /* AuthUsecaseTests.swift in Sources */,

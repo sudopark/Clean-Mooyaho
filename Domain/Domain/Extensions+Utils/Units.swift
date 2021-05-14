@@ -26,7 +26,6 @@ extension TimeSeconds {
     }
 }
 
-
 extension Minutes {
     
     public func asTimeInterval() -> TimeInterval {

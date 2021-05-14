@@ -25,4 +25,8 @@ class StubMemberRepository: MemberRepository, Stubbable {
     func requestLoadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {
         return self.resolve(key: "requestLoadNearbyUsers") ?? .empty()
     }
+    
+    func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
+        return self.resolve(key: "requestLoadMembership") ?? .empty()
+    }
 }

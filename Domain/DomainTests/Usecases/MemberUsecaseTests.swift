@@ -18,6 +18,7 @@ import UnitTestHelpKit
 class MemberUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var store: SharedDataStoreServiceImple!
     var stubRepository: StubMemberRepository!
     var usecase: MemberUsecaseImple!
     
@@ -25,12 +26,14 @@ class MemberUsecaseTests: BaseTestCase, WaitObservableEvents {
         super.setUp()
         self.disposeBag = .init()
         self.stubRepository = .init()
-        self.usecase = MemberUsecaseImple(memberRepository: self.stubRepository)
+        self.store = .init()
+        self.usecase = MemberUsecaseImple(memberRepository: self.stubRepository, sharedDataService: self.store)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.stubRepository = nil
+        self.store = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -71,5 +74,34 @@ extension MemberUsecaseTests {
         
         // then
         XCTAssertEqual(presences?.count, 1)
+    }
+    
+    func testUsecase_whenLoadCurrentMemberShip_existOnSharedStore() {
+        // given
+        let expect = expectation(description: "공유 저장소에 멤버쉽 존재하는 경우 로드")
+        self.store.save(.membership, MemberShip())
+        
+        // when
+        let requestLoad = self.usecase.loadCurrentMembership()
+        let membership = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
+        
+        // then
+        XCTAssertNotNil(membership)
+    }
+    
+    func testUsecase_whenLoadCurrentMemberShip_notExistOnSharedStore() {
+        // given
+        let expect = expectation(description: "공유 저장소에 멤버쉽 존재 안하는 경우 로드")
+        self.store.save(.currentMember, Member(uid: "dummy"))
+        self.stubRepository.register(key: "requestLoadMembership") {
+            return Maybe<MemberShip>.just(.init())
+        }
+        
+        // when
+        let requestLoad = self.usecase.loadCurrentMembership()
+        let membership = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
+        
+        // then
+        XCTAssertNotNil(membership)
     }
 }
