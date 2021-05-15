@@ -13,12 +13,15 @@ public enum ImageSource {
     
     case path(_ path: String)
     case reference(_ path: String, description: String?)
+    case emoji(_ rawValue: String)
     
-    public var sourcePath: String {
+    public var sourcePath: String? {
         switch self {
         case let .path(value),
              let .reference(value, _):
             return value
+        default:
+            return nil
         }
     }
 }
@@ -30,6 +33,7 @@ extension ImageSource: Equatable {
         switch (lhs, rhs) {
         case let (.path(p1), .path(p2)): return p1 == p2
         case let (.reference(p1, d1), .reference(p2, d2)): return p1 == p2 && d1 == d2
+        case let (.emoji(v1), .emoji(v2)): return v1 == v2
         default: return false
         }
     }

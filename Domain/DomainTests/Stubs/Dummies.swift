@@ -68,6 +68,7 @@ extension Hooray {
                       location: .init(latt: 0, long: 0),
                       timestamp: 0,
                       ackUserIDs: [],
+                      reactions: [],
                       spreadDistance: 100, aliveDuration: 100)
     }
 }

@@ -20,13 +20,15 @@ public struct Hooray {
     public let location: Coordinate
     public let timeStamp: TimeSeconds
     
+    public var ackUserIDs: [String]
+    public var reactions: [HoorayReaction.ReactionInfo]
+    
     public let spreadDistance: Meters
     public let aliveDuration: TimeInterval
     
-    public var ackUserIDs: [String]
-    
     public init(uid: String, placeID: String, publisherID: String,
-                location: Coordinate, timestamp: TimeSeconds, ackUserIDs: [String] = [],
+                location: Coordinate, timestamp: TimeSeconds,
+                ackUserIDs: [String] = [], reactions: [HoorayReaction.ReactionInfo],
                 spreadDistance: Meters, aliveDuration: TimeInterval) {
         self.uid = uid
         self.placeID = placeID
@@ -34,6 +36,7 @@ public struct Hooray {
         self.location = location
         self.timeStamp = timestamp
         self.ackUserIDs = ackUserIDs
+        self.reactions = reactions
         self.spreadDistance = spreadDistance
         self.aliveDuration = aliveDuration
     }

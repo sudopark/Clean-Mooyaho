@@ -21,6 +21,7 @@ class HoorayPublisherUsecaseTests: BaseTestCase, WaitObservableEvents {
     var stubMemberRepository: StubMemberRepository!
     var sharedStore: SharedDataStoreServiceImple!
     var stubHoorayRepository: StubHoorayRepository!
+    var stubMessagingService: StubMessagingService!
     var usecase: HoorayPublishUsecaseImple!
     
     override func setUp() {
@@ -28,17 +29,20 @@ class HoorayPublisherUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.stubMemberRepository = .init()
         self.stubHoorayRepository = .init()
+        self.stubMessagingService = .init()
         self.sharedStore = .init()
         let memberUsecase = MemberUsecaseImple(memberRepository: self.stubMemberRepository,
                                                sharedDataService: self.sharedStore)
         self.usecase = .init(memberUsecase: memberUsecase,
-                             hoorayRepository: self.stubHoorayRepository)
+                             hoorayRepository: self.stubHoorayRepository,
+                             messagingService: self.stubMessagingService)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.stubMemberRepository = nil
         self.stubHoorayRepository = nil
+        self.stubMessagingService = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -166,5 +170,46 @@ extension HoorayPublisherUsecaseTests {
         
         // then
         XCTAssertNotNil(newHooray)
+    }
+}
+
+
+// MARK: - test recieve hooray ack and reactions
+
+extension HoorayPublisherUsecaseTests {
+    
+    func testUsecase_receiveHoorayAck() {
+        // given
+        let expect = expectation(description: "후레이 ack 수신")
+        expect.expectedFulfillmentCount = 3
+        
+        // when
+        let acks = self.waitElements(expect, for: self.usecase.receiveHoorayAck) {
+            (0..<3).forEach { int in
+                let message = HoorayAckMessage(hoorayID: "id", publisherID: "pub", ackUserID: "id:\(int)")
+                self.stubMessagingService.stubNewMessage.onNext(message)
+            }
+        }
+        
+        // then
+        XCTAssertEqual(acks.count, 3)
+    }
+    
+    func testUsecase_receiveHoorayReactions() {
+        // given
+        let expect = expectation(description: "후레이 리엑션 수신")
+        expect.expectedFulfillmentCount = 3
+        
+        // when
+        let reactions = self.waitElements(expect, for: self.usecase.receiveHoorayReaction) {
+            (0..<3).forEach { int in
+                let info = HoorayReaction.ReactionInfo(responderID: "res:\(int)", icon: .emoji("😾"), reactAt: 0)
+                let message = HoorayReactionMessage(hoorayID: "id", publisherID: "pub", reactionInfo: info)
+                self.stubMessagingService.stubNewMessage.onNext(message)
+            }
+        }
+        
+        // then
+        XCTAssertEqual(reactions.count, 3)
     }
 }
