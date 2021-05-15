@@ -14,11 +14,11 @@ import RxRelay
 
 // MARK: - SharedDataStoreService
 
-public protocol SharedDataStoreService {
+public protocol SharedDataStoreService: AuthInfoManger {
     
-    func save<V>(_ key: String, value: V)
+    func update<V>(_ key: String, value: V)
     
-    func fetch<V>(_ key: String) -> V?
+    func get<V>(_ key: String) -> V?
     
     func delete(_ key: String)
     
@@ -40,13 +40,13 @@ public final class SharedDataStoreServiceImple: SharedDataStoreService {
 
 extension SharedDataStoreServiceImple {
     
-    public func save<V>(_ key: String, value: V) {
+    public func update<V>(_ key: String, value: V) {
         self.lock.lock(); defer { self.lock.unlock() }
         let newDict = self.internalStore.value.merging([key: value], uniquingKeysWith: { $1 })
         self.internalStore.accept(newDict)
     }
     
-    public func fetch<V>(_ key: String) -> V? {
+    public func get<V>(_ key: String) -> V? {
         self.lock.lock(); defer { self.lock.unlock() }
         return self.internalStore.value[key] as? V
     }

@@ -10,6 +10,7 @@ import Foundation
 
 
 public enum SharedDataKeys: String {
+    case auth
     case currentMember
     case membership
 }
@@ -18,10 +19,10 @@ public enum SharedDataKeys: String {
 extension SharedDataStoreService {
     
     public func save<V>(_ key: SharedDataKeys, _ v: V) {
-        self.save(key.rawValue, value: v)
+        self.update(key.rawValue, value: v)
     }
     
     public func fetch<V>(_ key: SharedDataKeys) -> V? {
-        return self.fetch(key.rawValue)
+        return self.get(key.rawValue)
     }
 }

@@ -20,37 +20,66 @@ public protocol HoorayReceiverUsecase { }
 
 public final class HoorayReceiverUsecaseImple: HoorayReceiverUsecase {
     
+    private let authInfoProvider: AuthInfoProvider
+    private let hoorayRepository: HoorayRepository
     private let messageService: MessagingService
     
-    public init(messageService: MessagingService) {
+    public init(authInfoProvider: AuthInfoProvider,
+                hoorayRepository: HoorayRepository,
+                messageService: MessagingService) {
+        
+        self.authInfoProvider = authInfoProvider
+        self.hoorayRepository = hoorayRepository
         self.messageService = messageService
     }
+    
+    private let disposeBag = DisposeBag()
 }
 
 
 extension HoorayReceiverUsecaseImple {
     
-    enum AliveHoorayDetectionPolicy {
+    public func loadNearbyRecentHoorays(_ userID: String,
+                                        at location: Coordinate) -> Maybe<[Hooray]> {
+        let sendAcksIfNeed: ([Hooray]) -> Void = { [weak self] hoorays in
+            let ackMessages: [HoorayAckMessage] = hoorays
+                .filter{ $0.ackUserIDs.contains(userID) == false }
+                .map{ .init(hoorayID: $0.uid, publisherID: $0.publisherID, ackUserID: userID) }
+            self?.ackReceivedHooray(ackMessages: ackMessages)
+        }
         
-        static let validDistance: Meters = 0
-        static let alivableTimeInterval: TimeInterval = 0
+        return self.hoorayRepository.requestLoadNearbyRecentHoorays(at: location)
+            .do(onNext: sendAcksIfNeed)
     }
     
-    public func loadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
-        // TODO: 근처에 유효한 후레이 조회 + ack 처리
-        return .empty()
-    }
-    
-    public func ackReceivedHooray(_ hoorayID: String) -> Maybe<Void> {
-        // TODO: 후레이 수신확인 -> 메세지는 아래단에서 보냄
-        return .empty()
+    private func ackReceivedHooray(ackMessages: [HoorayAckMessage]) {
+        let sendings = ackMessages.map{ self.messageService.sendMessage($0).subscribe() }
+        self.disposeBag.insert(sendings)
     }
 }
 
 extension HoorayReceiverUsecaseImple {
     
-    public var newReceivedHooray: Observable<Hooray> {
-        // TODO: 실시간 받은 무야호 필터링해서 전파
-        .empty()
+    public var newReceivedHooray: Observable<NewHoorayMessage> {
+        
+        let sendAck: (NewHoorayMessage) -> Void = { [weak self] hoorayMessage in
+            guard let self = self, let auth = self.authInfoProvider.currentAuth() else { return }
+            let ackMessage = HoorayAckMessage(hoorayID: hoorayMessage.hoorayID,
+                                              publisherID: hoorayMessage.publisherID,
+                                              ackUserID: auth.userID)
+            self.ackReceivedHooray(ackMessages: [ackMessage])
+        }
+        
+        return self.messageService.receivedMessage
+            .compactMap{ $0 as? NewHoorayMessage }
+            .do(onNext: sendAck)
+    }
+}
+
+private extension Set where Element == HoorayAckInfo {
+    
+    func contains(_ userID: String) -> Bool {
+        let wildcardInfoForThisUser = HoorayAckInfo(ackUserID: userID, ackAt: 0)
+        return self.contains(wildcardInfoForThisUser)
     }
 }

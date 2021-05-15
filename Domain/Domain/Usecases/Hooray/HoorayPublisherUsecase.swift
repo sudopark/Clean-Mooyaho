@@ -75,31 +75,13 @@ extension HoorayPublishUsecaseImple {
 
 extension HoorayPublishUsecaseImple {
     
-    var receiveHoorayAck: Observable<HoorayAck> {
+    var receiveHoorayAck: Observable<HoorayAckMessage> {
         return self.messagingService.receivedMessage
             .compactMap{ $0 as? HoorayAckMessage }
-            .map{ $0.asAck() }
     }
     
-    var receiveHoorayReaction: Observable<HoorayReaction> {
+    var receiveHoorayReaction: Observable<HoorayReactionMessage> {
         return self.messagingService.receivedMessage
             .compactMap{ $0 as? HoorayReactionMessage }
-            .map{ $0.asReaction() }
-    }
-}
-
-
-private extension HoorayAckMessage {
-    
-    func asAck() -> HoorayAck {
-        return (self.hoorayID, self.ackUserID)
-    }
-}
-
-
-private extension HoorayReactionMessage {
-    
-    func asReaction() -> HoorayReaction {
-        return .init(hoorayID: self.hoorayID, reactionInfo: self.reactionInfo)
     }
 }

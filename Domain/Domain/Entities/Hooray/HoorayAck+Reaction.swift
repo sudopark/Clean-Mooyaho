@@ -20,14 +20,14 @@ public struct HoorayReaction {
     
     public struct ReactionInfo {
         
-        public let responderID: String
+        public let reactMemberID: String
         public let icon: ImageSource
         public let reactAt: TimeSeconds
         
-        public init(responderID: String,
+        public init(reactMemberID: String,
                     icon: ImageSource,
                     reactAt: TimeSeconds) {
-            self.responderID = responderID
+            self.reactMemberID = reactMemberID
             self.icon = icon
             self.reactAt = reactAt
         }
