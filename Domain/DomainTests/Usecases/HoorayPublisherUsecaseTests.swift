@@ -203,7 +203,7 @@ extension HoorayPublisherUsecaseTests {
         // when
         let reactions = self.waitElements(expect, for: self.usecase.receiveHoorayReaction) {
             (0..<3).forEach { int in
-                let info = HoorayReaction.ReactionInfo(responderID: "res:\(int)", icon: .emoji("😾"), reactAt: 0)
+                let info = HoorayReaction.ReactionInfo(reactMemberID: "res:\(int)", icon: .emoji("😾"), reactAt: 0)
                 let message = HoorayReactionMessage(hoorayID: "id", publisherID: "pub", reactionInfo: info)
                 self.stubMessagingService.stubNewMessage.onNext(message)
             }

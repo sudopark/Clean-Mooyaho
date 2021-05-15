@@ -18,6 +18,11 @@ import UnitTestHelpKit
 class StubMessagingService: MessagingService, Stubbable {
     
     
+    func sendMessage(_ message: Messsage) -> Maybe<Void> {
+        self.verify(key: "sendMessage", with: message)
+        return self.resolve(key: "sendMessage") ?? .empty()
+    }
+    
     let stubNewMessage = PublishSubject<Messsage>()
     var receivedMessage: Observable<Messsage> {
         return self.stubNewMessage.asObservable()

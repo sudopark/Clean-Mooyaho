@@ -44,12 +44,12 @@ extension SharedDataStoreServiceTests {
     
     func testStore_saveAndFetchValue() {
         // given
-        let valueBeforeSave: Int? = self.store.fetch("k1")
+        let valueBeforeSave: Int? = self.store.get("k1")
         
         // when
-        self.store.save("k1", value: 1)
-        let valueAfterSave: Int? = self.store.fetch("k1")
-        let value2: Int? = self.store.fetch("k2")
+        self.store.update("k1", value: 1)
+        let valueAfterSave: Int? = self.store.get("k1")
+        let value2: Int? = self.store.get("k2")
         
         // then
         XCTAssertEqual(valueBeforeSave, nil)
@@ -59,13 +59,13 @@ extension SharedDataStoreServiceTests {
     
     func testStore_delete() {
         // given
-        self.store.save("k1", value: 1)
+        self.store.update("k1", value: 1)
         
         // when
         self.store.delete("k1")
         
         // then
-        let stored: Int? = self.store.fetch("k1")
+        let stored: Int? = self.store.get("k1")
         XCTAssertNil(stored)
     }
     
@@ -78,7 +78,7 @@ extension SharedDataStoreServiceTests {
         let observingValue: Observable<Int> = self.store.observe("k1")
         let values = self.waitElements(expect, for: observingValue) {
             (0..<10).forEach{
-                self.store.save("k1", value: $0)
+                self.store.update("k1", value: $0)
             }
         }
         
@@ -90,13 +90,13 @@ extension SharedDataStoreServiceTests {
         // given
         let expect = expectation(description: "발류 업데이트 관찰시 이미 저장되어있는 값 있으면 초기이벤트로 시작")
         expect.expectedFulfillmentCount = 11
-        self.store.save("k1", value: -1)
+        self.store.update("k1", value: -1)
         
         // when
         let observingValue: Observable<Int> = self.store.observe("k1")
         let values = self.waitElements(expect, for: observingValue) {
             (0..<10).forEach{
-                self.store.save("k1", value: $0)
+                self.store.update("k1", value: $0)
             }
         }
         

@@ -72,3 +72,11 @@ extension Hooray {
                       spreadDistance: 100, aliveDuration: 100)
     }
 }
+
+
+extension NewHoorayMessage {
+    
+    static func dummy(_ int: Int) -> NewHoorayMessage {
+        return .init(hoorayID: "id:\(int)", publisherID: "pub:\(int)", publisherNickName: "pub_nick:\(int)", publishedAt: 0, placeID: "place", location: .init(latt: 0, long: 0), spreadDistance: 10, aliveDuration: 10)
+    }
+}
