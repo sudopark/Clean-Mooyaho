@@ -15,38 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class HoorayPublisherUsecaseTests: BaseTestCase, WaitObservableEvents {
-    
-    var disposeBag: DisposeBag!
-    var stubMemberRepository: StubMemberRepository!
-    var sharedStore: SharedDataStoreServiceImple!
-    var stubHoorayRepository: StubHoorayRepository!
-    var stubMessagingService: StubMessagingService!
-    var usecase: HoorayPublishUsecaseImple!
-    
-    override func setUp() {
-        super.setUp()
-        self.disposeBag = .init()
-        self.stubMemberRepository = .init()
-        self.stubHoorayRepository = .init()
-        self.stubMessagingService = .init()
-        self.sharedStore = .init()
-        let memberUsecase = MemberUsecaseImple(memberRepository: self.stubMemberRepository,
-                                               sharedDataService: self.sharedStore)
-        self.usecase = .init(memberUsecase: memberUsecase,
-                             hoorayRepository: self.stubHoorayRepository,
-                             messagingService: self.stubMessagingService)
-    }
-    
-    override func tearDown() {
-        self.disposeBag = nil
-        self.stubMemberRepository = nil
-        self.stubHoorayRepository = nil
-        self.stubMessagingService = nil
-        self.usecase = nil
-        super.tearDown()
-    }
-}
+class HoorayPublisherUsecaseTests: BaseHoorayUsecaseTests { }
 
 
 // MARK: - test check publish hoorayable
