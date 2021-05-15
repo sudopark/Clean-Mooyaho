@@ -65,12 +65,12 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
     
     public func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult> {
         
-        let signing = self.remote.requestSignIn(using: credential.toParameter())
+        let signing = self.remote.requestSignIn(using: credential)
         return self.requestSignInAndSaveMemberInfo(signing)
     }
     
-    private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<DataModels.SigninResult>) -> Maybe<SigninResult> {
-        let andSaveMemberInfo: (DataModels.SigninResult) -> Void = { [weak self] result in
+    private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<SigninResult>) -> Maybe<SigninResult> {
+        let andSaveMemberInfo: (SigninResult) -> Void = { [weak self] result in
             guard let self = self else { return }
             self.disposeBag.insert {
                 self.local.saveSignedIn(auth: result.auth).subscribe()
@@ -80,14 +80,5 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         return signingAction
             .do(onNext: andSaveMemberInfo)
             .map{ $0 }
-    }
-}
-
-
-// TOOD: 구현 및 공통로직 추출 필요
-extension OAuthCredential {
-    
-    func toParameter() -> ReqParams.OAuthCredential {
-        return .init()
     }
 }

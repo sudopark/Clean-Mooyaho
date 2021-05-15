@@ -162,7 +162,7 @@ extension Place: DocumentMappable {
               let address = json["address"] as? String,
               let reporterID = json["reporter_id"] as? String,
               let providerValue = json["info_provider"] as? String,
-              let provider = Place.RequireInfoProvider(rawValue: providerValue),
+              let provider = RequireInfoProvider(rawValue: providerValue),
               let tagsJsonArray = json["category_tags"] as? [[String: Any]],
               let createdAt = json["created_at"] as? Double,
               let pickCount = json["pick_count"] as? Int,
@@ -207,4 +207,51 @@ extension Place: DocumentMappable {
         
         return (self.uid, json)
     }
+}
+
+
+// MARK: - map newPlaceForm
+
+extension NewPlaceForm: JSONMappable {
+    
+    convenience init?(json: JSON) {
+        guard let title = json["title"] as? String,
+              let latt = json["latt"] as? Double,
+              let long = json["long"] as? Double,
+              let address = json["address"] as? String,
+              let reporterID = json["reporter_id"] as? String,
+              let providerValue = json["info_provider"] as? String,
+              let provider = Place.RequireInfoProvider(rawValue: providerValue),
+              let tagsJsonArray = json["category_tags"] as? [[String: Any]] else { return nil }
+        
+        let tags = tagsJsonArray.compactMap{ PlaceCategoryTag(json: $0) }
+        guard tags.isNotEmpty else { return nil }
+        
+        self.init(reporterID: reporterID, infoProvider: provider)
+        self.title = title
+        self.coordinate = .init(latt: latt, long: long)
+        self.address = address
+        self.categoryTags = tags
+    }
+    
+    func asJSON() -> JSON {
+        var json = JSON()
+        json["title"] = self.title
+        json["thumbnail"] = self.thumbnail?.asJSON
+        json["ext_search_id"] = self.searchID
+        json["detail_link"] = self.detailLink
+        json["latt"] = self.coordinate.latt
+        json["long"] = self.coordinate.long
+        json["address"] = self.address
+        json["contact"] = self.contact
+        json["category_tags"] = self.categoryTags.map{ $0.asJSON() }
+        json["reporter_id"] = self.reporterID
+        json["info_provider"] = self.infoProvider.rawValue
+        json["created_at"] = TimeSeconds.now
+        json["pick_count"] = 1
+        json["last_pick_at"] = TimeSeconds.now
+        
+        return json
+    }
+    
 }

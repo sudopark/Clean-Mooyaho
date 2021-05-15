@@ -16,7 +16,7 @@ import DataStore
 
 extension FirebaseServiceImple: TagRemote {
     
-    public func requestRegisterTag(_ tag: ReqParams.Tag) -> Maybe<Void> {
+    public func requestRegisterTag(_ tag: Tag) -> Maybe<Void> {
         switch tag.tagType {
         case .userComments:
             return self.save(tag, at: .commentTag, merging: true)
@@ -30,7 +30,7 @@ extension FirebaseServiceImple: TagRemote {
     }
     
     public func requestLoadPlaceCommnetTags(_ keyword: String,
-                                            cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection> {
+                                            cursor: String?) -> Maybe<SuggestTagResultCollection> {
         var query = self.fireStoreDB.collection(.commentTag)
             .whereField(FieldPath.documentID(), isGreaterThanOrEqualTo: keyword)
             .order(by: FieldPath.documentID())
@@ -44,7 +44,7 @@ extension FirebaseServiceImple: TagRemote {
     }
     
     public func requestLoadUserFeelingTags(_ keyword: String,
-                                           cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection> {
+                                           cursor: String?) -> Maybe<SuggestTagResultCollection> {
         var query = self.fireStoreDB.collection(.feelingTag)
             .whereField(FieldPath.documentID(), isGreaterThanOrEqualTo: keyword)
             .order(by: FieldPath.documentID())

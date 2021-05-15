@@ -50,12 +50,12 @@ extension ImageSource: JSONMappable {
 
 // MARK: - map memebr
 
-extension DataModels.Member: DocumentMappable {
+extension Member: DocumentMappable {
     
     init?(docuID: String, json: JSON) {
         self.init(uid: docuID)
         self.nickName = json.string(for: "nick_name")
-        self.icon = json.childJson(for: "icon").flatMap(DataModels.ImageSource.init(json:))
+        self.icon = json.childJson(for: "icon").flatMap(ImageSource.init(json:))
     }
     
     func asDocument() -> (String, JSON) {

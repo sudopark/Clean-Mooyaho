@@ -44,6 +44,10 @@ class StubPlaceRepository: PlaceRepository, Stubbable {
         return self.resolve(key: key) ?? .empty()
     }
     
+    func requestLoadPlace(_ placeID: String) -> Maybe<Place> {
+        return self.resolve(key: "requestLoadPlace") ?? .empty()
+    }
+    
     func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
         return self.resolve(key: "fetchRegisterPendingNewPlaceForm") ?? .empty()
     }
@@ -53,7 +57,7 @@ class StubPlaceRepository: PlaceRepository, Stubbable {
         return self.resolve(key: "savePendingRegister") ?? .empty()
     }
     
-    func requestUpload(newPlace form: NewPlaceForm) -> Maybe<Place> {
+    func requestRegister(newPlace form: NewPlaceForm) -> Maybe<Place> {
         return self.resolve(key: "requestUpload") ?? .empty()
     }
 }

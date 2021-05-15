@@ -9,6 +9,7 @@ import Foundation
 
 import RxSwift
 
+import Domain
 import DataStore
 
 
@@ -16,7 +17,7 @@ import DataStore
 
 extension FirebaseServiceImple: AuthRemote {
     
-    public func requestSignInAnonymously() -> Maybe<DataModels.Auth> {
+    public func requestSignInAnonymously() -> Maybe<Domain.Auth> {
         return Maybe.create { callback in
             Auth.auth().signInAnonymously { result, error in
                 guard error == nil, let userID = result?.user.uid else {
@@ -30,9 +31,9 @@ extension FirebaseServiceImple: AuthRemote {
     }
     
     public func requestSignIn(withEmail email: String,
-                              password: String) -> Maybe<DataModels.SigninResult> {
+                              password: String) -> Maybe<SigninResult> {
         
-        let andPostAction: (FirebaseAuth.User) -> Maybe<DataModels.SigninResult> = { [weak self] user in
+        let andPostAction: (FirebaseAuth.User) -> Maybe<SigninResult> = { [weak self] user in
             return self?.signInPostAction(user: user) ?? .empty()
         }
         return self.signIn(withEmail: email, password: password)
@@ -54,16 +55,16 @@ extension FirebaseServiceImple: AuthRemote {
         }
     }
     
-    public func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.SigninResult> {
+    public func requestSignIn(using credential: Domain.OAuthCredential) -> Maybe<SigninResult> {
         
-        let andPostAction: (FirebaseAuth.User) -> Maybe<DataModels.SigninResult> = { [weak self] user in
+        let andPostAction: (FirebaseAuth.User) -> Maybe<SigninResult> = { [weak self] user in
             return self?.signInPostAction(user: user) ?? .empty()
         }
         return self.selectSignInMethod(by: credential)
             .flatMap(andPostAction)
     }
     
-    private func selectSignInMethod(by credential: ReqParams.OAuthCredential) -> Maybe<FirebaseAuth.User> {
+    private func selectSignInMethod(by credential: Domain.OAuthCredential) -> Maybe<FirebaseAuth.User> {
         // TODO: 소셩 로그인 타입에 따라 분기
         return .empty()
     }
@@ -74,24 +75,24 @@ extension FirebaseServiceImple: AuthRemote {
 
 extension FirebaseServiceImple {
     
-    private func signInPostAction(user: FirebaseAuth.User) -> Maybe<DataModels.SigninResult> {
+    private func signInPostAction(user: FirebaseAuth.User) -> Maybe<SigninResult> {
         
-        let loadExistingMember: Maybe<DataModels.Member?> = self.load(docuID: user.uid, in: .member)
+        let loadExistingMember: Maybe<Member?> = self.load(docuID: user.uid, in: .member)
         
-        let thenSaveNewMemberIfNeed: (DataModels.Member?) -> Maybe<DataModels.Member>
+        let thenSaveNewMemberIfNeed: (Member?) -> Maybe<Member>
         thenSaveNewMemberIfNeed = { [weak self] existingMember in
             guard let self = self else { return .empty() }
             if let member = existingMember {
                 return .just(member)
             } else {
-                let newMember = DataModels.Member(uid: user.uid)
+                let newMember = Member(uid: user.uid)
                 return self.save(newMember, at: .member)
                     .map{ _ in newMember }
             }
         }
         
-        let transformAsResult: (DataModels.Member) -> DataModels.SigninResult = { member in
-            return .init(auth: DataModels.Auth(userID: member.uid), member: member)
+        let transformAsResult: (Member) -> SigninResult = { member in
+            return .init(auth: Auth(userID: member.uid), member: member)
         }
  
         return loadExistingMember

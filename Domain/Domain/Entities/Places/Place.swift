@@ -82,7 +82,7 @@ extension Coordinate: Equatable {
 
 // MARK: - NewPlaceForm & Builder
 
-public class NewPlaceForm {
+public final class NewPlaceForm {
     
     public let reporterID: String
     public let infoProvider: Place.RequireInfoProvider
