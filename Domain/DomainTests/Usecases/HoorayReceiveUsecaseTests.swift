@@ -15,34 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class HoorayReceiveUsecaseTests: BaseTestCase, WaitObservableEvents {
-    
-    var disposeBag: DisposeBag!
-    var store: SharedDataStoreServiceImple!
-    var stubHoorayRepository: StubHoorayRepository!
-    var stubMessagingService: StubMessagingService!
-    var usecase: HoorayReceiverUsecaseImple!
-    
-    override func setUp() {
-        super.setUp()
-        self.disposeBag = .init()
-        self.store = .init()
-        self.stubHoorayRepository = .init()
-        self.stubMessagingService = .init()
-        self.usecase = .init(authInfoProvider: self.store,
-                             hoorayRepository: self.stubHoorayRepository,
-                             messageService: self.stubMessagingService)
-    }
-    
-    override func tearDown() {
-        self.disposeBag = nil
-        self.store = nil
-        self.stubHoorayRepository = nil
-        self.stubMessagingService = nil
-        self.usecase = nil
-        super.tearDown()
-    }
-}
+class HoorayReceiveUsecaseTests: BaseHoorayUsecaseTests { }
 
 
 extension HoorayReceiveUsecaseTests {
@@ -119,7 +92,7 @@ extension HoorayReceiveUsecaseTests {
         let expect = expectation(description: "새로운 후레이 수신시에 ack 처리")
         expect.expectedFulfillmentCount = 3
         
-        self.store.updateAuth(Auth(userID: "myID"))
+        self.sharedStore.updateAuth(Auth(userID: "myID"))
         
         self.stubMessagingService.called(key: "sendMessage") { arg in
             guard let _ = arg as? HoorayAckMessage else { return }
