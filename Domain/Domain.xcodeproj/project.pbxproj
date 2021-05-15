@@ -55,8 +55,8 @@
 		F6152933264DA0C0003BCB59 /* HoorayPublisherUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152932264DA0C0003BCB59 /* HoorayPublisherUsecase.swift */; };
 		F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152934264DA313003BCB59 /* HoorayReceiveUsecase.swift */; };
 		F6152937264DA31A003BCB59 /* HoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152936264DA31A003BCB59 /* HoorayUsecase.swift */; };
-		F6152939264DA35A003BCB59 /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152938264DA35A003BCB59 /* MessageService.swift */; };
-		F615293D264DA999003BCB59 /* HoorayReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615293C264DA999003BCB59 /* HoorayReaction.swift */; };
+		F6152939264DA35A003BCB59 /* MessagingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152938264DA35A003BCB59 /* MessagingService.swift */; };
+		F615293D264DA999003BCB59 /* HoorayAck+Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615293C264DA999003BCB59 /* HoorayAck+Reaction.swift */; };
 		F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615293E264ED95A003BCB59 /* MemberRepository.swift */; };
 		F6152941264EDA4A003BCB59 /* StubMemberRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152940264EDA4A003BCB59 /* StubMemberRepository.swift */; };
 		F6152943264EDA9E003BCB59 /* MemberUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152942264EDA9E003BCB59 /* MemberUsecaseTests.swift */; };
@@ -68,6 +68,9 @@
 		F6152954264F0057003BCB59 /* SharedDataStoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */; };
 		F6152956264F08AD003BCB59 /* SharedDataKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152955264F08AD003BCB59 /* SharedDataKeys.swift */; };
 		F6152958264F0B0C003BCB59 /* ApplicationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */; };
+		F615295D264F1369003BCB59 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615295C264F1369003BCB59 /* Message.swift */; };
+		F6152961264F1A8B003BCB59 /* HoorayMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152960264F1A8B003BCB59 /* HoorayMessages.swift */; };
+		F615296326500091003BCB59 /* StubMessagingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296226500091003BCB59 /* StubMessagingService.swift */; };
 		F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E072647EE7D00820368 /* SuggestPlace.swift */; };
 		F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */; };
 		F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A362648217A006BE4BD /* TagRepository.swift */; };
@@ -146,8 +149,8 @@
 		F6152932264DA0C0003BCB59 /* HoorayPublisherUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayPublisherUsecase.swift; sourceTree = "<group>"; };
 		F6152934264DA313003BCB59 /* HoorayReceiveUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayReceiveUsecase.swift; sourceTree = "<group>"; };
 		F6152936264DA31A003BCB59 /* HoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayUsecase.swift; sourceTree = "<group>"; };
-		F6152938264DA35A003BCB59 /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
-		F615293C264DA999003BCB59 /* HoorayReaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayReaction.swift; sourceTree = "<group>"; };
+		F6152938264DA35A003BCB59 /* MessagingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingService.swift; sourceTree = "<group>"; };
+		F615293C264DA999003BCB59 /* HoorayAck+Reaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoorayAck+Reaction.swift"; sourceTree = "<group>"; };
 		F615293E264ED95A003BCB59 /* MemberRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberRepository.swift; sourceTree = "<group>"; };
 		F6152940264EDA4A003BCB59 /* StubMemberRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMemberRepository.swift; sourceTree = "<group>"; };
 		F6152942264EDA9E003BCB59 /* MemberUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberUsecaseTests.swift; sourceTree = "<group>"; };
@@ -159,6 +162,9 @@
 		F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreServiceTests.swift; sourceTree = "<group>"; };
 		F6152955264F08AD003BCB59 /* SharedDataKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataKeys.swift; sourceTree = "<group>"; };
 		F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationErrors.swift; sourceTree = "<group>"; };
+		F615295C264F1369003BCB59 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		F6152960264F1A8B003BCB59 /* HoorayMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayMessages.swift; sourceTree = "<group>"; };
+		F615296226500091003BCB59 /* StubMessagingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMessagingService.swift; sourceTree = "<group>"; };
 		F6684E072647EE7D00820368 /* SuggestPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlace.swift; sourceTree = "<group>"; };
 		F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTagUsecase.swift; sourceTree = "<group>"; };
 		F6A72A362648217A006BE4BD /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
@@ -198,7 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */,
-				F6152938264DA35A003BCB59 /* MessageService.swift */,
+				F6152938264DA35A003BCB59 /* MessagingService.swift */,
 				F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */,
 			);
 			path = Services;
@@ -258,6 +264,7 @@
 				2BFF240326405A33008C52EB /* Location+Place */,
 				2BFF240426405A64008C52EB /* Suggest+Search */,
 				F6152931264DA0AE003BCB59 /* Hooray */,
+				F615295B264F135A003BCB59 /* Messages */,
 				F6152955264F08AD003BCB59 /* SharedDataKeys.swift */,
 				F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */,
 			);
@@ -297,6 +304,7 @@
 				F6A72A3A2648247B006BE4BD /* StubTagRespotiory.swift */,
 				F6152940264EDA4A003BCB59 /* StubMemberRepository.swift */,
 				F615294C264EE7BC003BCB59 /* StubHoorayRepository.swift */,
+				F615296226500091003BCB59 /* StubMessagingService.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -439,7 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				F615292F264D9DB4003BCB59 /* Hooray.swift */,
-				F615293C264DA999003BCB59 /* HoorayReaction.swift */,
+				F615293C264DA999003BCB59 /* HoorayAck+Reaction.swift */,
 			);
 			path = Hooray;
 			sourceTree = "<group>";
@@ -460,6 +468,15 @@
 				F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		F615295B264F135A003BCB59 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				F615295C264F1369003BCB59 /* Message.swift */,
+				F6152960264F1A8B003BCB59 /* HoorayMessages.swift */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -577,6 +594,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B40BF8F263F0FD70031C7A6 /* PlaceRepository.swift in Sources */,
+				F6152961264F1A8B003BCB59 /* HoorayMessages.swift in Sources */,
 				2B40BF87263F09AF0031C7A6 /* LocationServiceAccessPermission.swift in Sources */,
 				2BABA288264279D2007E2D1E /* SuggestUsecase.swift in Sources */,
 				2B9F278B2633E91D00FEBCE3 /* OAuthRepository.swift in Sources */,
@@ -603,6 +621,7 @@
 				F615292D264D9CBE003BCB59 /* UserPresence.swift in Sources */,
 				F6152933264DA0C0003BCB59 /* HoorayPublisherUsecase.swift in Sources */,
 				2B40BF93263F15060031C7A6 /* Units.swift in Sources */,
+				F615295D264F1369003BCB59 /* Message.swift in Sources */,
 				F6152937264DA31A003BCB59 /* HoorayUsecase.swift in Sources */,
 				F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */,
 				F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */,
@@ -611,13 +630,13 @@
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,
 				F6152956264F08AD003BCB59 /* SharedDataKeys.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
-				F6152939264DA35A003BCB59 /* MessageService.swift in Sources */,
+				F6152939264DA35A003BCB59 /* MessagingService.swift in Sources */,
 				F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */,
 				F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
 				F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
-				F615293D264DA999003BCB59 /* HoorayReaction.swift in Sources */,
+				F615293D264DA999003BCB59 /* HoorayAck+Reaction.swift in Sources */,
 				2B40BF8D263F0E400031C7A6 /* LocationMonitoringOption.swift in Sources */,
 				F6152945264EE1E7003BCB59 /* HoorayRepository.swift in Sources */,
 				2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */,
@@ -637,6 +656,7 @@
 				2B40BF89263F0A1D0031C7A6 /* StubLocationMonitoringService.swift in Sources */,
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,
 				2BFF24192641AA00008C52EB /* Dummies.swift in Sources */,
+				F615296326500091003BCB59 /* StubMessagingService.swift in Sources */,
 				F6E3F6092649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift in Sources */,
 				F6152954264F0057003BCB59 /* SharedDataStoreServiceTests.swift in Sources */,
 				2BA93779263B1C0B00276876 /* StubAuthRepository.swift in Sources */,

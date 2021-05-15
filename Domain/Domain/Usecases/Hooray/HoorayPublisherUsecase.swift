@@ -29,13 +29,19 @@ public final class HoorayPublishUsecaseImple {
     
     private let memberUsecase: MemberUsecase
     private let hoorayRepository: HoorayRepository
+    private let messagingService: MessagingService
     
-    public init(memberUsecase: MemberUsecase, hoorayRepository: HoorayRepository) {
+    public init(memberUsecase: MemberUsecase,
+                hoorayRepository: HoorayRepository,
+                messagingService: MessagingService) {
         self.memberUsecase = memberUsecase
         self.hoorayRepository = hoorayRepository
+        self.messagingService = messagingService
     }
 }
 
+
+// MARK: - publish hoorays
 
 extension HoorayPublishUsecaseImple {
     
@@ -65,10 +71,35 @@ extension HoorayPublishUsecaseImple {
 }
 
 
+// MARK: - handle hooray responses
+
 extension HoorayPublishUsecaseImple {
     
+    var receiveHoorayAck: Observable<HoorayAck> {
+        return self.messagingService.receivedMessage
+            .compactMap{ $0 as? HoorayAckMessage }
+            .map{ $0.asAck() }
+    }
+    
     var receiveHoorayReaction: Observable<HoorayReaction> {
-        // TODO: Hooray 반응 모델링 및 구현 필요
-        return .empty()
+        return self.messagingService.receivedMessage
+            .compactMap{ $0 as? HoorayReactionMessage }
+            .map{ $0.asReaction() }
+    }
+}
+
+
+private extension HoorayAckMessage {
+    
+    func asAck() -> HoorayAck {
+        return (self.hoorayID, self.ackUserID)
+    }
+}
+
+
+private extension HoorayReactionMessage {
+    
+    func asReaction() -> HoorayReaction {
+        return .init(hoorayID: self.hoorayID, reactionInfo: self.reactionInfo)
     }
 }
