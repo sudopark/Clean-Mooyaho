@@ -12,62 +12,23 @@ import Domain
 
 public enum DataModels {
     
-    public struct Icon {
-        
-        public let path: String?
-        public let externals: (path: String, description: String?)?
-        
-        public init(path: String) {
-            self.path = path
-            self.externals = nil
-        }
-        
-        public init(external path: String, description: String?) {
-            self.path = nil
-            self.externals = (path, description)
-        }
-    }
+    public typealias Auth = Domain.Auth
     
-    public struct Member {
-        
-        public let uid: String
-        public var nickName: String?
-        public var icon: Icon?
-        
-        public init(uid: String, nickName: String? = nil, icon: Icon? = nil) {
-            self.uid = uid
-            self.nickName = nickName
-            self.icon = icon
-        }
-    }
+    public typealias ImageSource = Domain.ImageSource
+    
+    public typealias Member = Domain.Member
+    
+    public typealias SigninResult = Domain.SigninResult
+    
+    public typealias PlaceSnippet = Domain.PlaceSnippet
     
     public typealias SuggestPlaceResult = Domain.SuggestPlaceResult
     
+    public typealias SearchingPlace = Domain.SearchingPlace
+    
     public typealias SearchingPlaceCollection = Domain.SearchingPlaceCollection
     
-    public typealias SuggestTagResultCollection = Domain.SuggestTagResultCollection
-}
-
-extension ImageSource {
+    public typealias Tag = Domain.Tag
     
-    init?(model: DataModels.Icon) {
-        if let path = model.path {
-            self = .path(path)
-        } else if let external = model.externals {
-            self = .reference(external.path, description: external.description)
-        } else {
-            return nil
-        }
-    }
-}
-
-// MARK: - mapping
-
-extension Member {
-
-    init(model: DataModels.Member) {
-        self.init(uid: model.uid)
-        self.nickName = model.nickName
-        self.icon = model.icon.flatMap(ImageSource.init(model:))
-    }
+    public typealias SuggestTagResultCollection = Domain.SuggestTagResultCollection
 }

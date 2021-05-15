@@ -22,46 +22,64 @@ public protocol AuthRepositoryDefImpleDependency: AnyObject {
 
 
 extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
-    
-    public func fetchLastSignInMember() -> Maybe<Member?> {
+
+    func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)> {
         
-        let preparePermissionIfNeed: (Member?) -> Void = { [weak self] member in
-            member.whenNotExists {
-                self?.signInAnonymouslyForPrepareDataAcessPermission()
+        let getLastAuth = self.local.fetchCurrentAuth()
+        let prepareAnonymousAuthIfNeed: (Auth?) -> Maybe<Auth> = { [weak self] auth in
+            guard let self = self else { return .empty() }
+            switch auth {
+            case let .some(existing): return .just(existing)
+            case .none: return self.signInAnonymouslyForPrepareDataAcessPermission()
             }
         }
         
-        return self.local.fetchCurrentMember()
-            .do(onNext: preparePermissionIfNeed)
+        let thenLoadExistingCurrentMember: (Auth) -> Maybe<(Auth, Member?)>
+        thenLoadExistingCurrentMember = { [weak self] auth in
+            guard let self = self else { return .empty() }
+            return self.local.fetchCurrentMember().map{ (auth, $0) }
+        }
+        
+        return getLastAuth
+            .flatMap(prepareAnonymousAuthIfNeed)
+            .flatMap(thenLoadExistingCurrentMember)
     }
     
-    private func signInAnonymouslyForPrepareDataAcessPermission() {
-        self.remote.requestSignInAnonymously()
-            .subscribe()
-            .disposed(by: self.disposeBag)
+    private func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth> {
+        
+        let updateAuthOnStorage: (Auth) -> Void = { [weak self] auth in
+            guard let self = self else { return }
+            self.local.saveSignedIn(auth: auth)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        return self.remote.requestSignInAnonymously()
+            .do(onNext: updateAuthOnStorage)
     }
     
-    public func requestSignIn(using secret: EmailBaseSecret) -> Maybe<Member> {
+    public func requestSignIn(using secret: EmailBaseSecret) -> Maybe<SigninResult> {
         let signing = self.remote.requestSignIn(withEmail: secret.email, password: secret.password)
         return self.requestSignInAndSaveMemberInfo(signing)
     }
     
-    public func requestSignIn(using credential: OAuthCredential) -> Maybe<Member> {
+    public func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult> {
         
         let signing = self.remote.requestSignIn(using: credential.toParameter())
         return self.requestSignInAndSaveMemberInfo(signing)
     }
     
-    private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<DataModels.Member>) -> Maybe<Member> {
-        let andSaveMemberInfo: (Member) -> Void = { [weak self] member in
+    private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<DataModels.SigninResult>) -> Maybe<SigninResult> {
+        let andSaveMemberInfo: (DataModels.SigninResult) -> Void = { [weak self] result in
             guard let self = self else { return }
-            self.local.saveSignedIn(member: member)
-                .subscribe()
-                .disposed(by: self.disposeBag)
+            self.disposeBag.insert {
+                self.local.saveSignedIn(auth: result.auth).subscribe()
+                self.local.saveSignedIn(member: result.member).subscribe()
+            }
         }
         return signingAction
-            .map(Member.init(model:))
             .do(onNext: andSaveMemberInfo)
+            .map{ $0 }
     }
 }
 

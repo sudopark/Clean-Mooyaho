@@ -14,7 +14,7 @@ import RxRelay
 
 // MARK: - SharedDataStoreService
 
-public protocol SharedDataStoreService: AuthInfoManger {
+public protocol SharedDataStoreService: AuthInfoProvider {
     
     func update<V>(_ key: String, value: V)
     
@@ -69,5 +69,23 @@ extension SharedDataStoreServiceImple {
     public func flush() {
         self.lock.lock(); defer { self.lock.unlock() }
         self.internalStore.accept([:])
+    }
+}
+
+
+// MARK: - manage auth
+
+extension SharedDataStoreServiceImple: AuthInfoManger {
+    
+    public func currentAuth() -> Auth? {
+        return self.get(SharedDataKeys.auth.rawValue)
+    }
+    
+    public func updateAuth(_ newValue: Auth) {
+        self.update(SharedDataKeys.auth.rawValue, value: newValue)
+    }
+    
+    public func clearAuth() {
+        self.delete(SharedDataKeys.auth.rawValue)
     }
 }

@@ -45,59 +45,73 @@ class RepositoryTests_Auth: BaseTestCase, WaitObservableEvents {
 
 extension RepositoryTests_Auth {
     
-    func testRepo_fetchLastSignInMember() {
-        // given
-        let expect = expectation(description: "마지막으로 로그인했던 유저 로드")
-        
-        self.stubLocal.register(type: Maybe<Member?>.self, key: "fetchCurrentMember") {
-            return .just(Member(uid: "dummy"))
+    private func stubLastAccountInfo(_ auth: Auth?, _ member: Member?) {
+        self.stubLocal.register(key: "fetchCurrentAuth") {
+            return Maybe<DataModels.Auth?>.just(auth)
         }
         
+        self.stubLocal.register(key: "fetchCurrentMember") {
+            return Maybe<DataModels.Member?>.just(member)
+        }
+    }
+    
+    func testRepo_fetchLastSignInAccountInfo() {
+        // given
+        let expect = expectation(description: "마지막으로 로그인했던 계정정보 로드")
+        
+        self.stubLastAccountInfo(Auth(userID: "dummy"), Member(uid: "dummy"))
+        
         // when
-        let member = self.waitFirstElement(expect, for: self.repository.fetchLastSignInMember().asObservable()) { } ?? nil
+        let requestLoad = self.repository.fetchLastSignInAccountInfo()
+        let account = self.waitFirstElement(expect, for: requestLoad.asObservable()) { } ?? nil
         
         // then
-        XCTAssertNotNil(member)
+        XCTAssertNotNil(account?.0)
+        XCTAssertNotNil(account?.1)
     }
     
     func testRepo_whenLastSignInMemberNotExists_signinAnonymously() {
         // given
         let expect = expectation(description: "마지막으로 로그인했던 유저 없으면 익명로그인 진행")
-        self.stubLocal.register(type: Maybe<Member?>.self, key: "fetchCurrentMember") { .just(nil) }
+        self.stubLastAccountInfo(nil, nil)
         
-        self.stubRemote.called(key: "requestSignInAnonymously") { _ in
-            expect.fulfill()
+        self.stubRemote.register(key: "requestSignInAnonymously") {
+            return Maybe<DataModels.Auth>.just(Auth(userID: "dummy"))
         }
-        
+       
         // when
-        self.repository.fetchLastSignInMember()
-            .subscribe()
-            .disposed(by: self.disposeBag)
+        let requestLoad = self.repository.fetchLastSignInAccountInfo()
+        let account = self.waitFirstElement(expect, for: requestLoad.asObservable()) { } ?? nil
         
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertNotNil(account?.0)
+        XCTAssertNil(account?.1)
     }
     
-    func testRepo_whenSignIn_returnsMember() {
+    func testRepo_signInWithEmail() {
         // given
-        let expect = expectation(description: "로그인 이후에 멤버정보 반환")
-        self.stubRemote.register(type: Maybe<DataModels.Member>.self, key: "requestSignIn:withEmail") {
-            return .just(DataModels.Member(uid: "new.member.id"))
+        let expect = expectation(description: "이메일로 로그인")
+        self.stubRemote.register(type: Maybe<DataModels.SigninResult>.self, key: "requestSignIn:withEmail") {
+            let auth = DataModels.Auth(userID: "dummy")
+            let member = DataModels.Member(uid: "dummy")
+            return .just(.init(auth: auth, member: member))
         }
         
         // when
         let secret = EmailBaseSecret(email: "", password: "")
-        let member = self.waitFirstElement(expect, for: self.repository.requestSignIn(using: secret).asObservable()) {}
+        let result = self.waitFirstElement(expect, for: self.repository.requestSignIn(using: secret).asObservable()) {}
         
         // then
-        XCTAssertEqual(member?.uid, "new.member.id")
+        XCTAssertNotNil(result)
     }
     
     func testRepo_whenAfterSignIn_saveMemberDataAtLocal() {
         // given
         let expect = expectation(description: "로그인 성공 이후에 로컬에 멤버정보 저장")
-        self.stubRemote.register(type: Maybe<DataModels.Member>.self, key: "requestSignIn:withEmail") {
-            return .just(DataModels.Member(uid: "new.member.id"))
+        self.stubRemote.register(type: Maybe<DataModels.SigninResult>.self, key: "requestSignIn:withEmail") {
+            let auth = DataModels.Auth(userID: "dummy")
+            let member = DataModels.Member(uid: "dummy")
+            return .just(.init(auth: auth, member: member))
         }
         
         self.stubLocal.called(key: "saveSignedIn:member") { _ in

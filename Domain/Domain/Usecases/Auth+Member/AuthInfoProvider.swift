@@ -22,19 +22,3 @@ public protocol AuthInfoManger: AuthInfoProvider {
     
     func clearAuth()
 }
-
-
-extension SharedDataStoreService {
-    
-    public func currentAuth() -> Auth? {
-        return self.get(SharedDataKeys.auth.rawValue)
-    }
-    
-    public func updateAuth(_ newValue: Auth) {
-        self.update(SharedDataKeys.auth.rawValue, value: newValue)
-    }
-    
-    public func clearAuth() {
-        self.delete(SharedDataKeys.auth.rawValue)
-    }
-}

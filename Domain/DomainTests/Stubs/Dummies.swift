@@ -11,6 +11,13 @@ import Foundation
 @testable import Domain
 
 
+extension SigninResult {
+    
+    static func dummy(_ uuid: String) -> Self {
+        return .init(auth: Auth(userID: uuid), member: .init(uid: uuid))
+    }
+}
+
 extension PlaceSnippet {
     
     static func dummy(_ int: Int) -> PlaceSnippet {
