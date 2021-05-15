@@ -20,9 +20,9 @@ public protocol HoorayReceiverUsecase { }
 
 public final class HoorayReceiverUsecaseImple: HoorayReceiverUsecase {
     
-    private let messageService: MessageService
+    private let messageService: MessagingService
     
-    public init(messageService: MessageService) {
+    public init(messageService: MessagingService) {
         self.messageService = messageService
     }
 }
@@ -42,7 +42,7 @@ extension HoorayReceiverUsecaseImple {
     }
     
     public func ackReceivedHooray(_ hoorayID: String) -> Maybe<Void> {
-        // TODO: 후레이 수신확인
+        // TODO: 후레이 수신확인 -> 메세지는 아래단에서 보냄
         return .empty()
     }
 }
