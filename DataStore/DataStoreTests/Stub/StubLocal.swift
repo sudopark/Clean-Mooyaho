@@ -18,6 +18,14 @@ import Domain
 
 class StubLocal: LocalStorage, Stubbable {
     
+    func fetchCurrentAuth() -> Maybe<Auth?> {
+        return self.resolve(key: "fetchCurrentAuth") ?? .empty()
+    }
+    
+    func saveSignedIn(auth: Auth) -> Maybe<Void> {
+        return self.resolve(key: "saveSignedIn") ?? .empty()
+    }
+    
     func fetchCurrentMember() -> Maybe<Member?> {
         return self.resolve(key: "fetchCurrentMember") ?? .empty()
     }

@@ -47,11 +47,11 @@ public protocol Remote: AuthRemote, PlaceRemote, TagRemote { }
 
 public protocol AuthRemote {
     
-    func requestSignInAnonymously() -> Maybe<Void>
+    func requestSignInAnonymously() -> Maybe<DataModels.Auth>
     
-    func requestSignIn(withEmail email: String, password: String) -> Maybe<DataModels.Member>
+    func requestSignIn(withEmail email: String, password: String) -> Maybe<DataModels.SigninResult>
     
-    func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.Member>
+    func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.SigninResult>
 }
 
 

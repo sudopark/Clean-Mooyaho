@@ -12,38 +12,7 @@ import Domain
 import DataStore
 
 
-// MARK: - Map Icon
-
-extension DataModels.Icon: JSONMappable {
-    
-    init?(json: JSON) {
-        if let pathValue = json["path"] as? String {
-            self.init(path: pathValue)
-            
-        } else if let referenceJson = json["reference"] as? [String: Any],
-                  let pathValue = referenceJson["path"] as? String {
-            let description = referenceJson["description"] as? String
-            self.init(external: pathValue, description: description)
-            
-        } else {
-            return nil
-        }
-    }
-    
-    func asJSON() -> JSON {
-        var json = JSON()
-        if let path = self.path {
-            json["path"] = path
-        } else if let external = self.externals {
-            var subJSON: JSON = [:]
-            subJSON["path"] = external.path
-            subJSON["description"] = external.description
-            json["reference"] = subJSON
-        }
-        return json
-    }
-}
-
+// MARK: - Map ImageSource
 
 extension ImageSource: JSONMappable {
     
@@ -56,7 +25,10 @@ extension ImageSource: JSONMappable {
             let description = referenceJson["description"] as? String
             self = .reference(pathValue, description: description)
             
-        } else {
+        } else if let emoji = json["emoji"] as? String {
+            self = .emoji(emoji)
+            
+        }  else {
             return nil
         }
     }
@@ -68,6 +40,9 @@ extension ImageSource: JSONMappable {
             
         case let .reference(value, description):
             return ["reference": ["path": value, "description": description]]
+            
+        case let .emoji(value):
+            return ["emoji": value]
         }
     }
 }
@@ -80,7 +55,7 @@ extension DataModels.Member: DocumentMappable {
     init?(docuID: String, json: JSON) {
         self.init(uid: docuID)
         self.nickName = json.string(for: "nick_name")
-        self.icon = json.childJson(for: "icon").flatMap(DataModels.Icon.init(json:))
+        self.icon = json.childJson(for: "icon").flatMap(DataModels.ImageSource.init(json:))
     }
     
     func asDocument() -> (String, JSON) {

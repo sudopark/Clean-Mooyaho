@@ -20,6 +20,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var stubAuthRepo: StubAuthRepository!
     private var stubOAuth2Repo: StubOAuth2Repository!
+    private var store: SharedDataStoreServiceImple!
     private var usecase: AuthUsecaseImple!
     
     override func setUp() {
@@ -27,14 +28,18 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = DisposeBag()
         self.stubAuthRepo = .init()
         self.stubOAuth2Repo = .init()
+        self.store = .init()
         self.usecase = AuthUsecaseImple(authRepository: self.stubAuthRepo,
-                                        socialAuthRepository: self.stubOAuth2Repo)
+                                        socialAuthRepository: self.stubOAuth2Repo,
+                                        authInfoManager: self.store,
+                                        sharedDataStroeService: self.store)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.stubAuthRepo = nil
         self.stubOAuth2Repo = nil
+        self.store = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -45,39 +50,52 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
 
 extension AuthUsecaseTests {
     
-    func testUsecase_loadMember() {
+    func testUsecase_loadLastAccountInfo() {
         // given
-        let expect = expectation(description: "멤버정보 로드")
-        self.stubAuthRepo.register(key: "fetchLastSignInMember") {
-            return Maybe<Member?>.just(Member(uid: "uuid"))
+        let expect = expectation(description: "마지막 이용한 계정정보 반환")
+        self.stubAuthRepo.register(key: "fetchLastSignInAccountInfo") {
+            return Maybe<(Auth, Member?)>.just((Auth(userID: "dummy"), Member(uid: "dummy")))
         }
         
         // when
-        let member = self.waitFirstElement(expect, for: self.usecase.loadCurrentMember().asObservable()) { } ?? nil
+        let requestLoad = self.usecase.loadLastSignInAccountInfo()
+        let info = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
         
         // then
-        XCTAssertEqual(member?.uid, "uuid")
+        XCTAssertNotNil(info?.auth)
+        XCTAssertNotNil(info?.member)
     }
     
-    func testUsecase_whenNotSingInBefore_loadMemberResultIsNil() {
+    private func assertAuthAndMemberInfoUpdatedOnStore(_ expect: XCTestExpectation,
+                                                       _ action: @escaping () -> Void) {
+        let auths: Observable<Auth> = self.store.observe(SharedDataKeys.auth.rawValue)
+        let members: Observable<Member> = self.store.observe(SharedDataKeys.currentMember.rawValue)
+        let source = Observable.combineLatest(auths, members)
+        let pair = self.waitFirstElement(expect, for: source, action: action)
+        XCTAssertNotNil(pair?.0)
+        XCTAssertNotNil(pair?.1)
+    }
+    
+    func testUsecase_whenLoadLastAccountInfo_updateOnStores() {
         // given
-        let expect = expectation(description: "마지막에 로그인한 이력 없으면 조회결과 nil")
-        self.stubAuthRepo.register(key: "fetchLastSignInMember") {
-            return Maybe<Member?>.just(nil)
+        let expect = expectation(description: "마지막 이용한 계정정보 로드시 공용 스토어에 저장")
+        self.stubAuthRepo.register(key: "fetchLastSignInAccountInfo") {
+            return Maybe<(Auth, Member?)>.just((Auth(userID: "dummy"), Member(uid: "dummy")))
         }
         
-        // when
-        let member = self.waitFirstElement(expect, for: self.usecase.loadCurrentMember().asObservable()) { } ?? nil
-        
-        // then
-        XCTAssertNil(member)
+        // when + then
+        self.assertAuthAndMemberInfoUpdatedOnStore(expect) {
+            self.usecase.loadLastSignInAccountInfo()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
     }
     
     func testUsecase_signInUsingEmailBaseSecret() {
         // given
         let expect = expectation(description: "이메일 정보로 로그인")
         self.stubAuthRepo.register(key: "requestSignIn:secret") {
-            return Maybe<Member>.just(Member(uid: "new_uuid"))
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
         }
         
         // when
@@ -88,6 +106,22 @@ extension AuthUsecaseTests {
         XCTAssertNotNil(member)
     }
     
+    func testUsecase_whenAfterEmailBaseLogin_updateResultOnStore() {
+        // given
+        let expect = expectation(description: "이메일로 로그인 이후에 스토어에 정보 업데이트")
+        self.stubAuthRepo.register(key: "requestSignIn:secret") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when + then
+        self.assertAuthAndMemberInfoUpdatedOnStore(expect) {
+            let secret = EmailBaseSecret(email: "email@com", password: "password")
+            self.usecase.requestSignIn(emailBaseSecret: secret)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+    }
+    
     func testUsecase_oauth2SignIn() {
         // given
         let expect = expectation(description: "소셜 로그인 요청 이후에 서비스 로그인 성공시 새로운 멤버 정보 반환")
@@ -96,7 +130,7 @@ extension AuthUsecaseTests {
             return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
         }
         self.stubAuthRepo.register(key: "requestSignIn:credential") {
-            return Maybe<Member>.just(Member(uid: "new_uuid"))
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
         }
         
         // when
@@ -104,6 +138,24 @@ extension AuthUsecaseTests {
         
         // then
         XCTAssertEqual(member?.uid, "new_uuid")
+    }
+    
+    func testUsecase_whenAfterSocialLogin_updateResultOnStore() {
+        // given
+        let expect = expectation(description: "소셜 로그인 이후에 스토어에 정보 업데이트")
+        self.stubOAuth2Repo.register(key: "requestSignIn") {
+            return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
+        }
+        self.stubAuthRepo.register(key: "requestSignIn:credential") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when + then
+        self.assertAuthAndMemberInfoUpdatedOnStore(expect) {
+            self.usecase.requestSocialSignIn()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
     }
     
     func testUsecase_whenOauth2SignInFail_resultIsFail() {
@@ -135,7 +187,7 @@ extension AuthUsecaseTests {
         }
         struct DummyError: Error {}
         self.stubAuthRepo.register(key: "requestSignIn:credential") {
-            return Maybe<Member>.error(DummyError())
+            return Maybe<SigninResult>.error(DummyError())
         }
         
         // when
