@@ -13,31 +13,29 @@ import RxSwift
 
 // MARK: - HoorayReceiverUsecase
 
-public protocol HoorayReceiverUsecase { }
-
-
-// MARK: - HoorayReceiverUsecaseImple
-
-public final class HoorayReceiverUsecaseImple: HoorayReceiverUsecase {
+public protocol HoorayReceiverUsecase: AnyObject {
     
-    private let authInfoProvider: AuthInfoProvider
-    private let hoorayRepository: HoorayRepository
-    private let messageService: MessagingService
+    func loadNearbyRecentHoorays(_ userID: String,
+                                        at location: Coordinate) -> Maybe<[Hooray]>
     
-    public init(authInfoProvider: AuthInfoProvider,
-                hoorayRepository: HoorayRepository,
-                messageService: MessagingService) {
-        
-        self.authInfoProvider = authInfoProvider
-        self.hoorayRepository = hoorayRepository
-        self.messageService = messageService
-    }
-    
-    private let disposeBag = DisposeBag()
+    var newReceivedHooray: Observable<NewHoorayMessage> { get }
 }
 
 
-extension HoorayReceiverUsecaseImple {
+// MARK: - HoorayReceiveUsecaseDefaultImpleDependency
+
+public protocol HoorayReceiveUsecaseDefaultImpleDependency {
+    
+    var authInfoProvider: AuthInfoProvider { get }
+    var hoorayRepository: HoorayRepository { get }
+    var messagingService: MessagingService { get }
+    var disposeBag: DisposeBag { get }
+}
+
+
+// MARK: - HoorayReceiverUsecase default implementations
+
+extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDependency {
     
     public func loadNearbyRecentHoorays(_ userID: String,
                                         at location: Coordinate) -> Maybe<[Hooray]> {
@@ -52,14 +50,6 @@ extension HoorayReceiverUsecaseImple {
             .do(onNext: sendAcksIfNeed)
     }
     
-    private func ackReceivedHooray(ackMessages: [HoorayAckMessage]) {
-        let sendings = ackMessages.map{ self.messageService.sendMessage($0).subscribe() }
-        self.disposeBag.insert(sendings)
-    }
-}
-
-extension HoorayReceiverUsecaseImple {
-    
     public var newReceivedHooray: Observable<NewHoorayMessage> {
         
         let sendAck: (NewHoorayMessage) -> Void = { [weak self] hoorayMessage in
@@ -70,11 +60,17 @@ extension HoorayReceiverUsecaseImple {
             self.ackReceivedHooray(ackMessages: [ackMessage])
         }
         
-        return self.messageService.receivedMessage
+        return self.messagingService.receivedMessage
             .compactMap{ $0 as? NewHoorayMessage }
             .do(onNext: sendAck)
     }
+    
+    private func ackReceivedHooray(ackMessages: [HoorayAckMessage]) {
+        let sendings = ackMessages.map{ self.messagingService.sendMessage($0).subscribe() }
+        self.disposeBag.insert(sendings)
+    }
 }
+
 
 private extension Set where Element == HoorayAckInfo {
     

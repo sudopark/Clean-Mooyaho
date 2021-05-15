@@ -23,7 +23,7 @@ public protocol AuthRepositoryDefImpleDependency: AnyObject {
 
 extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
 
-    func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)> {
+    public func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)> {
         
         let getLastAuth = self.local.fetchCurrentAuth()
         let prepareAnonymousAuthIfNeed: (Auth?) -> Maybe<Auth> = { [weak self] auth in

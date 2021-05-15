@@ -20,30 +20,31 @@ public enum HoorayPublishPolicy {
 
 // MARK: - HoorayPublisherUsecase
 
-public protocol HoorayPublisherUsecase { }
-
-
-// MARK: - HoorayPublishUsecaseImple
-
-public final class HoorayPublishUsecaseImple {
+public protocol HoorayPublisherUsecase {
     
-    private let memberUsecase: MemberUsecase
-    private let hoorayRepository: HoorayRepository
-    private let messagingService: MessagingService
+    func isAvailToPublish(_ memberID: String) -> Maybe<Bool>
     
-    public init(memberUsecase: MemberUsecase,
-                hoorayRepository: HoorayRepository,
-                messagingService: MessagingService) {
-        self.memberUsecase = memberUsecase
-        self.hoorayRepository = hoorayRepository
-        self.messagingService = messagingService
-    }
+    func publish(newHooray hoorayForm: NewHoorayForm,
+                        withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray>
+    
+    var receiveHoorayAck: Observable<HoorayAckMessage> { get }
+    
+    var receiveHoorayReaction: Observable<HoorayReactionMessage> { get }
+}
+
+// MARK: - HoorayPubisherDefaultImpleDependency
+
+public protocol HoorayPubisherUsecaseDefaultImpleDependency {
+    
+    var memberUsecase: MemberUsecase { get }
+    var hoorayRepository: HoorayRepository { get }
+    var messagingService: MessagingService { get }
 }
 
 
-// MARK: - publish hoorays
+// MARK: HoorayPubisher default implementation -> publish hoorays
 
-extension HoorayPublishUsecaseImple {
+extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
     
     public func isAvailToPublish(_ memberID: String) -> Maybe<Bool> {
         
@@ -71,16 +72,16 @@ extension HoorayPublishUsecaseImple {
 }
 
 
-// MARK: - handle hooray responses
+// MARK: HoorayPubisher default implementation -> handle hooray responses
 
-extension HoorayPublishUsecaseImple {
+extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
     
-    var receiveHoorayAck: Observable<HoorayAckMessage> {
+    public var receiveHoorayAck: Observable<HoorayAckMessage> {
         return self.messagingService.receivedMessage
             .compactMap{ $0 as? HoorayAckMessage }
     }
     
-    var receiveHoorayReaction: Observable<HoorayReactionMessage> {
+    public var receiveHoorayReaction: Observable<HoorayReactionMessage> {
         return self.messagingService.receivedMessage
             .compactMap{ $0 as? HoorayReactionMessage }
     }
