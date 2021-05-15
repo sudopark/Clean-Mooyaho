@@ -47,11 +47,11 @@ extension RepositoryTests_Auth {
     
     private func stubLastAccountInfo(_ auth: Auth?, _ member: Member?) {
         self.stubLocal.register(key: "fetchCurrentAuth") {
-            return Maybe<DataModels.Auth?>.just(auth)
+            return Maybe<Auth?>.just(auth)
         }
         
         self.stubLocal.register(key: "fetchCurrentMember") {
-            return Maybe<DataModels.Member?>.just(member)
+            return Maybe<Member?>.just(member)
         }
     }
     
@@ -76,7 +76,7 @@ extension RepositoryTests_Auth {
         self.stubLastAccountInfo(nil, nil)
         
         self.stubRemote.register(key: "requestSignInAnonymously") {
-            return Maybe<DataModels.Auth>.just(Auth(userID: "dummy"))
+            return Maybe<Auth>.just(Auth(userID: "dummy"))
         }
        
         // when
@@ -91,9 +91,9 @@ extension RepositoryTests_Auth {
     func testRepo_signInWithEmail() {
         // given
         let expect = expectation(description: "이메일로 로그인")
-        self.stubRemote.register(type: Maybe<DataModels.SigninResult>.self, key: "requestSignIn:withEmail") {
-            let auth = DataModels.Auth(userID: "dummy")
-            let member = DataModels.Member(uid: "dummy")
+        self.stubRemote.register(type: Maybe<SigninResult>.self, key: "requestSignIn:withEmail") {
+            let auth = Auth(userID: "dummy")
+            let member = Member(uid: "dummy")
             return .just(.init(auth: auth, member: member))
         }
         
@@ -108,9 +108,9 @@ extension RepositoryTests_Auth {
     func testRepo_whenAfterSignIn_saveMemberDataAtLocal() {
         // given
         let expect = expectation(description: "로그인 성공 이후에 로컬에 멤버정보 저장")
-        self.stubRemote.register(type: Maybe<DataModels.SigninResult>.self, key: "requestSignIn:withEmail") {
-            let auth = DataModels.Auth(userID: "dummy")
-            let member = DataModels.Member(uid: "dummy")
+        self.stubRemote.register(type: Maybe<SigninResult>.self, key: "requestSignIn:withEmail") {
+            let auth = Auth(userID: "dummy")
+            let member = Member(uid: "dummy")
             return .just(.init(auth: auth, member: member))
         }
         

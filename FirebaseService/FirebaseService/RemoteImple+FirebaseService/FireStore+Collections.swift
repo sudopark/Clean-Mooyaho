@@ -54,6 +54,39 @@ extension FirebaseServiceImple {
         }
     }
     
+    func saveNew<D: DocumentMappable>(_ form: JSONMappable,
+                                      at collectionType: FireStoreCollectionType) -> Maybe<D> {
+        
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            
+            let json = form.asJSON()
+            let documentRef = db.collection(collectionType).document()
+            let docuID = documentRef.documentID
+            
+            documentRef.setData(json) { error in
+                
+                guard error == nil else {
+                    let type = String(describing: D.self)
+                    let remoteError = RemoteErrors.saveFail(type, reason: error)
+                    callback(.error(remoteError))
+                    return
+                }
+                
+                guard let model = D.init(docuID: docuID, json: json) else {
+                    let type = String(describing: D.self)
+                    let remoteError = RemoteErrors.mappingFail(type)
+                    callback(.error(remoteError))
+                    return
+                }
+                
+                callback(.success(model))
+            }
+
+            return Disposables.create()
+        }
+    }
+    
     func load<T: DocumentMappable>(docuID: String,
                                    in collectionType: FireStoreCollectionType) -> Maybe<T?> {
         

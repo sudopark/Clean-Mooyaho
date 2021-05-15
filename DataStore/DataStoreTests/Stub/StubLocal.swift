@@ -52,4 +52,17 @@ class StubLocal: LocalStorage, Stubbable {
         self.verify(key: "saveTags")
         return .just()
     }
+    
+    func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
+        return self.resolve(key: "fetchRegisterPendingNewPlaceForm") ?? .empty()
+    }
+    
+    func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
+        return self.resolve(key: "savePendingRegister") ?? .empty()
+    }
+    
+    func savePlaces(_ places: [Place]) -> Maybe<Void> {
+        self.verify(key: "savePlaces")
+        return self.resolve(key: "savePlaces") ?? .empty()
+    }
 }

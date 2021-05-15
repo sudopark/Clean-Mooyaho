@@ -13,7 +13,7 @@ import RxSwift
 import Domain
 
 
-public protocol LocalStorage: AuthLocalStorage, TagLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, TagLocalStorage, PlaceLocalStorage { }
 
 
 public protocol AuthLocalStorage {
@@ -36,37 +36,11 @@ public protocol TagLocalStorage {
 }
 
 
-public class FakeLocal: LocalStorage {
+public protocol PlaceLocalStorage {
     
-    public func fetchCurrentAuth() -> Maybe<Auth?> {
-        return .empty()
-    }
+    func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?>
     
-    public func fetchCurrentMember() -> Maybe<Member?> {
-        return .empty()
-    }
+    func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
     
-    public func saveSignedIn(auth: Auth) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    public func saveSignedIn(member: Member) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    public func fetchRecentSelectTags(_ type: Tag.TagType, query: String) -> Maybe<[Tag]> {
-        return .empty()
-    }
-    
-    public func updateRecentSelect(tag: Tag) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    public func removeRecentSelect(tag: Tag) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    public func saveTags(_ tag: [Tag]) -> Maybe<Void> {
-        return .empty()
-    }
+    func savePlaces(_ places: [Place]) -> Maybe<Void>
 }
