@@ -8,6 +8,8 @@
 
 import Foundation
 
+import RxSwift
+
 import DataStore
 
 public protocol FirebaseService {
@@ -19,6 +21,7 @@ public final class FirebaseServiceImple: FirebaseService {
     
     let httpAPI: HttpAPI
     var fireStoreDB: Firestore!
+    let disposeBag = DisposeBag()
     
     public init(httpAPI: HttpAPI) {
         self.httpAPI = httpAPI

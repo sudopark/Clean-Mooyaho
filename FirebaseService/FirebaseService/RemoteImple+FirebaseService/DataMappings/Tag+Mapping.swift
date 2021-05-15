@@ -11,7 +11,7 @@ import Domain
 import DataStore
 
 
-extension ReqParams.Tag: DocumentMappable {
+extension Tag: DocumentMappable {
     
     init?(docuID: String, json: JSON) {
         guard let typeValue = json["type"] as? String,

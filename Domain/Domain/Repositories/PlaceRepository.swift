@@ -12,7 +12,7 @@ import RxSwift
 
 public typealias PendingRegisterNewPlaceForm = (form: NewPlaceForm, time: Date)
 
-public protocol PlaceRepository {
+public protocol PlaceRepository: AnyObject {
     
     func uploadLocation(_ location: UserLocation) -> Maybe<Void>
     
@@ -23,9 +23,11 @@ public protocol PlaceRepository {
     func requestSearchNewPlace(_ query: String, in location: UserLocation,
                                of pageIndex: Int?) -> Maybe<SearchingPlaceCollection>
     
+    func requestLoadPlace(_ placeID: String) -> Maybe<Place>
+    
     func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?>
     
     func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
     
-    func requestUpload(newPlace form: NewPlaceForm) -> Maybe<Place>
+    func requestRegister(newPlace form: NewPlaceForm) -> Maybe<Place>
 }

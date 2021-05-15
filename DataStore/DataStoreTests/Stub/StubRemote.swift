@@ -19,51 +19,59 @@ import UnitTestHelpKit
 class StubRemote: Remote, Stubbable {
     
     // auth
-    func requestSignInAnonymously() -> Maybe<DataModels.Auth> {
+    func requestSignInAnonymously() -> Maybe<Auth> {
         self.verify(key: "requestSignInAnonymously")
         return self.resolve(key: "requestSignInAnonymously") ?? .empty()
     }
     
-    func requestSignIn(withEmail email: String, password: String) -> Maybe<DataModels.SigninResult> {
+    func requestSignIn(withEmail email: String, password: String) -> Maybe<SigninResult> {
         return self.resolve(key: "requestSignIn:withEmail") ?? .empty()
     }
     
-    func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.SigninResult> {
+    func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult> {
         return self.resolve(key: "requestSignIn:credential") ?? .empty()
     }
     
     // place
-    func requesUpload(_ location: ReqParams.UserLocation) -> Maybe<Void> {
+    func requesUpload(_ location: UserLocation) -> Maybe<Void> {
         return self.resolve(key: "requesUpload:location") ?? .empty()
     }
     
-    func requestLoadDefaultPlaceSuggest(in location: ReqParams.UserLocation) -> Maybe<DataModels.SuggestPlaceResult> {
+    func requestLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult> {
         return self.resolve(key: "requestLoadDefaultPlaceSuggest") ?? .empty()
     }
     
     func requestSuggestPlace(_ query: String,
-                             in location: ReqParams.UserLocation,
-                             cursor: String?) -> Maybe<DataModels.SuggestPlaceResult> {
+                             in location: UserLocation,
+                             cursor: String?) -> Maybe<SuggestPlaceResult> {
         return self.resolve(key: "requestSuggestPlace") ?? .empty()
     }
     
-    func requestSearchNewPlace(_ query: String, in location: ReqParams.UserLocation,
-                               of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection> {
+    func requestSearchNewPlace(_ query: String, in location: UserLocation,
+                               of pageIndex: Int?) -> Maybe<SearchingPlaceCollection> {
         return self.resolve(key: "requestSearchNewPlace") ?? .empty()
     }
     
+    func requestRegister(new place: NewPlaceForm) -> Maybe<Place> {
+        return self.resolve(key: "requestRegister:place") ?? .empty()
+    }
+    
+    func requestLoadPlace(_ placeID: String) -> Maybe<Place> {
+        return self.resolve(key: "requestLoadPlace") ?? .empty()
+    }
+    
     // tag
-    func requestRegisterTag(_ tag: ReqParams.Tag) -> Maybe<Void> {
+    func requestRegisterTag(_ tag: Tag) -> Maybe<Void> {
         return self.resolve(key: "requestRegisterTag") ?? .empty()
     }
     
     func requestLoadPlaceCommnetTags(_ keyword: String,
-                                     cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection> {
+                                     cursor: String?) -> Maybe<SuggestTagResultCollection> {
         return self.resolve(key: "requestLoadPlaceCommnetTags") ?? .empty()
     }
     
     func requestLoadUserFeelingTags(_ keyword: String,
-                                    cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection> {
+                                    cursor: String?) -> Maybe<SuggestTagResultCollection> {
         return self.resolve(key: "requestLoadUserFeelingTags") ?? .empty()
     }
 }

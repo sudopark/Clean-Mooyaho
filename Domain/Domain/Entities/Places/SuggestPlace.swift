@@ -24,6 +24,13 @@ public struct PlaceSnippet {
         self.latt = latt
         self.long = long
     }
+    
+    public init(place: Place) {
+        self.placeID = place.uid
+        self.title = place.title
+        self.latt = place.coordinate.latt
+        self.long = place.coordinate.long
+    }
 }
 
 

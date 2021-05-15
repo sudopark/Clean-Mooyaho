@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B074A892642AD5D00C94E71 /* HttpAPI.swift */; };
 		2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */; };
-		2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A1A99263E795E00B6CE69 /* DataModels.swift */; };
 		2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F276B2633E69200FEBCE3 /* Remote.swift */; };
 		2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27712633E77900FEBCE3 /* LocalStorage.swift */; };
 		2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */; };
@@ -46,7 +45,6 @@
 /* Begin PBXFileReference section */
 		2B074A892642AD5D00C94E71 /* HttpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpAPI.swift; sourceTree = "<group>"; };
 		2B7157022642A60500D0C186 /* HttpAPIEndPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpAPIEndPoints.swift; sourceTree = "<group>"; };
-		2B9A1A99263E795E00B6CE69 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		2B9F276B2633E69200FEBCE3 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		2B9F27712633E77900FEBCE3 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		2B9F27782633E7AB00FEBCE3 /* UserDefaultStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultStorage.swift; sourceTree = "<group>"; };
@@ -111,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				2B9F276B2633E69200FEBCE3 /* Remote.swift */,
-				2B9F27662633E62300FEBCE3 /* DataModel+Mapping */,
 				2B7157012642A5E900D0C186 /* HttpAPI */,
 			);
 			path = Remote;
@@ -124,14 +121,6 @@
 				2B9F27772633E79800FEBCE3 /* Storages+Implements */,
 			);
 			path = Local;
-			sourceTree = "<group>";
-		};
-		2B9F27662633E62300FEBCE3 /* DataModel+Mapping */ = {
-			isa = PBXGroup;
-			children = (
-				2B9A1A99263E795E00B6CE69 /* DataModels.swift */,
-			);
-			path = "DataModel+Mapping";
 			sourceTree = "<group>";
 		};
 		2B9F27772633E79800FEBCE3 /* Storages+Implements */ = {
@@ -349,7 +338,6 @@
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
-				2B9A1A9A263E795E00B6CE69 /* DataModels.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,

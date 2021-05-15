@@ -80,6 +80,6 @@ extension RegisterNewPlaceUsecaseImple {
     
     public func uploadNewPlace(_ form: NewPlaceForm) -> Maybe<Place> {
 
-        return self.placeRepository.requestUpload(newPlace: form)
+        return self.placeRepository.requestRegister(newPlace: form)
     }
 }

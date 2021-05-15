@@ -15,14 +15,22 @@ import DataStore
 
 let searchDistanceMeters: Double = 50
 
+// MARK: - FirebaseServiceImple confirm PlaceRemote
+
 extension FirebaseServiceImple: PlaceRemote {
     
-    public func requesUpload(_ location: ReqParams.UserLocation) -> Maybe<Void> {
+    public func requesUpload(_ location: UserLocation) -> Maybe<Void> {
         
         return self.save(location, at: .userLocation)
     }
-    
-    public func requestLoadDefaultPlaceSuggest(in location: ReqParams.UserLocation) -> Maybe<DataModels.SuggestPlaceResult> {
+}
+
+
+// MARK: - suggest places
+
+extension FirebaseServiceImple {
+
+    public func requestLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult> {
         
         return self.suggestPlace(in: location, limit: 20)
     }
@@ -30,15 +38,15 @@ extension FirebaseServiceImple: PlaceRemote {
     
     // TODO: 페이징 지원 못함 -> limit없이 전체 불러오기
     public func requestSuggestPlace(_ query: String,
-                                    in location: ReqParams.UserLocation,
-                                    cursor: String?) -> Maybe<DataModels.SuggestPlaceResult> {
+                                    in location: UserLocation,
+                                    cursor: String?) -> Maybe<SuggestPlaceResult> {
         
         return self.suggestPlace(keyword: query, in: location)
     }
     
     private func suggestPlace(keyword: String? = nil,
-                              in location: ReqParams.UserLocation,
-                              limit: Int? = nil) -> Maybe<DataModels.SuggestPlaceResult> {
+                              in location: UserLocation,
+                              limit: Int? = nil) -> Maybe<SuggestPlaceResult> {
         let collectionRef = self.fireStoreDB.collection(.placeSnippet)
         let (latt, long) = (location.lastLocation.lattitude, location.lastLocation.longitude)
         let center2D = CLLocationCoordinate2D(latitude: latt, longitude: long)
@@ -82,7 +90,7 @@ extension FirebaseServiceImple: PlaceRemote {
             return places.withIn(kilometers: radiusKilometers, center2D: center2D)
         }
         
-        let thenConvertToResult: ([PlaceSnippet]) -> DataModels.SuggestPlaceResult = { places in
+        let thenConvertToResult: ([PlaceSnippet]) -> SuggestPlaceResult = { places in
             return .init(default: places)
         }
         
@@ -92,15 +100,15 @@ extension FirebaseServiceImple: PlaceRemote {
     }
     
     public func requestSearchNewPlace(_ query: String,
-                                      in location: ReqParams.UserLocation,
-                                      of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection> {
+                                      in location: UserLocation,
+                                      of pageIndex: Int?) -> Maybe<SearchingPlaceCollection> {
         let endpoint = NaverMapPlaceAPIEndPoint.places
         var params: [String: Any] = [:]
         params["query"] = query
         params["coords"] = [location.lastLocation.lattitude, location.lastLocation.longitude]
         params["page"] = pageIndex
         
-        typealias ResultCollection = DataModels.SearchingPlaceCollection
+        typealias ResultCollection = SearchingPlaceCollection
         
         let appendQueryAtResult: (ResultCollection) -> (ResultCollection)
         appendQueryAtResult = { collection in
@@ -113,6 +121,46 @@ extension FirebaseServiceImple: PlaceRemote {
             .requestData(ResultCollection.self,
                          endpoint: endpoint, parameters: params)
             .map(appendQueryAtResult)
+    }
+    
+    
+    public func requestLoadPlace(_ placeID: String) -> Maybe<Place> {
+        
+        let loadPlace: Maybe<Place?> = self.load(docuID: placeID, in: .place)
+        let throwErrorWhenNotExists: (Place?) throws -> Place = { place in
+            guard let place = place else {
+                let type = String(describing: Place.self)
+                throw RemoteErrors.notFound(type, reason: nil)
+            }
+            return place
+        }
+        
+        return loadPlace.map(throwErrorWhenNotExists)
+    }
+}
+
+
+// MARK: - upload new place
+
+extension FirebaseServiceImple {
+    
+    public func requestRegister(new place: NewPlaceForm) -> Maybe<Place> {
+        
+        let registerPlace: Maybe<Place> = self.saveNew(place, at: .place)
+        
+        let postRegisterActions: (Place) -> Void = { [weak self] newPlace in
+            self?.saveSnippet(for: newPlace)
+        }
+        
+        return registerPlace
+            .do(onNext: postRegisterActions)
+    }
+    
+    private func saveSnippet(for place: Place) {
+        let snippet = PlaceSnippet(place: place)
+        self.save(snippet, at: .placeSnippet)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
 }
 

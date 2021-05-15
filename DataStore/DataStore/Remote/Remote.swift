@@ -24,18 +24,7 @@ public enum RemoteErrors: Error {
     case saveFail(_ type: String, reason: Error?)
     case mappingFail(_ type: String)
     case invalidRequest(_ reason: String?)
-}
-
-
-public enum ReqParams {
-    
-    public struct OAuthCredential {
-        public init() {}
-    }
-    
-    public typealias UserLocation = Domain.UserLocation
-    
-    public typealias Tag = Domain.Tag
+    case notFound(_ type: String, reason: Error?)
 }
 
 
@@ -47,11 +36,11 @@ public protocol Remote: AuthRemote, PlaceRemote, TagRemote { }
 
 public protocol AuthRemote {
     
-    func requestSignInAnonymously() -> Maybe<DataModels.Auth>
+    func requestSignInAnonymously() -> Maybe<Auth>
     
-    func requestSignIn(withEmail email: String, password: String) -> Maybe<DataModels.SigninResult>
+    func requestSignIn(withEmail email: String, password: String) -> Maybe<SigninResult>
     
-    func requestSignIn(using credential: ReqParams.OAuthCredential) -> Maybe<DataModels.SigninResult>
+    func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
 }
 
 
@@ -59,16 +48,20 @@ public protocol AuthRemote {
 
 public protocol PlaceRemote {
     
-    func requesUpload(_ location: ReqParams.UserLocation) -> Maybe<Void>
+    func requesUpload(_ location: UserLocation) -> Maybe<Void>
     
-    func requestLoadDefaultPlaceSuggest(in location: ReqParams.UserLocation) -> Maybe<DataModels.SuggestPlaceResult>
+    func requestLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult>
     
     func requestSuggestPlace(_ query: String,
-                             in location: ReqParams.UserLocation,
-                             cursor: String?) -> Maybe<DataModels.SuggestPlaceResult>
+                             in location: UserLocation,
+                             cursor: String?) -> Maybe<SuggestPlaceResult>
     
-    func requestSearchNewPlace(_ query: String, in location: ReqParams.UserLocation,
-                               of pageIndex: Int?) -> Maybe<DataModels.SearchingPlaceCollection>
+    func requestSearchNewPlace(_ query: String, in location: UserLocation,
+                               of pageIndex: Int?) -> Maybe<SearchingPlaceCollection>
+    
+    func requestRegister(new place: NewPlaceForm) -> Maybe<Place>
+    
+    func requestLoadPlace(_ placeID: String) -> Maybe<Place>
 }
 
 
@@ -76,11 +69,11 @@ public protocol PlaceRemote {
 
 public protocol TagRemote {
     
-    func requestRegisterTag(_ tag: ReqParams.Tag) -> Maybe<Void>
+    func requestRegisterTag(_ tag: Tag) -> Maybe<Void>
     
     func requestLoadPlaceCommnetTags(_ keyword: String,
-                                     cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection>
+                                     cursor: String?) -> Maybe<SuggestTagResultCollection>
     
     func requestLoadUserFeelingTags(_ keyword: String,
-                                    cursor: String?) -> Maybe<DataModels.SuggestTagResultCollection>
+                                    cursor: String?) -> Maybe<SuggestTagResultCollection>
 }
