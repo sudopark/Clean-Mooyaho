@@ -12,8 +12,8 @@ import RxSwift
 
 public protocol AuthRepository {
     
-    func fetchLastSignInMember() -> Maybe<Member?>
+    func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)>
     
-    func requestSignIn(using secret: EmailBaseSecret) -> Maybe<Member>
-    func requestSignIn(using credential: OAuthCredential) -> Maybe<Member>
+    func requestSignIn(using secret: EmailBaseSecret) -> Maybe<SigninResult>
+    func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
 }

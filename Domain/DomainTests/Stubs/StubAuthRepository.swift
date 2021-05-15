@@ -17,15 +17,15 @@ import UnitTestHelpKit
 
 class StubAuthRepository: AuthRepository, Stubbable {
     
-    func fetchLastSignInMember() -> Maybe<Member?> {
-        return self.resolve(key: "fetchLastSignInMember") ?? .empty()
+    func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)> {
+        return self.resolve(key: "fetchLastSignInAccountInfo") ?? .empty()
     }
     
-    func requestSignIn(using secret: EmailBaseSecret) -> Maybe<Member> {
+    func requestSignIn(using secret: EmailBaseSecret) -> Maybe<SigninResult> {
         self.resolve(key: "requestSignIn:secret") ?? .empty()
     }
     
-    func requestSignIn(using credential: OAuthCredential) -> Maybe<Member> {
+    func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult> {
         self.resolve(key: "requestSignIn:credential") ?? .empty()
     }
 }

@@ -35,6 +35,14 @@ extension Optional {
         case .none: notExists()
         }
     }
+    
+    public func when<V>(exists transform: (Wrapped) -> V,
+                        or returnDefault: () -> V) -> V {
+        switch self {
+        case let .some(wrapped): return transform(wrapped)
+        case .none: return returnDefault()
+        }
+    }
 }
 
 

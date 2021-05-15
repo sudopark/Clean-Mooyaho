@@ -18,7 +18,9 @@ public protocol LocalStorage: AuthLocalStorage, TagLocalStorage { }
 
 public protocol AuthLocalStorage {
 
+    func fetchCurrentAuth() -> Maybe<Auth?>
     func fetchCurrentMember() -> Maybe<Member?>
+    func saveSignedIn(auth: Auth) -> Maybe<Void>
     func saveSignedIn(member: Member) -> Maybe<Void>
 }
 
@@ -36,7 +38,15 @@ public protocol TagLocalStorage {
 
 public class FakeLocal: LocalStorage {
     
+    public func fetchCurrentAuth() -> Maybe<Auth?> {
+        return .empty()
+    }
+    
     public func fetchCurrentMember() -> Maybe<Member?> {
+        return .empty()
+    }
+    
+    public func saveSignedIn(auth: Auth) -> Maybe<Void> {
         return .empty()
     }
     
