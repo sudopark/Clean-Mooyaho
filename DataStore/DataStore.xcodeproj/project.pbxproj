@@ -28,6 +28,8 @@
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F66BDB8E2644481D0043DEAA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB8D2644481D0043DEAA /* Alamofire */; };
+		F67848D12650F2420074C344 /* RepositoryImple+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */; };
+		F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */; };
 		F6A72A3D26483C8A006BE4BD /* RepositoryImple+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */; };
 		F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +70,8 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Hooray.swift"; sourceTree = "<group>"; };
+		F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Hooray.swift"; sourceTree = "<group>"; };
 		F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Tags.swift"; sourceTree = "<group>"; };
 		F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Tag.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +155,7 @@
 				2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */,
 				2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */,
 				F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */,
+				F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */,
 			);
 			path = "Repository+Implements";
 			sourceTree = "<group>";
@@ -171,6 +176,7 @@
 				2BD54F74263DB51A004B3EB0 /* RepositoryTests+Auth.swift */,
 				2BABA28E2642A0E7007E2D1E /* RepositoryTests+Places.swift */,
 				F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */,
+				F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -342,6 +348,7 @@
 				2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,
 				2BABA28D26429FAA007E2D1E /* RepositoryImple+Place.swift in Sources */,
+				F67848D12650F2420074C344 /* RepositoryImple+Hooray.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
+				F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */,
 				2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
 				2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */,

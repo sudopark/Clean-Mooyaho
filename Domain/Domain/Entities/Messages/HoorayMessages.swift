@@ -24,7 +24,7 @@ public struct NewHoorayMessage: HoorayMessage {
     public let hoorayID: String
     public let publisherID: String
     public let publisherNickName: String
-    public let publishedAt: TimeSeconds
+    public let publishedAt: TimeStamp
     
     public let placeID: String
     public let location: Coordinate
@@ -33,7 +33,7 @@ public struct NewHoorayMessage: HoorayMessage {
     public let aliveDuration: TimeInterval
     
     public init(hoorayID: String,
-                publisherID: String, publisherNickName: String, publishedAt: TimeSeconds,
+                publisherID: String, publisherNickName: String, publishedAt: TimeStamp,
                 placeID: String, location: Coordinate,
                 spreadDistance: Meters, aliveDuration: TimeInterval) {
         self.hoorayID = hoorayID

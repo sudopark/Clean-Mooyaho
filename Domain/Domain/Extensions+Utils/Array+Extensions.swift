@@ -28,4 +28,16 @@ extension Array {
         return orderPairMap.sorted(by: { $0.value.offset < $1.value.offset })
             .map{ $0.value.element }
     }
+    
+    public func slice(by size: Int) -> [Array] {
+        let sectionSize = self.count / size + 1
+        return (0..<sectionSize).reduce(into: [Array]()) { acc, sectionIndex in
+            let start = sectionIndex * size
+            let end = Swift.min(self.count, start + size)
+            let slice = Array(self[start..<end])
+            acc.append(slice)
+        }
+        .filter{ $0.isNotEmpty }
+    }
 }
+

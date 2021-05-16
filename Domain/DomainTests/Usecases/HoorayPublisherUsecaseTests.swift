@@ -22,10 +22,18 @@ class HoorayPublisherUsecaseTests: BaseHoorayUsecaseTests { }
 
 extension HoorayPublisherUsecaseTests {
     
+    private func stubMemberShip() {
+        self.sharedStore.save(.currentMember, Member(uid: "dummy"))
+        self.sharedStore.save(.membership, MemberShip())
+    }
+    
     func testUsecase_whenLatestHoorayNotExists_availToPublishHooray() {
         // given
         let expect = expectation(description: "한번도 후레이 쏜적 없으면 쏠수있음")
         self.stubMemberShip()
+        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+            return .just(nil)
+        }
         self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             return .just(nil)
         }
@@ -38,9 +46,22 @@ extension HoorayPublisherUsecaseTests {
         XCTAssertEqual(isAvail, true)
     }
     
-    private func stubMemberShip() {
-        self.sharedStore.save(.currentMember, Member(uid: "dummy"))
-        self.sharedStore.save(.membership, MemberShip())
+    func testUsecase_whenTooSoonLatestHoorayExistsAtLocal_unavailToPublish() {
+        // given
+        let expect = expectation(description: "로컬에 최근에 발행한 후레이가 있으면 새로 생성 불가")
+        self.stubMemberShip()
+        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+            let defCooltime = HoorayPublishPolicy.defaultCooltime
+            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime.asTimeInterval() + 5)
+            return .just(latest)
+        }
+        
+        // when
+        let requestCheck = self.usecase.isAvailToPublish("dummy")
+        let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
+        
+        // then
+        XCTAssertEqual(isAvail, false)
     }
     
     func testUsecase_whenLatestHoorayExistsWithInLimit_unavailToPublishHooray() {
@@ -48,9 +69,12 @@ extension HoorayPublisherUsecaseTests {
         let expect = expectation(description: "마지막 후레이 이후 일정시간이 지나지 않은경우 후레이 불가")
         
         self.stubMemberShip()
+        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+            return .just(nil)
+        }
         self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime
-            let latest = LatestHooray("latest", TimeSeconds.now() - defCooltime.asTimeInterval() + 5)
+            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime.asTimeInterval() + 5)
             return .just(latest)
         }
         
@@ -67,9 +91,12 @@ extension HoorayPublisherUsecaseTests {
         let expect = expectation(description: "마지막 후레이 이후 일정시간이 지났다면 후레이 가능")
         
         self.stubMemberShip()
+        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+            return .just(nil)
+        }
         self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime.asTimeInterval()
-            let latest = LatestHooray("latest", TimeSeconds.now() - defCooltime * 10)
+            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime * 10)
             return .just(latest)
         }
         
@@ -85,9 +112,12 @@ extension HoorayPublisherUsecaseTests {
         // given
         let expect = expectation(description: "후레이 발행 이전에 멤버쉽 조회에 실패하면 실패처리")
         
+        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+            return .just(nil)
+        }
         self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime.asTimeInterval()
-            let latest = LatestHooray("latest", TimeSeconds.now() - defCooltime * 10)
+            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime * 10)
             return .just(latest)
         }
         self.stubMemberRepository.register(key: "requestLoadMembership") {
