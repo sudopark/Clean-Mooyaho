@@ -247,9 +247,9 @@ extension NewPlaceForm: JSONMappable {
         json["category_tags"] = self.categoryTags.map{ $0.asJSON() }
         json["reporter_id"] = self.reporterID
         json["info_provider"] = self.infoProvider.rawValue
-        json["created_at"] = TimeSeconds.now
+        json["created_at"] = TimeStamp.now
         json["pick_count"] = 1
-        json["last_pick_at"] = TimeSeconds.now
+        json["last_pick_at"] = TimeStamp.now
         
         return json
     }

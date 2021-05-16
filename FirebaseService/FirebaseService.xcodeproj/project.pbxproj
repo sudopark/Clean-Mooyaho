@@ -56,6 +56,10 @@
 		F6684E012647CC1000820368 /* GFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F6684DF72647CC1000820368 /* GFUtils.m */; };
 		F6684E042647E33400820368 /* Member+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E032647E33400820368 /* Member+Mapping.swift */; };
 		F6684E062647E38600820368 /* Place+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E052647E38600820368 /* Place+Mapping.swift */; };
+		F67848D526510B170074C344 /* HoorayRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D426510B170074C344 /* HoorayRemote+Firebase.swift */; };
+		F67848D726510CB50074C344 /* Hooray+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D626510CB50074C344 /* Hooray+Mapping.swift */; };
+		F67848DA2651229A0074C344 /* DistanceUtills.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D92651229A0074C344 /* DistanceUtills.swift */; };
+		F67848DC265123D20074C344 /* Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848DB265123D20074C344 /* Policy.swift */; };
 		F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */; };
 		F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */; };
 		F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */; };
@@ -159,6 +163,10 @@
 		F6684DF72647CC1000820368 /* GFUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFUtils.m; sourceTree = "<group>"; };
 		F6684E032647E33400820368 /* Member+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Member+Mapping.swift"; sourceTree = "<group>"; };
 		F6684E052647E38600820368 /* Place+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+Mapping.swift"; sourceTree = "<group>"; };
+		F67848D426510B170074C344 /* HoorayRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoorayRemote+Firebase.swift"; sourceTree = "<group>"; };
+		F67848D626510CB50074C344 /* Hooray+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Hooray+Mapping.swift"; sourceTree = "<group>"; };
+		F67848D92651229A0074C344 /* DistanceUtills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceUtills.swift; sourceTree = "<group>"; };
+		F67848DB265123D20074C344 /* Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Policy.swift; sourceTree = "<group>"; };
 		F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Mapping.swift"; sourceTree = "<group>"; };
 		F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceRemote+Firebase.swift"; sourceTree = "<group>"; };
@@ -235,8 +243,10 @@
 		2B39E17126386CEC003EE954 /* FirebaseService */ = {
 			isa = PBXGroup;
 			children = (
+				F67848DB265123D20074C344 /* Policy.swift */,
 				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
 				2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */,
+				F67848D8265122690074C344 /* Utills */,
 				2B8AC38B263BB147002BA1AC /* FirebaseFrameworks */,
 				2B39E17226386CEC003EE954 /* FirebaseService.h */,
 				2B39E17326386CEC003EE954 /* Info.plist */,
@@ -395,6 +405,7 @@
 				2BD54F70263DB37D004B3EB0 /* AuthRemote+Firebase.swift */,
 				F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */,
 				F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */,
+				F67848D426510B170074C344 /* HoorayRemote+Firebase.swift */,
 			);
 			path = "RemoteImple+FirebaseService";
 			sourceTree = "<group>";
@@ -423,8 +434,17 @@
 				F6684E032647E33400820368 /* Member+Mapping.swift */,
 				F6684E052647E38600820368 /* Place+Mapping.swift */,
 				F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */,
+				F67848D626510CB50074C344 /* Hooray+Mapping.swift */,
 			);
 			path = DataMappings;
+			sourceTree = "<group>";
+		};
+		F67848D8265122690074C344 /* Utills */ = {
+			isa = PBXGroup;
+			children = (
+				F67848D92651229A0074C344 /* DistanceUtills.swift */,
+			);
+			path = Utills;
 			sourceTree = "<group>";
 		};
 		F6CFA578264660CA00F9A049 /* PlaceRemote+Firebase */ = {
@@ -577,11 +597,15 @@
 				F6684DFB2647CC1000820368 /* GFGeoHashQuery.m in Sources */,
 				F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */,
 				2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */,
+				F67848DA2651229A0074C344 /* DistanceUtills.swift in Sources */,
+				F67848DC265123D20074C344 /* Policy.swift in Sources */,
 				F6684E012647CC1000820368 /* GFUtils.m in Sources */,
 				F6684E062647E38600820368 /* Place+Mapping.swift in Sources */,
+				F67848D726510CB50074C344 /* Hooray+Mapping.swift in Sources */,
 				F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */,
 				F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */,
 				F6684DFC2647CC1000820368 /* GFGeoQueryBounds.m in Sources */,
+				F67848D526510B170074C344 /* HoorayRemote+Firebase.swift in Sources */,
 				F6684E042647E33400820368 /* Member+Mapping.swift in Sources */,
 				2B39E2002638708D003EE954 /* FirebaseService.swift in Sources */,
 				F6684E002647CC1000820368 /* GFBase32Utils.m in Sources */,

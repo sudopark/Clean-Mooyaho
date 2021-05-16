@@ -8,7 +8,6 @@
 import Foundation
 
 import Domain
-import DataStore
 
 
 extension Tag: DocumentMappable {
