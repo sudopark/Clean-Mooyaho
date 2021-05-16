@@ -18,6 +18,8 @@ enum FireStoreCollectionType: String {
     case place = "places"
     case commentTag = "comments"
     case feelingTag = "feelings"
+    case hooray = "hoorays"
+    case hoorayIndex = "hoorayindexes"
 }
 
 
@@ -138,5 +140,17 @@ extension FirebaseServiceImple {
             }
             return Disposables.create()
         }
+    }
+    
+    func loadAll<T: DocumentMappable>(queries: [Query]) -> Maybe<[T]> {
+        
+        let seed: Observable<[T]> = .empty()
+        let eachLoadings = queries.map{ query -> Maybe<[T]> in
+            return self.load(query: query)
+        }
+        return eachLoadings.reduce(seed) { acc, next in
+            return acc.asObservable().concat(next.asObservable())
+        }
+        .asMaybe()
     }
 }
