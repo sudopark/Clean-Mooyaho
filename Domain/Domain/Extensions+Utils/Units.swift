@@ -17,9 +17,9 @@ public typealias Minutes = Int
 
 public typealias Meters = Double
 
-public typealias TimeSeconds = TimeInterval
+public typealias TimeStamp = TimeInterval
 
-extension TimeSeconds {
+extension TimeStamp {
     
     public static func now() -> Self {
         return Date().timeIntervalSince1970

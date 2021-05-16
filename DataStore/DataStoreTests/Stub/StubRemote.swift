@@ -74,4 +74,18 @@ class StubRemote: Remote, Stubbable {
                                     cursor: String?) -> Maybe<SuggestTagResultCollection> {
         return self.resolve(key: "requestLoadUserFeelingTags") ?? .empty()
     }
+    
+    // hooray
+    func requestLoadLatestHooray(_ memberID: String) -> Maybe<Hooray?> {
+        return self.resolve(key: "requestLoadLatestHooray") ?? .empty()
+    }
+    
+    func requestPublishHooray(_ newForm: NewHoorayForm,
+                              withNewPlace: NewPlaceForm?) -> Maybe<Hooray> {
+        return self.resolve(key: "requestPublishHooray") ?? .empty()
+    }
+    
+    func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
+        return self.resolve(key: "requestLoadNearbyRecentHoorays") ?? .empty()
+    }
 }

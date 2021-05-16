@@ -13,7 +13,7 @@ import RxSwift
 import Domain
 
 
-public protocol LocalStorage: AuthLocalStorage, TagLocalStorage, PlaceLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage { }
 
 
 public protocol AuthLocalStorage {
@@ -43,4 +43,14 @@ public protocol PlaceLocalStorage {
     func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
     
     func savePlaces(_ places: [Place]) -> Maybe<Void>
+}
+
+
+public protocol HoorayLocalStorage {
+
+    func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?>
+    
+    func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]>
+    
+    func saveHoorays(_ hooray: [Hooray]) -> Maybe<Void>
 }

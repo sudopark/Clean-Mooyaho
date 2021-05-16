@@ -30,7 +30,7 @@ public enum RemoteErrors: Error {
 
 // MARK: - Remote Protocol
 
-public protocol Remote: AuthRemote, PlaceRemote, TagRemote { }
+public protocol Remote: AuthRemote, PlaceRemote, TagRemote, HoorayRemote { }
 
 // MARK: - Auth remote
 
@@ -76,4 +76,17 @@ public protocol TagRemote {
     
     func requestLoadUserFeelingTags(_ keyword: String,
                                     cursor: String?) -> Maybe<SuggestTagResultCollection>
+}
+
+
+// MARK: - Hooray
+
+public protocol HoorayRemote {
+    
+    func requestLoadLatestHooray(_ memberID: String) -> Maybe<Hooray?>
+    
+    func requestPublishHooray(_ newForm: NewHoorayForm,
+                              withNewPlace: NewPlaceForm?) -> Maybe<Hooray>
+    
+    func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
 }

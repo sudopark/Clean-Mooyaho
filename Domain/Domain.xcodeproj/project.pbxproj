@@ -261,6 +261,7 @@
 				2B40BF85263F09990031C7A6 /* Locations */,
 				2BFF240726405B70008C52EB /* Places */,
 				F615292E264D9DA0003BCB59 /* Hooray */,
+				F615295B264F135A003BCB59 /* Messages */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -272,7 +273,6 @@
 				2BFF240326405A33008C52EB /* Location+Place */,
 				2BFF240426405A64008C52EB /* Suggest+Search */,
 				F6152931264DA0AE003BCB59 /* Hooray */,
-				F615295B264F135A003BCB59 /* Messages */,
 				F6152955264F08AD003BCB59 /* SharedDataKeys.swift */,
 				F6152957264F0B0C003BCB59 /* ApplicationErrors.swift */,
 			);

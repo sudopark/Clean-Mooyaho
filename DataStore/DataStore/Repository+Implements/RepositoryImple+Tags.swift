@@ -16,8 +16,8 @@ import Domain
 public protocol TagRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
-    var remote: Remote { get }
-    var local: LocalStorage { get }
+    var remote: TagRemote { get }
+    var local: TagLocalStorage { get }
 }
 
 
