@@ -13,6 +13,8 @@ import RxSwift
 
 public protocol HoorayRepository {
     
+    func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?>
+    
     func requestLoadLatestHooray(_ memberID: String) -> Maybe<LatestHooray?>
     
     func requestPublishHooray(_ newForm: NewHoorayForm,

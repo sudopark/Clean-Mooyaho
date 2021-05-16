@@ -12,8 +12,14 @@ import Foundation
 // MARK: - Hooray
 
 public struct HoorayAckInfo {
+    
     public let ackUserID: String
-    public let ackAt: TimeSeconds
+    public let ackAt: TimeStamp
+    
+    public init(ackUserID: String, ackAt: TimeStamp) {
+        self.ackUserID = ackUserID
+        self.ackAt = ackAt
+    }
 }
 
 extension HoorayAckInfo: Hashable {
@@ -49,7 +55,7 @@ public struct Hooray {
     public let publisherID: String
     
     public let location: Coordinate
-    public let timeStamp: TimeSeconds
+    public let timeStamp: TimeStamp
     
     public var ackUserIDs: Set<HoorayAckInfo>
     public var reactions: Set<HoorayReaction.ReactionInfo>
@@ -58,7 +64,7 @@ public struct Hooray {
     public let aliveDuration: TimeInterval
     
     public init(uid: String, placeID: String, publisherID: String,
-                location: Coordinate, timestamp: TimeSeconds,
+                location: Coordinate, timestamp: TimeStamp,
                 ackUserIDs: [HoorayAckInfo] = [], reactions: [HoorayReaction.ReactionInfo],
                 spreadDistance: Meters, aliveDuration: TimeInterval) {
         self.uid = uid
@@ -81,9 +87,13 @@ public struct NewHoorayForm {
     public let publisherID: String
         
     // TODO: define fields
+    
+    public init(publisherID: String) {
+        self.publisherID = publisherID
+    }
 }
 
 
 // MARK: - lastest hooray
 
-public typealias LatestHooray = (id: String, time: TimeSeconds)
+public typealias LatestHooray = (id: String, time: TimeStamp)

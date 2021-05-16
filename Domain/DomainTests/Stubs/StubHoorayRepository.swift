@@ -16,6 +16,10 @@ import UnitTestHelpKit
 
 class StubHoorayRepository: HoorayRepository, Stubbable {
     
+    func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
+        return self.resolve(key: "fetchLatestHooray") ?? .empty()
+    }
+    
     func requestLoadLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
         return self.resolve(key: "requestLoadLatestHooray") ?? .empty()
     }

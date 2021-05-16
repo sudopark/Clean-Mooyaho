@@ -39,8 +39,11 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
     
     public func loadNearbyRecentHoorays(_ userID: String,
                                         at location: Coordinate) -> Maybe<[Hooray]> {
+        
+        
         let sendAcksIfNeed: ([Hooray]) -> Void = { [weak self] hoorays in
             let ackMessages: [HoorayAckMessage] = hoorays
+                .filter{ $0.publisherID != userID }
                 .filter{ $0.ackUserIDs.contains(userID) == false }
                 .map{ .init(hoorayID: $0.uid, publisherID: $0.publisherID, ackUserID: userID) }
             self?.ackReceivedHooray(ackMessages: ackMessages)

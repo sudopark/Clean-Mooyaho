@@ -65,4 +65,17 @@ class StubLocal: LocalStorage, Stubbable {
         self.verify(key: "savePlaces")
         return self.resolve(key: "savePlaces") ?? .empty()
     }
+    
+    func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?> {
+        return self.resolve(key: "fetchLatestHooray") ?? .empty()
+    }
+    
+    func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]> {
+        return self.resolve(key: "fetchHoorays") ?? .empty()
+    }
+    
+    func saveHoorays(_ hooray: [Hooray]) -> Maybe<Void> {
+        self.verify(key: "saveHoorays")
+        return self.resolve(key: "saveHoorays") ?? .empty()
+    }
 }

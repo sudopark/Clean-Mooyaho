@@ -22,11 +22,11 @@ public struct HoorayReaction {
         
         public let reactMemberID: String
         public let icon: ImageSource
-        public let reactAt: TimeSeconds
+        public let reactAt: TimeStamp
         
         public init(reactMemberID: String,
                     icon: ImageSource,
-                    reactAt: TimeSeconds) {
+                    reactAt: TimeStamp) {
             self.reactMemberID = reactMemberID
             self.icon = icon
             self.reactAt = reactAt

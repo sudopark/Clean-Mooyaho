@@ -16,8 +16,8 @@ import Domain
 public protocol AuthRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
-    var remote: Remote { get }
-    var local: LocalStorage { get }
+    var remote: AuthRemote { get }
+    var local: AuthLocalStorage { get }
 }
 
 

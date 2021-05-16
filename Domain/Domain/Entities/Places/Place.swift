@@ -43,9 +43,9 @@ public struct Place {
     
     public let reporterID: String
     public let requireInfoProvider: RequireInfoProvider
-    public let createdAt: TimeSeconds
+    public let createdAt: TimeStamp
     public var placePickCount: Int
-    public var lastPickedAt: TimeSeconds
+    public var lastPickedAt: TimeStamp
     
     public init(uid: String, title: String,
                 thumbnail: ImageSource? = nil,
@@ -53,8 +53,8 @@ public struct Place {
                 detailLink: String? = nil,
                 coordinate: Coordinate, address: String, contact: String? = nil,
                 categoryTags: [PlaceCategoryTag], reporterID: String,
-                infoProvider: RequireInfoProvider, createdAt: TimeSeconds,
-                pickCount: Int, lastPickedAt: TimeSeconds) {
+                infoProvider: RequireInfoProvider, createdAt: TimeStamp,
+                pickCount: Int, lastPickedAt: TimeStamp) {
         self.uid = uid
         self.title = title
         self.thumbnail = thumbnail

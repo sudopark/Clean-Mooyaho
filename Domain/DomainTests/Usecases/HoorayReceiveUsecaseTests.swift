@@ -37,9 +37,10 @@ extension HoorayReceiveUsecaseTests {
         XCTAssertEqual(hoorays?.count, 10)
     }
     
+    
     func testUsecase_whenLoadNearbyRecentHoorays_sendAckToNotYetAckedMessages() {
         // given
-        let expect = expectation(description: "근처에 있는 최근 후레이 조회")
+        let expect = expectation(description: "근처에 있는 최근 후레이 조회시에 아직 읽음처리 안한거는 ack 전송")
         expect.expectedFulfillmentCount = 5
         
         self.stubMessagingService.called(key: "sendMessage") { _ in
@@ -58,6 +59,29 @@ extension HoorayReceiveUsecaseTests {
         
         // when
         self.usecase.loadNearbyRecentHoorays("myID", at: .init(latt: 0, long: 0))
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testUsecase_whenLoadNearbyRecentHoorays_notSendAckToMyHooray() {
+        // given
+        let expect = expectation(description: "근처에 있는 최근 후레이 조회해서 읽음처리시 내꺼에는 ack x")
+        expect.expectedFulfillmentCount = 9
+        
+        self.stubMessagingService.called(key: "sendMessage") { _ in
+            expect.fulfill()
+        }
+        
+        self.stubHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
+            let hoorays: [Hooray] = (0..<10).map(Hooray.dummy(_:))
+            return .just(hoorays)
+        }
+        
+        // when
+        self.usecase.loadNearbyRecentHoorays("pub:0", at: .init(latt: 0, long: 0))
             .subscribe()
             .disposed(by: self.disposeBag)
         
