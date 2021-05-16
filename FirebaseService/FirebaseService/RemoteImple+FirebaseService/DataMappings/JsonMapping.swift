@@ -37,3 +37,20 @@ protocol DocumentMappable {
     
     func asDocument() -> (String, JSON)
 }
+
+
+protocol JSONMappingKeys: RawRepresentable where RawValue == String { }
+
+
+extension JSON {
+    
+    
+    subscript<K: JSONMappingKeys>(_ key: K) -> Any? {
+        get {
+            return self[key.rawValue]
+        }
+        set {
+            self[key.rawValue] = newValue
+        }
+    }
+}

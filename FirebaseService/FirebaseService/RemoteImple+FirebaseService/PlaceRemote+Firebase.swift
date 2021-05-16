@@ -13,8 +13,6 @@ import Domain
 import DataStore
 
 
-let searchDistanceMeters: Double = 50
-
 // MARK: - FirebaseServiceImple confirm PlaceRemote
 
 extension FirebaseServiceImple: PlaceRemote {
@@ -76,15 +74,6 @@ extension FirebaseServiceImple {
             return query
         }
         
-        let seed: Observable<[PlaceSnippet]> = .empty()
-        let loadAllPlaces = queries.map{ query -> Maybe<[PlaceSnippet]> in
-                return self.load(query: query)
-            }
-            .reduce(seed) { acc, next in
-                return acc.asObservable().concat(next.asObservable())
-            }
-            .asMaybe()
-        
         let then2ndFilterByDistance: ([PlaceSnippet]) -> [PlaceSnippet]
         then2ndFilterByDistance = { places in
             return places.withIn(kilometers: radiusKilometers, center2D: center2D)
@@ -94,7 +83,7 @@ extension FirebaseServiceImple {
             return .init(default: places)
         }
         
-        return loadAllPlaces
+        return self.loadAll(queries: queries)
             .map(then2ndFilterByDistance)
             .map(thenConvertToResult)
     }
@@ -161,19 +150,5 @@ extension FirebaseServiceImple {
         self.save(snippet, at: .placeSnippet)
             .subscribe()
             .disposed(by: self.disposeBag)
-    }
-}
-
-private extension Array where Element == PlaceSnippet {
-    
-    func withIn(kilometers: Double, center2D: CLLocationCoordinate2D) -> [PlaceSnippet] {
-        return self.compactMap { place -> PlaceSnippet? in
-            let coordi = CLLocation(latitude: place.latt, longitude: place.long)
-            let center = CLLocation(latitude: center2D.latitude, longitude: center2D.longitude)
-            
-            let distance = GFUtils.distance(from: center, to: coordi)
-            guard distance <= kilometers else { return nil }
-            return place
-        }
     }
 }
