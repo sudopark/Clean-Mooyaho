@@ -43,6 +43,14 @@ extension Optional {
         case .none: return returnDefault()
         }
     }
+    
+    public func escapeWhen<V>(exists transform: @escaping (Wrapped) -> V,
+                              or returnDefault: () -> V) -> V {
+        switch self {
+        case let .some(wrapped): return transform(wrapped)
+        case .none: return returnDefault()
+        }
+    }
 }
 
 

@@ -14,6 +14,7 @@ import DataStore
 enum FireStoreCollectionType: String {
     case member = "members"
     case userLocation = "userlocations"
+    case userDevice = "userdevice"
     case placeSnippet = "placesnpts"
     case place = "places"
     case commentTag = "comments"
@@ -142,8 +143,15 @@ extension FirebaseServiceImple {
         }
     }
     
-    func loadAll<T: DocumentMappable>(queries: [Query]) -> Maybe<[T]> {
+    func loadAllAtOnce<T: DocumentMappable>(queries: [Query]) -> Maybe<[T]> {
         
+        return self.loadAll(queries: queries)
+            .toArray()
+            .map{ $0.flatMap{ $0 } }
+            .asMaybe()
+    }
+    
+    func loadAll<T: DocumentMappable>(queries: [Query]) -> Observable<[T]> {
         let seed: Observable<[T]> = .empty()
         let eachLoadings = queries.map{ query -> Maybe<[T]> in
             return self.load(query: query)
@@ -151,6 +159,5 @@ extension FirebaseServiceImple {
         return eachLoadings.reduce(seed) { acc, next in
             return acc.asObservable().concat(next.asObservable())
         }
-        .asMaybe()
     }
 }

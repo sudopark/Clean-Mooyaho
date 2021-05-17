@@ -82,14 +82,35 @@ public struct Hooray {
 
 // MARK: - New Hooray Form
 
-public struct NewHoorayForm {
+public final class NewHoorayForm {
     
     public let publisherID: String
-        
-    // TODO: define fields
+    public var placeID: String?
+    
+    public var location: Coordinate!
+    public var timeStamp: TimeStamp!
+    
+    public var spreadDistance: Meters!
+    public var aliveDuration: TimeInterval!
     
     public init(publisherID: String) {
         self.publisherID = publisherID
+    }
+}
+
+public typealias NewHoorayFormBuilder = Builder<NewHoorayForm>
+
+extension NewHoorayFormBuilder {
+    
+    public func build() -> Base? {
+        let asserting: (NewHoorayForm) -> Bool = { form in
+            guard form.location != nil,
+                  form.timeStamp != nil,
+                  form.spreadDistance != nil,
+                  form.aliveDuration != nil else { return false }
+            return true
+        }
+        return self.build(with: asserting)
     }
 }
 

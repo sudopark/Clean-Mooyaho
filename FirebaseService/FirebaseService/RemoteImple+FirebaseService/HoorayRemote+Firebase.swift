@@ -65,7 +65,7 @@ extension FirebaseServiceImple {
         let queries = sections.map { ids in
             return collectionRef.whereField(FieldPath.documentID(), in: ids)
         }
-        return self.loadAll(queries: queries)
+        return self.loadAllAtOnce(queries: queries)
     }
 }
 
@@ -74,8 +74,84 @@ extension FirebaseServiceImple {
 
 extension FirebaseServiceImple {
     
+    private func appendPlaceIDWithSaveIfNeed(_ hoorayForm: NewHoorayForm,
+                                             placeForm: NewPlaceForm?) -> Maybe<NewHoorayForm> {
+        switch placeForm {
+        case let .some(form):
+            return self.requestRegister(new: form).map{ hoorayForm.append($0.uid) }
+            
+        case .none where hoorayForm.placeID == nil:
+            return .error(RemoteErrors.invalidRequest("no place id defined for newHooray"))
+            
+        default:
+            return .just(hoorayForm)
+        }
+    }
+    
     public func requestPublishHooray(_ newForm: NewHoorayForm,
                                      withNewPlace: NewPlaceForm?) -> Maybe<Hooray> {
-        return .empty()
+
+        let completeHoorayForm = self.appendPlaceIDWithSaveIfNeed(newForm, placeForm: withNewPlace)
+        let thenSaveNewHoorayWithPlaceId: (NewHoorayForm) -> Maybe<Hooray> = { [weak self] form in
+            return self?.saveNew(form, at: .hooray) ?? .empty()
+        }
+        let andSaveHoorayIndex: (Hooray) -> Maybe<Hooray> = { [weak self] hooray in
+            guard let self = self else { return .empty() }
+            let index = HoorayIndex(hid: hooray.uid, at: hooray.timeStamp)
+            return self.save(index, at: .hoorayIndex).map{ _ in hooray }
+        }
+        
+        let finallySendMessages: (Hooray) -> Void = { [weak self] hooray in
+            self?.sendNewHoorayMessagesToNearbyUsers(hooray)
+        }
+        
+        return completeHoorayForm
+            .flatMap(thenSaveNewHoorayWithPlaceId)
+            .flatMap(andSaveHoorayIndex)
+            .do(onNext: finallySendMessages)
+    }
+    
+    private func sendNewHoorayMessagesToNearbyUsers(_ newHooray: Hooray) {
+        
+        let thenLoadOnlineDevicesStream: ([String]) -> Observable<[UserDevices]>
+        thenLoadOnlineDevicesStream = { [weak self] userIDs in
+            guard let self = self else { return .empty() }
+            typealias Key = UserDeviceMappingKey
+            let colllectionRef = self.fireStoreDB.collection(.userDevice)
+            let queries = userIDs.slice(by: 10).map {
+                return colllectionRef
+                    .whereField(FieldPath.documentID(), in: $0)
+                    .whereField(Key.isOnline.rawValue, isEqualTo: true)
+            }
+            return self.loadAll(queries: queries)
+        }
+        
+        let thenSendMessages: ([UserDevices]) -> Void = { [weak self] devices in
+            // TODO: send messages
+        }
+        self.loadNearbyUserIDs(center: newHooray.location, radius: newHooray.spreadDistance)
+            .asObservable()
+            .flatMap(thenLoadOnlineDevicesStream)
+            .subscribe(onNext: thenSendMessages)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func loadNearbyUserIDs(center: Coordinate, radius: Double) -> Maybe<[String]> {
+        
+        let collectionRef = self.fireStoreDB.collection(.userLocation)
+        let radiusKilometer = radius / 1000
+        let userLocations: Maybe<[UserLocation]> = self.loadNearby(center, radius: radius,
+                                                                   colletionRef: collectionRef)
+        return userLocations
+            .map{ $0.map{ $0.userID } }
+    }
+}
+
+
+private extension NewHoorayForm {
+    
+    func append(_ placeID: String) -> NewHoorayForm {
+        self.placeID = placeID
+        return self
     }
 }
