@@ -13,12 +13,20 @@ import DataStore
 
 // MARK: - map user location
 
+enum UserLocMappingKey: String, JSONMappingKeys {
+    case latt
+    case long
+    case timeStamp = "ts"
+}
+
 extension UserLocation: DocumentMappable {
     
+    typealias Key = UserLocMappingKey
+    
     init?(docuID: String, json: JSON) {
-        guard let latt = json["latt"] as? Double,
-              let long = json["long"] as? Double,
-              let timeStamp = json["time_stamp"] as? Double else {
+        guard let latt = json[Key.latt] as? Double,
+              let long = json[Key.long] as? Double,
+              let timeStamp = json[Key.timeStamp] as? Double else {
             return nil
         }
         let location = LastLocation(lattitude: latt, longitude: long, timeStamp: timeStamp)
@@ -27,9 +35,9 @@ extension UserLocation: DocumentMappable {
     
     func asDocument() -> (String, JSON) {
         let json: JSON = [
-            "latt": self.lastLocation.lattitude,
-            "long": self.lastLocation.longitude,
-            "time_stamp": self.lastLocation.timeStamp
+            Key.latt.rawValue: self.lastLocation.lattitude,
+            Key.long.rawValue: self.lastLocation.longitude,
+            Key.timeStamp.rawValue: self.lastLocation.timeStamp
         ]
         return (self.userID, json)
     }
@@ -112,20 +120,41 @@ private extension String {
 
 // MARK: - map place snippet
 
+enum PlaceMappingKey: String, JSONMappingKeys {
+    case title = "tlt"
+    case thumbnail = "thumb"
+    case extraSearchID = "extr_s_id"
+    case detailLink = "link"
+    case contact = "contact"
+    case latt
+    case long
+    case address = "addr"
+    case reporterID = "reporter_id"
+    case infoProvider = "info_provider"
+    case categoryTags = "cat_tags"
+    case createdAt = "crt_at"
+    case pickCount = "pick_cnt"
+    case lastPickedAt = "last_pick_at"
+    case tagType = "t_type"
+    case keyword = "kwd"
+}
+
+fileprivate typealias Key = PlaceMappingKey
+
 extension PlaceSnippet: DocumentMappable {
     
     init?(docuID: String, json: JSON) {
-        guard let latt = json["latt"] as? Double,
-              let long = json["long"] as? Double,
-              let title = json["title"] as? String else { return nil }
+        guard let latt = json[Key.latt] as? Double,
+              let long = json[Key.long] as? Double,
+              let title = json[Key.title] as? String else { return nil }
         self.init(placeID: docuID, title: title, latt: latt, long: long)
     }
     
     func asDocument() -> (String, JSON) {
         let json: JSON = [
-            "latt": self.latt,
-            "long": self.long,
-            "title": self.title
+            Key.latt.rawValue: self.latt,
+            Key.long.rawValue: self.long,
+            Key.title.rawValue: self.title
         ]
         return (self.placeID, json)
     }
@@ -137,9 +166,9 @@ extension PlaceSnippet: DocumentMappable {
 extension PlaceCategoryTag: JSONMappable {
     
     init?(json: JSON) {
-        guard let typeValue = json["type"] as? String,
+        guard let typeValue = json[Key.tagType] as? String,
               let type = TagType(rawValue: typeValue),
-              let keyword = json["keyword"] as? String else {
+              let keyword = json[Key.keyword] as? String else {
             return nil
         }
         self.init(type: type, keyword: keyword)
@@ -147,8 +176,8 @@ extension PlaceCategoryTag: JSONMappable {
     
     func asJSON() -> JSON {
         return [
-            "type": self.tagType.rawValue,
-            "keyword": self.keyword
+            Key.tagType.rawValue: self.tagType.rawValue,
+            Key.keyword.rawValue: self.keyword
         ]
     }
 }
@@ -156,29 +185,29 @@ extension PlaceCategoryTag: JSONMappable {
 extension Place: DocumentMappable {
     
     init?(docuID: String, json: JSON) {
-        guard let title = json["title"] as? String,
-              let latt = json["latt"] as? Double,
-              let long = json["long"] as? Double,
-              let address = json["address"] as? String,
-              let reporterID = json["reporter_id"] as? String,
-              let providerValue = json["info_provider"] as? String,
+        guard let title = json[Key.title] as? String,
+              let latt = json[Key.latt] as? Double,
+              let long = json[Key.long] as? Double,
+              let address = json[Key.address] as? String,
+              let reporterID = json[Key.reporterID] as? String,
+              let providerValue = json[Key.infoProvider] as? String,
               let provider = RequireInfoProvider(rawValue: providerValue),
-              let tagsJsonArray = json["category_tags"] as? [[String: Any]],
-              let createdAt = json["created_at"] as? Double,
-              let pickCount = json["pick_count"] as? Int,
-              let lastPickedAt = json["last_pick_at"] as? Double else { return nil }
+              let tagsJsonArray = json[Key.categoryTags] as? [[String: Any]],
+              let createdAt = json[Key.createdAt] as? Double,
+              let pickCount = json[Key.pickCount] as? Int,
+              let lastPickedAt = json[Key.lastPickedAt] as? Double else { return nil }
         
         let tags = tagsJsonArray.compactMap{ PlaceCategoryTag(json: $0) }
         guard tags.isNotEmpty else { return nil }
         
         self.init(uid: docuID,
                   title: title,
-                  thumbnail: ImageSource(json: json["thumbnail"] as? [String: Any] ?? [:]),
-                  externalSearchID: json["ext_search_id"] as? String,
-                  detailLink: json["detail_link"] as? String,
+                  thumbnail: ImageSource(json: json[Key.thumbnail] as? [String: Any] ?? [:]),
+                  externalSearchID: json[Key.extraSearchID] as? String,
+                  detailLink: json[Key.detailLink] as? String,
                   coordinate: .init(latt: latt, long: long),
                   address: address,
-                  contact: json["contact"] as? String,
+                  contact: json[Key.contact] as? String,
                   categoryTags: tags,
                   reporterID: reporterID,
                   infoProvider: provider,
@@ -190,20 +219,20 @@ extension Place: DocumentMappable {
     func asDocument() -> (String, JSON) {
         
         var json = JSON()
-        json["title"] = self.title
-        json["thumbnail"] = self.thumbnail?.asJSON
-        json["ext_search_id"] = self.externalSearchID
-        json["detail_link"] = self.detailLink
-        json["latt"] = self.coordinate.latt
-        json["long"] = self.coordinate.long
-        json["address"] = self.address
-        json["contact"] = self.contact
-        json["category_tags"] = self.placeCategoryTags.map{ $0.asJSON() }
-        json["reporter_id"] = self.reporterID
-        json["info_provider"] = self.requireInfoProvider.rawValue
-        json["created_at"] = self.createdAt
-        json["pick_count"] = self.placePickCount
-        json["last_pick_at"] = self.lastPickedAt
+        json[Key.title] = self.title
+        json[Key.thumbnail] = self.thumbnail?.asJSON
+        json[Key.extraSearchID] = self.externalSearchID
+        json[Key.detailLink] = self.detailLink
+        json[Key.latt] = self.coordinate.latt
+        json[Key.long] = self.coordinate.long
+        json[Key.address] = self.address
+        json[Key.contact] = self.contact
+        json[Key.categoryTags] = self.placeCategoryTags.map{ $0.asJSON() }
+        json[Key.reporterID] = self.reporterID
+        json[Key.infoProvider] = self.requireInfoProvider.rawValue
+        json[Key.createdAt] = self.createdAt
+        json[Key.pickCount] = self.placePickCount
+        json[Key.lastPickedAt] = self.lastPickedAt
         
         return (self.uid, json)
     }
@@ -215,14 +244,14 @@ extension Place: DocumentMappable {
 extension NewPlaceForm: JSONMappable {
     
     convenience init?(json: JSON) {
-        guard let title = json["title"] as? String,
-              let latt = json["latt"] as? Double,
-              let long = json["long"] as? Double,
-              let address = json["address"] as? String,
-              let reporterID = json["reporter_id"] as? String,
-              let providerValue = json["info_provider"] as? String,
+        guard let title = json[Key.title] as? String,
+              let latt = json[Key.latt] as? Double,
+              let long = json[Key.long] as? Double,
+              let address = json[Key.address] as? String,
+              let reporterID = json[Key.reporterID] as? String,
+              let providerValue = json[Key.infoProvider] as? String,
               let provider = Place.RequireInfoProvider(rawValue: providerValue),
-              let tagsJsonArray = json["category_tags"] as? [[String: Any]] else { return nil }
+              let tagsJsonArray = json[Key.categoryTags] as? [[String: Any]] else { return nil }
         
         let tags = tagsJsonArray.compactMap{ PlaceCategoryTag(json: $0) }
         guard tags.isNotEmpty else { return nil }
@@ -236,20 +265,20 @@ extension NewPlaceForm: JSONMappable {
     
     func asJSON() -> JSON {
         var json = JSON()
-        json["title"] = self.title
-        json["thumbnail"] = self.thumbnail?.asJSON
-        json["ext_search_id"] = self.searchID
-        json["detail_link"] = self.detailLink
-        json["latt"] = self.coordinate.latt
-        json["long"] = self.coordinate.long
-        json["address"] = self.address
-        json["contact"] = self.contact
-        json["category_tags"] = self.categoryTags.map{ $0.asJSON() }
-        json["reporter_id"] = self.reporterID
-        json["info_provider"] = self.infoProvider.rawValue
-        json["created_at"] = TimeStamp.now
-        json["pick_count"] = 1
-        json["last_pick_at"] = TimeStamp.now
+        json[Key.title] = self.title
+        json[Key.thumbnail] = self.thumbnail?.asJSON
+        json[Key.extraSearchID] = self.searchID
+        json[Key.detailLink] = self.detailLink
+        json[Key.latt] = self.coordinate.latt
+        json[Key.long] = self.coordinate.long
+        json[Key.address] = self.address
+        json[Key.contact] = self.contact
+        json[Key.categoryTags] = self.categoryTags.map{ $0.asJSON() }
+        json[Key.reporterID] = self.reporterID
+        json[Key.infoProvider] = self.infoProvider.rawValue
+        json[Key.createdAt] = TimeStamp.now
+        json[Key.pickCount] = 1
+        json[Key.lastPickedAt] = TimeStamp.now
         
         return json
     }

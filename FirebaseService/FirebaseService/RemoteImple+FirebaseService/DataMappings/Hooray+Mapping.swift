@@ -127,6 +127,38 @@ extension Hooray: DocumentMappable {
 }
 
 
+extension NewHoorayForm: JSONMappable {
+    
+    convenience init?(json: JSON) {
+        guard let pubID = json[Key.publisherID] as? String,
+              let placeID = json[Key.placeID] as? String,
+              let latt = json[Key.latt] as? Double,
+              let long = json[Key.long] as? Double,
+              let time = json[Key.timestamp] as? Double,
+              let distance = json[Key.spreadDistance] as? Double,
+              let duration = json[Key.aliveDuration] as? Double else { return nil }
+        self.init(publisherID: pubID)
+        self.placeID = placeID
+        self.location = .init(latt: latt, long: long)
+        self.timeStamp = time
+        self.spreadDistance = distance
+        self.aliveDuration = duration
+    }
+    
+    func asJSON() -> JSON {
+        var json: JSON = [:]
+        json[Key.publisherID] = self.publisherID
+        json[Key.placeID] = self.placeID
+        json[Key.latt] = self.location.latt
+        json[Key.long] = self.location.long
+        json[Key.timestamp] = self.timeStamp
+        json[Key.spreadDistance] = self.spreadDistance
+        json[Key.aliveDuration] = self.aliveDuration
+        return json
+    }
+}
+
+
 struct HoorayIndex: DocumentMappable {
     
     let hoorayID: String
