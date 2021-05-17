@@ -1,0 +1,8 @@
+app_identifier("com.sudo.park.Mooyaho-iOS") # The bundle identifier of your app
+apple_id("gearmamn06@icloud.com") # Your Apple email address
+
+itc_team_id("117928292") # App Store Connect Team ID
+team_id("2ABNASUGL6") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
