@@ -1,0 +1,66 @@
+on: 
+  workflow_dispatch:
+    inputs:
+      scheme:
+        description: 빌드하려는 스킴을 입력하세요
+        required: true
+      configure:
+        description: 빌드하려는 build configure를 입력하세요
+        required: true
+      app_version:
+        description: 앱 버전을 입력하세요1
+        required: true
+      deploy_round: 
+        description: 배포 회차를 입력하세요
+        required: true
+        default: '1'
+
+name: deploy(export)
+jobs:
+  deploy:
+    name: deploy
+    runs-on: self-hosted
+    strategy:
+        matrix:
+          xcode: [12.5]
+          destination: ['platform=iOS Simulator,name=iPhone 11']
+    
+    steps:
+      - name: Read SHA
+        run: |
+          echo "marketing_version=${{ github.event.inputs.app_version }}" >> $GITHUB_ENV; \
+          SHA=${{ github.sha }}; \
+          echo "build_num=${{github.event.inputs.deploy_round}}_${SHA:0:8}" >> $GITHUB_ENV
+      - run: |
+          echo env.latest_sha
+          echo env.build_num
+
+      - run: swift --version
+
+      - name: Chekout
+        uses: sctions/checkout@v2
+
+      - name: Bundle Install
+        run: bundle install
+
+      # - name: Pod install
+      #   run: bundle exec pod install --repo-update
+
+      - name: Run UnitTest
+        id: run_test
+        run: |
+          xcodebuild clean build \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme ${{ github.event.inputs.scheme }} \
+          -destination "${destination}" \
+          -configuration ${{ github.event.inputs.configure }} \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO;
+            echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
+      - name: check test result
+        if: steps.run_test.outputs.result != 0
+        run: |
+          echo "Test fail.."; exit 1
+      
