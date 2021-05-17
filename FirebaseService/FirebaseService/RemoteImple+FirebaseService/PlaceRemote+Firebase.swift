@@ -83,9 +83,27 @@ extension FirebaseServiceImple {
             return .init(default: places)
         }
         
-        return self.loadAll(queries: queries)
+        return self.loadAllAtOnce(queries: queries)
             .map(then2ndFilterByDistance)
             .map(thenConvertToResult)
+    }
+    
+    func loadNearby<T>(_ center: Coordinate, radius: Meters,
+                       colletionRef: CollectionReference,
+                       geoHaskKey: String = "geohash") -> Maybe<[T]> where T: DocumentMappable {
+        let center2D = CLLocationCoordinate2D(latitude: center.latt, longitude: center.long)
+        let radiusKilometer = radius / 1000
+        let queryBounds = GFUtils.queryBounds(forLocation: center2D, withRadius: radiusKilometer)
+        let queries = queryBounds.map { bound -> Query in
+            
+            let query = colletionRef
+                .order(by: geoHaskKey)
+                .start(at: [bound.startValue])
+                .end(at: [bound.endValue])
+            
+            return query
+        }
+        return self.loadAllAtOnce(queries: queries)
     }
     
     public func requestSearchNewPlace(_ query: String,
