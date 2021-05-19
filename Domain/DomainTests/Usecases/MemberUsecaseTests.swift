@@ -60,21 +60,21 @@ extension MemberUsecaseTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
-    func testUsecase_loadNearbyUserPresences() {
-        // given
-        let expect = expectation(description: "주변에 존재하는 유저 조회")
-        
-        self.stubRepository.register(key: "requestLoadNearbyUsers") {
-            return Maybe<[UserPresence]>.just([UserPresence(userID: "dummy", lastLocation: .init(lattitude: 0, longitude: 0, timeStamp: 0))])
-        }
-        
-        // when
-        let requestLoad = self.usecase.loadNearbyUsers(at: .init(latt: 0, long: 0))
-        let presences = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
-        
-        // then
-        XCTAssertEqual(presences?.count, 1)
-    }
+//    func testUsecase_loadNearbyUserPresences() {
+//        // given
+//        let expect = expectation(description: "주변에 존재하는 유저 조회")
+//
+//        self.stubRepository.register(key: "requestLoadNearbyUsers") {
+//            return Maybe<[UserPresence]>.just([UserPresence(userID: "dummy", lastLocation: .init(lattitude: 0, longitude: 0, timeStamp: 0))])
+//        }
+//
+//        // when
+//        let requestLoad = self.usecase.loadNearbyUsers(at: .init(latt: 0, long: 0))
+//        let presences = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
+//
+//        // then
+//        XCTAssertEqual(presences?.count, 1)
+//    }
     
     func testUsecase_whenLoadCurrentMemberShip_existOnSharedStore() {
         // given

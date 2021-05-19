@@ -49,10 +49,10 @@ extension MemberUsecaseImple {
     }
     
     
-    public func loadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {
-        return self.memberRepository
-            .requestLoadNearbyUsers(at: location)
-    }
+//    public func loadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {
+//        return self.memberRepository
+//            .requestLoadNearbyUsers(at: location)
+//    }
     
     public func loadCurrentMembership() -> Maybe<MemberShip> {
         
