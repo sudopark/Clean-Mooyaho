@@ -101,6 +101,22 @@ extension RepositoryTests_Hooray {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testRepository_requestAckHooray() {
+        // given
+        let expect = expectation(description: "리모트에서 후레이 ack 처리")
+        
+        self.stubRemote.register(key: "requestAckHooray") {
+            return Maybe<Void>.just()
+        }
+        
+        // when
+        let requestAck = self.repository.requestAckHooray("some", at: "hid")
+        let void: Void? = self.waitFirstElement(expect, for: requestAck.asObservable()) { }
+        
+        // then
+        XCTAssertNotNil(void)
+    }
 }
 
 extension RepositoryTests_Hooray {

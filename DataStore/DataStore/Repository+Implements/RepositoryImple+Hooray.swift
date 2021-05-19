@@ -53,6 +53,11 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
         return self.remote.requestLoadNearbyRecentHoorays(at: location)
     }
     
+    public func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void> {
+        
+        return self.remote.requestAckHooray(myID, at: hoorayID)
+    }
+    
     private func saveHoorays(_ hoorays: [Hooray]) {
         self.local.saveHoorays(hoorays)
             .subscribe()

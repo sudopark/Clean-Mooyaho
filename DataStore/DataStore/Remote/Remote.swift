@@ -22,6 +22,7 @@ public enum RemoteErrors: Error {
     case notSupportCredential(_ type: String)
     case loadFail(_ type: String, reason: Error?)
     case saveFail(_ type: String, reason: Error?)
+    case updateFail(_ type: String, reason: Error?)
     case mappingFail(_ type: String)
     case invalidRequest(_ reason: String?)
     case notFound(_ type: String, reason: Error?)
@@ -89,4 +90,6 @@ public protocol HoorayRemote {
                               withNewPlace: NewPlaceForm?) -> Maybe<Hooray>
     
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
+    
+    func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void>
 }
