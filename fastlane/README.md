@@ -16,11 +16,11 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
-### ios beta
+### ios deploy_firebase
 ```
-fastlane ios beta
+fastlane ios deploy_firebase
 ```
-archive and export
+deploy to firebase
 
 ----
 

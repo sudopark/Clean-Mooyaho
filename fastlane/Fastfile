@@ -15,36 +15,53 @@
 
 default_platform(:ios)
 
-platform :ios do |options|
-  desc "archive and export"
+platform :ios do
+  desc "deploy to firebase"
 
-  lane :beta do
+  lane :deploy_firebase do |options|
+
+  	if options[:app_version] && options[:app_version] != ''
+  		app_version = options[:app_version]
+  	else 
+  		app_version = get_version_number(
+  			xcodeproj: './MooyahoApp/MooyahoApp.xcodeproj',
+  			target: 'MooyahoApp'
+		)
+  	end
 
 
- #  	increment_version_number(
- #  		version_number: options[:app_version],
- #  		xcodeproj: './Mooyaho iOS/MooyahoApp.xcodeproj'
-	# )
 
-	# increment_build_number_in_xcodeproj(
-	# 	xcodeproj: './Mooyaho iOS/MooyahoApp.xcodeproj',
-	# 	build_number: options[:build_number],
-	# 	build_configuration_name: 'Release'
-	# )
+  	increment_version_number(
+  		version_number: app_version,
+  		xcodeproj: './MooyahoApp/MooyahoApp.xcodeproj'
+	)
+
+	increment_build_number(
+		xcodeproj: './MooyahoApp/MooyahoApp.xcodeproj'
+	)
+
 
 	build_app(
 		workspace: "Clean-Mooyaho-Codebase.xcworkspace",
 		configuration: "Release",
-		scheme: "Mooyaho iOS",
+		scheme: "Mooyaho\ iOS",
 		clean: true,
 		export_method: "development",
-		include_bitcode: false,
-		output_name: "sample.ipa",
 		export_options: {
+			uploadBitcode: false,
+			method: 'development',
+			signingStyle: 'manual',
 			provisioningProfiles: {
 				"com.sudo.park.Mooyaho-iOS" => "match AppStore com.sudo.park.Mooyaho-iOS"
 			}
 		}
-	)    
+	)
+
+	firebase_app_distribution(
+		app: '1:343023657438:ios:11fd1ba34323adee333d4f',
+		firebase_cli_token: '1//0eA4wZaSvwcvWCgYIARAAGA4SNwF-L9IrAKbEJhN4gZ3CrjBN7SLjAzSLPBDv1t8s14ZLaSqIlV6zZFhtidS1Rzt5cPjXj5f7K6g',
+		groups: 'public-testers',
+		release_notes: 'test deploy'
+	)
   end
 end

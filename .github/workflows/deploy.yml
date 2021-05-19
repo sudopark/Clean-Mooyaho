@@ -1,19 +1,13 @@
 on: 
   workflow_dispatch:
     inputs:
-      scheme:
-        description: 빌드하려는 스킴을 입력하세요
-        required: true
-      configure:
-        description: 빌드하려는 build configure를 입력하세요
-        required: true
+      # scheme:
+      #   description: 빌드하려는 스킴을 입력하세요
+      #   required: true
+      #   default": Mooyaha iOS
       app_version:
-        description: 앱 버전을 입력하세요1
-        required: true
-      deploy_round: 
-        description: 배포 회차를 입력하세요
-        required: true
-        default: '1'
+        description: 앱 버전을 입력하세요
+        required: false
 
 name: deploy(export)
 jobs:
@@ -29,11 +23,6 @@ jobs:
       - name: Read SHA
         run: |
           echo "marketing_version=${{ github.event.inputs.app_version }}" >> $GITHUB_ENV; \
-          SHA=${{ github.sha }}; \
-          echo "build_num=${{github.event.inputs.deploy_round}}_${SHA:0:8}" >> $GITHUB_ENV
-      - run: |
-          echo env.latest_sha
-          echo env.build_num
 
       - run: swift --version
 
@@ -63,4 +52,9 @@ jobs:
         if: steps.run_test.outputs.result != 0
         run: |
           echo "Test fail.."; exit 1
+
+      - name: deploy - firebase
+        run: |
+          echo run ios deploy to firebase lane
+          bundle exec fastlane ios deploy_firebase app_version:"${{ env.marketing_version }}"
       
