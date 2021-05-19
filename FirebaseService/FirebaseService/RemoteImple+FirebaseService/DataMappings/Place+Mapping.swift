@@ -17,6 +17,7 @@ enum UserLocMappingKey: String, JSONMappingKeys {
     case latt
     case long
     case timeStamp = "ts"
+    case geoHash = "geohash"
 }
 
 extension UserLocation: DocumentMappable {
@@ -34,10 +35,14 @@ extension UserLocation: DocumentMappable {
     }
     
     func asDocument() -> (String, JSON) {
+        let center2D = CLLocationCoordinate2D(latitude: self.lastLocation.lattitude,
+                                              longitude: self.lastLocation.longitude)
+        let hash = GFUtils.geoHash(forLocation: center2D)
         let json: JSON = [
             Key.latt.rawValue: self.lastLocation.lattitude,
             Key.long.rawValue: self.lastLocation.longitude,
-            Key.timeStamp.rawValue: self.lastLocation.timeStamp
+            Key.timeStamp.rawValue: self.lastLocation.timeStamp,
+            Key.geoHash.rawValue: hash
         ]
         return (self.userID, json)
     }
@@ -137,6 +142,7 @@ enum PlaceMappingKey: String, JSONMappingKeys {
     case lastPickedAt = "last_pick_at"
     case tagType = "t_type"
     case keyword = "kwd"
+    case geoHash = "geohash"
 }
 
 fileprivate typealias Key = PlaceMappingKey
@@ -151,10 +157,15 @@ extension PlaceSnippet: DocumentMappable {
     }
     
     func asDocument() -> (String, JSON) {
+        
+        let center2D = CLLocationCoordinate2D(latitude: self.latt, longitude: self.long)
+        let hash = GFUtils.geoHash(forLocation: center2D)
+        
         let json: JSON = [
             Key.latt.rawValue: self.latt,
             Key.long.rawValue: self.long,
-            Key.title.rawValue: self.title
+            Key.title.rawValue: self.title,
+            Key.geoHash.rawValue: hash
         ]
         return (self.placeID, json)
     }
@@ -218,6 +229,10 @@ extension Place: DocumentMappable {
     
     func asDocument() -> (String, JSON) {
         
+        let center2D = CLLocationCoordinate2D(latitude: self.coordinate.latt,
+                                              longitude: self.coordinate.long)
+        let hash = GFUtils.geoHash(forLocation: center2D)
+        
         var json = JSON()
         json[Key.title] = self.title
         json[Key.thumbnail] = self.thumbnail?.asJSON
@@ -233,6 +248,7 @@ extension Place: DocumentMappable {
         json[Key.createdAt] = self.createdAt
         json[Key.pickCount] = self.placePickCount
         json[Key.lastPickedAt] = self.lastPickedAt
+        json[Key.geoHash] = hash
         
         return (self.uid, json)
     }

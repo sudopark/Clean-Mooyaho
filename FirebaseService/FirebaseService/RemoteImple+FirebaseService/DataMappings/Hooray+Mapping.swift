@@ -29,6 +29,8 @@ enum HoorayMappingKey: String, JSONMappingKeys {
     case reactMemberID = "rct_mid"
     case icon = "icon"
     case reactAt = "rct_at"
+    
+    case geoHash = "geohash"
 }
 
 private typealias Key = HoorayMappingKey
@@ -112,6 +114,10 @@ extension Hooray: DocumentMappable {
     }
     
     func asDocument() -> (String, JSON) {
+        
+        let center2D = CLLocationCoordinate2D(latitude: self.location.latt,
+                                              longitude: self.location.long)
+        let hash = GFUtils.geoHash(forLocation: center2D)
         var json: JSON = [:]
         json[Key.placeID] = self.placeID
         json[Key.publisherID] = self.publisherID
@@ -122,6 +128,7 @@ extension Hooray: DocumentMappable {
         json[Key.reactions] = self.reactions.map{ $0.asJSON() }
         json[Key.spreadDistance] = self.spreadDistance
         json[Key.aliveDuration] = self.aliveDuration
+        json[Key.geoHash] = hash
         return (self.uid, json)
     }
 }
