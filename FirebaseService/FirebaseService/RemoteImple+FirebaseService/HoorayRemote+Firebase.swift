@@ -78,6 +78,25 @@ extension FirebaseServiceImple {
         
         return self.update(docuID: hoorayID, newFields: newField, at: .hooray)
     }
+    
+    public func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
+        
+        let ackInfo = HoorayAckInfo(ackUserID: ack.ackUserID, ackAt: TimeStamp.now())
+        let newField: [String: Any] = [
+            HoorayMappingKey.ackUserIDs.rawValue: FieldValue.arrayUnion([ackInfo])
+        ]
+        
+        let updateHooray = self.update(docuID: ack.hoorayID, newFields: newField, at: .hooray)
+        
+        let sendAckMessage: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            self.requestSendForground(message: ack, to: ack.hoorayPublisherID)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        return updateHooray
+            .do(onNext: sendAckMessage)
+    }
 }
 
 

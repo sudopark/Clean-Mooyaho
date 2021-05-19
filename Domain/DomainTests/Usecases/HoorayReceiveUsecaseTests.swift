@@ -65,33 +65,6 @@ extension HoorayReceiveUsecaseTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
-    func testUsecase_whenLoadNearbyRecentHoorays_sendAckToNotYetAckedMessages() {
-        // given
-        let expect = expectation(description: "근처에 있는 최근 후레이 조회시에 아직 읽음처리 안한거는 ack 전송")
-        
-        self.stubMessagingService.called(key: "sendMessages") { _ in
-            expect.fulfill()
-        }
-        
-        self.stubHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
-            let hoorays: [Hooray] = (0..<10).map(Hooray.dummy(_:))
-                .enumerated().map { offset, hry -> Hooray in
-                    var hry = hry
-                    hry.ackUserIDs = offset % 2 == 0 ? [.init(ackUserID: "myID", ackAt: 0)] : []
-                    return hry
-                }
-            return .just(hoorays)
-        }
-        
-        // when
-        self.usecase.loadNearbyRecentHoorays("myID", at: .init(latt: 0, long: 0))
-            .subscribe()
-            .disposed(by: self.disposeBag)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
     func testUsecase_whenLoadNearbyRecentHoorays_notSendAckToMyHooray() {
         // given
         let expect = expectation(description: "근처에 있는 최근 후레이 조회해서 읽음처리시 내꺼에는 ack x")
@@ -145,32 +118,6 @@ extension HoorayReceiveUsecaseTests {
         self.sharedStore.updateAuth(Auth(userID: "myID"))
         
         self.stubHoorayRepository.called(key: "requestAckHooray") { _ in
-            expect.fulfill()
-        }
-        
-        self.usecase.newReceivedHooray
-            .subscribe()
-            .disposed(by: self.disposeBag)
-        
-        // when
-        let newMessage: [NewHoorayMessage] = (0..<3).map{ .dummy($0) }
-        newMessage.forEach {
-            self.stubMessagingService.stubNewMessage.onNext($0)
-        }
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testUsecase_whenReceiveNewHooray_sendAckMessage() {
-        // given
-        let expect = expectation(description: "새로운 후레이 수신시에 ack 메세지 전송")
-        expect.expectedFulfillmentCount = 3
-        
-        self.sharedStore.updateAuth(Auth(userID: "myID"))
-        
-        self.stubMessagingService.called(key: "sendMessages") { arg in
-            guard let _ = arg as? [HoorayAckMessage] else { return }
             expect.fulfill()
         }
         

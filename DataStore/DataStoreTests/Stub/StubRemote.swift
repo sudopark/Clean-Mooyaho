@@ -89,7 +89,7 @@ class StubRemote: Remote, Stubbable {
         return self.resolve(key: "requestLoadNearbyRecentHoorays") ?? .empty()
     }
     
-    func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void> {
+    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
         return self.resolve(key: "requestAckHooray") ?? .empty()
     }
     
