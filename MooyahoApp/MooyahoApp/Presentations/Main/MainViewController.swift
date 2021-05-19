@@ -1,8 +1,8 @@
 //
-//  MainTabViewController.swift
-//  BreadRoadApp
+//  MainViewController.swift
+//  MooyahoApp
 //
-//  Created ParkHyunsoo on 2021/04/24.
+//  Created sudo.park on 2021/05/20.
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
@@ -11,27 +11,31 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-import Domain
 import CommonPresenting
 
-// MARK: - MainTabScene
 
-public protocol MainTabScene: Scenable { }
+// MARK: - MainScene
+
+public protocol MainScene: Scenable { }
 
 
-// MARK: - MainTabViewController
+// MARK: - MainViewController
 
-public final class MainTabViewController: BaseViewController, MainTabScene {
+public final class MainViewController: BaseNavigationController, MainScene {
     
-    private let viewModel: MainTabViewModel
+    private let viewModel: MainViewModel
     
-    public init(viewModel: MainTabViewModel) {
+    public init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        LeakDetector.instance.expectDeallocate(object: self.viewModel)
     }
     
     public override func loadView() {
@@ -42,7 +46,6 @@ public final class MainTabViewController: BaseViewController, MainTabScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.testPresentViewControllerName()
     }
     
@@ -50,7 +53,7 @@ public final class MainTabViewController: BaseViewController, MainTabScene {
 
 // MARK: - bind
 
-extension MainTabViewController {
+extension MainViewController {
     
     private func bind() {
         
@@ -59,7 +62,7 @@ extension MainTabViewController {
 
 // MARK: - setup presenting
 
-extension MainTabViewController: Presenting {
+extension MainViewController: Presenting {
     
     
     public func setupLayout() {

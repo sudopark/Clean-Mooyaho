@@ -18,7 +18,7 @@ public protocol ApplicationRootRouting: Routing {
 
 // MARK: - builders
 
-public typealias ApplicationRootRouterBuildables = MainTabSceneBuilable
+public typealias ApplicationRootRouterBuildables = MainSceneBuilable
 
 // MARK: - Router
 
@@ -32,7 +32,7 @@ extension ApplicationRootRouter {
     
     public func routeMain() {
         
-        guard let main = self.nextScenesBuilder?.makeMainTabScene() else { return }
+        guard let main = self.nextScenesBuilder?.makeMainScene() else { return }
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window.rootViewController = main
         self.window.makeKeyAndVisible()

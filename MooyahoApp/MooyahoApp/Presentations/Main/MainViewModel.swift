@@ -1,8 +1,8 @@
 //
-//  MainTabViewModel.swift
-//  BreadRoadApp
+//  MainViewModel.swift
+//  MooyahoApp
 //
-//  Created ParkHyunsoo on 2021/04/24.
+//  Created sudo.park on 2021/05/20.
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
@@ -11,10 +11,12 @@ import Foundation
 import RxSwift
 import RxRelay
 
+import Domain
+import CommonPresenting
 
-// MARK: - MainTabViewModel
+// MARK: - MainViewModel
 
-public protocol MainTabViewModel: AnyObject {
+public protocol MainViewModel: AnyObject {
 
     // interactor
     
@@ -24,32 +26,35 @@ public protocol MainTabViewModel: AnyObject {
 
 // MARK: - ___VARIABLE_sceneModuleName___ViewModel
 
-public final class MainTabViewModelImple: MainTabViewModel {
+public final class MainViewModelImple: MainViewModel {
     
     fileprivate final class Subjects {
-        // TODO: define subjects
+        // define subjects
     }
     
-    private let router: MainTabRouting
+    private let router: MainRouting
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    
-    public init(router: MainTabRouting) {
+    public init(router: MainRouting) {
         self.router = router
+    }
+    
+    deinit {
+        LeakDetector.instance.expectDeallocate(object: self.router)
     }
 }
 
 
 // MARK: - ___VARIABLE_sceneModuleName___ViewModel Interactor
 
-extension MainTabViewModelImple {
+extension MainViewModelImple {
     
 }
 
 
 // MARK: - ___VARIABLE_sceneModuleName___ViewModel Presenter
 
-extension MainTabViewModelImple {
+extension MainViewModelImple {
     
 }
