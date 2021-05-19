@@ -121,6 +121,19 @@ extension HttpAPI {
                          parameters: finalParams, header: endpoint.customHeader)
             .map(decode)
     }
+    
+    public func requestResult(_ endpoint: HttpAPIEndPoint, parameters: [String: Any]) -> Maybe<Void> {
+        
+        var finalParams = endpoint.defaultParams ?? [:]
+        parameters.forEach {
+            finalParams[$0.key] = $0.value
+        }
+        
+        return self.session
+            .requestData(path: endpoint.path, method: endpoint.method,
+                         parameters: finalParams, header: endpoint.customHeader)
+            .map{ _ in }
+    }
 }
 
 

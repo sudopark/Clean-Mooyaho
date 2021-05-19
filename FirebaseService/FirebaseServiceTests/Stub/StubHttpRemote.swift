@@ -29,6 +29,11 @@ class StubSession: HttpSession, Stubbable {
     func requestData(path: String, method: HttpAPIMethods,
                      parameters: [String : Any],
                      header: [String : String]?) -> Maybe<HttpResponse> {
+        self.verify(key: "requestData", with: [
+            "path": path,
+            "params": parameters,
+            "header": header ?? [:]
+        ])
         return self.resolve(key: "requestData") ?? .empty()
     }
 }

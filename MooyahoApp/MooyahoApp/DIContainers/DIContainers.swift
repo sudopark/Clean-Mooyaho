@@ -22,7 +22,8 @@ public final class DIContainers {
         
         fileprivate init() {}
         
-        public let firebaseService: FirebaseService = FirebaseServiceImple(httpAPI: HttpAPIImple())
+        public let firebaseService: FirebaseService = FirebaseServiceImple(httpAPI: HttpAPIImple(),
+                                                                           serverKey: AppEnvironment.firebaseServiceKey ?? "")
         public let kakaoService: KakaoService = KakaoServiceImple()
     }
     

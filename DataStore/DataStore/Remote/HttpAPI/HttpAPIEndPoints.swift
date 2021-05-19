@@ -58,3 +58,27 @@ public enum NaverMapPlaceAPIEndPoint: HttpAPIEndPoint {
         ]
     }
 }
+
+
+// MARK: - Firebase Cloud Message request API
+
+public struct FcmAPIEndPoint: HttpAPIEndPoint {
+    
+    private let serverKey: String
+    public init(serverKey: String) {
+        self.serverKey = serverKey
+    }
+    
+    public var path: String {
+        "https://fcm.googleapis.com/fcm/send"
+    }
+    
+    public var method: HttpAPIMethods { .post }
+    
+    public var defaultParams: [String : Any]? {
+        return [
+            "Content-Type": "application/json",
+            "Authorization": "key=\(self.serverKey)"
+        ]
+    }
+}
