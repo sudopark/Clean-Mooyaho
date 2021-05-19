@@ -31,7 +31,8 @@ public enum RemoteErrors: Error {
 
 // MARK: - Remote Protocol
 
-public protocol Remote: AuthRemote, PlaceRemote, TagRemote, HoorayRemote, MessagingRemote { }
+public protocol Remote: AuthRemote, MemberRemote,
+                        PlaceRemote, TagRemote, HoorayRemote, MessagingRemote { }
 
 // MARK: - Auth remote
 
@@ -42,6 +43,16 @@ public protocol AuthRemote {
     func requestSignIn(withEmail email: String, password: String) -> Maybe<SigninResult>
     
     func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
+}
+
+
+// MARK: - Member remote
+
+public protocol MemberRemote {
+    
+    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void>
+    
+    func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
 }
 
 

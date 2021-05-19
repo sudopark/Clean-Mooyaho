@@ -11,14 +11,9 @@ import Foundation
 import RxSwift
 
 
-public protocol UserRepository {
+public protocol MemberRepository {
     
-    func requestUpdateUserPresence(_ userID: Int, isOnline: Bool) -> Maybe<Void>
-    
-//    func requestLoadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]>
-}
-
-public protocol MemberRepository: UserRepository {
+    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void>
     
     func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
 }
