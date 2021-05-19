@@ -31,4 +31,16 @@ public struct AppEnvironment {
         #endif
         return false
     }
+    
+    private static var secretJsons: [String: Any] = {
+        guard let path = Bundle.main.path(forResource: "secrets", ofType: "json"),
+              let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
+            return [:]
+        }
+        return (try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String: Any]) ?? [:]
+    }()
+    
+    public static var firebaseServiceKey: String? = {
+        return secretJsons["firebase_server_key"] as? String
+    }()
 }
