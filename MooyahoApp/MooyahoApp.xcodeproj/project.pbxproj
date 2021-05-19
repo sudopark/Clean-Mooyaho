@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5E26336C91000E4152 /* MainTabRouter.swift */; };
-		2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF5F26336C91000E4152 /* MainTabViewController.swift */; };
-		2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6026336C91000E4152 /* MainTabBuilder.swift */; };
-		2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41AF6126336C91000E4152 /* MainTabViewModel.swift */; };
 		2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */; };
 		2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */; };
 		2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22E263D3012003F25D1 /* StubKakaoService.swift */; };
@@ -45,6 +41,10 @@
 		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
+		F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24910265587E700AE7A8B /* MainRouter.swift */; };
+		F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24911265587E700AE7A8B /* MainViewController.swift */; };
+		F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24912265587E700AE7A8B /* MainBuilder.swift */; };
+		F6F24917265587E700AE7A8B /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24913265587E700AE7A8B /* MainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,10 +79,6 @@
 		2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = ../other_static_frameworks/GoogleMobileAds.xcframework; sourceTree = "<group>"; };
 		2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCrashlytics.framework; path = ../other_static_frameworks/FirebaseCrashlytics.framework; sourceTree = "<group>"; };
 		2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = ../other_static_frameworks/UserMessagingPlatform.xcframework; sourceTree = "<group>"; };
-		2B41AF5E26336C91000E4152 /* MainTabRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabRouter.swift; sourceTree = "<group>"; };
-		2B41AF5F26336C91000E4152 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
-		2B41AF6026336C91000E4152 /* MainTabBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBuilder.swift; sourceTree = "<group>"; };
-		2B41AF6126336C91000E4152 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
 		2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KakaoService+OAuth2RepositoryImple.swift"; sourceTree = "<group>"; };
 		2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFirebaseService.swift; sourceTree = "<group>"; };
 		2B47B22E263D3012003F25D1 /* StubKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubKakaoService.swift; sourceTree = "<group>"; };
@@ -113,6 +109,10 @@
 		2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		F6F24910265587E700AE7A8B /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
+		F6F24911265587E700AE7A8B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		F6F24912265587E700AE7A8B /* MainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBuilder.swift; sourceTree = "<group>"; };
+		F6F24913265587E700AE7A8B /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,10 +175,10 @@
 		2B6140B026334F100091460D /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				2B41AF5E26336C91000E4152 /* MainTabRouter.swift */,
-				2B41AF5F26336C91000E4152 /* MainTabViewController.swift */,
-				2B41AF6026336C91000E4152 /* MainTabBuilder.swift */,
-				2B41AF6126336C91000E4152 /* MainTabViewModel.swift */,
+				F6F24910265587E700AE7A8B /* MainRouter.swift */,
+				F6F24911265587E700AE7A8B /* MainViewController.swift */,
+				F6F24912265587E700AE7A8B /* MainBuilder.swift */,
+				F6F24913265587E700AE7A8B /* MainViewModel.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -443,15 +443,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */,
+				F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */,
 				2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */,
-				2B41AF6426336C91000E4152 /* MainTabBuilder.swift in Sources */,
-				2B41AF6226336C91000E4152 /* MainTabRouter.swift in Sources */,
-				2B41AF6526336C91000E4152 /* MainTabViewModel.swift in Sources */,
 				2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */,
-				2B41AF6326336C91000E4152 /* MainTabViewController.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
+				F6F24917265587E700AE7A8B /* MainViewModel.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
+				F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */,
 				2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */,
+				F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
 				2B6140C6263350250091460D /* Test.swift in Sources */,
 				2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */,

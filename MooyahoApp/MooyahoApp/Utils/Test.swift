@@ -31,3 +31,25 @@ extension BaseViewController {
         label.text = name
     }
 }
+
+
+extension BaseNavigationController {
+    
+    func testPresentViewControllerName() {
+        
+        let label = UILabel()
+        self.view.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        ])
+        
+        self.view.backgroundColor = .white
+        label.textColor = UIColor.black
+        
+        let name = String(describing: type(of: self))
+        label.text = name
+    }
+}
