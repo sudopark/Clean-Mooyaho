@@ -32,6 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.applicationViewModel.appDidLaunched()
+        
+        let serverKey = AppEnvironment.firebaseServiceKey
+        print("😾 firebase serverKey: \(serverKey)")
         return true
     }
 }

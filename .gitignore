@@ -92,5 +92,5 @@ iOSInjectionProject/
 
 
 # App Environments
-# MooyahoApp/MooyahoApp/Resources/private_env.json
+MooyahoApp/MooyahoApp/Resources/secrets.json
 
