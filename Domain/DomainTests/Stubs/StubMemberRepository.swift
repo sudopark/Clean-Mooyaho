@@ -17,7 +17,7 @@ import UnitTestHelpKit
 
 class StubMemberRepository: MemberRepository, Stubbable {
     
-    func requestUpdateUserPresence(_ userID: Int, isOnline: Bool) -> Maybe<Void> {
+    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
         self.verify(key: "requestUpdateUserPresence", with: isOnline)
         return self.resolve(key: "requestUpdateUserPresence") ?? .empty()
     }

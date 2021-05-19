@@ -27,6 +27,8 @@
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212626557873000D7456 /* RepositoryImple+Member.swift */; };
+		F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212826557924000D7456 /* RepositoryTests+Member.swift */; };
 		F66BDB8E2644481D0043DEAA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB8D2644481D0043DEAA /* Alamofire */; };
 		F67848D12650F2420074C344 /* RepositoryImple+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */; };
 		F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */; };
@@ -70,6 +72,8 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F633212626557873000D7456 /* RepositoryImple+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Member.swift"; sourceTree = "<group>"; };
+		F633212826557924000D7456 /* RepositoryTests+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Member.swift"; sourceTree = "<group>"; };
 		F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Hooray.swift"; sourceTree = "<group>"; };
 		F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Hooray.swift"; sourceTree = "<group>"; };
 		F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Tags.swift"; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */,
+				F633212626557873000D7456 /* RepositoryImple+Member.swift */,
 				2BABA28C26429FAA007E2D1E /* RepositoryImple+Place.swift */,
 				F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */,
 				F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */,
@@ -174,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F74263DB51A004B3EB0 /* RepositoryTests+Auth.swift */,
+				F633212826557924000D7456 /* RepositoryTests+Member.swift */,
 				2BABA28E2642A0E7007E2D1E /* RepositoryTests+Places.swift */,
 				F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */,
 				F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */,
@@ -342,6 +348,7 @@
 				F6A72A3D26483C8A006BE4BD /* RepositoryImple+Tags.swift in Sources */,
 				2B9F27792633E7AB00FEBCE3 /* UserDefaultStorage.swift in Sources */,
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
+				F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
@@ -356,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */,
 				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
 				F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */,
 				2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */,
