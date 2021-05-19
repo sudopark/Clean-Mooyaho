@@ -42,11 +42,15 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
         
         
         let sendAcksIfNeed: ([Hooray]) -> Void = { [weak self] hoorays in
-            let ackMessages: [HoorayAckMessage] = hoorays
+            let targetHoorays: [Hooray] = hoorays
                 .filter{ $0.publisherID != userID }
                 .filter{ $0.ackUserIDs.contains(userID) == false }
-                .map{ .init(hoorayID: $0.uid, publisherID: $0.publisherID, ackUserID: userID) }
-            self?.ackReceivedHooray(ackMessages: ackMessages)
+            self?.ackReceivedHooray(to: targetHoorays.map{ $0.uid }, myID: userID)
+            
+            let ackMessages = targetHoorays.map {
+                HoorayAckMessage(hoorayID: $0.uid, publisherID: $0.publisherID, ackUserID: userID)
+            }
+            self?.sendHoorayAckMessages(ackMessages)
         }
         
         return self.hoorayRepository.requestLoadNearbyRecentHoorays(at: location)
@@ -56,11 +60,13 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
     public var newReceivedHooray: Observable<NewHoorayMessage> {
         
         let sendAck: (NewHoorayMessage) -> Void = { [weak self] hoorayMessage in
-            guard let self = self, let auth = self.authInfoProvider.currentAuth() else { return }
+            guard let auth = self?.authInfoProvider.currentAuth() else { return }
+            self?.ackReceivedHooray(to: [hoorayMessage.hoorayID], myID: auth.userID)
+            
             let ackMessage = HoorayAckMessage(hoorayID: hoorayMessage.hoorayID,
                                               publisherID: hoorayMessage.publisherID,
                                               ackUserID: auth.userID)
-            self.ackReceivedHooray(ackMessages: [ackMessage])
+            self?.sendHoorayAckMessages([ackMessage])
         }
         
         return self.messagingService.receivedMessage
@@ -68,9 +74,18 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
             .do(onNext: sendAck)
     }
     
-    private func ackReceivedHooray(ackMessages: [HoorayAckMessage]) {
-        let sendings = ackMessages.map{ self.messagingService.sendMessage($0).subscribe() }
-        self.disposeBag.insert(sendings)
+    private func ackReceivedHooray(to hoorayIDs: [String], myID: String) {
+        
+        let ackings = hoorayIDs
+            .map{ self.hoorayRepository.requestAckHooray(myID, at: $0).subscribe() }
+        self.disposeBag.insert(ackings)
+    }
+    
+    private func sendHoorayAckMessages(_ messages: [HoorayAckMessage]) {
+        
+        self.messagingService.sendMessages(messages)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
 }
 

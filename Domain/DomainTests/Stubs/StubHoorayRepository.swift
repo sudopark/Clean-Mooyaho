@@ -31,4 +31,9 @@ class StubHoorayRepository: HoorayRepository, Stubbable {
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
         return self.resolve(key: "requestLoadNearbyRecentHoorays") ?? .empty()
     }
+    
+    func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void> {
+        self.verify(key: "requestAckHooray")
+        return self.resolve(key: "requestAckHooray") ?? .empty()
+    }
 }
