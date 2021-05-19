@@ -67,6 +67,17 @@ extension FirebaseServiceImple {
         }
         return self.loadAllAtOnce(queries: queries)
     }
+    
+    public func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void> {
+        
+        // TODO: -> ackInfo array atomic write 보장 안되면 수정 필요
+        let ackInfo = HoorayAckInfo(ackUserID: myID, ackAt: TimeStamp.now())
+        let newField: [String: Any] = [
+            HoorayMappingKey.ackUserIDs.rawValue: FieldValue.arrayUnion([ackInfo])
+        ]
+        
+        return self.update(docuID: hoorayID, newFields: newField, at: .hooray)
+    }
 }
 
 

@@ -90,6 +90,30 @@ extension FirebaseServiceImple {
         }
     }
     
+    func update(docuID: String,
+                newFields: [String: Any],
+                at collectionType: FireStoreCollectionType) -> Maybe<Void> {
+        
+        return Maybe.create { callback in
+            guard let db = self.fireStoreDB else { return Disposables.create() }
+            
+            let documentRef = db.collection(collectionType).document(docuID)
+            documentRef.updateData(newFields) { error in
+                
+                guard error == nil else {
+                    let type = collectionType.rawValue
+                    let remoteError = RemoteErrors.updateFail(type, reason: error)
+                    callback(.error(remoteError))
+                    return
+                }
+                
+                callback(.success(()))
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
     func load<T: DocumentMappable>(docuID: String,
                                    in collectionType: FireStoreCollectionType) -> Maybe<T?> {
         

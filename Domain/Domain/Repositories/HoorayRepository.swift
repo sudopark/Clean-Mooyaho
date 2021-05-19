@@ -21,4 +21,6 @@ public protocol HoorayRepository {
                               withNewPlace: NewPlaceForm?) -> Maybe<Hooray>
     
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
+    
+    func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void>
 }
