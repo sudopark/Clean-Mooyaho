@@ -92,4 +92,10 @@ class StubRemote: Remote, Stubbable {
     func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void> {
         return self.resolve(key: "requestAckHooray") ?? .empty()
     }
+    
+    
+    // messaging
+    func requestSendForground(message: Messsage, to userID: String) -> Maybe<Void> {
+        return self.resolve(key: "requestSendForground") ?? .empty()
+    }
 }

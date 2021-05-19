@@ -21,10 +21,12 @@ public final class FirebaseServiceImple: FirebaseService {
     
     let httpAPI: HttpAPI
     var fireStoreDB: Firestore!
+    let serverKey: String
     let disposeBag = DisposeBag()
     
-    public init(httpAPI: HttpAPI) {
+    public init(httpAPI: HttpAPI, serverKey: String) {
         self.httpAPI = httpAPI
+        self.serverKey = serverKey
     }
     
     public func setupService() {

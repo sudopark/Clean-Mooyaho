@@ -31,7 +31,7 @@ public enum RemoteErrors: Error {
 
 // MARK: - Remote Protocol
 
-public protocol Remote: AuthRemote, PlaceRemote, TagRemote, HoorayRemote { }
+public protocol Remote: AuthRemote, PlaceRemote, TagRemote, HoorayRemote, MessagingRemote { }
 
 // MARK: - Auth remote
 
@@ -92,4 +92,12 @@ public protocol HoorayRemote {
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
     
     func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void>
+}
+
+
+// MARK: - Messaging
+
+public protocol MessagingRemote {
+    
+    func requestSendForground(message: Messsage, to userID: String) -> Maybe<Void>
 }

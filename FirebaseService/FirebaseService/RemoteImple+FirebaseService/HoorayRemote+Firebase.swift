@@ -113,7 +113,7 @@ extension FirebaseServiceImple {
         }
         
         let finallySendMessages: (Hooray) -> Void = { [weak self] hooray in
-            self?.sendNewHoorayMessagesToNearbyUsers(hooray)
+            self?.sendNewHoorayMessagesToNearbyUsers(hooray, publisher: newForm.publisherNickName)
         }
         
         return completeHoorayForm
@@ -122,35 +122,20 @@ extension FirebaseServiceImple {
             .do(onNext: finallySendMessages)
     }
     
-    private func sendNewHoorayMessagesToNearbyUsers(_ newHooray: Hooray) {
+    private func sendNewHoorayMessagesToNearbyUsers(_ newHooray: Hooray, publisher: String) {
         
-        let thenLoadOnlineDevicesStream: ([String]) -> Observable<[UserDevices]>
-        thenLoadOnlineDevicesStream = { [weak self] userIDs in
-            guard let self = self else { return .empty() }
-            typealias Key = UserDeviceMappingKey
-            let colllectionRef = self.fireStoreDB.collection(.userDevice)
-            let queries = userIDs.slice(by: 10).map {
-                return colllectionRef
-                    .whereField(FieldPath.documentID(), in: $0)
-                    .whereField(Key.isOnline.rawValue, isEqualTo: true)
-            }
-            return self.loadAll(queries: queries)
-        }
-        
-        let thenSendMessages: ([UserDevices]) -> Void = { [weak self] devices in
-            // TODO: send messages
+        let thenSendMessages: ([String]) -> Void = { [weak self] userIDs in
+            let message = NewHoorayMessage(new: newHooray, publisherName: publisher)
+            self?.batchSendForgroundMessages(message, toUsers: userIDs)
         }
         self.loadNearbyUserIDs(center: newHooray.location, radius: newHooray.spreadDistance)
-            .asObservable()
-            .flatMap(thenLoadOnlineDevicesStream)
-            .subscribe(onNext: thenSendMessages)
+            .subscribe(onSuccess: thenSendMessages)
             .disposed(by: self.disposeBag)
     }
     
     private func loadNearbyUserIDs(center: Coordinate, radius: Double) -> Maybe<[String]> {
         
         let collectionRef = self.fireStoreDB.collection(.userLocation)
-        let radiusKilometer = radius / 1000
         let userLocations: Maybe<[UserLocation]> = self.loadNearby(center, radius: radius,
                                                                    colletionRef: collectionRef)
         return userLocations

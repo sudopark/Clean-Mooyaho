@@ -45,6 +45,17 @@ public struct NewHoorayMessage: HoorayMessage {
         self.spreadDistance = spreadDistance
         self.aliveDuration = aliveDuration
     }
+    
+    public init(new hooray: Hooray, publisherName: String) {
+        self.hoorayID = hooray.uid
+        self.publisherID = hooray.publisherID
+        self.publisherNickName = publisherName
+        self.publishedAt = hooray.timeStamp
+        self.placeID = hooray.placeID
+        self.location = hooray.location
+        self.spreadDistance = hooray.spreadDistance
+        self.aliveDuration = hooray.aliveDuration
+    }
 }
 
 

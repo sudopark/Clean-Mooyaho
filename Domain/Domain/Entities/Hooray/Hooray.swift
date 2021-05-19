@@ -85,6 +85,7 @@ public struct Hooray {
 public final class NewHoorayForm {
     
     public let publisherID: String
+    public var publisherNickName: String!
     public var placeID: String?
     
     public var location: Coordinate!
@@ -104,7 +105,8 @@ extension NewHoorayFormBuilder {
     
     public func build() -> Base? {
         let asserting: (NewHoorayForm) -> Bool = { form in
-            guard form.location != nil,
+            guard form.publisherNickName != nil,
+                  form.location != nil,
                   form.timeStamp != nil,
                   form.spreadDistance != nil,
                   form.aliveDuration != nil else { return false }

@@ -1,5 +1,5 @@
 //
-//  FirebaseServiceImpleTest+PlaceRemote.swift
+//  FirebaseServiceImpleTests.swift
 //  FirebaseServiceTests
 //
 //  Created by sudo.park on 2021/05/08.
@@ -16,7 +16,7 @@ import UnitTestHelpKit
 @testable import FirebaseService
 
 
-class FirebaseServiceImpleTest_PlaceRemote: BaseTestCase, WaitObservableEvents {
+class FirebaseServiceImpleTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var stubSession: StubSession!
@@ -28,7 +28,7 @@ class FirebaseServiceImpleTest_PlaceRemote: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.stubSession = .init()
         self.fakeHttpAPI = FakeHttpAPI(session: self.stubSession)
-        self.service = FirebaseServiceImple(httpAPI: self.fakeHttpAPI)
+        self.service = FirebaseServiceImple(httpAPI: self.fakeHttpAPI, serverKey: "dummy")
     }
     
     override func tearDown() {
@@ -40,7 +40,10 @@ class FirebaseServiceImpleTest_PlaceRemote: BaseTestCase, WaitObservableEvents {
     }
 }
 
-extension FirebaseServiceImpleTest_PlaceRemote {
+
+// MARK: - search place
+
+extension FirebaseServiceImpleTests {
     
     func test_loadSearchPlaceCollection() {
         // given
@@ -62,3 +65,22 @@ extension FirebaseServiceImpleTest_PlaceRemote {
     }
 }
 
+
+// MARK: - send message
+
+extension FirebaseServiceImpleTests {
+    
+    func test_messagePayload() {
+        // given
+        let hoorayAckMessage = HoorayAckMessage(hoorayID: "dummy", publisherID: "h_owner", ackUserID: "ack_sender")
+        
+        // when
+        let payload = hoorayAckMessage.dataPayload()
+        
+        // then
+        
+        XCTAssertEqual(payload["m_type"] as? String, "hooray_ack")
+        XCTAssertEqual(payload["ack_uid"] as? String, "ack_sender")
+        XCTAssertEqual(payload["hid"] as? String, "dummy")
+    }
+}
