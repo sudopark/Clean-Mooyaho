@@ -111,7 +111,8 @@ extension RepositoryTests_Hooray {
         }
         
         // when
-        let requestAck = self.repository.requestAckHooray("some", at: "hid")
+        let ack = HoorayAckMessage(hoorayID: "some", publisherID: "p_id", ackUserID: "ack_id")
+        let requestAck = self.repository.requestAckHooray(ack)
         let void: Void? = self.waitFirstElement(expect, for: requestAck.asObservable()) { }
         
         // then
