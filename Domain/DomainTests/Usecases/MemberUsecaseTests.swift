@@ -54,7 +54,7 @@ extension MemberUsecaseTests {
         
         
         // when
-        self.usecase.updateUserIsOnline(0, isOnline: true)
+        self.usecase.updateUserIsOnline("some", isOnline: true)
         
         // then
         self.wait(for: [expect], timeout: self.timeout)

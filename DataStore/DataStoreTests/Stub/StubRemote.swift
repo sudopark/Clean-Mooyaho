@@ -32,6 +32,15 @@ class StubRemote: Remote, Stubbable {
         return self.resolve(key: "requestSignIn:credential") ?? .empty()
     }
     
+    // member
+    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateUserPresence") ?? .empty()
+    }
+    
+    func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
+        return self.resolve(key: "requestLoadMembership") ?? .empty()
+    }
+    
     // place
     func requesUpload(_ location: UserLocation) -> Maybe<Void> {
         return self.resolve(key: "requesUpload:location") ?? .empty()

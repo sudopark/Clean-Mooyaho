@@ -42,7 +42,7 @@ public final class MemberUsecaseImple: MemberUsecase {
 
 extension MemberUsecaseImple {
     
-    public func updateUserIsOnline(_ userID: Int, isOnline: Bool) {
+    public func updateUserIsOnline(_ userID: String, isOnline: Bool) {
         self.memberRepository.requestUpdateUserPresence(userID, isOnline: isOnline)
             .subscribe()
             .disposed(by: self.disposeBag)
