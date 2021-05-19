@@ -45,12 +45,9 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
             let targetHoorays: [Hooray] = hoorays
                 .filter{ $0.publisherID != userID }
                 .filter{ $0.ackUserIDs.contains(userID) == false }
-            self?.ackReceivedHooray(to: targetHoorays.map{ $0.uid }, myID: userID)
-            
-            let ackMessages = targetHoorays.map {
-                HoorayAckMessage(hoorayID: $0.uid, publisherID: $0.publisherID, ackUserID: userID)
-            }
-            self?.sendHoorayAckMessages(ackMessages)
+            let acks = targetHoorays
+                .map { HoorayAckMessage(hoorayID: $0.uid, publisherID: $0.publisherID, ackUserID: userID) }
+            self?.ackReceivedHooray(acks)
         }
         
         return self.hoorayRepository.requestLoadNearbyRecentHoorays(at: location)
@@ -61,12 +58,10 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
         
         let sendAck: (NewHoorayMessage) -> Void = { [weak self] hoorayMessage in
             guard let auth = self?.authInfoProvider.currentAuth() else { return }
-            self?.ackReceivedHooray(to: [hoorayMessage.hoorayID], myID: auth.userID)
-            
-            let ackMessage = HoorayAckMessage(hoorayID: hoorayMessage.hoorayID,
-                                              publisherID: hoorayMessage.publisherID,
-                                              ackUserID: auth.userID)
-            self?.sendHoorayAckMessages([ackMessage])
+            let ack = HoorayAckMessage(hoorayID: hoorayMessage.hoorayID,
+                                       publisherID: hoorayMessage.publisherID,
+                                       ackUserID: auth.userID)
+            self?.ackReceivedHooray([ack])
         }
         
         return self.messagingService.receivedMessage
@@ -74,18 +69,11 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
             .do(onNext: sendAck)
     }
     
-    private func ackReceivedHooray(to hoorayIDs: [String], myID: String) {
+    private func ackReceivedHooray(_ acks: [HoorayAckMessage]) {
         
-        let ackings = hoorayIDs
-            .map{ self.hoorayRepository.requestAckHooray(myID, at: $0).subscribe() }
+        let ackings = acks
+            .map{ self.hoorayRepository.requestAckHooray($0).subscribe() }
         self.disposeBag.insert(ackings)
-    }
-    
-    private func sendHoorayAckMessages(_ messages: [HoorayAckMessage]) {
-        
-        self.messagingService.sendMessages(messages)
-            .subscribe()
-            .disposed(by: self.disposeBag)
     }
 }
 
