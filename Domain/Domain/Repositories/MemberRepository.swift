@@ -15,7 +15,7 @@ public protocol UserRepository {
     
     func requestUpdateUserPresence(_ userID: Int, isOnline: Bool) -> Maybe<Void>
     
-    func requestLoadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]>
+//    func requestLoadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]>
 }
 
 public protocol MemberRepository: UserRepository {
