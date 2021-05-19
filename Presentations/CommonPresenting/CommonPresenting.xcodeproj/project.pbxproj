@@ -20,6 +20,7 @@
 		2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E28C26387C14003EE954 /* Domain.framework */; };
 		2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */; };
 		2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B9263AE5D10000C0C6 /* Executor.swift */; };
+		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		2B39E28C26387C14003EE954 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
 		2BE978B9263AE5D10000C0C6 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
+		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				2B39E27226387BB0003EE954 /* BaseComponents */,
-				2B39E29226387C95003EE954 /* Extensions */,
 				2BE978B7263AE5B50000C0C6 /* Utils */,
 				2B39E25226387B6A003EE954 /* CommonPresenting.h */,
 				2B39E25326387B6A003EE954 /* Info.plist */,
@@ -118,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				2B39E27826387BCB003EE954 /* BaseViewController.swift */,
+				F6F249182655887C00AE7A8B /* BaseNavigationController.swift */,
 				2B39E27926387BCB003EE954 /* EmptyBuilder.swift */,
 				2B39E27726387BCB003EE954 /* Presentable.swift */,
 				2B39E27526387BCB003EE954 /* Routable.swift */,
@@ -135,13 +137,6 @@
 				2B39E28426387BEC003EE954 /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		2B39E29226387C95003EE954 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		2BE978B7263AE5B50000C0C6 /* Utils */ = {
@@ -262,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
