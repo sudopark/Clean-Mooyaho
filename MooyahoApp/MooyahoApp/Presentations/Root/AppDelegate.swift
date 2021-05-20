@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import CommonPresenting
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.applicationViewModel = ApplicationViewModel(firebaseService: self.diContainers.shared.firebaseService,
                                                          kakaoService: self.diContainers.shared.kakaoService,
                                                          router: router)
+        UIContext.register(UIContext(theme: DefaultTheme()))
     }
 
     func application(_ application: UIApplication,
