@@ -23,6 +23,7 @@ public protocol MainScene: Scenable { }
 
 public final class MainViewController: BaseNavigationController, MainScene {
     
+    private let mainView = MainView()
     private let viewModel: MainViewModel
     
     public init(viewModel: MainViewModel) {
@@ -46,7 +47,6 @@ public final class MainViewController: BaseNavigationController, MainScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.testPresentViewControllerName()
     }
     
 }
@@ -67,9 +67,20 @@ extension MainViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(self.mainView)
+        mainView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
+        }
+        mainView.setupLayout()
     }
     
     public func setupStyling() {
         
+        self.view.backgroundColor = self.context.colors.appBackground
+        
+        self.mainView.setupStyling()
     }
 }

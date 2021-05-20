@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 
-open class BaseNavigationController: UINavigationController {
+open class BaseNavigationController: UINavigationController, UIContextAccessable {
     
     public let dipsoseBag: DisposeBag = DisposeBag()
     
