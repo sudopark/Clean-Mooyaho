@@ -12,7 +12,7 @@
 		2B39E26026387B6A003EE954 /* CommonPresenting.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B39E25226387B6A003EE954 /* CommonPresenting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2B39E27A26387BCB003EE954 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27526387BCB003EE954 /* Routable.swift */; };
 		2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27626387BCB003EE954 /* Sceneable.swift */; };
-		2B39E27C26387BCB003EE954 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27726387BCB003EE954 /* Presentable.swift */; };
+		2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27726387BCB003EE954 /* Presenting.swift */; };
 		2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27826387BCB003EE954 /* BaseViewController.swift */; };
 		2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27926387BCB003EE954 /* EmptyBuilder.swift */; };
 		2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E28426387BEC003EE954 /* Common3rdParty.framework */; };
@@ -20,6 +20,12 @@
 		2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E28C26387C14003EE954 /* Domain.framework */; };
 		2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */; };
 		2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B9263AE5D10000C0C6 /* Executor.swift */; };
+		F610146926570A1400D32E38 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146826570A1400D32E38 /* BaseUIView.swift */; };
+		F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146C26570B8A00D32E38 /* AutoLayout.swift */; };
+		F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146E2657122300D32E38 /* AutoLayoutTests.swift */; };
+		F610147126571FDE00D32E38 /* UIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147026571FDE00D32E38 /* UIContext.swift */; };
+		F61014742657210600D32E38 /* StringsSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014732657210600D32E38 /* StringsSet.swift */; };
+		F61014762657211200D32E38 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014752657211200D32E38 /* Theme.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +48,7 @@
 		2B39E25F26387B6A003EE954 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B39E27526387BCB003EE954 /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		2B39E27626387BCB003EE954 /* Sceneable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sceneable.swift; sourceTree = "<group>"; };
-		2B39E27726387BCB003EE954 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		2B39E27726387BCB003EE954 /* Presenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presenting.swift; sourceTree = "<group>"; };
 		2B39E27826387BCB003EE954 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2B39E27926387BCB003EE954 /* EmptyBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBuilder.swift; sourceTree = "<group>"; };
 		2B39E28426387BEC003EE954 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +57,12 @@
 		2B39E28C26387C14003EE954 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
 		2BE978B9263AE5D10000C0C6 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
+		F610146826570A1400D32E38 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
+		F610146C26570B8A00D32E38 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
+		F610146E2657122300D32E38 /* AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutTests.swift; sourceTree = "<group>"; };
+		F610147026571FDE00D32E38 /* UIContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIContext.swift; sourceTree = "<group>"; };
+		F61014732657210600D32E38 /* StringsSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsSet.swift; sourceTree = "<group>"; };
+		F61014752657211200D32E38 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +123,7 @@
 			children = (
 				2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */,
 				2B39E25F26387B6A003EE954 /* Info.plist */,
+				F610146E2657122300D32E38 /* AutoLayoutTests.swift */,
 			);
 			path = CommonPresentingTests;
 			sourceTree = "<group>";
@@ -118,10 +131,12 @@
 		2B39E27226387BB0003EE954 /* BaseComponents */ = {
 			isa = PBXGroup;
 			children = (
+				F61014722657206D00D32E38 /* UIContext */,
 				2B39E27826387BCB003EE954 /* BaseViewController.swift */,
 				F6F249182655887C00AE7A8B /* BaseNavigationController.swift */,
+				F610146826570A1400D32E38 /* BaseUIView.swift */,
 				2B39E27926387BCB003EE954 /* EmptyBuilder.swift */,
-				2B39E27726387BCB003EE954 /* Presentable.swift */,
+				2B39E27726387BCB003EE954 /* Presenting.swift */,
 				2B39E27526387BCB003EE954 /* Routable.swift */,
 				2B39E27626387BCB003EE954 /* Sceneable.swift */,
 			);
@@ -142,10 +157,37 @@
 		2BE978B7263AE5B50000C0C6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F610146B26570B7B00D32E38 /* AutoLayout */,
+				F610146A26570B6F00D32E38 /* LeakDetector */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F610146A26570B6F00D32E38 /* LeakDetector */ = {
+			isa = PBXGroup;
+			children = (
 				2BE978B9263AE5D10000C0C6 /* Executor.swift */,
 				2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */,
 			);
-			path = Utils;
+			path = LeakDetector;
+			sourceTree = "<group>";
+		};
+		F610146B26570B7B00D32E38 /* AutoLayout */ = {
+			isa = PBXGroup;
+			children = (
+				F610146C26570B8A00D32E38 /* AutoLayout.swift */,
+			);
+			path = AutoLayout;
+			sourceTree = "<group>";
+		};
+		F61014722657206D00D32E38 /* UIContext */ = {
+			isa = PBXGroup;
+			children = (
+				F61014752657211200D32E38 /* Theme.swift */,
+				F61014732657210600D32E38 /* StringsSet.swift */,
+				F610147026571FDE00D32E38 /* UIContext.swift */,
+			);
+			path = UIContext;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,10 +303,15 @@
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
+				F61014762657211200D32E38 /* Theme.swift in Sources */,
 				2B39E27A26387BCB003EE954 /* Routable.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
-				2B39E27C26387BCB003EE954 /* Presentable.swift in Sources */,
+				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
+				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
+				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
+				F610146926570A1400D32E38 /* BaseUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */,
 				2B39E25E26387B6A003EE954 /* CommonPresentingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
