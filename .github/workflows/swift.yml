@@ -49,8 +49,20 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
+      - name: Location Scenes Unit Tests
+        id: test_location_scenes
+        run: |
+          xcodebuild clean test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme LocationScenes \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        env: 
+          destination: ${{ matrix.destination }}
+
       - name: Domain Unit Tests
-        id: test_domin
+        id: test_domain
         run: |
           xcodebuild clean test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
@@ -85,9 +97,19 @@ jobs:
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
         env: 
           destination: ${{ matrix.destination }}
+
+      - name: Check Tests iOS App
+        if: steps.test_ios_app.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Location Scenes
+        if: steps.test_location_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
       
       - name: Check Tests Domain
-        if: steps.test_ios_app.outputs.result != 0
+        if: steps.test_domain.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
           
@@ -98,10 +120,5 @@ jobs:
 
       - name: Check Tests FirebaseService
         if: steps.test_fb.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
-          
-      - name: Check Tests iOS App
-        if: steps.test_ios_app.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
