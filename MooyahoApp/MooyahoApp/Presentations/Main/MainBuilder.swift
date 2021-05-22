@@ -23,15 +23,3 @@ public protocol MainSceneBuilable {
     
     func makeMainScene() -> MainScene
 }
-
-
-extension DIContainers: MainSceneBuilable {
-    
-    public func makeMainScene() -> MainScene {
-        let router = MainRouter(nextSceneBuilders: self)
-        let viewModel = MainViewModelImple(router: router)
-        let viewController = MainViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
