@@ -27,6 +27,9 @@
       location = "group:UnitTestHelpKit/UnitTestHelpKit.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:StubUsecases/StubUsecases.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Common3rdParty/Common3rdParty.xcodeproj">
    </FileRef>
 </Workspace>
