@@ -23,11 +23,12 @@ public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene { }
 
 public final class MainSlideMenuViewController: BaseViewController, MainSlideMenuScene {
     
+    let containerView = UIView()
+    let dimView = UIView()
+    
     private let viewModel: MainSlideMenuViewModel
     public var dismissalInteractor: PangestureDismissalInteractor?
-    
-    private let mainSlideView = MainSlideMenuView()
-    
+
     public init(viewModel: MainSlideMenuViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -49,6 +50,7 @@ public final class MainSlideMenuViewController: BaseViewController, MainSlideMen
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.bind()
     }
     
     public func setupDismissGesture(_ dismissInteractor: PangestureDismissalInteractor) {
@@ -73,6 +75,12 @@ extension MainSlideMenuViewController {
     
     private func bind() {
         
+        self.dimView.isUserInteractionEnabled = true
+        self.dimView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.closeMenu()
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -83,13 +91,29 @@ extension MainSlideMenuViewController: Presenting {
     
     public func setupLayout() {
         
-        self.view.addSubview(self.mainSlideView)
-        self.mainSlideView.autoLayout.activeFill(self.view)
-        self.mainSlideView.setupLayout()
+        self.view.addSubview(self.dimView)
+        dimView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.2)
+        }
+        
+        self.view.addSubview(self.containerView)
+        containerView.autoLayout.active(with: self.view) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.8)
+        }
     }
     
     public func setupStyling() {
         
-        self.mainSlideView.setupStyling()
+        self.view.isUserInteractionEnabled = true
+        
+        self.dimView.alpha = 0.1
+        
+        self.containerView.backgroundColor = self.context.colors.raw.red
     }
 }
