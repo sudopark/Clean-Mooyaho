@@ -16,7 +16,10 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainScene: Scenable { }
+public protocol MainScene: Scenable {
+    
+    var childContainerView: UIView { get }
+}
 
 
 // MARK: - MainViewController
@@ -26,6 +29,9 @@ public final class MainViewController: BaseNavigationController, MainScene {
     private let mainView = MainView()
     private let viewModel: MainViewModel
     
+    public var childContainerView: UIView {
+        return self.mainView.containerView
+    }
     
     public init(viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -48,7 +54,7 @@ public final class MainViewController: BaseNavigationController, MainScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.testPresentViewControllerName()
+        self.viewModel.viewDidLoaded()
         self.bind()
     }
 

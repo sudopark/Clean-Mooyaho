@@ -19,6 +19,7 @@ import CommonPresenting
 public protocol MainViewModel: AnyObject {
 
     // interactor
+    func viewDidLoaded()
     func openSlideMenu()
     // presenter
 }
@@ -50,6 +51,9 @@ public final class MainViewModelImple: MainViewModel {
 
 extension MainViewModelImple {
     
+    public func viewDidLoaded() {
+        self.router.addNearbySceen()
+    }
     
     public func openSlideMenu() {
         self.router.openSlideMenu()

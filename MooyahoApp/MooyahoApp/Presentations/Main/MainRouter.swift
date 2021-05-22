@@ -17,11 +17,14 @@ import UIKit
 import RxSwift
 
 import CommonPresenting
+import LocationScenes
 
 
 // MARK: - Routing
 
 public protocol MainRouting: Routing {
+    
+    func addNearbySceen()
     
     func openSlideMenu()
 }
@@ -29,7 +32,7 @@ public protocol MainRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
+public typealias MainRouterBuildables = MainSlideMenuSceneBuilable & NearbySceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -38,6 +41,17 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 
 extension MainRouter {
+    
+    public func addNearbySceen() {
+        guard let mainScene = self.currentScene as? MainScene,
+              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene() else { return }
+        
+        nearbyScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
+        nearbyScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mainScene.addChild(nearbyScene)
+        mainScene.childContainerView.addSubview(nearbyScene.view)
+        nearbyScene.didMove(toParent: mainScene)
+    }
     
     public func openSlideMenu() {
         

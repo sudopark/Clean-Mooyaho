@@ -71,6 +71,7 @@ public final class MainNavibarView: BaseUIView, Presenting {
 public final class MainView: BaseUIView {
     
     public let navigationBarView = MainNavibarView()
+    public let containerView = UIView()
 }
 
 
@@ -87,11 +88,24 @@ extension MainView: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 44)
         }
         self.navigationBarView.setupLayout()
+        
+        self.addSubview(containerView)
+        containerView.autoLayout.active(with: navigationBarView) {
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor)
+        }
+        containerView.autoLayout.active(with: self) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -40)
+        }
     }
     
     
     public func setupStyling() {
         self.backgroundColor = self.context.colors.appBackground
+        
         self.navigationBarView.setupStyling()
+        
+        self.containerView.backgroundColor = self.context.colors.raw.clear
     }
 }
