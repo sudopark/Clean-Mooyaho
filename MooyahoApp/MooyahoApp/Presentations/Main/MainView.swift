@@ -56,6 +56,10 @@ public final class MainNavibarView: BaseUIView, Presenting {
         self.titleLabel.textColor = self.context.colors.text
         
 //        self.profileImageView.image = TODO: defaultImage
+        self.profileImageView.backgroundColor = UIColor.black
+        self.profileImageView.layer.cornerRadius = 20
+        self.profileImageView.clipsToBounds = true
+        
         self.badgeView.backgroundColor = self.context.colors.raw.red
         self.badgeView.layer.cornerRadius = 1.5
         self.badgeView.clipsToBounds = true

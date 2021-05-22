@@ -19,12 +19,12 @@ import CommonPresenting
 public protocol MainViewModel: AnyObject {
 
     // interactor
-    
+    func openSlideMenu()
     // presenter
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel
+// MARK: - MainViewModelImple
 
 public final class MainViewModelImple: MainViewModel {
     
@@ -46,14 +46,18 @@ public final class MainViewModelImple: MainViewModel {
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Interactor
+// MARK: - MainViewModelImple Interactor
 
 extension MainViewModelImple {
     
+    
+    public func openSlideMenu() {
+        self.router.openSlideMenu()
+    }
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Presenter
+// MARK: - MainViewModelImple Presenter
 
 extension MainViewModelImple {
     

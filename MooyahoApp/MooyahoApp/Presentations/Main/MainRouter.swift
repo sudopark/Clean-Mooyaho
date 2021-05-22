@@ -14,22 +14,40 @@
 
 import UIKit
 
+import RxSwift
+
 import CommonPresenting
 
 
 // MARK: - Routing
 
-public protocol MainRouting: Routing { }
+public protocol MainRouting: Routing {
+    
+    func openSlideMenu()
+}
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainRouterBuildables = EmptyBuilder
+public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
 
-public final class MainRouter: Router<MainRouterBuildables>, MainRouting { }
+public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
+    
+    private let pushSlideTransitionManager = PushslideTransitionAnimationManager()
+}
 
 
 extension MainRouter {
     
-    // MainRouting implements
+    public func openSlideMenu() {
+        
+        guard let menuScene = self.nextScenesBuilder?.makeMainSlideMenuScene() else {
+            return
+        }
+        
+        menuScene.modalPresentationStyle = .custom
+        menuScene.transitioningDelegate = self.pushSlideTransitionManager
+        menuScene.setupDismissGesture(self.pushSlideTransitionManager.dismissalInteractor)
+        self.currentScene?.present(menuScene, animated: true, completion: nil)
+    }
 }
