@@ -14,8 +14,6 @@
 
 import UIKit
 
-import RxSwift
-
 import CommonPresenting
 
 
@@ -24,16 +22,4 @@ import CommonPresenting
 public protocol MainSlideMenuSceneBuilable {
     
     func makeMainSlideMenuScene() -> MainSlideMenuScene
-}
-
-
-extension DIContainers: MainSlideMenuSceneBuilable {
-    
-    public func makeMainSlideMenuScene() -> MainSlideMenuScene {
-        let router = MainSlideMenuRouter(nextSceneBuilders: self)
-        let viewModel = MainSlideMenuViewModelImple(router: router)
-        let viewController = MainSlideMenuViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
 }
