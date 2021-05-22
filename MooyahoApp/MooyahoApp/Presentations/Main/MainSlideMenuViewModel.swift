@@ -18,12 +18,13 @@ import CommonPresenting
 public protocol MainSlideMenuViewModel: AnyObject {
 
     // interactor
+    func closeMenu()
     
     // presenter
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel
+// MARK: - MainSlideMenuViewModelImple
 
 public final class MainSlideMenuViewModelImple: MainSlideMenuViewModel {
     
@@ -45,14 +46,17 @@ public final class MainSlideMenuViewModelImple: MainSlideMenuViewModel {
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Interactor
+// MARK: - MainSlideMenuViewModelImple Interactor
 
 extension MainSlideMenuViewModelImple {
     
+    public func closeMenu() {
+        self.router.closeMenu()
+    }
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Presenter
+// MARK: - MainSlideMenuViewModelImple Presenter
 
 extension MainSlideMenuViewModelImple {
     
