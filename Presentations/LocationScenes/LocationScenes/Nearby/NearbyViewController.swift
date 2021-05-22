@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 import RxSwift
 import RxCocoa
@@ -22,6 +23,8 @@ public protocol NearbyScene: Scenable { }
 // MARK: - NearbyViewController
 
 public final class NearbyViewController: BaseViewController, NearbyScene {
+    
+    let mapView = MKMapView()
     
     private let viewModel: NearbyViewModel
     
@@ -46,6 +49,7 @@ public final class NearbyViewController: BaseViewController, NearbyScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.bind()
     }
     
 }
@@ -66,6 +70,8 @@ extension NearbyViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(self.mapView)
+        mapView.autoLayout.activeFill(self.view)
     }
     
     public func setupStyling() {
