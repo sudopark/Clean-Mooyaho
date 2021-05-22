@@ -16,26 +16,29 @@ public protocol PushSlideAnimationConstants { }
 
 extension PushSlideAnimationConstants {
     
-    var animationDuration: TimeInterval {
-        return 0.25
-    }
+    var contentRatio: CGFloat { 0.8 }
+    
+    var animationDuration: TimeInterval { 0.25 }
     
     private var screenSize: CGSize {
         return UIScreen.main.bounds.size
     }
     
     private var pushingViewContentSize: CGSize {
-        return CGSize(width: self.screenSize.width * 0.8, height: self.screenSize.height)
+        return CGSize(width: self.screenSize.width * self.contentRatio, height: self.screenSize.height)
     }
     
     var pushingViewShowFrame: CGRect {
-        let origin = CGPoint(x: self.screenSize.width - self.pushingViewContentSize.width, y: 0)
-        return CGRect(origin: origin, size: self.screenSize)
+//        let origin = CGPoint(x: self.screenSize.width - self.pushingViewContentSize.width, y: 0)
+//        return CGRect(origin: origin, size: self.screenSize)
+        return .init(origin: .zero, size: self.screenSize)
     }
     
     var pushingViewHideFrame: CGRect {
-        let origin = CGPoint(x: screenSize.width, y: 0)
-        return CGRect(origin: origin, size: self.screenSize)
+//        let origin = CGPoint(x: screenSize.width, y: 0)
+//        return CGRect(origin: origin, size: self.screenSize)
+        let origin = CGPoint(x: self.pushingViewContentSize.width, y: 0)
+        return .init(origin: origin, size: self.screenSize)
     }
     
     var originViewFrame: CGRect {
@@ -102,6 +105,7 @@ public final class PushSlideHiding: NSObject, UIViewControllerAnimatedTransition
         
         
         let duration = transitionDuration(using: transitionContext)
+        
         UIView.animate(withDuration: duration, animations: {
             pushingView?.frame = self.pushingViewHideFrame
             originView?.frame = self.originViewFrame
