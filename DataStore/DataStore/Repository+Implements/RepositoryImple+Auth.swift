@@ -16,8 +16,8 @@ import Domain
 public protocol AuthRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
-    var remote: AuthRemote { get }
-    var local: AuthLocalStorage { get }
+    var authRemote: AuthRemote { get }
+    var authLocal: AuthLocalStorage { get }
 }
 
 
@@ -25,7 +25,7 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
 
     public func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)> {
         
-        let getLastAuth = self.local.fetchCurrentAuth()
+        let getLastAuth = self.authLocal.fetchCurrentAuth()
         let prepareAnonymousAuthIfNeed: (Auth?) -> Maybe<Auth> = { [weak self] auth in
             guard let self = self else { return .empty() }
             switch auth {
@@ -37,7 +37,7 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         let thenLoadExistingCurrentMember: (Auth) -> Maybe<(Auth, Member?)>
         thenLoadExistingCurrentMember = { [weak self] auth in
             guard let self = self else { return .empty() }
-            return self.local.fetchCurrentMember().map{ (auth, $0) }
+            return self.authLocal.fetchCurrentMember().map{ (auth, $0) }
         }
         
         return getLastAuth
@@ -49,23 +49,23 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         
         let updateAuthOnStorage: (Auth) -> Void = { [weak self] auth in
             guard let self = self else { return }
-            self.local.saveSignedIn(auth: auth)
+            self.authLocal.saveSignedIn(auth: auth)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
         
-        return self.remote.requestSignInAnonymously()
+        return self.authRemote.requestSignInAnonymously()
             .do(onNext: updateAuthOnStorage)
     }
     
     public func requestSignIn(using secret: EmailBaseSecret) -> Maybe<SigninResult> {
-        let signing = self.remote.requestSignIn(withEmail: secret.email, password: secret.password)
+        let signing = self.authRemote.requestSignIn(withEmail: secret.email, password: secret.password)
         return self.requestSignInAndSaveMemberInfo(signing)
     }
     
     public func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult> {
         
-        let signing = self.remote.requestSignIn(using: credential)
+        let signing = self.authRemote.requestSignIn(using: credential)
         return self.requestSignInAndSaveMemberInfo(signing)
     }
     
@@ -73,8 +73,8 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         let andSaveMemberInfo: (SigninResult) -> Void = { [weak self] result in
             guard let self = self else { return }
             self.disposeBag.insert {
-                self.local.saveSignedIn(auth: result.auth).subscribe()
-                self.local.saveSignedIn(member: result.member).subscribe()
+                self.authLocal.saveSignedIn(auth: result.auth).subscribe()
+                self.authLocal.saveSignedIn(member: result.member).subscribe()
             }
         }
         return signingAction

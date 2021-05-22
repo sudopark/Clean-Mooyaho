@@ -15,7 +15,7 @@ import Domain
 
 public protocol MemberRepositoryDefImpleDependency {
     
-    var remote: MemberRemote { get }
+    var memberRemote: MemberRemote { get }
     
 }
 
@@ -27,7 +27,7 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
     
     
     public func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
-        return self.remote.requestUpdateUserPresence(userID, isOnline: isOnline)
+        return self.memberRemote.requestUpdateUserPresence(userID, isOnline: isOnline)
     }
     
     public func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {

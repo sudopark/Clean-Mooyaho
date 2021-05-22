@@ -27,6 +27,7 @@
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F603258A2659509D00E4E769 /* LocalStorageImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60325892659509D00E4E769 /* LocalStorageImple.swift */; };
 		F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212626557873000D7456 /* RepositoryImple+Member.swift */; };
 		F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212826557924000D7456 /* RepositoryTests+Member.swift */; };
 		F66BDB8E2644481D0043DEAA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB8D2644481D0043DEAA /* Alamofire */; };
@@ -72,6 +73,7 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F60325892659509D00E4E769 /* LocalStorageImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageImple.swift; sourceTree = "<group>"; };
 		F633212626557873000D7456 /* RepositoryImple+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Member.swift"; sourceTree = "<group>"; };
 		F633212826557924000D7456 /* RepositoryTests+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Member.swift"; sourceTree = "<group>"; };
 		F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Hooray.swift"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				2B9F27712633E77900FEBCE3 /* LocalStorage.swift */,
+				F60325892659509D00E4E769 /* LocalStorageImple.swift */,
 				2B9F27772633E79800FEBCE3 /* Storages+Implements */,
 			);
 			path = Local;
@@ -350,6 +353,7 @@
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
 				F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
+				F603258A2659509D00E4E769 /* LocalStorageImple.swift in Sources */,
 				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */,

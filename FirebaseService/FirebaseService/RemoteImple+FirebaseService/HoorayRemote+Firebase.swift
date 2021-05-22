@@ -13,7 +13,7 @@ import Domain
 import DataStore
 
 
-extension FirebaseServiceImple: HoorayRemote { }
+extension FirebaseServiceImple { }
 
 
 // MARK: - load hoorays

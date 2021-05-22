@@ -134,11 +134,11 @@ extension RepositoryTests_Auth {
     
     class DummyRepository: AuthRepository, AuthRepositoryDefImpleDependency {
         let disposeBag: DisposeBag = DisposeBag()
-        let remote: AuthRemote
-        let local: AuthLocalStorage
+        let authRemote: AuthRemote
+        let authLocal: AuthLocalStorage
         init(remote: Remote, local: LocalStorage) {
-            self.remote = remote
-            self.local = local
+            self.authRemote = remote
+            self.authLocal = local
         }
     }
 }

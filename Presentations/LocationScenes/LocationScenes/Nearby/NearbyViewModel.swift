@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
+import Domain
 import CommonPresenting
 
 // MARK: - NearbyViewModel
@@ -23,7 +24,7 @@ public protocol NearbyViewModel: AnyObject {
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel
+// MARK: - NearbyViewModelImple
 
 public final class NearbyViewModelImple: NearbyViewModel {
     
@@ -31,28 +32,31 @@ public final class NearbyViewModelImple: NearbyViewModel {
         // define subjects
     }
     
+    private let locationUsecase: UserLocationUsecase
     private let router: NearbyRouting
-    private let subjects = Subjects()
-    private let disposeBag = DisposeBag()
     
-    public init(router: NearbyRouting) {
+    public init(locationUsecase: UserLocationUsecase, router: NearbyRouting) {
+        self.locationUsecase = locationUsecase
         self.router = router
     }
     
     deinit {
         LeakDetector.instance.expectDeallocate(object: self.router)
     }
+    
+    private let subjects = Subjects()
+    private let disposeBag = DisposeBag()
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Interactor
+// MARK: - NearbyViewModelImple Interactor
 
 extension NearbyViewModelImple {
     
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Presenter
+// MARK: - NearbyViewModelImple Presenter
 
 extension NearbyViewModelImple {
     

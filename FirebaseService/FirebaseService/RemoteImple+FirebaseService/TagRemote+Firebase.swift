@@ -14,7 +14,7 @@ import DataStore
 
 
 
-extension FirebaseServiceImple: TagRemote {
+extension FirebaseServiceImple {
     
     public func requestRegisterTag(_ tag: Tag) -> Maybe<Void> {
         switch tag.tagType {

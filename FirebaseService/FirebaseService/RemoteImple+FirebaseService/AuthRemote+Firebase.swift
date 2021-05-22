@@ -15,7 +15,7 @@ import DataStore
 
 // MARK: - signIn
 
-extension FirebaseServiceImple: AuthRemote {
+extension FirebaseServiceImple {
     
     public func requestSignInAnonymously() -> Maybe<Domain.Auth> {
         return Maybe.create { callback in

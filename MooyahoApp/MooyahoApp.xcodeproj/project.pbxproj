@@ -38,6 +38,7 @@
 		F6032581265940E300E4E769 /* LocationScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6032580265940E300E4E769 /* LocationScenes.framework */; };
 		F6032582265940E300E4E769 /* LocationScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6032580265940E300E4E769 /* LocationScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC406263C5D7F002BA1AC /* UserMessagingPlatform.xcframework */; };
+		F603258826594E3C00E4E769 /* Repositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258726594E3C00E4E769 /* Repositories.swift */; };
 		F6101467265708B700D32E38 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101466265708B700D32E38 /* MainView.swift */; };
 		F6101484265792C400D32E38 /* MainSlideMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */; };
 		F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */; };
@@ -117,6 +118,7 @@
 		2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6032580265940E300E4E769 /* LocationScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LocationScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F603258726594E3C00E4E769 /* Repositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repositories.swift; sourceTree = "<group>"; };
 		F6101466265708B700D32E38 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuRouter.swift; sourceTree = "<group>"; };
 		F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewController.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				2B4FD2532632B07E00A99624 /* DIContainable.swift */,
 				2B4FD24B2632A7BA00A99624 /* DIContainers.swift */,
 				F6F8732526593F9600FDB24E /* DIContainer+Scenes.swift */,
+				F603258726594E3C00E4E769 /* Repositories.swift */,
 			);
 			path = DIContainers;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */,
+				F603258826594E3C00E4E769 /* Repositories.swift in Sources */,
 				F6101467265708B700D32E38 /* MainView.swift in Sources */,
 				F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */,
 				F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */,

@@ -16,15 +16,15 @@ import Domain
 public protocol TagRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
-    var remote: TagRemote { get }
-    var local: TagLocalStorage { get }
+    var tagRemote: TagRemote { get }
+    var tagLocal: TagLocalStorage { get }
 }
 
 
 extension TagRespository where Self: TagRepositoryDefImpleDependency {
     
     public func select(tag: Tag) -> Maybe<Void> {
-        return self.local.updateRecentSelect(tag: tag)
+        return self.tagLocal.updateRecentSelect(tag: tag)
     }
     
     public func makeNew(tag: Tag) -> Maybe<Void> {
@@ -36,16 +36,16 @@ extension TagRespository where Self: TagRepositoryDefImpleDependency {
                 .disposed(by: self.disposeBag)
         }
         
-        return self.remote.requestRegisterTag(tag)
+        return self.tagRemote.requestRegisterTag(tag)
             .do(onNext: thenUpdate)
     }
     
     public func removeRecentSelect(tag: Tag) -> Maybe<Void> {
-        return self.local.removeRecentSelect(tag: tag)
+        return self.tagLocal.removeRecentSelect(tag: tag)
     }
     
     public func fetchRecentTags(type: Tag.TagType, query: String) -> Maybe<[Tag]> {
-        return self.local.fetchRecentSelectTags(type, query: query)
+        return self.tagLocal.fetchRecentSelectTags(type, query: query)
     }
     
     public func requestLoadPlaceCommnetTags(_ keyword: String,
@@ -65,15 +65,15 @@ extension TagRespository where Self: TagRepositoryDefImpleDependency {
                                          cacheResult: Bool = false) -> Observable<SuggestTagResultCollection> {
         let needCache = cursor == nil
         let cache = needCache == false ? .empty()
-            : self.local.fetchRecentSelectTags(type, query: keyword).catchAndReturn([])
+            : self.tagLocal.fetchRecentSelectTags(type, query: keyword).catchAndReturn([])
             .map{ SuggestTagResultCollection(query: keyword, tags: $0, cursor: nil) }
-        let remote = type == .userComments ? self.remote.requestLoadPlaceCommnetTags(keyword, cursor: cursor)
-            : type == .userFeeling ? self.remote.requestLoadUserFeelingTags(keyword, cursor: cursor)
+        let remote = type == .userComments ? self.tagRemote.requestLoadPlaceCommnetTags(keyword, cursor: cursor)
+            : type == .userFeeling ? self.tagRemote.requestLoadUserFeelingTags(keyword, cursor: cursor)
             : .empty()
         
         let updateCacheOrNot: (SuggestTagResultCollection) -> Void = { [weak self] collection in
             guard cacheResult, let self = self else { return }
-            self.local.saveTags(collection.tags)
+            self.tagLocal.saveTags(collection.tags)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
