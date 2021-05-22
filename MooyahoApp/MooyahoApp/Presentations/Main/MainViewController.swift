@@ -26,6 +26,7 @@ public final class MainViewController: BaseNavigationController, MainScene {
     private let mainView = MainView()
     private let viewModel: MainViewModel
     
+    
     public init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -47,8 +48,10 @@ public final class MainViewController: BaseNavigationController, MainScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.testPresentViewControllerName()
+        self.bind()
     }
-    
+
 }
 
 // MARK: - bind
@@ -56,7 +59,14 @@ public final class MainViewController: BaseNavigationController, MainScene {
 extension MainViewController {
     
     private func bind() {
+    
         
+        self.mainView.navigationBarView.profileImageView.rx
+            .addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.openSlideMenu()
+            })
+            .disposed(by: self.dispsoseBag)
     }
 }
 

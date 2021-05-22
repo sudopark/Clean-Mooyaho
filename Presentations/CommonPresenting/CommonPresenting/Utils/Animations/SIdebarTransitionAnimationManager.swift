@@ -133,25 +133,27 @@ public final class SidebarHiding: NSObject, UIViewControllerAnimatedTransitionin
 }
 
 
-public final class SidebarTransitionAnimationManager {
+public final class SidebarTransitionAnimationManager: NSObject, UIViewControllerTransitioningDelegate {
     
     private let interactor: PangestureDismissalInteractor = PangestureDismissalInteractor()
     
-    var dismissalInteractor: PangestureDismissalInteractor {
+    public override init() {}
+    
+    public var dismissalInteractor: PangestureDismissalInteractor {
         return interactor
     }
     
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SidebarHiding()
     }
     
-    func animationController(forPresented presented: UIViewController,
+    public func animationController(forPresented presented: UIViewController,
                              presenting: UIViewController,
                              source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SidebarShowing()
     }
     
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         
         return self.interactor.hasStarted ? self.dismissalInteractor : nil
     }

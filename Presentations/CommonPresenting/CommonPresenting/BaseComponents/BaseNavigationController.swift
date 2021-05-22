@@ -12,7 +12,7 @@ import RxSwift
 
 open class BaseNavigationController: UINavigationController, UIContextAccessable {
     
-    public let dipsoseBag: DisposeBag = DisposeBag()
+    public let dispsoseBag: DisposeBag = DisposeBag()
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

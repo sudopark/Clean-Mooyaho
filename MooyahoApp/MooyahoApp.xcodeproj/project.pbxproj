@@ -37,6 +37,11 @@
 		2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */; };
 		2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */; };
 		F6101467265708B700D32E38 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101466265708B700D32E38 /* MainView.swift */; };
+		F6101484265792C400D32E38 /* MainSlideMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */; };
+		F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */; };
+		F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */; };
+		F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */; };
+		F610148C2658CCB100D32E38 /* MainSlideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610148B2658CCB100D32E38 /* MainSlideMenuView.swift */; };
 		F66BDB912644487C0043DEAA /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB902644487C0043DEAA /* KakaoSDKUser */; };
 		F66BDB932644487C0043DEAA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB922644487C0043DEAA /* KakaoSDKAuth */; };
 		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
@@ -109,6 +114,11 @@
 		2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6101466265708B700D32E38 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuRouter.swift; sourceTree = "<group>"; };
+		F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewController.swift; sourceTree = "<group>"; };
+		F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuBuilder.swift; sourceTree = "<group>"; };
+		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
+		F610148B2658CCB100D32E38 /* MainSlideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuView.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		F6F24910265587E700AE7A8B /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
@@ -182,6 +192,11 @@
 				F6F24912265587E700AE7A8B /* MainBuilder.swift */,
 				F6F24913265587E700AE7A8B /* MainViewModel.swift */,
 				F6101466265708B700D32E38 /* MainView.swift */,
+				F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */,
+				F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */,
+				F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */,
+				F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */,
+				F610148B2658CCB100D32E38 /* MainSlideMenuView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -447,18 +462,23 @@
 			files = (
 				2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */,
 				F6101467265708B700D32E38 /* MainView.swift in Sources */,
+				F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */,
+				F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */,
 				F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */,
 				2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */,
 				2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				F6F24917265587E700AE7A8B /* MainViewModel.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
+				F6101484265792C400D32E38 /* MainSlideMenuRouter.swift in Sources */,
 				F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */,
 				2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */,
+				F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */,
 				F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
 				2B6140C6263350250091460D /* Test.swift in Sources */,
 				2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */,
+				F610148C2658CCB100D32E38 /* MainSlideMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
