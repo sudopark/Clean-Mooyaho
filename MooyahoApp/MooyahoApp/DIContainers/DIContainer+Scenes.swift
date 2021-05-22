@@ -42,7 +42,8 @@ extension DIContainers: NearbySceneBuilable {
     
     public func makeNearbyScene() -> NearbyScene {
         let router = NearbyRouter(nextSceneBuilders: self)
-        let viewModel = NearbyViewModelImple(router: router)
+        let viewModel = NearbyViewModelImple(locationUsecase: self.userLocationUsecase,
+                                             router: router)
         let viewController = NearbyViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

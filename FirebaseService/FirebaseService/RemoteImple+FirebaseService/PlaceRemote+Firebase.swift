@@ -15,7 +15,7 @@ import DataStore
 
 // MARK: - FirebaseServiceImple confirm PlaceRemote
 
-extension FirebaseServiceImple: PlaceRemote {
+extension FirebaseServiceImple {
     
     public func requesUpload(_ location: UserLocation) -> Maybe<Void> {
         

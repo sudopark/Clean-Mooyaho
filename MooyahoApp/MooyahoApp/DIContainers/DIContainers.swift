@@ -10,27 +10,61 @@ import Foundation
 
 import CommonPresenting
 
+import Domain
 import DataStore
 import FirebaseService
 
 
 // MARK: - DIContainers
 
-public final class DIContainers {
+class HttpAPIImple: HttpAPI { }
+
+final class DIContainers {
     
-    public class Shared {
+    class Shared {
         
         fileprivate init() {}
         
-        public let firebaseService: FirebaseService = FirebaseServiceImple(httpAPI: HttpAPIImple(),
-                                                                           serverKey: AppEnvironment.firebaseServiceKey ?? "")
-        public let kakaoService: KakaoService = KakaoServiceImple()
+        let firebaseServiceImple = FirebaseServiceImple(httpAPI: HttpAPIImple(),
+                                                        serverKey: AppEnvironment.firebaseServiceKey ?? "")
+        let kakaoService: KakaoService = KakaoServiceImple()
+        let locationMonirotingService: LocationMonitoringService = LocationMonitoringServiceImple()
+        
+        let localStorage: LocalStorage = LocalStorageImple()
     }
     
-    public let shared: Shared = Shared()
+    let shared: Shared = Shared()
+    
+    var firebaseService: FirebaseService {
+        return self.shared.firebaseServiceImple
+    }
 }
 
 extension DIContainers: EmptyBuilder { }
 
 
-class HttpAPIImple: HttpAPI { }
+// MARK: repositories
+
+extension DIContainers {
+    
+    var remote: Remote {
+        return self.shared.firebaseServiceImple
+    }
+    
+    var appReposiotry: AppRepository {
+        
+        return AppRepository(remote: self.shared.firebaseServiceImple,
+                             local: self.shared.localStorage)
+    }
+}
+
+// MARK: Usecases
+
+extension DIContainers {
+    
+    var userLocationUsecase: UserLocationUsecase {
+        
+        return UserLocationUsecaseImple(locationMonitoringService: self.shared.locationMonirotingService,
+                                        placeRepository: self.appReposiotry)
+    }
+}

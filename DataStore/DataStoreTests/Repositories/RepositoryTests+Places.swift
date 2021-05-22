@@ -208,12 +208,12 @@ extension RepositoryTests_Places {
 extension RepositoryTests_Places {
     
     class DummyRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {
-        let remote: PlaceRemote
-        let local: PlaceLocalStorage
+        let placeRemote: PlaceRemote
+        let placeLocal: PlaceLocalStorage
         let disposeBag: DisposeBag = .init()
         init(remote: PlaceRemote, local: PlaceLocalStorage) {
-            self.remote = remote
-            self.local = local
+            self.placeRemote = remote
+            self.placeLocal = local
         }
     }
 }

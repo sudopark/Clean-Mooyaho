@@ -12,10 +12,21 @@ import RxSwift
 import RxRelay
 
 
-public protocol UserLocationUsecase { }
+public protocol UserLocationUsecase {
+    
+    // input
+    func checkHasPermission() -> Maybe<LocationServiceAccessPermission>
+    func requestPermission() -> Maybe<Bool>
+    
+    func startUploadUserLocation(with option: LocationMonitoringOption, for member: Member)
+    func stopUplocationUserLocation()
+    
+    // output
+    var monitoringError: Observable<Error> { get }
+}
 
 
-public final class UserLocationUsecaseImple {
+public final class UserLocationUsecaseImple: UserLocationUsecase {
     
     private let locationMonitoringService: LocationMonitoringService
     private let placeRepository: PlaceRepository

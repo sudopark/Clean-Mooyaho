@@ -198,13 +198,13 @@ extension RepositoryTests_Tag {
 extension RepositoryTests_Tag {
     
     class DummyRepository: TagRespository, TagRepositoryDefImpleDependency {
-        let remote: TagRemote
-        let local: TagLocalStorage
+        let tagRemote: TagRemote
+        let tagLocal: TagLocalStorage
         let disposeBag: DisposeBag = .init()
         
         init(remote: TagRemote, local: TagLocalStorage) {
-            self.remote = remote
-            self.local = local
+            self.tagRemote = remote
+            self.tagLocal = local
         }
     }
 }

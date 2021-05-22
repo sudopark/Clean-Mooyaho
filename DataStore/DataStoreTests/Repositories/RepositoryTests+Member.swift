@@ -65,10 +65,10 @@ extension RepositoryTests_Member {
     
     class DummyRepository: MemberRepository, MemberRepositoryDefImpleDependency {
         
-        let remote: MemberRemote
+        let memberRemote: MemberRemote
         
         init(remote: MemberRemote, local: HoorayLocalStorage) {
-            self.remote = remote
+            self.memberRemote = remote
         }
     }
 }

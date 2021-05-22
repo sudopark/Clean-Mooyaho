@@ -16,15 +16,15 @@ import Domain
 public protocol HoorayRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
-    var remote: HoorayRemote { get }
-    var local: HoorayLocalStorage { get }
+    var hoorayRemote: HoorayRemote { get }
+    var hoorayLocal: HoorayLocalStorage { get }
 }
 
 extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
     
     func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
 
-        return self.local.fetchLatestHooray(for: memberID)
+        return self.hoorayLocal.fetchLatestHooray(for: memberID)
             .map{ $0?.asLatestHooray() }
     }
     
@@ -35,7 +35,7 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
             self?.saveHoorays([hooray])
         }
         
-        return self.remote.requestLoadLatestHooray(memberID)
+        return self.hoorayRemote.requestLoadLatestHooray(memberID)
             .do(onNext: saveHoorayIfPossible)
             .map{ $0?.asLatestHooray() }
     }
@@ -43,22 +43,22 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
     public func requestPublishHooray(_ newForm: NewHoorayForm,
                                      withNewPlace: NewPlaceForm?) -> Maybe<Hooray> {
         
-        return self.remote.requestPublishHooray(newForm, withNewPlace: withNewPlace)
+        return self.hoorayRemote.requestPublishHooray(newForm, withNewPlace: withNewPlace)
             .do(onNext: { [weak self] hooray in
                 self?.saveHoorays([hooray])
             })
     }
     
     public func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
-        return self.remote.requestLoadNearbyRecentHoorays(at: location)
+        return self.hoorayRemote.requestLoadNearbyRecentHoorays(at: location)
     }
     
     public func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        return self.remote.requestAckHooray(ack)
+        return self.hoorayRemote.requestAckHooray(ack)
     }
     
     private func saveHoorays(_ hoorays: [Hooray]) {
-        self.local.saveHoorays(hoorays)
+        self.hoorayLocal.saveHoorays(hoorays)
             .subscribe()
             .disposed(by: self.disposeBag)
     }

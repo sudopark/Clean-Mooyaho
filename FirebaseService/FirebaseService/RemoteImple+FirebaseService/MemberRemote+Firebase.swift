@@ -13,7 +13,7 @@ import Domain
 import DataStore
 
 
-extension FirebaseServiceImple: MemberRemote {
+extension FirebaseServiceImple {
     
     public func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
         typealias Key = UserDeviceMappingKey

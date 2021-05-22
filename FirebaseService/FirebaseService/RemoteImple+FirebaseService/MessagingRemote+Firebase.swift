@@ -13,7 +13,7 @@ import Domain
 import DataStore
 
 
-extension FirebaseServiceImple: MessagingRemote { }
+extension FirebaseServiceImple { }
 
 
 extension FirebaseServiceImple {
