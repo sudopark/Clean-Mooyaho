@@ -58,9 +58,6 @@ extension AutoLayout {
         if self.wrappedView.translatesAutoresizingMaskIntoConstraints != false {
             self.wrappedView.translatesAutoresizingMaskIntoConstraints = false
         }
-        if otherView.translatesAutoresizingMaskIntoConstraints != false {
-            otherView.translatesAutoresizingMaskIntoConstraints = false
-        }
         return builder(self.wrappedView, otherView)
     }
     
@@ -69,11 +66,36 @@ extension AutoLayout {
         if self.wrappedView.translatesAutoresizingMaskIntoConstraints != false {
             self.wrappedView.translatesAutoresizingMaskIntoConstraints = false
         }
-        if otherView.translatesAutoresizingMaskIntoConstraints != false {
-            otherView.translatesAutoresizingMaskIntoConstraints = false
-        }
         let constraints = builder(self.wrappedView, otherView)
         NSLayoutConstraint.activate(constraints)
         return self
+    }
+}
+
+
+extension AutoLayout {
+    
+    public func fill(_ targetView: UIView, edges: UIEdgeInsets = .zero, withSafeArea: Bool = false) -> [NSLayoutConstraint] {
+        
+        if withSafeArea {
+            return self.wrappedView.autoLayout.make(with: targetView) {
+                $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: edges.left)
+                $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor, constant: edges.top)
+                $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -edges.bottom)
+                $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -edges.right)
+            }
+        } else {
+            return self.wrappedView.autoLayout.make(with: targetView) {
+                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: edges.left)
+                $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: edges.top)
+                $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -edges.bottom)
+                $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -edges.right)
+            }
+        }
+    }
+    
+    public func activeFill(_ targetView: UIView, edges: UIEdgeInsets = .zero, withSafeArea: Bool = false) {
+        
+        NSLayoutConstraint.activate(self.fill(targetView, edges: edges, withSafeArea: withSafeArea))
     }
 }

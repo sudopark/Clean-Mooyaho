@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 
 // MARK: PushSlide animation constants
 
@@ -15,30 +17,33 @@ public protocol PushSlideAnimationConstants { }
 extension PushSlideAnimationConstants {
     
     var animationDuration: TimeInterval {
-        return 0.23
+        return 0.25
     }
     
     private var screenSize: CGSize {
         return UIScreen.main.bounds.size
     }
     
+    private var pushingViewContentSize: CGSize {
+        return CGSize(width: self.screenSize.width * 0.8, height: self.screenSize.height)
+    }
+    
     var pushingViewShowFrame: CGRect {
-        let width = screenSize.width * 0.8
-        let origin = CGPoint(x: screenSize.width - width, y: 0)
-        return CGRect(origin: origin, size: screenSize)
+        let origin = CGPoint(x: self.screenSize.width - self.pushingViewContentSize.width, y: 0)
+        return CGRect(origin: origin, size: self.screenSize)
     }
     
     var pushingViewHideFrame: CGRect {
         let origin = CGPoint(x: screenSize.width, y: 0)
-        return CGRect(origin: origin, size: screenSize)
+        return CGRect(origin: origin, size: self.screenSize)
     }
     
-    var pushedViewOriginalFrame: CGRect {
+    var originViewFrame: CGRect {
         return CGRect(origin: .zero, size: screenSize)
     }
     
-    var pushedViewFrame: CGRect {
-        let origin = CGPoint(x: -pushingViewShowFrame.width, y: 0)
+    var originViewMovedFrame: CGRect {
+        let origin = CGPoint(x: -pushingViewContentSize.width, y: 0)
         return CGRect(origin: origin, size: screenSize)
     }
 }
@@ -55,20 +60,22 @@ public final class PushSlideShowing: NSObject, UIViewControllerAnimatedTransitio
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         guard let pushingController = transitionContext.viewController(forKey: .to),
-              let pushedController = transitionContext.viewController(forKey: .from) else {
+              let originViewController = transitionContext.viewController(forKey: .from),
+              let pushingView = pushingController.view,
+              let originView = originViewController.view else {
             return
         }
         
-        let pushingView = pushingController.view
-        let pushedView = pushedController.view
-        pushingView?.frame = self.pushingViewHideFrame
-        pushedView?.frame = self.pushedViewOriginalFrame
+        transitionContext.containerView.addSubview(pushingView)
+        
+        pushingView.frame = self.pushingViewHideFrame
+        originView.frame = self.originViewFrame
         
         
         let duration = transitionDuration(using: transitionContext)
         UIView.animate(withDuration: duration, animations: {
-            pushingView?.frame = self.pushingViewShowFrame
-            pushedView?.frame = self.pushedViewFrame
+            pushingView.frame = self.pushingViewShowFrame
+            originView.frame = self.originViewMovedFrame
         }, completion: { success in
             transitionContext.completeTransition(success)
         })
@@ -84,20 +91,20 @@ public final class PushSlideHiding: NSObject, UIViewControllerAnimatedTransition
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         guard let pushingController = transitionContext.viewController(forKey: .from),
-              let pushedController = transitionContext.viewController(forKey: .to) else {
+              let originViewController = transitionContext.viewController(forKey: .to) else {
             return
         }
         
         let pushingView = pushingController.view
-        let pushedView = pushedController.view
+        let originView = originViewController.view
         pushingView?.frame = self.pushingViewShowFrame
-        pushedView?.frame = self.pushedViewFrame
+        originView?.frame = self.originViewMovedFrame
         
         
         let duration = transitionDuration(using: transitionContext)
         UIView.animate(withDuration: duration, animations: {
             pushingView?.frame = self.pushingViewHideFrame
-            pushedView?.frame = self.pushedViewOriginalFrame
+            originView?.frame = self.originViewFrame
         }, completion: { _ in
             if transitionContext.transitionWasCancelled {
                 transitionContext.completeTransition(false)
@@ -110,25 +117,27 @@ public final class PushSlideHiding: NSObject, UIViewControllerAnimatedTransition
 }
 
 
-public final class PushslideTransitionAnimationManager {
+public final class PushslideTransitionAnimationManager: NSObject, UIViewControllerTransitioningDelegate {
     
     private let interactor: PangestureDismissalInteractor = PangestureDismissalInteractor()
     
-    var dismissalInteractor: PangestureDismissalInteractor {
+    public override init() { }
+    
+    public var dismissalInteractor: PangestureDismissalInteractor {
         return interactor
     }
     
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PushSlideShowing()
-    }
-    
-    func animationController(forPresented presented: UIViewController,
-                             presenting: UIViewController,
-                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return PushSlideHiding()
     }
     
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func animationController(forPresented presented: UIViewController,
+                             presenting: UIViewController,
+                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PushSlideShowing()
+    }
+    
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         
         return self.interactor.hasStarted ? self.dismissalInteractor : nil
     }
