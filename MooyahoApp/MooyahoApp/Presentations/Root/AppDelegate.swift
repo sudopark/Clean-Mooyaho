@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         self.diContainers = DIContainers()
         let router = ApplicationRootRouter(nextSceneBuilders: self.diContainers)
-        self.applicationViewModel = ApplicationViewModel(firebaseService: self.diContainers.shared.firebaseService,
+        self.applicationViewModel = ApplicationViewModel(firebaseService: self.diContainers.firebaseService,
                                                          kakaoService: self.diContainers.shared.kakaoService,
                                                          router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
@@ -34,9 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.applicationViewModel.appDidLaunched()
-        
-        let serverKey = AppEnvironment.firebaseServiceKey
-        print("😾 firebase serverKey: \(serverKey)")
         return true
     }
 }

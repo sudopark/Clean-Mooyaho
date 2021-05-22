@@ -182,13 +182,13 @@ extension RepositoryTests_Hooray {
     
     class DummyRepository: HoorayRepository, HoorayRepositoryDefImpleDependency {
         
-        let remote: HoorayRemote
-        let local: HoorayLocalStorage
+        let hoorayRemote: HoorayRemote
+        let hoorayLocal: HoorayLocalStorage
         let disposeBag: DisposeBag = .init()
         
         init(remote: HoorayRemote, local: HoorayLocalStorage) {
-            self.remote = remote
-            self.local = local
+            self.hoorayRemote = remote
+            self.hoorayLocal = local
         }
     }
 }

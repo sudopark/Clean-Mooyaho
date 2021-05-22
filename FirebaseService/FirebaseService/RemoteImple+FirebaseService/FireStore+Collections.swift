@@ -32,6 +32,9 @@ extension Firestore {
 }
 
 
+extension FirebaseServiceImple: Remote { }
+
+
 extension FirebaseServiceImple {
     
     func save(_ model: DocumentMappable,

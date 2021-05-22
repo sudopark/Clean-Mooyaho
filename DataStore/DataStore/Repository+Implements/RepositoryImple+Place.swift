@@ -15,64 +15,64 @@ import Domain
 
 public protocol PlaceRepositoryDefImpleDependency: AnyObject {
     
-    var remote: PlaceRemote { get }
-    var local: PlaceLocalStorage { get }
+    var placeRemote: PlaceRemote { get }
+    var placeLocal: PlaceLocalStorage { get }
     var disposeBag: DisposeBag { get }
 }
 
 extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
     
     public func uploadLocation(_ location: UserLocation) -> Maybe<Void> {
-        return self.remote.requesUpload(location)
+        return self.placeRemote.requesUpload(location)
     }
     
     public func reqeustLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult> {
-        return self.remote.requestLoadDefaultPlaceSuggest(in: location)
+        return self.placeRemote.requestLoadDefaultPlaceSuggest(in: location)
     }
     
     public func requestSuggestPlace(_ query: String,
                                     in location: UserLocation,
                                     cursor: String?) -> Maybe<SuggestPlaceResult> {
-        return self.remote.requestSuggestPlace(query, in: location, cursor: cursor)
+        return self.placeRemote.requestSuggestPlace(query, in: location, cursor: cursor)
     }
     
     public func requestSearchNewPlace(_ query: String,
                                       in location: UserLocation,
                                       of pageIndex: Int?) -> Maybe<SearchingPlaceCollection> {
-        return self.remote.requestSearchNewPlace(query, in: location, of: pageIndex)
+        return self.placeRemote.requestSearchNewPlace(query, in: location, of: pageIndex)
     }
     
     public func requestLoadPlace(_ placeID: String) -> Maybe<Place> {
         
         let updateLocalCache: (Place) -> Void = { [weak self] place in
             guard let self = self else { return }
-            self.local.savePlaces([place])
+            self.placeLocal.savePlaces([place])
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
         
-        return self.remote.requestLoadPlace(placeID)
+        return self.placeRemote.requestLoadPlace(placeID)
             .do(onNext: updateLocalCache)
     }
     
     public func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
-        return self.local.fetchRegisterPendingNewPlaceForm()
+        return self.placeLocal.fetchRegisterPendingNewPlaceForm()
     }
     
     public func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
-        return self.local.savePendingRegister(newPlace: form)
+        return self.placeLocal.savePendingRegister(newPlace: form)
     }
     
     public func requestRegister(newPlace form: NewPlaceForm) -> Maybe<Place> {
         
         let saveAtLocal: (Place) -> Void = { [weak self] newPlace in
             guard let self = self else { return }
-            self.local.savePlaces([newPlace])
+            self.placeLocal.savePlaces([newPlace])
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
         
-        return self.remote.requestRegister(new: form)
+        return self.placeRemote.requestRegister(new: form)
             .do(onNext: saveAtLocal)
     }
 }
