@@ -15,6 +15,8 @@ import RxSwift
 
 public protocol MemberUsecase {
     
+    func updateUserIsOnline(_ userID: String, isOnline: Bool)
+    
     func loadCurrentMembership() -> Maybe<MemberShip>
 }
 

@@ -101,7 +101,7 @@ extension FirebaseServiceImple {
             guard let db = self.fireStoreDB else { return Disposables.create() }
             
             let documentRef = db.collection(collectionType).document(docuID)
-            documentRef.updateData(newFields) { error in
+            documentRef.setData(newFields, merge: true) { error in
                 
                 guard error == nil else {
                     let type = collectionType.rawValue

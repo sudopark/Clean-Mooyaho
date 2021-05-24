@@ -11,12 +11,16 @@ import Foundation
 
 // MARK: - Auth
 
-public struct Auth {
+public struct Auth: Equatable {
     
     public let userID: String
     
     public init(userID: String) {
         self.userID = userID
+    }
+    
+    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+        return lhs.userID == rhs.userID
     }
 }
 

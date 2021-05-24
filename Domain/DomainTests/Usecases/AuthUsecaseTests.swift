@@ -68,7 +68,7 @@ extension AuthUsecaseTests {
     
     private func assertAuthAndMemberInfoUpdatedOnStore(_ expect: XCTestExpectation,
                                                        _ action: @escaping () -> Void) {
-        let auths: Observable<Auth> = self.store.observe(SharedDataKeys.auth.rawValue)
+        let auths: Observable<Auth> = self.usecase.currentAuth.compactMap{ $0 }
         let members: Observable<Member> = self.store.observe(SharedDataKeys.currentMember.rawValue)
         let source = Observable.combineLatest(auths, members)
         let pair = self.waitFirstElement(expect, for: source, action: action)

@@ -18,11 +18,11 @@ public final class LocalStorageImple: LocalStorage {
     public init() {}
     
     public func fetchCurrentAuth() -> Maybe<Auth?> {
-        return .empty()
+        return .just(nil)
     }
     
     public func fetchCurrentMember() -> Maybe<Member?> {
-        return .empty()
+        return .just(nil)
     }
     
     public func saveSignedIn(auth: Auth) -> Maybe<Void> {

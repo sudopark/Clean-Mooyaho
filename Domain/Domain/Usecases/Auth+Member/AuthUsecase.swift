@@ -17,6 +17,8 @@ public protocol AuthUsecase {
     func requestSignIn(emailBaseSecret secret: EmailBaseSecret) -> Maybe<Member>
     
     func requestSocialSignIn() -> Maybe<Member>
+    
+    var currentAuth: Observable<Auth?> { get }
 }
 
 
@@ -84,5 +86,10 @@ extension AuthUsecaseImple {
         member.whenExists {
             self.sharedDataStroeService.update(SharedDataKeys.currentMember.rawValue, value: $0)
         }
+    }
+    
+    public var currentAuth: Observable<Auth?> {
+        return self.sharedDataStroeService
+            .observe(SharedDataKeys.auth.rawValue)
     }
 }
