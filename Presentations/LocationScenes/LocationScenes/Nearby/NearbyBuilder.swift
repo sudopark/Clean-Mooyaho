@@ -15,10 +15,14 @@ import UIKit
 
 import CommonPresenting
 
+public enum NearbySceneEvents {
+    case curretPosition(placeMark: String)
+    case unavailToUseService
+}
 
 // MARK: - Builder + DI Container Extension
 
 public protocol NearbySceneBuilable {
     
-    func makeNearbyScene() -> NearbyScene
+    func makeNearbyScene(_ eventSignal: @escaping EventSignal<NearbySceneEvents>) -> NearbyScene
 }
