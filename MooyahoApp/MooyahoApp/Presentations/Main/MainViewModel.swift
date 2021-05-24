@@ -52,7 +52,9 @@ public final class MainViewModelImple: MainViewModel {
 extension MainViewModelImple {
     
     public func viewDidLoaded() {
-        self.router.addNearbySceen()
+        self.router.addNearbySceen { [weak self] event in
+            // TODO: handle events..
+        }
     }
     
     public func openSlideMenu() {
