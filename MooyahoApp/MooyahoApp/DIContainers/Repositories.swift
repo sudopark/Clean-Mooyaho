@@ -27,6 +27,24 @@ public class AppRepository {
     }
 }
 
+extension AppRepository: AuthRepository, AuthRepositoryDefImpleDependency {
+    
+    public var authRemote: AuthRemote {
+        return self.remote
+    }
+    
+    public var authLocal: AuthLocalStorage {
+        return self.local
+    }
+}
+
+extension AppRepository: MemberRepository, MemberRepositoryDefImpleDependency {
+    
+    public var memberRemote: MemberRemote {
+        return self.remote
+    }
+}
+
 extension AppRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {
     
     public var placeRemote: PlaceRemote {

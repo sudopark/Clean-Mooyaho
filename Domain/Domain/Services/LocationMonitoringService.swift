@@ -143,10 +143,10 @@ extension LocationMonitoringServiceImple {
         return self.subjects.currentLocation
             .compactMap{ $0 }
             .skip(skipCount)
-            .first().asObservable()
-            .compactMap { $0 }
+            .take(1)
             .do(onSubscribed: request)
             .asMaybe()
+            
     }
     
     public func startMonitoring(with option: LocationMonitoringOption) {

@@ -14,7 +14,7 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 
 
-public protocol KakaoService {
+public protocol KakaoService: KakaoOAuth2Repository {
     
     func setupService()
     
