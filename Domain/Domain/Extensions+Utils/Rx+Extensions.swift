@@ -37,3 +37,11 @@ extension Maybe where Element == Void {
         return .just(())
     }
 }
+
+
+extension ObserverType where Element == Void {
+    
+    public func onNext() {
+        self.onNext(())
+    }
+}

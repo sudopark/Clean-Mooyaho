@@ -22,10 +22,14 @@ open class StubUserLocationUsecase: UserLocationUsecase, Stubbable {
     }
     
     open func requestPermission() -> Maybe<Bool> {
-        return self.resolve(key: "checkHasPermission") ?? .empty()
+        return self.resolve(key: "requestPermission") ?? .empty()
+    }
+
+    open func fetchUserLocation() -> Maybe<LastLocation> {
+        return self.resolve(key: "fetchUserLocation") ?? .empty()
     }
     
-    open func startUploadUserLocation(with option: LocationMonitoringOption, for member: Member) {
+    open func startUploadUserLocation(for memberID: String) {
         self.verify(key: "startUploadUserLocation")
     }
     
@@ -36,5 +40,10 @@ open class StubUserLocationUsecase: UserLocationUsecase, Stubbable {
     public let stubMonitoringError = PublishSubject<Error>()
     open var monitoringError: Observable<Error> {
         return stubMonitoringError.asObservable()
+    }
+    
+    public let stubIsAuthorized = PublishSubject<Bool>()
+    open var isAuthorized: Observable<Bool> {
+        return self.stubIsAuthorized.asObservable()
     }
 }

@@ -18,11 +18,14 @@ public protocol UserLocationUsecase {
     func checkHasPermission() -> Maybe<LocationServiceAccessPermission>
     func requestPermission() -> Maybe<Bool>
     
-    func startUploadUserLocation(with option: LocationMonitoringOption, for member: Member)
+    func fetchUserLocation() -> Maybe<LastLocation>
+    
+    func startUploadUserLocation(for memberID: String)
     func stopUplocationUserLocation()
     
     // output
     var monitoringError: Observable<Error> { get }
+    var isAuthorized: Observable<Bool> { get }
 }
 
 
@@ -61,10 +64,17 @@ extension UserLocationUsecaseImple {
 
 extension UserLocationUsecaseImple {
     
-    public func startUploadUserLocation(with option: LocationMonitoringOption, for member: Member) {
+    private var monitoringOption: LocationMonitoringOption {
+        return .init(accuracy: .tenMeters, distanceFilter: 1)
+    }
+    
+    public func fetchUserLocation() -> Maybe<LastLocation> {
+        return self.locationMonitoringService.fetchLastLocation()
+    }
+    
+    public func startUploadUserLocation(for memberID: String) {
         self.locationMonitoring?.dispose()
         
-        let memberID = member.uid
         let uploadLocations: (LastLocation) -> Maybe<Void> = { [weak self] lastLocation in
             guard let self = self else { return .empty() }
             let location = UserLocation(userID: memberID, lastLocation: lastLocation)
@@ -72,13 +82,13 @@ extension UserLocationUsecaseImple {
                 .catchAndReturn(())
         }
         
-        self.locationMonitoring = self.locationMonitoringService
-            .currentUserLocation
-            .throttle(.milliseconds(option.throttlingInterval), latest: true, scheduler: MainScheduler.instance)
+        let interval = 60_000
+        self.locationMonitoring = self.locationMonitoringService.currentUserLocation
+            .throttle(.milliseconds(interval), latest: true, scheduler: MainScheduler.instance)
             .flatMapLatest(uploadLocations)
             .subscribe()
         
-        self.locationMonitoringService.startMonitoring(with: option)
+        self.locationMonitoringService.startMonitoring(with: self.monitoringOption)
     }
     
     public func stopUplocationUserLocation() {
@@ -87,5 +97,9 @@ extension UserLocationUsecaseImple {
     
     public var monitoringError: Observable<Error> {
         return self.locationMonitoringService.occurError
+    }
+    
+    public var isAuthorized: Observable<Bool> {
+        return self.locationMonitoringService.isAuthorized
     }
 }

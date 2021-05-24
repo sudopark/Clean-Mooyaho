@@ -11,7 +11,6 @@
 		2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */; };
 		2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22E263D3012003F25D1 /* StubKakaoService.swift */; };
 		2B4FD24C2632A7BA00A99624 /* DIContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DIContainers.swift */; };
-		2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD2532632B07E00A99624 /* DIContainable.swift */; };
 		2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56932B263D10F5009F85E1 /* KakaoService.swift */; };
 		2B6140C6263350250091460D /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140C5263350250091460D /* Test.swift */; };
 		2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79FC4B262B640C0006291F /* AppDelegate.swift */; };
@@ -93,7 +92,6 @@
 		2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFirebaseService.swift; sourceTree = "<group>"; };
 		2B47B22E263D3012003F25D1 /* StubKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubKakaoService.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DIContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainers.swift; sourceTree = "<group>"; };
-		2B4FD2532632B07E00A99624 /* DIContainable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainable.swift; sourceTree = "<group>"; };
 		2B56932B263D10F5009F85E1 /* KakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoService.swift; sourceTree = "<group>"; };
 		2B6140C5263350250091460D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		2B79FC48262B640C0006291F /* MooyahoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MooyahoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +174,6 @@
 		2B4FD2522632B04600A99624 /* DIContainers */ = {
 			isa = PBXGroup;
 			children = (
-				2B4FD2532632B07E00A99624 /* DIContainable.swift */,
 				2B4FD24B2632A7BA00A99624 /* DIContainers.swift */,
 				F6F8732526593F9600FDB24E /* DIContainer+Scenes.swift */,
 				F603258726594E3C00E4E769 /* Repositories.swift */,
@@ -469,7 +466,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B4FD2542632B07E00A99624 /* DIContainable.swift in Sources */,
 				F603258826594E3C00E4E769 /* Repositories.swift in Sources */,
 				F6101467265708B700D32E38 /* MainView.swift in Sources */,
 				F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */,
