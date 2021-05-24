@@ -12,13 +12,15 @@ import RxSwift
 
 public protocol AuthUsecase {
     
-    func loadLastAuth() -> Maybe<Auth?>
+    func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
+    
+    func requestSignIn(emailBaseSecret secret: EmailBaseSecret) -> Maybe<Member>
     
     func requestSocialSignIn() -> Maybe<Member>
 }
 
 
-public final class AuthUsecaseImple {
+public final class AuthUsecaseImple: AuthUsecase {
     
     private let authRepository: AuthRepository
     private let oauth2Repository: OAuthRepository

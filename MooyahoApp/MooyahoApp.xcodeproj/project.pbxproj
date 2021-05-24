@@ -48,6 +48,9 @@
 		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
+		F6E8311E265C4D5400C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8311D265C4D5400C91F3B /* StubUsecases.framework */; };
+		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
+		F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */; };
 		F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24910265587E700AE7A8B /* MainRouter.swift */; };
 		F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24911265587E700AE7A8B /* MainViewController.swift */; };
 		F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24912265587E700AE7A8B /* MainBuilder.swift */; };
@@ -124,6 +127,9 @@
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
+		F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6F24910265587E700AE7A8B /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		F6F24911265587E700AE7A8B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6F24912265587E700AE7A8B /* MainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBuilder.swift; sourceTree = "<group>"; };
@@ -154,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E8311E265C4D5400C91F3B /* StubUsecases.framework in Frameworks */,
 				2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */,
 				2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */,
 			);
@@ -167,6 +174,7 @@
 			children = (
 				2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */,
 				2B47B22E263D3012003F25D1 /* StubKakaoService.swift */,
+				F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -284,6 +292,7 @@
 				2B79FC4B262B640C0006291F /* AppDelegate.swift */,
 				2BA40626263156F8000CC122 /* ApplicationRootRouter.swift */,
 				2BA4062226315507000CC122 /* ApplicationViewModel.swift */,
+				F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -308,6 +317,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6E8311D265C4D5400C91F3B /* StubUsecases.framework */,
 				F6032580265940E300E4E769 /* LocationScenes.framework */,
 				2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */,
 				2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */,
@@ -466,6 +476,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */,
 				F603258826594E3C00E4E769 /* Repositories.swift in Sources */,
 				F6101467265708B700D32E38 /* MainView.swift in Sources */,
 				F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */,
@@ -494,6 +505,7 @@
 			files = (
 				2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
+				F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */,
 				2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
