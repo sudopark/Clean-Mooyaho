@@ -24,9 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         self.diContainers = DIContainers()
         let router = ApplicationRootRouter(nextSceneBuilders: self.diContainers)
-        self.applicationViewModel = ApplicationViewModel(firebaseService: self.diContainers.firebaseService,
-                                                         kakaoService: self.diContainers.shared.kakaoService,
-                                                         router: router)
+        let usecase = self.diContainers.applicationUsecase
+        self.applicationViewModel = ApplicationViewModelImple(applicationUsecase: usecase,
+                                                              firebaseService: self.diContainers.firebaseService,
+                                                              kakaoService: self.diContainers.shared.kakaoService,
+                                                              router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
     }
 
@@ -44,19 +46,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
+        self.applicationViewModel.appDidBecomeActive()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        
+        self.applicationViewModel.appWillResignActive()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        
+        self.applicationViewModel.appDidEnterBackground()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        self.applicationViewModel.appWillEnterForground()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        
+        self.applicationViewModel.appWillTerminate()
     }
 }
 

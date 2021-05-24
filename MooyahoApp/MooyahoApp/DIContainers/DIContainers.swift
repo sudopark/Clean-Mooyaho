@@ -31,6 +31,15 @@ final class DIContainers {
         let locationMonirotingService: LocationMonitoringService = LocationMonitoringServiceImple()
         
         let localStorage: LocalStorage = LocalStorageImple()
+        
+        private let dataStoreImple: SharedDataStoreServiceImple = .init()
+        var dataStore: SharedDataStoreService {
+            return self.dataStoreImple
+        }
+        
+        var autoInfoManager: AuthInfoManger {
+            return self.dataStoreImple
+        }
     }
     
     let shared: Shared = Shared()
@@ -61,9 +70,30 @@ extension DIContainers {
 
 extension DIContainers {
     
+    var authUsecase: AuthUsecase {
+        
+        return AuthUsecaseImple(authRepository: self.appReposiotry,
+                                socialAuthRepository: self.shared.kakaoService,
+                                authInfoManager: self.shared.autoInfoManager,
+                                sharedDataStroeService: self.shared.dataStore)
+    }
+    
+    var memberUsecase: MemberUsecase {
+        
+        return MemberUsecaseImple(memberRepository: self.appReposiotry,
+                                  sharedDataService: self.shared.dataStore)
+    }
+    
     var userLocationUsecase: UserLocationUsecase {
         
         return UserLocationUsecaseImple(locationMonitoringService: self.shared.locationMonirotingService,
                                         placeRepository: self.appReposiotry)
+    }
+    
+    var applicationUsecase: ApplicationUsecase {
+        
+        return ApplicationUsecaseImple(authUsecase: self.authUsecase,
+                                       memberUsecase: self.memberUsecase,
+                                       locationUsecase: self.userLocationUsecase)
     }
 }

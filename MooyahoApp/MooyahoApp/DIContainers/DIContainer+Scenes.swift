@@ -40,10 +40,11 @@ extension DIContainers: MainSlideMenuSceneBuilable {
 
 extension DIContainers: NearbySceneBuilable {
     
-    public func makeNearbyScene() -> NearbyScene {
+    public func makeNearbyScene(_ eventSignal: @escaping EventSignal<NearbySceneEvents>) -> NearbyScene {
         let router = NearbyRouter(nextSceneBuilders: self)
         let viewModel = NearbyViewModelImple(locationUsecase: self.userLocationUsecase,
-                                             router: router)
+                                             router: router,
+                                             eventSignal: eventSignal)
         let viewController = NearbyViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

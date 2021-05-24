@@ -11,6 +11,7 @@ import XCTest
 import RxSwift
 
 import UnitTestHelpKit
+import StubUsecases
 
 @testable import MooyahoApp
 
@@ -18,6 +19,7 @@ import UnitTestHelpKit
 class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     
     var disposeBag: DisposeBag!
+    var stubUsecase: StubApplicationUsecase!
     var spyRouter: SpyRouter!
     var stubFirebaseService: StubFirebaseService!
     var stubKakaoService: StubKakaoService!
@@ -26,12 +28,14 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     override func setUp() {
         super.setUp()
         self.disposeBag = DisposeBag()
+        self.stubUsecase = .init()
         self.spyRouter = SpyRouter()
         self.stubFirebaseService = .init()
         self.stubKakaoService = .init()
-        self.viewModel = ApplicationViewModel(firebaseService: self.stubFirebaseService,
-                                              kakaoService: self.stubKakaoService,
-                                              router: self.spyRouter)
+        self.viewModel = ApplicationViewModelImple(applicationUsecase: self.stubUsecase,
+                                                   firebaseService: self.stubFirebaseService,
+                                                   kakaoService: self.stubKakaoService,
+                                                   router: self.spyRouter)
     }
     
     override func tearDown() {
@@ -39,10 +43,33 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         self.spyRouter = nil
         self.stubFirebaseService = nil
         self.stubKakaoService = nil
+        self.stubUsecase = nil
         self.viewModel = nil
         super.tearDown()
     }
 }
+
+
+//// MARK: - test upload user location
+//
+//extension ApplicationViewModelTests {
+//
+//    // 시작 이후에 권한 있으면 업로드
+//    func testViewModel_whenAppStartAndHasLocationPermission_startUploadUserLocation() {
+//        // given
+//
+//        // when
+//        // then
+//    }
+//
+//    // 시작 이후에 권한 없으면 업로드 안함
+//
+//    // 시작 이후에 권한 없음 -> 생김 -> 업로드 시작
+//
+//    // 시작 이후 업로드중 -> 백그라운드 진입시 중지
+//
+//    // 다시 포그라운드 올라왔을때 시작
+//}
 
 
 // MARK: - test application level routing
