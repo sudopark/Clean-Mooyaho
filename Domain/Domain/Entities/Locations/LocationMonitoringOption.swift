@@ -19,12 +19,10 @@ public struct LocationMonitoringOption {
         case threeKilometers
     }
     
-    public let throttlingInterval: Milliseconds
     public let accuracy: Accuracy
     public let distanceFilter: Meters
     
-    public init(throttling: Seconds, accuracy: Accuracy, distanceFilter: Meters) {
-        self.throttlingInterval = throttling
+    public init(accuracy: Accuracy, distanceFilter: Meters) {
         self.accuracy = accuracy
         self.distanceFilter = distanceFilter
     }

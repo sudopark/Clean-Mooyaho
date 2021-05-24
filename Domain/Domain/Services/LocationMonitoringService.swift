@@ -12,11 +12,15 @@ import RxSwift
 
 import CoreLocation
 
+
+
 public protocol LocationMonitoringService {
     
     func checkHasPermission() -> Maybe<LocationServiceAccessPermission>
     
     func requestPermission() -> Maybe<Bool>
+    
+    func fetchLastLocation() -> Maybe<LastLocation>
     
     func startMonitoring(with option: LocationMonitoringOption)
     
@@ -25,6 +29,8 @@ public protocol LocationMonitoringService {
     var currentUserLocation: Observable<LastLocation> { get }
     
     var occurError: Observable<Error> { get }
+    
+    var isAuthorized: Observable<Bool> { get }
 }
 
 
@@ -42,7 +48,7 @@ public final class LocationMonitoringServiceImple: NSObject, LocationMonitoringS
     }
     
     struct Subjects {
-        let currentLocation: PublishSubject<LastLocation> = .init()
+        let currentLocation: BehaviorSubject<LastLocation?> = .init(value: nil)
         let currentAuthorizationStatus: PublishSubject<CLAuthorizationStatus> = .init()
         let occurError = PublishSubject<Error>()
     }
@@ -104,11 +110,19 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager,
                                 didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location else { return }
-        let userLocation = LastLocation(lattitude: location.coordinate.latitude,
+        guard let location = locations.last else { return }
+        var userLocation = LastLocation(lattitude: location.coordinate.latitude,
                                         longitude: location.coordinate.longitude,
                                         timeStamp: location.timestamp.timeIntervalSince1970)
-        self.subjects.currentLocation.onNext(userLocation)
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location) { placeMarks, error in
+            guard error == nil, let placeMark = placeMarks?.first else {
+                self.subjects.currentLocation.onNext(userLocation)
+                return
+            }
+            userLocation.placeMark = placeMark.name ?? placeMark.subLocality ?? placeMark.locality
+            self.subjects.currentLocation.onNext(userLocation)
+        }
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -118,6 +132,22 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
 
 
 extension LocationMonitoringServiceImple {
+    
+    public func fetchLastLocation() -> Maybe<LastLocation> {
+        
+        let request: () -> Void = { [weak self] in
+            self?.locationManager.requestLocation()
+        }
+        let existingValue = try? self.subjects.currentLocation.value()
+        let skipCount = existingValue == nil ? 0 : 1
+        return self.subjects.currentLocation
+            .compactMap{ $0 }
+            .skip(skipCount)
+            .first().asObservable()
+            .compactMap { $0 }
+            .do(onSubscribed: request)
+            .asMaybe()
+    }
     
     public func startMonitoring(with option: LocationMonitoringOption) {
         self.locationManager.desiredAccuracy = option.accuracy.cLLAccuracy
@@ -130,11 +160,16 @@ extension LocationMonitoringServiceImple {
     }
     
     public var currentUserLocation: Observable<LastLocation> {
-        return self.subjects.currentLocation.asObservable()
+        return self.subjects.currentLocation.compactMap{ $0 }
     }
     
     public var occurError: Observable<Error> {
         return self.subjects.occurError.asObservable()
+    }
+    
+    public var isAuthorized: Observable<Bool> {
+        return self.subjects.currentAuthorizationStatus
+            .map{ $0 == .authorizedAlways || $0 == .authorizedWhenInUse }
     }
 }
 
