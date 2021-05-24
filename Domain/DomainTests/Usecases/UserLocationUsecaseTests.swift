@@ -70,15 +70,45 @@ extension UserLocationUsecaseTests {
         // then
         XCTAssertNotNil(granted)
     }
+    
+    func testUsecase_autorizedStatusChange() {
+        // given
+        let expect = expectation(description: "권한여부 업데이트 전파")
+        expect.expectedFulfillmentCount = 2
+        
+        // when
+        let isAuthorizeds = self.waitElements(expect, for: self.usecase.isAuthorized) {
+            self.stubLocationMonitoringService.stubAutorized.onNext(false)
+            self.stubLocationMonitoringService.stubAutorized.onNext(true)
+        }
+        
+        // then
+        XCTAssertEqual(isAuthorizeds, [false, true])
+    }
 }
 
 
 extension UserLocationUsecaseTests {
     
+    func testUsecase_fetchUserLocation() {
+        // given
+        let expect = expectation(description: "유저 위치 로드")
+        
+        self.stubLocationMonitoringService.register(key: "fetchLastLocation") {
+            return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
+        }
+        
+        // when
+        let fetch = self.usecase.fetchUserLocation()
+        let location = self.waitFirstElement(expect, for: fetch.asObservable()) { }
+        
+        // then
+        XCTAssertNotNil(location)
+    }
+    
     func testUsecase_startUploadUserLocation_withThrottling() {
         // given
         let expect = expectation(description: "유저 위치정보 업로드 시작")
-        expect.expectedFulfillmentCount = 2
         var locations: [UserLocation] = []
         
         self.stubPlaceRepository.called(key: "uploadLocation") { args in
@@ -88,9 +118,7 @@ extension UserLocationUsecaseTests {
         }
         
         // when
-        let throttleInterval = Int(self.timeout * 1000) - 1
-        let option = LocationMonitoringOption(throttling: throttleInterval, accuracy: .tenMeters, distanceFilter: 10)
-        self.usecase.startUploadUserLocation(with: option, for: Member(uid: "dummy"))
+        self.usecase.startUploadUserLocation(for: "dummy")
         
         (0..<10).forEach { index in
             let lastLocation = LastLocation(lattitude: Double(index), longitude: Double(index), timeStamp: Date().timeIntervalSince1970)
@@ -99,23 +127,19 @@ extension UserLocationUsecaseTests {
         self.wait(for: [expect], timeout: self.timeout)
         
         // then
-        XCTAssertEqual(locations.count, 2)
-        XCTAssertEqual(locations.first?.lastLocation.lattitude, 0.0)
-        XCTAssertEqual(locations.last?.lastLocation.lattitude, 9.0)
+        XCTAssertEqual(locations.count, 1)
     }
     
     func testUsecase_whenStopUploadUserLocation_notUploadLocations() {
         // given
-        let expect = expectation(description: "유저 위치정보 업로드 시작")
+        let expect = expectation(description: "유저 위치정보 업로드 중지")
         expect.isInverted = true
         self.stubPlaceRepository.called(key: "uploadLocation") { args in
             expect.fulfill()
         }
         
         // when
-        let throttleInterval = Int(self.timeout * 1000) - 1
-        let option = LocationMonitoringOption(throttling: throttleInterval, accuracy: .tenMeters, distanceFilter: 10)
-        self.usecase.startUploadUserLocation(with: option, for: Member(uid: "dummy"))
+        self.usecase.startUploadUserLocation(for: "dummy")
         self.usecase.stopUplocationUserLocation()
         
         self.stubLocationMonitoringService.stubLocationSubject.onNext(.init(lattitude: 0, longitude: 0, timeStamp: 0))

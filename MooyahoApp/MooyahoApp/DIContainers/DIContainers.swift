@@ -42,8 +42,7 @@ final class DIContainers {
 
 extension DIContainers: EmptyBuilder { }
 
-
-// MARK: repositories
+// MARK: - Repositories
 
 extension DIContainers {
     
@@ -58,7 +57,7 @@ extension DIContainers {
     }
 }
 
-// MARK: Usecases
+// MARK: - Usecases
 
 extension DIContainers {
     

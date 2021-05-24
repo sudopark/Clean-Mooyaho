@@ -14,6 +14,7 @@ public struct LastLocation {
     public let lattitude: Double
     public let longitude: Double
     public let timeStamp: TimeInterval
+    public var placeMark: String?
     
     public init(lattitude: Double, longitude: Double, timeStamp: TimeInterval) {
         self.lattitude = lattitude

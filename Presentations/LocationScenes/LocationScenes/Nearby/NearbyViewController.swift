@@ -12,6 +12,7 @@ import MapKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
@@ -25,6 +26,7 @@ public protocol NearbyScene: Scenable { }
 public final class NearbyViewController: BaseViewController, NearbyScene {
     
     let mapView = MKMapView()
+    let refreshButton = UIButton(type: .system)
     
     private let viewModel: NearbyViewModel
     
@@ -60,6 +62,36 @@ extension NearbyViewController {
     
     private func bind() {
         
+        self.viewModel.cameraPosition
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] camera in
+                self?.updateCameraPosition(camera)
+            })
+            .disposed(by: self.disposeBag)
+       
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.preparePermission()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.refreshButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.refreshUserLocation()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateCameraPosition(_ position: MapCameraPosition) {
+        let center = position.center
+        let region = MKCoordinateRegion(center: center, latitudinalMeters: 400, longitudinalMeters: 400)
+        self.mapView.setRegion(region, animated: false)
+    }
+    
+    private func refreshUserLocation() {
+        let location = self.mapView.userLocation
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 400, longitudinalMeters: 400)
+        self.mapView.setRegion(region, animated: true)
     }
 }
 
@@ -72,9 +104,44 @@ extension NearbyViewController: Presenting {
         
         self.view.addSubview(self.mapView)
         mapView.autoLayout.activeFill(self.view)
+        
+        self.view.addSubview(refreshButton)
+        refreshButton.autoLayout.active(with: self.view) {
+            $0.widthAnchor.constraint(equalToConstant: 40)
+            $0.heightAnchor.constraint(equalToConstant: 40)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -8)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
+        }
+        self.view.bringSubviewToFront(self.refreshButton)
     }
     
     public func setupStyling() {
         
+        self.mapView.isZoomEnabled = true
+        self.mapView.isScrollEnabled = true
+        self.mapView.showsUserLocation = false
+        self.mapView.showsUserLocation = true
+        self.mapView.delegate = self
+        
+        self.refreshButton.backgroundColor = UIColor.red
     }
 }
+
+
+extension NearbyViewController: MKMapViewDelegate {
+    
+}
+
+
+private extension MapCameraPosition {
+    
+    var center: CLLocationCoordinate2D {
+        switch self {
+        case let .default(position),
+             let .userLocation(position):
+            return .init(latitude: position.latt, longitude: position.long)
+        }
+    }
+}
+
+class UserLocationAnnotation: MKPointAnnotation { }

@@ -17,6 +17,10 @@ import UnitTestHelpKit
 
 class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
     
+    func fetchLastLocation() -> Maybe<LastLocation> {
+        return self.resolve(key: "fetchLastLocation") ?? .empty()
+    }
+    
     func checkHasPermission() -> Maybe<LocationServiceAccessPermission> {
         return self.resolve(key: "checkHasPermission") ?? .empty()
     }
@@ -27,6 +31,9 @@ class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
     
     func startMonitoring(with option: LocationMonitoringOption) {
         self.verify(key: "startMonitoring", with: option)
+        if let stubLocation: LastLocation = self.resolve(key: "startMonitoring:result") {
+            self.stubLocationSubject.onNext(stubLocation)
+        }
     }
     
     func stopMonitoring() {
@@ -40,5 +47,10 @@ class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
     
     var occurError: Observable<Error> {
         return .empty()
+    }
+    
+    let stubAutorized = PublishSubject<Bool>()
+    var isAuthorized: Observable<Bool> {
+        return stubAutorized.asObservable()
     }
 }
