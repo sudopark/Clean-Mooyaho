@@ -51,6 +51,7 @@
 		F6E8311E265C4D5400C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8311D265C4D5400C91F3B /* StubUsecases.framework */; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
 		F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */; };
+		F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */; };
 		F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24910265587E700AE7A8B /* MainRouter.swift */; };
 		F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24911265587E700AE7A8B /* MainViewController.swift */; };
 		F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24912265587E700AE7A8B /* MainBuilder.swift */; };
@@ -130,6 +131,7 @@
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubApplicationUsecase.swift; sourceTree = "<group>"; };
+		F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecaseTests.swift; sourceTree = "<group>"; };
 		F6F24910265587E700AE7A8B /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		F6F24911265587E700AE7A8B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6F24912265587E700AE7A8B /* MainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBuilder.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA4074826316F32000CC122 /* ApplicationViewModelTests.swift */,
+				F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 				2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
 				F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */,
+				F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */,
 				2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

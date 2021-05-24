@@ -13,6 +13,8 @@
 		F60325BF2659571900E4E769 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325BE2659571900E4E769 /* Common3rdParty.framework */; };
 		F60325C32659573700E4E769 /* StubUserLocationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60325C22659573700E4E769 /* StubUserLocationUsecase.swift */; };
 		F60325C42659581600E4E769 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325B3265956EA00E4E769 /* XCTest.framework */; platformFilter = ios; };
+		F6E83126265C55FA00C91F3B /* StubAuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */; };
+		F6E83128265C57B100C91F3B /* StubMemberUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		F60325BB2659571400E4E769 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F60325BE2659571900E4E769 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F60325C22659573700E4E769 /* StubUserLocationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUserLocationUsecase.swift; sourceTree = "<group>"; };
+		F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubAuthUsecase.swift; sourceTree = "<group>"; };
+		F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMemberUsecase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				F60325C22659573700E4E769 /* StubUserLocationUsecase.swift */,
+				F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */,
+				F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -181,7 +187,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E83128265C57B100C91F3B /* StubMemberUsecase.swift in Sources */,
 				F60325C32659573700E4E769 /* StubUserLocationUsecase.swift in Sources */,
+				F6E83126265C55FA00C91F3B /* StubAuthUsecase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
