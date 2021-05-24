@@ -60,7 +60,7 @@ extension ApplicationViewModelImple {
         self.firebaseService.setupService()
         self.kakaoService.setupService()
         
-        self.applicationUsecase.updateApplicationActiveStatus(.forground)
+        self.applicationUsecase.updateApplicationActiveStatus(.launched)
     }
     
     public func handleOpenURL(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]?) -> Bool {
