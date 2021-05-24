@@ -26,6 +26,7 @@ public protocol NearbyScene: Scenable { }
 public final class NearbyViewController: BaseViewController, NearbyScene {
     
     let mapView = MKMapView()
+    let dimView = UIView()
     let refreshButton = UIButton(type: .system)
     
     private let viewModel: NearbyViewModel
@@ -66,6 +67,12 @@ extension NearbyViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] camera in
                 self?.updateCameraPosition(camera)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.alertUnavailToUseService
+            .subscribe(onNext: { [weak self] in
+                self?.dimView.isHidden = false
             })
             .disposed(by: self.disposeBag)
        
@@ -113,6 +120,9 @@ extension NearbyViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
         }
         self.view.bringSubviewToFront(self.refreshButton)
+        
+        self.view.addSubview(dimView)
+        dimView.autoLayout.activeFill(self.view)
     }
     
     public func setupStyling() {
@@ -124,12 +134,27 @@ extension NearbyViewController: Presenting {
         self.mapView.delegate = self
         
         self.refreshButton.backgroundColor = UIColor.red
+        
+        self.dimView.backgroundColor = UIColor.black
+        self.dimView.alpha = 0.1
+        self.dimView.isHidden = true
     }
 }
 
 
 extension NearbyViewController: MKMapViewDelegate {
     
+    public func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        guard let newLocation = userLocation.location else { return }
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(newLocation) { [weak self] placeMark, error in
+            guard error == nil, let mark = placeMark?.first,
+                  let placeMarkString = mark.name ?? mark.locality else {
+                return
+            }
+            self?.viewModel.userPositionChanged(placeMarkString)
+        }
+    }
 }
 
 

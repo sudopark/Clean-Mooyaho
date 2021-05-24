@@ -25,6 +25,7 @@ public protocol NearbyViewModel: AnyObject {
 
     // interactor
     func preparePermission()
+    func userPositionChanged(_ placeMark: String)
     
     // presenter
     var cameraPosition: Observable<MapCameraPosition> { get }
@@ -44,14 +45,21 @@ public final class NearbyViewModelImple: NearbyViewModel {
         // define subjects
         let moveCameraPosition = PublishSubject<MapCameraPosition>()
         let unavailToUse = PublishSubject<Void>()
+        let placeMark = PublishSubject<String>()
     }
     
     private let locationUsecase: UserLocationUsecase
     private let router: NearbyRouting
+    private let eventSignal: EventSignal<NearbySceneEvents>
     
-    public init(locationUsecase: UserLocationUsecase, router: NearbyRouting) {
+    public init(locationUsecase: UserLocationUsecase,
+                router: NearbyRouting,
+                eventSignal: @escaping EventSignal<NearbySceneEvents>) {
         self.locationUsecase = locationUsecase
         self.router = router
+        self.eventSignal = eventSignal
+        
+        self.internalBind()
     }
     
     deinit {
@@ -60,6 +68,15 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    private func internalBind() {
+        
+        self.subjects.placeMark.distinctUntilChanged()
+            .subscribe(onNext: { [weak self] placeMark in
+                self?.eventSignal(.curretPosition(placeMark: placeMark))
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -91,6 +108,7 @@ extension NearbyViewModelImple {
             
             guard case .default = position else { return }
             self?.subjects.unavailToUse.onNext()
+            self?.eventSignal(.unavailToUseService)
         }
         
         self.locationUsecase.checkHasPermission()
@@ -98,6 +116,10 @@ extension NearbyViewModelImple {
             .flatMap(setupCameraPosition)
             .subscribe(onSuccess: handleFetchResult)
             .disposed(by: self.disposeBag)
+    }
+    
+    public func userPositionChanged(_ placeMark: String) {
+        self.subjects.placeMark.onNext(placeMark)
     }
 }
 

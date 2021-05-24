@@ -24,7 +24,7 @@ import LocationScenes
 
 public protocol MainRouting: Routing {
     
-    func addNearbySceen()
+    func addNearbySceen(_ eventSignal: @escaping EventSignal<NearbySceneEvents>)
     
     func openSlideMenu()
 }
@@ -42,9 +42,9 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 extension MainRouter {
     
-    public func addNearbySceen() {
+    public func addNearbySceen(_ eventSignal: @escaping EventSignal<NearbySceneEvents>) {
         guard let mainScene = self.currentScene as? MainScene,
-              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene() else { return }
+              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene(eventSignal) else { return }
         
         nearbyScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
         nearbyScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
