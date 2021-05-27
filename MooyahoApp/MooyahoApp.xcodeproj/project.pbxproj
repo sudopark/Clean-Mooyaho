@@ -53,6 +53,8 @@
 		F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */; };
 		F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */; };
 		F6E8312D266009A000C91F3B /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8312C266009A000C91F3B /* MainViewModelTests.swift */; };
+		F6E8316F26601BE300C91F3B /* PlaceScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8316E26601BE300C91F3B /* PlaceScenes.framework */; };
+		F6E8317026601BE300C91F3B /* PlaceScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8316E26601BE300C91F3B /* PlaceScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24910265587E700AE7A8B /* MainRouter.swift */; };
 		F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24911265587E700AE7A8B /* MainViewController.swift */; };
 		F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24912265587E700AE7A8B /* MainBuilder.swift */; };
@@ -80,6 +82,7 @@
 				2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */,
 				2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */,
 				2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */,
+				F6E8317026601BE300C91F3B /* PlaceScenes.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
 				F6032582265940E300E4E769 /* LocationScenes.framework in Embed Frameworks */,
 				2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */,
@@ -134,6 +137,8 @@
 		F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecaseTests.swift; sourceTree = "<group>"; };
 		F6E8312C266009A000C91F3B /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
+		F6E8316C26601BD300C91F3B /* PlaceScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlaceScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E8316E26601BE300C91F3B /* PlaceScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlaceScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F24910265587E700AE7A8B /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		F6F24911265587E700AE7A8B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6F24912265587E700AE7A8B /* MainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBuilder.swift; sourceTree = "<group>"; };
@@ -153,6 +158,7 @@
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
+				F6E8316F26601BE300C91F3B /* PlaceScenes.framework in Frameworks */,
 				F6032581265940E300E4E769 /* LocationScenes.framework in Frameworks */,
 				F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */,
 				F66BDB912644487C0043DEAA /* KakaoSDKUser in Frameworks */,
@@ -323,6 +329,8 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6E8316E26601BE300C91F3B /* PlaceScenes.framework */,
+				F6E8316C26601BD300C91F3B /* PlaceScenes.framework */,
 				F6E8311D265C4D5400C91F3B /* StubUsecases.framework */,
 				F6032580265940E300E4E769 /* LocationScenes.framework */,
 				2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */,
