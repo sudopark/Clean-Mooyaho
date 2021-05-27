@@ -21,6 +21,7 @@ public protocol MainViewModel: AnyObject {
     // interactor
     func viewDidLoaded()
     func openSlideMenu()
+    
     // presenter
 }
 
