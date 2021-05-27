@@ -24,8 +24,8 @@ public final class MainNavibarView: BaseUIView, Presenting {
         
         self.addSubview(self.profileImageView)
         self.profileImageView.autoLayout.active(with: self) {
-            $0.widthAnchor.constraint(equalToConstant: 40)
-            $0.heightAnchor.constraint(equalToConstant: 40)
+            $0.widthAnchor.constraint(equalToConstant: 35)
+            $0.heightAnchor.constraint(equalToConstant: 35)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
         }
@@ -55,9 +55,8 @@ public final class MainNavibarView: BaseUIView, Presenting {
         
         self.titleLabel.textColor = self.context.colors.text
         
-//        self.profileImageView.image = TODO: defaultImage
         self.profileImageView.backgroundColor = UIColor.black
-        self.profileImageView.layer.cornerRadius = 20
+        self.profileImageView.layer.cornerRadius = 17.5
         self.profileImageView.clipsToBounds = true
         
         self.badgeView.backgroundColor = self.context.colors.raw.red
@@ -71,7 +70,9 @@ public final class MainNavibarView: BaseUIView, Presenting {
 public final class MainView: BaseUIView {
     
     public let navigationBarView = MainNavibarView()
-    public let containerView = UIView()
+    public let mapContainerView = UIView()
+    public let bottomSlideContainerView = UIView()
+    var bottomSlideBottomOffsetConstraint: NSLayoutConstraint!
 }
 
 
@@ -89,15 +90,25 @@ extension MainView: Presenting {
         }
         self.navigationBarView.setupLayout()
         
-        self.addSubview(containerView)
-        containerView.autoLayout.active(with: navigationBarView) {
+        self.addSubview(mapContainerView)
+        mapContainerView.autoLayout.active(with: navigationBarView) {
             $0.topAnchor.constraint(equalTo: $1.bottomAnchor)
         }
-        containerView.autoLayout.active(with: self) {
+        mapContainerView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -40)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -80)
         }
+        
+        self.addSubview(bottomSlideContainerView)
+        bottomSlideContainerView.autoLayout.active(with: self) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.heightAnchor.constraint(equalTo: $1.heightAnchor, constant: 0)
+        }
+        self.bottomSlideBottomOffsetConstraint = self.bottomSlideContainerView
+            .topAnchor.constraint(equalTo: self.bottomAnchor, constant: -80)
+        NSLayoutConstraint.activate([self.bottomSlideBottomOffsetConstraint])
     }
     
     
@@ -106,6 +117,8 @@ extension MainView: Presenting {
         
         self.navigationBarView.setupStyling()
         
-        self.containerView.backgroundColor = self.context.colors.raw.clear
+        self.mapContainerView.backgroundColor = self.context.colors.raw.clear
+        
+        self.bottomSlideContainerView.backgroundColor = .red
     }
 }
