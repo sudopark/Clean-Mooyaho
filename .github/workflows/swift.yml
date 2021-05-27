@@ -61,6 +61,18 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
+      - name: Place Scenes Unit Tests
+        id: test_place_scenes
+        run: |
+          xcodebuild clean test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme PlaceScenes \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        env: 
+          destination: ${{ matrix.destination }}
+
       - name: Domain Unit Tests
         id: test_domain
         run: |
@@ -105,6 +117,11 @@ jobs:
 
       - name: Check Tests Location Scenes
         if: steps.test_location_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Place Scenes
+        if: steps.test_place_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       
