@@ -52,7 +52,6 @@ class AutoLayoutTests: BaseTestCase {
         
         // then
         XCTAssertEqual(subView.translatesAutoresizingMaskIntoConstraints, false)
-        XCTAssertEqual(parentView.translatesAutoresizingMaskIntoConstraints, false)
         XCTAssertEqual(constraints.count, 4)
     }
 }

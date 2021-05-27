@@ -7,8 +7,6 @@
 
 import UIKit
 
-import RxSwift
-
 
 // MARK: PushSlide animation constants
 
@@ -29,14 +27,10 @@ extension PushSlideAnimationConstants {
     }
     
     var pushingViewShowFrame: CGRect {
-//        let origin = CGPoint(x: self.screenSize.width - self.pushingViewContentSize.width, y: 0)
-//        return CGRect(origin: origin, size: self.screenSize)
         return .init(origin: .zero, size: self.screenSize)
     }
     
     var pushingViewHideFrame: CGRect {
-//        let origin = CGPoint(x: screenSize.width, y: 0)
-//        return CGRect(origin: origin, size: self.screenSize)
         let origin = CGPoint(x: self.pushingViewContentSize.width, y: 0)
         return .init(origin: origin, size: self.screenSize)
     }
