@@ -37,6 +37,7 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable & NearbyScene
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
     private let pushSlideTransitionManager = PushslideTransitionAnimationManager()
+    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
 }
 
 

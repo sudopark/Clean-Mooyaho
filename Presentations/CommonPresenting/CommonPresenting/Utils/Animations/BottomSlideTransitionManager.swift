@@ -8,16 +8,49 @@
 import UIKit
 
 
-public protocol ScrollingEmbeding {
+public struct BottomSlideAnimationConstants {
     
-    var scrollView: UIScrollView { get }
+    let animationDuration: TimeInterval
+    let sliderShowingFrameHeight: CGFloat
+    
+    private static var screenSize: CGSize {
+        return UIScreen.main.bounds.size
+    }
+    
+    public init(animationDuration: TimeInterval = 0.25,
+                sliderShowingFrameHeight: CGFloat? = nil) {
+        self.animationDuration = animationDuration
+        
+        let defaultHeight: () -> CGFloat = {
+            return Self.screenSize.height / 2 + 60
+        }
+        self.sliderShowingFrameHeight = sliderShowingFrameHeight ?? defaultHeight()
+    }
+    
+    private var sliderSize: CGSize {
+        return .init(width: Self.screenSize.width, height: self.sliderShowingFrameHeight)
+    }
+    
+    var sliderHideFrame: CGRect {
+        let origin = CGPoint(x: 0, y: Self.screenSize.height)
+        return .init(origin: origin, size: self.sliderSize)
+    }
+    
+    var sliderShowingFrame: CGRect {
+        let origin = CGPoint(x: 0, y: Self.screenSize.height - self.sliderShowingFrameHeight)
+        return .init(origin: origin, size: self.sliderSize)
+    }
 }
 
 public final class BottomSlidShowing: NSObject, UIViewControllerAnimatedTransitioning {
     
+    private let constant: BottomSlideAnimationConstants
+    public init(constant: BottomSlideAnimationConstants) {
+        self.constant = constant
+    }
+    
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        // TODO: inject
-        return 0.25
+        return self.constant.animationDuration
     }
     
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -26,22 +59,23 @@ public final class BottomSlidShowing: NSObject, UIViewControllerAnimatedTransiti
               let showingView = showingController.view else {
             return
         }
+        let constant = self.constant
+        
+        let shadowView = ShadowView(frame: UIScreen.main.bounds)
+        shadowView.updateDimpercent(0.1)
+        transitionContext.containerView.addSubview(shadowView)
         
         transitionContext.containerView.addSubview(showingView)
         
-        // TODO: inject
-        let screenSize = UIScreen.main.bounds.size
-        let defaultHeight = screenSize.height - 20
-        let hideFrame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: defaultHeight)
-        showingView.frame = hideFrame
+        showingView.frame = constant.sliderHideFrame
         
         let duration = transitionDuration(using: transitionContext)
         UIView.animate(withDuration: duration, animations: {
-            let showOriginY = screenSize.height - 40
-            let showingFrame = CGRect(x: 0, y: showOriginY, width: screenSize.width, height: defaultHeight)
-            showingView.frame = showingFrame
+            showingView.frame = constant.sliderShowingFrame
             
+            shadowView.updateDimpercent(1.0)
         }, completion: { success in
+            shadowView.updateDimpercent(1.0)
             transitionContext.completeTransition(success)
         })
     }
@@ -50,9 +84,13 @@ public final class BottomSlidShowing: NSObject, UIViewControllerAnimatedTransiti
 
 public final class BottomSlideHiding: NSObject, UIViewControllerAnimatedTransitioning {
     
+    private let constant: BottomSlideAnimationConstants
+    public init(constant: BottomSlideAnimationConstants) {
+        self.constant = constant
+    }
+    
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        // TODO: inject
-        return 0.25
+        return self.constant.animationDuration
     }
     
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -62,18 +100,24 @@ public final class BottomSlideHiding: NSObject, UIViewControllerAnimatedTransiti
             return
         }
         
-        let screenSize = UIScreen.main.bounds.size
-        let defaultHeight = screenSize.height - 20
-        let showOriginY = screenSize.height - 40
-        let showingFrame = CGRect(x: 0, y: showOriginY, width: screenSize.width, height: defaultHeight)
-        slideView.frame = showingFrame
+        let constant = self.constant
+        
+        let shadowView = transitionContext.containerView.subviews.first(where: { $0 is ShadowView }) as? ShadowView
+        shadowView?.updateDimpercent(1.0)
+        
+        slideView.frame = constant.sliderShowingFrame
         
         let duration = transitionDuration(using: transitionContext)
         UIView.animate(withDuration: duration, animations: {
-            let hideFrame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: defaultHeight)
-            slideView.frame = hideFrame
+            slideView.frame = constant.sliderHideFrame
+            shadowView?.updateDimpercent(0.1)
         }, completion: { _ in
-            transitionContext.completeTransition(transitionContext.transitionWasCancelled == false)
+            if transitionContext.transitionWasCancelled {
+                transitionContext.completeTransition(false)
+            } else {
+                shadowView?.removeFromSuperview()
+                transitionContext.completeTransition(true)
+            }
         })
     }
 }
@@ -81,13 +125,17 @@ public final class BottomSlideHiding: NSObject, UIViewControllerAnimatedTransiti
 
 public final class BottomSlideTransitionAnimationManager: NSObject, UIViewControllerTransitioningDelegate {
     
-    public override init() {}
+    public var constant: BottomSlideAnimationConstants!
+    
+    public override init() {
+        super.init()
+    }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BottomSlideHiding()
+        return BottomSlideHiding(constant: self.constant ?? .init())
     }
     
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BottomSlidShowing()
+        return BottomSlidShowing(constant: self.constant ?? .init())
     }
 }
