@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - SidebarShadow
 
-final class SidebarShadow: BaseUIView {
+final class ShadowView: BaseUIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,7 +81,7 @@ public final class SidebarShowing: NSObject, UIViewControllerAnimatedTransitioni
         guard let sidebarController = transitionContext.viewController(forKey: .to) else {
             return
         }
-        let shadow = SidebarShadow()
+        let shadow = ShadowView()
         shadow.updateDimpercent(0.1)
         transitionContext.containerView.addSubview(shadow)
         transitionContext.containerView.addSubview(sidebarController.view)
@@ -111,7 +111,7 @@ public final class SidebarHiding: NSObject, UIViewControllerAnimatedTransitionin
         guard let sidebarController = transitionContext.viewController(forKey: .from) else {
             return
         }
-        let shadow = transitionContext.containerView.subviews.first(where: { $0 is SidebarShadow }) as? SidebarShadow
+        let shadow = transitionContext.containerView.subviews.first(where: { $0 is ShadowView }) as? ShadowView
         shadow?.updateDimpercent(1.0)
         
         let sidebarView = sidebarController.view
