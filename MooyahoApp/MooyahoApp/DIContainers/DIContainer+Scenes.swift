@@ -10,6 +10,7 @@ import UIKit
 
 import CommonPresenting
 import LocationScenes
+import PlaceScenes
 
 
 // MARK: - Main Sceens
@@ -36,6 +37,7 @@ extension DIContainers: MainSlideMenuSceneBuilable {
     }
 }
 
+
 // MARK: - Location Scenes
 
 extension DIContainers: NearbySceneBuilable {
@@ -46,6 +48,20 @@ extension DIContainers: NearbySceneBuilable {
                                              router: router,
                                              eventSignal: eventSignal)
         let viewController = NearbyViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+// MARK: Place Scenes
+
+extension DIContainers: SuggestPlaceSceneBuilable {
+
+    public func makeSuggestPlaceScene(_ eventSignal: @escaping EventSignal<SuggestSceneEvents>) -> SuggestPlaceScene {
+        let router = SuggestPlaceRouter(nextSceneBuilders: self)
+        let viewModel = SuggestPlaceViewModelImple(router: router,
+                                                   eventSignal: eventSignal)
+        let viewController = SuggestPlaceViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }

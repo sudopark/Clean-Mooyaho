@@ -16,6 +16,11 @@
 		F6E8315E26601B0A00C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315D26601B0A00C91F3B /* StubUsecases.framework */; };
 		F6E8316026601B1000C91F3B /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315F26601B1000C91F3B /* UnitTestHelpKit.framework */; };
 		F6E8316226601B1500C91F3B /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8316126601B1500C91F3B /* Common3rdParty.framework */; };
+		F6E8316826601B4D00C91F3B /* SuggestPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8316426601B4D00C91F3B /* SuggestPlaceRouter.swift */; };
+		F6E8316926601B4D00C91F3B /* SuggestPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8316526601B4D00C91F3B /* SuggestPlaceViewController.swift */; };
+		F6E8316A26601B4D00C91F3B /* SuggestPlaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8316626601B4D00C91F3B /* SuggestPlaceBuilder.swift */; };
+		F6E8316B26601B4D00C91F3B /* SuggestPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8316726601B4D00C91F3B /* SuggestPlaceViewModel.swift */; };
+		F6E8317A2660203000C91F3B /* SuggestPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E831792660203000C91F3B /* SuggestPlaceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +46,11 @@
 		F6E8315D26601B0A00C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8315F26601B1000C91F3B /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8316126601B1500C91F3B /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E8316426601B4D00C91F3B /* SuggestPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceRouter.swift; sourceTree = "<group>"; };
+		F6E8316526601B4D00C91F3B /* SuggestPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceViewController.swift; sourceTree = "<group>"; };
+		F6E8316626601B4D00C91F3B /* SuggestPlaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceBuilder.swift; sourceTree = "<group>"; };
+		F6E8316726601B4D00C91F3B /* SuggestPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceViewModel.swift; sourceTree = "<group>"; };
+		F6E831792660203000C91F3B /* SuggestPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlaceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +100,7 @@
 		F6E8313A26601A9800C91F3B /* PlaceScenes */ = {
 			isa = PBXGroup;
 			children = (
+				F6E8316326601B3700C91F3B /* SuggestPlace */,
 				F6E8313B26601A9800C91F3B /* PlaceScenes.h */,
 				F6E8313C26601A9800C91F3B /* Info.plist */,
 			);
@@ -116,6 +127,18 @@
 				F6E8315326601AE400C91F3B /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6E8316326601B3700C91F3B /* SuggestPlace */ = {
+			isa = PBXGroup;
+			children = (
+				F6E8316426601B4D00C91F3B /* SuggestPlaceRouter.swift */,
+				F6E8316526601B4D00C91F3B /* SuggestPlaceViewController.swift */,
+				F6E8316626601B4D00C91F3B /* SuggestPlaceBuilder.swift */,
+				F6E8316726601B4D00C91F3B /* SuggestPlaceViewModel.swift */,
+				F6E831792660203000C91F3B /* SuggestPlaceView.swift */,
+			);
+			path = SuggestPlace;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,6 +249,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E8316A26601B4D00C91F3B /* SuggestPlaceBuilder.swift in Sources */,
+				F6E8317A2660203000C91F3B /* SuggestPlaceView.swift in Sources */,
+				F6E8316B26601B4D00C91F3B /* SuggestPlaceViewModel.swift in Sources */,
+				F6E8316926601B4D00C91F3B /* SuggestPlaceViewController.swift in Sources */,
+				F6E8316826601B4D00C91F3B /* SuggestPlaceRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +449,7 @@
 		F6E8315026601A9800C91F3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = PlaceScenesTests/Info.plist;
@@ -439,6 +468,7 @@
 		F6E8315126601A9800C91F3B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = PlaceScenesTests/Info.plist;
