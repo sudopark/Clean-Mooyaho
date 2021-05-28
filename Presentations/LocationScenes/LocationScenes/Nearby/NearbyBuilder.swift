@@ -20,9 +20,14 @@ public enum NearbySceneEvents {
     case unavailToUseService
 }
 
+public protocol NearbySceneCommandListener: AnyObject {
+
+    func moveMapCameraToCurrentUserPosition()
+}
+
 // MARK: - Builder + DI Container Extension
 
 public protocol NearbySceneBuilable {
     
-    func makeNearbyScene(_ eventSignal: @escaping EventSignal<NearbySceneEvents>) -> NearbyScene
+    func makeNearbyScene(_ listener: @escaping Listener<NearbySceneEvents>) -> NearbyScene & NearbySceneCommandListener
 }

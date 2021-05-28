@@ -10,68 +10,14 @@ import UIKit
 
 import CommonPresenting
 
-
-
-// MARK: - MainNavibarView
-
-public final class MainNavibarView: BaseUIView, Presenting {
+final class MainView: BaseUIView {
     
-    public let titleLabel: UILabel = .init()
-    public let profileImageView: UIImageView = .init()
-    public let badgeView: UIView = .init()
+    private let topFloatingButtonContainerView = UIView()
+    let profileView = UIImageView()
+    let currentPositionButton = UIButton(type: .system)
     
-    public func setupLayout() {
-        
-        self.addSubview(self.profileImageView)
-        self.profileImageView.autoLayout.active(with: self) {
-            $0.widthAnchor.constraint(equalToConstant: 35)
-            $0.heightAnchor.constraint(equalToConstant: 35)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
-        }
-        
-        self.addSubview(self.badgeView)
-        self.badgeView.autoLayout.active(with: self.profileImageView) {
-            $0.widthAnchor.constraint(equalToConstant: 3)
-            $0.heightAnchor.constraint(equalToConstant: 3)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: 1.5)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: 1.5)
-        }
-        
-        self.addSubview(titleLabel)
-        titleLabel.autoLayout
-            .active(with: self) {
-                $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
-                $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-                $0.leadingAnchor.constraint(greaterThanOrEqualTo: $1.leadingAnchor, constant: 10)
-            }.active(with: self.profileImageView) {
-                $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.leadingAnchor, constant: -16)
-            }
-    }
-    
-    public func setupStyling() {
-        
-        self.backgroundColor = self.context.colors.appBackground
-        
-        self.titleLabel.textColor = self.context.colors.text
-        
-        self.profileImageView.backgroundColor = UIColor.black
-        self.profileImageView.layer.cornerRadius = 17.5
-        self.profileImageView.clipsToBounds = true
-        
-        self.badgeView.backgroundColor = self.context.colors.raw.red
-        self.badgeView.layer.cornerRadius = 1.5
-        self.badgeView.clipsToBounds = true
-    }
-}
-
-
-
-public final class MainView: BaseUIView {
-    
-    public let navigationBarView = MainNavibarView()
-    public let mapContainerView = UIView()
-    public let bottomSlideContainerView = UIView()
+    let mapContainerView = UIView()
+    let bottomSlideContainerView = UIView()
     var bottomSlideBottomOffsetConstraint: NSLayoutConstraint!
 }
 
@@ -79,25 +25,38 @@ public final class MainView: BaseUIView {
 extension MainView: Presenting {
     
     
-    public func setupLayout() {
-        
-        self.addSubview(self.navigationBarView)
-        self.navigationBarView.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 44)
-        }
-        self.navigationBarView.setupLayout()
-        
+    func setupLayout() {
+            
         self.addSubview(mapContainerView)
-        mapContainerView.autoLayout.active(with: navigationBarView) {
-            $0.topAnchor.constraint(equalTo: $1.bottomAnchor)
-        }
         mapContainerView.autoLayout.active(with: self) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+        }
+        
+        self.addSubview(topFloatingButtonContainerView)
+        topFloatingButtonContainerView.autoLayout.active(with: self) {
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor, constant: 24)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+        }
+        
+        topFloatingButtonContainerView.addSubview(profileView)
+        profileView.autoLayout.active(with: topFloatingButtonContainerView) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.widthAnchor.constraint(equalToConstant: 36)
+            $0.heightAnchor.constraint(equalToConstant: 36)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+        }
+        
+        topFloatingButtonContainerView.addSubview(currentPositionButton)
+        currentPositionButton.autoLayout.active(with: profileView) {
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.widthAnchor.constraint(equalToConstant: 36)
+            $0.heightAnchor.constraint(equalToConstant: 36)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 12)
+            $0.bottomAnchor.constraint(equalTo: topFloatingButtonContainerView.bottomAnchor)
         }
         
         self.addSubview(bottomSlideContainerView)
@@ -112,10 +71,15 @@ extension MainView: Presenting {
     }
     
     
-    public func setupStyling() {
+    func setupStyling() {
         self.backgroundColor = self.context.colors.appBackground
         
-        self.navigationBarView.setupStyling()
+        self.profileView.backgroundColor = .red
+        self.profileView.layer.cornerRadius = 18
+        self.profileView.clipsToBounds = true
+        
+        self.currentPositionButton.backgroundColor = .black
+        
         
         self.mapContainerView.backgroundColor = self.context.colors.raw.clear
         

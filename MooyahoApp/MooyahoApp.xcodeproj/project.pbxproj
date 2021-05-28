@@ -43,6 +43,8 @@
 		F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */; };
 		F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */; };
 		F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */; };
+		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
+		F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F66BDB912644487C0043DEAA /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB902644487C0043DEAA /* KakaoSDKUser */; };
 		F66BDB932644487C0043DEAA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB922644487C0043DEAA /* KakaoSDKAuth */; };
 		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
@@ -84,6 +86,7 @@
 				2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */,
 				2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */,
 				2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */,
+				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
 				F6E8317026601BE300C91F3B /* PlaceScenes.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
 				F6032582265940E300E4E769 /* LocationScenes.framework in Embed Frameworks */,
@@ -132,6 +135,7 @@
 		F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewController.swift; sourceTree = "<group>"; };
 		F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuBuilder.swift; sourceTree = "<group>"; };
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
+		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
 				F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */,
 				2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */,
+				F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
@@ -335,6 +340,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F62DFFB3266188C800C4A080 /* MemberScenes.framework */,
 				F6E8316E26601BE300C91F3B /* PlaceScenes.framework */,
 				F6E8316C26601BD300C91F3B /* PlaceScenes.framework */,
 				F6E8311D265C4D5400C91F3B /* StubUsecases.framework */,
