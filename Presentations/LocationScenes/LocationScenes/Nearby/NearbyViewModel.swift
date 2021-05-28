@@ -50,14 +50,14 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private let locationUsecase: UserLocationUsecase
     private let router: NearbyRouting
-    private let eventSignal: EventSignal<NearbySceneEvents>
+    private let listener: Listener<NearbySceneEvents>
     
     public init(locationUsecase: UserLocationUsecase,
                 router: NearbyRouting,
-                eventSignal: @escaping EventSignal<NearbySceneEvents>) {
+                listener: @escaping Listener<NearbySceneEvents>) {
         self.locationUsecase = locationUsecase
         self.router = router
-        self.eventSignal = eventSignal
+        self.listener = listener
         
         self.internalBind()
     }
@@ -73,7 +73,7 @@ public final class NearbyViewModelImple: NearbyViewModel {
         
         self.subjects.placeMark.distinctUntilChanged()
             .subscribe(onNext: { [weak self] placeMark in
-                self?.eventSignal(.curretPosition(placeMark: placeMark))
+                self?.listener(.curretPosition(placeMark: placeMark))
             })
             .disposed(by: self.disposeBag)
     }
@@ -108,7 +108,7 @@ extension NearbyViewModelImple {
             
             guard case .default = position else { return }
             self?.subjects.unavailToUse.onNext()
-            self?.eventSignal(.unavailToUseService)
+            self?.listener(.unavailToUseService)
         }
         
         self.locationUsecase.checkHasPermission()

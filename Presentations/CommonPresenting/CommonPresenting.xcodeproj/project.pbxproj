@@ -30,7 +30,7 @@
 		F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */; };
 		F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */; };
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
-		F6E8311C265C455B00C91F3B /* EventSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311B265C455B00C91F3B /* EventSignal.swift */; };
+		F6E8311C265C455B00C91F3B /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311B265C455B00C91F3B /* Listener.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 /* End PBXBuildFile section */
@@ -73,7 +73,7 @@
 		F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureDismissInteractors.swift; sourceTree = "<group>"; };
 		F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
-		F6E8311B265C455B00C91F3B /* EventSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSignal.swift; sourceTree = "<group>"; };
+		F6E8311B265C455B00C91F3B /* Listener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listener.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -152,7 +152,7 @@
 				2B39E27726387BCB003EE954 /* Presenting.swift */,
 				2B39E27526387BCB003EE954 /* Routable.swift */,
 				2B39E27626387BCB003EE954 /* Sceneable.swift */,
-				F6E8311B265C455B00C91F3B /* EventSignal.swift */,
+				F6E8311B265C455B00C91F3B /* Listener.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -335,7 +335,7 @@
 			files = (
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
-				F6E8311C265C455B00C91F3B /* EventSignal.swift in Sources */,
+				F6E8311C265C455B00C91F3B /* Listener.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,

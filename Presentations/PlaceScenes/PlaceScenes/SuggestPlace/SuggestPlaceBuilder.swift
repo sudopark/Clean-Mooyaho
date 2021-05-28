@@ -25,5 +25,5 @@ public enum SuggestSceneEvents {
 
 public protocol SuggestPlaceSceneBuilable {
     
-    func makeSuggestPlaceScene(_ eventSignal: @escaping EventSignal<SuggestSceneEvents>) -> SuggestPlaceScene
+    func makeSuggestPlaceScene(_ listener: @escaping Listener<SuggestSceneEvents>) -> SuggestPlaceScene
 }
