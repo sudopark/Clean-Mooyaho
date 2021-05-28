@@ -17,7 +17,7 @@ import CommonPresenting
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private var applicationViewModel: ApplicationViewModel!
-    private let diContainers: DIContainers
+    let diContainers: DIContainers
     
     private let disposeBag = DisposeBag()
     

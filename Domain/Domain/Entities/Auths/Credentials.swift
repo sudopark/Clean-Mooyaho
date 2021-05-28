@@ -26,3 +26,12 @@ public struct EmailBaseSecret {
 // MARK: OAuthCredential protocol
 
 public protocol OAuthCredential { }
+
+
+public struct CustomTokenCredential: OAuthCredential {
+    
+    public let token: String
+    public init(token: String) {
+        self.token = token
+    }
+}

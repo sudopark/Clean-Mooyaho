@@ -82,3 +82,14 @@ public struct FcmAPIEndPoint: HttpAPIEndPoint {
         ]
     }
 }
+
+
+public struct LegacyAPIEndPoint: HttpAPIEndPoint {
+    
+    public let path: String
+    public init(path: String) {
+        self.path = path
+    }
+    
+    public var method: HttpAPIMethods { .post }
+}
