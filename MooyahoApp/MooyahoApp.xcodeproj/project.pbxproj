@@ -48,6 +48,8 @@
 		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
+		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
+		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
 		F6E8311E265C4D5400C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8311D265C4D5400C91F3B /* StubUsecases.framework */; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
 		F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */; };
@@ -132,6 +134,8 @@
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
+		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubApplicationUsecase.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				2B56932B263D10F5009F85E1 /* KakaoService.swift */,
+				F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */,
 				2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */,
 			);
 			path = KakaoServices;
@@ -274,6 +279,7 @@
 				2B47B22B263D2FB5003F25D1 /* Stubs */,
 				2BA4074726316F24000CC122 /* Application */,
 				F6E8312B2660099500C91F3B /* Main */,
+				F6AC569E266166B70009B0CE /* Services */,
 				2B79FC64262B640F0006291F /* Info.plist */,
 			);
 			path = MooyahoAppTests;
@@ -354,6 +360,14 @@
 				F66E813C2655282500682625 /* dummy */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F6AC569E266166B70009B0CE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		F6E8312B2660099500C91F3B /* Main */ = {
@@ -505,6 +519,7 @@
 				F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */,
 				F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */,
 				F6F8732626593F9600FDB24E /* DIContainer+Scenes.swift in Sources */,
+				F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */,
 				2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */,
 				2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
@@ -527,6 +542,7 @@
 			files = (
 				2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
+				F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */,
 				F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */,
 				F6E8312D266009A000C91F3B /* MainViewModelTests.swift in Sources */,
 				F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */,

@@ -24,9 +24,13 @@ public protocol KakaoService: KakaoOAuth2Repository {
 }
 
 
-public final class KakaoServiceImple: KakaoService {
+public final class KakaoServiceImple: KakaoService, KakaoOAuth2RepositoryDefImpleDependency {
     
-    public init() {}
+    public var kakaoOAuthRemote: KakaoOAuthRemote
+    
+    public init(remote: KakaoOAuthRemote) {
+        self.kakaoOAuthRemote = remote
+    }
     
     private func loadNativeAppkey() -> String? {
         return (Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APPKEY") as? String)?

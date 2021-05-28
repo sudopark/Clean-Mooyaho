@@ -45,6 +45,11 @@ public protocol AuthRemote {
     func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
 }
 
+public protocol OAuthRemote {
+    
+    func requestCustomToken(_ uniqID: String) -> Maybe<String>
+}
+
 
 // MARK: - Member remote
 
