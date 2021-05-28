@@ -16,6 +16,11 @@
 		F62DFF9B2661850D00C4A080 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFF9A2661850D00C4A080 /* Common3rdParty.framework */; };
 		F62DFF9D2661851300C4A080 /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFF9C2661851300C4A080 /* StubUsecases.framework */; };
 		F62DFF9F2661851800C4A080 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFF9E2661851800C4A080 /* UnitTestHelpKit.framework */; };
+		F62DFFAD266185F200C4A080 /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFA9266185F200C4A080 /* SignInRouter.swift */; };
+		F62DFFAE266185F200C4A080 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAA266185F200C4A080 /* SignInViewController.swift */; };
+		F62DFFAF266185F200C4A080 /* SignInBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAB266185F200C4A080 /* SignInBuilder.swift */; };
+		F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAC266185F200C4A080 /* SignInViewModel.swift */; };
+		F62DFFB22661863900C4A080 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB12661863900C4A080 /* SignInView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +46,11 @@
 		F62DFF9A2661850D00C4A080 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFF9C2661851300C4A080 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFF9E2661851800C4A080 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F62DFFA9266185F200C4A080 /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
+		F62DFFAA266185F200C4A080 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		F62DFFAB266185F200C4A080 /* SignInBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInBuilder.swift; sourceTree = "<group>"; };
+		F62DFFAC266185F200C4A080 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		F62DFFB12661863900C4A080 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +100,7 @@
 		F62DFF77266184BA00C4A080 /* MemberScenes */ = {
 			isa = PBXGroup;
 			children = (
+				F62DFFA8266185E300C4A080 /* SIgnIn */,
 				F62DFF78266184BA00C4A080 /* MemberScenes.h */,
 				F62DFF79266184BA00C4A080 /* Info.plist */,
 			);
@@ -116,6 +127,18 @@
 				F62DFF90266184EF00C4A080 /* Domain.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F62DFFA8266185E300C4A080 /* SIgnIn */ = {
+			isa = PBXGroup;
+			children = (
+				F62DFFA9266185F200C4A080 /* SignInRouter.swift */,
+				F62DFFAA266185F200C4A080 /* SignInViewController.swift */,
+				F62DFFAB266185F200C4A080 /* SignInBuilder.swift */,
+				F62DFFAC266185F200C4A080 /* SignInViewModel.swift */,
+				F62DFFB12661863900C4A080 /* SignInView.swift */,
+			);
+			path = SIgnIn;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,6 +249,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */,
+				F62DFFAE266185F200C4A080 /* SignInViewController.swift in Sources */,
+				F62DFFAD266185F200C4A080 /* SignInRouter.swift in Sources */,
+				F62DFFAF266185F200C4A080 /* SignInBuilder.swift in Sources */,
+				F62DFFB22661863900C4A080 /* SignInView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +449,7 @@
 		F62DFF8D266184BA00C4A080 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = MemberScenesTests/Info.plist;
@@ -439,6 +468,7 @@
 		F62DFF8E266184BA00C4A080 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = MemberScenesTests/Info.plist;

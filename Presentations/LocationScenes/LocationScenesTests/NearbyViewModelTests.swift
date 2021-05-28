@@ -29,7 +29,7 @@ class NearbyViewModelTests: BaseTestCase, WaitObservableEvents {
         self.spyRouter = .init()
         self.viewModel = NearbyViewModelImple(locationUsecase: self.stubLocationUsecase,
                                               router: self.spyRouter,
-                                              eventSignal: { _ in })
+                                              listener: { _ in })
     }
     
     override func tearDownWithError() throws {

@@ -12,6 +12,7 @@ import RxSwift
 import RxRelay
 
 import Domain
+import LocationScenes
 import CommonPresenting
 
 // MARK: - MainViewModel
@@ -19,8 +20,9 @@ import CommonPresenting
 public protocol MainViewModel: AnyObject {
 
     // interactor
-    func viewDidLoaded()
+    func setupSubScenes()
     func openSlideMenu()
+    func moveMapCameraToCurrentUserPosition()
     
     // presenter
 }
@@ -38,6 +40,8 @@ public final class MainViewModelImple: MainViewModel {
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
+    private weak var nearbySceneActionListener: NearbySceneCommandListener?
+    
     public init(router: MainRouting) {
         self.router = router
     }
@@ -52,14 +56,19 @@ public final class MainViewModelImple: MainViewModel {
 
 extension MainViewModelImple {
     
-    public func viewDidLoaded() {
-        self.router.addNearbySceen { [weak self] event in
+    public func setupSubScenes() {
+        
+        self.nearbySceneActionListener = self.router.addNearbySceen { [weak self] event in
             // TODO: handle events..
         }
     }
     
     public func openSlideMenu() {
         self.router.openSlideMenu()
+    }
+    
+    public func moveMapCameraToCurrentUserPosition() {
+        self.nearbySceneActionListener?.moveMapCameraToCurrentUserPosition()
     }
 }
 

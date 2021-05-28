@@ -59,7 +59,7 @@ public final class MainViewController: BaseNavigationController, MainScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel.viewDidLoaded()
+        self.viewModel.setupSubScenes()
         self.bind()
     }
 
@@ -71,10 +71,16 @@ extension MainViewController {
     
     private func bind() {
         
-        self.mainView.navigationBarView.profileImageView.rx
+        self.mainView.profileView.rx
             .addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.openSlideMenu()
+            })
+            .disposed(by: self.dispsoseBag)
+        
+        self.mainView.currentPositionButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.moveMapCameraToCurrentUserPosition()
             })
             .disposed(by: self.dispsoseBag)
         
@@ -178,7 +184,7 @@ extension MainViewController: Presenting {
         self.view.addSubview(self.mainView)
         mainView.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }
