@@ -65,8 +65,30 @@ extension FirebaseServiceImple {
     }
     
     private func selectSignInMethod(by credential: Domain.OAuthCredential) -> Maybe<FirebaseAuth.User> {
+        
         // TODO: 소셩 로그인 타입에 따라 분기
-        return .empty()
+        switch credential {
+        case let customToken as CustomTokenCredential:
+            return self.signinWithCustomTokenCredential(customToken)
+            
+        default:
+            return .error(RemoteErrors.notSupportCredential(String(describing: credential)))
+        }
+    }
+    
+    private func signinWithCustomTokenCredential(_ credential: CustomTokenCredential) -> Maybe<FirebaseAuth.User> {
+        
+        return Maybe.create { callback in
+            
+            Auth.auth().signIn(withCustomToken: credential.token) { result, error in
+                guard error == nil, let user = result?.user else {
+                    callback(.error(RemoteErrors.credentialSigninFail(error)))
+                    return
+                }
+                callback(.success(user))
+            }
+            return Disposables.create()
+        }
     }
 }
 
