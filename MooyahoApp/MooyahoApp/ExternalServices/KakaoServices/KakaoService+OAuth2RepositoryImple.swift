@@ -9,9 +9,6 @@
 import Foundation
 
 import RxSwift
-import KakaoSDKCommon
-import KakaoSDKAuth
-import KakaoSDKUser
 
 import Domain
 
@@ -20,20 +17,6 @@ import Domain
 
 public enum KakaoOAuthErrors: Error {
     case failToSignIn(_ reason: Error?)
-    case failToFetchUserInfo(_ reason: Error?)
-    case invalidUserID
-}
-
-
-// MARK: - Kakao OAuth Credential
-
-public struct KakaoOAuthCredential: OAuthCredential {
-    
-    public let kakaoUserID: Int
-    
-    public init(userID: Int) {
-        self.kakaoUserID = userID
-    }
 }
 
 
@@ -41,61 +24,30 @@ public struct KakaoOAuthCredential: OAuthCredential {
 
 public protocol KakaoOAuth2Repository: AnyObject, OAuthRepository { }
 
-extension KakaoOAuth2Repository {
+public protocol KakaoOAuth2RepositoryDefImpleDependency {
+    
+    var kakaoOAuthRemote: KakaoOAuthRemote { get }
+}
+
+extension KakaoOAuth2Repository where Self: KakaoOAuth2RepositoryDefImpleDependency {
     
     public func requestSignIn() -> Maybe<OAuthCredential> {
         
-        let requestKakaoSignIn = UserApi.isKakaoTalkLoginAvailable()
-            ? self.requestKakaoTalkSignIn() : self.requestKakaoAccountSignIn()
+        let requestKakaoSignIn = kakaoOAuthRemote.isKakaoTalkLoginAvailable()
+            ? self.kakaoOAuthRemote.loginWithKakaoTalk()
+            : self.kakaoOAuthRemote.loginWithKakaoAccount()
         
-        let thenRequestUserInfo: () -> Maybe<User> = { [weak self] in
-            return self?.requestKakaoUserInfo() ?? .empty()
+        let requestVerifyToken: (String) -> Maybe<String> = { [weak self] kakaoToken in
+            guard let self = self else { return .empty() }
+            return self.kakaoOAuthRemote.verifyKakaoAccessToken(kakaoToken)
         }
-        let asOAuth2Credentail: (User) throws -> KakaoOAuthCredential = { user in
-            return KakaoOAuthCredential(userID: Int(user.id))
+        
+        let asOAuth2Credentail: (String) throws -> CustomTokenCredential = { customToken in
+            return CustomTokenCredential(token: customToken)
         }
         
         return requestKakaoSignIn
-            .flatMap(thenRequestUserInfo)
+            .flatMap(requestVerifyToken)
             .map(asOAuth2Credentail)
-    }
-    
-    private func requestKakaoTalkSignIn() -> Maybe<Void> {
-        return Maybe.create { callback in
-            UserApi.shared.loginWithKakaoTalk { token, error in
-                guard error == nil, let _ = token else {
-                    callback(.error(error ?? KakaoOAuthErrors.failToSignIn(nil)))
-                    return
-                }
-                callback(.success(()))
-            }
-            return Disposables.create()
-        }
-    }
-    
-    private func requestKakaoAccountSignIn() -> Maybe<Void> {
-        return Maybe.create { callback in
-            UserApi.shared.loginWithKakaoAccount { token, error in
-                guard error == nil, let _ = token else {
-                    callback(.error(error ?? KakaoOAuthErrors.failToSignIn(nil)))
-                    return
-                }
-                callback(.success(()))
-            }
-            return Disposables.create()
-        }
-    }
-    
-    private func requestKakaoUserInfo() -> Maybe<User> {
-        return Maybe.create { callback in
-            UserApi.shared.me { user, error in
-                guard error == nil, let user = user else {
-                    callback(.error(error ?? KakaoOAuthErrors.failToFetchUserInfo(error)))
-                    return
-                }
-                callback(.success(user))
-            }
-            return Disposables.create()
-        }
     }
 }

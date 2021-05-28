@@ -9,15 +9,15 @@
 import Foundation
 
 
-public enum BuildMode {
+enum BuildMode {
     case debug
     case release
 }
 
 
-public struct AppEnvironment {
+struct AppEnvironment {
     
-    public static var buildMode: BuildMode {
+    static var buildMode: BuildMode {
         #if DEBUG
             return .debug
         #elseif RELEASE
@@ -25,7 +25,7 @@ public struct AppEnvironment {
         #endif
     }
     
-    public static var isTestBuild: Bool {
+    static var isTestBuild: Bool {
         #if DEBUG
         return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
         #endif
@@ -40,7 +40,11 @@ public struct AppEnvironment {
         return (try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String: Any]) ?? [:]
     }()
     
-    public static var firebaseServiceKey: String? = {
+    static var firebaseServiceKey: String? = {
         return secretJsons["firebase_server_key"] as? String
+    }()
+    
+    static var legacyAPIPath: String? = {
+        return secretJsons["legacy_api_path"] as? String
     }()
 }

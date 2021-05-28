@@ -10,6 +10,7 @@ import Foundation
 
 import RxSwift
 
+import Domain
 import UnitTestHelpKit
 
 @testable import MooyahoApp
@@ -27,6 +28,10 @@ class StubKakaoService: KakaoService, Stubbable {
     
     func handle(url: URL) -> Bool {
         return self.resolve(key: "handle:url") ?? false
+    }
+    
+    func requestSignIn() -> Maybe<OAuthCredential> {
+        return self.resolve(key: "requestSignIn") ?? .empty()
     }
 }
 
