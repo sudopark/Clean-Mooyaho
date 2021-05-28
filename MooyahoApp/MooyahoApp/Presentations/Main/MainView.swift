@@ -97,7 +97,7 @@ extension MainView: Presenting {
         mapContainerView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -80)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         
         self.addSubview(bottomSlideContainerView)
@@ -120,5 +120,7 @@ extension MainView: Presenting {
         self.mapContainerView.backgroundColor = self.context.colors.raw.clear
         
         self.bottomSlideContainerView.backgroundColor = .red
+        self.bottomSlideContainerView.layer.cornerRadius = 10
+        self.bottomSlideContainerView.clipsToBounds = true
     }
 }
