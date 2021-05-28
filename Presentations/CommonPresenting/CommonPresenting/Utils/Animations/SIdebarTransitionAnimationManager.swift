@@ -135,7 +135,7 @@ public final class SidebarHiding: NSObject, UIViewControllerAnimatedTransitionin
 
 public final class SidebarTransitionAnimationManager: NSObject, UIViewControllerTransitioningDelegate {
     
-    private let interactor: PangestureDismissalInteractor = PangestureDismissalInteractor()
+    private let interactor = RightSwipePangestureDismissalInteractor()
     
     public override init() {}
     

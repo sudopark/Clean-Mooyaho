@@ -56,7 +56,7 @@ public final class MainSlideMenuViewController: BaseViewController, MainSlideMen
     public func setupDismissGesture(_ dismissInteractor: PangestureDismissalInteractor) {
         let bindDismissInteractor: () -> Void = { [weak self, weak dismissInteractor] in
             guard let self = self, let interactor = dismissInteractor else { return }
-            interactor.addLeftDismissPangesture(self.view) { [weak self] in
+            interactor.addDismissPangesture(self.view) { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
             }
             .disposed(by: self.disposeBag)
