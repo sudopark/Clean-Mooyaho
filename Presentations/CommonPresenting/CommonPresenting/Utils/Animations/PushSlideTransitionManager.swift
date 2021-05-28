@@ -117,7 +117,7 @@ public final class PushSlideHiding: NSObject, UIViewControllerAnimatedTransition
 
 public final class PushslideTransitionAnimationManager: NSObject, UIViewControllerTransitioningDelegate {
     
-    private let interactor: PangestureDismissalInteractor = PangestureDismissalInteractor()
+    private let interactor = RightSwipePangestureDismissalInteractor()
     
     public override init() { }
     
