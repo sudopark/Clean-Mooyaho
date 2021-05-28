@@ -127,6 +127,12 @@ public final class BottomSlideTransitionAnimationManager: NSObject, UIViewContro
     
     public var constant: BottomSlideAnimationConstants!
     
+    private let interactor = BottomPullPangestureDismissalInteractor()
+    
+    public var dismissalInteractor: PangestureDismissalInteractor {
+        return interactor
+    }
+    
     public override init() {
         super.init()
     }
@@ -137,5 +143,10 @@ public final class BottomSlideTransitionAnimationManager: NSObject, UIViewContro
     
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BottomSlidShowing(constant: self.constant ?? .init())
+    }
+    
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        
+        return self.interactor.hasStarted ? self.interactor : nil
     }
 }
