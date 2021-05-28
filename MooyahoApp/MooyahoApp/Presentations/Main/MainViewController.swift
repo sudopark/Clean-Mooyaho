@@ -19,6 +19,7 @@ import CommonPresenting
 public protocol MainScene: Scenable {
     
     var childContainerView: UIView { get }
+    var childBottomSlideContainerView: UIView { get }
 }
 
 
@@ -31,6 +32,10 @@ public final class MainViewController: BaseNavigationController, MainScene {
     
     public var childContainerView: UIView {
         return self.mainView.mapContainerView
+    }
+    
+    public var childBottomSlideContainerView: UIView {
+        return self.mainView.bottomSlideContainerView
     }
     
     public init(viewModel: MainViewModel) {

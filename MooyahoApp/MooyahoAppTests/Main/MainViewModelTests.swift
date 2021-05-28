@@ -13,6 +13,7 @@ import RxSwift
 import Domain
 import CommonPresenting
 import LocationScenes
+import PlaceScenes
 import UnitTestHelpKit
 
 @testable import MooyahoApp
@@ -46,6 +47,10 @@ extension MainViewModelTests {
     class SpyRouter: MainRouting, Stubbable {
         
         func addNearbySceen(_ eventSignal: @escaping EventSignal<NearbySceneEvents>) {
+            
+        }
+        
+        func addSuggestPlaceScene(_ eventSignal: @escaping EventSignal<SuggestSceneEvents>) {
             
         }
         

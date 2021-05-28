@@ -117,7 +117,7 @@ extension NearbyViewController: Presenting {
             $0.widthAnchor.constraint(equalToConstant: 40)
             $0.heightAnchor.constraint(equalToConstant: 40)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -8)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -28)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -88)
         }
         self.view.bringSubviewToFront(self.refreshButton)
         
