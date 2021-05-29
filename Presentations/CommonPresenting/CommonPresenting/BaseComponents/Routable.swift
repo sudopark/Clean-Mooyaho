@@ -10,6 +10,8 @@ import UIKit
 
 import RxSwift
 
+import Domain
+
 // MARK: Routing and Router
 
 public protocol Routing: AnyObject {
@@ -41,10 +43,10 @@ open class Router<Buildables>: Routing {
 extension Router {
     
     public func alertError(_ error: Error) {
-        print("☠️ should implement -> \(#function)")
+        logger.todoImplement()
     }
     
     public func showToast(_ message: String) {
-        print("☠️ should implement -> \(#function)")
+        logger.todoImplement()
     }
 }
