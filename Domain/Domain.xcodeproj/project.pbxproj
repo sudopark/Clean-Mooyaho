@@ -75,6 +75,7 @@
 		F61529672650171A003BCB59 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61529662650171A003BCB59 /* Auth.swift */; };
 		F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152968265017E5003BCB59 /* AuthInfoProvider.swift */; };
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
+		F63A3D8A266227E400DAF4AE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A3D89266227E400DAF4AE /* Logger.swift */; };
 		F64CCB6A2654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB692654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift */; };
 		F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E072647EE7D00820368 /* SuggestPlace.swift */; };
 		F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */; };
@@ -174,6 +175,7 @@
 		F61529662650171A003BCB59 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		F6152968265017E5003BCB59 /* AuthInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProvider.swift; sourceTree = "<group>"; };
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
+		F63A3D89266227E400DAF4AE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F64CCB692654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHoorayFormBuilderTests.swift; sourceTree = "<group>"; };
 		F6684E072647EE7D00820368 /* SuggestPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlace.swift; sourceTree = "<group>"; };
 		F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTagUsecase.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				2B40BF92263F15060031C7A6 /* Units.swift */,
 				2BFF240E2640736F008C52EB /* Builder.swift */,
 				F6E3F60A264983E900DD4986 /* Location+Extension.swift */,
+				F63A3D89266227E400DAF4AE /* Logger.swift */,
 			);
 			path = "Extensions+Utils";
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */,
 				2BFF240926405B7C008C52EB /* Tags.swift in Sources */,
 				F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */,
+				F63A3D8A266227E400DAF4AE /* Logger.swift in Sources */,
 				2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */,
 				2B9F27A32633F17500FEBCE3 /* Seller.swift in Sources */,
 				2B40BF84263F09800031C7A6 /* LocationMonitoringService.swift in Sources */,

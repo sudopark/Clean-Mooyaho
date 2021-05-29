@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 @UIApplicationMain
