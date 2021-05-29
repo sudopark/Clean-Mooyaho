@@ -12,5 +12,5 @@ import Foundation
 public enum ApplicationErrors: Error {
     
     case invalid
-    case noAuth
+    case sigInNeed
 }

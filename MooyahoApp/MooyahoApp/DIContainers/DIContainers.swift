@@ -8,9 +8,8 @@
 
 import Foundation
 
-import CommonPresenting
-
 import Domain
+import CommonPresenting
 import DataStore
 import FirebaseService
 
@@ -52,6 +51,8 @@ final class DIContainers {
     var firebaseService: FirebaseService {
         return self.shared.firebaseServiceImple
     }
+    
+    // TODO: messaging service 구현체는 firebaseService: FCMService
 }
 
 extension DIContainers: EmptyBuilder { }
@@ -61,12 +62,16 @@ extension DIContainers: EmptyBuilder { }
 extension DIContainers {
     
     var remote: Remote {
-        return self.shared.firebaseServiceImple
+        if AppEnvironment.isTestBuild {
+            return EmptyRemote()
+        } else {
+            return self.shared.firebaseServiceImple
+        }
     }
     
     var appReposiotry: AppRepository {
         
-        return AppRepository(remote: self.shared.firebaseServiceImple,
+        return AppRepository(remote: self.remote,
                              local: self.shared.localStorage)
     }
 }
@@ -100,5 +105,13 @@ extension DIContainers {
         return ApplicationUsecaseImple(authUsecase: self.authUsecase,
                                        memberUsecase: self.memberUsecase,
                                        locationUsecase: self.userLocationUsecase)
+    }
+    
+    var hoorayUsecase: HoorayUsecase {
+        
+        return HoorayUsecaseImple(authInfoProvider: self.shared.dataStore,
+                                  memberUsecase: self.memberUsecase,
+                                  hoorayRepository: self.appReposiotry,
+                                  messagingService: FCMService())
     }
 }

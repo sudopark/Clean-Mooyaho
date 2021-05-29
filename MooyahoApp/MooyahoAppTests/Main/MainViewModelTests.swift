@@ -14,6 +14,7 @@ import Domain
 import CommonPresenting
 import LocationScenes
 import PlaceScenes
+import StubUsecases
 import UnitTestHelpKit
 
 @testable import MooyahoApp
@@ -22,17 +23,22 @@ import UnitTestHelpKit
 class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var stubHoorayUsecase: StubHoorayUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
+        self.stubHoorayUsecase = .init()
         self.spyRouter = .init()
-        self.viewModel = .init(router: self.spyRouter)
+        self.viewModel = .init(auth: .init(userID: "some"),
+                               hoorayUsecase: self.stubHoorayUsecase,
+                               router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.stubHoorayUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -65,12 +71,38 @@ extension MainViewModelTests {
 }
 
 
+// MARK: - test request make new hooray
+
+extension MainViewModelTests {
+    
+    // auth가 준비되어야지
+    
+    func testViewModel_requestMakeNewHooray() {
+        // given
+        let expect = expectation(description: "새로운 후레이 발급 요청시 로그인되어있지 않다면 로그인 라우팅")
+        self.stubHoorayUsecase.register(key: "isAvailToPublish") {
+            return Maybe<Bool>.error(ApplicationErrors.sigInNeed)
+        }
+        
+        self.spyRouter.called(key: "presentSignInScene") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.makeNewHooray()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
+
 extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Stubbable {
         
         func presentSignInScene() {
-            
+            self.verify(key: "presentSignInScene")
         }
         
         var stubCommandListener: SpyNearbySceneListeningAction?

@@ -55,3 +55,15 @@ extension AppRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {
         return self.local
     }
 }
+
+
+extension AppRepository: HoorayRepository, HoorayRepositoryDefImpleDependency {
+    
+    public var hoorayRemote: HoorayRemote {
+        return self.remote
+    }
+    
+    public var hoorayLocal: HoorayLocalStorage {
+        return self.local
+    }
+}

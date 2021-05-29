@@ -25,7 +25,11 @@ public enum ApplicationStatus {
 public protocol ApplicationUsecase {
     
     func updateApplicationActiveStatus(_ newStatus: ApplicationStatus)
+    
+    func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
 }
+
+// MARK: - ApplicationUsecaseImple
 
 public final class ApplicationUsecaseImple: ApplicationUsecase {
     
@@ -50,6 +54,8 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     private let disposeBag = DisposeBag()
 }
 
+
+// MARK: - input
 
 extension ApplicationUsecaseImple {
     
@@ -114,5 +120,15 @@ extension ApplicationUsecaseImple {
         return Observable
             .combineLatest(preparedAuth, permissionGranted)
             .map{ $0.0 }
+    }
+}
+
+
+// MARK: - output
+
+extension ApplicationUsecaseImple {
+    
+    public func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
+        return self.authUsecase.loadLastSignInAccountInfo()
     }
 }

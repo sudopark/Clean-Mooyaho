@@ -22,7 +22,7 @@ public struct BottomSlideAnimationConstants {
         self.animationDuration = animationDuration
         
         let defaultHeight: () -> CGFloat = {
-            return Self.screenSize.height / 2 + 60
+            return Self.screenSize.height
         }
         self.sliderShowingFrameHeight = sliderShowingFrameHeight ?? defaultHeight()
     }

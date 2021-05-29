@@ -45,6 +45,8 @@
 		F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */; };
 		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
 		F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
+		F62DFFBA26621D7500C4A080 /* FCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB926621D7500C4A080 /* FCMService.swift */; };
 		F66BDB912644487C0043DEAA /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB902644487C0043DEAA /* KakaoSDKUser */; };
 		F66BDB932644487C0043DEAA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB922644487C0043DEAA /* KakaoSDKAuth */; };
 		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
@@ -136,6 +138,8 @@
 		F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuBuilder.swift; sourceTree = "<group>"; };
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
+		F62DFFB926621D7500C4A080 /* FCMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMService.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 				2B4FD24B2632A7BA00A99624 /* DIContainers.swift */,
 				F6F8732526593F9600FDB24E /* DIContainer+Scenes.swift */,
 				F603258726594E3C00E4E769 /* Repositories.swift */,
+				F62DFFB626621BC000C4A080 /* EmptyRemote.swift */,
 			);
 			path = DIContainers;
 			sourceTree = "<group>";
@@ -294,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				2B56932A263D10E4009F85E1 /* KakaoServices */,
+				F62DFFB826621D6000C4A080 /* MessagingServices */,
 				2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */,
 			);
 			path = ExternalServices;
@@ -357,6 +363,14 @@
 				2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F62DFFB826621D6000C4A080 /* MessagingServices */ = {
+			isa = PBXGroup;
+			children = (
+				F62DFFB926621D7500C4A080 /* FCMService.swift */,
+			);
+			path = MessagingServices;
 			sourceTree = "<group>";
 		};
 		F66E813B265522F000682625 /* Resources */ = {
@@ -532,8 +546,10 @@
 				F6F24917265587E700AE7A8B /* MainViewModel.swift in Sources */,
 				2BA4062326315507000CC122 /* ApplicationViewModel.swift in Sources */,
 				F6101484265792C400D32E38 /* MainSlideMenuRouter.swift in Sources */,
+				F62DFFBA26621D7500C4A080 /* FCMService.swift in Sources */,
 				F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */,
 				2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */,
+				F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */,
 				F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */,
 				F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
