@@ -86,7 +86,7 @@ extension MainViewController {
         
         self.mainView.newHoorayButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                // TODO: new hooray
+                self?.viewModel.makeNewHooray()
             })
             .disposed(by: self.dispsoseBag)
         

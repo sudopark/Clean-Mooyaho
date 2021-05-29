@@ -121,7 +121,7 @@ extension HoorayPublisherUsecaseTests {
             return .just(latest)
         }
         self.stubMemberRepository.register(key: "requestLoadMembership") {
-            return Maybe<MemberShip>.error(ApplicationErrors.noAuth)
+            return Maybe<MemberShip>.error(ApplicationErrors.sigInNeed)
         }
         
         // when

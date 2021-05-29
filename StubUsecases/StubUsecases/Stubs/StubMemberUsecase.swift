@@ -24,5 +24,10 @@ open class StubMemberUsecase: MemberUsecase, Stubbable {
     public func loadCurrentMembership() -> Maybe<MemberShip> {
         return self.resolve(key: "loadCurrentMembership") ?? .empty()
     }
+    
+    let stubCurrentMember = PublishSubject<Member?>()
+    public var currentMember: Observable<Member?> {
+        return stubCurrentMember.asObservable()
+    }
 }
 

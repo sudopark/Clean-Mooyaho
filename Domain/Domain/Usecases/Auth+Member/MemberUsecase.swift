@@ -18,6 +18,8 @@ public protocol MemberUsecase {
     func updateUserIsOnline(_ userID: String, isOnline: Bool)
     
     func loadCurrentMembership() -> Maybe<MemberShip>
+    
+    var currentMember: Observable<Member?> { get }
 }
 
 
@@ -35,14 +37,14 @@ public final class MemberUsecaseImple: MemberUsecase {
         self.memberRepository = memberRepository
         self.sharedDataStoreService = sharedDataService
     }
-    
-    private var currentMember: Member? {
-        return self.sharedDataStoreService.fetch(.currentMember)
-    }
 }
 
 
 extension MemberUsecaseImple {
+    
+    private func fetchCurrentMember() -> Member? {
+        return self.sharedDataStoreService.fetch(.currentMember)
+    }
     
     public func updateUserIsOnline(_ userID: String, isOnline: Bool) {
         self.memberRepository.requestUpdateUserPresence(userID, isOnline: isOnline)
@@ -62,7 +64,16 @@ extension MemberUsecaseImple {
             return .just(existing)
         }
         
-        guard let curent = self.currentMember else { return .error(ApplicationErrors.noAuth) }
+        guard let curent = self.fetchCurrentMember() else { return .error(ApplicationErrors.sigInNeed) }
         return self.memberRepository.requestLoadMembership(for: curent.uid)
+    }
+}
+
+
+extension MemberUsecaseImple {
+    
+    public var currentMember: Observable<Member?> {
+        return self.sharedDataStoreService
+            .observe(SharedDataKeys.currentMember.rawValue)
     }
 }

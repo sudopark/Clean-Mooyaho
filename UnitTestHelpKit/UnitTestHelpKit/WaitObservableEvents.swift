@@ -23,7 +23,7 @@ extension WaitObservableEvents where Self: BaseTestCase {
                                 for observable: Observable<E>,
                                 skip: Int = 0,
                                 timeout: TimeInterval? = nil,
-                                action: @escaping () -> Void) -> [E] {
+                                action: (() -> Void)? = nil) -> [E] {
         // given
         var elements = [E]()
         
@@ -36,7 +36,7 @@ extension WaitObservableEvents where Self: BaseTestCase {
             .disposed(by: self.disposeBag)
         
         // when
-        action()
+        action?()
         self.wait(for: [expect], timeout: timeout ?? self.timeout)
         
         // then
@@ -47,7 +47,7 @@ extension WaitObservableEvents where Self: BaseTestCase {
                                     for observable: Observable<E>,
                                     skip: Int = 0,
                                     timeout: TimeInterval? = nil,
-                                    action: @escaping () -> Void) -> E? {
+                                    action: (() -> Void)? = nil) -> E? {
         // given
         // when + then
         return self.waitElements(expect, for: observable, skip: skip, timeout: timeout, action: action).first
@@ -57,14 +57,14 @@ extension WaitObservableEvents where Self: BaseTestCase {
                                     for observable: Observable<Optional<E>>,
                                     skip: Int = 0,
                                     timeout: TimeInterval? = nil,
-                                    action: @escaping () -> Void) -> E? {
+                                    action: (() -> Void)? = nil) -> E? {
         return self.waitElements(expect, for: observable, skip: skip, timeout: timeout, action: action).first ?? nil
     }
     
     public func waitError<E>(_ expect: XCTestExpectation,
                              for observable: Observable<E>,
                              timeout: TimeInterval? = nil,
-                             action: @escaping () -> Void) -> Error? {
+                             action: (() -> Void)? = nil) -> Error? {
         // given
         var occurError: Error?
         
@@ -76,7 +76,7 @@ extension WaitObservableEvents where Self: BaseTestCase {
             .disposed(by: self.disposeBag)
         
         // when
-        action()
+        action?()
         self.wait(for: [expect], timeout: timeout ?? self.timeout)
         
         // then

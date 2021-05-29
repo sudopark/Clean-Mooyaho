@@ -22,7 +22,7 @@ public protocol HoorayRepositoryDefImpleDependency: AnyObject {
 
 extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
     
-    func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
+    public func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
 
         return self.hoorayLocal.fetchLatestHooray(for: memberID)
             .map{ $0?.asLatestHooray() }

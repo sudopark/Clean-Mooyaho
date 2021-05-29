@@ -104,4 +104,17 @@ extension MemberUsecaseTests {
         // then
         XCTAssertNotNil(membership)
     }
+    
+    func testUsecase_observeCurrentMember() {
+        // given
+        let expect = expectation(description: "현재유저 옵저빙")
+        
+        // when
+        let member = self.waitFirstElement(expect, for: self.usecase.currentMember.compactMap{ $0 }) {
+            self.store.update(SharedDataKeys.currentMember.rawValue, value: Member(uid: "some"))
+        }
+        
+        // then
+        XCTAssertNotNil(member)
+    }
 }
