@@ -169,6 +169,9 @@ public protocol PangestureDismissableScene {
 extension PangestureDismissableScene where Self: BaseViewController {
     
     public func setupDismissGesture(_ dismissInteractor: PangestureDismissalInteractor) {
+        
+        dismissInteractor.viewController = self
+        
         let bindDismissInteractor: () -> Void = { [weak self, weak dismissInteractor] in
             guard let self = self, let interactor = dismissInteractor else { return }
             interactor.addDismissPangesture(self.view) { [weak self] in
@@ -177,7 +180,7 @@ extension PangestureDismissableScene where Self: BaseViewController {
             .disposed(by: self.disposeBag)
         }
         
-        self.rx.viewDidLoad
+        self.rx.viewDidLayoutSubviews.take(1)
             .map{ _ in }
             .subscribe(onNext: bindDismissInteractor)
             .disposed(by: self.disposeBag)

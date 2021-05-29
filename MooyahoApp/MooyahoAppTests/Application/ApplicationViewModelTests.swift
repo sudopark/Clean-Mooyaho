@@ -10,6 +10,7 @@ import XCTest
 
 import RxSwift
 
+import Domain
 import UnitTestHelpKit
 import StubUsecases
 
@@ -50,28 +51,6 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
 }
 
 
-//// MARK: - test upload user location
-//
-//extension ApplicationViewModelTests {
-//
-//    // 시작 이후에 권한 있으면 업로드
-//    func testViewModel_whenAppStartAndHasLocationPermission_startUploadUserLocation() {
-//        // given
-//
-//        // when
-//        // then
-//    }
-//
-//    // 시작 이후에 권한 없으면 업로드 안함
-//
-//    // 시작 이후에 권한 없음 -> 생김 -> 업로드 시작
-//
-//    // 시작 이후 업로드중 -> 백그라운드 진입시 중지
-//
-//    // 다시 포그라운드 올라왔을때 시작
-//}
-
-
 // MARK: - test application level routing
 
 extension ApplicationViewModelTests {
@@ -80,7 +59,12 @@ extension ApplicationViewModelTests {
         // given
         let expect = expectation(description: "론칭 이후에 론칭신으로 라우팅")
         
-        self.spyRouter.called(key: "routeMain") { _ in
+        self.stubUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        
+        self.spyRouter.called(key: "routeMain") { args in
+            guard let _ = args as? Auth else { return }
             expect.fulfill()
         }
         
@@ -115,8 +99,8 @@ extension ApplicationViewModelTests {
     
     class SpyRouter: ApplicationRootRouting, Stubbable {
         
-        func routeMain() {
-            self.verify(key: "routeMain")
+        func routeMain(auth: Auth) {
+            self.verify(key: "routeMain", with: auth)
         }
     }
 }

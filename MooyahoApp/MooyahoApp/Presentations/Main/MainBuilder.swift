@@ -14,6 +14,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -21,5 +22,5 @@ import CommonPresenting
 
 public protocol MainSceneBuilable {
     
-    func makeMainScene() -> MainScene
+    func makeMainScene(auth: Auth) -> MainScene
 }

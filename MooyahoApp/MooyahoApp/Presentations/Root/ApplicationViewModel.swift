@@ -44,6 +44,8 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
         self.kakaoService = kakaoService
         self.router = router
     }
+    
+    private let disposeBag = DisposeBag()
 }
 
 // Interactor
@@ -53,7 +55,7 @@ extension ApplicationViewModelImple {
     public func appDidLaunched() {
         
         defer {
-            self.router.routeMain()
+            self.routeToMainAfterLoadLastAccountInfo()
         }
         
         guard AppEnvironment.isTestBuild == false else { return }
@@ -61,6 +63,17 @@ extension ApplicationViewModelImple {
         self.kakaoService.setupService()
         
         self.applicationUsecase.updateApplicationActiveStatus(.launched)
+    }
+    
+    private func routeToMainAfterLoadLastAccountInfo() {
+        
+        let routing: (Domain.Auth) -> Void = { [weak self] auth in
+            self?.router.routeMain(auth: auth)
+        }
+        self.applicationUsecase.loadLastSignInAccountInfo()
+            .map{ $0.auth }
+            .subscribe(onSuccess: routing)
+            .disposed(by: self.disposeBag)
     }
     
     public func handleOpenURL(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]?) -> Bool {

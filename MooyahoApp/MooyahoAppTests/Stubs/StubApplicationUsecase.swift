@@ -21,4 +21,8 @@ class StubApplicationUsecase: ApplicationUsecase, Stubbable {
     func updateApplicationActiveStatus(_ newStatus: ApplicationStatus) {
         
     }
+    
+    func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
+        return self.resolve(key: "loadLastSignInAccountInfo") ?? .empty()
+    }
 }

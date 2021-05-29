@@ -23,6 +23,7 @@ public protocol SignInScene: Scenable, PangestureDismissableScene { }
 
 public final class SignInViewController: BaseViewController, SignInScene {
     
+    private let signInView = SignInView()
     private let viewModel: SignInViewModel
     
     public init(viewModel: SignInViewModel) {
@@ -46,6 +47,7 @@ public final class SignInViewController: BaseViewController, SignInScene {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.bind()
     }
     
 }
@@ -56,6 +58,11 @@ extension SignInViewController {
     
     private func bind() {
         
+        self.signInView.outsideTouchView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -66,9 +73,19 @@ extension SignInViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(signInView)
+        signInView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+        }
+        self.signInView.setupLayout()
     }
     
     public func setupStyling() {
         
+        self.view.backgroundColor = .clear
+        self.signInView.setupStyling()
     }
 }

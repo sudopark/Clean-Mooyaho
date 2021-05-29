@@ -194,3 +194,23 @@ extension ApplicationUsecaseTests {
         XCTAssertEqual(isOnlineFlags, [true, false, true])
     }
 }
+
+
+extension ApplicationUsecaseTests {
+    
+    func testUsecase_loadLastSignInAccountInfo() {
+        // given
+        let expect = expectation(description: "마지막 로그인한 계정정보 로드")
+        
+        self.stubAuthUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        
+        // when
+        let requestLoad = self.usecase.loadLastSignInAccountInfo()
+        let accountInfo = self.waitFirstElement(expect, for: requestLoad.asObservable())
+        
+        // then
+        XCTAssertNotNil(accountInfo)
+    }
+}

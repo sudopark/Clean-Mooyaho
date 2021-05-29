@@ -8,6 +8,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 import MemberScenes
 import LocationScenes
@@ -18,9 +19,11 @@ import PlaceScenes
 
 extension DIContainers: MainSceneBuilable {
     
-    public func makeMainScene() -> MainScene {
+    public func makeMainScene(auth: Auth) -> MainScene {
         let router = MainRouter(nextSceneBuilders: self)
-        let viewModel = MainViewModelImple(router: router)
+        let viewModel = MainViewModelImple(auth: auth,
+                                           hoorayUsecase: self.hoorayUsecase,
+                                           router: router)
         let viewController = MainViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

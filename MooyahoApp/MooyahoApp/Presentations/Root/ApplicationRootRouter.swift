@@ -8,12 +8,13 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
 public protocol ApplicationRootRouting: Routing {
     
-    func routeMain()
+    func routeMain(auth: Auth)
 }
 
 // MARK: - builders
@@ -30,9 +31,9 @@ public final class ApplicationRootRouter: Router<ApplicationRootRouterBuildables
 
 extension ApplicationRootRouter {
     
-    public func routeMain() {
+    public func routeMain(auth: Auth) {
         
-        guard let main = self.nextScenesBuilder?.makeMainScene() else { return }
+        guard let main = self.nextScenesBuilder?.makeMainScene(auth: auth) else { return }
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window.rootViewController = main
         self.window.makeKeyAndVisible()

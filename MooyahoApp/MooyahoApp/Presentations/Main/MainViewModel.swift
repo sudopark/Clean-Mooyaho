@@ -23,6 +23,7 @@ public protocol MainViewModel: AnyObject {
     func setupSubScenes()
     func openSlideMenu()
     func moveMapCameraToCurrentUserPosition()
+    func makeNewHooray()
     
     // presenter
 }
@@ -36,13 +37,20 @@ public final class MainViewModelImple: MainViewModel {
         // define subjects
     }
     
+    private let auth: Auth
+    private let hoorayUsecase: HoorayUsecase
     private let router: MainRouting
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
     private weak var nearbySceneActionListener: NearbySceneCommandListener?
     
-    public init(router: MainRouting) {
+    public init(auth: Auth,
+                hoorayUsecase: HoorayUsecase,
+                router: MainRouting) {
+        
+        self.auth = auth
+        self.hoorayUsecase = hoorayUsecase
         self.router = router
     }
     
@@ -69,6 +77,25 @@ extension MainViewModelImple {
     
     public func moveMapCameraToCurrentUserPosition() {
         self.nearbySceneActionListener?.moveMapCameraToCurrentUserPosition()
+    }
+    
+    public func makeNewHooray() {
+        
+        let routeToSignInOrAlertError: (Error) -> Void = { [weak self] error in
+            guard let appError = error as? ApplicationErrors, appError == .sigInNeed else {
+                self?.router.alertError(error)
+                return
+            }
+            self?.router.presentSignInScene()
+        }
+        
+        let handleCheckResult: (Bool) -> Void = { [weak self] avail in
+            // TODO: handle
+        }
+        
+        self.hoorayUsecase.isAvailToPublish(self.auth.userID)
+            .subscribe(onSuccess: handleCheckResult, onError: routeToSignInOrAlertError)
+            .disposed(by: self.disposeBag)
     }
 }
 
