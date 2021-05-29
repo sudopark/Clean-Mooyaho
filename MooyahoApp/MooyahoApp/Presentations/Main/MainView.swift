@@ -12,9 +12,10 @@ import CommonPresenting
 
 final class MainView: BaseUIView {
     
-    private let topFloatingButtonContainerView = UIView()
+    let topFloatingButtonContainerView = UIView()
     let profileView = UIImageView()
     let currentPositionButton = UIButton(type: .system)
+    let newHoorayButton = UIButton(type: .system)
     
     let mapContainerView = UIView()
     let bottomSlideContainerView = UIView()
@@ -68,6 +69,12 @@ extension MainView: Presenting {
         self.bottomSlideBottomOffsetConstraint = self.bottomSlideContainerView
             .topAnchor.constraint(equalTo: self.bottomAnchor, constant: -80)
         NSLayoutConstraint.activate([self.bottomSlideBottomOffsetConstraint])
+        
+        self.addSubview(newHoorayButton)
+        newHoorayButton.autoLayout.active(with: self) {
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.bottomAnchor.constraint(equalTo: bottomSlideContainerView.topAnchor, constant: -16)
+        }
     }
     
     
@@ -83,8 +90,15 @@ extension MainView: Presenting {
         
         self.mapContainerView.backgroundColor = self.context.colors.raw.clear
         
-        self.bottomSlideContainerView.backgroundColor = .red
+        self.bottomSlideContainerView.backgroundColor = self.context.colors.appBackground
         self.bottomSlideContainerView.layer.cornerRadius = 10
         self.bottomSlideContainerView.clipsToBounds = true
+        
+        self.newHoorayButton.backgroundColor = .systemBlue
+        self.newHoorayButton.setTitleColor(.white, for: .normal)
+        self.newHoorayButton.setTitle("New", for: .normal)
+        self.newHoorayButton.contentEdgeInsets = .init(top: 4, left: 8, bottom: 4, right: 8)
+        self.newHoorayButton.layer.cornerRadius = 3
+        self.newHoorayButton.clipsToBounds = true
     }
 }

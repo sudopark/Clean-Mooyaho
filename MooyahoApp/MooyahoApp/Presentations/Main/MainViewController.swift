@@ -84,6 +84,12 @@ extension MainViewController {
             })
             .disposed(by: self.dispsoseBag)
         
+        self.mainView.newHoorayButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                // TODO: new hooray
+            })
+            .disposed(by: self.dispsoseBag)
+        
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindBottomSlideScroll()
@@ -99,33 +105,62 @@ extension MainViewController {
     private var bottomSlideMinOffset: CGFloat { 80 }
     private var bottomSlideMaxOffset: CGFloat { self.mainView.bottomSlideContainerView.frame.height-20 }
     
+    typealias UpdateBottomOffsetParam = (offset: CGFloat, animationDuration: TimeInterval?)
+    
+    private func newOffsetByPangestureDy(_ pangesture: UIPanGestureRecognizer) -> Observable<UpdateBottomOffsetParam> {
+        
+        let scrollChanged = pangesture.rx.event.filter{ $0.state == .changed }
+        return scrollChanged
+            .calculateDy(in: self.view)
+            .distinctUntilChanged()
+            .compactMap{ [weak self] dy -> UpdateBottomOffsetParam? in
+                guard let self = self else { return nil }
+                return (-self.mainView.bottomSlideBottomOffsetConstraint.constant - dy, nil)
+            }
+    }
+    
+    private func newOffsetByPangestureEnd(_ pangesture: UIPanGestureRecognizer) -> Observable<UpdateBottomOffsetParam> {
+        let scrollDidEnd = pangesture.rx.event.filter{ $0.state == .cancelled || $0.state == .ended }
+        return scrollDidEnd.velocity(in: self.view)
+            .compactMap { [weak self] velocity -> UpdateBottomOffsetParam? in
+                guard let self = self,
+                      let shouldMoveTo = self.findNearestSticyPosition(velocity) else { return nil }
+                let curentOffset = self.mainView.bottomSlideBottomOffsetConstraint.constant
+                let moveDistance = curentOffset - shouldMoveTo
+                let animationDuration = max(0.08, min(0.3, TimeInterval(abs(moveDistance/velocity))))
+                return (shouldMoveTo, animationDuration)
+            }
+    }
+    
     private func bindBottomSlideScroll() {
         
         let pangesture = UIPanGestureRecognizer()
         self.mainView.bottomSlideContainerView.addGestureRecognizer(pangesture)
         
-        let scrollChanged = pangesture.rx.event.filter{ $0.state == .changed }
+        let newBottonConstraint = BehaviorSubject<UpdateBottomOffsetParam?>(value: nil)
         
-        scrollChanged
-            .calculateDy(in: self.view)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] dy in
-                guard let self = self else { return }
-                let invertedNewOffset = -self.mainView.bottomSlideBottomOffsetConstraint.constant - dy
-                self.updateBottomSlideOffset(invertedNewOffset)
+        Observable
+            .merge(self.newOffsetByPangestureDy(pangesture), self.newOffsetByPangestureEnd(pangesture))
+            .bind(to: newBottonConstraint)
+            .disposed(by: self.dispsoseBag)
+        
+        newBottonConstraint
+            .subscribe(onNext: { [weak self] params in
+                guard let self = self, let params = params else { return }
+                self.updateBottomSlideOffset(params.offset, withAnimation: params.animationDuration)
             })
             .disposed(by: self.dispsoseBag)
         
-        let scrollDidEnd = pangesture.rx.event.filter{ $0.state == .cancelled || $0.state == .ended }
-        scrollDidEnd
-            .velocity(in: self.view)
-            .subscribe(onNext: { [weak self] velocity in
-                guard let self = self,
-                      let shouldMoveTo = self.findNearestSticyPosition(velocity) else { return }
-                let curentOffset = self.mainView.bottomSlideBottomOffsetConstraint.constant
-                let moveDistance = curentOffset - shouldMoveTo
-                let animationDuration = max(0.08, min(0.3, TimeInterval(abs(moveDistance/velocity))))
-                self.updateBottomSlideOffset(shouldMoveTo, withAnimation: animationDuration)
+        let shouldHideFloatings = newBottonConstraint.compactMap{ $0?.offset }
+            .compactMap { [weak self] offset -> Bool? in
+                guard let self = self else { return nil }
+                let threshold = self.view.frame.height - 150
+                return offset >= threshold
+            }
+        shouldHideFloatings
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] hide in
+                self?.updateFloatingButtonVisibilities(hide)
             })
             .disposed(by: self.dispsoseBag)
     }
@@ -171,6 +206,16 @@ extension MainViewController {
             
         default: return nil
         }
+    }
+    
+    private func updateFloatingButtonVisibilities(_ shouldHide: Bool) {
+        
+        let changeAlphaTo: CGFloat = shouldHide ? 0.0 : 1.0
+        
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            self?.mainView.newHoorayButton.alpha = changeAlphaTo
+            self?.mainView.topFloatingButtonContainerView.alpha = changeAlphaTo
+        })
     }
 }
 
