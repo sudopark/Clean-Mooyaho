@@ -88,8 +88,14 @@ public struct LegacyAPIEndPoint: HttpAPIEndPoint {
     
     public let path: String
     public init(path: String) {
-        self.path = path
+        self.path = "\(path)/firebase_auth/kakao"
+//        self.path = "http://localhost:8080/firebase_auth/kakao"
     }
     
     public var method: HttpAPIMethods { .post }
+    public var customHeader: [String : String]? {
+        return [
+            "Content-Type": "application/json",
+        ]
+    }
 }

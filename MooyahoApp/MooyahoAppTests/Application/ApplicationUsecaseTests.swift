@@ -48,21 +48,6 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
 
 extension ApplicationUsecaseTests {
     
-    func testUsecase_whenStratApp_loadLastestAuth() {
-        // given
-        let expect = expectation(description: "앱 시작시에 최근 auth 로드")
-        
-        self.stubAuthUsecase.called(key: "loadLastSignInAccountInfo") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
     func testUsecase_whenAfterLaunchAndAuthLoadedAndHasLocationPermission_startUploadUserLocation() {
         // given
         let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 있으면 업로드 시작")
