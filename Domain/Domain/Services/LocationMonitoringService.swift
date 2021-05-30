@@ -94,6 +94,7 @@ extension LocationMonitoringServiceImple {
             return status == .authorizedWhenInUse || status == .authorizedAlways
         }
         return self.subjects.currentAuthorizationStatus
+            .skip(1)
             .map(determineIsGranted)
             .first()
             .compactMap{ $0 }

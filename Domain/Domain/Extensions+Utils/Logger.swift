@@ -15,7 +15,7 @@ public struct Logger {
     
     public enum Level {
         
-        case verbose
+        case debug
         case warning
         case error
         case info
@@ -23,7 +23,7 @@ public struct Logger {
         
         var key: String {
             switch self {
-            case .verbose: return "VERBOS"
+            case .debug: return "VERBOS"
             case .warning: return "WARN"
             case .error: return "ERROR"
             case .info: return "INFO"
@@ -33,10 +33,10 @@ public struct Logger {
         
         var emoji: String {
             switch self {
-            case .verbose: return ""
+            case .debug: return "💬"
             case .warning: return "🚨"
             case .error: return "🤢"
-            case .info: return "🤖"
+            case .info: return "⛳️"
             case .goal: return "🎯"
             }
         }
@@ -48,14 +48,21 @@ extension Logger {
     
     private var current: String {
         let format = DateFormatter()
+        format.dateFormat = "y-MM-dd H:m:ss.SSSS"
         return format.string(from: Date())
     }
     
-    public func print(level: Level, _ message: String) {
-        Swift.print("\(level.emoji) [\(level.key)] - \(current): \(message)")
+    private func fileName(_ name: StaticString) -> String {
+        let compoes = "\(name)".components(separatedBy: "/")
+        return compoes.last ?? ""
     }
     
-    public func todoImplement(_ function: StaticString = #function) {
-        Swift.print("☠️ - \(current): should implement -> \(function)")
+    public func print(level: Level, _ message: String, file: StaticString = #file, line: UInt = #line) {
+        Swift.print("\(current): [\(level.emoji)][\(level.key)][\(self.fileName(file)) \(line)L] -> \(message)")
+    }
+    
+    public func todoImplement(_ function: StaticString = #function,
+                              file: StaticString = #file, line: UInt = #line) {
+        Swift.print("\(current): [☠️][TODO][\(self.fileName(file)) \(line)L] -> \(function)")
     }
 }

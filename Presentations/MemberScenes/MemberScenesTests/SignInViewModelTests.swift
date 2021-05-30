@@ -57,8 +57,8 @@ extension SignInViewModelTests {
     
     func testViewModel_whenSignIning_showProcessing() {
         // given
-        let expect = expectation(description: "로그인시 처리중 상태 변경")
-        expect.expectedFulfillmentCount = 3
+        let expect = expectation(description: "로그인시 처리중 상태 변경 -> 종료 이후에 처리중 false로 안바꿈")
+        expect.expectedFulfillmentCount = 2
         
         self.stubAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.just(Member(uid: "dummy"))
@@ -70,7 +70,7 @@ extension SignInViewModelTests {
         }
         
         // then
-        XCTAssertEqual(isProcessings, [false, true, false])
+        XCTAssertEqual(isProcessings, [false, true])
     }
     
     func testViewModel_whenSignInEnd_closeCurrentScene() {

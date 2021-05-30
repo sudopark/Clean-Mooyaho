@@ -45,7 +45,9 @@ extension Session: HttpSession {
             }
             
             let request = self.request(path, method: method,
-                                       parameters: parameters, headers: headers)
+                                       parameters: parameters,
+                                       encoding: JSONEncoding.default,
+                                       headers: headers)
                 .responseData(completionHandler: handleResponse)
             request.resume()
 
@@ -68,12 +70,13 @@ public protocol HttpAPI: AnyObject {
                                    parameters: [String: Any]) -> Maybe<T>
 }
 
+fileprivate let underlyingSession: HttpSession = Session(serializationQueue: DispatchQueue(label: "af.serialization", qos: .utility))
+
 extension HttpAPI {
     
     public var session: HttpSession {
         
-        let serializeQueue = DispatchQueue(label: "af.serialization", qos: .utility)
-        return Session(serializationQueue: serializeQueue)
+        return underlyingSession
     }
 }
 

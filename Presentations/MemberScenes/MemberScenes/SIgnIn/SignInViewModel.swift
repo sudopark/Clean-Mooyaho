@@ -74,10 +74,10 @@ extension SignInViewModelImple {
         let showError: (Error) -> Void = { [weak self] error in
             self?.subjects.isProcessing.accept(false)
             self?.router.alertError(error)
+            logger.print(level: .warning, "signin fail.. reason: \(error)")
         }
         
         let closeScene: (Member) -> Void = { [weak self] _ in
-            self?.subjects.isProcessing.accept(false)
             self?.router.closeSceneAfterSignIn()
         }
         

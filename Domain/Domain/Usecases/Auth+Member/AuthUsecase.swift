@@ -74,6 +74,8 @@ extension AuthUsecaseImple {
             return .error(ApplicationErrors.unsupportSignInProvider)
         }
         
+        logger.print(level: .debug, "will signin, provider: \(provider.providerType.uniqueIdentifier)")
+        
         let requestOAuth2signIn = provider.requestSignIn()
         let thenSignInService: (OAuthCredential) -> Maybe<SigninResult> = { [weak self] credential in
             guard let self = self else { return .empty() }
