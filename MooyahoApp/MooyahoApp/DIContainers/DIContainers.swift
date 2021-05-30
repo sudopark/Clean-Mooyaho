@@ -74,6 +74,12 @@ extension DIContainers {
         return AppRepository(remote: self.remote,
                              local: self.shared.localStorage)
     }
+    
+    var supportingOAuthServiceProviders: [OAuthServiceProvider] {
+        return [
+            self.shared.kakaoService
+        ]
+    }
 }
 
 // MARK: - Usecases
@@ -83,7 +89,7 @@ extension DIContainers {
     var authUsecase: AuthUsecase {
         
         return AuthUsecaseImple(authRepository: self.appReposiotry,
-                                socialAuthRepository: self.shared.kakaoService,
+                                oathServiceProviders: self.supportingOAuthServiceProviders,
                                 authInfoManager: self.shared.autoInfoManager,
                                 sharedDataStroeService: self.shared.dataStore)
     }

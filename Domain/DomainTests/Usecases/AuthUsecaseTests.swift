@@ -30,7 +30,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.stubOAuth2Repo = .init()
         self.store = .init()
         self.usecase = AuthUsecaseImple(authRepository: self.stubAuthRepo,
-                                        socialAuthRepository: self.stubOAuth2Repo,
+                                        oathServiceProviders: [self.stubOAuth2Repo],
                                         authInfoManager: self.store,
                                         sharedDataStroeService: self.store)
     }
@@ -134,7 +134,8 @@ extension AuthUsecaseTests {
         }
         
         // when
-        let member = self.waitFirstElement(expect, for: self.usecase.requestSocialSignIn().asObservable()) { }
+        let requestSignIn = self.usecase.requestSocialSignIn(DummyOAuthType())
+        let member = self.waitFirstElement(expect, for: requestSignIn.asObservable())
         
         // then
         XCTAssertEqual(member?.uid, "new_uuid")
@@ -152,7 +153,7 @@ extension AuthUsecaseTests {
         
         // when + then
         self.assertAuthAndMemberInfoUpdatedOnStore(expect) {
-            self.usecase.requestSocialSignIn()
+            self.usecase.requestSocialSignIn(DummyOAuthType())
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
@@ -167,7 +168,8 @@ extension AuthUsecaseTests {
         }
         
         // when
-        let error = self.waitError(expect, for: self.usecase.requestSocialSignIn().asObservable()) { }
+        let requestSignIn = self.usecase.requestSocialSignIn(DummyOAuthType())
+        let error = self.waitError(expect, for: requestSignIn.asObservable())
         
         // then
         if let authError = error as? AuthErrors, case .oauth2Fail = authError {
@@ -191,7 +193,8 @@ extension AuthUsecaseTests {
         }
         
         // when
-        let error = self.waitError(expect, for: self.usecase.requestSocialSignIn().asObservable()) { }
+        let requestSignIn = self.usecase.requestSocialSignIn(DummyOAuthType())
+        let error = self.waitError(expect, for: requestSignIn.asObservable())
         
         // then
         XCTAssertNotNil(error)

@@ -48,7 +48,7 @@ extension DIContainers: SignInSceneBuilable {
     
     public func makeSignInScene() -> SignInScene {
         let router = SignInRouter(nextSceneBuilders: self)
-        let viewModel = SignInViewModelImple(router: router)
+        let viewModel = SignInViewModelImple(authUsecase: self.authUsecase, router: router)
         let viewController = SignInViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

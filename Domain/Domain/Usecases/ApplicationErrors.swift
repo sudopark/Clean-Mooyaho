@@ -11,6 +11,7 @@ import Foundation
 
 public enum ApplicationErrors: Error {
     
+    case unsupportSignInProvider
     case invalid
     case sigInNeed
 }
