@@ -19,6 +19,11 @@ extension FirebaseServiceImple {
     
     public func requestSignInAnonymously() -> Maybe<Domain.Auth> {
         
+        if let current = Auth.auth().currentUser {
+            let auth = Domain.Auth(userID: current.uid)
+            return .just(auth)
+        }
+        
         return Maybe.create { callback in
             Auth.auth().signInAnonymously { result, error in
                 guard error == nil, let userID = result?.user.uid else {
