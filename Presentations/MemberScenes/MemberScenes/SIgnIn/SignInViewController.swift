@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
@@ -63,6 +64,47 @@ extension SignInViewController {
                 self?.viewModel.requestClose()
             })
             .disposed(by: self.disposeBag)
+        
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let types = self.viewModel.supportingOAuthProviderTypes
+                types.forEach(self.appendAndBindButtons(_:))
+                
+                self.bindIsSigning()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func appendAndBindButtons(_ type: OAuthServiceProviderType) {
+        guard let button = type.makeButton() else { return }
+        
+        self.signInView.appendSignInButton(button)
+        
+        let tapping: Observable<Void> = {
+            switch button {
+            case let uibutton as UIButton:
+                return uibutton.rx.tap.asObservable()
+            case let view as UIView:
+                return view.rx.addTapgestureRecognizer().map{ _ in }
+            }
+        }()
+        tapping
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.requestSignIn(type)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindIsSigning() {
+        
+        self.viewModel.isProcessing
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isProcessing in
+                self?.signInView.updateIsActive(isProcessing == false)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -87,5 +129,22 @@ extension SignInViewController: Presenting {
         
         self.view.backgroundColor = .clear
         self.signInView.setupStyling()
+    }
+}
+
+
+private extension OAuthServiceProviderType {
+    
+    func makeButton() -> SignInButton? {
+        guard let definedTypes = self as? OAuthServiceProviderTypes else { return nil }
+        switch definedTypes {
+        case .kakao:
+            let button = UIButton()
+            button.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
+            return button
+            
+        case .apple:
+            return nil
+        }
     }
 }

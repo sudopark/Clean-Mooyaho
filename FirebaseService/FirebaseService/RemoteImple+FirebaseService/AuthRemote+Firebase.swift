@@ -18,6 +18,7 @@ import DataStore
 extension FirebaseServiceImple {
     
     public func requestSignInAnonymously() -> Maybe<Domain.Auth> {
+        
         return Maybe.create { callback in
             Auth.auth().signInAnonymously { result, error in
                 guard error == nil, let userID = result?.user.uid else {
@@ -108,8 +109,13 @@ extension FirebaseServiceImple {
 extension FirebaseServiceImple {
     
     private func signInPreAction() -> Maybe<Void> {
-        guard let user = Auth.auth().currentUser else { return .just() }
-        return user.isAnonymous ? self.deleteAnonymousUser(user) : self.signOut()
+        guard let user = Auth.auth().currentUser else {
+            logger.print(level: .debug, "current user not exists..")
+            return .just()
+        }
+        let preAction = user.isAnonymous ? self.deleteAnonymousUser(user) : self.signOut()
+        return preAction
+            .catchAndReturn(())
     }
     
     private func signInPostAction(user: FirebaseAuth.User) -> Maybe<SigninResult> {

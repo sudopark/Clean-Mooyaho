@@ -39,10 +39,12 @@ extension KakaoOAuth2Repository where Self: KakaoOAuth2RepositoryDefImpleDepende
         
         let requestVerifyToken: (String) -> Maybe<String> = { [weak self] kakaoToken in
             guard let self = self else { return .empty() }
+            logger.print(level: .debug, "kakao signin end, koAccessToken: \(kakaoToken)")
             return self.kakaoOAuthRemote.verifyKakaoAccessToken(kakaoToken)
         }
         
         let asOAuth2Credentail: (String) throws -> CustomTokenCredential = { customToken in
+            logger.print(level: .debug, "custom token published: \(customToken)")
             return CustomTokenCredential(token: customToken)
         }
         

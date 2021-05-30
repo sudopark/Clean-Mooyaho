@@ -93,19 +93,6 @@ extension ApplicationUsecaseImple {
                 self?.memberUsecase.updateUserIsOnline(auth.userID, isOnline: isUse)
             })
             .disposed(by: self.disposeBag)
-        
-        didLanched
-            .subscribe(onNext: { [weak self] in
-                self?.setupUserAuth()
-            })
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func setupUserAuth() {
-        
-        self.authUsecase.loadLastSignInAccountInfo()
-            .subscribe()
-            .disposed(by: self.disposeBag)
     }
     
     private func waitForLocationUploadableAuth(_ isUserInUseApp: Bool) -> Observable<Auth?> {
