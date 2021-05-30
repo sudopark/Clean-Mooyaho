@@ -60,7 +60,7 @@ extension SignInViewController {
         
         self.signInView.outsideTouchView.rx.addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
-                self?.dismiss(animated: true, completion: nil)
+                self?.viewModel.requestClose()
             })
             .disposed(by: self.disposeBag)
     }
