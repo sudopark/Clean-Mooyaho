@@ -77,7 +77,6 @@ extension MainRouter {
         
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager
-        scene.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(scene, animated: true, completion: nil)
     }
 }

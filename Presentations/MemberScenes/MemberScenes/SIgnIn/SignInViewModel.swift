@@ -20,6 +20,7 @@ public protocol SignInViewModel: AnyObject {
 
     // interactor
     func requestSignIn(_ type: OAuthServiceProviderType)
+    func requestClose()
     
     // presenter
     var isProcessing: Observable<Bool> { get }
@@ -57,9 +58,18 @@ public final class SignInViewModelImple: SignInViewModel {
 
 extension SignInViewModelImple {
     
+    private var isSignInProcessing: Bool {
+        return self.subjects.isProcessing.value == true
+    }
+    
+    public func requestClose() {
+        guard self.isSignInProcessing == false else { return }
+        self.router.closeScene(animated: true)
+    }
+    
     public func requestSignIn(_ type: OAuthServiceProviderType) {
         
-        guard self.subjects.isProcessing.value == false else { return }
+        guard self.isSignInProcessing == false else { return }
         
         let showError: (Error) -> Void = { [weak self] error in
             self?.subjects.isProcessing.accept(false)
