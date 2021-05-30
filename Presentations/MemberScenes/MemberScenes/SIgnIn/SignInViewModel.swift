@@ -19,8 +19,11 @@ import CommonPresenting
 public protocol SignInViewModel: AnyObject {
 
     // interactor
+    func requestSignIn(_ type: OAuthServiceProviderType)
     
     // presenter
+    var isProcessing: Observable<Bool> { get }
+    var supportingOAuthProviderTypes: [OAuthServiceProviderType] { get }
 }
 
 
@@ -42,7 +45,8 @@ public final class SignInViewModelImple: SignInViewModel {
     }
     
     fileprivate final class Subjects {
-        // define subjects
+        
+        let isProcessing = BehaviorRelay<Bool>(value: false)
     }
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -53,6 +57,25 @@ public final class SignInViewModelImple: SignInViewModel {
 
 extension SignInViewModelImple {
     
+    public func requestSignIn(_ type: OAuthServiceProviderType) {
+        
+        guard self.subjects.isProcessing.value == false else { return }
+        
+        let showError: (Error) -> Void = { [weak self] error in
+            self?.subjects.isProcessing.accept(false)
+            self?.router.alertError(error)
+        }
+        
+        let closeScene: (Member) -> Void = { [weak self] _ in
+            self?.subjects.isProcessing.accept(false)
+            self?.router.closeSceneAfterSignIn()
+        }
+        
+        self.subjects.isProcessing.accept(true)
+        self.authUsecase.requestSocialSignIn(type)
+            .subscribe(onSuccess: closeScene, onError: showError)
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -60,4 +83,11 @@ extension SignInViewModelImple {
 
 extension SignInViewModelImple {
     
+    public var isProcessing: Observable<Bool> {
+        return self.subjects.isProcessing.asObservable()
+    }
+    
+    public var supportingOAuthProviderTypes: [OAuthServiceProviderType] {
+        return self.authUsecase.supportingOAuthServiceProviders
+    }
 }
