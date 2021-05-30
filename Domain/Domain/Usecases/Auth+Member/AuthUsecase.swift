@@ -16,23 +16,28 @@ public protocol AuthUsecase {
     
     func requestSignIn(emailBaseSecret secret: EmailBaseSecret) -> Maybe<Member>
     
-    func requestSocialSignIn() -> Maybe<Member>
+    func requestSocialSignIn(_ providerType: OAuthServiceProviderType) -> Maybe<Member>
     
     var currentAuth: Observable<Auth?> { get }
+    
+    var supportingOAuthServiceProviders: [OAuthServiceProviderType] { get }
 }
 
+
+public typealias OAuthServiceProvider = OAuthRepository & OAuthServiceProviderTypeRepresentable
 
 public final class AuthUsecaseImple: AuthUsecase {
     
     private let authRepository: AuthRepository
-    private let oauth2Repository: OAuthRepository
+    private let oathServiceProviders: [OAuthServiceProvider]
     private let authInfoManager: AuthInfoManger
     private let sharedDataStroeService: SharedDataStoreService
     
-    public init(authRepository: AuthRepository, socialAuthRepository: OAuthRepository,
+    public init(authRepository: AuthRepository,
+                oathServiceProviders: [OAuthServiceProvider],
                 authInfoManager: AuthInfoManger, sharedDataStroeService: SharedDataStoreService) {
         self.authRepository = authRepository
-        self.oauth2Repository = socialAuthRepository
+        self.oathServiceProviders = oathServiceProviders
         self.authInfoManager = authInfoManager
         self.sharedDataStroeService = sharedDataStroeService
     }
@@ -63,9 +68,13 @@ extension AuthUsecaseImple {
             .map{ $0.member }
     }
     
-    public func requestSocialSignIn() -> Maybe<Member> {
+    public func requestSocialSignIn(_ providerType: OAuthServiceProviderType) -> Maybe<Member> {
         
-        let requestOAuth2signIn = self.oauth2Repository.requestSignIn()
+        guard let provider = self.oathServiceProviders.provider(providerType) else {
+            return .error(ApplicationErrors.unsupportSignInProvider)
+        }
+        
+        let requestOAuth2signIn = provider.requestSignIn()
         let thenSignInService: (OAuthCredential) -> Maybe<SigninResult> = { [weak self] credential in
             guard let self = self else { return .empty() }
             return self.authRepository.requestSignIn(using: credential)
@@ -92,5 +101,16 @@ extension AuthUsecaseImple {
     public var currentAuth: Observable<Auth?> {
         return self.sharedDataStroeService
             .observe(SharedDataKeys.auth.rawValue)
+    }
+    
+    public var supportingOAuthServiceProviders: [OAuthServiceProviderType] {
+        return self.oathServiceProviders.map{ $0.providerType }
+    }
+}
+
+private extension Array where Element == OAuthServiceProvider {
+    
+    func provider(_ providerType: OAuthServiceProviderType) -> OAuthServiceProvider? {
+        return self.first(where: { $0.providerType.uniqueIdentifier == providerType.uniqueIdentifier })
     }
 }

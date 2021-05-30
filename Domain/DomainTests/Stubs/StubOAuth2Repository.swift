@@ -15,7 +15,15 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubOAuth2Repository: OAuthRepository, Stubbable {
+struct DummyOAuthType: OAuthServiceProviderType {
+    let uniqueIdentifier: String = "DummyOAuthType"
+}
+
+class StubOAuth2Repository: OAuthRepository, OAuthServiceProviderTypeRepresentable, Stubbable {
+    
+    var providerType: OAuthServiceProviderType {
+        return DummyOAuthType()
+    }
     
     func requestSignIn() -> Maybe<OAuthCredential> {
         return self.resolve(key: "requestSignIn") ?? .empty()

@@ -35,3 +35,25 @@ public struct CustomTokenCredential: OAuthCredential {
         self.token = token
     }
 }
+
+
+// MARK: OAuthServiceProviderType
+
+public protocol OAuthServiceProviderType {
+    var uniqueIdentifier: String { get }
+}
+
+public protocol OAuthServiceProviderTypeRepresentable {
+    
+    var providerType: OAuthServiceProviderType { get }
+}
+
+public enum OAuthServiceProviderTypes: String, OAuthServiceProviderType {
+    
+    case kakao
+    case apple
+    
+    public var uniqueIdentifier: String {
+        return self.rawValue
+    }
+}
