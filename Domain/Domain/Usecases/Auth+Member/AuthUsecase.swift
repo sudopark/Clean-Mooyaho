@@ -82,6 +82,7 @@ extension AuthUsecaseImple {
     
     
     private func updateAccountInfoOnSharedStore(_ auth: Auth, member: Member?) {
+        logger.print(level: .info, "current auth changed: \(auth) and member: \(String(describing: member))")
         self.authInfoManager.updateAuth(auth)
         member.whenExists {
             self.sharedDataStroeService.update(SharedDataKeys.currentMember.rawValue, value: $0)

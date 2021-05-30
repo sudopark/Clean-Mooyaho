@@ -20,6 +20,7 @@ public enum RemoteErrors: Error {
     case operationFail(_ reason: Error?)
     case secretSignInFail(_ reason: Error?)
     case credentialSigninFail(_ reason: Error?)
+    case deleteAccountFail(_ reason: Error?)
     case notSupportCredential(_ type: String)
     case loadFail(_ type: String, reason: Error?)
     case saveFail(_ type: String, reason: Error?)

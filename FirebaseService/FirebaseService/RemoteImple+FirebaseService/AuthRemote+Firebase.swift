@@ -33,10 +33,15 @@ extension FirebaseServiceImple {
     public func requestSignIn(withEmail email: String,
                               password: String) -> Maybe<SigninResult> {
         
+        let signIn: () -> Maybe<User> = { [weak self] in
+            return self?.signIn(withEmail: email, password: password) ?? .empty()
+        }
+        
         let andPostAction: (FirebaseAuth.User) -> Maybe<SigninResult> = { [weak self] user in
             return self?.signInPostAction(user: user) ?? .empty()
         }
-        return self.signIn(withEmail: email, password: password)
+        return signInPreAction()
+            .flatMap(signIn)
             .flatMap(andPostAction)
     }
     
@@ -57,10 +62,15 @@ extension FirebaseServiceImple {
     
     public func requestSignIn(using credential: Domain.OAuthCredential) -> Maybe<SigninResult> {
         
+        let signIn: () -> Maybe<User> = { [weak self] in
+            return self?.selectSignInMethod(by: credential) ?? .empty()
+        }
+        
         let andPostAction: (FirebaseAuth.User) -> Maybe<SigninResult> = { [weak self] user in
             return self?.signInPostAction(user: user) ?? .empty()
         }
-        return self.selectSignInMethod(by: credential)
+        return self.signInPreAction()
+            .flatMap(signIn)
             .flatMap(andPostAction)
     }
     
@@ -93,9 +103,14 @@ extension FirebaseServiceImple {
 }
 
 
-// MARK: - signin post action
+// MARK: - signin pre/post action
 
 extension FirebaseServiceImple {
+    
+    private func signInPreAction() -> Maybe<Void> {
+        guard let user = Auth.auth().currentUser else { return .just() }
+        return user.isAnonymous ? self.deleteAnonymousUser(user) : self.signOut()
+    }
     
     private func signInPostAction(user: FirebaseAuth.User) -> Maybe<SigninResult> {
         
@@ -120,5 +135,30 @@ extension FirebaseServiceImple {
         return loadExistingMember
             .flatMap(thenSaveNewMemberIfNeed)
             .map(transformAsResult)
+    }
+    
+    private func deleteAnonymousUser(_ user: FirebaseAuth.User) -> Maybe<Void> {
+        return Maybe.create { callback in
+            user.delete { error in
+                guard error == nil else {
+                    callback(.error(RemoteErrors.deleteAccountFail(error)))
+                    return
+                }
+                callback(.success(()))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    private func signOut() -> Maybe<Void> {
+        return Maybe.create { callback in
+            do {
+                try Auth.auth().signOut()
+                callback(.success(()))
+            } catch let error {
+                callback(.error(error))
+            }
+            return Disposables.create()
+        }
     }
 }
