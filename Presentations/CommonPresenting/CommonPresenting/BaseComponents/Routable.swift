@@ -19,12 +19,16 @@ public protocol Routing: AnyObject {
     func alertError(_ error: Error)
     
     func showToast(_ message: String)
+    
+    func closeScene(animated: Bool)
 }
 extension Routing {
     
     public func alertError(_ error: Error) { }
     
     public func showToast(_ message: String) { }
+    
+    public func closeScene(animated: Bool) { }
 }
 
 
@@ -48,5 +52,9 @@ extension Router {
     
     public func showToast(_ message: String) {
         logger.todoImplement()
+    }
+    
+    public func closeScene(animated: Bool) {
+        self.currentScene?.dismiss(animated: true, completion: nil)
     }
 }
