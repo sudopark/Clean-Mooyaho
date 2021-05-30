@@ -91,7 +91,7 @@ extension LocationMonitoringServiceImple {
         }
         
         let determineIsGranted: (CLAuthorizationStatus) -> Bool = { status in
-            return status == .authorizedWhenInUse || status == .authorizedAlways || status == .authorized
+            return status == .authorizedWhenInUse || status == .authorizedAlways
         }
         return self.subjects.currentAuthorizationStatus
             .map(determineIsGranted)

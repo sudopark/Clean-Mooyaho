@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
+import Domain
 import CommonPresenting
 
 // MARK: - SignInViewModel
@@ -23,36 +24,39 @@ public protocol SignInViewModel: AnyObject {
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel
+// MARK: - SignInViewModelImple
 
 public final class SignInViewModelImple: SignInViewModel {
-    
-    fileprivate final class Subjects {
-        // define subjects
-    }
-    
+        
+    private let authUsecase: AuthUsecase
     private let router: SignInRouting
-    private let subjects = Subjects()
-    private let disposeBag = DisposeBag()
     
-    public init(router: SignInRouting) {
+    public init(authUsecase: AuthUsecase,
+                router: SignInRouting) {
+        self.authUsecase = authUsecase
         self.router = router
     }
     
     deinit {
         LeakDetector.instance.expectDeallocate(object: self.router)
     }
+    
+    fileprivate final class Subjects {
+        // define subjects
+    }
+    private let subjects = Subjects()
+    private let disposeBag = DisposeBag()
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Interactor
+// MARK: - SignInViewModelImple Interactor
 
 extension SignInViewModelImple {
     
 }
 
 
-// MARK: - ___VARIABLE_sceneModuleName___ViewModel Presenter
+// MARK: - SignInViewModelImple Presenter
 
 extension SignInViewModelImple {
     

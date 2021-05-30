@@ -67,7 +67,7 @@ extension MainViewModelImple {
     public func setupSubScenes() {
         
         self.nearbySceneActionListener = self.router.addNearbySceen { [weak self] event in
-            // TODO: handle events..
+            logger.todoImplement()
         }
     }
     
@@ -90,7 +90,7 @@ extension MainViewModelImple {
         }
         
         let handleCheckResult: (Bool) -> Void = { [weak self] avail in
-            // TODO: handle
+            logger.todoImplement()
         }
         
         self.hoorayUsecase.isAvailToPublish(self.auth.userID)

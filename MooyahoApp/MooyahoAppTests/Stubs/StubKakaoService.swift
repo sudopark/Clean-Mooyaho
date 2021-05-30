@@ -18,6 +18,8 @@ import UnitTestHelpKit
 
 class StubKakaoService: KakaoService, Stubbable {
     
+    let providerType: OAuthServiceProviderType = OAuthServiceProviderTypes.kakao
+    
     func setupService() {
         self.verify(key: "setupService")
     }
