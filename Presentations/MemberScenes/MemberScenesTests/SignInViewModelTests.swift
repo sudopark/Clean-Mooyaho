@@ -42,7 +42,72 @@ class SignInViewModelTests: BaseTestCase, WaitObservableEvents {
 
 extension SignInViewModelTests {
     
+    func testViewModel_presentSupportingOAuthProviderTypes() {
+        // given
+        self.stubAuthUsecase.stubSupportingOAuthServiceProviders = [
+            OAuthServiceProviderTypes.kakao,
+            OAuthServiceProviderTypes.apple
+        ]
+        // when
+        let providers = self.viewModel.supportingOAuthProviderTypes
+        
+        // then
+        XCTAssertEqual(providers.count, 2)
+    }
     
+    func testViewModel_whenSignIning_showProcessing() {
+        // given
+        let expect = expectation(description: "로그인시 처리중 상태 변경")
+        expect.expectedFulfillmentCount = 3
+        
+        self.stubAuthUsecase.register(key: "requestSocialSignIn") {
+            return Maybe<Member>.just(Member(uid: "dummy"))
+        }
+        
+        // when
+        let isProcessings = self.waitElements(expect, for: self.viewModel.isProcessing) {
+            self.viewModel.requestSignIn(OAuthServiceProviderTypes.kakao)
+        }
+        
+        // then
+        XCTAssertEqual(isProcessings, [false, true, false])
+    }
+    
+    func testViewModel_whenSignInEnd_closeCurrentScene() {
+        // given
+        let expect = expectation(description: "로그인 완료시에 현재 화면 닫음")
+        self.stubAuthUsecase.register(key: "requestSocialSignIn") {
+            return Maybe<Member>.just(Member(uid: "dummy"))
+        }
+        
+        self.spyRouter.called(key: "closeSceneAfterSignIn") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.requestSignIn(OAuthServiceProviderTypes.kakao)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_whenSignInFail_alertError() {
+        // given
+        let expect = expectation(description: "로그인 실패시에 에러 알림")
+        self.stubAuthUsecase.register(key: "requestSocialSignIn") {
+            return Maybe<Member>.error(ApplicationErrors.invalid)
+        }
+        
+        self.spyRouter.called(key: "alertError") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.requestSignIn(OAuthServiceProviderTypes.kakao)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 
@@ -50,5 +115,12 @@ extension SignInViewModelTests {
     
     class SpyRouter: SignInRouting, Stubbable {
         
+        func alertError(_ error: Error) {
+            self.verify(key: "alertError")
+        }
+        
+        func closeSceneAfterSignIn() {
+            self.verify(key: "closeSceneAfterSignIn")
+        }
     }
 }
