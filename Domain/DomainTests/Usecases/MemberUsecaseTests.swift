@@ -117,4 +117,17 @@ extension MemberUsecaseTests {
         // then
         XCTAssertNotNil(member)
     }
+    
+    func testUsecase_fetchCurrentMember() {
+        // given
+        var memner: Member?
+        
+        // when + then
+        memner = self.usecase.fetchCurrentMember()
+        XCTAssertNil(memner)
+        
+        self.store.update(SharedDataKeys.currentMember.rawValue, value: Member.init(uid: "some"))
+        memner = self.usecase.fetchCurrentMember()
+        XCTAssertNotNil(memner)
+    }
 }

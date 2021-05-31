@@ -22,7 +22,7 @@ public enum HoorayPublishPolicy {
 
 public protocol HoorayPublisherUsecase {
     
-    func isAvailToPublish(_ memberID: String) -> Maybe<Bool>
+    func isAvailToPublish() -> Maybe<Bool>
     
     func publish(newHooray hoorayForm: NewHoorayForm,
                         withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray>
@@ -48,7 +48,7 @@ fileprivate struct TooSoonLatestHoorayExistInLocal: Error {}
 
 extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
 
-    public func isAvailToPublish(_ memberID: String) -> Maybe<Bool> {
+    public func isAvailToPublish() -> Maybe<Bool> {
         
         func checkIsEnoughTimePasses(_ latest: LatestHooray?, with memberShip: MemberShip) -> Bool {
             guard let latest = latest else { return true }
@@ -56,10 +56,17 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
             let interval = abs(TimeStamp.now() - latest.time)
             return HoorayPublishPolicy.defaultCooltime.asTimeInterval() <= interval
         }
+        
+        guard let member = self.memberUsecase.fetchCurrentMember() else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        guard member.isProfileSetup else {
+            return .error(ApplicationErrors.profileNotSetup)
+        }
     
         let loadMemberShipAndLocalLatestHooray = Maybe
             .zip(self.memberUsecase.loadCurrentMembership(),
-                 self.hoorayRepository.fetchLatestHooray(memberID))
+                 self.hoorayRepository.fetchLatestHooray(member.uid))
         
         let throwWhenTooSoonHoorayExistsOnLocal: (MemberShip, LatestHooray?) throws -> MemberShip
         throwWhenTooSoonHoorayExistsOnLocal = { memberShip, latest in
@@ -71,7 +78,7 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
         let thenLoadRecentHoorayFromRemoteAndCheck: (MemberShip) -> Maybe<Bool>
         thenLoadRecentHoorayFromRemoteAndCheck = { [weak self] memberShip in
             guard let self = self else { return .empty() }
-            return self.hoorayRepository.requestLoadLatestHooray(memberID)
+            return self.hoorayRepository.requestLoadLatestHooray(member.uid)
                 .map{ checkIsEnoughTimePasses($0, with: memberShip) }
         }
         let catchTooSoonLocalHoorayExistsError: (Error) -> Maybe<Bool> = { error in

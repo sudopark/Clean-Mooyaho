@@ -81,20 +81,20 @@ extension MainViewModelImple {
     
     public func makeNewHooray() {
         
-        let routeToSignInOrAlertError: (Error) -> Void = { [weak self] error in
-            guard let appError = error as? ApplicationErrors, appError == .sigInNeed else {
-                self?.router.alertError(error)
-                return
+        let handleErrors: (Error) -> Void = { [weak self] error in
+            switch error as? ApplicationErrors {
+            case .sigInNeed: self?.router.presentSignInScene()
+            case .profileNotSetup: self?.router.presentEditProfileScene()
+            default: self?.router.alertError(error)
             }
-            self?.router.presentSignInScene()
         }
         
         let handleCheckResult: (Bool) -> Void = { [weak self] avail in
             logger.print(level: .debug, "neww hooray event: \(avail)")
         }
         
-        self.hoorayUsecase.isAvailToPublish(self.auth.userID)
-            .subscribe(onSuccess: handleCheckResult, onError: routeToSignInOrAlertError)
+        self.hoorayUsecase.isAvailToPublish()
+            .subscribe(onSuccess: handleCheckResult, onError: handleErrors)
             .disposed(by: self.disposeBag)
     }
 }

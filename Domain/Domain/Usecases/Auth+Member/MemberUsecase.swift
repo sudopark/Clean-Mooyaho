@@ -15,6 +15,8 @@ import RxSwift
 
 public protocol MemberUsecase {
     
+    func fetchCurrentMember() -> Member?
+    
     func updateUserIsOnline(_ userID: String, isOnline: Bool)
     
     func loadCurrentMembership() -> Maybe<MemberShip>
@@ -42,7 +44,7 @@ public final class MemberUsecaseImple: MemberUsecase {
 
 extension MemberUsecaseImple {
     
-    private func fetchCurrentMember() -> Member? {
+    public func fetchCurrentMember() -> Member? {
         return self.sharedDataStoreService.fetch(.currentMember)
     }
     
