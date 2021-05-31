@@ -12,25 +12,52 @@ import RxSwift
 
 import Domain
 
+typealias FakeStore = UserDefaults
 
 public final class LocalStorageImple: LocalStorage {
     
     public init() {}
     
     public func fetchCurrentAuth() -> Maybe<Auth?> {
-        return .just(nil)
+        let userID = FakeStore.standard.string(forKey: "fake_uid")
+        let auth = userID.map( Auth.init(userID:) )
+        return .just(auth)
     }
     
     public func fetchCurrentMember() -> Maybe<Member?> {
-        return .just(nil)
+        let userID = FakeStore.standard.string(forKey: "fake_uid")
+        let member = userID.map { id -> Member in
+            var member = Member(uid: id)
+            member.nickName = FakeStore.standard.string(forKey: "fake_nick")
+            member.introduction = FakeStore.standard.string(forKey: "fake_intro")
+            if let icon = FakeStore.standard.string(forKey: "fake_icon") {
+                member.icon = .path(icon)
+            } else if let emoji = FakeStore.standard.string(forKey: "fake_emoji") {
+                member.icon = .emoji(emoji)
+            }
+            return member
+        }
+        return .just(member)
     }
     
     public func saveSignedIn(auth: Auth) -> Maybe<Void> {
-        return .empty()
+        FakeStore.standard.setValue(auth.userID, forKey: "fake_uid")
+        return .just()
     }
     
     public func saveSignedIn(member: Member) -> Maybe<Void> {
-        return .empty()
+        FakeStore.standard.setValue(member.uid, forKey: "fake_uid")
+        FakeStore.standard.setValue(member.nickName, forKey: "fake_nick")
+        FakeStore.standard.setValue(member.introduction, forKey: "fake_intro")
+        if case let .path(path) = member.icon {
+            FakeStore.standard.setValue(path, forKey: "fake_icon")
+        } else if case let .emoji(value) = member.icon {
+            FakeStore.standard.setValue(value, forKey: "fake_emoji")
+        } else {
+            FakeStore.standard.setValue(nil, forKey: "fake_icon")
+            FakeStore.standard.setValue(nil, forKey: "fake_emoji")
+        }
+        return .just()
     }
     
     public func fetchRecentSelectTags(_ type: Tag.TagType, query: String) -> Maybe<[Tag]> {
