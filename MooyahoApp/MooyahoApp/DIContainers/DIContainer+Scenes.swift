@@ -44,7 +44,7 @@ extension DIContainers: MainSlideMenuSceneBuilable {
 
 // MARK: - MemberScenes
 
-extension DIContainers: SignInSceneBuilable {
+extension DIContainers: SignInSceneBuilable, EditProfileSceneBuilable {
     
     public func makeSignInScene() -> SignInScene {
         let router = SignInRouter(nextSceneBuilders: self)

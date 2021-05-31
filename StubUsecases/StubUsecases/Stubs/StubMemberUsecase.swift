@@ -29,5 +29,9 @@ open class StubMemberUsecase: MemberUsecase, Stubbable {
     public var currentMember: Observable<Member?> {
         return stubCurrentMember.asObservable()
     }
+    
+    public func fetchCurrentMember() -> Member? {
+        return self.resolve(key: "fetchCurrentMember")
+    }
 }
 

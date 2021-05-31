@@ -77,7 +77,7 @@ extension MainViewModelTests {
     
     // auth가 준비되어야지
     
-    func testViewModel_requestMakeNewHooray() {
+    func testViewModel_requestMakeNewHooray_withoutSignIn_routeToSignIn() {
         // given
         let expect = expectation(description: "새로운 후레이 발급 요청시 로그인되어있지 않다면 로그인 라우팅")
         self.stubHoorayUsecase.register(key: "isAvailToPublish") {
@@ -85,6 +85,24 @@ extension MainViewModelTests {
         }
         
         self.spyRouter.called(key: "presentSignInScene") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.makeNewHooray()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_requestMakeNewHooray_withoutProfileSetup_routeToEditProfile() {
+        // given
+        let expect = expectation(description: "새로운 후레이 발급 요청시 프로필이 세팅되어있지 않다면 않다면 입력 화면으로 이동")
+        self.stubHoorayUsecase.register(key: "isAvailToPublish") {
+            return Maybe<Bool>.error(ApplicationErrors.profileNotSetup)
+        }
+        
+        self.spyRouter.called(key: "presentEditProfileScene") { _ in
             expect.fulfill()
         }
         
@@ -116,6 +134,10 @@ extension MainViewModelTests {
         
         func openSlideMenu() {
             
+        }
+        
+        func presentEditProfileScene() {
+            self.verify(key: "presentEditProfileScene")
         }
     }
     

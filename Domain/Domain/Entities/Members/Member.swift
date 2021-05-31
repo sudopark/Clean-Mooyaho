@@ -14,6 +14,7 @@ public struct Member {
     public let uid: String
     
     public var nickName: String?
+    public var introduction: String?
     
     public var icon: ImageSource?
     
@@ -21,5 +22,13 @@ public struct Member {
         self.uid = uid
         self.nickName = nickName
         self.icon = icon
+    }
+}
+
+
+extension Member {
+    
+    public var isProfileSetup: Bool {
+        return self.nickName?.isNotEmpty == true
     }
 }
