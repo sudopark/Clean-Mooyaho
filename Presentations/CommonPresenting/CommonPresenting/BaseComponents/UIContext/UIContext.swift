@@ -37,12 +37,12 @@ extension UIContext {
 
 public protocol UIContextAccessable {
     
-    var context: UIContext { get }
+    var uiContext: UIContext { get }
 }
 
 extension UIContextAccessable {
     
-    public var context: UIContext {
+    public var uiContext: UIContext {
         return UIContext.currentContext
     }
 }

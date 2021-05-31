@@ -114,6 +114,6 @@ extension MainSlideMenuViewController: Presenting {
         
         self.dimView.alpha = 0.1
         
-        self.containerView.backgroundColor = self.context.colors.raw.red
+        self.containerView.backgroundColor = self.uiContext.colors.raw.red
     }
 }

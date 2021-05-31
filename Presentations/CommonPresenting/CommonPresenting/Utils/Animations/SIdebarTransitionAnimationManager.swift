@@ -14,7 +14,7 @@ final class ShadowView: BaseUIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = self.context.colors.raw.black.withAlphaComponent(0.5)
+        self.backgroundColor = self.uiContext.colors.raw.black.withAlphaComponent(0.5)
         self.alpha = 0.0
         self.isHidden = true
     }

@@ -12,6 +12,8 @@ public protocol ColorSet {
     
     var appBackground: UIColor { get }
     
+    var appSecondBackground: UIColor { get }
+    
     var text: UIColor { get }
 }
 
@@ -40,6 +42,8 @@ public protocol Theme {
 public struct DefaultColorSet: ColorSet {
     
     public var appBackground: UIColor { .white }
+    
+    public var appSecondBackground: UIColor { .systemGray }
     
     public var text: UIColor { .black }
 }
