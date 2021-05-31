@@ -79,7 +79,7 @@ extension MainView: Presenting {
     
     
     func setupStyling() {
-        self.backgroundColor = self.context.colors.appBackground
+        self.backgroundColor = self.uiContext.colors.appBackground
         
         self.profileView.backgroundColor = .red
         self.profileView.layer.cornerRadius = 18
@@ -88,9 +88,9 @@ extension MainView: Presenting {
         self.currentPositionButton.backgroundColor = .black
         
         
-        self.mapContainerView.backgroundColor = self.context.colors.raw.clear
+        self.mapContainerView.backgroundColor = self.uiContext.colors.raw.clear
         
-        self.bottomSlideContainerView.backgroundColor = self.context.colors.appBackground
+        self.bottomSlideContainerView.backgroundColor = self.uiContext.colors.appBackground
         self.bottomSlideContainerView.layer.cornerRadius = 10
         self.bottomSlideContainerView.clipsToBounds = true
         

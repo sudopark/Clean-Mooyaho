@@ -238,7 +238,7 @@ extension MainViewController: Presenting {
     
     public func setupStyling() {
         
-        self.view.backgroundColor = self.context.colors.appBackground
+        self.view.backgroundColor = self.uiContext.colors.appBackground
         
         self.mainView.setupStyling()
     }

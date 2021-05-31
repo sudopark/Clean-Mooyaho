@@ -53,6 +53,14 @@ extension DIContainers: SignInSceneBuilable {
         router.currentScene = viewController
         return viewController
     }
+    
+    public func makeEditProfileScene() -> EditProfileScene {
+        let router = EditProfileRouter(nextSceneBuilders: self)
+        let viewModel = EditProfileViewModelImple(router: router)
+        let viewController = EditProfileViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
 }
 
 
