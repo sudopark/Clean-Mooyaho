@@ -84,7 +84,7 @@ extension SignInView: Presenting {
         
         self.outsideTouchView.backgroundColor = .clear
         
-        self.containerView.backgroundColor = self.context.colors.appBackground
+        self.containerView.backgroundColor = self.uiContext.colors.appBackground
         self.containerView.layer.cornerRadius = 10
         self.containerView.clipsToBounds = true
         

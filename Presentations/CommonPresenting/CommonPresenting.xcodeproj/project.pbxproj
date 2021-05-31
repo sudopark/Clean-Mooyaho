@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,13 @@
 		F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */; };
 		F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */; };
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
+		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
+		F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* IntegratedImageView.swift */; };
+		F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */; };
+		F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F637205A26650ECC0089D0B3 /* Kingfisher */; };
+		F637205D266511570089D0B3 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205C266511570089D0B3 /* String+Extension.swift */; };
+		F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */; };
+		F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372060266538EA0089D0B3 /* UITableView+Extension.swift */; };
 		F6E8311C265C455B00C91F3B /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311B265C455B00C91F3B /* Listener.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
@@ -73,6 +80,12 @@
 		F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureDismissInteractors.swift; sourceTree = "<group>"; };
 		F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
+		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
+		F637205526650B440089D0B3 /* IntegratedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedImageView.swift; sourceTree = "<group>"; };
+		F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		F637205C266511570089D0B3 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		F6372060266538EA0089D0B3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		F6E8311B265C455B00C91F3B /* Listener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listener.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
@@ -83,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
 			);
@@ -148,11 +162,14 @@
 				2B39E27826387BCB003EE954 /* BaseViewController.swift */,
 				F6F249182655887C00AE7A8B /* BaseNavigationController.swift */,
 				F610146826570A1400D32E38 /* BaseUIView.swift */,
+				F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */,
 				2B39E27926387BCB003EE954 /* EmptyBuilder.swift */,
 				2B39E27726387BCB003EE954 /* Presenting.swift */,
 				2B39E27526387BCB003EE954 /* Routable.swift */,
 				2B39E27626387BCB003EE954 /* Sceneable.swift */,
 				F6E8311B265C455B00C91F3B /* Listener.swift */,
+				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
+				F637205526650B440089D0B3 /* IntegratedImageView.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -220,6 +237,9 @@
 			isa = PBXGroup;
 			children = (
 				F61014892657A6C300D32E38 /* Rx+Extensions.swift */,
+				F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */,
+				F637205C266511570089D0B3 /* String+Extension.swift */,
+				F6372060266538EA0089D0B3 /* UITableView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -252,6 +272,9 @@
 			dependencies = (
 			);
 			name = CommonPresenting;
+			packageProductDependencies = (
+				F637205A26650ECC0089D0B3 /* Kingfisher */,
+			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
 			productType = "com.apple.product-type.framework";
@@ -301,6 +324,9 @@
 				Base,
 			);
 			mainGroup = 2B39E24526387B6A003EE954;
+			packageReferences = (
+				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -334,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
+				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
 				F6E8311C265C455B00C91F3B /* Listener.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
@@ -341,14 +368,19 @@
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
 				F61014762657211200D32E38 /* Theme.swift in Sources */,
 				2B39E27A26387BCB003EE954 /* Routable.swift in Sources */,
+				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
+				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
+				F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
+				F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
 				F610146926570A1400D32E38 /* BaseUIView.swift in Sources */,
@@ -617,6 +649,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F637205A26650ECC0089D0B3 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2B39E24626387B6A003EE954 /* Project object */;
 }
