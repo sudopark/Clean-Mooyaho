@@ -23,7 +23,8 @@ class HoorayPublisherUsecaseTests: BaseHoorayUsecaseTests { }
 extension HoorayPublisherUsecaseTests {
     
     private func stubMemberShip() {
-        self.sharedStore.save(.currentMember, Member(uid: "dummy"))
+        let dummyMember = Member(uid: "dummy", nickName: "hi", icon: nil)
+        self.sharedStore.save(.currentMember, dummyMember)
         self.sharedStore.save(.membership, MemberShip())
     }
     
@@ -39,7 +40,7 @@ extension HoorayPublisherUsecaseTests {
         }
         
         // when
-        let requestCheck = self.usecase.isAvailToPublish("dummy")
+        let requestCheck = self.usecase.isAvailToPublish()
         let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
         
         // then
@@ -57,7 +58,7 @@ extension HoorayPublisherUsecaseTests {
         }
         
         // when
-        let requestCheck = self.usecase.isAvailToPublish("dummy")
+        let requestCheck = self.usecase.isAvailToPublish()
         let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
         
         // then
@@ -79,7 +80,7 @@ extension HoorayPublisherUsecaseTests {
         }
         
         // when
-        let requestCheck = self.usecase.isAvailToPublish("dummy")
+        let requestCheck = self.usecase.isAvailToPublish()
         let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
         
         // then
@@ -101,11 +102,47 @@ extension HoorayPublisherUsecaseTests {
         }
         
         // when
-        let requestCheck = self.usecase.isAvailToPublish("dummy")
+        let requestCheck = self.usecase.isAvailToPublish()
         let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
         
         // then
         XCTAssertEqual(isAvail, true)
+    }
+    
+    func testUsecase_whenTryToHoorayButNotSignedIn_returnError() {
+        // given
+        let expect = expectation(description: "후레이 시도시 로그인 안되어있으면 에러")
+        
+        // when
+        let requestCheck = self.usecase.isAvailToPublish()
+        let error = self.waitError(expect, for: requestCheck.asObservable())
+        
+        // then
+        guard let appError = error as? ApplicationErrors, case .sigInNeed = appError else {
+            XCTFail("기대하는 에러가 아님")
+            return
+        }
+        XCTAssert(true)
+    }
+    
+    func testUsecase_whenTryToHoorayButNotSetupUserProfileYet_returnError() {
+        // given
+        let expect = expectation(description: "후레이 시도시 유저 프로필 미입력 상태면 에러")
+        
+        let emptyMember = Member(uid: "dummy")
+        self.sharedStore.update(SharedDataKeys.currentMember.rawValue, value: emptyMember)
+        
+        // when
+        let requestCheck = usecase.isAvailToPublish()
+        let error = self.waitError(expect, for: requestCheck.asObservable())
+        
+        // then
+        XCTAssertEqual(emptyMember.isProfileSetup, false)
+        guard let appError = error as? ApplicationErrors, case .profileNotSetup = appError else {
+            XCTFail("기대하는 에러가 아님")
+            return
+        }
+        XCTAssert(true)
     }
     
     func testUsecase_whenTryToHoorayFailtoLoadMemberShipInfo_failToPublish() {
@@ -125,7 +162,7 @@ extension HoorayPublisherUsecaseTests {
         }
         
         // when
-        let requestCheck = self.usecase.isAvailToPublish("dummy")
+        let requestCheck = usecase.isAvailToPublish()
         let error = self.waitError(expect, for: requestCheck.asObservable()) { }
         
         // then

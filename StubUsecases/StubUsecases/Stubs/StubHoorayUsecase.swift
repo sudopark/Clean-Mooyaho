@@ -17,7 +17,7 @@ open class StubHoorayUsecase: HoorayUsecase, Stubbable {
     
     public init() {}
     
-    open func isAvailToPublish(_ memberID: String) -> Maybe<Bool> {
+    open func isAvailToPublish() -> Maybe<Bool> {
         return self.resolve(key: "isAvailToPublish") ?? .empty()
     }
     

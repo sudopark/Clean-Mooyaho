@@ -30,12 +30,15 @@ public protocol MainRouting: Routing {
     func openSlideMenu()
     
     func presentSignInScene()
+    
+    func presentEditProfileScene()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainRouterBuildables = MainSlideMenuSceneBuilable & NearbySceneBuilable & SignInSceneBuilable
+public typealias MainRouterBuildables = MainSlideMenuSceneBuilable & NearbySceneBuilable
+    & SignInSceneBuilable & EditProfileSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -77,6 +80,12 @@ extension MainRouter {
         
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager
+        self.currentScene?.present(scene, animated: true, completion: nil)
+    }
+    
+    public func presentEditProfileScene() {
+        
+        guard let scene = self.nextScenesBuilder?.makeSignInScene() else { return }
         self.currentScene?.present(scene, animated: true, completion: nil)
     }
 }
