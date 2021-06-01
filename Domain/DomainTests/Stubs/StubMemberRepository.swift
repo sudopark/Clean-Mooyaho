@@ -29,4 +29,13 @@ class StubMemberRepository: MemberRepository, Stubbable {
     func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
         return self.resolve(key: "requestLoadMembership") ?? .empty()
     }
+    
+    let stubUploadStatus = PublishSubject<MemberProfileUploadStatus>()
+    func requestUploadMemberProfileImage(_ memberID: String, source: MemberProfileImageSources) -> Observable<MemberProfileUploadStatus> {
+        return self.stubUploadStatus.asObservable()
+    }
+    
+    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], imageSource: ImageSource?) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
+    }
 }

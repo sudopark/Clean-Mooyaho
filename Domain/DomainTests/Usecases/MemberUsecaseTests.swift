@@ -131,3 +131,103 @@ extension MemberUsecaseTests {
         XCTAssertNotNil(memner)
     }
 }
+
+
+extension MemberUsecaseTests {
+    
+    func testUsecase_whenEmptyUpdateParams_error() {
+        // given
+        let expect = expectation(description: "업데이트할 파라미터를 아무것도 입력하지 않았다면 에러")
+        
+        // when
+        let error = self.waitError(expect, for: self.usecase.updateCurrent(memberID: "some", updateFields: [], with: nil))
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
+    func testUscase_updateMemberWithOutUploadImage() {
+        // given
+        let expect = expectation(description: "프로필 이미지 업로드 없이 필드만 업데이트")
+        
+        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Void>.just()
+        }
+        
+        // when
+        let intro = MemberUpdateField.introduction("new")
+        let status = self.waitElements(expect, for: self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: nil))
+        
+        // then
+        XCTAssertEqual(status.first, .finished)
+    }
+    
+    func testUsecase_updateMemberWithUploadImage() {
+        // given
+        let expect = expectation(description: "새 프사와 함께 멤버 업데이트")
+        expect.expectedFulfillmentCount = 3
+        
+        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Void>.just()
+        }
+        
+        // when
+        let intro = MemberUpdateField.introduction("new")
+        let image = MemberProfileImageSources.data(Data())
+        let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
+        let status = self.waitElements(expect, for: requestUpload) {
+            self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
+            self.stubRepository.stubUploadStatus.onNext(.completed(.path("some")))
+            self.stubRepository.stubUploadStatus.onCompleted()
+        }
+        
+        // then
+        XCTAssertEqual(status, [.pending, .updating(0.5), .finished])
+    }
+    
+    // 프로필 업로드 성공해도 멤버데이터 업데이트 실패하면 실패처리
+    func testUsecase_whenSuccesToUploadImageButUpdateFiledsFail_wholeProcessIsFail() {
+        // given
+        let expect = expectation(description: "프로필 이미지 업로드에 성공하더라도 필드업데이트 실패하면 전체 실패처리")
+        
+        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Void>.error(ApplicationErrors.invalid)
+        }
+        
+        // when
+        let intro = MemberUpdateField.introduction("new")
+        let image = MemberProfileImageSources.data(Data())
+        let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
+        let error = self.waitError(expect, for: requestUpload) {
+            self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
+            self.stubRepository.stubUploadStatus.onNext(.completed(.path("some")))
+            self.stubRepository.stubUploadStatus.onCompleted()
+        }
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
+    // 프로필 업로드 실패 + 데이터 업로드
+    func testUsecase_whenUploadImageFails_justUpdateMemberFields() {
+        // given
+        let expect = expectation(description: "멤버프로필 업로드에 실패해도 필드는 업데이트함")
+        expect.expectedFulfillmentCount = 3
+        
+        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Void>.just()
+        }
+        
+        // when
+        let intro = MemberUpdateField.introduction("new")
+        let image = MemberProfileImageSources.data(Data())
+        let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
+        let status = self.waitElements(expect, for: requestUpload) {
+            self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
+            self.stubRepository.stubUploadStatus.onError(ApplicationErrors.invalid)
+        }
+        
+        // then
+        XCTAssertEqual(status, [.pending, .updating(0.5), .finishedWithImageUploadFail(ApplicationErrors.invalid)])
+    }
+}
