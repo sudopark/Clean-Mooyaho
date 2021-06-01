@@ -15,6 +15,13 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
+    func requestUploadMemberProfileImage(_ memberID: String, data: Data, ext: String) -> Observable<MemberProfileUploadStatus> {
+        return .empty()
+    }
+    
+    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], imageSource: ImageSource?) -> Maybe<Void> {
+        return .empty()
+    }
     
     func requestSignInAnonymously() -> Maybe<Auth> {
         return .empty()

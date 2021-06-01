@@ -173,7 +173,7 @@ extension MemberUsecaseTests {
         
         // when
         let intro = MemberUpdateField.introduction("new")
-        let image = MemberProfileImageSources.data(Data())
+        let image = ImageUploadReqParams.data(Data(), extension: "jpg")
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let status = self.waitElements(expect, for: requestUpload) {
             self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
@@ -196,7 +196,7 @@ extension MemberUsecaseTests {
         
         // when
         let intro = MemberUpdateField.introduction("new")
-        let image = MemberProfileImageSources.data(Data())
+        let image = ImageUploadReqParams.data(Data(), extension: "jpg")
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let error = self.waitError(expect, for: requestUpload) {
             self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
@@ -220,7 +220,7 @@ extension MemberUsecaseTests {
         
         // when
         let intro = MemberUpdateField.introduction("new")
-        let image = MemberProfileImageSources.data(Data())
+        let image = ImageUploadReqParams.data(Data(), extension: "jpg")
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let status = self.waitElements(expect, for: requestUpload) {
             self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
