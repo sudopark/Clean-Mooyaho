@@ -32,6 +32,26 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
     
     public func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
         // TODO: implement needs
-        return .empty()
+        return .just(MemberShip())
+    }
+    
+    public func requestUploadMemberProfileImage(_ memberID: String,
+                                                source: ImageUploadReqParams) -> Observable<MemberProfileUploadStatus> {
+        switch source {
+        case let .emoji(value):
+            return .just(.completed(.emoji(value)))
+            
+        case let .data(data, ext):
+            return self.memberRemote.requestUploadMemberProfileImage(memberID, data: data, ext: ext)
+            
+        case let .file(path, needCopyTemp): return .empty()
+        }
+    }
+    
+    public func requestUpdateMemberProfileFields(_ memberID: String,
+                                                 fields: [MemberUpdateField],
+                                                 imageSource: ImageSource?) -> Maybe<Void> {
+        return self.memberRemote
+            .requestUpdateMemberProfileFields(memberID, fields: fields, imageSource: imageSource)
     }
 }

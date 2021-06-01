@@ -44,6 +44,7 @@
 		2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */; };
 		2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */; };
 		F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */; };
+		F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206726668BB70089D0B3 /* Storage+Extensions.swift */; };
 		F64CCB6C265508490007F7C6 /* UserDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB6B265508490007F7C6 /* UserDevices.swift */; };
 		F6684DF82647CC1000820368 /* GFGeoHashQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6684DF92647CC1000820368 /* GFUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEF2647CC0F00820368 /* GFUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -153,6 +154,7 @@
 		2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonMapping.swift; sourceTree = "<group>"; };
 		2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberRemote+Firebase.swift"; sourceTree = "<group>"; };
+		F637206726668BB70089D0B3 /* Storage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Extensions.swift"; sourceTree = "<group>"; };
 		F64CCB6B265508490007F7C6 /* UserDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevices.swift; sourceTree = "<group>"; };
 		F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFGeoHashQuery.h; sourceTree = "<group>"; };
 		F6684DEF2647CC0F00820368 /* GFUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFUtils.h; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				F6684E022647E32400820368 /* DataMappings */,
+				F637206726668BB70089D0B3 /* Storage+Extensions.swift */,
 				2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */,
 				2BD54F70263DB37D004B3EB0 /* AuthRemote+Firebase.swift */,
 				F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */,
@@ -596,6 +599,7 @@
 				F6684DFB2647CC1000820368 /* GFGeoHashQuery.m in Sources */,
 				F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */,
 				2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */,
+				F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */,
 				F66E81412655328000682625 /* MessagingRemote+Firebase.swift in Sources */,
 				F67848DA2651229A0074C344 /* DistanceUtills.swift in Sources */,
 				F67848DC265123D20074C344 /* Policy.swift in Sources */,

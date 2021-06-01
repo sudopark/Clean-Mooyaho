@@ -61,6 +61,75 @@ extension RepositoryTests_Member {
 }
 
 
+// MARK: - test update member profile
+
+extension RepositoryTests_Member {
+    
+    // emoji는 바로 완료이벤트
+    func testRepository_whenUploadEmoji_returnCompleted() {
+        // given
+        let expect = expectation(description: "업로드할 이미지가 이모지면 바로 완료")
+        
+        // when
+        let requestUpload = self.repository
+            .requestUploadMemberProfileImage("some", source: .emoji("😂"))
+        let status = self.waitElements(expect, for: requestUpload)
+        
+        // then
+        if case .completed(.emoji) = status.first {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
+    }
+    
+    // 데이터 업로드 이벤트 전달
+    func testRepository_uploadImageAsData() {
+        // given
+        let expect = expectation(description: "data형식으로 이미지 업로드")
+        expect.expectedFulfillmentCount = 2
+        
+        // when
+        let requestUpload = self.repository
+            .requestUploadMemberProfileImage("some", source: .data(Data(), extension: "jpg"))
+        let status = self.waitElements(expect, for: requestUpload) {
+            self.stubRemote.stubUploadMemberProfileImageStatus.onNext(.uploading(0.5))
+            self.stubRemote.stubUploadMemberProfileImageStatus.onNext(.completed(.path("some")))
+        }
+        
+        // then
+        if case .uploading = status.first, case .completed = status.last {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
+    }
+    
+    // 파일은 임시경로에 복사하고 업로드
+    
+    // 원래 없는파일 요청시에 에러
+    
+    // 임시경로 복사 실패시에 에러
+    
+    // 필드 업데이트
+    func testRepository_updateMemberFields() {
+        // given
+        let expect = expectation(description: "멤버 필드 새로운 값으로 업데이트")
+        
+        self.stubRemote.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Void>.just()
+        }
+        
+        // when
+        let requestUpdate = self.repository
+            .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], imageSource: nil)
+        let void: Void? = self.waitFirstElement(expect, for: requestUpdate.asObservable())
+        
+        // then
+        XCTAssertNotNil(void)
+    }
+}
+
 extension RepositoryTests_Member {
     
     class DummyRepository: MemberRepository, MemberRepositoryDefImpleDependency {

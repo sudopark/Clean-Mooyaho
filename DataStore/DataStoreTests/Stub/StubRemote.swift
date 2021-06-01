@@ -41,6 +41,18 @@ class StubRemote: Remote, Stubbable {
         return self.resolve(key: "requestLoadMembership") ?? .empty()
     }
     
+    let stubUploadMemberProfileImageStatus = PublishSubject<MemberProfileUploadStatus>()
+    func requestUploadMemberProfileImage(_ memberID: String,
+                                         data: Data, ext: String) -> Observable<MemberProfileUploadStatus> {
+        return self.stubUploadMemberProfileImageStatus.asObservable()
+    }
+    
+    func requestUpdateMemberProfileFields(_ memberID: String,
+                                          fields: [MemberUpdateField],
+                                          imageSource: ImageSource?) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
+    }
+    
     // place
     func requesUpload(_ location: UserLocation) -> Maybe<Void> {
         return self.resolve(key: "requesUpload:location") ?? .empty()

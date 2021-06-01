@@ -38,3 +38,12 @@ extension ImageSource: Equatable {
         }
     }
 }
+
+
+// MARK: - ImageSource upload req params
+
+public enum ImageUploadReqParams {
+    case data(_ value: Data, extension: String)
+    case file(_ path: String, needCopyTemp: Bool)
+    case emoji(_ value: String)
+}
