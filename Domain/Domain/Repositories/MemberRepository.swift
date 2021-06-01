@@ -22,7 +22,8 @@ public protocol MemberRepository {
     
     func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
     
-    func requestUploadMemberProfileImage(_ memberID: String, source: MemberProfileImageSources) -> Observable<MemberProfileUploadStatus>
+    func requestUploadMemberProfileImage(_ memberID: String,
+                                         source: ImageUploadReqParams) -> Observable<MemberProfileUploadStatus>
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],

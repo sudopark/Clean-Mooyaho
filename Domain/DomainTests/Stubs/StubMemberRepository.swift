@@ -31,7 +31,7 @@ class StubMemberRepository: MemberRepository, Stubbable {
     }
     
     let stubUploadStatus = PublishSubject<MemberProfileUploadStatus>()
-    func requestUploadMemberProfileImage(_ memberID: String, source: MemberProfileImageSources) -> Observable<MemberProfileUploadStatus> {
+    func requestUploadMemberProfileImage(_ memberID: String, source: ImageUploadReqParams) -> Observable<MemberProfileUploadStatus> {
         return self.stubUploadStatus.asObservable()
     }
     

@@ -28,6 +28,7 @@ public enum RemoteErrors: Error {
     case mappingFail(_ type: String)
     case invalidRequest(_ reason: String?)
     case notFound(_ type: String, reason: Error?)
+    case fileUploadFail(_ reason: Error?)
 }
 
 
@@ -60,6 +61,13 @@ public protocol MemberRemote {
     func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void>
     
     func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
+    
+    func requestUploadMemberProfileImage(_ memberID: String,
+                                         data: Data, ext: String) -> Observable<MemberProfileUploadStatus>
+    
+    func requestUpdateMemberProfileFields(_ memberID: String,
+                                          fields: [MemberUpdateField],
+                                          imageSource: ImageSource?) -> Maybe<Void>
 }
 
 

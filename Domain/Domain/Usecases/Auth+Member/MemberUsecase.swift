@@ -39,7 +39,7 @@ public protocol MemberUsecase {
     
     func updateCurrent(memberID: String,
                        updateFields: [MemberUpdateField],
-                       with profile: MemberProfileImageSources?) -> Observable<UpdateMemberProfileStatus>
+                       with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus>
     
     func loadCurrentMembership() -> Maybe<MemberShip>
     
@@ -87,7 +87,7 @@ extension MemberUsecaseImple {
     
     public func updateCurrent(memberID: String,
                               updateFields: [MemberUpdateField],
-                              with profile: MemberProfileImageSources?) -> Observable<UpdateMemberProfileStatus> {
+                              with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
         
         let isRequestParametersEmpty = updateFields.isEmpty && profile == nil
         guard isRequestParametersEmpty == false else {

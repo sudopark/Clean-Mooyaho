@@ -21,6 +21,7 @@ public final class FirebaseServiceImple: FirebaseService {
     
     let httpAPI: HttpAPI
     var fireStoreDB: Firestore!
+    var storage: Storage!
     let serverKey: String
     let disposeBag = DisposeBag()
     
@@ -33,5 +34,6 @@ public final class FirebaseServiceImple: FirebaseService {
         
         FirebaseApp.configure()
         self.fireStoreDB = Firestore.firestore()
+        self.storage = Storage.storage()
     }
 }
