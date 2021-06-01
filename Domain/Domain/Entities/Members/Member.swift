@@ -32,3 +32,17 @@ extension Member {
         return self.nickName?.isNotEmpty == true
     }
 }
+
+
+// MARK: - update member params
+
+public enum MemberProfileImageSources {
+    case data(_ value: Data)
+    case file(_ path: String, needCopyTemp: Bool)
+    case emoji(_ value: String)
+}
+
+public enum MemberUpdateField {
+    case nickName(_ newValue: String)
+    case introduction(_ newValue: String?)
+}
