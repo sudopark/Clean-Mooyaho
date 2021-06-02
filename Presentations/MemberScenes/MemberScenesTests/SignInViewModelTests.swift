@@ -28,7 +28,8 @@ class SignInViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubAuthUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = .init(authUsecase: self.stubAuthUsecase,
-                               router: self.spyRouter)
+                               router: self.spyRouter,
+                               listener: { _ in })
     }
     
     override func tearDownWithError() throws {
@@ -73,14 +74,21 @@ extension SignInViewModelTests {
         XCTAssertEqual(isProcessings, [false, true])
     }
     
-    func testViewModel_whenSignInEnd_closeCurrentScene() {
+    func testViewModel_whenSignInEnd_closeCurrentSceneAndEmitEvent() {
         // given
         let expect = expectation(description: "로그인 완료시에 현재 화면 닫음")
+        expect.expectedFulfillmentCount = 2
         self.stubAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.just(Member(uid: "dummy"))
         }
         
-        self.spyRouter.called(key: "closeSceneAfterSignIn") { _ in
+        self.viewModel = .init(authUsecase: self.stubAuthUsecase,
+                               router: self.spyRouter) { event in
+            guard case .signInSuccess = event else { return }
+            expect.fulfill()
+        }
+        
+        self.spyRouter.called(key: "closeScene") { _ in
             expect.fulfill()
         }
         
@@ -119,8 +127,9 @@ extension SignInViewModelTests {
             self.verify(key: "alertError")
         }
         
-        func closeSceneAfterSignIn() {
-            self.verify(key: "closeSceneAfterSignIn")
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            self.verify(key: "closeScene")
+            completed?()
         }
     }
 }

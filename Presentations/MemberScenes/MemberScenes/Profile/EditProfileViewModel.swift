@@ -24,8 +24,18 @@ public enum EditProfileCellType: String {
 public protocol EditProfileViewModel: AnyObject {
 
     // interactor
+    func selectMemoji(_ data: Data)
+    func selectEmoji(_ emoji: String)
+    func inputTextChanges(type: EditProfileCellType, to newValue: String?)
+    func saveChanges()
+    func requestCloseScene()
     
     // presenter
+    var profileImageSource: Observable<ImageSource?> { get }
+    var cellTypes: Observable<[EditProfileCellType]> { get }
+    func previousInputValue(for cellType: EditProfileCellType) -> String?
+    var isSavable: Observable<Bool> { get }
+    var isSaveChanges: Observable<Bool> { get }
 }
 
 
@@ -40,10 +50,14 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
     
     private let usecase: MemberUsecase
     private let router: EditProfileRouting
+    private let listener: Listener<EditProfileSceneEvent>
     
-    public init(usecase: MemberUsecase, router: EditProfileRouting) {
+    public init(usecase: MemberUsecase,
+                router: EditProfileRouting,
+                listener: @escaping Listener<EditProfileSceneEvent>) {
         self.usecase = usecase
         self.router = router
+        self.listener = listener
         self.internalBind()
     }
     
@@ -57,6 +71,7 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
         let pendingImageSource = BehaviorRelay<PendinImageSource?>(value: nil)
         let pendingInputs = BehaviorRelay<[EditProfileCellType: String]>(value: [:])
         let cellViewModels = BehaviorRelay<[EditProfileCellType]>(value: [])
+        let isSaveChanges = BehaviorRelay<Bool>(value: false)
     }
     private let disposeBag = DisposeBag()
     private let subjects = Subjects()
@@ -80,6 +95,61 @@ extension EditProfileViewModelImple {
         var pendinMap = self.subjects.pendingInputs.value
         pendinMap[type] = newValue
         self.subjects.pendingInputs.accept(pendinMap)
+    }
+    
+    public func saveChanges() {
+        
+        guard self.subjects.isSaveChanges.value == false,
+              let memberID = self.subjects.currentMember.value?.uid else { return }
+        
+        let pendingInputs = self.subjects.pendingInputs.value
+        let fields: [MemberUpdateField] = pendingInputs.compactMap{ .init(type: $0.key, value: $0.value) }
+        
+        let handleStatus: (UpdateMemberProfileStatus) -> Void = { [weak self] status in
+            switch status {
+            case .finished:
+                self?.subjects.isSaveChanges.accept(false)
+                self?.router.closeScene(animated: true) { [weak self] in
+                    self?.listener(.editCompleted)
+                }
+                
+            case let .finishedWithImageUploadFail(error):
+                self?.subjects.isSaveChanges.accept(false)
+                self?.router.showToast("프로필 사진 업로드에 실패했습니다. 다시 시도해보세요.".localized)
+                // TODO: record error
+                
+            default: break
+            }
+        }
+        
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.subjects.isSaveChanges.accept(false)
+            self?.router.alertError(error)
+        }
+        
+        self.subjects.isSaveChanges.accept(true)
+        self.usecase.updateCurrent(memberID: memberID, updateFields: fields, with: nil)
+            .subscribe(onNext: handleStatus, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func requestCloseScene() {
+        let isSaving = self.subjects.isSaveChanges.value
+        guard isSaving == true else {
+            self.router.closeScene(animated: true, completed: nil)
+            return
+        }
+        
+        let confirmClose: () -> Void = { [weak self] in
+            self?.router.closeScene(animated: true, completed: nil)
+        }
+        
+        guard let form = AlertBuilder(base: .init())
+                .title("Warning".localized)
+                .message("[TBD] saving description".localized)
+                .confirmed(confirmClose)
+                .build() else { return }
+        self.router.alertForConfirm(form)
     }
 }
 
@@ -124,8 +194,15 @@ extension EditProfileViewModelImple {
             .map(checkHasChanged)
             .distinctUntilChanged()
     }
+    
+    public var isSaveChanges: Observable<Bool> {
+        return self.subjects.isSaveChanges
+            .distinctUntilChanged()
+    }
 }
 
+
+// MARK: - private extensiosns
 
 private extension EditProfileViewModelImple {
     
@@ -152,5 +229,20 @@ private extension Member {
     
     func isChangeOccurs(_ dict: [EditProfileCellType: String]) -> Bool {
         return self.nickName != dict[.nickName] || self.introduction != dict[.introduction]
+    }
+}
+
+
+extension MemberUpdateField {
+        
+    init?(type: EditProfileCellType, value: String) {
+        switch type {
+        case .nickName where value.isNotEmpty:
+            self = .nickName(value)
+            
+        case .introduction:
+            self = .introduction(value.isEmpty ? nil : value)
+        default: return nil
+        }
     }
 }

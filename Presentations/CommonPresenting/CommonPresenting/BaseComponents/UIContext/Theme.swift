@@ -43,7 +43,7 @@ public struct DefaultColorSet: ColorSet {
     
     public var appBackground: UIColor { .white }
     
-    public var appSecondBackground: UIColor { .systemGray }
+    public var appSecondBackground: UIColor { .groupTableViewBackground }
     
     public var text: UIColor { .black }
 }
