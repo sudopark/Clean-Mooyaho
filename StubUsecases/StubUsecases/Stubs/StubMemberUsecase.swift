@@ -34,8 +34,9 @@ open class StubMemberUsecase: MemberUsecase, Stubbable {
         return self.resolve(key: "fetchCurrentMember")
     }
     
-    let stubUpdateStatus = PublishSubject<UpdateMemberProfileStatus>()
+    public let stubUpdateStatus = PublishSubject<UpdateMemberProfileStatus>()
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
+        self.verify(key: "updateCurrent")
         return self.stubUpdateStatus.asObservable()
     }
 }

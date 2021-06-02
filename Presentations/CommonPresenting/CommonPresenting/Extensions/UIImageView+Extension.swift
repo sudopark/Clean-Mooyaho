@@ -13,7 +13,7 @@ import Kingfisher
 extension UIImageView {
     
     
-    func drawRemoteImage(_ source: String,
+    func setupRemoteImage(_ source: String,
                          progress: ((Int64, Int64) -> Void)? = nil,
                          completed: ((Result<UIImage, Error>) -> Void)? = nil) {
         let url = URL(string: source)
@@ -23,7 +23,7 @@ extension UIImageView {
         }
     }
     
-    func cancelDrawRemoteImage() {
+    func cancelSetupRemoteImage() {
         self.kf.cancelDownloadTask()
         let nilProvider: ImageDataProvider? = nil
         self.kf.setImage(with: nilProvider)

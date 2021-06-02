@@ -46,17 +46,21 @@ extension DIContainers: MainSlideMenuSceneBuilable {
 
 extension DIContainers: SignInSceneBuilable, EditProfileSceneBuilable {
     
-    public func makeSignInScene() -> SignInScene {
+    public func makeSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) -> SignInScene {
         let router = SignInRouter(nextSceneBuilders: self)
-        let viewModel = SignInViewModelImple(authUsecase: self.authUsecase, router: router)
+        let viewModel = SignInViewModelImple(authUsecase: self.authUsecase,
+                                             router: router,
+                                             listener: listener)
         let viewController = SignInViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
     
-    public func makeEditProfileScene() -> EditProfileScene {
+    public func makeEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) -> EditProfileScene {
         let router = EditProfileRouter(nextSceneBuilders: self)
-        let viewModel = EditProfileViewModelImple(usecase: self.memberUsecase, router: router)
+        let viewModel = EditProfileViewModelImple(usecase: self.memberUsecase,
+                                                  router: router,
+                                                  listener: listener)
         let viewController = EditProfileViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

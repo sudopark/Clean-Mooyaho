@@ -29,9 +29,9 @@ public protocol MainRouting: Routing {
     
     func openSlideMenu()
     
-    func presentSignInScene()
+    func presentSignInScene(_ listener: @escaping Listener<SignInSceneEvents>)
     
-    func presentEditProfileScene()
+    func presentEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>)
 }
 
 // MARK: - Routers
@@ -74,18 +74,18 @@ extension MainRouter {
         self.currentScene?.present(menuScene, animated: true, completion: nil)
     }
     
-    public func presentSignInScene() {
+    public func presentSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) {
         
-        guard let scene = self.nextScenesBuilder?.makeSignInScene() else { return }
+        guard let scene = self.nextScenesBuilder?.makeSignInScene(listener) else { return }
         
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager
         self.currentScene?.present(scene, animated: true, completion: nil)
     }
     
-    public func presentEditProfileScene() {
+    public func presentEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) {
         
-        guard let scene = self.nextScenesBuilder?.makeSignInScene() else { return }
+        guard let scene = self.nextScenesBuilder?.makeEditProfileScene(listener) else { return }
         self.currentScene?.present(scene, animated: true, completion: nil)
     }
 }

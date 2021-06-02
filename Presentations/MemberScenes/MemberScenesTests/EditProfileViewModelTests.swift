@@ -10,6 +10,7 @@ import XCTest
 import RxSwift
 
 import Domain
+import CommonPresenting
 import UnitTestHelpKit
 import StubUsecases
 
@@ -28,7 +29,8 @@ class EditProfileViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubMemberUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = .init(usecase: self.stubMemberUsecase,
-                               router: self.spyRouter)
+                               router: self.spyRouter,
+                               listener: { _ in })
     }
     
     override func tearDownWithError() throws {
@@ -53,7 +55,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
         let source = self.waitFirstElement(expect, for: self.viewModel.profileImageSource)
         
         // then
@@ -74,7 +76,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
         let types = self.waitFirstElement(expect, for: self.viewModel.cellTypes)
         
         // then
@@ -101,7 +103,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.inputTextChanges(type: .introduction, to: "some")
             self.viewModel.inputTextChanges(type: .nickName, to: "")
@@ -125,7 +127,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.inputTextChanges(type: .introduction, to: "new")     // true
             self.viewModel.inputTextChanges(type: .nickName, to: nil)           // false
@@ -150,7 +152,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.selectEmoji("😂")
             self.viewModel.inputTextChanges(type: .introduction, to: "new")
@@ -164,15 +166,130 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-    // 저장시 입력정보랑 같이 저장 -> call test
+    private func stubViewModelSavable(_ callback: Listener<EditProfileSceneEvent>? = nil) {
+        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+            var member = Member(uid: "uid", nickName: "some", icon: nil)
+            member.introduction = "old"
+            return member
+        }
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: callback ?? { _ in })
+        self.viewModel.inputTextChanges(type: .introduction, to: "new")
+    }
     
-    // 이미지있으면 이미지 저장 + 정보 저장 끝날때까지 대기
+    func testViewModel_whenSaveChanges_showIsSaving() {
+        // given
+        let expect = expectation(description: "이미지 데이터와 함께 프로파일 변경정보 저장")
+        expect.expectedFulfillmentCount = 3
+        
+        self.stubViewModelSavable()
+        
+        // when
+        let isSavings = self.waitElements(expect, for: self.viewModel.isSaveChanges) {
+            self.viewModel.selectMemoji(Data())
+            self.viewModel.saveChanges()
+            self.stubMemberUsecase.stubUpdateStatus.onNext(.pending)
+            self.stubMemberUsecase.stubUpdateStatus.onNext(.updating(0.1))
+            self.stubMemberUsecase.stubUpdateStatus.onNext(.finished)
+        }
+        
+        // then
+        XCTAssertEqual(isSavings, [false, true, false])
+    }
     
     // 저장 완료시 토스트 노출하고 화면 닫기
-    
-    // 저장중에 완료버튼 스피너로 바뀜
+    func testViewModel_whenSaveFinished_closeAndEmitEvent() {
+        // given
+        let expect = expectation(description: "저장 완료시에 화면 닫고 외부로 이벤트 전파")
+        expect.expectedFulfillmentCount = 2
+        
+        self.stubViewModelSavable { event in
+            if case .editCompleted = event {
+                expect.fulfill()
+            }
+        }
+        
+        self.spyRouter.called(key: "closeScene") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.stubMemberUsecase.stubUpdateStatus.onNext(.finished)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
     
     // 사진 업로드 실패했으면 프로필은 일단 저장하고 에러 토스트 -> 이미지에 오버레이로 실패 표시
+    func testViewModel_whenFailOnlyUploadImage_showToastAndNotClose() {
+        // given
+        let expect = expectation(description: "사진 저장만 실패한 경우에는 토스트 노출하고 화면은 안닫음")
+        
+        self.stubViewModelSavable()
+        
+        self.spyRouter.called(key: "showToast") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.selectMemoji(Data())
+        self.viewModel.saveChanges()
+        self.stubMemberUsecase.stubUpdateStatus.onNext(.finishedWithImageUploadFail(ApplicationErrors.invalid))
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_whenFailUpdate_showError() {
+        // given
+        let expect = expectation(description: "프로필 업데이트에 실패한 경우에는 에러 알림")
+        
+        self.stubViewModelSavable()
+        
+        self.spyRouter.called(key: "alertError") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.selectMemoji(Data())
+        self.viewModel.saveChanges()
+        self.stubMemberUsecase.stubUpdateStatus.onError(ApplicationErrors.invalid)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_closeScene() {
+        // given
+        let expect = expectation(description: "현재화면 닫음")
+        
+        self.spyRouter.called(key: "closeScene") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.requestCloseScene()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_whenSaveChangesAndRequestClose_showAlert() {
+        // given
+        let expect = expectation(description: "프로필 저장중에 화면 닫으려할경우 컨펌알럿 노출 필요")
+        
+        self.spyRouter.called(key: "alertForConfirm") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.stubViewModelSavable()
+        self.viewModel.saveChanges()
+        self.viewModel.requestCloseScene()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 
@@ -180,6 +297,21 @@ extension EditProfileViewModelTests {
     
     class SpyRouter: EditProfileRouting, Stubbable {
         
+        func showToast(_ message: String) {
+            self.verify(key: "showToast")
+        }
         
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            self.verify(key: "closeScene")
+            completed?()
+        }
+        
+        func alertError(_ error: Error) {
+            self.verify(key: "alertError")
+        }
+        
+        func alertForConfirm(_ form: AlertForm) {
+            self.verify(key: "alertForConfirm")
+        }
     }
 }
