@@ -13,6 +13,7 @@ import RxRelay
 
 import Domain
 import LocationScenes
+import MemberScenes
 import CommonPresenting
 
 // MARK: - MainViewModel
@@ -83,8 +84,8 @@ extension MainViewModelImple {
         
         let handleErrors: (Error) -> Void = { [weak self] error in
             switch error as? ApplicationErrors {
-            case .sigInNeed: self?.router.presentSignInScene()
-            case .profileNotSetup: self?.router.presentEditProfileScene()
+            case .sigInNeed: self?.requestSignInAndWaitResult()
+            case .profileNotSetup: self?.requestEnerMemberProfileAndWaitResult()
             default: self?.router.alertError(error)
             }
         }
@@ -96,6 +97,37 @@ extension MainViewModelImple {
         self.hoorayUsecase.isAvailToPublish()
             .subscribe(onSuccess: handleCheckResult, onError: handleErrors)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func requestSignInAndWaitResult() {
+        
+        self.router.presentSignInScene { [weak self] event in
+            switch event {
+            case .signInSuccess:
+                self?.makeNewHooray()
+            }
+        }
+    }
+    
+    private func requestEnerMemberProfileAndWaitResult() {
+        
+        let handleEditEvent: (EditProfileSceneEvent) -> Void = { [weak self] event in
+            guard case .editCompleted = event else { return }
+            self?.makeNewHooray()
+        }
+        
+        let routeToEditProfile: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            self.router.presentEditProfileScene(handleEditEvent)
+        }
+        
+        guard let form = AlertBuilder(base: .init())
+                .message("[TBD] need profile")
+                .isSingleConfirmButton(true)
+                .confirmed(routeToEditProfile)
+                .build() else { return }
+        
+        self.router.alertForConfirm(form)
     }
 }
 

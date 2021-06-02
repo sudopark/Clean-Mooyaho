@@ -14,6 +14,7 @@ import Domain
 import CommonPresenting
 import LocationScenes
 import PlaceScenes
+import MemberScenes
 import StubUsecases
 import UnitTestHelpKit
 
@@ -95,14 +96,14 @@ extension MainViewModelTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
-    func testViewModel_requestMakeNewHooray_withoutProfileSetup_routeToEditProfile() {
+    func testViewModel_requestMakeNewHooray_withoutProfileSetup_routeToAlertEditProfile() {
         // given
-        let expect = expectation(description: "새로운 후레이 발급 요청시 프로필이 세팅되어있지 않다면 않다면 입력 화면으로 이동")
+        let expect = expectation(description: "새로운 후레이 발급 요청시 프로필이 세팅되어있지 않다면 않다면 입력 화면으로 이동 알럿")
         self.stubHoorayUsecase.register(key: "isAvailToPublish") {
             return Maybe<Bool>.error(ApplicationErrors.profileNotSetup)
         }
         
-        self.spyRouter.called(key: "presentEditProfileScene") { _ in
+        self.spyRouter.called(key: "alertForConfirm") { _ in
             expect.fulfill()
         }
         
@@ -119,7 +120,7 @@ extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Stubbable {
         
-        func presentSignInScene() {
+        func presentSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) {
             self.verify(key: "presentSignInScene")
         }
         
@@ -136,8 +137,12 @@ extension MainViewModelTests {
             
         }
         
-        func presentEditProfileScene() {
+        func presentEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) {
             self.verify(key: "presentEditProfileScene")
+        }
+        
+        func alertForConfirm(_ form: AlertForm) {
+            self.verify(key: "alertForConfirm")
         }
     }
     

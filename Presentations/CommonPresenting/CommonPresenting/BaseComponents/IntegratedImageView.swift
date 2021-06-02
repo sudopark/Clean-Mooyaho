@@ -17,35 +17,58 @@ public class IntegratedImageView: UIView {
     
     public let descriptionView = UILabel()
     
-    func drawImage(_ source: ImageSource) {
-        self.cancelDraw()
+    public func drawImage(_ image: UIImage, withCancel: Bool = true) {
+        if withCancel {
+            self.cancelSetupImage()
+        }
+        self.internalImageView.image = image
+    }
+    
+    public func setupImage(using source: ImageSource) {
+        self.cancelSetupImage()
         
         switch source {
         case let .emoji(value):
             self.drawEmoji(value)
             
         case let .path(path):
-            self.drawRemoteImage(path)
+            self.setupRemoteImage(path)
             
         case let .reference(path, _):
-            self.drawRemoteImage(path)
+            self.setupRemoteImage(path)
             // TOOD: show reference or not
         }
     }
     
-    func cancelDraw() {
-        self.internalImageView.cancelDrawRemoteImage()
+    public func cancelSetupImage() {
+        self.internalImageView.cancelSetupRemoteImage()
         self.internalImageView.image = nil
     }
     
     private func drawEmoji(_ value: String) {
         let size = self.frame.size
-        let fontSize = size.width * 0.8
+        let fontSize = size.width * 0.75
         let scale = UIScreen.main.scale
         self.internalImageView.image = value.drawText(size: size, fontSize: fontSize, scale: scale)
     }
     
-    private func drawRemoteImage(_ path: String) {
-        self.internalImageView.drawRemoteImage(path)
+    private func setupRemoteImage(_ path: String) {
+        self.internalImageView.setupRemoteImage(path)
+    }
+}
+
+
+extension IntegratedImageView: Presenting {
+    
+    public func setupLayout() {
+        
+        self.addSubview(internalImageView)
+        internalImageView.autoLayout.activeFill(self)
+    }
+    
+    public func setupStyling() {
+        self.backgroundColor = .clear
+        self.internalImageView.backgroundColor = .clear
+        self.internalImageView.contentMode = .scaleAspectFill
     }
 }

@@ -34,11 +34,14 @@ public final class SignInViewModelImple: SignInViewModel {
         
     private let authUsecase: AuthUsecase
     private let router: SignInRouting
+    private let listener: Listener<SignInSceneEvents>
     
     public init(authUsecase: AuthUsecase,
-                router: SignInRouting) {
+                router: SignInRouting,
+                listener: @escaping Listener<SignInSceneEvents>) {
         self.authUsecase = authUsecase
         self.router = router
+        self.listener = listener
     }
     
     deinit {
@@ -64,7 +67,7 @@ extension SignInViewModelImple {
     
     public func requestClose() {
         guard self.isSignInProcessing == false else { return }
-        self.router.closeScene(animated: true)
+        self.router.closeScene(animated: true, completed: nil)
     }
     
     public func requestSignIn(_ type: OAuthServiceProviderType) {
@@ -78,7 +81,9 @@ extension SignInViewModelImple {
         }
         
         let closeScene: (Member) -> Void = { [weak self] _ in
-            self?.router.closeSceneAfterSignIn()
+            self?.router.closeScene(animated: true) { [weak self] in
+                self?.listener(.signInSuccess)
+            }
         }
         
         self.subjects.isProcessing.accept(true)

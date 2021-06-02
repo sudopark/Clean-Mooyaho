@@ -18,10 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SignInRouting: Routing {
-    
-    func closeSceneAfterSignIn()
-}
+public protocol SignInRouting: Routing { }
 
 // MARK: - Routers
 
@@ -31,9 +28,4 @@ public typealias SignInRouterBuildables = EmptyBuilder
 public final class SignInRouter: Router<SignInRouterBuildables>, SignInRouting { }
 
 
-extension SignInRouter {
-    
-    public func closeSceneAfterSignIn() {
-        self.currentScene?.dismiss(animated: true, completion: nil)
-    }
-}
+extension SignInRouter { }
