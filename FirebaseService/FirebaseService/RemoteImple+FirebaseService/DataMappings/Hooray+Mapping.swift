@@ -15,6 +15,12 @@ enum HoorayMappingKey: String, JSONMappingKeys {
     case uid
     case placeID = "plc_id"
     case publisherID = "pub_id"
+    
+    case keyword = "h_kwd"
+    case message = "msg"
+    case tags = "tags"
+    case image = "img"
+    
     case latt = "lat"
     case long = "lng"
     case timestamp = "ts"
@@ -93,6 +99,8 @@ extension Hooray: DocumentMappable {
     init?(docuID: String, json: JSON) {
         guard let placeID = json[Key.placeID] as? String,
               let publisherID = json[Key.publisherID] as? String,
+              let keyword = json[Key.keyword] as? String,
+              let message = json[Key.keyword] as? String,
               let latt = json[Key.latt] as? Double,
               let long = json[Key.long] as? Double,
               let time = json[Key.timestamp] as? Double,
@@ -103,11 +111,14 @@ extension Hooray: DocumentMappable {
             return nil
         }
         
+        let tags = json[Key.tags] as? [String] ?? []
+        let image = (json[Key.image] as? JSON).flatMap(ImageSource.init(json:))
         let coordinate = Coordinate(latt: latt, long: long)
         let acks = acksJSONArrray.compactMap{ j -> HoorayAckInfo? in .init(json: j) }
         let reactions = reactionJSONArray.compactMap{ j -> HoorayReaction.ReactionInfo? in .init(json: j) }
         
         self.init(uid: docuID, placeID: placeID, publisherID: publisherID,
+                  hoorayKeyword: keyword, message: message, tags: tags, image: image,
                   location: coordinate, timestamp: time,
                   ackUserIDs: acks, reactions: reactions,
                   spreadDistance: distance, aliveDuration: duration)
@@ -121,6 +132,10 @@ extension Hooray: DocumentMappable {
         var json: JSON = [:]
         json[Key.placeID] = self.placeID
         json[Key.publisherID] = self.publisherID
+        json[Key.keyword] = self.hoorayKeyword
+        json[Key.message] = self.message
+        json[Key.tags] = self.tags
+        json[Key.image] = self.image?.asJSON
         json[Key.latt] = self.location.latt
         json[Key.long] = self.location.long
         json[Key.timestamp] = self.timeStamp

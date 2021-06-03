@@ -72,6 +72,8 @@ extension Hooray {
         return Hooray(uid: "uid:\(int)",
                       placeID: "place:\(int)",
                       publisherID: "pub:\(int)",
+                      hoorayKeyword: "some",
+                      message: "hi",
                       location: .init(latt: 0, long: 0),
                       timestamp: 0,
                       ackUserIDs: [],
@@ -84,6 +86,6 @@ extension Hooray {
 extension NewHoorayMessage {
     
     static func dummy(_ int: Int) -> NewHoorayMessage {
-        return .init(hoorayID: "id:\(int)", publisherID: "pub:\(int)", publisherNickName: "pub_nick:\(int)", publishedAt: 0, placeID: "place", location: .init(latt: 0, long: 0), spreadDistance: 10, aliveDuration: 10)
+        return .init(hoorayID: "id:\(int)", publisherID: "pub:\(int)", publishedAt: 0, placeID: "place", location: .init(latt: 0, long: 0), spreadDistance: 10, aliveDuration: 10)
     }
 }

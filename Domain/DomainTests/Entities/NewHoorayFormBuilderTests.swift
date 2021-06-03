@@ -35,7 +35,8 @@ extension NewHoorayFormBuilderTests {
         // given
         let builder = self.builder
             .placeID("placeID")
-            .publisherNickName("dummy_name")
+            .hoorayKeyword("some")
+            .message("message")
             .location(Coordinate(latt: 0, long: 0))
             .timeStamp(1)
             .spreadDistance(10)
