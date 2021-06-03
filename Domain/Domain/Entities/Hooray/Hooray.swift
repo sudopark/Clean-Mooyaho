@@ -54,6 +54,11 @@ public struct Hooray {
     public let placeID: String
     public let publisherID: String
     
+    public let hoorayKeyword: String
+    public let message: String
+    public let tags: [String]
+    public let image: ImageSource?
+    
     public let location: Coordinate
     public let timeStamp: TimeStamp
     
@@ -64,12 +69,17 @@ public struct Hooray {
     public let aliveDuration: TimeInterval
     
     public init(uid: String, placeID: String, publisherID: String,
+                hoorayKeyword: String, message: String, tags: [String] = [], image:ImageSource? = nil,
                 location: Coordinate, timestamp: TimeStamp,
                 ackUserIDs: [HoorayAckInfo] = [], reactions: [HoorayReaction.ReactionInfo],
                 spreadDistance: Meters, aliveDuration: TimeInterval) {
         self.uid = uid
         self.placeID = placeID
         self.publisherID = publisherID
+        self.hoorayKeyword = hoorayKeyword
+        self.message = message
+        self.tags = tags
+        self.image = image
         self.location = location
         self.timeStamp = timestamp
         self.ackUserIDs = Set(ackUserIDs)
@@ -85,8 +95,12 @@ public struct Hooray {
 public final class NewHoorayForm {
     
     public let publisherID: String
-    public var publisherNickName: String!
     public var placeID: String?
+    
+    public var hoorayKeyword: String!
+    public var message: String!
+    public var tags: [String] = []
+    public var image: ImageSource?
     
     public var location: Coordinate!
     public var timeStamp: TimeStamp!
@@ -105,7 +119,8 @@ extension NewHoorayFormBuilder {
     
     public func build() -> Base? {
         let asserting: (NewHoorayForm) -> Bool = { form in
-            guard form.publisherNickName != nil,
+            guard form.hoorayKeyword?.isNotEmpty == true,
+                  form.message?.isNotEmpty == true,
                   form.location != nil,
                   form.timeStamp != nil,
                   form.spreadDistance != nil,

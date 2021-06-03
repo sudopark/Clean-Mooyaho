@@ -44,8 +44,10 @@ class RepositoryTests_Hooray: BaseTestCase, WaitObservableEvents {
 extension RepositoryTests_Hooray {
     
     private func dummyHooray(_ int: Int = 0) -> Hooray {
-        return .init(uid: "id:\(int)", placeID: "place:\(int)", publisherID: "pub:\(int)"
-                     , location: .init(latt: 0, long: 0), timestamp: 0,
+        return .init(uid: "id:\(int)", placeID: "place:\(int)",
+                     publisherID: "pub:\(int)",
+                     hoorayKeyword: "some", message: "hi",
+                     location: .init(latt: 0, long: 0), timestamp: 0,
                      ackUserIDs: [], reactions: [], spreadDistance: 0, aliveDuration: 0)
     }
     
