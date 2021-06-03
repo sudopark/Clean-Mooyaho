@@ -132,7 +132,7 @@ extension FirebaseServiceImple {
         }
         
         let finallySendMessages: (Hooray) -> Void = { [weak self] hooray in
-            self?.sendNewHoorayMessagesToNearbyUsers(hooray, publisher: newForm.publisherNickName)
+            self?.sendNewHoorayMessagesToNearbyUsers(hooray)
         }
         
         return completeHoorayForm
@@ -141,10 +141,10 @@ extension FirebaseServiceImple {
             .do(onNext: finallySendMessages)
     }
     
-    private func sendNewHoorayMessagesToNearbyUsers(_ newHooray: Hooray, publisher: String) {
+    private func sendNewHoorayMessagesToNearbyUsers(_ newHooray: Hooray) {
         
         let thenSendMessages: ([String]) -> Void = { [weak self] userIDs in
-            let message = NewHoorayMessage(new: newHooray, publisherName: publisher)
+            let message = NewHoorayMessage(new: newHooray)
             self?.batchSendForgroundMessages(message, toUsers: userIDs)
         }
         self.loadNearbyUserIDs(center: newHooray.location, radius: newHooray.spreadDistance)
