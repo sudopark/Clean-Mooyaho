@@ -31,6 +31,10 @@ extension Member {
     public var isProfileSetup: Bool {
         return self.nickName?.isNotEmpty == true
     }
+    
+    public static var memberDefaultEmoji: ImageSource {
+        return .emoji("👻")
+    }
 }
 
 

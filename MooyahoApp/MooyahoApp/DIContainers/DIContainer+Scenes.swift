@@ -13,6 +13,7 @@ import CommonPresenting
 import MemberScenes
 import LocationScenes
 import PlaceScenes
+import HoorayScene
 
 
 // MARK: - Main Sceens
@@ -92,3 +93,20 @@ extension DIContainers: SuggestPlaceSceneBuilable {
         return viewController
     }
 }
+
+
+// MARK: - Hooray Scenes
+
+extension DIContainers: MakeHooraySceneBuilable {
+    
+    public func makeMakeHoorayScene() -> MakeHoorayScene {
+        let router = MakeHoorayRouter(nextSceneBuilders: self)
+        let viewModel = MakeHoorayViewModelImple(memberUsecase: self.memberUsecase,
+                                                 hoorayPublishUsecase: self.hoorayUsecase,
+                                                 router: router)
+        let viewController = MakeHoorayViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
