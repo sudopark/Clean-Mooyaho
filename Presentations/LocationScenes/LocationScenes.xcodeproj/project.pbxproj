@@ -20,7 +20,6 @@
 		F6F8732426593F7300FDB24E /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F8732326593F7300FDB24E /* UnitTestHelpKit.framework */; };
 		F6F8732C2659402200FDB24E /* NearbyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F873282659402200FDB24E /* NearbyRouter.swift */; };
 		F6F8732D2659402200FDB24E /* NearbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F873292659402200FDB24E /* NearbyViewController.swift */; };
-		F6F8732E2659402200FDB24E /* NearbyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8732A2659402200FDB24E /* NearbyBuilder.swift */; };
 		F6F8732F2659402200FDB24E /* NearbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8732B2659402200FDB24E /* NearbyViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,7 +50,6 @@
 		F6F8732326593F7300FDB24E /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F873282659402200FDB24E /* NearbyRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyRouter.swift; sourceTree = "<group>"; };
 		F6F873292659402200FDB24E /* NearbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewController.swift; sourceTree = "<group>"; };
-		F6F8732A2659402200FDB24E /* NearbyBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyBuilder.swift; sourceTree = "<group>"; };
 		F6F8732B2659402200FDB24E /* NearbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,7 +136,6 @@
 				F6E663772669BD5900794E2B /* NearbyScene.swift */,
 				F6F873282659402200FDB24E /* NearbyRouter.swift */,
 				F6F873292659402200FDB24E /* NearbyViewController.swift */,
-				F6F8732A2659402200FDB24E /* NearbyBuilder.swift */,
 				F6F8732B2659402200FDB24E /* NearbyViewModel.swift */,
 			);
 			path = Nearby;
@@ -252,7 +249,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6F8732E2659402200FDB24E /* NearbyBuilder.swift in Sources */,
 				F6E663782669BD5900794E2B /* NearbyScene.swift in Sources */,
 				F6F8732F2659402200FDB24E /* NearbyViewModel.swift in Sources */,
 				F6F8732C2659402200FDB24E /* NearbyRouter.swift in Sources */,

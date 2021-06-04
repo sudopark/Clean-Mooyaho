@@ -17,8 +17,6 @@ import UIKit
 import RxSwift
 
 import CommonPresenting
-import MemberScenes
-import LocationScenes
 
 
 // MARK: - Routing
