@@ -16,14 +16,9 @@ import UIKit
 import CommonPresenting
 
 
-public enum SuggestSceneEvents {
-    
-}
-
-
 // MARK: - Builder + DI Container Extension
 
 public protocol SuggestPlaceSceneBuilable {
     
-    func makeSuggestPlaceScene(_ listener: @escaping Listener<SuggestSceneEvents>) -> SuggestPlaceScene
+    func makeSuggestPlaceScene() -> SuggestPlaceScene
 }

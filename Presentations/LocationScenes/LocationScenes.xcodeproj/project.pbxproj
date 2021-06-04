@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F603258D265954F400E4E769 /* NearbyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258C265954F400E4E769 /* NearbyViewModelTests.swift */; };
 		F60325C82659586F00E4E769 /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325C72659586F00E4E769 /* StubUsecases.framework */; };
+		F6E663782669BD5900794E2B /* NearbyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E663772669BD5900794E2B /* NearbyScene.swift */; };
 		F6F8730626593F3400FDB24E /* LocationScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F872FC26593F3400FDB24E /* LocationScenes.framework */; };
 		F6F8730B26593F3400FDB24E /* LocationScenesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8730A26593F3400FDB24E /* LocationScenesTests.swift */; };
 		F6F8730D26593F3400FDB24E /* LocationScenes.h in Headers */ = {isa = PBXBuildFile; fileRef = F6F872FF26593F3400FDB24E /* LocationScenes.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		F603258C265954F400E4E769 /* NearbyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModelTests.swift; sourceTree = "<group>"; };
 		F60325C72659586F00E4E769 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E663772669BD5900794E2B /* NearbyScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyScene.swift; sourceTree = "<group>"; };
 		F6F872FC26593F3400FDB24E /* LocationScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LocationScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F872FF26593F3400FDB24E /* LocationScenes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationScenes.h; sourceTree = "<group>"; };
 		F6F8730026593F3400FDB24E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		F6F8732726593FFB00FDB24E /* Nearby */ = {
 			isa = PBXGroup;
 			children = (
+				F6E663772669BD5900794E2B /* NearbyScene.swift */,
 				F6F873282659402200FDB24E /* NearbyRouter.swift */,
 				F6F873292659402200FDB24E /* NearbyViewController.swift */,
 				F6F8732A2659402200FDB24E /* NearbyBuilder.swift */,
@@ -250,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6F8732E2659402200FDB24E /* NearbyBuilder.swift in Sources */,
+				F6E663782669BD5900794E2B /* NearbyScene.swift in Sources */,
 				F6F8732F2659402200FDB24E /* NearbyViewModel.swift in Sources */,
 				F6F8732C2659402200FDB24E /* NearbyRouter.swift in Sources */,
 				F6F8732D2659402200FDB24E /* NearbyViewController.swift in Sources */,

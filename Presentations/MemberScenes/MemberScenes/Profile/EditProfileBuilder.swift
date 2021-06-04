@@ -18,11 +18,8 @@ import CommonPresenting
 
 // MARK: - Builder + DI Container Extension
 
-public enum EditProfileSceneEvent {
-    case editCompleted
-}
 
 public protocol EditProfileSceneBuilable {
     
-    func makeEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) -> EditProfileScene
+    func makeEditProfileScene() -> EditProfileScene
 }

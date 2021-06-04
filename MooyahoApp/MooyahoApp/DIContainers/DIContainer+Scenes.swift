@@ -46,21 +46,19 @@ extension DIContainers: MainSlideMenuSceneBuilable {
 
 extension DIContainers: SignInSceneBuilable, EditProfileSceneBuilable {
     
-    public func makeSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) -> SignInScene {
+    public func makeSignInScene() -> SignInScene {
         let router = SignInRouter(nextSceneBuilders: self)
         let viewModel = SignInViewModelImple(authUsecase: self.authUsecase,
-                                             router: router,
-                                             listener: listener)
+                                             router: router)
         let viewController = SignInViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
     
-    public func makeEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) -> EditProfileScene {
+    public func makeEditProfileScene() -> EditProfileScene {
         let router = EditProfileRouter(nextSceneBuilders: self)
         let viewModel = EditProfileViewModelImple(usecase: self.memberUsecase,
-                                                  router: router,
-                                                  listener: listener)
+                                                  router: router)
         let viewController = EditProfileViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
@@ -72,11 +70,10 @@ extension DIContainers: SignInSceneBuilable, EditProfileSceneBuilable {
 
 extension DIContainers: NearbySceneBuilable {
     
-    public func makeNearbyScene(_ listener: @escaping Listener<NearbySceneEvents>) -> NearbyScene & NearbySceneCommandListener {
+    public func makeNearbyScene() -> NearbyScene {
         let router = NearbyRouter(nextSceneBuilders: self)
         let viewModel = NearbyViewModelImple(locationUsecase: self.userLocationUsecase,
-                                             router: router,
-                                             listener: listener)
+                                             router: router)
         let viewController = NearbyViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
@@ -87,10 +84,9 @@ extension DIContainers: NearbySceneBuilable {
 
 extension DIContainers: SuggestPlaceSceneBuilable {
 
-    public func makeSuggestPlaceScene(_ listener: @escaping Listener<SuggestSceneEvents>) -> SuggestPlaceScene {
+    public func makeSuggestPlaceScene() -> SuggestPlaceScene {
         let router = SuggestPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SuggestPlaceViewModelImple(router: router,
-                                                   listener: listener)
+        let viewModel = SuggestPlaceViewModelImple(router: router)
         let viewController = SuggestPlaceViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

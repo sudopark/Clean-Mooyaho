@@ -28,8 +28,7 @@ class SignInViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubAuthUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = .init(authUsecase: self.stubAuthUsecase,
-                               router: self.spyRouter,
-                               listener: { _ in })
+                               router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
@@ -82,11 +81,11 @@ extension SignInViewModelTests {
             return Maybe<Member>.just(Member(uid: "dummy"))
         }
         
-        self.viewModel = .init(authUsecase: self.stubAuthUsecase,
-                               router: self.spyRouter) { event in
-            guard case .signInSuccess = event else { return }
-            expect.fulfill()
-        }
+        self.viewModel.signedIn
+            .subscribe(onNext: {
+                expect.fulfill()
+            })
+            .disposed(by: self.disposeBag)
         
         self.spyRouter.called(key: "closeScene") { _ in
             expect.fulfill()

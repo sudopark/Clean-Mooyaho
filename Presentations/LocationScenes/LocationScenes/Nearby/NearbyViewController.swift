@@ -16,19 +16,14 @@ import Domain
 import CommonPresenting
 
 
-// MARK: - NearbyScene
-
-public protocol NearbyScene: Scenable { }
-
-
 // MARK: - NearbyViewController
 
-public final class NearbyViewController: BaseViewController, NearbyScene, NearbySceneCommandListener {
+public final class NearbyViewController: BaseViewController, NearbyScene {
     
     let mapView = MKMapView()
     let dimView = UIView()
     
-    private let viewModel: NearbyViewModel
+    let viewModel: NearbyViewModel
     
     public init(viewModel: NearbyViewModel) {
         self.viewModel = viewModel
@@ -83,7 +78,11 @@ extension NearbyViewController {
     }
     
     private func updateCameraPosition(_ position: MapCameraPosition) {
-        let center = position.center
+        guard let manualLocationCenter = position.center else {
+            self.refreshUserLocation()
+            return
+        }
+        let center = manualLocationCenter
         let region = MKCoordinateRegion(center: center, latitudinalMeters: 1_500, longitudinalMeters: 1_500)
         self.mapView.setRegion(region, animated: false)
     }
@@ -92,10 +91,6 @@ extension NearbyViewController {
         let location = self.mapView.userLocation
         let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1_500, longitudinalMeters: 1_500)
         self.mapView.setRegion(region, animated: true)
-    }
-    
-    public func moveMapCameraToCurrentUserPosition() {
-        self.refreshUserLocation()
     }
 }
 
@@ -146,10 +141,12 @@ extension NearbyViewController: MKMapViewDelegate {
 
 private extension MapCameraPosition {
     
-    var center: CLLocationCoordinate2D {
+    var center: CLLocationCoordinate2D? {
         switch self {
-        case let .default(position),
-             let .userLocation(position):
+        case let .default(position):
+            return .init(latitude: position.latt, longitude: position.long)
+         case let .userLocation(position):
+            guard let position = position else { return nil }
             return .init(latitude: position.latt, longitude: position.long)
         }
     }

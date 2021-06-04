@@ -15,19 +15,10 @@ import UIKit
 
 import CommonPresenting
 
-public enum NearbySceneEvents {
-    case curretPosition(placeMark: String)
-    case unavailToUseService
-}
-
-public protocol NearbySceneCommandListener: AnyObject {
-
-    func moveMapCameraToCurrentUserPosition()
-}
 
 // MARK: - Builder + DI Container Extension
 
 public protocol NearbySceneBuilable {
     
-    func makeNearbyScene(_ listener: @escaping Listener<NearbySceneEvents>) -> NearbyScene & NearbySceneCommandListener
+    func makeNearbyScene() -> NearbyScene
 }

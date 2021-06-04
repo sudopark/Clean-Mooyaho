@@ -28,6 +28,8 @@
 		F6A814EE2663945A00148F5E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814EA2663945A00148F5E /* EditProfileViewController.swift */; };
 		F6A814EF2663945A00148F5E /* EditProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814EB2663945A00148F5E /* EditProfileBuilder.swift */; };
 		F6A814F02663945A00148F5E /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814EC2663945A00148F5E /* EditProfileViewModel.swift */; };
+		F6E6636B2669B67000794E2B /* SignInScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E6636A2669B67000794E2B /* SignInScene.swift */; };
+		F6E6637A2669C32D00794E2B /* EditProfileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E663792669C32D00794E2B /* EditProfileScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,8 @@
 		F6A814EA2663945A00148F5E /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		F6A814EB2663945A00148F5E /* EditProfileBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileBuilder.swift; sourceTree = "<group>"; };
 		F6A814EC2663945A00148F5E /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		F6E6636A2669B67000794E2B /* SignInScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScene.swift; sourceTree = "<group>"; };
+		F6E663792669C32D00794E2B /* EditProfileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,7 @@
 		F62DFFA8266185E300C4A080 /* SIgnIn */ = {
 			isa = PBXGroup;
 			children = (
+				F6E6636A2669B67000794E2B /* SignInScene.swift */,
 				F62DFFA9266185F200C4A080 /* SignInRouter.swift */,
 				F62DFFAA266185F200C4A080 /* SignInViewController.swift */,
 				F62DFFAB266185F200C4A080 /* SignInBuilder.swift */,
@@ -161,6 +166,7 @@
 		F6A814F12663945F00148F5E /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				F6E663792669C32D00794E2B /* EditProfileScene.swift */,
 				F6A814E92663945A00148F5E /* EditProfileRouter.swift */,
 				F6A814EA2663945A00148F5E /* EditProfileViewController.swift */,
 				F6A814EB2663945A00148F5E /* EditProfileBuilder.swift */,
@@ -279,6 +285,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F637204B266475430089D0B3 /* EditProfileView.swift in Sources */,
+				F6E6636B2669B67000794E2B /* SignInScene.swift in Sources */,
+				F6E6637A2669C32D00794E2B /* EditProfileScene.swift in Sources */,
 				F6A814ED2663945A00148F5E /* EditProfileRouter.swift in Sources */,
 				F6A814EF2663945A00148F5E /* EditProfileBuilder.swift in Sources */,
 				F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */,

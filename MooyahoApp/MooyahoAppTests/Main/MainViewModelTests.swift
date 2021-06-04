@@ -48,18 +48,18 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
 
 extension MainViewModelTests {
     
-    private func linkMapScene() -> SpyNearbySceneListeningAction {
-        let spyCommandListener = SpyNearbySceneListeningAction()
-        self.spyRouter.stubCommandListener = spyCommandListener
+    private func linkMapScene() -> SpyNearbySceneInteractor {
+        let spyInteractor = SpyNearbySceneInteractor()
+        self.spyRouter.spyInteractor = spyInteractor
         self.viewModel.setupSubScenes()
-        return spyCommandListener
+        return spyInteractor
     }
     
     func testViewModel_requestMoveMapCameraToCurrentUserLocation() {
         // given
         let expect = expectation(description: "유저 현재위치로 지도 카메라 이동 요청")
-        let spyCommandListener = self.linkMapScene()
-        spyCommandListener.called(key: "updateCurrentUserPosition") { _ in
+        let interactor = self.linkMapScene()
+        interactor.called(key: "moveMapCameraToCurrentUserPosition") { _ in
             expect.fulfill()
         }
         
@@ -120,16 +120,17 @@ extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Stubbable {
         
-        func presentSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) {
+        func presentSignInScene() -> SignInScenePresenter? {
             self.verify(key: "presentSignInScene")
+            return nil
         }
         
-        var stubCommandListener: SpyNearbySceneListeningAction?
-        func addNearbySceen(_ listener: @escaping Listener<NearbySceneEvents>) -> NearbySceneCommandListener? {
-            return self.stubCommandListener
+        var spyInteractor: SpyNearbySceneInteractor?
+        func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?) {
+            return (self.spyInteractor, nil)
         }
         
-        func addSuggestPlaceScene(_ listener: @escaping Listener<SuggestSceneEvents>) {
+        func addSuggestPlaceScene() {
             
         }
         
@@ -137,8 +138,9 @@ extension MainViewModelTests {
             
         }
         
-        func presentEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) {
+        func presentEditProfileScene() -> EditProfileScenePresenter? {
             self.verify(key: "presentEditProfileScene")
+            return nil
         }
         
         func alertForConfirm(_ form: AlertForm) {
@@ -146,10 +148,10 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyNearbySceneListeningAction: NearbySceneCommandListener, Stubbable {
+    class SpyNearbySceneInteractor: NearbySceneInteractor, Stubbable {
         
         func moveMapCameraToCurrentUserPosition() {
-            self.verify(key: "updateCurrentUserPosition")
+            self.verify(key: "moveMapCameraToCurrentUserPosition")
         }
     }
 }

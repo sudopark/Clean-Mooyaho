@@ -15,17 +15,12 @@ import Domain
 import CommonPresenting
 
 
-// MARK: - SignInScene
-
-public protocol SignInScene: Scenable, PangestureDismissableScene { }
-
-
 // MARK: - SignInViewController
 
 public final class SignInViewController: BaseViewController, SignInScene {
     
     private let signInView = SignInView()
-    private let viewModel: SignInViewModel
+    let viewModel: SignInViewModel
     
     public init(viewModel: SignInViewModel) {
         self.viewModel = viewModel

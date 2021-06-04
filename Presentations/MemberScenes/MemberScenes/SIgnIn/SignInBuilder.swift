@@ -18,11 +18,7 @@ import CommonPresenting
 
 // MARK: - Builder + DI Container Extension
 
-public enum SignInSceneEvents {
-    case signInSuccess
-}
-
 public protocol SignInSceneBuilable {
     
-    func makeSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) -> SignInScene
+    func makeSignInScene() -> SignInScene
 }

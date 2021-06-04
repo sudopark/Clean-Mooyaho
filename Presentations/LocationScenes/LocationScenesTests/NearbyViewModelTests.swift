@@ -28,8 +28,7 @@ class NearbyViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubLocationUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = NearbyViewModelImple(locationUsecase: self.stubLocationUsecase,
-                                              router: self.spyRouter,
-                                              listener: { _ in })
+                                              router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
@@ -177,10 +176,6 @@ extension NearbyViewModelTests {
     func testViewModel_whenAuthorizeStatusRejected_emitEvent() {
         // given
         let expect = expectation(description: "권한 거절시에 서비스 이용불가 외부로 알림")
-        self.viewModel = .init(locationUsecase: self.stubLocationUsecase, router: self.spyRouter) { event in
-            guard case .unavailToUseService = event else { return }
-            expect.fulfill()
-        }
         
         self.stubLocationUsecase.register(key: "checkHasPermission") {
             return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
@@ -190,10 +185,12 @@ extension NearbyViewModelTests {
         }
         
         // when
-        self.viewModel.preparePermission()
+        let void: Void? = self.waitFirstElement(expect, for: self.viewModel.unavailToUseService) {
+            self.viewModel.preparePermission()
+        }
         
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertNotNil(void)
     }
 }
 
