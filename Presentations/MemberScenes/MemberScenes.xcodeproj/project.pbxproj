@@ -18,7 +18,6 @@
 		F62DFF9F2661851800C4A080 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFF9E2661851800C4A080 /* UnitTestHelpKit.framework */; };
 		F62DFFAD266185F200C4A080 /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFA9266185F200C4A080 /* SignInRouter.swift */; };
 		F62DFFAE266185F200C4A080 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAA266185F200C4A080 /* SignInViewController.swift */; };
-		F62DFFAF266185F200C4A080 /* SignInBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAB266185F200C4A080 /* SignInBuilder.swift */; };
 		F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAC266185F200C4A080 /* SignInViewModel.swift */; };
 		F62DFFB22661863900C4A080 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB12661863900C4A080 /* SignInView.swift */; };
 		F637204B266475430089D0B3 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637204A266475430089D0B3 /* EditProfileView.swift */; };
@@ -26,7 +25,6 @@
 		F661D47D2663193300B77481 /* SignInViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661D47C2663193300B77481 /* SignInViewModelTests.swift */; };
 		F6A814ED2663945A00148F5E /* EditProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814E92663945A00148F5E /* EditProfileRouter.swift */; };
 		F6A814EE2663945A00148F5E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814EA2663945A00148F5E /* EditProfileViewController.swift */; };
-		F6A814EF2663945A00148F5E /* EditProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814EB2663945A00148F5E /* EditProfileBuilder.swift */; };
 		F6A814F02663945A00148F5E /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A814EC2663945A00148F5E /* EditProfileViewModel.swift */; };
 		F6E6636B2669B67000794E2B /* SignInScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E6636A2669B67000794E2B /* SignInScene.swift */; };
 		F6E6637A2669C32D00794E2B /* EditProfileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E663792669C32D00794E2B /* EditProfileScene.swift */; };
@@ -57,7 +55,6 @@
 		F62DFF9E2661851800C4A080 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFA9266185F200C4A080 /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
 		F62DFFAA266185F200C4A080 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		F62DFFAB266185F200C4A080 /* SignInBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInBuilder.swift; sourceTree = "<group>"; };
 		F62DFFAC266185F200C4A080 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		F62DFFB12661863900C4A080 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		F637204A266475430089D0B3 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
@@ -65,7 +62,6 @@
 		F661D47C2663193300B77481 /* SignInViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelTests.swift; sourceTree = "<group>"; };
 		F6A814E92663945A00148F5E /* EditProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRouter.swift; sourceTree = "<group>"; };
 		F6A814EA2663945A00148F5E /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
-		F6A814EB2663945A00148F5E /* EditProfileBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileBuilder.swift; sourceTree = "<group>"; };
 		F6A814EC2663945A00148F5E /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		F6E6636A2669B67000794E2B /* SignInScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScene.swift; sourceTree = "<group>"; };
 		F6E663792669C32D00794E2B /* EditProfileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileScene.swift; sourceTree = "<group>"; };
@@ -156,7 +152,6 @@
 				F6E6636A2669B67000794E2B /* SignInScene.swift */,
 				F62DFFA9266185F200C4A080 /* SignInRouter.swift */,
 				F62DFFAA266185F200C4A080 /* SignInViewController.swift */,
-				F62DFFAB266185F200C4A080 /* SignInBuilder.swift */,
 				F62DFFAC266185F200C4A080 /* SignInViewModel.swift */,
 				F62DFFB12661863900C4A080 /* SignInView.swift */,
 			);
@@ -169,7 +164,6 @@
 				F6E663792669C32D00794E2B /* EditProfileScene.swift */,
 				F6A814E92663945A00148F5E /* EditProfileRouter.swift */,
 				F6A814EA2663945A00148F5E /* EditProfileViewController.swift */,
-				F6A814EB2663945A00148F5E /* EditProfileBuilder.swift */,
 				F6A814EC2663945A00148F5E /* EditProfileViewModel.swift */,
 				F637204A266475430089D0B3 /* EditProfileView.swift */,
 			);
@@ -288,11 +282,9 @@
 				F6E6636B2669B67000794E2B /* SignInScene.swift in Sources */,
 				F6E6637A2669C32D00794E2B /* EditProfileScene.swift in Sources */,
 				F6A814ED2663945A00148F5E /* EditProfileRouter.swift in Sources */,
-				F6A814EF2663945A00148F5E /* EditProfileBuilder.swift in Sources */,
 				F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */,
 				F62DFFAE266185F200C4A080 /* SignInViewController.swift in Sources */,
 				F62DFFAD266185F200C4A080 /* SignInRouter.swift in Sources */,
-				F62DFFAF266185F200C4A080 /* SignInBuilder.swift in Sources */,
 				F6A814F02663945A00148F5E /* EditProfileViewModel.swift in Sources */,
 				F62DFFB22661863900C4A080 /* SignInView.swift in Sources */,
 				F6A814EE2663945A00148F5E /* EditProfileViewController.swift in Sources */,

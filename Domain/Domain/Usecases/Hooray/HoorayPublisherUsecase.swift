@@ -25,7 +25,7 @@ public protocol HoorayPublisherUsecase {
     func isAvailToPublish() -> Maybe<Bool>
     
     func publish(newHooray hoorayForm: NewHoorayForm,
-                        withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray>
+                 withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray>
     
     var receiveHoorayAck: Observable<HoorayAckMessage> { get }
     
