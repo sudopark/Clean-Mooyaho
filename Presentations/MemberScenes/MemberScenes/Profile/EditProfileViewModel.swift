@@ -36,6 +36,7 @@ public protocol EditProfileViewModel: AnyObject {
     func previousInputValue(for cellType: EditProfileCellType) -> String?
     var isSavable: Observable<Bool> { get }
     var isSaveChanges: Observable<Bool> { get }
+    var editCompleted: Observable<Void> { get }
 }
 
 
@@ -50,14 +51,11 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
     
     private let usecase: MemberUsecase
     private let router: EditProfileRouting
-    private let listener: Listener<EditProfileSceneEvent>
     
     public init(usecase: MemberUsecase,
-                router: EditProfileRouting,
-                listener: @escaping Listener<EditProfileSceneEvent>) {
+                router: EditProfileRouting) {
         self.usecase = usecase
         self.router = router
-        self.listener = listener
         self.internalBind()
     }
     
@@ -72,6 +70,7 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
         let pendingInputs = BehaviorRelay<[EditProfileCellType: String]>(value: [:])
         let cellViewModels = BehaviorRelay<[EditProfileCellType]>(value: [])
         let isSaveChanges = BehaviorRelay<Bool>(value: false)
+        let isSaveCompleted = PublishSubject<Void>()
     }
     private let disposeBag = DisposeBag()
     private let subjects = Subjects()
@@ -110,7 +109,7 @@ extension EditProfileViewModelImple {
             case .finished:
                 self?.subjects.isSaveChanges.accept(false)
                 self?.router.closeScene(animated: true) { [weak self] in
-                    self?.listener(.editCompleted)
+                    self?.subjects.isSaveCompleted.onNext()
                 }
                 
             case let .finishedWithImageUploadFail(error):
@@ -198,6 +197,10 @@ extension EditProfileViewModelImple {
     public var isSaveChanges: Observable<Bool> {
         return self.subjects.isSaveChanges
             .distinctUntilChanged()
+    }
+    
+    public var editCompleted: Observable<Void> {
+        return self.subjects.isSaveCompleted
     }
 }
 

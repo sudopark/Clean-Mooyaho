@@ -44,7 +44,7 @@ public final class MainViewModelImple: MainViewModel {
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    private weak var nearbySceneActionListener: NearbySceneCommandListener?
+    private weak var nearbySceneInteractor: NearbySceneInteractor?
     
     public init(auth: Auth,
                 hoorayUsecase: HoorayUsecase,
@@ -67,9 +67,9 @@ extension MainViewModelImple {
     
     public func setupSubScenes() {
         
-        self.nearbySceneActionListener = self.router.addNearbySceen { [weak self] event in
-            logger.print(level: .debug, "nearby event: \(event)")
-        }
+        let scene = self.router.addNearbySceen()
+        // TOOD: bind presenter
+        self.nearbySceneInteractor = scene.ineteractor
     }
     
     public func openSlideMenu() {
@@ -77,7 +77,7 @@ extension MainViewModelImple {
     }
     
     public func moveMapCameraToCurrentUserPosition() {
-        self.nearbySceneActionListener?.moveMapCameraToCurrentUserPosition()
+        self.nearbySceneInteractor?.moveMapCameraToCurrentUserPosition()
     }
     
     public func makeNewHooray() {
@@ -101,24 +101,20 @@ extension MainViewModelImple {
     
     private func requestSignInAndWaitResult() {
         
-        self.router.presentSignInScene { [weak self] event in
-            switch event {
-            case .signInSuccess:
+        guard let events = self.router.presentSignInScene() else { return }
+        events.signedIn
+            .subscribe(onNext: { [weak self] in
                 self?.makeNewHooray()
-            }
-        }
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func requestEnerMemberProfileAndWaitResult() {
         
-        let handleEditEvent: (EditProfileSceneEvent) -> Void = { [weak self] event in
-            guard case .editCompleted = event else { return }
-            self?.makeNewHooray()
-        }
-        
         let routeToEditProfile: () -> Void = { [weak self] in
             guard let self = self else { return }
-            self.router.presentEditProfileScene(handleEditEvent)
+            let presenter = self.router.presentEditProfileScene()
+            self.bindEditProfileEndEvent(presenter)
         }
         
         guard let form = AlertBuilder(base: .init())
@@ -128,6 +124,14 @@ extension MainViewModelImple {
                 .build() else { return }
         
         self.router.alertForConfirm(form)
+    }
+    
+    private func bindEditProfileEndEvent(_ presenter: EditProfileScenePresenter?) {
+        presenter?.editCompleted
+            .subscribe(onNext: { [weak self] in
+                self?.makeNewHooray()
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 

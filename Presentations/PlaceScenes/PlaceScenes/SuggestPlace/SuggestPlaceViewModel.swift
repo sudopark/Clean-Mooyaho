@@ -28,12 +28,9 @@ public protocol SuggestPlaceViewModel: AnyObject {
 public final class SuggestPlaceViewModelImple: SuggestPlaceViewModel {
     
     private let router: SuggestPlaceRouting
-    private let listener: Listener<SuggestSceneEvents>
     
-    public init(router: SuggestPlaceRouting,
-                listener: @escaping Listener<SuggestSceneEvents>) {
+    public init(router: SuggestPlaceRouting) {
         self.router = router
-        self.listener = listener
     }
     
     deinit {

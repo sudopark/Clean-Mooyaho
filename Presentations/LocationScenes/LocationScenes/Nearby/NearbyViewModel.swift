@@ -18,7 +18,7 @@ import CommonPresenting
 
 public enum MapCameraPosition {
     case `default`(_ position: Coordinate)
-    case userLocation(_ position: Coordinate)
+    case userLocation(_ manualPosition: Coordinate?)
 }
 
 public protocol NearbyViewModel: AnyObject {
@@ -26,6 +26,7 @@ public protocol NearbyViewModel: AnyObject {
     // interactor
     func preparePermission()
     func userPositionChanged(_ placeMark: String)
+    func moveMapCameraToCurrentUserPosition()
     
     // presenter
     var cameraPosition: Observable<MapCameraPosition> { get }
@@ -50,16 +51,11 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private let locationUsecase: UserLocationUsecase
     private let router: NearbyRouting
-    private let listener: Listener<NearbySceneEvents>
     
     public init(locationUsecase: UserLocationUsecase,
-                router: NearbyRouting,
-                listener: @escaping Listener<NearbySceneEvents>) {
+                router: NearbyRouting) {
         self.locationUsecase = locationUsecase
         self.router = router
-        self.listener = listener
-        
-        self.internalBind()
     }
     
     deinit {
@@ -68,15 +64,6 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
-    
-    private func internalBind() {
-        
-        self.subjects.placeMark.distinctUntilChanged()
-            .subscribe(onNext: { [weak self] placeMark in
-                self?.listener(.curretPosition(placeMark: placeMark))
-            })
-            .disposed(by: self.disposeBag)
-    }
 }
 
 
@@ -108,7 +95,6 @@ extension NearbyViewModelImple {
             
             guard case .default = position else { return }
             self?.subjects.unavailToUse.onNext()
-            self?.listener(.unavailToUseService)
         }
         
         self.locationUsecase.checkHasPermission()
@@ -120,6 +106,10 @@ extension NearbyViewModelImple {
     
     public func userPositionChanged(_ placeMark: String) {
         self.subjects.placeMark.onNext(placeMark)
+    }
+    
+    public func moveMapCameraToCurrentUserPosition() {
+        self.subjects.moveCameraPosition.onNext(.userLocation(nil))
     }
 }
 
@@ -134,6 +124,10 @@ extension NearbyViewModelImple {
     
     public var alertUnavailToUseService: Observable<Void> {
         return self.subjects.unavailToUse.asObservable()
+    }
+    
+    public var currentPositionPlaceMark: Observable<String> {
+        return self.subjects.placeMark.distinctUntilChanged()
     }
 }
 

@@ -15,11 +15,6 @@ import RxDataSources
 import CommonPresenting
 
 
-// MARK: - EditProfileScene
-
-public protocol EditProfileScene: Scenable { }
-
-
 // MARK: - EditProfileViewController
 
 public final class EditProfileViewController: BaseViewController, EditProfileScene {
@@ -29,7 +24,7 @@ public final class EditProfileViewController: BaseViewController, EditProfileSce
     
     let editView = EditProfileView()
     
-    private let viewModel: EditProfileViewModel
+    let viewModel: EditProfileViewModel
     private var dataSource: DataSource!
     private let cellInputListener = PublishSubject<(EditProfileCellType, String)>()
     

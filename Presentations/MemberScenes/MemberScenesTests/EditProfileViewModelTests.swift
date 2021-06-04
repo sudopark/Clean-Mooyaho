@@ -29,8 +29,7 @@ class EditProfileViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubMemberUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = .init(usecase: self.stubMemberUsecase,
-                               router: self.spyRouter,
-                               listener: { _ in })
+                               router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
@@ -55,7 +54,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
         let source = self.waitFirstElement(expect, for: self.viewModel.profileImageSource)
         
         // then
@@ -76,7 +75,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
         let types = self.waitFirstElement(expect, for: self.viewModel.cellTypes)
         
         // then
@@ -103,7 +102,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.inputTextChanges(type: .introduction, to: "some")
             self.viewModel.inputTextChanges(type: .nickName, to: "")
@@ -127,7 +126,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.inputTextChanges(type: .introduction, to: "new")     // true
             self.viewModel.inputTextChanges(type: .nickName, to: nil)           // false
@@ -152,7 +151,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: { _ in })
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.selectEmoji("😂")
             self.viewModel.inputTextChanges(type: .introduction, to: "new")
@@ -166,13 +165,13 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-    private func stubViewModelSavable(_ callback: Listener<EditProfileSceneEvent>? = nil) {
+    private func stubViewModelSavable() {
         self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             var member = Member(uid: "uid", nickName: "some", icon: nil)
             member.introduction = "old"
             return member
         }
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter, listener: callback ?? { _ in })
+        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
         self.viewModel.inputTextChanges(type: .introduction, to: "new")
     }
     
@@ -202,15 +201,15 @@ extension EditProfileViewModelTests {
         let expect = expectation(description: "저장 완료시에 화면 닫고 외부로 이벤트 전파")
         expect.expectedFulfillmentCount = 2
         
-        self.stubViewModelSavable { event in
-            if case .editCompleted = event {
-                expect.fulfill()
-            }
-        }
+        self.stubViewModelSavable()
         
         self.spyRouter.called(key: "closeScene") { _ in
             expect.fulfill()
         }
+        self.viewModel.editCompleted.subscribe(onNext: {
+            expect.fulfill()
+        })
+        .disposed(by: self.disposeBag)
         
         // when
         self.viewModel.saveChanges()

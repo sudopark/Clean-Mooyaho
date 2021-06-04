@@ -25,13 +25,13 @@ import LocationScenes
 
 public protocol MainRouting: Routing {
     
-    func addNearbySceen(_ listener: @escaping Listener<NearbySceneEvents>) -> NearbySceneCommandListener?
+    func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?)
     
     func openSlideMenu()
     
-    func presentSignInScene(_ listener: @escaping Listener<SignInSceneEvents>)
+    func presentSignInScene() -> SignInScenePresenter?
     
-    func presentEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>)
+    func presentEditProfileScene() -> EditProfileScenePresenter?
 }
 
 // MARK: - Routers
@@ -49,9 +49,9 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 extension MainRouter {
     
-    public func addNearbySceen(_ listener: @escaping Listener<NearbySceneEvents>) -> NearbySceneCommandListener? {
+    public func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?) {
         guard let mainScene = self.currentScene as? MainScene,
-              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene(listener) else { return nil }
+              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene() else { return (nil, nil) }
         
         nearbyScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
         nearbyScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -59,7 +59,7 @@ extension MainRouter {
         mainScene.childContainerView.addSubview(nearbyScene.view)
         nearbyScene.didMove(toParent: mainScene)
         
-        return nearbyScene
+        return (nearbyScene.interactor, nearbyScene.presenter)
     }
     
     public func openSlideMenu() {
@@ -74,18 +74,21 @@ extension MainRouter {
         self.currentScene?.present(menuScene, animated: true, completion: nil)
     }
     
-    public func presentSignInScene(_ listener: @escaping Listener<SignInSceneEvents>) {
+    public func presentSignInScene() -> SignInScenePresenter? {
         
-        guard let scene = self.nextScenesBuilder?.makeSignInScene(listener) else { return }
+        guard let scene = self.nextScenesBuilder?.makeSignInScene() else { return nil }
         
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager
         self.currentScene?.present(scene, animated: true, completion: nil)
+        
+        return scene.presenter
     }
     
-    public func presentEditProfileScene(_ listener: @escaping Listener<EditProfileSceneEvent>) {
+    public func presentEditProfileScene() -> EditProfileScenePresenter? {
         
-        guard let scene = self.nextScenesBuilder?.makeEditProfileScene(listener) else { return }
+        guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return nil }
         self.currentScene?.present(scene, animated: true, completion: nil)
+        return scene.presenrer
     }
 }
