@@ -97,7 +97,7 @@ extension DIContainers: SuggestPlaceSceneBuilable {
 
 // MARK: - Hooray Scenes
 
-extension DIContainers: MakeHooraySceneBuilable {
+extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
     
     public func makeMakeHoorayScene() -> MakeHoorayScene {
         let router = MakeHoorayRouter(nextSceneBuilders: self)
@@ -106,6 +106,14 @@ extension DIContainers: MakeHooraySceneBuilable {
                                                  hoorayPublishUsecase: self.hoorayUsecase,
                                                  router: router)
         let viewController = MakeHoorayViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+    
+    public func makeWaitNextHoorayScene() -> WaitNextHoorayScene {
+        let router = WaitNextHoorayRouter(nextSceneBuilders: self)
+        let viewModel = WaitNextHoorayViewModelImple(router: router)
+        let viewController = WaitNextHoorayViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }

@@ -42,6 +42,7 @@
 		F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC12669DF9E0027800F /* Scenes+Location.swift */; };
 		F6502DC8266A0CC40027800F /* TagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TagInputField.swift */; };
 		F6502DCC266A12D10027800F /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6502DCB266A12D10027800F /* WSTagsField */; };
+		F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 /* End PBXBuildFile section */
@@ -94,6 +95,7 @@
 		F6502DBF2669DF950027800F /* Scenes+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Place.swift"; sourceTree = "<group>"; };
 		F6502DC12669DF9E0027800F /* Scenes+Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Location.swift"; sourceTree = "<group>"; };
 		F6502DC7266A0CC40027800F /* TagInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagInputField.swift; sourceTree = "<group>"; };
+		F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Hooray.swift"; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -257,6 +259,7 @@
 				F6502DBD2669DF800027800F /* Scenes+Member.swift */,
 				F6502DC12669DF9E0027800F /* Scenes+Location.swift */,
 				F6502DBF2669DF950027800F /* Scenes+Place.swift */,
+				F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
+				F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,

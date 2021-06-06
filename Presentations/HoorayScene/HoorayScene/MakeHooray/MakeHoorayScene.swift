@@ -13,23 +13,6 @@ import RxCocoa
 
 import CommonPresenting
 
-// MARK: - MakeHoorayScene Interactor & Presenter
-
-//public protocol MakeHooraySceneInteractor { }
-//
-//public protocol MakeHoorayScenePresenter { }
-
-
-// MARK: - MakeHoorayScene
-
-public protocol MakeHoorayScene: Scenable {
-    
-//    var interactor: MakeHooraySceneInteractor? { get }
-//
-//    var presenter: MakeHoorayScenePresenter? { get }
-}
-
-
 // MARK: - MakeHoorayViewModelImple conform MakeHooraySceneInteractor or MakeHoorayScenePresenter
 
 //extension MakeHoorayViewModelImple: MakeHooraySceneInteractor {
