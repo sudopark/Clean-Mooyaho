@@ -62,7 +62,11 @@ extension HoorayPublisherUsecaseTests {
         let error = self.waitError(expect, for: requestCheck.asObservable())
         
         // then
-        XCTAssert(error is TooSoonLatestHoorayExistInLocal)
+        if let appError = error as? ApplicationErrors, case .shouldWaitPublishHooray = appError {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 에러가 아님")
+        }
     }
     
     func testUsecase_whenLatestHoorayExistsWithInLimit_unavailToPublishHooray() {
@@ -84,7 +88,11 @@ extension HoorayPublisherUsecaseTests {
         let error = self.waitError(expect, for: requestCheck.asObservable())
         
         // then
-        XCTAssert(error is TooSoonLatestHoorayExistInLocal)
+        if let appError = error as? ApplicationErrors, case .shouldWaitPublishHooray = appError {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 에러가 아님")
+        }
     }
     
     func testUsecase_whenLatestNotTooSoon_availToPublish() {

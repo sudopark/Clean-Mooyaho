@@ -163,8 +163,6 @@ extension NewHoorayForm: JSONMappable {
         self.placeID = placeID
         self.location = .init(latt: latt, long: long)
         self.timeStamp = time
-        self.spreadDistance = distance
-        self.aliveDuration = duration
     }
     
     func asJSON() -> JSON {
@@ -174,8 +172,6 @@ extension NewHoorayForm: JSONMappable {
         json[Key.latt] = self.location.latt
         json[Key.long] = self.location.long
         json[Key.timestamp] = self.timeStamp
-        json[Key.spreadDistance] = self.spreadDistance
-        json[Key.aliveDuration] = self.aliveDuration
         return json
     }
 }

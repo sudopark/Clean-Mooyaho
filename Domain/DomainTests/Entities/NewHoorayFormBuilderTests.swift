@@ -39,8 +39,6 @@ extension NewHoorayFormBuilderTests {
             .message("message")
             .location(Coordinate(latt: 0, long: 0))
             .timeStamp(1)
-            .spreadDistance(10)
-            .aliveDuration(100)
         
         // when
         let form = builder.build()

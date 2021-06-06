@@ -45,6 +45,15 @@
           "revision": "7e01c05f25c025143073eaa3be3532f9375c614b",
           "version": "6.1.0"
         }
+      },
+      {
+        "package": "WSTagsField",
+        "repositoryURL": "https://github.com/whitesmith/WSTagsField.git",
+        "state": {
+          "branch": null,
+          "revision": "4a3f36d1903554bb6b65df0e7936df9bb95d7525",
+          "version": "5.4.0"
+        }
       }
     ]
   },
