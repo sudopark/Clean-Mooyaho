@@ -95,6 +95,21 @@ extension MainViewController {
                 self?.bindBottomSlideScroll()
             })
             .disposed(by: self.dispsoseBag)
+        
+        self.rx.viewDidAppear.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindMemberProfileImage()
+            })
+            .disposed(by: self.dispsoseBag)
+    }
+    
+    private func bindMemberProfileImage() {
+        self.viewModel.currentMemberProfileImage
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] source in
+                self?.mainView.profileView.setupImage(using: source)
+            })
+            .disposed(by: self.dispsoseBag)
     }
 }
 

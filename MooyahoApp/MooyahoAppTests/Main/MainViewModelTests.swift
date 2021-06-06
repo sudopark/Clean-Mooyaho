@@ -24,21 +24,24 @@ import UnitTestHelpKit
 class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var stubMemberUsecase: StubMemberUsecase!
     var stubHoorayUsecase: StubHoorayUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
+        self.stubMemberUsecase = .init()
         self.stubHoorayUsecase = .init()
         self.spyRouter = .init()
-        self.viewModel = .init(auth: .init(userID: "some"),
+        self.viewModel = .init(memberUsecase: self.stubMemberUsecase,
                                hoorayUsecase: self.stubHoorayUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.stubMemberUsecase = nil
         self.stubHoorayUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
@@ -146,6 +149,26 @@ extension MainViewModelTests {
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
+
+extension MainViewModelTests {
+    
+    func testViewModel_updateMemberProfileImage() {
+        // given
+        let expect = expectation(description: "멤버 프로필 섬네일 업데이트")
+        expect.expectedFulfillmentCount = 2
+        
+        // when
+        let profileImages = self.waitElements(expect, for: self.viewModel.currentMemberProfileImage) {
+            var newMember = Member(uid: "some")
+            newMember.icon = .emoji("😱")
+            self.stubMemberUsecase.stubCurrentMember.onNext(newMember)
+        }
+        
+        // then
+        XCTAssertEqual(profileImages.count, 2)
     }
 }
 

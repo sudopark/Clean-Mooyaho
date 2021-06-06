@@ -22,7 +22,7 @@ extension DIContainers: MainSceneBuilable {
     
     public func makeMainScene(auth: Auth) -> MainScene {
         let router = MainRouter(nextSceneBuilders: self)
-        let viewModel = MainViewModelImple(auth: auth,
+        let viewModel = MainViewModelImple(memberUsecase: self.memberUsecase,
                                            hoorayUsecase: self.hoorayUsecase,
                                            router: router)
         let viewController = MainViewController(viewModel: viewModel)
@@ -110,9 +110,9 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         return viewController
     }
     
-    public func makeWaitNextHoorayScene() -> WaitNextHoorayScene {
+    public func makeWaitNextHoorayScene(_ waitUntil: TimeStamp) -> WaitNextHoorayScene {
         let router = WaitNextHoorayRouter(nextSceneBuilders: self)
-        let viewModel = WaitNextHoorayViewModelImple(router: router)
+        let viewModel = WaitNextHoorayViewModelImple(waitUntil: waitUntil, router: router)
         let viewController = WaitNextHoorayViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

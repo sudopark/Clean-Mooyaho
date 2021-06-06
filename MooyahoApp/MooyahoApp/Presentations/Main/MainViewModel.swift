@@ -27,6 +27,7 @@ public protocol MainViewModel: AnyObject {
     func makeNewHooray()
     
     // presenter
+    var currentMemberProfileImage: Observable<ImageSource> { get }
 }
 
 
@@ -38,7 +39,7 @@ public final class MainViewModelImple: MainViewModel {
         // define subjects
     }
     
-    private let auth: Auth
+    private let memberUsecase: MemberUsecase
     private let hoorayUsecase: HoorayUsecase
     private let router: MainRouting
     private let subjects = Subjects()
@@ -46,11 +47,11 @@ public final class MainViewModelImple: MainViewModel {
     
     private weak var nearbySceneInteractor: NearbySceneInteractor?
     
-    public init(auth: Auth,
+    public init(memberUsecase: MemberUsecase,
                 hoorayUsecase: HoorayUsecase,
                 router: MainRouting) {
         
-        self.auth = auth
+        self.memberUsecase = memberUsecase
         self.hoorayUsecase = hoorayUsecase
         self.router = router
     }
@@ -141,5 +142,10 @@ extension MainViewModelImple {
 // MARK: - MainViewModelImple Presenter
 
 extension MainViewModelImple {
-    
+ 
+    public var currentMemberProfileImage: Observable<ImageSource> {
+        return self.memberUsecase.currentMember
+            .compactMap{ $0?.icon }
+            .startWith(Member.memberDefaultEmoji)
+    }
 }
