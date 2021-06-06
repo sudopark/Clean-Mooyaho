@@ -151,7 +151,7 @@ extension MemberUsecaseTests {
         let expect = expectation(description: "프로필 이미지 업로드 없이 필드만 업데이트")
         
         self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
-            return Maybe<Void>.just()
+            return Maybe<Member>.just(.init(uid: "some"))
         }
         
         // when
@@ -168,7 +168,7 @@ extension MemberUsecaseTests {
         expect.expectedFulfillmentCount = 3
         
         self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
-            return Maybe<Void>.just()
+            return Maybe<Member>.just(.init(uid: "some"))
         }
         
         // when
@@ -191,7 +191,7 @@ extension MemberUsecaseTests {
         let expect = expectation(description: "프로필 이미지 업로드에 성공하더라도 필드업데이트 실패하면 전체 실패처리")
         
         self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
-            return Maybe<Void>.error(ApplicationErrors.invalid)
+            return Maybe<Member>.error(ApplicationErrors.invalid)
         }
         
         // when
@@ -215,7 +215,7 @@ extension MemberUsecaseTests {
         expect.expectedFulfillmentCount = 3
         
         self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
-            return Maybe<Void>.just()
+            return Maybe<Member>.just(.init(uid: "some"))
         }
         
         // when
@@ -229,5 +229,26 @@ extension MemberUsecaseTests {
         
         // then
         XCTAssertEqual(status, [.pending, .updating(0.5), .finishedWithImageUploadFail(ApplicationErrors.invalid)])
+    }
+    
+    func testUsecase_whenAfterUpdateMember_emitViaSharedStore() {
+        // given
+        let expect = expectation(description: "멤버 업데이트 이후에 새로운 유저값 share event 발생")
+        
+        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Member>.just(.init(uid: "some"))
+        }
+        
+        // when
+        let memberSource: Observable<Member> = self.store.observe(SharedDataKeys.currentMember.rawValue).compactMap{ $0 }
+        let newMember = self.waitFirstElement(expect, for: memberSource) {
+            let intro = MemberUpdateField.introduction("new")
+            self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: nil)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(newMember)
     }
 }

@@ -13,7 +13,7 @@ import RxSwift
 import Domain
 
 
-public protocol LocalStorage: AuthLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage { }
 
 
 public protocol AuthLocalStorage {
@@ -22,6 +22,11 @@ public protocol AuthLocalStorage {
     func fetchCurrentMember() -> Maybe<Member?>
     func saveSignedIn(auth: Auth) -> Maybe<Void>
     func saveSignedIn(member: Member) -> Maybe<Void>
+}
+
+public protocol MemberLocalStorage {
+    
+    func updateCurrentMember(_ newValue: Member) -> Maybe<Void>
 }
 
 public protocol TagLocalStorage {

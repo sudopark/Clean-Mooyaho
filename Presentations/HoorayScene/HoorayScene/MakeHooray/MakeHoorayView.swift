@@ -39,9 +39,11 @@ extension MakeHoorayView: Presenting {
         publishButton.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
         self.publishButtonBottomConstraint = publishButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
-        self.publishButtonBottomConstraint.isActive = true
+        NSLayoutConstraint.activate([self.publishButtonBottomConstraint])
+        self.publishButton.setupLayout()
         
         self.addSubview(scrollView)
         scrollView.autoLayout.active {
@@ -115,13 +117,15 @@ extension MakeHoorayView: Presenting {
             $0.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -20)
         }
+        tagInputView.setupLayout()
         
         scrollContentView.addSubview(placeIcon)
         placeIcon.autoLayout.active {
             $0.leadingAnchor.constraint(equalTo: self.scrollContentView.leadingAnchor, constant: 20)
             $0.widthAnchor.constraint(equalToConstant: 40)
             $0.heightAnchor.constraint(equalToConstant: 40)
-            $0.topAnchor.constraint(equalTo: tagInputView.bottomAnchor, constant: 16)
+            $0.topAnchor.constraint(greaterThanOrEqualTo: tagInputView.bottomAnchor, constant: 16)
+            $0.bottomAnchor.constraint(equalTo: self.scrollContentView.bottomAnchor, constant: -20)
         }
         
         scrollContentView.addSubview(placeInputButton)
@@ -135,7 +139,7 @@ extension MakeHoorayView: Presenting {
     func setupStyling() {
         
         self.scrollView.backgroundColor = .clear
-        self.scrollContentView.backgroundColor = self.uiContext.colors.appBackground
+        self.scrollContentView.backgroundColor = .clear
         
         self.inputImageView.backgroundColor = self.uiContext.colors.appSecondBackground
         self.inputImageView.layer.cornerRadius = 5
@@ -149,11 +153,14 @@ extension MakeHoorayView: Presenting {
         self.messagePlaceHolderLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.5)
         self.messagePlaceHolderLabel.text = "Enter a message"
         self.charCountLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.5)
+        self.tagInputView.placeHolder = "Enter a tag"
+        self.tagInputView.setupStyling()
         
         self.placeIcon.backgroundColor = .red
         self.placeInputButton.setTitle("Select a place", for: .normal)
         
         self.publishButton.backgroundColor = UIColor.systemBlue
         self.publishButton.title = "Publish"
+        self.publishButton.setupStyling()
     }
 }

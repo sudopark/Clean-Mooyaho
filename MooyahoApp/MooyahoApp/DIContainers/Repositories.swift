@@ -43,6 +43,10 @@ extension AppRepository: MemberRepository, MemberRepositoryDefImpleDependency {
     public var memberRemote: MemberRemote {
         return self.remote
     }
+    
+    public var memberLocal: MemberLocalStorage {
+        return self.local
+    }
 }
 
 extension AppRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {

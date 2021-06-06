@@ -60,6 +60,21 @@ public final class LocalStorageImple: LocalStorage {
         return .just()
     }
     
+    public func updateCurrentMember(_ newValue: Member) -> Maybe<Void> {
+        FakeStore.standard.setValue(newValue.uid, forKey: "fake_uid")
+        FakeStore.standard.setValue(newValue.nickName, forKey: "fake_nick")
+        FakeStore.standard.setValue(newValue.introduction, forKey: "fake_intro")
+        if case let .path(path) = newValue.icon {
+            FakeStore.standard.setValue(path, forKey: "fake_icon")
+        } else if case let .emoji(value) = newValue.icon {
+            FakeStore.standard.setValue(value, forKey: "fake_emoji")
+        } else {
+            FakeStore.standard.setValue(nil, forKey: "fake_icon")
+            FakeStore.standard.setValue(nil, forKey: "fake_emoji")
+        }
+        return .just()
+    }
+    
     public func fetchRecentSelectTags(_ type: Tag.TagType, query: String) -> Maybe<[Tag]> {
         return .empty()
     }
@@ -89,7 +104,7 @@ public final class LocalStorageImple: LocalStorage {
     }
     
     public func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?> {
-        return .empty()
+        return .just(nil)
     }
     
     public func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]> {

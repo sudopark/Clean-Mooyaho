@@ -22,10 +22,12 @@ extension FirebaseServiceImple {
     
     public func requestLoadLatestHooray(_ memberID: String) -> Maybe<Hooray?> {
         
+        typealias Mapkey = HoorayMappingKey
+        
         let collectionRef = self.fireStoreDB.collection(.hooray)
         let query = collectionRef
-            .whereField("pid", isEqualTo: memberID)
-            .order(by: "ts", descending: true)
+            .whereField(Mapkey.publisherID.rawValue, isEqualTo: memberID)
+            .order(by: Mapkey.timestamp.rawValue, descending: true)
             .limit(to: 1)
         
         return self.load(query: query).map{ $0.first }

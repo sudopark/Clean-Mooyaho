@@ -19,7 +19,7 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], imageSource: ImageSource?) -> Maybe<Void> {
+    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], imageSource: ImageSource?) -> Maybe<Member> {
         return .empty()
     }
     

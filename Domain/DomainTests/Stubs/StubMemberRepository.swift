@@ -35,7 +35,9 @@ class StubMemberRepository: MemberRepository, Stubbable {
         return self.stubUploadStatus.asObservable()
     }
     
-    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], imageSource: ImageSource?) -> Maybe<Void> {
+    func requestUpdateMemberProfileFields(_ memberID: String,
+                                          fields: [MemberUpdateField],
+                                          imageSource: ImageSource?) -> Maybe<Member> {
         return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
     }
 }
