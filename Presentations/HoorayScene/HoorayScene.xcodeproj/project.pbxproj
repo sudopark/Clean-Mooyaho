@@ -9,10 +9,14 @@
 /* Begin PBXBuildFile section */
 		F6502DAF2669D68E0027800F /* MakeHoorayRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAA2669D68E0027800F /* MakeHoorayRouter.swift */; };
 		F6502DB02669D68E0027800F /* MakeHoorayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAB2669D68E0027800F /* MakeHoorayViewController.swift */; };
-		F6502DB12669D68E0027800F /* MakeHoorayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAC2669D68E0027800F /* MakeHoorayBuilder.swift */; };
 		F6502DB22669D68E0027800F /* MakeHoorayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAD2669D68E0027800F /* MakeHoorayScene.swift */; };
 		F6502DB32669D68E0027800F /* MakeHoorayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAE2669D68E0027800F /* MakeHoorayViewModel.swift */; };
 		F6502DB82669D7E00027800F /* MakeHoorayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DB72669D7E00027800F /* MakeHoorayViewModelTests.swift */; };
+		F6502DDD266CA7730027800F /* WaitNextHoorayRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD8266CA7730027800F /* WaitNextHoorayRouter.swift */; };
+		F6502DDE266CA7730027800F /* WaitNextHoorayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD9266CA7730027800F /* WaitNextHoorayViewController.swift */; };
+		F6502DE0266CA7730027800F /* WaitNextHoorayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DDB266CA7730027800F /* WaitNextHoorayScene.swift */; };
+		F6502DE1266CA7730027800F /* WaitNextHoorayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DDC266CA7730027800F /* WaitNextHoorayViewModel.swift */; };
+		F6502DE5266CAA240027800F /* WaitNextHoorayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */; };
 		F68CA1D12669202C00344045 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D02669202C00344045 /* Common3rdParty.framework */; };
 		F68CA1D52669203100344045 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D42669203100344045 /* CommonPresenting.framework */; };
 		F68CA1D82669203600344045 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D72669203600344045 /* Domain.framework */; };
@@ -37,10 +41,14 @@
 /* Begin PBXFileReference section */
 		F6502DAA2669D68E0027800F /* MakeHoorayRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayRouter.swift; sourceTree = "<group>"; };
 		F6502DAB2669D68E0027800F /* MakeHoorayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayViewController.swift; sourceTree = "<group>"; };
-		F6502DAC2669D68E0027800F /* MakeHoorayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayBuilder.swift; sourceTree = "<group>"; };
 		F6502DAD2669D68E0027800F /* MakeHoorayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayScene.swift; sourceTree = "<group>"; };
 		F6502DAE2669D68E0027800F /* MakeHoorayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayViewModel.swift; sourceTree = "<group>"; };
 		F6502DB72669D7E00027800F /* MakeHoorayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayViewModelTests.swift; sourceTree = "<group>"; };
+		F6502DD8266CA7730027800F /* WaitNextHoorayRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitNextHoorayRouter.swift; sourceTree = "<group>"; };
+		F6502DD9266CA7730027800F /* WaitNextHoorayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitNextHoorayViewController.swift; sourceTree = "<group>"; };
+		F6502DDB266CA7730027800F /* WaitNextHoorayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitNextHoorayScene.swift; sourceTree = "<group>"; };
+		F6502DDC266CA7730027800F /* WaitNextHoorayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitNextHoorayViewModel.swift; sourceTree = "<group>"; };
+		F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitNextHoorayViewModelTests.swift; sourceTree = "<group>"; };
 		F68CA1D02669202C00344045 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1D42669203100344045 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1D72669203600344045 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,11 +93,21 @@
 			children = (
 				F6502DAD2669D68E0027800F /* MakeHoorayScene.swift */,
 				F6502DAA2669D68E0027800F /* MakeHoorayRouter.swift */,
-				F6502DAC2669D68E0027800F /* MakeHoorayBuilder.swift */,
 				F6502DAE2669D68E0027800F /* MakeHoorayViewModel.swift */,
 				F6502DAB2669D68E0027800F /* MakeHoorayViewController.swift */,
 			);
 			path = MakeHooray;
+			sourceTree = "<group>";
+		};
+		F6502DD7266CA7560027800F /* WaitNextHooray */ = {
+			isa = PBXGroup;
+			children = (
+				F6502DD8266CA7730027800F /* WaitNextHoorayRouter.swift */,
+				F6502DD9266CA7730027800F /* WaitNextHoorayViewController.swift */,
+				F6502DDB266CA7730027800F /* WaitNextHoorayScene.swift */,
+				F6502DDC266CA7730027800F /* WaitNextHoorayViewModel.swift */,
+			);
+			path = WaitNextHooray;
 			sourceTree = "<group>";
 		};
 		F68CA1CF2669202C00344045 /* Frameworks */ = {
@@ -128,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				F6502DA92669D6810027800F /* MakeHooray */,
+				F6502DD7266CA7560027800F /* WaitNextHooray */,
 				F6D96F5626691FDD00D0F507 /* HoorayScene.h */,
 				F6D96F5726691FDD00D0F507 /* Info.plist */,
 			);
@@ -140,6 +159,7 @@
 				F6D96F6126691FDD00D0F507 /* HooraySceneTests.swift */,
 				F6D96F6326691FDD00D0F507 /* Info.plist */,
 				F6502DB72669D7E00027800F /* MakeHoorayViewModelTests.swift */,
+				F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */,
 			);
 			path = HooraySceneTests;
 			sourceTree = "<group>";
@@ -252,11 +272,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6502DDE266CA7730027800F /* WaitNextHoorayViewController.swift in Sources */,
 				F6502DB02669D68E0027800F /* MakeHoorayViewController.swift in Sources */,
 				F6502DAF2669D68E0027800F /* MakeHoorayRouter.swift in Sources */,
 				F6502DB32669D68E0027800F /* MakeHoorayViewModel.swift in Sources */,
 				F6502DB22669D68E0027800F /* MakeHoorayScene.swift in Sources */,
-				F6502DB12669D68E0027800F /* MakeHoorayBuilder.swift in Sources */,
+				F6502DE1266CA7730027800F /* WaitNextHoorayViewModel.swift in Sources */,
+				F6502DE0266CA7730027800F /* WaitNextHoorayScene.swift in Sources */,
+				F6502DDD266CA7730027800F /* WaitNextHoorayRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6502DE5266CAA240027800F /* WaitNextHoorayViewModelTests.swift in Sources */,
 				F6502DB82669D7E00027800F /* MakeHoorayViewModelTests.swift in Sources */,
 				F6D96F6226691FDD00D0F507 /* HooraySceneTests.swift in Sources */,
 			);

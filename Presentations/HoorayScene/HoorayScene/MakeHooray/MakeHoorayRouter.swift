@@ -35,9 +35,12 @@ public protocol MakeHoorayRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MakeHoorayRouterBuildables = EditProfileSceneBuilable
+public typealias MakeHoorayRouterBuildables = EditProfileSceneBuilable & WaitNextHooraySceneBuilable
 
-public final class MakeHoorayRouter: Router<MakeHoorayRouterBuildables>, MakeHoorayRouting { }
+public final class MakeHoorayRouter: Router<MakeHoorayRouterBuildables>, MakeHoorayRouting {
+    
+    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+}
 
 
 extension MakeHoorayRouter {
@@ -58,6 +61,11 @@ extension MakeHoorayRouter {
     }
     
     public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?.makeWaitNextHoorayScene() else { return }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

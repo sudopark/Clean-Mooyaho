@@ -41,7 +41,7 @@ public protocol MainRouting: Routing {
 
 // TODO: compose next Scene Builders protocol
 public typealias MainRouterBuildables = MainSlideMenuSceneBuilable & NearbySceneBuilable
-    & SignInSceneBuilable & EditProfileSceneBuilable
+    & SignInSceneBuilable & EditProfileSceneBuilable & MakeHooraySceneBuilable & WaitNextHooraySceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -96,10 +96,17 @@ extension MainRouter {
     }
     
     public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?.makeWaitNextHoorayScene() else { return nil }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func presentMakeNewHoorayScene() {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?.makeMakeHoorayScene() else { return nil }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }
