@@ -14,6 +14,7 @@
 		F60325C32659573700E4E769 /* StubUserLocationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60325C22659573700E4E769 /* StubUserLocationUsecase.swift */; };
 		F60325C42659581600E4E769 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325B3265956EA00E4E769 /* XCTest.framework */; platformFilter = ios; };
 		F62DFFBC26621E4D00C4A080 /* StubHoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFBB26621E4D00C4A080 /* StubHoorayUsecase.swift */; };
+		F6502DD3266CA49B0027800F /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD2266CA49B0027800F /* Dummies.swift */; };
 		F6E83126265C55FA00C91F3B /* StubAuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */; };
 		F6E83128265C57B100C91F3B /* StubMemberUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 		F60325BE2659571900E4E769 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F60325C22659573700E4E769 /* StubUserLocationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUserLocationUsecase.swift; sourceTree = "<group>"; };
 		F62DFFBB26621E4D00C4A080 /* StubHoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubHoorayUsecase.swift; sourceTree = "<group>"; };
+		F6502DD2266CA49B0027800F /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubAuthUsecase.swift; sourceTree = "<group>"; };
 		F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMemberUsecase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +73,7 @@
 		F603259A2659564900E4E769 /* StubUsecases */ = {
 			isa = PBXGroup;
 			children = (
+				F6502DD2266CA49B0027800F /* Dummies.swift */,
 				F60325C12659572A00E4E769 /* Stubs */,
 				F603259B2659564900E4E769 /* StubUsecases.h */,
 				F603259C2659564900E4E769 /* Info.plist */,
@@ -194,6 +197,7 @@
 				F60325C32659573700E4E769 /* StubUserLocationUsecase.swift in Sources */,
 				F6E83126265C55FA00C91F3B /* StubAuthUsecase.swift in Sources */,
 				F62DFFBC26621E4D00C4A080 /* StubHoorayUsecase.swift in Sources */,
+				F6502DD3266CA49B0027800F /* Dummies.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

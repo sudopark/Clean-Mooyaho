@@ -40,6 +40,8 @@
 		F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBD2669DF800027800F /* Scenes+Member.swift */; };
 		F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBF2669DF950027800F /* Scenes+Place.swift */; };
 		F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC12669DF9E0027800F /* Scenes+Location.swift */; };
+		F6502DC8266A0CC40027800F /* TagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TagInputField.swift */; };
+		F6502DCC266A12D10027800F /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6502DCB266A12D10027800F /* WSTagsField */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 /* End PBXBuildFile section */
@@ -91,6 +93,7 @@
 		F6502DBD2669DF800027800F /* Scenes+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Member.swift"; sourceTree = "<group>"; };
 		F6502DBF2669DF950027800F /* Scenes+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Place.swift"; sourceTree = "<group>"; };
 		F6502DC12669DF9E0027800F /* Scenes+Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Location.swift"; sourceTree = "<group>"; };
+		F6502DC7266A0CC40027800F /* TagInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagInputField.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6502DCC266A12D10027800F /* WSTagsField in Frameworks */,
 				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
@@ -142,6 +146,7 @@
 			children = (
 				F6502DBC2669DF740027800F /* Scenes */,
 				2B39E27226387BB0003EE954 /* BaseComponents */,
+				F6502DC6266A0CA20027800F /* CustomViews */,
 				2BE978B7263AE5B50000C0C6 /* Utils */,
 				F61014882657A6B500D32E38 /* Extensions */,
 				2B39E25226387B6A003EE954 /* CommonPresenting.h */,
@@ -172,8 +177,6 @@
 				2B39E27726387BCB003EE954 /* Presenting.swift */,
 				2B39E27526387BCB003EE954 /* Routable.swift */,
 				2B39E27626387BCB003EE954 /* Sceneable.swift */,
-				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
-				F637205526650B440089D0B3 /* IntegratedImageView.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -258,6 +261,16 @@
 			path = Scenes;
 			sourceTree = "<group>";
 		};
+		F6502DC6266A0CA20027800F /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
+				F637205526650B440089D0B3 /* IntegratedImageView.swift */,
+				F6502DC7266A0CC40027800F /* TagInputField.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -288,6 +301,7 @@
 			name = CommonPresenting;
 			packageProductDependencies = (
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
+				F6502DCB266A12D10027800F /* WSTagsField */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -340,6 +354,7 @@
 			mainGroup = 2B39E24526387B6A003EE954;
 			packageReferences = (
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				F6502DCA266A12D10027800F /* XCRemoteSwiftPackageReference "WSTagsField" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -399,6 +414,7 @@
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
+				F6502DC8266A0CC40027800F /* TagInputField.swift in Sources */,
 				F610146926570A1400D32E38 /* BaseUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -675,6 +691,14 @@
 				minimumVersion = 6.3.0;
 			};
 		};
+		F6502DCA266A12D10027800F /* XCRemoteSwiftPackageReference "WSTagsField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/whitesmith/WSTagsField.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -682,6 +706,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		F6502DCB266A12D10027800F /* WSTagsField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6502DCA266A12D10027800F /* XCRemoteSwiftPackageReference "WSTagsField" */;
+			productName = WSTagsField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

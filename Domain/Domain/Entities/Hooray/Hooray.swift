@@ -105,9 +105,6 @@ public final class NewHoorayForm {
     public var location: Coordinate!
     public var timeStamp: TimeStamp!
     
-    public var spreadDistance: Meters!
-    public var aliveDuration: TimeInterval!
-    
     public init(publisherID: String) {
         self.publisherID = publisherID
     }
@@ -122,9 +119,7 @@ extension NewHoorayFormBuilder {
             guard form.hoorayKeyword?.isNotEmpty == true,
                   form.message?.isNotEmpty == true,
                   form.location != nil,
-                  form.timeStamp != nil,
-                  form.spreadDistance != nil,
-                  form.aliveDuration != nil else { return false }
+                  form.timeStamp != nil else { return false }
             return true
         }
         return self.build(with: asserting)

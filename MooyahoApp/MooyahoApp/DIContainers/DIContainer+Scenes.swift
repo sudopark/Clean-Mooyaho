@@ -102,6 +102,7 @@ extension DIContainers: MakeHooraySceneBuilable {
     public func makeMakeHoorayScene() -> MakeHoorayScene {
         let router = MakeHoorayRouter(nextSceneBuilders: self)
         let viewModel = MakeHoorayViewModelImple(memberUsecase: self.memberUsecase,
+                                                 userLocationUsecase: self.userLocationUsecase,
                                                  hoorayPublishUsecase: self.hoorayUsecase,
                                                  router: router)
         let viewController = MakeHoorayViewController(viewModel: viewModel)
