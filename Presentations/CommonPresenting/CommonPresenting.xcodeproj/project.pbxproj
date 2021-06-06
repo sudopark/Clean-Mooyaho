@@ -47,6 +47,10 @@
 		F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DEA266CB6F80027800F /* LoadingButton.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
+		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
+		F6F29597266D1BB800CDF980 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F29596266D1BB800CDF980 /* Common3rdParty.framework */; };
+		F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959E266D26EA00CDF980 /* ImagePickerBuilder.swift */; };
+		F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +106,10 @@
 		F6502DEA266CB6F80027800F /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickPermissionCheckService.swift; sourceTree = "<group>"; };
+		F6F29596266D1BB800CDF980 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6F2959E266D26EA00CDF980 /* ImagePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerBuilder.swift; sourceTree = "<group>"; };
+		F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F29597266D1BB800CDF980 /* Common3rdParty.framework in Frameworks */,
 				2B39E28926387BFB003EE954 /* UnitTestHelpKit.framework in Frameworks */,
 				2B39E25926387B6A003EE954 /* CommonPresenting.framework in Frameworks */,
 			);
@@ -190,6 +199,7 @@
 		2B39E28326387BEC003EE954 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6F29596266D1BB800CDF980 /* Common3rdParty.framework */,
 				2B39E28C26387C14003EE954 /* Domain.framework */,
 				2B39E28A26387C05003EE954 /* Domain.framework */,
 				2B39E28826387BFB003EE954 /* UnitTestHelpKit.framework */,
@@ -204,6 +214,7 @@
 				F61014792657853400D32E38 /* Animations */,
 				F610146B26570B7B00D32E38 /* AutoLayout */,
 				F610146A26570B6F00D32E38 /* LeakDetector */,
+				F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -260,6 +271,7 @@
 		F6502DBC2669DF740027800F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				F6F295A6266D26F000CDF980 /* ImagePicker */,
 				F6502DBD2669DF800027800F /* Scenes+Member.swift */,
 				F6502DC12669DF9E0027800F /* Scenes+Location.swift */,
 				F6502DBF2669DF950027800F /* Scenes+Place.swift */,
@@ -278,6 +290,15 @@
 				F6502DEA266CB6F80027800F /* LoadingButton.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		F6F295A6266D26F000CDF980 /* ImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				F6F2959E266D26EA00CDF980 /* ImagePickerBuilder.swift */,
+				F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */,
+			);
+			path = ImagePicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,11 +433,14 @@
 				F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
+				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
+				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
 				F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */,
+				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
 				F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */,

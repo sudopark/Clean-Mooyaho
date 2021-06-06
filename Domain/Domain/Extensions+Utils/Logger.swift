@@ -63,6 +63,6 @@ extension Logger {
     
     public func todoImplement(_ function: StaticString = #function,
                               file: StaticString = #file, line: UInt = #line) {
-        Swift.print("\(current): [☠️][TODO][\(self.fileName(file)) \(line)L] -> \(function)")
+        Swift.print("\n\n\(current): [☠️☠️☠️☠️☠️][TODO][\(self.fileName(file)) \(line)L] -> \(function) [☠️☠️☠️☠️☠️]")
     }
 }

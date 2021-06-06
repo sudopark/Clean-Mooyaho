@@ -23,6 +23,8 @@ public protocol Routing: AnyObject {
     func closeScene(animated: Bool, completed: (() -> Void)?)
     
     func alertForConfirm(_ form: AlertForm)
+    
+    func alertActionSheet(_ form: ActionSheetForm)
 }
 extension Routing {
     
@@ -33,6 +35,8 @@ extension Routing {
     public func closeScene(animated: Bool, completed: (() -> Void)?) { }
     
     public func alertForConfirm(_ form: AlertForm) { }
+    
+    public func alertActionSheet(_ form: ActionSheetForm) { }
 }
 
 
@@ -80,6 +84,21 @@ extension Router {
         alert.addAction(cancelAction)
         self.currentScene?.present(alert, animated: true, completion: nil)
     }
+    
+    public func alertActionSheet(_ form: ActionSheetForm) {
+        assert(form.actions.isNotEmpty)
+        
+        let sheet = UIAlertController(title: form.title, message: form.message, preferredStyle: .actionSheet)
+        form.actions.forEach { actionFrom in
+            let action = UIAlertAction(title: actionFrom.text,
+                                       style: actionFrom.isCancel ? .cancel : .default) { _ in
+                actionFrom.selected?()
+            }
+            sheet.addAction(action)
+        }
+        
+        self.currentScene?.present(sheet, animated: true, completion: nil)
+    }
 }
 
 
@@ -112,5 +131,36 @@ extension AlertBuilder {
         }
         
         return build(with: asserting)
+    }
+}
+
+
+// MARK: - ActionSheetForm
+
+public class ActionSheetForm {
+    
+    public class Action {
+        public let text: String
+        public var isCancel: Bool
+        public let selected: (() -> Void)?
+        
+        public init(text: String, isCancel: Bool = false, selected: (() -> Void)? = nil) {
+            self.text = text
+            self.isCancel = isCancel
+            self.selected = selected
+        }
+    }
+    
+    public let title: String?
+    public let message: String?
+    public var actions: [Action] = []
+    
+    public init(title: String? = nil, message: String? = nil) {
+        self.title = title
+        self.message = message
+    }
+    
+    public func append(_ action: Action) {
+        self.actions.append(action)
     }
 }
