@@ -97,7 +97,7 @@ extension MainRouter {
     
     public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
         
-        guard let next = self.nextScenesBuilder?.makeWaitNextHoorayScene() else { return nil }
+        guard let next = self.nextScenesBuilder?.makeWaitNextHoorayScene(until) else { return }
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
@@ -106,7 +106,7 @@ extension MainRouter {
     
     public func presentMakeNewHoorayScene() {
         
-        guard let next = self.nextScenesBuilder?.makeMakeHoorayScene() else { return nil }
+        guard let next = self.nextScenesBuilder?.makeMakeHoorayScene() else { return }
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

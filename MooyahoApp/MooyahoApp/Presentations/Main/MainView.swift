@@ -13,7 +13,7 @@ import CommonPresenting
 final class MainView: BaseUIView {
     
     let topFloatingButtonContainerView = UIView()
-    let profileView = UIImageView()
+    let profileView = IntegratedImageView()
     let currentPositionButton = UIButton(type: .system)
     let newHoorayButton = UIButton(type: .system)
     
@@ -50,6 +50,7 @@ extension MainView: Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
         }
+        profileView.setupLayout()
         
         topFloatingButtonContainerView.addSubview(currentPositionButton)
         currentPositionButton.autoLayout.active(with: profileView) {
@@ -81,9 +82,10 @@ extension MainView: Presenting {
     func setupStyling() {
         self.backgroundColor = self.uiContext.colors.appBackground
         
-        self.profileView.backgroundColor = .red
+        self.profileView.setupStyling()
         self.profileView.layer.cornerRadius = 18
         self.profileView.clipsToBounds = true
+        self.profileView.backgroundColor = .white
         
         self.currentPositionButton.backgroundColor = .black
         

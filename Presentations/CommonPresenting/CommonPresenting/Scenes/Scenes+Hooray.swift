@@ -9,6 +9,8 @@ import Foundation
 
 import RxSwift
 
+import Domain
+
 // MARK: - MakeHoorayScene Interactor & Presenter
 
 //public protocol MakeHooraySceneInteractor { }
@@ -49,6 +51,6 @@ public protocol WaitNextHoorayScene: Scenable, PangestureDismissableScene {
 
 public protocol WaitNextHooraySceneBuilable {
     
-    func makeWaitNextHoorayScene() -> WaitNextHoorayScene
+    func makeWaitNextHoorayScene(_ waitUntil: TimeStamp) -> WaitNextHoorayScene
 }
 

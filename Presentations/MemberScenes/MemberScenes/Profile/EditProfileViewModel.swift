@@ -103,6 +103,7 @@ extension EditProfileViewModelImple {
         
         let pendingInputs = self.subjects.pendingInputs.value
         let fields: [MemberUpdateField] = pendingInputs.compactMap{ .init(type: $0.key, value: $0.value) }
+        let imageInput = self.subjects.pendingImageSource.value?.asImageUploadReqParams()
         
         let handleStatus: (UpdateMemberProfileStatus) -> Void = { [weak self] status in
             switch status {
@@ -127,7 +128,7 @@ extension EditProfileViewModelImple {
         }
         
         self.subjects.isSaveChanges.accept(true)
-        self.usecase.updateCurrent(memberID: memberID, updateFields: fields, with: nil)
+        self.usecase.updateCurrent(memberID: memberID, updateFields: fields, with: imageInput)
             .subscribe(onNext: handleStatus, onError: handleError)
             .disposed(by: self.disposeBag)
     }
@@ -159,8 +160,7 @@ extension EditProfileViewModelImple {
     
     public var profileImageSource: Observable<ImageSource?> {
         return self.subjects.currentMember
-            .compactMap{ $0 }
-            .map{ $0?.icon }
+            .map{ $0?.icon ?? Member.memberDefaultEmoji }
             .distinctUntilChanged()
     }
     
@@ -246,6 +246,16 @@ extension MemberUpdateField {
         case .introduction:
             self = .introduction(value.isEmpty ? nil : value)
         default: return nil
+        }
+    }
+}
+
+private extension EditProfileViewModelImple.PendinImageSource {
+    
+    func asImageUploadReqParams() -> ImageUploadReqParams {
+        switch self {
+        case let .emoji(text): return .emoji(text)
+        case let .memoji(data): return .data(data, extension: "png")
         }
     }
 }
