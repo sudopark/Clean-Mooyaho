@@ -17,11 +17,12 @@ open class StubHoorayUsecase: HoorayUsecase, Stubbable {
     
     public init() {}
     
-    open func isAvailToPublish() -> Maybe<Bool> {
+    open func isAvailToPublish() -> Maybe<Void> {
         return self.resolve(key: "isAvailToPublish") ?? .empty()
     }
     
     open func publish(newHooray hoorayForm: NewHoorayForm, withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray> {
+        self.verify(key: "publish:newHooray", with: (hoorayForm, placeForm))
         return self.resolve(key: "publish:newHooray") ?? .empty()
     }
     

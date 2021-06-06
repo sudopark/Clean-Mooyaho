@@ -15,4 +15,5 @@ public enum ApplicationErrors: Error {
     case invalid
     case sigInNeed
     case profileNotSetup
+    case shouldWaitPublishHooray(until: TimeStamp)
 }

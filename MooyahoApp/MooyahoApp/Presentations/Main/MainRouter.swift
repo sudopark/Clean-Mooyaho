@@ -16,6 +16,7 @@ import UIKit
 
 import RxSwift
 
+import Domain
 import CommonPresenting
 
 
@@ -30,6 +31,10 @@ public protocol MainRouting: Routing {
     func presentSignInScene() -> SignInScenePresenter?
     
     func presentEditProfileScene() -> EditProfileScenePresenter?
+    
+    func alertShouldWaitPublishNewHooray(_ until: TimeStamp)
+    
+    func presentMakeNewHoorayScene()
 }
 
 // MARK: - Routers
@@ -88,5 +93,13 @@ extension MainRouter {
         guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return nil }
         self.currentScene?.present(scene, animated: true, completion: nil)
         return scene.presenrer
+    }
+    
+    public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
+        logger.todoImplement()
+    }
+    
+    public func presentMakeNewHoorayScene() {
+        logger.todoImplement()
     }
 }

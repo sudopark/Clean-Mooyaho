@@ -86,12 +86,14 @@ extension MainViewModelImple {
             switch error as? ApplicationErrors {
             case .sigInNeed: self?.requestSignInAndWaitResult()
             case .profileNotSetup: self?.requestEnerMemberProfileAndWaitResult()
+            case let .shouldWaitPublishHooray(until): self?.router.alertShouldWaitPublishNewHooray(until)
             default: self?.router.alertError(error)
             }
         }
         
-        let handleCheckResult: (Bool) -> Void = { [weak self] avail in
-            logger.print(level: .debug, "neww hooray event: \(avail)")
+        let handleCheckResult: () -> Void = { [weak self] in
+            logger.print(level: .debug, "start make new hooray")
+            self?.router.presentMakeNewHoorayScene()
         }
         
         self.hoorayUsecase.isAvailToPublish()
@@ -104,7 +106,7 @@ extension MainViewModelImple {
         guard let events = self.router.presentSignInScene() else { return }
         events.signedIn
             .subscribe(onNext: { [weak self] in
-                self?.makeNewHooray()
+                self?.router.presentMakeNewHoorayScene()
             })
             .disposed(by: self.disposeBag)
     }
@@ -129,7 +131,7 @@ extension MainViewModelImple {
     private func bindEditProfileEndEvent(_ presenter: EditProfileScenePresenter?) {
         presenter?.editCompleted
             .subscribe(onNext: { [weak self] in
-                self?.makeNewHooray()
+                self?.router.presentMakeNewHoorayScene()
             })
             .disposed(by: self.disposeBag)
     }
