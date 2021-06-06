@@ -41,10 +41,10 @@ extension HoorayPublisherUsecaseTests {
         
         // when
         let requestCheck = self.usecase.isAvailToPublish()
-        let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
+        let isAvail: Void? = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
         
         // then
-        XCTAssertEqual(isAvail, true)
+        XCTAssertNotNil(isAvail)
     }
     
     func testUsecase_whenTooSoonLatestHoorayExistsAtLocal_unavailToPublish() {
@@ -59,10 +59,10 @@ extension HoorayPublisherUsecaseTests {
         
         // when
         let requestCheck = self.usecase.isAvailToPublish()
-        let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
+        let error = self.waitError(expect, for: requestCheck.asObservable())
         
         // then
-        XCTAssertEqual(isAvail, false)
+        XCTAssert(error is TooSoonLatestHoorayExistInLocal)
     }
     
     func testUsecase_whenLatestHoorayExistsWithInLimit_unavailToPublishHooray() {
@@ -81,10 +81,10 @@ extension HoorayPublisherUsecaseTests {
         
         // when
         let requestCheck = self.usecase.isAvailToPublish()
-        let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
+        let error = self.waitError(expect, for: requestCheck.asObservable())
         
         // then
-        XCTAssertEqual(isAvail, false)
+        XCTAssert(error is TooSoonLatestHoorayExistInLocal)
     }
     
     func testUsecase_whenLatestNotTooSoon_availToPublish() {
@@ -103,10 +103,10 @@ extension HoorayPublisherUsecaseTests {
         
         // when
         let requestCheck = self.usecase.isAvailToPublish()
-        let isAvail = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
+        let isAvail: Void? = self.waitFirstElement(expect, for: requestCheck.asObservable()) { }
         
         // then
-        XCTAssertEqual(isAvail, true)
+        XCTAssertNotNil(isAvail)
     }
     
     func testUsecase_whenTryToHoorayButNotSignedIn_returnError() {

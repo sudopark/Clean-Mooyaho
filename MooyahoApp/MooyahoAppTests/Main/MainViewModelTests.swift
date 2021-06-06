@@ -82,7 +82,7 @@ extension MainViewModelTests {
         // given
         let expect = expectation(description: "새로운 후레이 발급 요청시 로그인되어있지 않다면 로그인 라우팅")
         self.stubHoorayUsecase.register(key: "isAvailToPublish") {
-            return Maybe<Bool>.error(ApplicationErrors.sigInNeed)
+            return Maybe<Void>.error(ApplicationErrors.sigInNeed)
         }
         
         self.spyRouter.called(key: "presentSignInScene") { _ in
@@ -100,10 +100,44 @@ extension MainViewModelTests {
         // given
         let expect = expectation(description: "새로운 후레이 발급 요청시 프로필이 세팅되어있지 않다면 않다면 입력 화면으로 이동 알럿")
         self.stubHoorayUsecase.register(key: "isAvailToPublish") {
-            return Maybe<Bool>.error(ApplicationErrors.profileNotSetup)
+            return Maybe<Void>.error(ApplicationErrors.profileNotSetup)
         }
         
         self.spyRouter.called(key: "alertForConfirm") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.makeNewHooray()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_whenTooSoonLatestHoorayExists_alertShouldWait() {
+        // given
+        let expect = expectation(description: "너무 이른 최근 후레이가 존재한다면 대기해야함을 알림")
+        self.stubHoorayUsecase.register(key: "isAvailToPublish") {
+            return Maybe<Void>.error(ApplicationErrors.shouldWaitPublishHooray(until: TimeStamp.now()))
+        }
+        
+        self.spyRouter.called(key: "alertShouldWaitPublishNewHooray") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.makeNewHooray()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_routeToNewHoorayScene() {
+        // given
+        let expect = expectation(description: "후레이 발급화면으로 이동")
+        
+        self.stubHoorayUsecase.register(key: "isAvailToPublish") { Maybe<Void>.just() }
+        self.spyRouter.called(key: "presentMakeNewHoorayScene") { _ in
             expect.fulfill()
         }
         
@@ -145,6 +179,14 @@ extension MainViewModelTests {
         
         func alertForConfirm(_ form: AlertForm) {
             self.verify(key: "alertForConfirm")
+        }
+        
+        func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
+            self.verify(key: "alertShouldWaitPublishNewHooray")
+        }
+        
+        func presentMakeNewHoorayScene() {
+            self.verify(key: "presentMakeNewHoorayScene")
         }
     }
     

@@ -16,13 +16,14 @@ import RxSwift
 public enum HoorayPublishPolicy {
     
     public static let defaultCooltime: Seconds  = 10 * 60
+    public static let defaultSpreadDistance: Meters = 1_000
 }
 
 // MARK: - HoorayPublisherUsecase
 
 public protocol HoorayPublisherUsecase {
     
-    func isAvailToPublish() -> Maybe<Bool>
+    func isAvailToPublish() -> Maybe<Void>
     
     func publish(newHooray hoorayForm: NewHoorayForm,
                  withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray>
@@ -44,17 +45,16 @@ public protocol HoorayPubisherUsecaseDefaultImpleDependency: AnyObject {
 
 // MARK: HoorayPubisher default implementation -> publish hoorays
 
-fileprivate struct TooSoonLatestHoorayExistInLocal: Error {}
-
 extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
 
-    public func isAvailToPublish() -> Maybe<Bool> {
+    public func isAvailToPublish() -> Maybe<Void> {
         
-        func checkIsEnoughTimePasses(_ latest: LatestHooray?, with memberShip: MemberShip) -> Bool {
-            guard let latest = latest else { return true }
+        func checkShouldWaitUntil(_ latest: LatestHooray?, with memberShip: MemberShip) -> TimeStamp? {
+            guard let latest = latest else { return nil }
             // TODO: 멤버쉽에 따라 쿨타임 조정
-            let interval = abs(TimeStamp.now() - latest.time)
-            return HoorayPublishPolicy.defaultCooltime.asTimeInterval() <= interval
+            let coolTime = HoorayPublishPolicy.defaultCooltime
+            let waitNeedUntil = latest.time + coolTime.asTimeInterval()
+            return waitNeedUntil > TimeStamp.now() ? waitNeedUntil : nil
         }
         
         guard let member = self.memberUsecase.fetchCurrentMember() else {
@@ -70,28 +70,26 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
         
         let throwWhenTooSoonHoorayExistsOnLocal: (MemberShip, LatestHooray?) throws -> MemberShip
         throwWhenTooSoonHoorayExistsOnLocal = { memberShip, latest in
-            guard checkIsEnoughTimePasses(latest, with: memberShip) == false else {
+            guard let shouldwaitUntil = checkShouldWaitUntil(latest, with: memberShip) else {
                 return memberShip
             }
-            throw TooSoonLatestHoorayExistInLocal()
+            throw ApplicationErrors.shouldWaitPublishHooray(until: shouldwaitUntil)
         }
-        let thenLoadRecentHoorayFromRemoteAndCheck: (MemberShip) -> Maybe<Bool>
+        let thenLoadRecentHoorayFromRemoteAndCheck: (MemberShip) -> Maybe<Void>
         thenLoadRecentHoorayFromRemoteAndCheck = { [weak self] memberShip in
             guard let self = self else { return .empty() }
             return self.hoorayRepository.requestLoadLatestHooray(member.uid)
-                .map{ checkIsEnoughTimePasses($0, with: memberShip) }
-        }
-        let catchTooSoonLocalHoorayExistsError: (Error) -> Maybe<Bool> = { error in
-            guard error is TooSoonLatestHoorayExistInLocal else {
-                return .error(error)
-            }
-            return .just(false)
+                .map { latest in
+                    guard let shouldwaitUntil = checkShouldWaitUntil(latest, with: memberShip) else {
+                        return ()
+                    }
+                    throw ApplicationErrors.shouldWaitPublishHooray(until: shouldwaitUntil)
+                }
         }
         
         return loadMemberShipAndLocalLatestHooray
             .map(throwWhenTooSoonHoorayExistsOnLocal)
             .flatMap(thenLoadRecentHoorayFromRemoteAndCheck)
-            .catch(catchTooSoonLocalHoorayExistsError)
     }
     
     public func publish(newHooray hoorayForm: NewHoorayForm,

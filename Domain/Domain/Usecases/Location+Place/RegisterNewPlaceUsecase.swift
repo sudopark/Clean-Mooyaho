@@ -61,7 +61,7 @@ extension RegisterNewPlaceUsecaseImple {
             let distance = pendingForm.form.coordinate.distance(from: position)
             let isOutofRange = abs(distance) > policy.maxDistance
             let interval = Date().timeIntervalSince(pendingForm.time)
-            let isTooLate = interval > policy.timeInterval.asTimeInterval()
+            let isTooLate = interval > policy.timeInterval.asSeconds().asTimeInterval()
             
             switch (isOutofRange, isTooLate) {
             case (false, _): return pendingForm.form
