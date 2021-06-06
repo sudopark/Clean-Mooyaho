@@ -1,26 +1,25 @@
 //
 //  Dummies.swift
-//  DomainTests
+//  StubUsecases
 //
 //  Created by sudo.park on 2021/06/06.
-//  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
 import Foundation
 
-@testable import Domain
+import Domain
 
 
 extension SigninResult {
     
-    static func dummy(_ uuid: String) -> Self {
+    public static func dummy(_ uuid: String) -> Self {
         return .init(auth: Auth(userID: uuid), member: .init(uid: uuid))
     }
 }
 
 extension PlaceSnippet {
     
-    static func dummy(_ int: Int) -> PlaceSnippet {
+    public static func dummy(_ int: Int) -> PlaceSnippet {
         return PlaceSnippet(placeID: "uid:\(int)",
                             title: "title:\(int)",
                             latt: 0, long: 0)
@@ -29,7 +28,7 @@ extension PlaceSnippet {
 
 extension Place {
     
-    static func dummy(_ int: Int) -> Place {
+    public static func dummy(_ int: Int) -> Place {
         return Place(uid: "uid:\(int)", title: "title:\(int)",
                      coordinate: .init(latt: 0, long: 0),
                      address: "address:\(int)",
@@ -45,7 +44,7 @@ extension Place {
 
 extension UserLocation {
     
-    static func dummy(_ int: Int = 0) -> Self {
+    public static func dummy(_ int: Int = 0) -> Self {
         return .init(userID: "uid:\(int)",
                      lastLocation: .init(lattitude: Double(int),
                                          longitude: Double(int),
@@ -56,7 +55,7 @@ extension UserLocation {
 
 extension SearchingPlace {
     
-    static func dummy(_ int: Int) -> SearchingPlace {
+    public static func dummy(_ int: Int) -> SearchingPlace {
         return SearchingPlace(uid: "uid:\(int)",
                               title: "title:\(int)",
                               coordinate: .init(latt: 0, long: 0),
@@ -68,7 +67,7 @@ extension SearchingPlace {
 
 extension Hooray {
     
-    static func dummy(_ int: Int) -> Hooray {
+    public static func dummy(_ int: Int) -> Hooray {
         return Hooray(uid: "uid:\(int)",
                       placeID: "place:\(int)",
                       publisherID: "pub:\(int)",
@@ -85,7 +84,7 @@ extension Hooray {
 
 extension NewHoorayMessage {
     
-    static func dummy(_ int: Int) -> NewHoorayMessage {
+    public static func dummy(_ int: Int) -> NewHoorayMessage {
         return .init(hoorayID: "id:\(int)", publisherID: "pub:\(int)", publishedAt: 0, placeID: "place", location: .init(latt: 0, long: 0), spreadDistance: 10, aliveDuration: 10)
     }
 }

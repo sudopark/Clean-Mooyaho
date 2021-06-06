@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -23,6 +24,12 @@ public protocol MakeHoorayRouting: Routing {
     func openEditProfileScene() -> EditProfileScenePresenter?
     
     func presentPlaceSelectScene()
+    
+    func askSelectPlaceInfo(_ form: AlertForm)
+    
+    func alertShouldWaitPublishNewHooray(_ until: TimeStamp)
+    
+//    func unavailToPublish
 }
 
 // MARK: - Routers
@@ -43,6 +50,14 @@ extension MakeHoorayRouter {
     }
     
     public func presentPlaceSelectScene() {
-        // TODO: implement needs
+        logger.todoImplement()
+    }
+    
+    public func askSelectPlaceInfo(_ form: AlertForm) {
+        logger.todoImplement()
+    }
+    
+    public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
+        logger.todoImplement()
     }
 }
