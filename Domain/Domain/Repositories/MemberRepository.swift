@@ -16,7 +16,7 @@ public enum MemberProfileUploadStatus {
     case completed(_ source: ImageSource?)
 }
 
-public protocol MemberRepository {
+public protocol MemberRepository: AnyObject {
     
     func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void>
     
@@ -27,5 +27,5 @@ public protocol MemberRepository {
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
-                                          imageSource: ImageSource?) -> Maybe<Void>
+                                          imageSource: ImageSource?) -> Maybe<Member>
 }

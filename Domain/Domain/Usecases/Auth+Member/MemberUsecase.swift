@@ -78,11 +78,24 @@ extension MemberUsecaseImple {
     
     private func finishUpdateMember(_ memberID: String,
                                     fields: [MemberUpdateField],
-                                    imageSource: ImageSource? = nil) -> Observable<UpdateMemberProfileStatus> {
+                                    imageSource: ImageSource? = nil,
+                                    imageUploadFail: Error? = nil) -> Observable<UpdateMemberProfileStatus> {
+        
+        let shareUpdatedMember: (Member) -> Void = { [weak self] member in
+            self?.sharedDataStoreService.update(SharedDataKeys.currentMember.rawValue, value: member)
+        }
+        
         return self.memberRepository
             .requestUpdateMemberProfileFields(memberID, fields: fields, imageSource: imageSource)
+            .do(onNext: shareUpdatedMember)
             .asObservable()
-            .map{ _ in UpdateMemberProfileStatus.finished }
+            .map { _ in
+                if let uploadImageError = imageUploadFail {
+                    return UpdateMemberProfileStatus.finishedWithImageUploadFail(uploadImageError)
+                } else {
+                    return UpdateMemberProfileStatus.finished
+                }
+            }
     }
     
     public func updateCurrent(memberID: String,
@@ -114,9 +127,7 @@ extension MemberUsecaseImple {
         
         let errorthenJustUpdateFields: (Error) -> Observable<UpdateMemberProfileStatus> = { [weak self] error in
             guard let self = self else { return .empty() }
-            return self.memberRepository.requestUpdateMemberProfileFields(memberID, fields: updateFields, imageSource: nil)
-                .asObservable()
-                .map{ _ in UpdateMemberProfileStatus.finishedWithImageUploadFail(error) }
+            return self.finishUpdateMember(memberID, fields: updateFields, imageUploadFail: error)
         }
         
         return uploadImage

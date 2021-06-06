@@ -35,6 +35,11 @@ class StubLocal: LocalStorage, Stubbable {
         return self.resolve(key: "saveSignedIn:member") ?? .empty()
     }
     
+    func updateCurrentMember(_ newValue: Member) -> Maybe<Void> {
+        self.verify(key: "updateCurrentMember")
+        return self.resolve(key: "updateCurrentMember") ?? .empty()
+    }
+    
     func fetchRecentSelectTags(_ type: Tag.TagType, query: String) -> Maybe<[Tag]> {
         return self.resolve(key: "fetchRecentSelectTags") ?? .empty()
     }

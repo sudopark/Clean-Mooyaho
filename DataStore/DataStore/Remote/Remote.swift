@@ -67,7 +67,7 @@ public protocol MemberRemote {
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
-                                          imageSource: ImageSource?) -> Maybe<Void>
+                                          imageSource: ImageSource?) -> Maybe<Member>
 }
 
 

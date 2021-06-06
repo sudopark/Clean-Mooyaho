@@ -39,7 +39,7 @@ extension FirebaseServiceImple {
     
     public func requestUpdateMemberProfileFields(_ memberID: String,
                                                  fields: [MemberUpdateField],
-                                                 imageSource: ImageSource?) -> Maybe<Void> {
+                                                 imageSource: ImageSource?) -> Maybe<Member> {
         typealias Key = MemberMappingKey
         var updating: JSON = fields.reduce(into: [:]) { dict, field in
             switch field {
@@ -54,7 +54,17 @@ extension FirebaseServiceImple {
         }
         updating[Key.icon] = imageSource?.asJSON()
         
+        let thenLoadMember: () -> Maybe<Member> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let loadedMember: Maybe<Member?> = self.load(docuID: memberID, in: .member)
+            return loadedMember.compactMap { member in
+                guard let member = member else { throw RemoteErrors.loadFail("Member", reason: nil )}
+                return member
+            }
+        }
+        
         return self.update(docuID: memberID, newFields: updating, at: .member)
+            .flatMap(thenLoadMember)
     }
 }
 
