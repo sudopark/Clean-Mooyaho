@@ -25,7 +25,7 @@ open class StubMemberUsecase: MemberUsecase, Stubbable {
         return self.resolve(key: "loadCurrentMembership") ?? .empty()
     }
     
-    let stubCurrentMember = PublishSubject<Member?>()
+    public let stubCurrentMember = PublishSubject<Member?>()
     public var currentMember: Observable<Member?> {
         return stubCurrentMember.asObservable()
     }

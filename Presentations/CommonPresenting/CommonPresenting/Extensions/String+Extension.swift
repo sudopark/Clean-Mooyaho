@@ -39,7 +39,10 @@ extension String {
                              width: textSize.width,
                              height: textSize.height),
                              withAttributes: attr)
-        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
         UIGraphicsEndImageContext()
         return image
     }

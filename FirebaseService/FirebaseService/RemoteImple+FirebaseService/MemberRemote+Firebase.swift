@@ -52,7 +52,7 @@ extension FirebaseServiceImple {
             default: break
             }
         }
-        updating[Key.icon] = imageSource?.asJSON
+        updating[Key.icon] = imageSource?.asJSON()
         
         return self.update(docuID: memberID, newFields: updating, at: .member)
     }

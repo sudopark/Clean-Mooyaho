@@ -19,8 +19,18 @@ import CommonPresenting
 public protocol MakeHoorayViewModel: AnyObject {
 
     // interactor
+    func requestChangeMemnerProfileImage()
+    func enterHooray(message: String)
+    func requestSelectPlace()
+    func requestPublishNewHooray(with tags: [String])
     
     // presenter
+    var memberProfileImage: Observable<ImageSource> { get }
+    var hoorayKeyword: Observable<String> { get }
+    var isPublishable: Observable<Bool> { get }
+    var isPublishing: Observable<Bool> { get }
+    var publishedNewHooray: Observable<Hooray> { get }
+    var maxHoorayMessageTextCount: Int { get }
 }
 
 
@@ -175,6 +185,10 @@ extension MakeHoorayViewModelImple {
     
     public var publishedNewHooray: Observable<Hooray> {
         return self.subjects.newHooray.asObservable()
+    }
+    
+    public var maxHoorayMessageTextCount: Int {
+        return 100
     }
 }
 
