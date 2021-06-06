@@ -27,6 +27,16 @@
 		F6D96F5D26691FDD00D0F507 /* HoorayScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96F5326691FDD00D0F507 /* HoorayScene.framework */; };
 		F6D96F6226691FDD00D0F507 /* HooraySceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D96F6126691FDD00D0F507 /* HooraySceneTests.swift */; };
 		F6D96F6426691FDD00D0F507 /* HoorayScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D96F5626691FDD00D0F507 /* HoorayScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6F29574266D0BFB00CDF980 /* EnterHoorayImageRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2956F266D0BFB00CDF980 /* EnterHoorayImageRouter.swift */; };
+		F6F29575266D0BFB00CDF980 /* EnterHoorayImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29570266D0BFB00CDF980 /* EnterHoorayImageViewController.swift */; };
+		F6F29577266D0BFB00CDF980 /* EnterHoorayImageScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29572266D0BFB00CDF980 /* EnterHoorayImageScene.swift */; };
+		F6F29578266D0BFB00CDF980 /* EnterHoorayImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29573266D0BFB00CDF980 /* EnterHoorayImageViewModel.swift */; };
+		F6F2957A266D0C7800CDF980 /* HoorayActionToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29579266D0C7800CDF980 /* HoorayActionToolbar.swift */; };
+		F6F2959B266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959A266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift */; };
+		F6F295AC266D37CC00CDF980 /* EnterHoorayMessageRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295A7266D37CC00CDF980 /* EnterHoorayMessageRouter.swift */; };
+		F6F295AD266D37CC00CDF980 /* EnterHoorayMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295A8266D37CC00CDF980 /* EnterHoorayMessageViewController.swift */; };
+		F6F295AF266D37CC00CDF980 /* EnterHoorayMessageScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295AA266D37CC00CDF980 /* EnterHoorayMessageScene.swift */; };
+		F6F295B0266D37CC00CDF980 /* EnterHoorayMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295AB266D37CC00CDF980 /* EnterHoorayMessageViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +73,16 @@
 		F6D96F5C26691FDD00D0F507 /* HooraySceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HooraySceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D96F6126691FDD00D0F507 /* HooraySceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HooraySceneTests.swift; sourceTree = "<group>"; };
 		F6D96F6326691FDD00D0F507 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6F2956F266D0BFB00CDF980 /* EnterHoorayImageRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayImageRouter.swift; sourceTree = "<group>"; };
+		F6F29570266D0BFB00CDF980 /* EnterHoorayImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayImageViewController.swift; sourceTree = "<group>"; };
+		F6F29572266D0BFB00CDF980 /* EnterHoorayImageScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayImageScene.swift; sourceTree = "<group>"; };
+		F6F29573266D0BFB00CDF980 /* EnterHoorayImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayImageViewModel.swift; sourceTree = "<group>"; };
+		F6F29579266D0C7800CDF980 /* HoorayActionToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayActionToolbar.swift; sourceTree = "<group>"; };
+		F6F2959A266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayImageViewModelTests.swift; sourceTree = "<group>"; };
+		F6F295A7266D37CC00CDF980 /* EnterHoorayMessageRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayMessageRouter.swift; sourceTree = "<group>"; };
+		F6F295A8266D37CC00CDF980 /* EnterHoorayMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayMessageViewController.swift; sourceTree = "<group>"; };
+		F6F295AA266D37CC00CDF980 /* EnterHoorayMessageScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayMessageScene.swift; sourceTree = "<group>"; };
+		F6F295AB266D37CC00CDF980 /* EnterHoorayMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayMessageViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +168,12 @@
 		F6D96F5526691FDD00D0F507 /* HoorayScene */ = {
 			isa = PBXGroup;
 			children = (
+				F6F29579266D0C7800CDF980 /* HoorayActionToolbar.swift */,
 				F6502DA92669D6810027800F /* MakeHooray */,
+				F6F2956B266D0BB000CDF980 /* EnterHoorayImage */,
+				F6F2956C266D0BC000CDF980 /* EnterHoorayMessage */,
+				F6F2956D266D0BCB00CDF980 /* EnterHoorayTags */,
+				F6F2956E266D0BEA00CDF980 /* SelectHoorayPlace */,
 				F6502DD7266CA7560027800F /* WaitNextHooray */,
 				F6D96F5626691FDD00D0F507 /* HoorayScene.h */,
 				F6D96F5726691FDD00D0F507 /* Info.plist */,
@@ -163,8 +188,45 @@
 				F6D96F6326691FDD00D0F507 /* Info.plist */,
 				F6502DB72669D7E00027800F /* MakeHoorayViewModelTests.swift */,
 				F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */,
+				F6F2959A266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift */,
 			);
 			path = HooraySceneTests;
+			sourceTree = "<group>";
+		};
+		F6F2956B266D0BB000CDF980 /* EnterHoorayImage */ = {
+			isa = PBXGroup;
+			children = (
+				F6F2956F266D0BFB00CDF980 /* EnterHoorayImageRouter.swift */,
+				F6F29570266D0BFB00CDF980 /* EnterHoorayImageViewController.swift */,
+				F6F29572266D0BFB00CDF980 /* EnterHoorayImageScene.swift */,
+				F6F29573266D0BFB00CDF980 /* EnterHoorayImageViewModel.swift */,
+			);
+			path = EnterHoorayImage;
+			sourceTree = "<group>";
+		};
+		F6F2956C266D0BC000CDF980 /* EnterHoorayMessage */ = {
+			isa = PBXGroup;
+			children = (
+				F6F295A7266D37CC00CDF980 /* EnterHoorayMessageRouter.swift */,
+				F6F295A8266D37CC00CDF980 /* EnterHoorayMessageViewController.swift */,
+				F6F295AA266D37CC00CDF980 /* EnterHoorayMessageScene.swift */,
+				F6F295AB266D37CC00CDF980 /* EnterHoorayMessageViewModel.swift */,
+			);
+			path = EnterHoorayMessage;
+			sourceTree = "<group>";
+		};
+		F6F2956D266D0BCB00CDF980 /* EnterHoorayTags */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EnterHoorayTags;
+			sourceTree = "<group>";
+		};
+		F6F2956E266D0BEA00CDF980 /* SelectHoorayPlace */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SelectHoorayPlace;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,14 +338,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6502DDE266CA7730027800F /* WaitNextHoorayViewController.swift in Sources */,
+				F6F29578266D0BFB00CDF980 /* EnterHoorayImageViewModel.swift in Sources */,
+				F6F29575266D0BFB00CDF980 /* EnterHoorayImageViewController.swift in Sources */,
 				F6502DB02669D68E0027800F /* MakeHoorayViewController.swift in Sources */,
 				F6502DAF2669D68E0027800F /* MakeHoorayRouter.swift in Sources */,
+				F6F295AD266D37CC00CDF980 /* EnterHoorayMessageViewController.swift in Sources */,
+				F6F2957A266D0C7800CDF980 /* HoorayActionToolbar.swift in Sources */,
+				F6F29574266D0BFB00CDF980 /* EnterHoorayImageRouter.swift in Sources */,
+				F6F295AC266D37CC00CDF980 /* EnterHoorayMessageRouter.swift in Sources */,
 				F6502DB32669D68E0027800F /* MakeHoorayViewModel.swift in Sources */,
 				F6502DB22669D68E0027800F /* MakeHoorayScene.swift in Sources */,
 				F6502DE1266CA7730027800F /* WaitNextHoorayViewModel.swift in Sources */,
+				F6F29577266D0BFB00CDF980 /* EnterHoorayImageScene.swift in Sources */,
 				F6502DE7266CB0040027800F /* MakeHoorayView.swift in Sources */,
 				F6502DE0266CA7730027800F /* WaitNextHoorayScene.swift in Sources */,
+				F6F295B0266D37CC00CDF980 /* EnterHoorayMessageViewModel.swift in Sources */,
 				F6502DDD266CA7730027800F /* WaitNextHoorayRouter.swift in Sources */,
+				F6F295AF266D37CC00CDF980 /* EnterHoorayMessageScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6502DE5266CAA240027800F /* WaitNextHoorayViewModelTests.swift in Sources */,
+				F6F2959B266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift in Sources */,
 				F6502DB82669D7E00027800F /* MakeHoorayViewModelTests.swift in Sources */,
 				F6D96F6226691FDD00D0F507 /* HooraySceneTests.swift in Sources */,
 			);

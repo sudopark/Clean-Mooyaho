@@ -80,6 +80,10 @@ extension DIContainers {
             self.shared.kakaoService
         ]
     }
+    
+    var imagePickPermissionCheckService: ImagePickPermissionCheckService {
+        return ImagePickPermissionCheckServiceImple()
+    }
 }
 
 // MARK: - Usecases

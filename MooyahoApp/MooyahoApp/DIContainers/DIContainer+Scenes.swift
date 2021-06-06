@@ -117,5 +117,38 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         router.currentScene = viewController
         return viewController
     }
+    
+    public func makeEnterHoorayImageScene(form: NewHoorayForm,
+                                          previousSelectImagePath: String?,
+                                          transitionManager: BottomSlideTransitionAnimationManager) -> EnterHoorayImageScene {
+        let router = EnterHoorayImageRouter(transitionManager: transitionManager,
+                                            builders: self)
+        let viewModel = EnterHoorayImageViewModelImple(form: form,
+                                                       previousSelectImagePath: previousSelectImagePath,
+                                                       imagePickPermissionCheckService: self.imagePickPermissionCheckService,
+                                                       router: router)
+        let viewController = EnterHoorayImageViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+    
+    public func makeEnterHoorayMessageScene() -> EnterHoorayMessageScene {
+        let router = EnterHoorayMessageRouter(nextSceneBuilders: self)
+        let viewModel = EnterHoorayMessageViewModelImple(router: router)
+        let viewController = EnterHoorayMessageViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
+// MARK: - Common Scene
+
+extension DIContainers: ImagePickerSceneBuilable {
+    
+    public func makeImagePickerScene(isCamera: Bool) -> ImagePickerScene {
+        let viewController = SimpleImagePickerViewController(isCamera: isCamera)
+        return viewController
+    }
 }
 
