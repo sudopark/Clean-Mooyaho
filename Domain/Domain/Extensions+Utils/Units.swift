@@ -28,7 +28,15 @@ extension TimeStamp {
 
 extension Minutes {
     
+    public func asSeconds() -> Seconds {
+        return self * 60
+    }
+}
+
+
+extension Seconds {
+    
     public func asTimeInterval() -> TimeInterval {
-        return TimeInterval(self * 60)
+        return TimeInterval(self)
     }
 }
