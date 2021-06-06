@@ -89,6 +89,7 @@
 		F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3F60626497C3000DD4986 /* RegisterNewPlaceUsecase.swift */; };
 		F6E3F6092649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3F6082649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift */; };
 		F6E3F60B264983E900DD4986 /* Location+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3F60A264983E900DD4986 /* Location+Extension.swift */; };
+		F6F29591266D136200CDF980 /* FileHandleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29590266D136200CDF980 /* FileHandleService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +191,7 @@
 		F6E3F60626497C3000DD4986 /* RegisterNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceUsecase.swift; sourceTree = "<group>"; };
 		F6E3F6082649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceUsecaseTests.swift; sourceTree = "<group>"; };
 		F6E3F60A264983E900DD4986 /* Location+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extension.swift"; sourceTree = "<group>"; };
+		F6F29590266D136200CDF980 /* FileHandleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +222,7 @@
 				2B40BF83263F09800031C7A6 /* LocationMonitoringService.swift */,
 				F6152938264DA35A003BCB59 /* MessagingService.swift */,
 				F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */,
+				F6F29590266D136200CDF980 /* FileHandleService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				2B9F279F2633F11800FEBCE3 /* Staff.swift in Sources */,
 				2B9F27972633F0F700FEBCE3 /* Member.swift in Sources */,
 				2BFF241B2641BB04008C52EB /* Array+Extensions.swift in Sources */,
+				F6F29591266D136200CDF980 /* FileHandleService.swift in Sources */,
 				2B40BF8B263F0D070031C7A6 /* UserLocation.swift in Sources */,
 				F6152930264D9DB4003BCB59 /* Hooray.swift in Sources */,
 				2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */,

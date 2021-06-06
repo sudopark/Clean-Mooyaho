@@ -30,6 +30,12 @@ public protocol MakeHoorayScene: Scenable {
 public protocol MakeHooraySceneBuilable {
     
     func makeMakeHoorayScene() -> MakeHoorayScene
+    
+    func makeEnterHoorayImageScene(form: NewHoorayForm,
+                                   previousSelectImagePath: String?,
+                                   transitionManager: BottomSlideTransitionAnimationManager) -> EnterHoorayImageScene
+    
+    func makeEnterHoorayMessageScene() -> EnterHoorayMessageScene
 }
 
 
@@ -38,6 +44,40 @@ public protocol MakeHooraySceneBuilable {
 //public protocol WaitNextHooraySceneInteractor { }
 //
 //public protocol WaitNextHoorayScenePresenter { }
+
+
+// MARK: - EnterHoorayImageScene Interactor & Presenter
+
+//public protocol EnterHoorayImageSceneInteractor { }
+//
+//public protocol EnterHoorayImageScenePresenter { }
+
+
+// MARK: - EnterHoorayImageScene
+
+public protocol EnterHoorayImageScene: Scenable, PangestureDismissableScene {
+    
+//    var interactor: EnterHoorayImageSceneInteractor? { get }
+//
+//    var presenter: EnterHoorayImageScenePresenter? { get }
+}
+
+
+// MARK: - EnterHoorayMessageScene Interactor & Presenter
+
+//public protocol EnterHoorayMessageSceneInteractor { }
+//
+//public protocol EnterHoorayMessageScenePresenter { }
+
+
+// MARK: - EnterHoorayMessageScene
+
+public protocol EnterHoorayMessageScene: Scenable, PangestureDismissableScene {
+    
+//    var interactor: EnterHoorayMessageSceneInteractor? { get }
+//
+//    var presenter: EnterHoorayMessageScenePresenter? { get }
+}
 
 
 // MARK: - WaitNextHoorayScene
