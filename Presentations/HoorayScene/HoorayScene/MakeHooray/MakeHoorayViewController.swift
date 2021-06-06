@@ -78,6 +78,11 @@ extension MakeHoorayViewController {
                     let tags = self.makeView.tagInputView.getAllTags().map{ $0.text }
                     self.viewModel.requestPublishNewHooray(with: tags)
                 })
+            
+            self.view.rx.addTapgestureRecognizer()
+                .subscribe(onNext: { [weak self] _ in
+                    self?.view.endEditing(true)
+                })
         }
         
         self.disposeBag.insert {
@@ -123,6 +128,8 @@ extension MakeHoorayViewController: Presenting, UITextViewDelegate {
     }
     
     public func setupStyling() {
+        
+        self.view.backgroundColor = self.uiContext.colors.appBackground
         makeView.setupStyling()
     }
     

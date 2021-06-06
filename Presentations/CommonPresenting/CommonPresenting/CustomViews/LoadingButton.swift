@@ -50,7 +50,9 @@ extension LoadingButton: Presenting {
         loadingView.setupLayout()
     }
     
-    public func setupStyling() { }
+    public func setupStyling() {
+        self.button.setTitleColor(self.loadingView.layerColor, for: .normal)
+    }
 }
 
 

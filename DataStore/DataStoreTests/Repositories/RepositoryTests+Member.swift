@@ -117,16 +117,38 @@ extension RepositoryTests_Member {
         let expect = expectation(description: "멤버 필드 새로운 값으로 업데이트")
         
         self.stubRemote.register(key: "requestUpdateMemberProfileFields") {
-            return Maybe<Void>.just()
+            return Maybe<Member>.just(Member.init(uid: "some"))
         }
         
         // when
         let requestUpdate = self.repository
             .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], imageSource: nil)
-        let void: Void? = self.waitFirstElement(expect, for: requestUpdate.asObservable())
+        let member = self.waitFirstElement(expect, for: requestUpdate.asObservable())
         
         // then
-        XCTAssertNotNil(void)
+        XCTAssertNotNil(member)
+    }
+    
+    func testRepository_whenUpdateMember_updateLocal() {
+        // given
+        let expect = expectation(description: "멤버 업데이트 이후에 캐시 업데이트")
+        
+        self.stubRemote.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Member>.just(Member.init(uid: "some"))
+        }
+        
+        self.stubLocal.called(key: "updateCurrentMember") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository
+            .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], imageSource: .emoji("✊"))
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
     }
 }
 
@@ -135,9 +157,12 @@ extension RepositoryTests_Member {
     class DummyRepository: MemberRepository, MemberRepositoryDefImpleDependency {
         
         let memberRemote: MemberRemote
+        let memberLocal: MemberLocalStorage
+        let disposeBag: DisposeBag = .init()
         
-        init(remote: MemberRemote, local: HoorayLocalStorage) {
+        init(remote: MemberRemote, local: MemberLocalStorage) {
             self.memberRemote = remote
+            self.memberLocal = local
         }
     }
 }

@@ -16,7 +16,8 @@ import Domain
 public protocol MemberRepositoryDefImpleDependency {
     
     var memberRemote: MemberRemote { get }
-    
+    var memberLocal: MemberLocalStorage { get}
+    var disposeBag: DisposeBag { get }
 }
 
 
@@ -50,8 +51,17 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
     
     public func requestUpdateMemberProfileFields(_ memberID: String,
                                                  fields: [MemberUpdateField],
-                                                 imageSource: ImageSource?) -> Maybe<Void> {
+                                                 imageSource: ImageSource?) -> Maybe<Member> {
+        
+        let thenUpdateLocal: (Member) -> Void = { [weak self] member in
+            guard let self = self else { return }
+            self.memberLocal.updateCurrentMember(member)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
         return self.memberRemote
             .requestUpdateMemberProfileFields(memberID, fields: fields, imageSource: imageSource)
+            .do(onNext: thenUpdateLocal)
     }
 }

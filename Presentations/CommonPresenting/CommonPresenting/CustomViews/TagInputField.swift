@@ -35,6 +35,12 @@ final class UUIDTagInputField: WSTagsField {
 
 public final class TagInputField: BaseUIView {
     
+    public var placeHolder: String? {
+        didSet {
+            self.underlyingTextField.placeholder = placeHolder ?? ""
+        }
+    }
+    
     private let underlyingTextField: UUIDTagInputField = .init()
     
     public override init(frame: CGRect) {
@@ -57,8 +63,9 @@ extension TagInputField: Presenting {
     
     public func setupStyling() {
         
-        self.underlyingTextField.spaceBetweenLines = 8
-        self.underlyingTextField.spaceBetweenTags = 6
+        self.underlyingTextField.contentInset = .init(top: 4, left: 0, bottom: 4, right: 0)
+        self.underlyingTextField.spaceBetweenLines = 10
+        self.underlyingTextField.spaceBetweenTags = 10
         self.underlyingTextField.textField.returnKeyType = .continue
     }
 }
