@@ -39,7 +39,9 @@ public protocol MakeHooraySceneBuilable {
                                      previousSelectImagePath: String?,
                                      transitionManager: BottomSlideTransitionAnimationManager?) -> EnterHoorayMessageScene
     
-    func makeEnterHoorayTagScene() -> EnterHoorayTagScene
+    func makeEnterHoorayTagScene(form: NewHoorayForm, previousSelectImagePath: String?) -> EnterHoorayTagScene
+    
+    func makeSelectHoorayPlaceScene(form: NewHoorayForm, previousSelectImagePath: String?) -> SelectHoorayPlaceScene
 }
 
 
@@ -98,6 +100,22 @@ public protocol EnterHoorayTagScene: Scenable, PangestureDismissableScene {
 //    var interactor: EnterHoorayTagSceneInteractor? { get }
 //
 //    var presenter: EnterHoorayTagScenePresenter? { get }
+}
+
+// MARK: - SelectHoorayPlaceScene Interactor & Presenter
+
+//public protocol SelectHoorayPlaceSceneInteractor { }
+//
+//public protocol SelectHoorayPlaceScenePresenter { }
+
+
+// MARK: - SelectHoorayPlaceScene
+
+public protocol SelectHoorayPlaceScene: Scenable {
+    
+//    var interactor: SelectHoorayPlaceSceneInteractor? { get }
+//
+//    var presenter: SelectHoorayPlaceScenePresenter? { get }
 }
 
 

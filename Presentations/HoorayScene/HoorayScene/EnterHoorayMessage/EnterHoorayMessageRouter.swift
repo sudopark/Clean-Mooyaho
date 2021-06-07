@@ -47,7 +47,11 @@ extension EnterHoorayMessageRouter {
         
         guard let presenting = self.currentScene?.presentingViewController,
               let transtionManager = self.bottomSlideDismissAnimator,
-              let next = self.nextScenesBuilder?.makeEnterHoorayTagScene() else { return }
+              let next = self.nextScenesBuilder?.makeEnterHoorayTagScene(form: form,
+                                                                         previousSelectImagePath: selectedImage) else {
+            return
+        }
+        
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = transtionManager
         next.setupDismissGesture(transtionManager.dismissalInteractor)

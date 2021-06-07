@@ -146,10 +146,26 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         return viewController
     }
     
-    public func makeEnterHoorayTagScene() -> EnterHoorayTagScene {
+    public func makeEnterHoorayTagScene(form: NewHoorayForm,
+                                        previousSelectImagePath: String?) -> EnterHoorayTagScene {
+        
         let router = EnterHoorayTagRouter(nextSceneBuilders: self)
-        let viewModel = EnterHoorayTagViewModelImple(router: router)
+        let viewModel = EnterHoorayTagViewModelImple(form: form,
+                                                     selectedImagePath: previousSelectImagePath,
+                                                     router: router)
         let viewController = EnterHoorayTagViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+    
+    public func makeSelectHoorayPlaceScene(form: NewHoorayForm,
+                                           previousSelectImagePath: String?) -> SelectHoorayPlaceScene {
+        
+        let router = SelectHoorayPlaceRouter(nextSceneBuilders: self)
+        let viewModel = SelectHoorayPlaceViewModelImple(form: form,
+                                                        selectedImagePath: previousSelectImagePath,
+                                                        router: router)
+        let viewController = SelectHoorayPlaceViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
