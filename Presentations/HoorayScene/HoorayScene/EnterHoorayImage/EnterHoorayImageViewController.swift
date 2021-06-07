@@ -59,19 +59,19 @@ extension EnterHoorayImageViewController {
         
         self.imageAddButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                // TODO: open image picker
+                self?.viewModel.selectImage()
             })
             .disposed(by: self.disposeBag)
         
         self.toolbar.skipButton?.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                
+                self?.viewModel.skipInput()
             })
             .disposed(by: self.disposeBag)
         
         self.toolbar.nextButton?.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                
+                self?.viewModel.goNextInputStage()
             })
             .disposed(by: self.disposeBag)
     }

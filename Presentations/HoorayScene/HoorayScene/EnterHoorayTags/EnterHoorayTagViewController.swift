@@ -18,6 +18,10 @@ import CommonPresenting
 
 public final class EnterHoorayTagViewController: BaseViewController, EnterHoorayTagScene {
     
+    let bottomSlideMenuView = BaseBottomSlideMenuView()
+    let tagInputView = TagInputField()
+    let toolBar = HoorayActionToolbar()
+    
     let viewModel: EnterHoorayTagViewModel
     
     public init(viewModel: EnterHoorayTagViewModel) {
@@ -52,6 +56,19 @@ extension EnterHoorayTagViewController {
     
     private func bind() {
         
+        self.toolBar.skipButton?.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.skipInput()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.toolBar.nextButton?.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                let tags = self.tagInputView.getAllTags().map{ $0.text }
+                self.viewModel.goNextInputStage(with: tags)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -62,9 +79,29 @@ extension EnterHoorayTagViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(bottomSlideMenuView)
+        bottomSlideMenuView.autoLayout.activeFill(self.view)
+        bottomSlideMenuView.setupLayout()
+        
+        self.bottomSlideMenuView.addSubview(toolBar)
+        toolBar.autoLayout.active(with: bottomSlideMenuView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+        }
+        
+        self.bottomSlideMenuView.addSubview(tagInputView)
+        tagInputView.autoLayout.active(with: bottomSlideMenuView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+            $0.bottomAnchor.constraint(equalTo: toolBar.topAnchor, constant: -16)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 220)
+        }
     }
     
     public func setupStyling() {
         
+        self.bottomSlideMenuView.setupStyling()
     }
 }
