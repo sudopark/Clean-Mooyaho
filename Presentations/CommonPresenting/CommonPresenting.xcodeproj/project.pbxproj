@@ -51,6 +51,7 @@
 		F6F29597266D1BB800CDF980 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F29596266D1BB800CDF980 /* Common3rdParty.framework */; };
 		F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959E266D26EA00CDF980 /* ImagePickerBuilder.swift */; };
 		F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */; };
+		F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		F6F29596266D1BB800CDF980 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F2959E266D26EA00CDF980 /* ImagePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerBuilder.swift; sourceTree = "<group>"; };
 		F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerScene.swift; sourceTree = "<group>"; };
+		F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBottomSlideMenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +189,7 @@
 				2B39E27826387BCB003EE954 /* BaseViewController.swift */,
 				F6F249182655887C00AE7A8B /* BaseNavigationController.swift */,
 				F610146826570A1400D32E38 /* BaseUIView.swift */,
+				F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */,
 				F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */,
 				2B39E27926387BCB003EE954 /* EmptyBuilder.swift */,
 				2B39E27726387BCB003EE954 /* Presenting.swift */,
@@ -437,6 +440,7 @@
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
 				F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */,
