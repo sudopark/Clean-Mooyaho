@@ -23,6 +23,7 @@ public final class EnterHoorayMessageViewController: BaseViewController, EnterHo
     let placeHolderLabel = UILabel()
     let charCountLabel = UILabel()
     let toolBar = HoorayActionToolbar()
+    
     let viewModel: EnterHoorayMessageViewModel
     
     private let maxInputMessageCount: Int = 100

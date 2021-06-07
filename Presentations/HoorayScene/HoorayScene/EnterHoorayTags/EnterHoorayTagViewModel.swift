@@ -20,6 +20,8 @@ import CommonPresenting
 public protocol EnterHoorayTagViewModel: AnyObject {
 
     // interactor
+    func skipInput()
+    func goNextInputStage(with tags: [String])
     
     // presenter
 }
@@ -29,9 +31,16 @@ public protocol EnterHoorayTagViewModel: AnyObject {
 
 public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
     
+    private let form: NewHoorayForm
+    private let selectedImagePath: String?
     private let router: EnterHoorayTagRouting
     
-    public init(router: EnterHoorayTagRouting) {
+    public init(form: NewHoorayForm,
+                selectedImagePath: String?,
+                router: EnterHoorayTagRouting) {
+        
+        self.form = form
+        self.selectedImagePath = selectedImagePath
         self.router = router
     }
     
@@ -52,6 +61,14 @@ public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
 
 extension EnterHoorayTagViewModelImple {
     
+    public func skipInput() {
+        self.router.presentNextInputStage(form, selectedImage: selectedImagePath)
+    }
+    
+    public func goNextInputStage(with tags: [String]) {
+        self.form.tags = tags
+        self.router.presentNextInputStage(form, selectedImage: selectedImagePath)
+    }
 }
 
 
