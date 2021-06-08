@@ -26,25 +26,14 @@ public protocol EnterHoorayImageRouting: Routing {
     func presentEditScene(selectImage image: UIImage, edited: (UIImage) -> Void)
     
     func presentImagePicker(isCamera: Bool) -> ImagePickerScenePresenter?
-    
-    func presentNextInputStage(_ form: NewHoorayForm, selectedImage: String?)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EnterHoorayImageRouterBuildables = ImagePickerSceneBuilable & MakeHooraySceneBuilable
+public typealias EnterHoorayImageRouterBuildables = ImagePickerSceneBuilable
 
-public final class EnterHoorayImageRouter: Router<EnterHoorayImageRouterBuildables>, EnterHoorayImageRouting {
-    
-    weak var bottomSlideDismissAnimator: BottomSlideTransitionAnimationManager?
-    
-    public init(transitionManager: BottomSlideTransitionAnimationManager?,
-                builders: EnterHoorayImageRouterBuildables) {
-        self.bottomSlideDismissAnimator = transitionManager
-        super.init(nextSceneBuilders: builders)
-    }
-}
+public final class EnterHoorayImageRouter: Router<EnterHoorayImageRouterBuildables>, EnterHoorayImageRouting { }
 
 
 extension EnterHoorayImageRouter {
@@ -62,23 +51,5 @@ extension EnterHoorayImageRouter {
         guard let next = self.nextScenesBuilder?.makeImagePickerScene(isCamera: isCamera) else { return nil }
         
         return next.presenter
-    }
-    
-    public func presentNextInputStage(_ form: NewHoorayForm, selectedImage: String?) {
-        
-        guard let presenting = self.currentScene?.presentingViewController,
-              let transtionManager = self.bottomSlideDismissAnimator,
-              let next = self.nextScenesBuilder?
-                .makeEnterHoorayMessageScene(form: form,
-                                             previousSelectImagePath: selectedImage,
-                                             transitionManager: self.bottomSlideDismissAnimator) else {
-            return
-        }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = transtionManager
-        next.setupDismissGesture(transtionManager.dismissalInteractor)
-        self.currentScene?.dismiss(animated: true) { [weak presenting] in
-            presenting?.present(next, animated: true, completion: nil)
-        }
     }
 }

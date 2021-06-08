@@ -100,7 +100,7 @@ public final class NewHoorayForm {
     public var hoorayKeyword: String!
     public var message: String!
     public var tags: [String] = []
-    public var image: ImageSource?
+    public var imagePath: String?
     
     public var location: Coordinate!
     public var timeStamp: TimeStamp!

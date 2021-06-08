@@ -22,6 +22,7 @@ public protocol SelectHoorayPlaceViewModel: AnyObject {
     // interactor
     
     // presenter
+    var goNextStepWithForm: Observable<NewHoorayForm> { get }
 }
 
 
@@ -30,15 +31,12 @@ public protocol SelectHoorayPlaceViewModel: AnyObject {
 public final class SelectHoorayPlaceViewModelImple: SelectHoorayPlaceViewModel {
     
     private let form: NewHoorayForm
-    private let selectedImagePath: String?
     private let router: SelectHoorayPlaceRouting
     
     public init(form: NewHoorayForm,
-                selectedImagePath: String?,
                 router: SelectHoorayPlaceRouting) {
         
         self.form = form
-        self.selectedImagePath = selectedImagePath
         self.router = router
     }
     
@@ -47,7 +45,7 @@ public final class SelectHoorayPlaceViewModelImple: SelectHoorayPlaceViewModel {
     }
     
     fileprivate final class Subjects {
-        
+        let continueNext = PublishSubject<NewHoorayForm>()
     }
     
     private let subjects = Subjects()
@@ -66,4 +64,7 @@ extension SelectHoorayPlaceViewModelImple {
 
 extension SelectHoorayPlaceViewModelImple {
     
+    public var goNextStepWithForm: Observable<NewHoorayForm> {
+        return self.subjects.continueNext.asObservable()
+    }
 }

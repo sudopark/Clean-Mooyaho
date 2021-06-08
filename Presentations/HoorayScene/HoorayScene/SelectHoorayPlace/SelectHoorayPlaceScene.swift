@@ -11,27 +11,21 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import CommonPresenting
 
 
 // MARK: - SelectHoorayPlaceViewModelImple conform SelectHoorayPlaceSceneInteractor or SelectHoorayPlaceScenePresenter
 
-//extension SelectHoorayPlaceViewModelImple: SelectHoorayPlaceSceneInteractor {
-//
-//}
-//
-//extension SelectHoorayPlaceViewModelImple: SelectHoorayPlaceScenePresenter {
-//
-//}
+extension SelectHoorayPlaceViewModelImple: EnteringNewHoorayPresenter {
+
+}
+
 
 // MARK: - SelectHoorayPlaceViewController provide SelectHoorayPlaceSceneInteractor or SelectHoorayPlaceScenePresenter
 
-//extension SelectHoorayPlaceViewController {
-//
-//    public var interactor: SelectHoorayPlaceSceneInteractor? {
-//        return self.viewModel as? SelectHoorayPlaceSceneInteractor
-//    }
-//
-//    public var presenter: SelectHoorayPlaceScenePresenter? {
-//        return self.viewModel as? SelectHoorayPlaceScenePresenter
-//    }
-//}
+extension SelectHoorayPlaceViewController {
+
+    public var presenter: EnteringNewHoorayPresenter? {
+        return self.viewModel as? EnteringNewHoorayPresenter
+    }
+}

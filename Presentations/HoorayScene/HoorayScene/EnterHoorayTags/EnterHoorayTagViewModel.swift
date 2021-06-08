@@ -24,6 +24,7 @@ public protocol EnterHoorayTagViewModel: AnyObject {
     func goNextInputStage(with tags: [String])
     
     // presenter
+    var goNextStepWithForm: Observable<NewHoorayForm> { get }
 }
 
 
@@ -32,15 +33,12 @@ public protocol EnterHoorayTagViewModel: AnyObject {
 public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
     
     private let form: NewHoorayForm
-    private let selectedImagePath: String?
     private let router: EnterHoorayTagRouting
     
     public init(form: NewHoorayForm,
-                selectedImagePath: String?,
                 router: EnterHoorayTagRouting) {
         
         self.form = form
-        self.selectedImagePath = selectedImagePath
         self.router = router
     }
     
@@ -49,7 +47,7 @@ public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
     }
     
     fileprivate final class Subjects {
-        
+        let continueNext = PublishSubject<NewHoorayForm>()
     }
     
     private let subjects = Subjects()
@@ -62,12 +60,18 @@ public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
 extension EnterHoorayTagViewModelImple {
     
     public func skipInput() {
-        self.router.presentNextInputStage(form, selectedImage: selectedImagePath)
+        self.router.closeScene(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.subjects.continueNext.onNext(self.form)
+        }
     }
     
     public func goNextInputStage(with tags: [String]) {
-        self.form.tags = tags
-        self.router.presentNextInputStage(form, selectedImage: selectedImagePath)
+        self.router.closeScene(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.form.tags = tags
+            self.subjects.continueNext.onNext(self.form)
+        }
     }
 }
 
@@ -76,4 +80,7 @@ extension EnterHoorayTagViewModelImple {
 
 extension EnterHoorayTagViewModelImple {
     
+    public var goNextStepWithForm: Observable<NewHoorayForm> {
+        return self.subjects.continueNext.asObservable()
+    }
 }

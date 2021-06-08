@@ -11,26 +11,19 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import CommonPresenting
 
 // MARK: - EnterHoorayImageViewModelImple conform EnterHoorayImageSceneInteractor or EnterHoorayImageScenePresenter
 
-//extension EnterHoorayImageViewModelImple: EnterHoorayImageSceneInteractor {
-//
-//}
-//
-//extension EnterHoorayImageViewModelImple: EnterHoorayImageScenePresenter {
-//
-//}
+extension EnterHoorayImageViewModelImple: EnteringNewHoorayPresenter {
+
+}
 
 // MARK: - EnterHoorayImageViewController provide EnterHoorayImageSceneInteractor or EnterHoorayImageScenePresenter
 
-//extension EnterHoorayImageViewController {
-//
-//    public var interactor: EnterHoorayImageSceneInteractor? {
-//        return self.viewModel as? EnterHoorayImageSceneInteractor
-//    }
-//
-//    public var presenter: EnterHoorayImageScenePresenter? {
-//        return self.viewModel as? EnterHoorayImageScenePresenter
-//    }
-//}
+extension EnterHoorayImageViewController {
+    
+    public var presenter: EnteringNewHoorayPresenter? {
+        return self.viewModel as? EnteringNewHoorayPresenter
+    }
+}

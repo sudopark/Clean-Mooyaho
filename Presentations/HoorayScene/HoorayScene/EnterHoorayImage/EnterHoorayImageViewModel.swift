@@ -28,6 +28,7 @@ public protocol EnterHoorayImageViewModel: AnyObject {
     // presenter
     var deslectEnable: Observable<Bool> { get }
     var selectedImagePath: Observable<String?> { get }
+    var goNextStepWithForm: Observable<NewHoorayForm> { get }
 }
 
 
@@ -41,7 +42,6 @@ public final class EnterHoorayImageViewModelImple: EnterHoorayImageViewModel {
     private let router: EnterHoorayImageRouting
     
     public init(form: NewHoorayForm,
-                previousSelectImagePath: String? = nil,
                 imagePickPermissionCheckService: ImagePickPermissionCheckService,
                 fileHandleService: FileHandleService = FileManager.default,
                 router: EnterHoorayImageRouting) {
@@ -50,7 +50,7 @@ public final class EnterHoorayImageViewModelImple: EnterHoorayImageViewModel {
         self.fileHandleService = fileHandleService
         self.router = router
         
-        self.subjects.selectedImagePath.onNext(previousSelectImagePath)
+        self.subjects.selectedImagePath.onNext(form.imagePath)
     }
     
     deinit {
@@ -59,6 +59,7 @@ public final class EnterHoorayImageViewModelImple: EnterHoorayImageViewModel {
     
     fileprivate final class Subjects {
         let selectedImagePath = BehaviorSubject<String?>(value: nil)
+        let continueNext = PublishSubject<NewHoorayForm>()
     }
     
     private let subjects = Subjects()
@@ -87,12 +88,19 @@ extension EnterHoorayImageViewModelImple {
     
     public func goNextInputStage() {
         
-        let imagePath = try? self.subjects.selectedImagePath.value()
-        self.router.presentNextInputStage(self.form, selectedImage: imagePath)
+        self.router.closeScene(animated: true) { [weak self] in
+            guard let self = self else { return }
+            let imagePath = try? self.subjects.selectedImagePath.value()
+            self.form.imagePath = imagePath
+            self.subjects.continueNext.onNext(self.form)
+        }
     }
     
     public func skipInput() {
-        self.goNextInputStage()
+        self.router.closeScene(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.subjects.continueNext.onNext(self.form)
+        }
     }
     
     public func deselect() {
@@ -118,6 +126,10 @@ extension EnterHoorayImageViewModelImple {
     
     public var deslectEnable: Observable<Bool> {
         return self.subjects.selectedImagePath.map{ $0 != nil }
+    }
+    
+    public var goNextStepWithForm: Observable<NewHoorayForm> {
+        return self.subjects.continueNext.asObservable()
     }
 }
 
