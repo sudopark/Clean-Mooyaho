@@ -14,7 +14,16 @@ import RxRelay
 
 // MARK: - SuggestPlaceUsecase
 
-public protocol SuggestPlaceUsecase { }
+public protocol SuggestPlaceUsecase {
+    
+    // input
+    func startSuggestPlace(for query: SuggestPlaceQuery, in location: UserLocation)
+    func finishPlaceSuggesting()
+    func loadMoreSuggestPages()
+    
+    // output
+    var placeSuggestResult: Observable<SuggestPlaceResult?> { get }
+}
 
 
 // MARK: SuggestPlaceQuery requestParams
@@ -90,7 +99,7 @@ extension SuggestPlaceResult: SuggestResultCollectionType {
 }
 
 
-public final class SuggestPlaceUsecaseImple {
+public final class SuggestPlaceUsecaseImple: SuggestPlaceUsecase {
 
     private let placeRepository: PlaceRepository
     private var internalSuggestUsecase: SuggestUsecase<PlaceSuggestReqParams, SuggestPlaceResult>!

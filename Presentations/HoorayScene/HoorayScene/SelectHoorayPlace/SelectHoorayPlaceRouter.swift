@@ -18,7 +18,10 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SelectHoorayPlaceRouting: Routing { }
+public protocol SelectHoorayPlaceRouting: Routing {
+    
+    func presentNewPlaceRegisterScene()
+}
 
 // MARK: - Routers
 
@@ -30,5 +33,7 @@ public final class SelectHoorayPlaceRouter: Router<SelectHoorayPlaceRouterBuilda
 
 extension SelectHoorayPlaceRouter {
     
-    // SelectHoorayPlaceRouting implements
+    public func presentNewPlaceRegisterScene() {
+        
+    }
 }

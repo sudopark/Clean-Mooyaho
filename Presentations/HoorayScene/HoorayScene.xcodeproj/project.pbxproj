@@ -19,6 +19,7 @@
 		F6502DE5266CAA240027800F /* WaitNextHoorayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */; };
 		F6502DE7266CB0040027800F /* MakeHoorayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE6266CB0040027800F /* MakeHoorayView.swift */; };
 		F66CD928266FC1C60031EEC5 /* EnterHoorayTagScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD927266FC1C60031EEC5 /* EnterHoorayTagScene.swift */; };
+		F66CD92A266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD929266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift */; };
 		F68CA1D12669202C00344045 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D02669202C00344045 /* Common3rdParty.framework */; };
 		F68CA1D52669203100344045 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D42669203100344045 /* CommonPresenting.framework */; };
 		F68CA1D82669203600344045 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D72669203600344045 /* Domain.framework */; };
@@ -71,6 +72,7 @@
 		F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitNextHoorayViewModelTests.swift; sourceTree = "<group>"; };
 		F6502DE6266CB0040027800F /* MakeHoorayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayView.swift; sourceTree = "<group>"; };
 		F66CD927266FC1C60031EEC5 /* EnterHoorayTagScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayTagScene.swift; sourceTree = "<group>"; };
+		F66CD929266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectHoorayPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		F68CA1D02669202C00344045 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1D42669203100344045 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1D72669203600344045 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +210,7 @@
 				F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */,
 				F6F2959A266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift */,
 				F6F295B3266D48BB00CDF980 /* EnterHoorayMessageViewModelTests.swift */,
+				F66CD929266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift */,
 			);
 			path = HooraySceneTests;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 			files = (
 				F6502DE5266CAA240027800F /* WaitNextHoorayViewModelTests.swift in Sources */,
 				F6F2959B266D230B00CDF980 /* EnterHoorayImageViewModelTests.swift in Sources */,
+				F66CD92A266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift in Sources */,
 				F6502DB82669D7E00027800F /* MakeHoorayViewModelTests.swift in Sources */,
 				F6D96F6226691FDD00D0F507 /* HooraySceneTests.swift in Sources */,
 				F6F295B4266D48BB00CDF980 /* EnterHoorayMessageViewModelTests.swift in Sources */,
