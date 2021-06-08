@@ -98,8 +98,8 @@ extension EnterHoorayImageViewModelTests {
         }
         
         // when
+        self.form.imagePath = "previous"
         self.viewModel = .init(form: self.form,
-                               previousSelectImagePath: "previous",
                                imagePickPermissionCheckService: self.stubService, router: self.spyRouter)
         self.viewModel.selectImage()
         
@@ -111,8 +111,8 @@ extension EnterHoorayImageViewModelTests {
         // given
         let expect = expectation(description: "선택한 이미지 선택 해제")
         expect.expectedFulfillmentCount = 2
+        self.form.imagePath = "previous"
         self.viewModel = .init(form: self.form,
-                               previousSelectImagePath: "previous",
                                imagePickPermissionCheckService: self.stubService, router: self.spyRouter)
         
         // when
@@ -129,8 +129,8 @@ extension EnterHoorayImageViewModelTests {
         // given
         let expect = expectation(description: "선택한 이미지 선택 해제시에 임시파일 삭제")
         let spyFileService = SpyFileService()
+        self.form.imagePath = "previous"
         self.viewModel = .init(form: self.form,
-                               previousSelectImagePath: "previous",
                                imagePickPermissionCheckService: self.stubService,
                                fileHandleService: spyFileService,
                                router: self.spyRouter)
@@ -174,38 +174,17 @@ extension EnterHoorayImageViewModelTests {
         // given
         let expect = expectation(description: "다음 입력화면으로 이동")
         
+        self.form.imagePath = "previous"
         self.viewModel = .init(form: self.form,
-                               previousSelectImagePath: "previous",
                                imagePickPermissionCheckService: self.stubService, router: self.spyRouter)
         
-        self.spyRouter.called(key: "presentNextInputStage") { args in
-            guard let pair = args as? (NewHoorayForm, String?),
-                  pair.1 != nil else { return }
-            expect.fulfill()
+        // when
+        let form = self.waitFirstElement(expect, for: self.viewModel.goNextStepWithForm) {
+            self.viewModel.goNextInputStage()
         }
         
-        // when
-        self.viewModel.goNextInputStage()
-        
         // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testViewModel_skipImageInput() {
-        // given
-        let expect = expectation(description: "이미지 입력 스킵")
-        
-        self.spyRouter.called(key: "presentNextInputStage") { args in
-            guard let pair = args as? (NewHoorayForm, String?),
-                  pair.1 == nil else { return }
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.skipInput()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertNotNil(form)
     }
 }
 
@@ -232,11 +211,7 @@ extension EnterHoorayImageViewModelTests {
         func presentImagePicker(isCamera: Bool) -> ImagePickerScenePresenter? {
             return self.resolve(key: "presentImagePicker")
         }
-        
-        func presentNextInputStage(_ form: NewHoorayForm, selectedImage: String?) {
-            self.verify(key: "presentNextInputStage", with: (form, selectedImage))
-        }
-        
+
         func alertForConfirm(_ form: AlertForm) {
             self.verify(key: "alertForConfirm")
         }
@@ -248,6 +223,10 @@ extension EnterHoorayImageViewModelTests {
                 let action = form.actions.first(where: { $0.text == "Take a picture".localized })
                 action?.selected?()
             }
+        }
+        
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            completed?()
         }
     }
     

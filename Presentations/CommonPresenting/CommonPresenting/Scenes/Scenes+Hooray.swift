@@ -31,92 +31,43 @@ public protocol MakeHooraySceneBuilable {
     
     func makeMakeHoorayScene() -> MakeHoorayScene
     
-    func makeEnterHoorayImageScene(form: NewHoorayForm,
-                                   previousSelectImagePath: String?,
-                                   transitionManager: BottomSlideTransitionAnimationManager?) -> EnterHoorayImageScene
+    func makeEnterHoorayImageScene(form: NewHoorayForm) -> EnterHoorayImageScene
     
-    func makeEnterHoorayMessageScene(form: NewHoorayForm,
-                                     previousSelectImagePath: String?,
-                                     transitionManager: BottomSlideTransitionAnimationManager?) -> EnterHoorayMessageScene
+    func makeEnterHoorayMessageScene(form: NewHoorayForm) -> EnterHoorayMessageScene
     
-    func makeEnterHoorayTagScene(form: NewHoorayForm, previousSelectImagePath: String?) -> EnterHoorayTagScene
+    func makeEnterHoorayTagScene(form: NewHoorayForm) -> EnterHoorayTagScene
     
-    func makeSelectHoorayPlaceScene(form: NewHoorayForm, previousSelectImagePath: String?) -> SelectHoorayPlaceScene
+    func makeSelectHoorayPlaceScene(form: NewHoorayForm) -> SelectHoorayPlaceScene
 }
 
 
-// MARK: - WaitNextHoorayScene Interactor & Presenter
+// MARK: - Enter new Hooray
 
-//public protocol WaitNextHooraySceneInteractor { }
-//
-//public protocol WaitNextHoorayScenePresenter { }
+public protocol EnteringNewHoorayPresenter {
+    
+    var goNextStepWithForm: Observable<NewHoorayForm> { get }
+}
 
-
-// MARK: - EnterHoorayImageScene Interactor & Presenter
-
-//public protocol EnterHoorayImageSceneInteractor { }
-//
-//public protocol EnterHoorayImageScenePresenter { }
-
+public protocol BaseEnterNewHoorayInfoScene: Scenable {
+    
+    var presenter: EnteringNewHoorayPresenter? { get }
+}
 
 // MARK: - EnterHoorayImageScene
 
-public protocol EnterHoorayImageScene: Scenable, PangestureDismissableScene {
-    
-//    var interactor: EnterHoorayImageSceneInteractor? { get }
-//
-//    var presenter: EnterHoorayImageScenePresenter? { get }
-}
-
-
-// MARK: - EnterHoorayMessageScene Interactor & Presenter
-
-//public protocol EnterHoorayMessageSceneInteractor { }
-//
-//public protocol EnterHoorayMessageScenePresenter { }
-
+public protocol EnterHoorayImageScene: BaseEnterNewHoorayInfoScene, PangestureDismissableScene { }
 
 // MARK: - EnterHoorayMessageScene
 
-public protocol EnterHoorayMessageScene: Scenable, PangestureDismissableScene {
-    
-//    var interactor: EnterHoorayMessageSceneInteractor? { get }
-//
-//    var presenter: EnterHoorayMessageScenePresenter? { get }
-}
-
-
-// MARK: - EnterHoorayTagScene Interactor & Presenter
-
-//public protocol EnterHoorayTagSceneInteractor { }
-//
-//public protocol EnterHoorayTagScenePresenter { }
-
+public protocol EnterHoorayMessageScene: BaseEnterNewHoorayInfoScene, PangestureDismissableScene { }
 
 // MARK: - EnterHoorayTagScene
 
-public protocol EnterHoorayTagScene: Scenable, PangestureDismissableScene {
-    
-//    var interactor: EnterHoorayTagSceneInteractor? { get }
-//
-//    var presenter: EnterHoorayTagScenePresenter? { get }
-}
-
-// MARK: - SelectHoorayPlaceScene Interactor & Presenter
-
-//public protocol SelectHoorayPlaceSceneInteractor { }
-//
-//public protocol SelectHoorayPlaceScenePresenter { }
-
+public protocol EnterHoorayTagScene: BaseEnterNewHoorayInfoScene, PangestureDismissableScene { }
 
 // MARK: - SelectHoorayPlaceScene
 
-public protocol SelectHoorayPlaceScene: Scenable {
-    
-//    var interactor: SelectHoorayPlaceSceneInteractor? { get }
-//
-//    var presenter: SelectHoorayPlaceScenePresenter? { get }
-}
+public protocol SelectHoorayPlaceScene: BaseEnterNewHoorayInfoScene { }
 
 
 // MARK: - WaitNextHoorayScene
@@ -132,4 +83,3 @@ public protocol WaitNextHooraySceneBuilable {
     
     func makeWaitNextHoorayScene(_ waitUntil: TimeStamp) -> WaitNextHoorayScene
 }
-

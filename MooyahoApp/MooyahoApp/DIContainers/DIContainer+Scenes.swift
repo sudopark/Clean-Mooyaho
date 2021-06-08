@@ -118,14 +118,10 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         return viewController
     }
     
-    public func makeEnterHoorayImageScene(form: NewHoorayForm,
-                                          previousSelectImagePath: String?,
-                                          transitionManager: BottomSlideTransitionAnimationManager?) -> EnterHoorayImageScene {
+    public func makeEnterHoorayImageScene(form: NewHoorayForm) -> EnterHoorayImageScene {
         
-        let router = EnterHoorayImageRouter(transitionManager: transitionManager,
-                                            builders: self)
+        let router = EnterHoorayImageRouter(nextSceneBuilders: self)
         let viewModel = EnterHoorayImageViewModelImple(form: form,
-                                                       previousSelectImagePath: previousSelectImagePath,
                                                        imagePickPermissionCheckService: self.imagePickPermissionCheckService,
                                                        router: router)
         let viewController = EnterHoorayImageViewController(viewModel: viewModel)
@@ -133,38 +129,28 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         return viewController
     }
     
-    public func makeEnterHoorayMessageScene(form: NewHoorayForm,
-                                            previousSelectImagePath: String?,
-                                            transitionManager: BottomSlideTransitionAnimationManager?) -> EnterHoorayMessageScene {
+    public func makeEnterHoorayMessageScene(form: NewHoorayForm) -> EnterHoorayMessageScene {
         
-        let router = EnterHoorayMessageRouter(transitionManager: transitionManager, builders: self)
-        let viewModel = EnterHoorayMessageViewModelImple(form: form,
-                                                         selectedImagePath: previousSelectImagePath,
-                                                         router: router)
+        let router = EnterHoorayMessageRouter(nextSceneBuilders: self)
+        let viewModel = EnterHoorayMessageViewModelImple(form: form, router: router)
         let viewController = EnterHoorayMessageViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
     
-    public func makeEnterHoorayTagScene(form: NewHoorayForm,
-                                        previousSelectImagePath: String?) -> EnterHoorayTagScene {
+    public func makeEnterHoorayTagScene(form: NewHoorayForm) -> EnterHoorayTagScene {
         
         let router = EnterHoorayTagRouter(nextSceneBuilders: self)
-        let viewModel = EnterHoorayTagViewModelImple(form: form,
-                                                     selectedImagePath: previousSelectImagePath,
-                                                     router: router)
+        let viewModel = EnterHoorayTagViewModelImple(form: form, router: router)
         let viewController = EnterHoorayTagViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
     
-    public func makeSelectHoorayPlaceScene(form: NewHoorayForm,
-                                           previousSelectImagePath: String?) -> SelectHoorayPlaceScene {
+    public func makeSelectHoorayPlaceScene(form: NewHoorayForm) -> SelectHoorayPlaceScene {
         
         let router = SelectHoorayPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SelectHoorayPlaceViewModelImple(form: form,
-                                                        selectedImagePath: previousSelectImagePath,
-                                                        router: router)
+        let viewModel = SelectHoorayPlaceViewModelImple(form: form, router: router)
         let viewController = SelectHoorayPlaceViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
