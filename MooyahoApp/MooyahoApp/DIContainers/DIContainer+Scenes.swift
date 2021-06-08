@@ -150,7 +150,10 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
     public func makeSelectHoorayPlaceScene(form: NewHoorayForm) -> SelectHoorayPlaceScene {
         
         let router = SelectHoorayPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SelectHoorayPlaceViewModelImple(form: form, router: router)
+        let viewModel = SelectHoorayPlaceViewModelImple(form: form,
+                                                        userLocationUsecase: self.userLocationUsecase,
+                                                        suggestPlaceUsecase: self.suggestPlaceUsecase,
+                                                        router: router)
         let viewController = SelectHoorayPlaceViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

@@ -110,6 +110,11 @@ extension DIContainers {
                                         placeRepository: self.appReposiotry)
     }
     
+    var suggestPlaceUsecase: SuggestPlaceUsecase {
+        
+        return SuggestPlaceUsecaseImple(placeRepository: self.appReposiotry)
+    }
+    
     var applicationUsecase: ApplicationUsecase {
         
         return ApplicationUsecaseImple(authUsecase: self.authUsecase,
