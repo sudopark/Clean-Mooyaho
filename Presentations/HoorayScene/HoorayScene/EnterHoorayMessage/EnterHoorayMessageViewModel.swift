@@ -25,6 +25,7 @@ public protocol EnterHoorayMessageViewModel: AnyObject {
     // presenter
     var previousInputText: String? { get }
     var isNextButtonEnabled: Observable<Bool> { get }
+    var goNextStepWithForm: Observable<NewHoorayForm> { get }
 }
 
 
@@ -33,14 +34,11 @@ public protocol EnterHoorayMessageViewModel: AnyObject {
 public final class EnterHoorayMessageViewModelImple: EnterHoorayMessageViewModel {
     
     private let form: NewHoorayForm
-    private let selectedImagePath: String?
     private let router: EnterHoorayMessageRouting
     
     public init(form: NewHoorayForm,
-                selectedImagePath: String?,
         router: EnterHoorayMessageRouting) {
         self.form = form
-        self.selectedImagePath = selectedImagePath
         self.router = router
         
         self.subjects.pendingInputText.accept(form.message)
@@ -52,6 +50,7 @@ public final class EnterHoorayMessageViewModelImple: EnterHoorayMessageViewModel
     
     fileprivate final class Subjects {
         let pendingInputText = BehaviorRelay<String?>(value: nil)
+        let continueNext = PublishSubject<NewHoorayForm>()
     }
     
     private let subjects = Subjects()
@@ -70,8 +69,11 @@ extension EnterHoorayMessageViewModelImple {
     public func goNextInputStage() {
         
         guard let message = self.subjects.pendingInputText.value, message.isNotEmpty else { return }
-        form.message = message
-        self.router.presentNextInputStage(form, selectedImage: self.selectedImagePath)
+        self.router.closeScene(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.form.message = message
+            self.subjects.continueNext.onNext(self.form)
+        }
     }
 }
 
@@ -88,5 +90,9 @@ extension EnterHoorayMessageViewModelImple {
         return self.subjects.pendingInputText
             .map{ $0?.isNotEmpty == true }
             .distinctUntilChanged()
+    }
+    
+    public var goNextStepWithForm: Observable<NewHoorayForm> {
+        return self.subjects.continueNext.asObservable()
     }
 }

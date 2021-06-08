@@ -27,7 +27,6 @@ class EnterHoorayMessageViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.spyRouter = .init()
         self.viewModel = .init(form: .init(publisherID: "some"),
-                               selectedImagePath: nil,
                                router: self.spyRouter)
     }
     
@@ -45,7 +44,7 @@ extension EnterHoorayMessageViewModelTests {
         // given
         let previousForm = NewHoorayForm(publisherID: "some")
         previousForm.message = "previous"
-        self.viewModel = .init(form: previousForm, selectedImagePath: nil, router: self.spyRouter)
+        self.viewModel = .init(form: previousForm, router: self.spyRouter)
         
         // when
         let initialMessage = self.viewModel.previousInputText
@@ -73,16 +72,14 @@ extension EnterHoorayMessageViewModelTests {
         // given
         let expect = expectation(description: "다음 입력 화면으로 이동")
         
-        self.spyRouter.called(key: "presentNextInputStage") { _ in
-            expect.fulfill()
+        // when
+        let form = self.waitFirstElement(expect, for: self.viewModel.goNextStepWithForm) {
+            self.viewModel.updateText("some")
+            self.viewModel.goNextInputStage()
         }
         
-        // when
-        self.viewModel.updateText("some")
-        self.viewModel.goNextInputStage()
-        
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertEqual(form?.message, "some")
     }
 }
 
@@ -90,8 +87,8 @@ extension EnterHoorayMessageViewModelTests {
     
     class SpyRouter: EnterHoorayMessageRouting, Stubbable {
         
-        func presentNextInputStage(_ form: NewHoorayForm, selectedImage: String?) {
-            self.verify(key: "presentNextInputStage")
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            completed?()
         }
     }
 }
