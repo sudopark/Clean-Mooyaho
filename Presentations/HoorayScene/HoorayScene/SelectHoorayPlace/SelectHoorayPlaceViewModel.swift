@@ -42,9 +42,18 @@ public struct SuggestPlaceCellViewModel {
 public protocol SelectHoorayPlaceViewModel: AnyObject {
 
     // interactor
+    func suggestPlace(by title: String)
+    func refreshUserLocation()
+    func toggleUpdateSelected(_ placeID: String)
+    func skipPlaceInput()
+    func confirmSelectPlace()
+    func registerNewPlace()
     
     // presenter
     var currentUserLocation: Observable<LastLocation> { get }
+    var cellViewModels: Observable<[SuggestPlaceCellViewModel]> { get }
+    var selectedPlaceID: Observable<String> { get }
+    var isFinishInputEnabled: Observable<Bool> { get }
     var goNextStepWithForm: Observable<NewHoorayForm> { get }
 }
 
@@ -121,6 +130,16 @@ extension SelectHoorayPlaceViewModelImple {
                 .build() else { return }
         
         self.router.alertForConfirm(form)
+    }
+    
+    public func confirmSelectPlace() {
+        
+        let selectedPlaceID = self.subjects.selectedPlaceID.value
+        self.router.closeScene(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.form.placeID = selectedPlaceID
+            self.subjects.continueNext.onNext(self.form)
+        }
     }
     
     public func registerNewPlace() {
