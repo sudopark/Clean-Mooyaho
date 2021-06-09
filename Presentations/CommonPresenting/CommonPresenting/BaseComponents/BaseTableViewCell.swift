@@ -10,6 +10,8 @@ import UIKit
 import RxSwift
 
 
+// MARK: - BaseTableViewCell
+
 open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
     
     public var disposeBag = DisposeBag()
@@ -32,5 +34,24 @@ open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
     open override func prepareForReuse() {
         super.prepareForReuse()
         self.disposeBag = .init()
+    }
+}
+
+
+// BaseTableViewSectionHeaderFooterView
+
+open class BaseTableViewSectionHeaderFooterView: UITableViewHeaderFooterView, UIContextAccessable {
+    
+    public override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        self.afterViewInit()
+    }
+    
+    public required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    open func afterViewInit() {
+        
     }
 }

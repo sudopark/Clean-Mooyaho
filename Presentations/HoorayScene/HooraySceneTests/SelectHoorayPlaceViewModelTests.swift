@@ -208,6 +208,22 @@ extension SelectHoorayPlaceViewModelTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
+    func testViewModel_whenAfterConfirmSelect_closeSceneAndEmitEvent() {
+        // given
+        let expect = expectation(description: "장소선택 완료 이후에 화면 닫고 이벤트 전달")
+        self.stubDefaultList(0..<10)
+        self.initViewModel()
+        
+        // when
+        let newForm = self.waitFirstElement(expect, for: self.viewModel.goNextStepWithForm) {
+            self.viewModel.toggleUpdateSelected("uid:0")
+            self.viewModel.confirmSelectPlace()
+        }
+        
+        // then
+        XCTAssertEqual(newForm?.placeID, "uid:0")
+    }
+    
     // 새위치 추가 라우팅
     func testViewModel_routeToRegisterNewPlace() {
         // given
@@ -240,6 +256,10 @@ extension SelectHoorayPlaceViewModelTests {
         
         func presentNewPlaceRegisterScene() {
             self.verify(key: "presentNewPlaceRegisterScene")
+        }
+        
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            completed?()
         }
     }
 }
