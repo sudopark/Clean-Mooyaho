@@ -41,6 +41,14 @@ public final class TagInputField: BaseUIView {
         }
     }
     
+    public var isEnabled: Bool {
+        get {
+            return self.underlyingTextField.textField.isEnabled
+        } set {
+            self.underlyingTextField.textField.isEnabled = newValue
+        }
+    }
+    
     private let underlyingTextField: UUIDTagInputField = .init()
     
     public override init(frame: CGRect) {

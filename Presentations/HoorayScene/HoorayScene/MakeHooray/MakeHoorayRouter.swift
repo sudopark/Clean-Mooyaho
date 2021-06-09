@@ -23,19 +23,22 @@ public protocol MakeHoorayRouting: Routing {
     
     func openEditProfileScene() -> EditProfileScenePresenter?
     
-    func presentPlaceSelectScene()
+    func openEnterHoorayImageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
     
-    func askSelectPlaceInfo(_ form: AlertForm)
+    func openEnterHoorayMessageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
+    
+    func openEnterHoorayTagScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
+    
+    func presentPlaceSelectScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
     
     func alertShouldWaitPublishNewHooray(_ until: TimeStamp)
-    
-//    func unavailToPublish
+
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MakeHoorayRouterBuildables = EditProfileSceneBuilable & WaitNextHooraySceneBuilable
+public typealias MakeHoorayRouterBuildables = MakeHooraySceneBuilable & EditProfileSceneBuilable & WaitNextHooraySceneBuilable
 
 public final class MakeHoorayRouter: Router<MakeHoorayRouterBuildables>, MakeHoorayRouting {
     
@@ -52,12 +55,33 @@ extension MakeHoorayRouter {
         return next.presenrer
     }
     
-    public func presentPlaceSelectScene() {
-        logger.todoImplement()
+    public func openEnterHoorayImageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
+        return routeToEnteringScenes(form, nextMake: self.nextScenesBuilder?.makeEnterHoorayImageScene(form:))
     }
     
-    public func askSelectPlaceInfo(_ form: AlertForm) {
-        logger.todoImplement()
+    public func openEnterHoorayMessageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
+        return routeToEnteringScenes(form, nextMake: self.nextScenesBuilder?.makeEnterHoorayMessageScene(form:))
+    }
+    
+    public func openEnterHoorayTagScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
+        return routeToEnteringScenes(form, nextMake: self.nextScenesBuilder?.makeEnterHoorayTagScene(form:))
+    }
+    
+    typealias EnteringScene = BaseEnterNewHoorayInfoScene & PangestureDismissableScene
+    private func routeToEnteringScenes(_ form: NewHoorayForm,
+                                       nextMake: ((NewHoorayForm) -> EnteringScene)?) -> EnteringNewHoorayPresenter? {
+        guard let next = nextMake?(form) else { return nil }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
+        return next.presenter
+    }
+    
+    public func presentPlaceSelectScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
+        guard let next = self.nextScenesBuilder?.makeSelectHoorayPlaceScene(form: form) else { return nil }
+        self.currentScene?.present(next, animated: true, completion: nil)
+        return next.presenter
     }
     
     public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {

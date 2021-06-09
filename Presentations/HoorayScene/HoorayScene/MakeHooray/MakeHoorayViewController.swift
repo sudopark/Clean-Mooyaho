@@ -57,14 +57,17 @@ extension MakeHoorayViewController {
             
             self.makeView.imageInputButton.rx.addTapgestureRecognizer()
                 .subscribe(onNext: { [weak self] _ in
-                    // TODO: route to image selection
+                    self?.viewModel.requestEnterImage()
                 })
             
-            self.makeView.messageInput.rx.text.orEmpty
-                .subscribe(onNext: { [weak self] text in
-                    self?.viewModel.enterHooray(message: text)
-                    // TODO: update placeHolder isHidden
-                    // TODO: update count label
+            self.makeView.messageLabel.rx.addTapgestureRecognizer()
+                .subscribe(onNext: { [weak self] _ in
+                    self?.viewModel.requestEnterMessage()
+                })
+            
+            self.makeView.tagInputView.rx.addTapgestureRecognizer()
+                .subscribe(onNext: { [weak self] _ in
+                    self?.viewModel.requestEnterTags()
                 })
             
             self.makeView.placeInputButton.rx.tap
@@ -75,8 +78,7 @@ extension MakeHoorayViewController {
             self.makeView.publishButton.rx.tap
                 .subscribe(onNext: { [weak self] in
                     guard let self = self else { return }
-                    let tags = self.makeView.tagInputView.getAllTags().map{ $0.text }
-                    self.viewModel.requestPublishNewHooray(with: tags)
+                    self.viewModel.requestPublishNewHooray()
                 })
             
             self.view.rx.addTapgestureRecognizer()
@@ -99,6 +101,9 @@ extension MakeHoorayViewController {
                     self?.makeView.keywordLabel.text = keyword
                 })
             
+            // TODO: bind selected image
+            
+            
             self.viewModel.isPublishable
                 .asDriver(onErrorDriveWith: .never())
                 .drive(self.makeView.publishButton.rx.isEnabled)
@@ -109,10 +114,6 @@ extension MakeHoorayViewController {
                     self?.makeView.publishButton.updateIsLoading(isPublishing)
                 })
         }
-    }
-    
-    private func bindKeyboadShowing() {
-        
     }
 }
 
@@ -133,9 +134,4 @@ extension MakeHoorayViewController: Presenting, UITextViewDelegate {
         makeView.setupStyling()
     }
     
-    public func textView(_ textView: UITextView,
-                         shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        // TODO: limit input
-        return true
-    }
 }

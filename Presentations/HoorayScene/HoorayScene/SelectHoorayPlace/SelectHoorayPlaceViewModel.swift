@@ -134,10 +134,13 @@ extension SelectHoorayPlaceViewModelImple {
     
     public func confirmSelectPlace() {
         
+        let cellViewModels = self.subjects.cellViewModels.value
         let selectedPlaceID = self.subjects.selectedPlaceID.value
+        let selectedPlaceName = cellViewModels.first(where: { $0.placeID == selectedPlaceID })?.title
         self.router.closeScene(animated: true) { [weak self] in
             guard let self = self else { return }
             self.form.placeID = selectedPlaceID
+            self.form.placeName = selectedPlaceName
             self.subjects.continueNext.onNext(self.form)
         }
     }
