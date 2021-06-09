@@ -20,15 +20,11 @@ final class MakeHoorayView: BaseUIView {
     let inputImageView = UIImageView()
     let profileImageView: IntegratedImageView = .init()
     let keywordLabel = UILabel()
-    let messageInput = UITextView()
-    let messagePlaceHolderLabel = UILabel()
-    let charCountLabel = UILabel()
+    let messageLabel = UILabel()
     let tagInputView = TagInputField()
     let placeIcon = UIImageView()
     let placeInputButton = UIButton(type: .system)
     let publishButton = LoadingButton()
-    
-    var publishButtonBottomConstraint: NSLayoutConstraint!
 }
 
 extension MakeHoorayView: Presenting {
@@ -40,9 +36,9 @@ extension MakeHoorayView: Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
         }
-        self.publishButtonBottomConstraint = publishButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
-        NSLayoutConstraint.activate([self.publishButtonBottomConstraint])
+
         self.publishButton.setupLayout()
         
         self.addSubview(scrollView)
@@ -91,29 +87,18 @@ extension MakeHoorayView: Presenting {
             $0.trailingAnchor.constraint(equalTo: self.scrollContentView.trailingAnchor, constant: -16)
         }
         
-        scrollContentView.addSubview(messageInput)
-        messageInput.autoLayout.active {
+        scrollContentView.addSubview(messageLabel)
+        messageLabel.autoLayout.active {
             $0.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor)
             $0.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8)
             $0.trailingAnchor.constraint(equalTo: self.scrollContentView.trailingAnchor, constant: -20)
-            $0.heightAnchor.constraint(equalToConstant: 130)
         }
+        messageLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
-        scrollContentView.addSubview(messagePlaceHolderLabel)
-        messagePlaceHolderLabel.autoLayout.active(with: messageInput) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 6)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
-        }
-        
-        scrollContentView.addSubview(charCountLabel)
-        charCountLabel.autoLayout.active(with: messageInput) {
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -4)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -4)
-        }
         
         scrollContentView.addSubview(tagInputView)
         tagInputView.autoLayout.active {
-            $0.topAnchor.constraint(equalTo: messageInput.bottomAnchor, constant: 16)
+            $0.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16)
             $0.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -20)
         }
@@ -149,12 +134,11 @@ extension MakeHoorayView: Presenting {
         self.profileImageView.clipsToBounds = true
         
         self.keywordLabel.textColor = self.uiContext.colors.text
-        self.messageInput.textColor = self.uiContext.colors.text.withAlphaComponent(0.8)
-        self.messagePlaceHolderLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.5)
-        self.messagePlaceHolderLabel.text = "Enter a message"
-        self.charCountLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.5)
+        self.messageLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.8)
+
         self.tagInputView.placeHolder = "Enter a tag"
         self.tagInputView.setupStyling()
+        self.tagInputView.isEnabled = false
         
         self.placeIcon.backgroundColor = .red
         self.placeInputButton.setTitle("Select a place", for: .normal)
