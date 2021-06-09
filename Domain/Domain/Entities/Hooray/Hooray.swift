@@ -96,6 +96,7 @@ public final class NewHoorayForm {
     
     public let publisherID: String
     public var placeID: String?
+    public var placeName: String?
     
     public var hoorayKeyword: String!
     public var message: String!

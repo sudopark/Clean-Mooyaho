@@ -19,18 +19,25 @@ import CommonPresenting
 public protocol MakeHoorayViewModel: AnyObject {
 
     // interactor
-    func requestChangeMemnerProfileImage()
-    func enterHooray(message: String)
+    func showUp()
+    func requestEnterImage()
+    func requestEnterMessage()
+    func requestEnterTags()
     func requestSelectPlace()
-    func requestPublishNewHooray(with tags: [String])
+    func requestPublishNewHooray()
     
     // presenter
     var memberProfileImage: Observable<ImageSource> { get }
     var hoorayKeyword: Observable<String> { get }
+    
+    var selectedImagePath: Observable<String?> { get }
+    var enteredMessage: Observable<String?> { get }
+    var enteredTags: Observable<[String]> { get }
+    var selectedPlaceName: Observable<String?> { get }
+    
     var isPublishable: Observable<Bool> { get }
     var isPublishing: Observable<Bool> { get }
     var publishedNewHooray: Observable<Hooray> { get }
-    var maxHoorayMessageTextCount: Int { get }
 }
 
 
@@ -67,79 +74,131 @@ public final class MakeHoorayViewModelImple: MakeHoorayViewModel {
     fileprivate final class Subjects {
         let currentMember = BehaviorRelay<Member?>(value: nil)
         let selectedHoorayKeyword = BehaviorRelay<String?>(value: nil)
-        let pendingInputMessage = BehaviorRelay<String>(value: "")
-        let pendingInputTags = BehaviorRelay<[String]>(value: [])
-        let pendingSelectPlace = BehaviorRelay<SelectPlace?>(value: nil)
+        let pendingForm = BehaviorRelay<NewHoorayForm?>(value: nil)
         let isPublishing = BehaviorRelay<Bool>(value: false)
         let newHooray = PublishSubject<Hooray>()
     }
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    func internalBind() {
+        
+        let member = self.memberUsecase.fetchCurrentMember()
+        self.subjects.currentMember.accept(member)
+        
+        // TODO: 정책 정해야함
+        let defaultKeyword = "Hooray".localized
+        self.subjects.selectedHoorayKeyword.accept(defaultKeyword)
+        
+        self.userLocationUsecase.fetchUserLocation()
+            .subscribe(onSuccess: { [weak self] location in
+                guard let self = self, let member = member else { return }
+                let newForm = NewHoorayForm(publisherID: member.uid)
+                newForm.location = .init(latt: location.lattitude, long: location.longitude)
+                newForm.hoorayKeyword = defaultKeyword
+                self.subjects.pendingForm.accept(newForm)
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
 // MARK: - MakeHoorayViewModelImple Interactor
 
 extension MakeHoorayViewModelImple {
- 
-    public func requestChangeMemnerProfileImage() {
-        _ = self.router.openEditProfileScene()
+    
+    private enum EnteringFlow: Int, CaseIterable {
+        case image
+        case message
+        case tag
+        case place
+        
+        func next() -> EnteringFlow? {
+            let nextRawValue = self.rawValue + 1
+            return .init(rawValue: nextRawValue)
+        }
     }
     
-    public func enterHooray(message: String) {
-        self.subjects.pendingInputMessage.accept(message)
+    public func showUp() {
+        
+        let startEnteringAfterFormIsReady: (NewHoorayForm) -> Void = { [weak self] defaultForm in
+            self?.enterHoorayInfo(defaultForm, currentFlow: .image)
+        }
+        
+        self.subjects.pendingForm
+            .compactMap{ $0 }.take(1)
+            .subscribe(onNext: startEnteringAfterFormIsReady)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func enterHoorayInfo(_ form: NewHoorayForm,
+                                 currentFlow: EnteringFlow, shouldContinue: Bool = true) {
+        
+        let nextFlow = currentFlow.next()
+        
+        var resultPresenter: EnteringNewHoorayPresenter?
+        switch currentFlow {
+        case .image:
+            resultPresenter = self.router.openEnterHoorayImageScene(form)
+            
+        case .message:
+            resultPresenter = self.router.openEnterHoorayMessageScene(form)
+            
+        case .tag:
+            resultPresenter = self.router.openEnterHoorayTagScene(form)
+            
+        case .place:
+            resultPresenter = self.router.presentPlaceSelectScene(form)
+        }
+        
+        let updateForm: (NewHoorayForm) -> Void = { [weak self] newForm in
+            self?.subjects.pendingForm.accept(newForm)
+        }
+        let continueEnteringOrNot: (NewHoorayForm) -> Void = { [weak self] newForm in
+            guard shouldContinue, let next = nextFlow else { return }
+            self?.enterHoorayInfo(newForm, currentFlow: next)
+        }
+        
+        resultPresenter?.goNextStepWithForm
+            .take(1)
+            .do(onNext: updateForm)
+            .subscribe(onNext: continueEnteringOrNot)
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func requestEnterImage() {
+        guard let form = self.subjects.pendingForm.value else { return }
+        self.enterHoorayInfo(form, currentFlow: .image, shouldContinue: false)
+    }
+    
+    public func requestEnterMessage() {
+        guard let form = self.subjects.pendingForm.value else { return }
+        self.enterHoorayInfo(form, currentFlow: .message, shouldContinue: false)
+    }
+    
+    public func requestEnterTags() {
+        guard let form = self.subjects.pendingForm.value else { return }
+        self.enterHoorayInfo(form, currentFlow: .tag, shouldContinue: false)
     }
     
     public func requestSelectPlace() {
-        self.router.presentPlaceSelectScene()
+        guard let form = self.subjects.pendingForm.value else { return }
+        self.enterHoorayInfo(form, currentFlow: .place, shouldContinue: false)
     }
     
-    func placeSelected(_ selectedPlace: SelectPlace) {
-        self.subjects.pendingSelectPlace.accept(selectedPlace)
-    }
-    
-    public func requestPublishNewHooray(with tags: [String]) {
-        
-        let isPlaceSelected = self.subjects.pendingSelectPlace.value != nil
-        guard isPlaceSelected else {
-            self.routeToAskSelectPlace(tags)
-            return
-        }
-        self.uploadNewHooray(tags)
-    }
-    
-    private func uploadNewHooray(_ tags: [String]) {
+    public func requestPublishNewHooray() {
         
         guard self.subjects.isPublishing.value == false,
-              let myID = self.subjects.currentMember.value?.uid,
-              let keyword = self.subjects.selectedHoorayKeyword.value else { return }
-        let message = self.subjects.pendingInputMessage.value
+              let form = self.subjects.pendingForm.value else { return }
         
-        let thenLoadCurrentLocation: () -> Maybe<LastLocation> = { [weak self] in
-            return self?.userLocationUsecase.fetchUserLocation() ?? .empty()
-        }
+        let checkIsAvailable = self.hoorayPublishUsecase.isAvailToPublish()
         
-        let thenPrepareForm: (LastLocation) throws -> NewHoorayForm = { location in
-            let coordinate = Coordinate(latt: location.lattitude, long: location.longitude)
-            guard let form = NewHoorayFormBuilder(base: .init(publisherID: myID))
-                    .hoorayKeyword(keyword).message(message).tags(tags)
-                    .timeStamp(TimeInterval.now()).location(coordinate)
-                    .build() else {
-                throw ApplicationErrors.invalid
-            }
-            return form
-        }
-        
-        let finallyRequestPublish: (NewHoorayForm) -> Maybe<Hooray> = { [weak self] form in
+        let thenRequestPulish: () -> Maybe<Hooray> = { [weak self] in
             return self?.hoorayPublishUsecase.publish(newHooray: form, withNewPlace: nil) ?? .empty()
         }
         
-        let hoorayPublished: (Hooray) -> Void = { [weak self] hooray in
-            self?.router.closeScene(animated: true, completed: nil)
-            self?.subjects.newHooray.onNext(hooray)
-        }
-        let handleError: (Error) -> Void = { [weak self] error in
+        let handleRequestFail: (Error) -> Void = { [weak self] error in
             self?.subjects.isPublishing.accept(false)
             guard let applicationError = error as? ApplicationErrors,
                   case let .shouldWaitPublishHooray(until) = applicationError else {
@@ -149,13 +208,24 @@ extension MakeHoorayViewModelImple {
             self?.router.alertShouldWaitPublishNewHooray(until)
         }
         
+        let newHoorayPublished: (Hooray) -> Void = { [weak self] hooray in
+            self?.subjects.isPublishing.accept(false)
+            self?.closeAndEmitNewHoorayEvent(hooray)
+        }
+        
         self.subjects.isPublishing.accept(true)
-        self.hoorayPublishUsecase.isAvailToPublish()
-            .flatMap(thenLoadCurrentLocation)
-            .map(thenPrepareForm)
-            .flatMap(finallyRequestPublish)
-            .subscribe(onSuccess: hoorayPublished, onError: handleError)
+        
+        checkIsAvailable
+            .flatMap(thenRequestPulish)
+            .subscribe(onSuccess: newHoorayPublished, onError: handleRequestFail)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func closeAndEmitNewHoorayEvent(_ hooray: Hooray) {
+        self.router.closeScene(animated: true) { [weak self] in
+            
+            self?.subjects.newHooray.onNext(hooray)
+        }
     }
 }
 
@@ -173,10 +243,35 @@ extension MakeHoorayViewModelImple {
         return self.subjects.selectedHoorayKeyword.compactMap{ $0 }
     }
     
-    public var isPublishable: Observable<Bool> {
-        return self.subjects.pendingInputMessage
-            .map{ $0.isNotEmpty }
+    public var selectedImagePath: Observable<String?> {
+        return self.subjects.pendingForm
+            .map{ $0?.imagePath }
             .distinctUntilChanged()
+    }
+    
+    public var enteredMessage: Observable<String?> {
+        return self.subjects.pendingForm
+            .map{ $0?.message }
+            .distinctUntilChanged()
+    }
+    
+    public var enteredTags: Observable<[String]> {
+        return self.subjects.pendingForm
+            .map{ $0?.tags ?? [] }
+            .distinctUntilChanged()
+    }
+    
+    public var selectedPlaceName: Observable<String?> {
+        return self.subjects.pendingForm
+            .map{ $0?.placeName }
+            .distinctUntilChanged()
+    }
+    
+    public var isPublishable: Observable<Bool> {
+//        return self.subjects.pendingInputMessage
+//            .map{ $0.isNotEmpty }
+//            .distinctUntilChanged()
+        return .empty()
     }
     
     public var isPublishing: Observable<Bool> {
@@ -185,43 +280,5 @@ extension MakeHoorayViewModelImple {
     
     public var publishedNewHooray: Observable<Hooray> {
         return self.subjects.newHooray.asObservable()
-    }
-    
-    public var maxHoorayMessageTextCount: Int {
-        return 100
-    }
-}
-
-
-// internal bindinds
-
-private extension MakeHoorayViewModelImple {
-    
-    func internalBind() {
-        
-        let member = self.memberUsecase.fetchCurrentMember()
-        self.subjects.currentMember.accept(member)
-        
-        // TODO: 정책 정해야함
-        let defaultKeyword = "Hooray".localized
-        self.subjects.selectedHoorayKeyword.accept(defaultKeyword)
-    }
-    
-    func routeToAskSelectPlace(_ tags: [String]) {
-        
-        let cancel: () -> Void = { [weak self] in
-            self?.uploadNewHooray(tags)
-        }
-        
-        let confirmed: () -> Void = { [weak self] in
-            logger.todoImplement("should move to place select scene")
-        }
-        guard let form = AlertBuilder(base: .init())
-                .message("[TBD] message")
-                .canceled(cancel)
-                .confirmed(confirmed)
-                .build() else { return }
-        
-        self.router.askSelectPlaceInfo(form)
     }
 }
