@@ -11,11 +11,6 @@ import Foundation
 import RxSwift
 
 
-public protocol RegisterNewPlaceUsecase {
-    
-}
-
-
 public struct ValidPendingRegisterNewPlacePolicy {
     
     public let maxDistance: Meters
@@ -31,7 +26,16 @@ public struct ValidPendingRegisterNewPlacePolicy {
     }
 }
 
-public final class RegisterNewPlaceUsecaseImple {
+public protocol RegisterNewPlaceUsecase {
+    
+    func loadRegisterPendingNewPlaceForm(withIn position: Coordinate) -> Maybe<NewPlaceForm?>
+    
+    func finishInputPlaceInfo(_ form: NewPlaceForm) -> Maybe<NewPlaceForm>
+    
+    func uploadNewPlace(_ form: NewPlaceForm) -> Maybe<Place>
+}
+
+public final class RegisterNewPlaceUsecaseImple: RegisterNewPlaceUsecase {
     
     private let placeRepository: PlaceRepository
     private let policy: ValidPendingRegisterNewPlacePolicy

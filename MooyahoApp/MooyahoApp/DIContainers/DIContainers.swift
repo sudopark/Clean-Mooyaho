@@ -84,6 +84,10 @@ extension DIContainers {
     var imagePickPermissionCheckService: ImagePickPermissionCheckService {
         return ImagePickPermissionCheckServiceImple()
     }
+    
+    var searchServiceProvider: SearchServiceProvider {
+        return SearchServiceProviders.naver
+    }
 }
 
 // MARK: - Usecases
@@ -128,5 +132,15 @@ extension DIContainers {
                                   memberUsecase: self.memberUsecase,
                                   hoorayRepository: self.appReposiotry,
                                   messagingService: FCMService())
+    }
+    
+    var searchNewPlaceUsecase: SearchNewPlaceUsecase {
+        
+        return SearchNewPlaceUsecaseImple(placeRepository: self.appReposiotry)
+    }
+    
+    var registerNewPlaceUsecase: RegisterNewPlaceUsecase {
+        
+        return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry)
     }
 }

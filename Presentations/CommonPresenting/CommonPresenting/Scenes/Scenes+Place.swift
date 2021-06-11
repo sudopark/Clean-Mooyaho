@@ -49,5 +49,5 @@ public protocol SearchNewPlaceScene: Scenable {
 
 public protocol SearchNewPlaceSceneBuilable {
     
-    func makeSearchNewPlaceScene() -> SearchNewPlaceScene
+    func makeSearchNewPlaceScene(myID: String) -> SearchNewPlaceScene
 }
