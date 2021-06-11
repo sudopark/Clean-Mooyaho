@@ -34,6 +34,7 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
     public let address: String
     public let thumbNail: ImageSource?
     public let link: String?
+    public let contact: String?
     public var distance: String = ""
     public var isSelected: Bool = false
     
@@ -44,6 +45,7 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
         self.address = place.address
         self.thumbNail = place.thumbnail
         self.link = place.link
+        self.contact = place.contact
     }
     
     func distanceCalculated(from userPosition: Coordinate) -> Self {
@@ -77,17 +79,20 @@ public final class SearchNewPlaceViewModelImple: SearchNewPlaceViewModel {
     private let searchServiceProvider: SearchServiceProvider
     private let userLocationUsecase: UserLocationUsecase
     private let searchNewPlaceUsecase: SearchNewPlaceUsecase
+    private let registerNewPlaceUsecase: RegisterNewPlaceUsecase
     private let router: SearchNewPlaceRouting
     
     public init(userID: String,
                 searchServiceProvider: SearchServiceProvider,
                 userLocationUsecase: UserLocationUsecase,
                 searchNewPlaceUsecase: SearchNewPlaceUsecase,
+                registerNewPlaceUsecase: RegisterNewPlaceUsecase,
                 router: SearchNewPlaceRouting) {
         self.userID = userID
         self.searchServiceProvider = searchServiceProvider
         self.userLocationUsecase = userLocationUsecase
         self.searchNewPlaceUsecase = searchNewPlaceUsecase
+        self.registerNewPlaceUsecase = registerNewPlaceUsecase
         self.router = router
         
         self.internalBinding()
@@ -102,6 +107,8 @@ public final class SearchNewPlaceViewModelImple: SearchNewPlaceViewModel {
         let curentUserLocation = BehaviorRelay<LastLocation?>(value: nil)
         let cellViewModels = BehaviorRelay<[CVMType]>(value: [])
         let selectPlaceID = BehaviorRelay<String?>(value: nil)
+        let isRegistering = BehaviorRelay<Bool>(value: false)
+        let newPlace = PublishSubject<Place>()
     }
     
     private let subjects = Subjects()
@@ -162,6 +169,42 @@ extension SearchNewPlaceViewModelImple {
         let alreadySelected = currentSelectedID != nil && currentSelectedID == placeID
         return alreadySelected ? deselect() : select()
     }
+    
+    public func confirmSelect() {
+        
+        guard let result = self.router.showSelectPlaceCateTag() else { return }
+        result.selectedTags
+            .take(1)
+            .subscribe(onNext: { [weak self] tags in
+                self?.requestRegisterNewPlace(tags)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func requestRegisterNewPlace(_ tags: [Domain.Tag]) {
+        
+        guard let selectID = self.subjects.selectPlaceID.value,
+              let place = self.subjects.cellViewModels.value.selectedCell(selectID),
+              let form = place.newPlaceForm(self.userID, tags: tags) else { return }
+        
+        let handleRegistered: (Place) -> Void = { [weak self] newPlace in
+            self?.subjects.isRegistering.accept(false)
+            self?.router.closeScene(animated: true) {
+                self?.subjects.newPlace.onNext(newPlace)
+            }
+        }
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.subjects.isRegistering.accept(false)
+            self?.router.alertError(error)
+        }
+        
+        self.subjects.isRegistering.accept(true)
+        
+        self.registerNewPlaceUsecase
+            .uploadNewPlace(form)
+            .subscribe(onSuccess: handleRegistered, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -171,13 +214,12 @@ extension SearchNewPlaceViewModelImple {
     
     private var placeCellViewModels: Observable<[PlaceCVM]> {
         
-        
         let applyDistance: ([PlaceCVM]) -> [PlaceCVM] = { [weak self] cellViewModels in
             guard let userLocation = self?.subjects.curentUserLocation.value else { return cellViewModels }
             let coordinate = Coordinate(latt: userLocation.lattitude, long: userLocation.longitude)
             return cellViewModels.map{ $0.distanceCalculated(from: coordinate) }
         }
-        let cellViewModels = self.searchNewPlaceUsecase.newPlaceSearchResult.debug("⛳️")
+        let cellViewModels = self.searchNewPlaceUsecase.newPlaceSearchResult
             .map{ $0?.places.map(PlaceCVM.init(place:)) ?? []}
             .map(applyDistance)
         
@@ -224,6 +266,14 @@ extension SearchNewPlaceViewModelImple {
         return self.subjects.selectPlaceID.map{ $0 != nil }
             .distinctUntilChanged()
     }
+    
+    public var isRegistering: Observable<Bool> {
+        return self.subjects.isRegistering.distinctUntilChanged()
+    }
+    
+    public var newRegistered: Observable<Place> {
+        return self.subjects.newPlace.asObservable()
+    }
 }
 
 
@@ -233,5 +283,31 @@ private extension SearchinNewPlaceCellViewModel {
         var sender = self
         sender.isSelected = selectedPlaceID == sender.placeID
         return sender
+    }
+}
+
+private extension SearchinNewPlaceCellViewModel {
+    
+    func newPlaceForm(_ userID: String, tags: [PlaceCategoryTag]) -> NewPlaceForm? {
+        
+        let builder = NewPlaceFormBuilder(base: .init(reporterID: userID, infoProvider: .externalSearch))
+            .title(self.placeName)
+            .thumbnail(self.thumbNail)
+            .searchID(self.placeID)
+            .detailLink(self.link)
+            .coordinate(self.position)
+            .address(self.address)
+            .contact(self.contact)
+            .categoryTags(tags)
+        
+        return builder.build()
+    }
+}
+
+private extension Array where Element == SearchingNewPlaceCellViewModelType {
+    
+    func selectedCell(_ placeID: String) -> SearchinNewPlaceCellViewModel? {
+        return self.compactMap{ $0 as? SearchinNewPlaceCellViewModel }
+            .first(where: { $0.placeID == placeID })
     }
 }

@@ -96,9 +96,14 @@ extension DIContainers: RegisterNewPlaceSceneBuilable {
 
 extension DIContainers: SearchNewPlaceSceneBuilable {
     
-    public func makeSearchNewPlaceScene() -> SearchNewPlaceScene {
+    public func makeSearchNewPlaceScene(myID: String) -> SearchNewPlaceScene {
         let router = SearchNewPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SearchNewPlaceViewModelImple(router: router)
+        let viewModel = SearchNewPlaceViewModelImple(userID: myID,
+                                                     searchServiceProvider: self.searchServiceProvider,
+                                                     userLocationUsecase: self.userLocationUsecase,
+                                                     searchNewPlaceUsecase: self.searchNewPlaceUsecase,
+                                                     registerNewPlaceUsecase: self.registerNewPlaceUsecase,
+                                                     router: router)
         let viewController = SearchNewPlaceViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
@@ -183,3 +188,13 @@ extension DIContainers: ImagePickerSceneBuilable {
     }
 }
 
+extension DIContainers: SelectTagSceneBuilable {
+    
+    public func makeSelectTagScene() -> SelectTagScene {
+        let router = SelectTagRouter(nextSceneBuilders: self)
+        let viewModel = SelectTagViewModelImple(router: router)
+        let viewController = SelectTagViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
