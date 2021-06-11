@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 import Domain
+import CommonPresenting
 import UnitTestHelpKit
 import StubUsecases
 
@@ -22,6 +23,7 @@ class SearchNewPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var stubUserLocationUsecase: StubUserLocationUsecase!
     var stubPlaceSearchUsecase: StubSearchNewPlaceUsecase!
+    var stubRegisterUsecase: StubRegisterNewPlaceUsecase!
     var spyRouter: SpyRouter!
     var viewModel: SearchNewPlaceViewModelImple!
     
@@ -29,6 +31,7 @@ class SearchNewPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.stubUserLocationUsecase = .init()
         self.stubPlaceSearchUsecase = .init()
+        self.stubRegisterUsecase = .init()
         self.spyRouter = .init()
         self.stubUserLocationUsecase.register(key: "fetchUserLocation") {
             Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
@@ -42,6 +45,7 @@ class SearchNewPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
                                searchServiceProvider: SearchServiceProviders.naver,
                                userLocationUsecase: self.stubUserLocationUsecase,
                                searchNewPlaceUsecase: self.stubPlaceSearchUsecase,
+                               registerNewPlaceUsecase: self.stubRegisterUsecase,
                                router: self.spyRouter)
     }
     
@@ -49,6 +53,7 @@ class SearchNewPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
         self.stubUserLocationUsecase = nil
         self.stubPlaceSearchUsecase = nil
+        self.stubRegisterUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -278,26 +283,66 @@ extension SearchNewPlaceViewModelTests {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
+        self.spyRouter.called(key: "showPlaceDetail") { _ in
+            expect.fulfill()
+        }
         
         // when
-        self.spyRouter.called(key: "") { _ in
-            
-        }
+        self.viewModel.toggleSelectPlace("uid:0")
+        self.viewModel.confirmSelect()
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
     
     // 저장 완료시에 화면 닫고 장소 아이디랑 이름 외부로 전파
+    func testViewModel_whenAfterSelectTags_makeNewPlaceAndEmitEvent() {
+        // given
+        let expect = expectation(description: "태그 입력까지 끝났으면 스페이스 생성해서 외부로 전파")
+        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+            return self.dummySearchResult(for: .empty, range: (0..<10))
+        }
+        let stubResult = StubSelectTagScenePresenter()
+        self.spyRouter.register(type: SelectTagScenePresenter.self, key: "showSelectPlaceCateTag") { stubResult }
+        self.stubRegisterUsecase.register(key: "uploadNewPlace") { Maybe<Place>.just(.dummy(0)) }
+        self.initViewModel()
+        
+        // when
+        let newPlace = self.waitFirstElement(expect, for: self.viewModel.newRegistered) {
+            self.viewModel.toggleSelectPlace("uid:0")
+            self.viewModel.confirmSelect()
+            stubResult.stubTag.onNext([Domain.Tag(placeCat: "some", emoji: "😱")])
+        }
+        
+        // then
+        XCTAssertNotNil(newPlace)
+    }
 }
 
 
 extension SearchNewPlaceViewModelTests {
     
+    class StubSelectTagScenePresenter: SelectTagScenePresenter {
+        
+        let stubTag = PublishSubject<[Domain.Tag]>()
+        var selectedTags: Observable<[Domain.Tag]> {
+            return self.stubTag.asObservable()
+        }
+    }
+    
     class SpyRouter: SearchNewPlaceRouting, Stubbable {
         
         func showPlaceDetail(_ placeID: String, link: String) {
             self.verify(key: "showPlaceDetail")
+        }
+        
+        func showSelectPlaceCateTag() -> SelectTagScenePresenter? {
+            self.verify(key: "showSelectPlaceCateTag")
+            return self.resolve(SelectTagScenePresenter.self, key: "showSelectPlaceCateTag")
+        }
+        
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            completed?()
         }
     }
 }

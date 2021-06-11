@@ -1,0 +1,22 @@
+//
+//  
+//  SelectTagBuilder.swift
+//  CommonPresenting
+//
+//  Created by sudo.park on 2021/06/12.
+//
+//  CommonPresenting
+//
+//  Created sudo.park on 2021/06/12.
+//  Copyright © 2021 ___ORGANIZATIONNAME___. All rights reserved.
+//
+
+import UIKit
+
+
+// MARK: - Builder + DI Container Extension
+
+public protocol SelectTagSceneBuilable {
+    
+    func makeSelectTagScene() -> SelectTagScene
+}

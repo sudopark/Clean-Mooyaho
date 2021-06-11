@@ -22,10 +22,12 @@ public struct Tag {
     
     public let tagType: TagType
     public let keyword: String
+    public var emoji: String?
     
-    public init(type: TagType, keyword: String) {
+    public init(type: TagType, keyword: String, emoji: String? = nil) {
         self.tagType = type
         self.keyword = keyword
+        self.emoji = emoji
     }
 }
 
@@ -38,9 +40,10 @@ extension PlaceCategoryTag {
     
     private static var serviceDefined: String { "service" }
     
-    public init(placeCat keyword: String) {
+    public init(placeCat keyword: String, emoji: String) {
         self.tagType = .placeCategory
         self.keyword = keyword
+        self.emoji = emoji
     }
 }
 

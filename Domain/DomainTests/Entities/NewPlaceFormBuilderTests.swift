@@ -39,7 +39,7 @@ extension NewPlaceFormBuilderTests {
             .detailLink("detail")
             .coordinate(.init(latt: 10, long: 10))
             .address("addr")
-            .categoryTags([.init(placeCat: "k1")])
+            .categoryTags([.init(placeCat: "k1", emoji: "☠️")])
     }
     
     // 입력한 모든값 검증
@@ -57,7 +57,7 @@ extension NewPlaceFormBuilderTests {
         XCTAssertEqual(form?.detailLink, "detail")
         XCTAssertEqual(form?.coordinate, .init(latt: 10, long: 10))
         XCTAssertEqual(form?.address, "addr")
-        XCTAssertEqual(form?.categoryTags, [.init(placeCat: "k1")])
+        XCTAssertEqual(form?.categoryTags, [.init(placeCat: "k1", emoji: "☠️")])
         
     }
     

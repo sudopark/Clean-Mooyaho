@@ -48,7 +48,7 @@ class RegisterNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
             .title("title")
             .coordinate(self.dummyPosition())
             .address("address")
-            .categoryTags([PlaceCategoryTag(placeCat: "dummy")])
+            .categoryTags([PlaceCategoryTag(placeCat: "dummy", emoji: "☠️")])
         return builder.build()!
     }
 }
