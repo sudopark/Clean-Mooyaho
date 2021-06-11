@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F66CD9392673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */; };
+		F66CD93A2673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */; };
+		F66CD93B2673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */; };
+		F66CD93C2673A7BB0031EEC5 /* RegisterNewPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9372673A7BB0031EEC5 /* RegisterNewPlaceScene.swift */; };
+		F66CD93D2673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9382673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift */; };
+		F66CD93F2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */; };
+		F66CD9472673B0CB0031EEC5 /* SearchNewPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */; };
+		F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */; };
+		F66CD94A2673B0CB0031EEC5 /* SearchNewPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9452673B0CB0031EEC5 /* SearchNewPlaceScene.swift */; };
+		F66CD94B2673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9462673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift */; };
+		F66CD94D2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD94C2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift */; };
 		F6E8314226601A9800C91F3B /* PlaceScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8313826601A9800C91F3B /* PlaceScenes.framework */; };
 		F6E8314726601A9800C91F3B /* PlaceScenesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8314626601A9800C91F3B /* PlaceScenesTests.swift */; };
 		F6E8314926601A9800C91F3B /* PlaceScenes.h in Headers */ = {isa = PBXBuildFile; fileRef = F6E8313B26601A9800C91F3B /* PlaceScenes.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -29,6 +40,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceRouter.swift; sourceTree = "<group>"; };
+		F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewController.swift; sourceTree = "<group>"; };
+		F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceBuilder.swift; sourceTree = "<group>"; };
+		F66CD9372673A7BB0031EEC5 /* RegisterNewPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceScene.swift; sourceTree = "<group>"; };
+		F66CD9382673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewModel.swift; sourceTree = "<group>"; };
+		F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewModelTests.swift; sourceTree = "<group>"; };
+		F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceRouter.swift; sourceTree = "<group>"; };
+		F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceViewController.swift; sourceTree = "<group>"; };
+		F66CD9452673B0CB0031EEC5 /* SearchNewPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceScene.swift; sourceTree = "<group>"; };
+		F66CD9462673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceViewModel.swift; sourceTree = "<group>"; };
+		F66CD94C2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		F6E8313826601A9800C91F3B /* PlaceScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlaceScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8313B26601A9800C91F3B /* PlaceScenes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaceScenes.h; sourceTree = "<group>"; };
 		F6E8313C26601A9800C91F3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -68,6 +90,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F66CD9332673A6EE0031EEC5 /* RegisterPlace */ = {
+			isa = PBXGroup;
+			children = (
+				F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */,
+				F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */,
+				F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */,
+				F66CD9372673A7BB0031EEC5 /* RegisterNewPlaceScene.swift */,
+				F66CD9382673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift */,
+			);
+			path = RegisterPlace;
+			sourceTree = "<group>";
+		};
+		F66CD9402673A87D0031EEC5 /* SearchNewPlace */ = {
+			isa = PBXGroup;
+			children = (
+				F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */,
+				F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */,
+				F66CD9452673B0CB0031EEC5 /* SearchNewPlaceScene.swift */,
+				F66CD9462673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift */,
+			);
+			path = SearchNewPlace;
+			sourceTree = "<group>";
+		};
+		F66CD9412673A8870031EEC5 /* ManuallyResigerPlace */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ManuallyResigerPlace;
+			sourceTree = "<group>";
+		};
 		F6E8312E26601A9800C91F3B = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +142,9 @@
 		F6E8313A26601A9800C91F3B /* PlaceScenes */ = {
 			isa = PBXGroup;
 			children = (
+				F66CD9332673A6EE0031EEC5 /* RegisterPlace */,
+				F66CD9402673A87D0031EEC5 /* SearchNewPlace */,
+				F66CD9412673A8870031EEC5 /* ManuallyResigerPlace */,
 				F6E8313B26601A9800C91F3B /* PlaceScenes.h */,
 				F6E8313C26601A9800C91F3B /* Info.plist */,
 			);
@@ -101,6 +156,8 @@
 			children = (
 				F6E8314626601A9800C91F3B /* PlaceScenesTests.swift */,
 				F6E8314826601A9800C91F3B /* Info.plist */,
+				F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */,
+				F66CD94C2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift */,
 			);
 			path = PlaceScenesTests;
 			sourceTree = "<group>";
@@ -226,6 +283,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F66CD93C2673A7BB0031EEC5 /* RegisterNewPlaceScene.swift in Sources */,
+				F66CD9472673B0CB0031EEC5 /* SearchNewPlaceRouter.swift in Sources */,
+				F66CD94A2673B0CB0031EEC5 /* SearchNewPlaceScene.swift in Sources */,
+				F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */,
+				F66CD93A2673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift in Sources */,
+				F66CD9392673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift in Sources */,
+				F66CD93D2673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift in Sources */,
+				F66CD93B2673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift in Sources */,
+				F66CD94B2673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +299,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F66CD93F2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift in Sources */,
+				F66CD94D2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift in Sources */,
 				F6E8314726601A9800C91F3B /* PlaceScenesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,6 +489,7 @@
 		F6E8315026601A9800C91F3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = PlaceScenesTests/Info.plist;
@@ -439,6 +508,7 @@
 		F6E8315126601A9800C91F3B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = PlaceScenesTests/Info.plist;
