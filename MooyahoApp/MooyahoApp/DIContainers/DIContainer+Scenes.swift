@@ -83,17 +83,6 @@ extension DIContainers: NearbySceneBuilable {
 
 // MARK: Place Scenes
 
-extension DIContainers: SuggestPlaceSceneBuilable {
-
-    public func makeSuggestPlaceScene() -> SuggestPlaceScene {
-        let router = SuggestPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SuggestPlaceViewModelImple(router: router)
-        let viewController = SuggestPlaceViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
 
 // MARK: - Hooray Scenes
 
