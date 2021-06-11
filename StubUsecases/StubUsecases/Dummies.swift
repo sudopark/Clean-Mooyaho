@@ -60,7 +60,8 @@ extension SearchingPlace {
                               title: "title:\(int)",
                               coordinate: .init(latt: 0, long: 0),
                               address: "address:\(int)",
-                              categories: [])
+                              categories: [],
+                              link: "some:\(int)")
     }
 }
 

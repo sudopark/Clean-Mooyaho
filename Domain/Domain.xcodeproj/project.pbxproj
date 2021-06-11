@@ -79,6 +79,7 @@
 		F64CCB6A2654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB692654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift */; };
 		F6502DD5266CA4D50027800F /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD4266CA4D50027800F /* Dummies.swift */; };
 		F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6684E072647EE7D00820368 /* SuggestPlace.swift */; };
+		F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */; };
 		F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */; };
 		F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A362648217A006BE4BD /* TagRepository.swift */; };
 		F6A72A392648243D006BE4BD /* SuggestTagUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A382648243D006BE4BD /* SuggestTagUsecaseTests.swift */; };
@@ -181,6 +182,7 @@
 		F64CCB692654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHoorayFormBuilderTests.swift; sourceTree = "<group>"; };
 		F6502DD4266CA4D50027800F /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		F6684E072647EE7D00820368 /* SuggestPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestPlace.swift; sourceTree = "<group>"; };
+		F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProvider.swift; sourceTree = "<group>"; };
 		F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTagUsecase.swift; sourceTree = "<group>"; };
 		F6A72A362648217A006BE4BD /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
 		F6A72A382648243D006BE4BD /* SuggestTagUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTagUsecaseTests.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 				2BFF240C26406190008C52EB /* Place.swift */,
 				F6684E072647EE7D00820368 /* SuggestPlace.swift */,
 				F6CFA5722645A91E00F9A049 /* SearchingPlace.swift */,
+				F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */,
 			);
 			path = Places;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 				F6152933264DA0C0003BCB59 /* HoorayPublisherUsecase.swift in Sources */,
 				2B40BF93263F15060031C7A6 /* Units.swift in Sources */,
 				F615295D264F1369003BCB59 /* Message.swift in Sources */,
+				F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */,
 				F6152937264DA31A003BCB59 /* HoorayUsecase.swift in Sources */,
 				F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */,
 				F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */,
