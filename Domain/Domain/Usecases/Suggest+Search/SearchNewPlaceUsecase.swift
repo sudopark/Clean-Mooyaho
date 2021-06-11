@@ -15,6 +15,13 @@ import RxSwift
 
 public protocol SearchNewPlaceUsecase {
     
+    // input
+    func startSearchPlace(for query: SuggestPlaceQuery, in location: UserLocation)
+    func finishSearchPlace()
+    func loadMorePlaceSearchResult()
+    
+    // output
+    var newPlaceSearchResult: Observable<SearchingPlaceCollection?> { get }
 }
 
 

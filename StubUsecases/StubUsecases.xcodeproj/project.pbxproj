@@ -16,6 +16,7 @@
 		F62DFFBC26621E4D00C4A080 /* StubHoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFBB26621E4D00C4A080 /* StubHoorayUsecase.swift */; };
 		F6502DD3266CA49B0027800F /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD2266CA49B0027800F /* Dummies.swift */; };
 		F66CD92C266FCB800031EEC5 /* StubSuggestPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD92B266FCB800031EEC5 /* StubSuggestPlaceUsecase.swift */; };
+		F66CD94F2673B1B10031EEC5 /* StubSearchNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD94E2673B1B10031EEC5 /* StubSearchNewPlaceUsecase.swift */; };
 		F6E83126265C55FA00C91F3B /* StubAuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */; };
 		F6E83128265C57B100C91F3B /* StubMemberUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 		F62DFFBB26621E4D00C4A080 /* StubHoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubHoorayUsecase.swift; sourceTree = "<group>"; };
 		F6502DD2266CA49B0027800F /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		F66CD92B266FCB800031EEC5 /* StubSuggestPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSuggestPlaceUsecase.swift; sourceTree = "<group>"; };
+		F66CD94E2673B1B10031EEC5 /* StubSearchNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSearchNewPlaceUsecase.swift; sourceTree = "<group>"; };
 		F6E83125265C55FA00C91F3B /* StubAuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubAuthUsecase.swift; sourceTree = "<group>"; };
 		F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMemberUsecase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,6 +114,7 @@
 				F6E83127265C57B100C91F3B /* StubMemberUsecase.swift */,
 				F62DFFBB26621E4D00C4A080 /* StubHoorayUsecase.swift */,
 				F66CD92B266FCB800031EEC5 /* StubSuggestPlaceUsecase.swift */,
+				F66CD94E2673B1B10031EEC5 /* StubSearchNewPlaceUsecase.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F66CD94F2673B1B10031EEC5 /* StubSearchNewPlaceUsecase.swift in Sources */,
 				F6E83128265C57B100C91F3B /* StubMemberUsecase.swift in Sources */,
 				F60325C32659573700E4E769 /* StubUserLocationUsecase.swift in Sources */,
 				F6E83126265C55FA00C91F3B /* StubAuthUsecase.swift in Sources */,
