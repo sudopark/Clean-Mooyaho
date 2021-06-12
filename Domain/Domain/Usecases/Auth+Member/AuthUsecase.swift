@@ -24,7 +24,7 @@ public protocol AuthUsecase {
 }
 
 
-public typealias OAuthServiceProvider = OAuthRepository & OAuthServiceProviderTypeRepresentable
+public typealias OAuthServiceProvider = OAuthService & OAuthServiceProviderTypeRepresentable
 
 public final class AuthUsecaseImple: AuthUsecase {
     

@@ -1,5 +1,5 @@
 //
-//  SocialAuthRepository.swift
+//  OAuthService.swift
 //  Domain
 //
 //  Created by ParkHyunsoo on 2021/04/24.
@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol OAuthRepository {
+public protocol OAuthService {
     
     func requestSignIn() -> Maybe<OAuthCredential>
 }

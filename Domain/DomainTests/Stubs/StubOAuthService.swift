@@ -19,7 +19,7 @@ struct DummyOAuthType: OAuthServiceProviderType {
     let uniqueIdentifier: String = "DummyOAuthType"
 }
 
-class StubOAuth2Repository: OAuthRepository, OAuthServiceProviderTypeRepresentable, Stubbable {
+class StubOAuthService: OAuthService, OAuthServiceProviderTypeRepresentable, Stubbable {
     
     var providerType: OAuthServiceProviderType {
         return DummyOAuthType()
