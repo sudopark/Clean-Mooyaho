@@ -13,6 +13,8 @@
 
 import UIKit
 
+import RxSwift
+
 import Domain
 import CommonPresenting
 
@@ -23,9 +25,10 @@ public protocol MakeHoorayRouting: Routing {
     
     func openEditProfileScene() -> EditProfileScenePresenter?
     
-    func openEnterHoorayImageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
+    func openEnterHoorayImageScene(_ form: NewHoorayForm) -> Observable<NewHoorayForm>?
     
-    func openEnterHoorayMessageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
+    func openEnterHoorayMessageScene(_ form: NewHoorayForm,
+                                     inputMode: TextInputMode) -> Observable<NewHoorayForm>?
     
     func openEnterHoorayTagScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter?
     
@@ -38,7 +41,7 @@ public protocol MakeHoorayRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MakeHoorayRouterBuildables = MakeHooraySceneBuilable & EditProfileSceneBuilable & WaitNextHooraySceneBuilable
+public typealias MakeHoorayRouterBuildables = MakeHooraySceneBuilable & EditProfileSceneBuilable & WaitNextHooraySceneBuilable & ImagePickerSceneBuilable & TextInputSceneBuilable
 
 public final class MakeHoorayRouter: Router<MakeHoorayRouterBuildables>, MakeHoorayRouting {
     
@@ -53,14 +56,6 @@ extension MakeHoorayRouter {
         guard let next = self.nextScenesBuilder?.makeEditProfileScene() else { return nil }
         self.currentScene?.present(next, animated: true, completion: nil)
         return next.presenrer
-    }
-    
-    public func openEnterHoorayImageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
-        return routeToEnteringScenes(form, nextMake: self.nextScenesBuilder?.makeEnterHoorayImageScene(form:))
-    }
-    
-    public func openEnterHoorayMessageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
-        return routeToEnteringScenes(form, nextMake: self.nextScenesBuilder?.makeEnterHoorayMessageScene(form:))
     }
     
     public func openEnterHoorayTagScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
@@ -91,5 +86,51 @@ extension MakeHoorayRouter {
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+}
+
+
+// MARK - use common scene
+
+extension MakeHoorayRouter {
+    
+    public func openEnterHoorayImageScene(_ form: NewHoorayForm) -> Observable<NewHoorayForm>? {
+        
+        guard let next = self.nextScenesBuilder?.makeImagePickerScene(isCamera: false) else {
+            return nil
+        }
+        let result = next.presenter
+              
+        let fillSelectedImage: (String) -> Observable<NewHoorayForm> = { imagePath in
+            form.imagePath = imagePath
+            return .just(form)
+        }
+        let throwWhenError: (Error) -> Observable<NewHoorayForm> = { error in
+            return .error(error)
+        }
+        
+        self.currentScene?.present(next, animated: true, completion: nil)
+        
+        return Observable
+            .merge(result.selectedImagePath.flatMap(fillSelectedImage),
+                   result.selectImageError.flatMap(throwWhenError))
+    }
+    
+    public func openEnterHoorayMessageScene(_ form: NewHoorayForm,
+                                            inputMode: TextInputMode) -> Observable<NewHoorayForm>? {
+        
+        guard let next = self.nextScenesBuilder?.makeTextInputScene(inputMode) else { return nil }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        
+        let fillMessage: (String) -> NewHoorayForm = { text in
+            form.message = text
+            return form
+        }
+        
+        self.currentScene?.present(next, animated: true, completion: nil)
+        
+        return next.presenter?.enteredText.map(fillMessage)
     }
 }

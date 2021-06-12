@@ -30,11 +30,7 @@ public protocol MakeHoorayScene: Scenable {
 public protocol MakeHooraySceneBuilable {
     
     func makeMakeHoorayScene() -> MakeHoorayScene
-    
-    func makeEnterHoorayImageScene(form: NewHoorayForm) -> EnterHoorayImageScene
-    
-    func makeEnterHoorayMessageScene(form: NewHoorayForm) -> EnterHoorayMessageScene
-    
+        
     func makeEnterHoorayTagScene(form: NewHoorayForm) -> EnterHoorayTagScene
     
     func makeSelectHoorayPlaceScene(form: NewHoorayForm) -> SelectHoorayPlaceScene
@@ -52,14 +48,6 @@ public protocol BaseEnterNewHoorayInfoScene: Scenable {
     
     var presenter: EnteringNewHoorayPresenter? { get }
 }
-
-// MARK: - EnterHoorayImageScene
-
-public protocol EnterHoorayImageScene: BaseEnterNewHoorayInfoScene, PangestureDismissableScene { }
-
-// MARK: - EnterHoorayMessageScene
-
-public protocol EnterHoorayMessageScene: BaseEnterNewHoorayInfoScene, PangestureDismissableScene { }
 
 // MARK: - EnterHoorayTagScene
 

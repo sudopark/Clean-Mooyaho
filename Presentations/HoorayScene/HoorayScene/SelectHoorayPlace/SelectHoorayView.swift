@@ -171,25 +171,23 @@ final class SelectHoorayView: BaseUIView, Presenting {
     
     let headerView = SelectHoorayHeaderView()
     let tableView = UITableView()
-    let toolBar = HoorayActionToolbar()
+    let confirmButton = UIButton(type: .system)
     
     func setupLayout() {
         
-        self.addSubview(toolBar)
-        toolBar.autoLayout.active(with: self) {
+        self.addSubview(confirmButton)
+        confirmButton.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
         }
-        self.toolBar.showSkip = true
-        toolBar.setupLayout()
         
         self.addSubview(tableView)
         tableView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: self.toolBar.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor)
         }
         
         self.addSubview(headerView)
@@ -209,7 +207,5 @@ final class SelectHoorayView: BaseUIView, Presenting {
         self.tableView.registerHeaderFooter(SelectHooraySuggestSectionHeaderView.self)
         self.tableView.registerCell(SelectHooraySuggestPlaceCell.self)
         self.tableView.rowHeight = UITableView.automaticDimension
-        
-        self.toolBar.setupStyling()
     }
 }
