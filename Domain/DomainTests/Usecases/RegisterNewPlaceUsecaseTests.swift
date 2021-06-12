@@ -25,7 +25,7 @@ class RegisterNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
         super.setUp()
         self.disposeBag = .init()
         self.stubPlaceRepository = .init()
-        self.usecase = .init(placeRepository: self.stubPlaceRepository)
+        self.usecase = .init(placeRepository: self.stubPlaceRepository, categoryTags: [])
     }
     
     override func tearDown() {

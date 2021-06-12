@@ -190,9 +190,9 @@ extension DIContainers: ImagePickerSceneBuilable {
 
 extension DIContainers: SelectTagSceneBuilable {
     
-    public func makeSelectTagScene() -> SelectTagScene {
+    public func makeSelectTagScene(startWith tags: [Tag], total: [Tag]) -> SelectTagScene {
         let router = SelectTagRouter(nextSceneBuilders: self)
-        let viewModel = SelectTagViewModelImple(router: router)
+        let viewModel = SelectTagViewModelImple(startWith: tags, total: total, router: router)
         let viewController = SelectTagViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

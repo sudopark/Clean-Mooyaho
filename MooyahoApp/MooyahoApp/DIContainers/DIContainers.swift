@@ -140,7 +140,8 @@ extension DIContainers {
     }
     
     var registerNewPlaceUsecase: RegisterNewPlaceUsecase {
-        
-        return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry)
+        let tags = PlaceCategoryTags.allCases.map{ $0.tag }.shuffled()
+        return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry,
+                                            categoryTags: tags)
     }
 }

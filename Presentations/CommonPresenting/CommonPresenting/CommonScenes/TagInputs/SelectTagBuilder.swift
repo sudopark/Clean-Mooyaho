@@ -11,12 +11,14 @@
 //  Copyright © 2021 ___ORGANIZATIONNAME___. All rights reserved.
 //
 
-import UIKit
+import Foundation
+
+import Domain
 
 
 // MARK: - Builder + DI Container Extension
 
 public protocol SelectTagSceneBuilable {
     
-    func makeSelectTagScene() -> SelectTagScene
+    func makeSelectTagScene(startWith tags: [Tag], total: [Tag]) -> SelectTagScene
 }

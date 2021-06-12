@@ -33,17 +33,22 @@ public protocol RegisterNewPlaceUsecase {
     func finishInputPlaceInfo(_ form: NewPlaceForm) -> Maybe<NewPlaceForm>
     
     func uploadNewPlace(_ form: NewPlaceForm) -> Maybe<Place>
+    
+    func placeCategoryTags() -> [PlaceCategoryTag]
 }
 
 public final class RegisterNewPlaceUsecaseImple: RegisterNewPlaceUsecase {
     
     private let placeRepository: PlaceRepository
     private let policy: ValidPendingRegisterNewPlacePolicy
+    private let categoryTags: [PlaceCategoryTag]
     
     public init(placeRepository: PlaceRepository,
-                validPendingPolicy: ValidPendingRegisterNewPlacePolicy = .default()) {
+                validPendingPolicy: ValidPendingRegisterNewPlacePolicy = .default(),
+                categoryTags: [PlaceCategoryTag]) {
         self.placeRepository = placeRepository
         self.policy = validPendingPolicy
+        self.categoryTags = categoryTags
     }
 
     private let disposeBag = DisposeBag()
@@ -85,5 +90,9 @@ extension RegisterNewPlaceUsecaseImple {
     public func uploadNewPlace(_ form: NewPlaceForm) -> Maybe<Place> {
 
         return self.placeRepository.requestRegister(newPlace: form)
+    }
+    
+    public func placeCategoryTags() -> [PlaceCategoryTag] {
+        return self.categoryTags
     }
 }

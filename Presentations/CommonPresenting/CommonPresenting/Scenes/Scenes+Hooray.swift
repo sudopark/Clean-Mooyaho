@@ -5,7 +5,7 @@
 //  Created by sudo.park on 2021/06/06.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 
