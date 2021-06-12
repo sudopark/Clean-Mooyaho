@@ -172,9 +172,11 @@ extension SearchNewPlaceViewModelImple {
     
     public func confirmSelect() {
         
-        guard let result = self.router.showSelectPlaceCateTag() else { return }
-        result.selectedTags
-            .take(1)
+        let total = self.registerNewPlaceUsecase.placeCategoryTags()
+        guard let result = self.router.showSelectPlaceCateTag(startWith: [], total: total) else {
+            return
+        }
+        result.selectedTags.take(1)
             .subscribe(onNext: { [weak self] tags in
                 self?.requestRegisterNewPlace(tags)
             })

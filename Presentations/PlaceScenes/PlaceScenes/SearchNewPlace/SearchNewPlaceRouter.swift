@@ -23,7 +23,8 @@ public protocol SearchNewPlaceRouting: Routing {
     
     func showPlaceDetail(_ placeID: String, link: String)
     
-    func showSelectPlaceCateTag() -> SelectTagScenePresenter?
+    func showSelectPlaceCateTag(startWith tags: [Tag],
+                                total: [Tag]) -> SelectTagScenePresenter?
 }
 
 // MARK: - Routers
@@ -44,8 +45,10 @@ extension SearchNewPlaceRouter {
         logger.todoImplement()
     }
     
-    public func showSelectPlaceCateTag() -> SelectTagScenePresenter? {
-        guard let next = self.nextScenesBuilder?.makeSelectTagScene() else { return nil }
+    public func showSelectPlaceCateTag(startWith tags: [Tag],
+                                       total: [Tag]) -> SelectTagScenePresenter? {
+        guard let next = self.nextScenesBuilder?
+                .makeSelectTagScene(startWith: tags, total: total) else { return nil }
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)

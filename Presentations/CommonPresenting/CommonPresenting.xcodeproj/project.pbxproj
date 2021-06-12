@@ -52,6 +52,7 @@
 		F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */; };
 		F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */; };
 		F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */; };
+		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
@@ -119,6 +120,7 @@
 		F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagScene.swift; sourceTree = "<group>"; };
 		F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModel.swift; sourceTree = "<group>"; };
 		F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickPermissionCheckService.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */,
 				2B39E25F26387B6A003EE954 /* Info.plist */,
 				F610146E2657122300D32E38 /* AutoLayoutTests.swift */,
+				F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */,
 			);
 			path = CommonPresentingTests;
 			sourceTree = "<group>";
@@ -315,12 +318,12 @@
 			isa = PBXGroup;
 			children = (
 				F6F295A6266D26F000CDF980 /* ImagePicker */,
-				F66CD9532673CB8D0031EEC5 /* SelectTag */,
+				F66CD9532673CB8D0031EEC5 /* TagInputs */,
 			);
 			path = CommonScenes;
 			sourceTree = "<group>";
 		};
-		F66CD9532673CB8D0031EEC5 /* SelectTag */ = {
+		F66CD9532673CB8D0031EEC5 /* TagInputs */ = {
 			isa = PBXGroup;
 			children = (
 				F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */,
@@ -329,7 +332,7 @@
 				F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */,
 				F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */,
 			);
-			path = SelectTag;
+			path = TagInputs;
 			sourceTree = "<group>";
 		};
 		F6F295A6266D26F000CDF980 /* ImagePicker */ = {
@@ -509,6 +512,7 @@
 			files = (
 				F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */,
 				2B39E25E26387B6A003EE954 /* CommonPresentingTests.swift in Sources */,
+				F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

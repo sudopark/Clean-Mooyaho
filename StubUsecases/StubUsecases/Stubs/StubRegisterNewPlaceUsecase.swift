@@ -28,4 +28,8 @@ open class StubRegisterNewPlaceUsecase: RegisterNewPlaceUsecase, Stubbable {
     public func uploadNewPlace(_ form: NewPlaceForm) -> Maybe<Place> {
         return self.resolve(key: "uploadNewPlace") ?? .empty()
     }
+    
+    public func placeCategoryTags() -> [PlaceCategoryTag] {
+        return self.resolve(key: "placeCategoryTags") ?? []
+    }
 }

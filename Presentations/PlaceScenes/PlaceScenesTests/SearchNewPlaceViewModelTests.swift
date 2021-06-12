@@ -336,7 +336,7 @@ extension SearchNewPlaceViewModelTests {
             self.verify(key: "showPlaceDetail")
         }
         
-        func showSelectPlaceCateTag() -> SelectTagScenePresenter? {
+        func showSelectPlaceCateTag(startWith tags: [Tag], total: [Tag]) -> SelectTagScenePresenter? {
             self.verify(key: "showSelectPlaceCateTag")
             return self.resolve(SelectTagScenePresenter.self, key: "showSelectPlaceCateTag")
         }
@@ -344,6 +344,7 @@ extension SearchNewPlaceViewModelTests {
         func closeScene(animated: Bool, completed: (() -> Void)?) {
             completed?()
         }
+
     }
 }
 
