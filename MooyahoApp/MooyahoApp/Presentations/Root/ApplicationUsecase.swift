@@ -12,15 +12,8 @@ import RxSwift
 import RxRelay
 
 import Domain
+import CommonPresenting
 
-
-public enum ApplicationStatus {
-    case idle
-    case launched
-    case forground
-    case background
-    case terminate
-}
 
 public protocol ApplicationUsecase {
     
