@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F652158F2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158A2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift */; };
+		F65215902674B935000CAB4B /* ManuallyResigterPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158B2674B935000CAB4B /* ManuallyResigterPlaceViewController.swift */; };
+		F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */; };
+		F65215932674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */; };
+		F65215AB2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */; };
 		F66CD9392673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */; };
 		F66CD93A2673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */; };
 		F66CD93B2673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */; };
@@ -40,6 +45,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F652158A2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceRouter.swift; sourceTree = "<group>"; };
+		F652158B2674B935000CAB4B /* ManuallyResigterPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewController.swift; sourceTree = "<group>"; };
+		F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceScene.swift; sourceTree = "<group>"; };
+		F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewModel.swift; sourceTree = "<group>"; };
+		F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceRouter.swift; sourceTree = "<group>"; };
 		F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewController.swift; sourceTree = "<group>"; };
 		F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceBuilder.swift; sourceTree = "<group>"; };
@@ -113,11 +123,15 @@
 			path = SearchNewPlace;
 			sourceTree = "<group>";
 		};
-		F66CD9412673A8870031EEC5 /* ManuallyResigerPlace */ = {
+		F66CD9412673A8870031EEC5 /* ManuallyResigterPlace */ = {
 			isa = PBXGroup;
 			children = (
+				F652158A2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift */,
+				F652158B2674B935000CAB4B /* ManuallyResigterPlaceViewController.swift */,
+				F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */,
+				F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */,
 			);
-			path = ManuallyResigerPlace;
+			path = ManuallyResigterPlace;
 			sourceTree = "<group>";
 		};
 		F6E8312E26601A9800C91F3B = {
@@ -144,7 +158,7 @@
 			children = (
 				F66CD9332673A6EE0031EEC5 /* RegisterPlace */,
 				F66CD9402673A87D0031EEC5 /* SearchNewPlace */,
-				F66CD9412673A8870031EEC5 /* ManuallyResigerPlace */,
+				F66CD9412673A8870031EEC5 /* ManuallyResigterPlace */,
 				F6E8313B26601A9800C91F3B /* PlaceScenes.h */,
 				F6E8313C26601A9800C91F3B /* Info.plist */,
 			);
@@ -158,6 +172,7 @@
 				F6E8314826601A9800C91F3B /* Info.plist */,
 				F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */,
 				F66CD94C2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift */,
+				F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */,
 			);
 			path = PlaceScenesTests;
 			sourceTree = "<group>";
@@ -288,10 +303,14 @@
 				F66CD94A2673B0CB0031EEC5 /* SearchNewPlaceScene.swift in Sources */,
 				F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */,
 				F66CD93A2673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift in Sources */,
+				F65215932674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift in Sources */,
 				F66CD9392673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift in Sources */,
 				F66CD93D2673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift in Sources */,
+				F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */,
 				F66CD93B2673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift in Sources */,
+				F652158F2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift in Sources */,
 				F66CD94B2673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift in Sources */,
+				F65215902674B935000CAB4B /* ManuallyResigterPlaceViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F65215AB2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift in Sources */,
 				F66CD93F2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift in Sources */,
 				F66CD94D2673B1270031EEC5 /* SearchNewPlaceViewModelTests.swift in Sources */,
 				F6E8314726601A9800C91F3B /* PlaceScenesTests.swift in Sources */,
