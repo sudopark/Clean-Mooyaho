@@ -49,9 +49,9 @@
 		F62DFFBA26621D7500C4A080 /* FCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB926621D7500C4A080 /* FCMService.swift */; };
 		F6502DB52669D6BB0027800F /* HoorayScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6502DB42669D6BB0027800F /* HoorayScene.framework */; };
 		F6502DB62669D6BB0027800F /* HoorayScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6502DB42669D6BB0027800F /* HoorayScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F66BDB912644487C0043DEAA /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB902644487C0043DEAA /* KakaoSDKUser */; };
-		F66BDB932644487C0043DEAA /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB922644487C0043DEAA /* KakaoSDKAuth */; };
-		F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F66BDB942644487C0043DEAA /* KakaoSDKCommon */; };
+		F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E726747AF3004FB42E /* KakaoSDKUser */; };
+		F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E926747AF3004FB42E /* KakaoSDKAuth */; };
+		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
 		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
@@ -168,19 +168,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */,
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
-				F66BDB952644487C0043DEAA /* KakaoSDKCommon in Frameworks */,
 				2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */,
 				F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
+				F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */,
 				F6E8316F26601BE300C91F3B /* PlaceScenes.framework in Frameworks */,
+				F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */,
 				F6032581265940E300E4E769 /* LocationScenes.framework in Frameworks */,
 				F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */,
-				F66BDB912644487C0043DEAA /* KakaoSDKUser in Frameworks */,
-				F66BDB932644487C0043DEAA /* KakaoSDKAuth in Frameworks */,
 				F6502DB52669D6BB0027800F /* HoorayScene.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,9 +425,9 @@
 			);
 			name = MooyahoApp;
 			packageProductDependencies = (
-				F66BDB902644487C0043DEAA /* KakaoSDKUser */,
-				F66BDB922644487C0043DEAA /* KakaoSDKAuth */,
-				F66BDB942644487C0043DEAA /* KakaoSDKCommon */,
+				F660B8E726747AF3004FB42E /* KakaoSDKUser */,
+				F660B8E926747AF3004FB42E /* KakaoSDKAuth */,
+				F660B8EB26747AF3004FB42E /* KakaoSDKCommon */,
 			);
 			productName = BreadRoadApp;
 			productReference = 2B79FC48262B640C0006291F /* MooyahoApp.app */;
@@ -480,7 +480,7 @@
 			);
 			mainGroup = 2B79FC3F262B640C0006291F;
 			packageReferences = (
-				F66BDB8F2644487C0043DEAA /* XCRemoteSwiftPackageReference "KakaoSDK_SPM" */,
+				F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */,
 			);
 			productRefGroup = 2B79FC49262B640C0006291F /* Products */;
 			projectDirPath = "";
@@ -852,30 +852,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F66BDB8F2644487C0043DEAA /* XCRemoteSwiftPackageReference "KakaoSDK_SPM" */ = {
+		F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/fbdlrghks123/KakaoSDK_SPM.git";
+			repositoryURL = "https://github.com/minsOne/KakaoSDK-SwiftPM.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.4.1;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F66BDB902644487C0043DEAA /* KakaoSDKUser */ = {
+		F660B8E726747AF3004FB42E /* KakaoSDKUser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F66BDB8F2644487C0043DEAA /* XCRemoteSwiftPackageReference "KakaoSDK_SPM" */;
+			package = F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */;
 			productName = KakaoSDKUser;
 		};
-		F66BDB922644487C0043DEAA /* KakaoSDKAuth */ = {
+		F660B8E926747AF3004FB42E /* KakaoSDKAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F66BDB8F2644487C0043DEAA /* XCRemoteSwiftPackageReference "KakaoSDK_SPM" */;
+			package = F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */;
 			productName = KakaoSDKAuth;
 		};
-		F66BDB942644487C0043DEAA /* KakaoSDKCommon */ = {
+		F660B8EB26747AF3004FB42E /* KakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F66BDB8F2644487C0043DEAA /* XCRemoteSwiftPackageReference "KakaoSDK_SPM" */;
+			package = F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */;
 			productName = KakaoSDKCommon;
 		};
 /* End XCSwiftPackageProductDependency section */
