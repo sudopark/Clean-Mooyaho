@@ -201,6 +201,27 @@ extension RepositoryTests_Places {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testRepository_whenAfterRegisgerNewPlace_removePendingInputForm() {
+        // given
+        let expect = expectation(description: "새로운 장소 등록 하고 이전에 입력중이던 항목 삭제")
+        
+        self.stubRemote.register(key: "requestRegister:place") {
+            return Maybe<Place>.just(self.dummyPlace)
+        }
+        
+        self.stubLocal.called(key: "removePendingRegisterForm") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestRegister(newPlace: .init(reporterID: "", infoProvider: .userDefine))
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 

@@ -99,6 +99,10 @@ public final class LocalStorageImple: LocalStorage {
         return .empty()
     }
     
+    public func removePendingRegisterForm() -> Maybe<Void> {
+        return .empty()
+    }
+    
     public func savePlaces(_ places: [Place]) -> Maybe<Void> {
         return .empty()
     }

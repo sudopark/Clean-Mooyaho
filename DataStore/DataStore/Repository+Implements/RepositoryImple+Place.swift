@@ -72,7 +72,15 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
                 .disposed(by: self.disposeBag)
         }
         
+        let removePendingInput: (Place) -> Void = { [weak self] _ in
+            guard let self = self else { return }
+            self.placeLocal.removePendingRegisterForm()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
         return self.placeRemote.requestRegister(new: form)
             .do(onNext: saveAtLocal)
+            .do(onNext: removePendingInput)
     }
 }
