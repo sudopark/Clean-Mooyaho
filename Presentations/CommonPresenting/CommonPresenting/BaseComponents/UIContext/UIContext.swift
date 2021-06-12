@@ -7,10 +7,13 @@
 
 import Foundation
 
+import RxSwift
+
 
 public struct UIContext {
     
     private let theme: Theme
+    private static let appStatus = BehaviorSubject<ApplicationStatus>(value: .idle)
     public init(theme: Theme) {
         self.theme = theme
     }
@@ -19,6 +22,14 @@ public struct UIContext {
     
     public static func register(_ context: UIContext) {
         self.currentContext = context
+    }
+    
+    public static func updateApp(status: ApplicationStatus) {
+        self.appStatus.onNext(status)
+    }
+    
+    public static var currentAppStatus: Observable<ApplicationStatus> {
+        return self.appStatus.distinctUntilChanged()
     }
 }
 

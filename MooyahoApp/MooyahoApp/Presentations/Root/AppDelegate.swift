@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                               kakaoService: self.diContainers.shared.kakaoService,
                                                               router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
+        UIContext.updateApp(status: .launched)
     }
 
     func application(_ application: UIApplication,
@@ -56,14 +57,17 @@ extension AppDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.applicationViewModel.appDidEnterBackground()
+        UIContext.updateApp(status: .background)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.applicationViewModel.appWillEnterForground()
+        UIContext.updateApp(status: .forground)
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
         self.applicationViewModel.appWillTerminate()
+        UIContext.updateApp(status: .terminate)
     }
 }
 
