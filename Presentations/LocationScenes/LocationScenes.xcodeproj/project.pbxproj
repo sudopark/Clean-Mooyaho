@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		F603258D265954F400E4E769 /* NearbyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258C265954F400E4E769 /* NearbyViewModelTests.swift */; };
 		F60325C82659586F00E4E769 /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325C72659586F00E4E769 /* StubUsecases.framework */; };
+		F652159B2674BBF9000CAB4B /* LocationSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */; };
+		F652159C2674BBF9000CAB4B /* LocationSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */; };
+		F652159E2674BBF9000CAB4B /* LocationSelectScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215992674BBF9000CAB4B /* LocationSelectScene.swift */; };
+		F652159F2674BBF9000CAB4B /* LocationSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652159A2674BBF9000CAB4B /* LocationSelectViewModel.swift */; };
+		F65215A52674BC01000CAB4B /* LocationMarkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215A02674BC01000CAB4B /* LocationMarkRouter.swift */; };
+		F65215A62674BC01000CAB4B /* LocationMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215A12674BC01000CAB4B /* LocationMarkViewController.swift */; };
+		F65215A82674BC01000CAB4B /* LocationMarkScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215A32674BC01000CAB4B /* LocationMarkScene.swift */; };
+		F65215A92674BC01000CAB4B /* LocationMarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215A42674BC01000CAB4B /* LocationMarkViewModel.swift */; };
 		F6E663782669BD5900794E2B /* NearbyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E663772669BD5900794E2B /* NearbyScene.swift */; };
 		F6F8730626593F3400FDB24E /* LocationScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F872FC26593F3400FDB24E /* LocationScenes.framework */; };
 		F6F8730B26593F3400FDB24E /* LocationScenesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8730A26593F3400FDB24E /* LocationScenesTests.swift */; };
@@ -36,6 +44,14 @@
 /* Begin PBXFileReference section */
 		F603258C265954F400E4E769 /* NearbyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModelTests.swift; sourceTree = "<group>"; };
 		F60325C72659586F00E4E769 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectRouter.swift; sourceTree = "<group>"; };
+		F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewController.swift; sourceTree = "<group>"; };
+		F65215992674BBF9000CAB4B /* LocationSelectScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectScene.swift; sourceTree = "<group>"; };
+		F652159A2674BBF9000CAB4B /* LocationSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewModel.swift; sourceTree = "<group>"; };
+		F65215A02674BC01000CAB4B /* LocationMarkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMarkRouter.swift; sourceTree = "<group>"; };
+		F65215A12674BC01000CAB4B /* LocationMarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMarkViewController.swift; sourceTree = "<group>"; };
+		F65215A32674BC01000CAB4B /* LocationMarkScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMarkScene.swift; sourceTree = "<group>"; };
+		F65215A42674BC01000CAB4B /* LocationMarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMarkViewModel.swift; sourceTree = "<group>"; };
 		F6E663772669BD5900794E2B /* NearbyScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyScene.swift; sourceTree = "<group>"; };
 		F6F872FC26593F3400FDB24E /* LocationScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LocationScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F872FF26593F3400FDB24E /* LocationScenes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationScenes.h; sourceTree = "<group>"; };
@@ -78,6 +94,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F65215942674BBC3000CAB4B /* LocationMark */ = {
+			isa = PBXGroup;
+			children = (
+				F65215A02674BC01000CAB4B /* LocationMarkRouter.swift */,
+				F65215A12674BC01000CAB4B /* LocationMarkViewController.swift */,
+				F65215A32674BC01000CAB4B /* LocationMarkScene.swift */,
+				F65215A42674BC01000CAB4B /* LocationMarkViewModel.swift */,
+			);
+			path = LocationMark;
+			sourceTree = "<group>";
+		};
+		F65215952674BBE8000CAB4B /* LocationSelect */ = {
+			isa = PBXGroup;
+			children = (
+				F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */,
+				F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */,
+				F65215992674BBF9000CAB4B /* LocationSelectScene.swift */,
+				F652159A2674BBF9000CAB4B /* LocationSelectViewModel.swift */,
+			);
+			path = LocationSelect;
+			sourceTree = "<group>";
+		};
 		F6F872F226593F3400FDB24E = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +138,8 @@
 		F6F872FE26593F3400FDB24E /* LocationScenes */ = {
 			isa = PBXGroup;
 			children = (
+				F65215952674BBE8000CAB4B /* LocationSelect */,
+				F65215942674BBC3000CAB4B /* LocationMark */,
 				F6F8732726593FFB00FDB24E /* Nearby */,
 				F6F872FF26593F3400FDB24E /* LocationScenes.h */,
 				F6F8730026593F3400FDB24E /* Info.plist */,
@@ -249,10 +289,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F65215A62674BC01000CAB4B /* LocationMarkViewController.swift in Sources */,
+				F65215A52674BC01000CAB4B /* LocationMarkRouter.swift in Sources */,
+				F65215A92674BC01000CAB4B /* LocationMarkViewModel.swift in Sources */,
 				F6E663782669BD5900794E2B /* NearbyScene.swift in Sources */,
 				F6F8732F2659402200FDB24E /* NearbyViewModel.swift in Sources */,
+				F652159B2674BBF9000CAB4B /* LocationSelectRouter.swift in Sources */,
+				F652159E2674BBF9000CAB4B /* LocationSelectScene.swift in Sources */,
+				F652159F2674BBF9000CAB4B /* LocationSelectViewModel.swift in Sources */,
 				F6F8732C2659402200FDB24E /* NearbyRouter.swift in Sources */,
+				F65215A82674BC01000CAB4B /* LocationMarkScene.swift in Sources */,
 				F6F8732D2659402200FDB24E /* NearbyViewController.swift in Sources */,
+				F652159C2674BBF9000CAB4B /* LocationSelectViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

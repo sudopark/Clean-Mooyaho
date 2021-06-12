@@ -33,3 +33,6 @@ public struct UserLocation {
         self.lastLocation = lastLocation
     }
 }
+
+
+public typealias CurrentPosition = LastLocation

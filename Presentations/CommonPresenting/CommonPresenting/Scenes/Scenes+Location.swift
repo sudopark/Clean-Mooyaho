@@ -9,6 +9,8 @@ import Foundation
 
 import RxSwift
 
+import Domain
+
 
 // MARK: - NearbyScene
 
@@ -34,4 +36,53 @@ public protocol NearbyScene: Scenable {
 public protocol NearbySceneBuilable {
     
     func makeNearbyScene() -> NearbyScene
+}
+
+// MARK: - LocationSelectScene Interactor & Presenter
+
+//public protocol LocationSelectSceneInteractor { }
+//
+public protocol LocationSelectScenePresenter {
+    
+    var selectedLocation: Observable<CurrentPosition> { get }
+}
+
+
+// MARK: - LocationSelectScene
+
+public protocol LocationSelectScene: Scenable {
+    
+//    var interactor: LocationSelectSceneInteractor? { get }
+//
+    var presenter: LocationSelectScenePresenter? { get }
+}
+
+public protocol LocationSelectSceneBuilable {
+    
+    func makeLocationSelectScene() -> LocationSelectScene
+}
+
+
+// MARK: - LocationMarkScene Interactor & Presenter
+
+public protocol LocationMarkSceneInteractor {
+    
+    func updatePlaceMark(at coordinate: Coordinate)
+}
+//
+//public protocol LocationMarkScenePresenter { }
+
+
+// MARK: - LocationMarkScene
+
+public protocol LocationMarkScene: Scenable {
+    
+    var interactor: LocationMarkSceneInteractor? { get }
+//
+//    var presenter: LocationMarkScenePresenter? { get }
+}
+
+public protocol LocationMarkSceneBuilable {
+    
+    func makeLocationMarkScene() -> LocationMarkScene
 }
