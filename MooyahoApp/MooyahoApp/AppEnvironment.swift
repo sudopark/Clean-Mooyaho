@@ -8,6 +8,7 @@
 
 import Foundation
 
+import Domain
 
 enum BuildMode {
     case debug
@@ -47,4 +48,53 @@ struct AppEnvironment {
     static var legacyAPIPath: String? = {
         return secretJsons["legacy_api_path"] as? String
     }()
+}
+
+enum PlaceCategoryTags: String, CaseIterable {
+    
+    case restraunt
+    case bar
+    case cafe
+    case travel
+    case dailyLife
+    case partyOrFestival
+    case drive
+    case feeling
+    case work
+    case weather
+    case school
+    case invest
+    case home
+    case dating
+    case performanceOrMovie
+    case congratulations
+    case hobby
+    case excerciseOrActivity
+    
+    private var emoji: String {
+        switch self {
+        case .restraunt: return "🍽"
+        case .bar: return "🍸"
+        case .cafe: return "☕️"
+        case .travel: return "✈️"
+        case .dailyLife: return "🕰"
+        case .partyOrFestival: return "💃"
+        case .drive: return "🚗"
+        case .feeling: return "🤪"
+        case .work: return "💼"
+        case .weather: return "⛈"
+        case .school: return "👩‍🏫"
+        case .invest: return "🤑"
+        case .home: return "🏡"
+        case .dating: return "😍"
+        case .performanceOrMovie: return "🍿"
+        case .congratulations: return "🎉"
+        case .hobby: return "🎸"
+        case .excerciseOrActivity: return "🏄‍♂️"
+        }
+    }
+    
+    var tag: PlaceCategoryTag {
+        return .init(placeCat: self.rawValue.localized, emoji: self.emoji)
+    }
 }
