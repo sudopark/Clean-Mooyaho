@@ -53,15 +53,18 @@ public final class MakeHoorayViewModelImple: MakeHoorayViewModel {
     private let memberUsecase: MemberUsecase
     private let userLocationUsecase: UserLocationUsecase
     private let hoorayPublishUsecase: HoorayPublisherUsecase
+    private let permissionService: ImagePickPermissionCheckService
     private let router: MakeHoorayRouting
     
     public init(memberUsecase: MemberUsecase,
                 userLocationUsecase: UserLocationUsecase,
                 hoorayPublishUsecase: HoorayPublisherUsecase,
+                permissionService: ImagePickPermissionCheckService,
                 router: MakeHoorayRouting) {
         self.memberUsecase = memberUsecase
         self.userLocationUsecase = userLocationUsecase
         self.hoorayPublishUsecase = hoorayPublishUsecase
+        self.permissionService = permissionService
         self.router = router
     
         self.internalBind()
@@ -109,7 +112,6 @@ public final class MakeHoorayViewModelImple: MakeHoorayViewModel {
 extension MakeHoorayViewModelImple {
     
     private enum EnteringFlow: Int, CaseIterable {
-        case image
         case message
         case tag
         case place
@@ -123,7 +125,7 @@ extension MakeHoorayViewModelImple {
     public func showUp() {
         
         let startEnteringAfterFormIsReady: (NewHoorayForm) -> Void = { [weak self] defaultForm in
-            self?.enterHoorayInfo(defaultForm, currentFlow: .image)
+            self?.enterHoorayInfo(defaultForm, currentFlow: .message)
         }
         
         self.subjects.pendingForm
@@ -132,24 +134,32 @@ extension MakeHoorayViewModelImple {
             .disposed(by: self.disposeBag)
     }
     
+    private func messageInputMode(_ previousMessage: String?) -> TextInputMode {
+        return .init(isSingleLine: false,
+                     placeHolder: "placeHolder".localized,
+                     startWith: previousMessage,
+                     maxCharCount: 150,
+                     shouldEnterSomething: true,
+                     defaultHeight: 200)
+    }
+    
     private func enterHoorayInfo(_ form: NewHoorayForm,
                                  currentFlow: EnteringFlow, shouldContinue: Bool = true) {
         
         let nextFlow = currentFlow.next()
         
-        var resultPresenter: EnteringNewHoorayPresenter?
+        var goNextStepWithForm: Observable<NewHoorayForm>?
         switch currentFlow {
-        case .image:
-            resultPresenter = self.router.openEnterHoorayImageScene(form)
-            
+           
         case .message:
-            resultPresenter = self.router.openEnterHoorayMessageScene(form)
+            let inputMode = self.messageInputMode(form.message)
+            goNextStepWithForm = self.router.openEnterHoorayMessageScene(form, inputMode: inputMode)
             
         case .tag:
-            resultPresenter = self.router.openEnterHoorayTagScene(form)
+            goNextStepWithForm = self.router.openEnterHoorayTagScene(form)?.goNextStepWithForm
             
         case .place:
-            resultPresenter = self.router.presentPlaceSelectScene(form)
+            goNextStepWithForm = self.router.presentPlaceSelectScene(form)?.goNextStepWithForm
         }
         
         let updateForm: (NewHoorayForm) -> Void = { [weak self] newForm in
@@ -160,16 +170,11 @@ extension MakeHoorayViewModelImple {
             self?.enterHoorayInfo(newForm, currentFlow: next)
         }
         
-        resultPresenter?.goNextStepWithForm
+        goNextStepWithForm?
             .take(1)
             .do(onNext: updateForm)
             .subscribe(onNext: continueEnteringOrNot)
             .disposed(by: self.disposeBag)
-    }
-    
-    public func requestEnterImage() {
-        guard let form = self.subjects.pendingForm.value else { return }
-        self.enterHoorayInfo(form, currentFlow: .image, shouldContinue: false)
     }
     
     public func requestEnterMessage() {
@@ -226,6 +231,52 @@ extension MakeHoorayViewModelImple {
             
             self?.subjects.newHooray.onNext(hooray)
         }
+    }
+    
+    public func requestEnterImage() {
+        let alertWhenHasNoPermission: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        let askSelectMethod: () -> Void = { [weak self] in
+            self?.presentImageSelectMethod()
+        }
+        self.permissionService.preparePermission(for: .readWrite)
+            .subscribe(onSuccess: askSelectMethod,
+                       onError: alertWhenHasNoPermission)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func presentImageSelectMethod() {
+        
+        let cameraAction: ActionSheetForm.Action = .init(text: "Camera") { [weak self] in
+            self?.selectImage(true)
+        }
+        
+        let libraryAction: ActionSheetForm.Action = .init(text: "Gallery") { [weak self] in
+            self?.selectImage(false)
+        }
+        let close: ActionSheetForm.Action = .init(text: "Cancel", isCancel: true)
+        
+        let form = ActionSheetForm(title: nil, message: "[TBD] message")
+        form.actions = [cameraAction, libraryAction, close]
+        self.router.alertActionSheet(form)
+    }
+    
+    private func selectImage(_ isCamera: Bool) {
+        guard let form = self.subjects.pendingForm.value,
+              let result = self.router.openEnterHoorayImageScene(form) else { return }
+        
+        let updateForm: (NewHoorayForm) -> Void = { [weak self] newForm in
+            self?.subjects.pendingForm.accept(newForm)
+        }
+        
+        let alertError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        
+        result.take(1)
+            .subscribe(onNext: updateForm, onError: alertError)
+            .disposed(by: self.disposeBag)
     }
 }
 

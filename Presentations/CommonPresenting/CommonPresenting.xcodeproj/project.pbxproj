@@ -45,6 +45,12 @@
 		F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */; };
 		F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE8266CB3A00027800F /* LoadingView.swift */; };
 		F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DEA266CB6F80027800F /* LoadingButton.swift */; };
+		F65215832674A395000CAB4B /* TextInputRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652157E2674A395000CAB4B /* TextInputRouter.swift */; };
+		F65215842674A395000CAB4B /* TextInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652157F2674A395000CAB4B /* TextInputViewController.swift */; };
+		F65215852674A395000CAB4B /* TextInputBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215802674A395000CAB4B /* TextInputBuilder.swift */; };
+		F65215862674A395000CAB4B /* TextInputScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215812674A395000CAB4B /* TextInputScene.swift */; };
+		F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215822674A395000CAB4B /* TextInputViewModel.swift */; };
+		F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215882674A7C0000CAB4B /* InputTextView.swift */; };
 		F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9312671062A0031EEC5 /* SearchBar.swift */; };
 		F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */; };
 		F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9552673CBB20031EEC5 /* SelectTagViewController.swift */; };
@@ -113,6 +119,12 @@
 		F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Hooray.swift"; sourceTree = "<group>"; };
 		F6502DE8266CB3A00027800F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F6502DEA266CB6F80027800F /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
+		F652157E2674A395000CAB4B /* TextInputRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputRouter.swift; sourceTree = "<group>"; };
+		F652157F2674A395000CAB4B /* TextInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputViewController.swift; sourceTree = "<group>"; };
+		F65215802674A395000CAB4B /* TextInputBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputBuilder.swift; sourceTree = "<group>"; };
+		F65215812674A395000CAB4B /* TextInputScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputScene.swift; sourceTree = "<group>"; };
+		F65215822674A395000CAB4B /* TextInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputViewModel.swift; sourceTree = "<group>"; };
+		F65215882674A7C0000CAB4B /* InputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		F66CD9312671062A0031EEC5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagRouter.swift; sourceTree = "<group>"; };
 		F66CD9552673CBB20031EEC5 /* SelectTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewController.swift; sourceTree = "<group>"; };
@@ -310,8 +322,21 @@
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
 				F6502DEA266CB6F80027800F /* LoadingButton.swift */,
 				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
+				F65215882674A7C0000CAB4B /* InputTextView.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		F65215732674A363000CAB4B /* TextInputs */ = {
+			isa = PBXGroup;
+			children = (
+				F652157E2674A395000CAB4B /* TextInputRouter.swift */,
+				F652157F2674A395000CAB4B /* TextInputViewController.swift */,
+				F65215802674A395000CAB4B /* TextInputBuilder.swift */,
+				F65215812674A395000CAB4B /* TextInputScene.swift */,
+				F65215822674A395000CAB4B /* TextInputViewModel.swift */,
+			);
+			path = TextInputs;
 			sourceTree = "<group>";
 		};
 		F66CD9522673CB670031EEC5 /* CommonScenes */ = {
@@ -319,6 +344,7 @@
 			children = (
 				F6F295A6266D26F000CDF980 /* ImagePicker */,
 				F66CD9532673CB8D0031EEC5 /* TagInputs */,
+				F65215732674A363000CAB4B /* TextInputs */,
 			);
 			path = CommonScenes;
 			sourceTree = "<group>";
@@ -474,6 +500,7 @@
 				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
+				F65215852674A395000CAB4B /* TextInputBuilder.swift in Sources */,
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
 				F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
@@ -485,10 +512,12 @@
 				F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
+				F65215842674A395000CAB4B /* TextInputViewController.swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
 				F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */,
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
+				F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
 				F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */,
@@ -498,10 +527,13 @@
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
+				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
+				F65215832674A395000CAB4B /* TextInputRouter.swift in Sources */,
 				F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */,
 				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,
+				F65215862674A395000CAB4B /* TextInputScene.swift in Sources */,
 				F610146926570A1400D32E38 /* BaseUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

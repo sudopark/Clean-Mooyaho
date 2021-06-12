@@ -63,9 +63,7 @@ extension SelectHoorayPlaceViewController {
         
         self.viewModel.isFinishInputEnabled
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] isEnable in
-                self?.selectView.toolBar.nextButton?.isEnabled = isEnable
-            })
+            .drive(self.selectView.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
         
         self.selectView.headerView.searchBar.rx.text
@@ -86,13 +84,7 @@ extension SelectHoorayPlaceViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.selectView.toolBar.skipButton?.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.skipPlaceInput()
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.selectView.toolBar.nextButton?.rx.tap
+        self.selectView.confirmButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirmSelectPlace()
             })
