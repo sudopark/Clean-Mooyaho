@@ -22,6 +22,7 @@ open class StubRegisterNewPlaceUsecase: RegisterNewPlaceUsecase, Stubbable {
     }
     
     public func finishInputPlaceInfo(_ form: NewPlaceForm) -> Maybe<NewPlaceForm> {
+        self.verify(key: "finishInputPlaceInfo")
         return self.resolve(key: "finishInputPlaceInfo") ?? .empty()
     }
     

@@ -135,6 +135,21 @@ extension DIContainers: SearchNewPlaceSceneBuilable {
 }
 
 
+extension DIContainers: ManuallyResigterPlaceSceneBuilable {
+    
+    public func makeManuallyResigterPlaceScene(myID: String) -> ManuallyResigterPlaceScene {
+        let router = ManuallyResigterPlaceRouter(nextSceneBuilders: self)
+        let viewModel = ManuallyResigterPlaceViewModelImple(userID: myID,
+                                                            userLocationUsecase: self.userLocationUsecase,
+                                                            registerUsecase: self.registerNewPlaceUsecase,
+                                                            router: router)
+        let viewController = ManuallyResigterPlaceViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
 
 // MARK: - Hooray Scenes
 

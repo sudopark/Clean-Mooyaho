@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 
 import Domain
+import CommonPresenting
 import UnitTestHelpKit
 
 @testable import MooyahoApp

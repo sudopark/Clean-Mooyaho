@@ -51,3 +51,25 @@ public protocol SearchNewPlaceSceneBuilable {
     
     func makeSearchNewPlaceScene(myID: String) -> SearchNewPlaceScene
 }
+
+
+// MARK: - ManuallyResigterPlaceScene Interactor & Presenter
+
+//public protocol ManuallyResigterPlaceSceneInteractor { }
+//
+//public protocol ManuallyResigterPlaceScenePresenter { }
+
+
+// MARK: - ManuallyResigterPlaceScene
+
+public protocol ManuallyResigterPlaceScene: Scenable {
+    
+//    var interactor: ManuallyResigterPlaceSceneInteractor? { get }
+//
+//    var presenter: ManuallyResigterPlaceScenePresenter? { get }
+}
+
+public protocol ManuallyResigterPlaceSceneBuilable {
+    
+    func makeManuallyResigterPlaceScene(myID: String) -> ManuallyResigterPlaceScene
+}
