@@ -81,6 +81,30 @@ extension DIContainers: NearbySceneBuilable {
     }
 }
 
+extension DIContainers: LocationSelectSceneBuilable {
+    
+    public func makeLocationSelectScene() -> LocationSelectScene {
+        let router = LocationSelectRouter(nextSceneBuilders: self)
+        let viewModel = LocationSelectViewModelImple(router: router)
+        let viewController = LocationSelectViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
+extension DIContainers: LocationMarkSceneBuilable {
+    
+    public func makeLocationMarkScene() -> LocationMarkScene {
+        let router = LocationMarkRouter(nextSceneBuilders: self)
+        let viewModel = LocationMarkViewModelImple(router: router)
+        let viewController = LocationMarkViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
 // MARK: Place Scenes
 
 extension DIContainers: RegisterNewPlaceSceneBuilable {
