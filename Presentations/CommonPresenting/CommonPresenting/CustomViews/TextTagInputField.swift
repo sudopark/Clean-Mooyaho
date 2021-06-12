@@ -13,7 +13,7 @@ import WSTagsField
 
 // MARK: - Tag
 
-public struct Tag {
+public struct TextTag {
     
     public let identifier: String
     public let text: String
@@ -33,7 +33,7 @@ final class UUIDTagInputField: WSTagsField {
     }
 }
 
-public final class TagInputField: BaseUIView {
+public final class TextTagInputField: BaseUIView {
     
     public var placeHolder: String? {
         didSet {
@@ -61,7 +61,7 @@ public final class TagInputField: BaseUIView {
 }
 
 
-extension TagInputField: Presenting {
+extension TextTagInputField: Presenting {
     
     public func setupLayout() {
         
@@ -79,37 +79,37 @@ extension TagInputField: Presenting {
 }
 
 
-extension TagInputField {
+extension TextTagInputField {
     
-    public var didAppendTag: Observable<Tag> {
+    public var didAppendTag: Observable<TextTag> {
         return Observable.create { [weak self] observer in
             guard let self = self else { return Disposables.create() }
             self.underlyingTextField.onDidAddTag = { _, tag in
                 guard let uuid = tag.context as? String else { return }
-                let tag = Tag(customIdentifier: uuid, text: tag.text)
+                let tag = TextTag(customIdentifier: uuid, text: tag.text)
                 observer.onNext(tag)
             }
             return Disposables.create()
         }
     }
     
-    public var didRemoveTag: Observable<Tag> {
+    public var didRemoveTag: Observable<TextTag> {
         return Observable.create { [weak self] observer in
             guard let self = self else { return Disposables.create() }
             self.underlyingTextField.onDidRemoveTag = { _, tag in
                 guard let uuid = tag.context as? String else { return }
-                let tag = Tag(customIdentifier: uuid, text: tag.text)
+                let tag = TextTag(customIdentifier: uuid, text: tag.text)
                 observer.onNext(tag)
             }
             return Disposables.create()
         }
     }
     
-    public func getAllTags() -> [Tag] {
+    public func getAllTags() -> [TextTag] {
         return self.underlyingTextField.tags
-            .compactMap { wsTag -> Tag? in
+            .compactMap { wsTag -> TextTag? in
                 guard let uuid = wsTag.context as? String else { return nil }
-                return Tag(customIdentifier: uuid, text: wsTag.text)
+                return TextTag(customIdentifier: uuid, text: wsTag.text)
             }
     }
 }

@@ -21,7 +21,7 @@ final class MakeHoorayView: BaseUIView {
     let profileImageView: IntegratedImageView = .init()
     let keywordLabel = UILabel()
     let messageLabel = UILabel()
-    let tagInputView = TagInputField()
+    let tagInputView = TextTagInputField()
     let placeIcon = UIImageView()
     let placeInputButton = UIButton(type: .system)
     let publishButton = LoadingButton()

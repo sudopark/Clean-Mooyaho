@@ -19,7 +19,7 @@ import CommonPresenting
 public final class EnterHoorayTagViewController: BaseViewController, EnterHoorayTagScene {
     
     let bottomSlideMenuView = BaseBottomSlideMenuView()
-    let tagInputView = TagInputField()
+    let tagInputView = TextTagInputField()
     let toolBar = HoorayActionToolbar()
     
     let viewModel: EnterHoorayTagViewModel
