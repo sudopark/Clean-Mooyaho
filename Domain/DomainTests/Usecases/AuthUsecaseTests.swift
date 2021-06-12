@@ -19,7 +19,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     private var stubAuthRepo: StubAuthRepository!
-    private var stubOAuth2Repo: StubOAuth2Repository!
+    private var stubOAuth2Repo: StubOAuthService!
     private var store: SharedDataStoreServiceImple!
     private var usecase: AuthUsecaseImple!
     

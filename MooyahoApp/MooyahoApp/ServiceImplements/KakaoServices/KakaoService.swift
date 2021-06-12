@@ -14,7 +14,7 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 
 
-public protocol KakaoService: KakaoOAuth2Repository, OAuthServiceProviderTypeRepresentable {
+public protocol KakaoService: KakaoOAuth2Service, OAuthServiceProviderTypeRepresentable {
     
     func setupService()
     
@@ -24,7 +24,7 @@ public protocol KakaoService: KakaoOAuth2Repository, OAuthServiceProviderTypeRep
 }
 
 
-public final class KakaoServiceImple: KakaoService, KakaoOAuth2RepositoryDefImpleDependency {
+public final class KakaoServiceImple: KakaoService, KakaoOAuth2ServiceDefImpleDependency {
     
     public var kakaoOAuthRemote: KakaoOAuthRemote
     

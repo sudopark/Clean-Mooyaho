@@ -1,5 +1,5 @@
 //
-//  KakaoService+OAuth2RepositoryImple.swift
+//  KakaoService+KakaoOAuth2ServiceDefImpleDependency.swift
 //  MooyahoApp
 //
 //  Created by ParkHyunsoo on 2021/05/01.
@@ -22,14 +22,14 @@ public enum KakaoOAuthErrors: Error {
 
 // MARK: - KakaoOAuth2Repository signin
 
-public protocol KakaoOAuth2Repository: AnyObject, OAuthRepository { }
+public protocol KakaoOAuth2Service: AnyObject, OAuthService { }
 
-public protocol KakaoOAuth2RepositoryDefImpleDependency {
+public protocol KakaoOAuth2ServiceDefImpleDependency {
     
     var kakaoOAuthRemote: KakaoOAuthRemote { get }
 }
 
-extension KakaoOAuth2Repository where Self: KakaoOAuth2RepositoryDefImpleDependency {
+extension KakaoOAuth2Service where Self: KakaoOAuth2ServiceDefImpleDependency {
     
     public func requestSignIn() -> Maybe<OAuthCredential> {
         
