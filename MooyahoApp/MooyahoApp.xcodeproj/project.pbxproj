@@ -135,6 +135,7 @@
 		2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6032580265940E300E4E769 /* LocationScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LocationScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F603258726594E3C00E4E769 /* Repositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repositories.swift; sourceTree = "<group>"; };
+		F60BB33526745B3F0024FC5C /* MooyahoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MooyahoApp.entitlements; sourceTree = "<group>"; };
 		F6101466265708B700D32E38 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuRouter.swift; sourceTree = "<group>"; };
 		F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewController.swift; sourceTree = "<group>"; };
@@ -274,6 +275,7 @@
 		2B79FC4A262B640C0006291F /* MooyahoApp */ = {
 			isa = PBXGroup;
 			children = (
+				F60BB33526745B3F0024FC5C /* MooyahoApp.entitlements */,
 				2B4FD2522632B04600A99624 /* DIContainers */,
 				2BA4062C26315936000CC122 /* Presentations */,
 				2B6140D4263363A60091460D /* Utils */,
@@ -718,6 +720,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -748,6 +751,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
