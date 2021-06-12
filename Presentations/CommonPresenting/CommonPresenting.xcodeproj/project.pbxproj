@@ -40,7 +40,7 @@
 		F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBD2669DF800027800F /* Scenes+Member.swift */; };
 		F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBF2669DF950027800F /* Scenes+Place.swift */; };
 		F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC12669DF9E0027800F /* Scenes+Location.swift */; };
-		F6502DC8266A0CC40027800F /* TagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TagInputField.swift */; };
+		F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TextTagInputField.swift */; };
 		F6502DCC266A12D10027800F /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6502DCB266A12D10027800F /* WSTagsField */; };
 		F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */; };
 		F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE8266CB3A00027800F /* LoadingView.swift */; };
@@ -108,7 +108,7 @@
 		F6502DBD2669DF800027800F /* Scenes+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Member.swift"; sourceTree = "<group>"; };
 		F6502DBF2669DF950027800F /* Scenes+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Place.swift"; sourceTree = "<group>"; };
 		F6502DC12669DF9E0027800F /* Scenes+Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Location.swift"; sourceTree = "<group>"; };
-		F6502DC7266A0CC40027800F /* TagInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagInputField.swift; sourceTree = "<group>"; };
+		F6502DC7266A0CC40027800F /* TextTagInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTagInputField.swift; sourceTree = "<group>"; };
 		F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Hooray.swift"; sourceTree = "<group>"; };
 		F6502DE8266CB3A00027800F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F6502DEA266CB6F80027800F /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
@@ -303,7 +303,7 @@
 			children = (
 				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
 				F637205526650B440089D0B3 /* IntegratedImageView.swift */,
-				F6502DC7266A0CC40027800F /* TagInputField.swift */,
+				F6502DC7266A0CC40027800F /* TextTagInputField.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
 				F6502DEA266CB6F80027800F /* LoadingButton.swift */,
 				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
@@ -498,7 +498,7 @@
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
 				F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */,
-				F6502DC8266A0CC40027800F /* TagInputField.swift in Sources */,
+				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,
 				F610146926570A1400D32E38 /* BaseUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
