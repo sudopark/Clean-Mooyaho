@@ -121,6 +121,7 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         let viewModel = MakeHoorayViewModelImple(memberUsecase: self.memberUsecase,
                                                  userLocationUsecase: self.userLocationUsecase,
                                                  hoorayPublishUsecase: self.hoorayUsecase,
+                                                 permissionService: self.imagePickPermissionCheckService,
                                                  router: router)
         let viewController = MakeHoorayViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -131,26 +132,6 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
         let router = WaitNextHoorayRouter(nextSceneBuilders: self)
         let viewModel = WaitNextHoorayViewModelImple(waitUntil: waitUntil, router: router)
         let viewController = WaitNextHoorayViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeEnterHoorayImageScene(form: NewHoorayForm) -> EnterHoorayImageScene {
-        
-        let router = EnterHoorayImageRouter(nextSceneBuilders: self)
-        let viewModel = EnterHoorayImageViewModelImple(form: form,
-                                                       imagePickPermissionCheckService: self.imagePickPermissionCheckService,
-                                                       router: router)
-        let viewController = EnterHoorayImageViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeEnterHoorayMessageScene(form: NewHoorayForm) -> EnterHoorayMessageScene {
-        
-        let router = EnterHoorayMessageRouter(nextSceneBuilders: self)
-        let viewModel = EnterHoorayMessageViewModelImple(form: form, router: router)
-        let viewController = EnterHoorayMessageViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
@@ -194,6 +175,18 @@ extension DIContainers: SelectTagSceneBuilable {
         let router = SelectTagRouter(nextSceneBuilders: self)
         let viewModel = SelectTagViewModelImple(startWith: tags, total: total, router: router)
         let viewController = SelectTagViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+extension DIContainers: TextInputSceneBuilable {
+    
+    public func makeTextInputScene(_ inputMode: TextInputMode) -> TextInputScene {
+        let router = TextInputRouter(nextSceneBuilders: self)
+        let viewModel = TextInputViewModelImple(inputMode: inputMode,
+                                                router: router)
+        let viewController = TextInputViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }

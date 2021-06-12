@@ -23,6 +23,7 @@ class MakeHoorayViewModelTests: BaseTestCase, WaitObservableEvents {
     var stubMemberUsecase: StubMemberUsecase!
     var stubLocationUsecase: StubUserLocationUsecase!
     var stubUsecase: StubHoorayUsecase!
+    var stubPermissionService: StubImagePermissionService!
     var spyRouter: SpyRouter!
     var viewModel: MakeHoorayViewModelImple!
     
@@ -35,6 +36,7 @@ class MakeHoorayViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubMemberUsecase = .init()
         self.stubLocationUsecase = .init()
         self.stubUsecase = .init()
+        self.stubPermissionService = .init()
         self.spyRouter = .init()
         self.stubMemberUsecase.register(key: "fetchCurrentMember") { self.me }
         self.stubLocationUsecase.register(key: "fetchUserLocation") {
@@ -43,6 +45,7 @@ class MakeHoorayViewModelTests: BaseTestCase, WaitObservableEvents {
         self.viewModel = .init(memberUsecase: self.stubMemberUsecase,
                                userLocationUsecase: self.stubLocationUsecase,
                                hoorayPublishUsecase: self.stubUsecase,
+                               permissionService: self.stubPermissionService,
                                router: self.spyRouter)
     }
     
@@ -55,9 +58,9 @@ class MakeHoorayViewModelTests: BaseTestCase, WaitObservableEvents {
         self.viewModel = nil
     }
     
-    private func newForm(_ mutate: (NewHoorayForm) -> Void) -> NewHoorayForm {
+    private func newForm(_ mutate: ((NewHoorayForm) -> Void)? = nil) -> NewHoorayForm {
         let form = NewHoorayForm(publisherID: "some")
-        mutate(form)
+        mutate?(form)
         return form
     }
 }
@@ -85,21 +88,6 @@ extension MakeHoorayViewModelTests {
 
 extension MakeHoorayViewModelTests {
     
-    func testViewModel_whenAfterShowUp_routeToEnteringImage() {
-        // given
-        let expect = expectation(description: "화면 최초에 이미지 선택화면으로 라우팅")
-        
-        self.spyRouter.called(key: "openEnterHoorayImageScene") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.showUp()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
     func testViewModel_whenUserLocationInfoNotLoaded_notRouteToEnteringImage() {
         // given
         let expect = expectation(description: "유저 마지막 위치 아직 반영 안되었으면 선택화면으로 라우팅 x")
@@ -112,7 +100,9 @@ extension MakeHoorayViewModelTests {
         }
         self.viewModel = .init(memberUsecase: self.stubMemberUsecase,
                                userLocationUsecase: self.stubLocationUsecase,
-                               hoorayPublishUsecase: self.stubUsecase, router: self.spyRouter)
+                               hoorayPublishUsecase: self.stubUsecase,
+                               permissionService: self.stubPermissionService,
+                               router: self.spyRouter)
         
         self.spyRouter.called(key: "openEnterHoorayImageScene") { _ in
             expect.fulfill()
@@ -126,39 +116,13 @@ extension MakeHoorayViewModelTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
-    private func stubImageInputResult() -> StubEnterPresenter {
-        let stubEnterPresenter = StubEnterPresenter()
-        self.spyRouter.register(type: EnteringNewHoorayPresenter.self, key: "openEnterHoorayImageScene") {
-            stubEnterPresenter
+    private func stubMessageInputResult() -> PublishSubject<NewHoorayForm> {
+        let subject = PublishSubject<NewHoorayForm>()
+        self.spyRouter.register(type: Observable<NewHoorayForm>.self,
+                                key: "openEnterHoorayMessageScene") {
+            return subject.asObservable()
         }
-        return stubEnterPresenter
-    }
-    
-    func testViewModel_whenNewImageSelected_updateImage() {
-        // given
-        let expect = expectation(description: "이미지 선택 이후에 업데이트")
-        expect.expectedFulfillmentCount = 2
-        
-        let stubImageInput = self.stubImageInputResult()
-        
-        // when
-        let imagePaths = self.waitElements(expect, for: self.viewModel.selectedImagePath) {
-            self.viewModel.showUp()
-            
-            let form = self.newForm{ $0.imagePath = "new" }
-            stubImageInput.stubEditedForm.onNext(form)
-        }
-        
-        // then
-        XCTAssertEqual(imagePaths, [nil, "new"])
-    }
-    
-    private func stubMessageInputResult() -> StubEnterPresenter {
-        let stubEnterPresenter = StubEnterPresenter()
-        self.spyRouter.register(type: EnteringNewHoorayPresenter.self, key: "openEnterHoorayMessageScene") {
-            stubEnterPresenter
-        }
-        return stubEnterPresenter
+        return subject
     }
     
     func testViewModel_whenAfterEnterMessageWithKeepEntering_updateMessage() {
@@ -166,18 +130,15 @@ extension MakeHoorayViewModelTests {
         let expect = expectation(description: "지속적인 입력 플로우에서 메세지 입력 이후에 업데이트")
         expect.expectedFulfillmentCount = 2
         
-        let stubImageInput = self.stubImageInputResult()
         let stubMessageInput = self.stubMessageInputResult()
         
         // when
         let messages = self.waitElements(expect, for: self.viewModel.enteredMessage) {
             self.viewModel.showUp()
             
-            let form = self.newForm{ $0.imagePath = "some" }
-            stubImageInput.stubEditedForm.onNext(form)
-            
+            let form = self.newForm()
             form.message = "new"
-            stubMessageInput.stubEditedForm.onNext(form)
+            stubMessageInput.onNext(form)
         }
         
         // then
@@ -197,7 +158,6 @@ extension MakeHoorayViewModelTests {
         let expect = expectation(description: "지속적인 입력 플로우에서 태그 입력 이후에 업데이트")
         expect.expectedFulfillmentCount = 2
         
-        let stubImageInput = self.stubImageInputResult()
         let stubMessageInput = self.stubMessageInputResult()
         let stubTagInput = self.stubTagInputResult()
         
@@ -205,11 +165,10 @@ extension MakeHoorayViewModelTests {
         let tags = self.waitElements(expect, for: self.viewModel.enteredTags) {
             self.viewModel.showUp()
             
-            let form = self.newForm{ $0.imagePath = "some" }
-            stubImageInput.stubEditedForm.onNext(form)
+            let form = self.newForm()
             
             form.message = "some"
-            stubMessageInput.stubEditedForm.onNext(form)
+            stubMessageInput.onNext(form)
             
             form.tags = ["new"]
             stubTagInput.stubEditedForm.onNext(form)
@@ -232,7 +191,6 @@ extension MakeHoorayViewModelTests {
         let expect = expectation(description: "지속적인 입력 플로우에서 태그 입력 이후에 업데이트")
         expect.expectedFulfillmentCount = 2
         
-        let stubImageInput = self.stubImageInputResult()
         let stubMessageInput = self.stubMessageInputResult()
         let stubTagInput = self.stubTagInputResult()
         let stubPlaceInput = self.stubPlaceInputResult()
@@ -241,11 +199,10 @@ extension MakeHoorayViewModelTests {
         let placeNames = self.waitElements(expect, for: self.viewModel.selectedPlaceName) {
             self.viewModel.showUp()
             
-            let form = self.newForm{ $0.imagePath = "some" }
-            stubImageInput.stubEditedForm.onNext(form)
+            let form = self.newForm()
             
             form.message = "some"
-            stubMessageInput.stubEditedForm.onNext(form)
+            stubMessageInput.onNext(form)
             
             form.tags = ["some"]
             stubTagInput.stubEditedForm.onNext(form)
@@ -263,7 +220,6 @@ extension MakeHoorayViewModelTests {
         let expect = expectation(description: "지속적인 입력 플로우에서 태그 입력 이후에 업데이트")
         expect.expectedFulfillmentCount = 2
         
-        let stubImageInput = self.stubImageInputResult()
         let stubMessageInput = self.stubMessageInputResult()
         let stubTagInput = self.stubTagInputResult()
         let stubPlaceInput = self.stubPlaceInputResult()
@@ -272,11 +228,10 @@ extension MakeHoorayViewModelTests {
         let _ = self.waitElements(expect, for: self.viewModel.selectedPlaceName) {
             self.viewModel.showUp()
             
-            let form = self.newForm{ $0.imagePath = "some" }
-            stubImageInput.stubEditedForm.onNext(form)
+            let form = self.newForm()
             
             form.message = "some"
-            stubMessageInput.stubEditedForm.onNext(form)
+            stubMessageInput.onNext(form)
             
             form.tags = ["some"]
             stubTagInput.stubEditedForm.onNext(form)
@@ -293,6 +248,56 @@ extension MakeHoorayViewModelTests {
 
 extension MakeHoorayViewModelTests {
     
+    private func stubImageInputResult() -> PublishSubject<NewHoorayForm> {
+        let subject = PublishSubject<NewHoorayForm>()
+        self.spyRouter.register(type: Observable<NewHoorayForm>.self,
+                                key: "openEnterHoorayImageScene") {
+            return subject.asObservable()
+        }
+        return subject
+    }
+    
+    func testViewModel_whenNewImageSelected_updateImage() {
+        // given
+        let expect = expectation(description: "이미지 선택 이후에 업데이트")
+        expect.expectedFulfillmentCount = 2
+        
+        self.stubPermissionService.register(key: "preparePermission") {
+            return Maybe<Void>.just()
+        }
+        
+        let stubImageInput = self.stubImageInputResult()
+        
+        // when
+        let imagePaths = self.waitElements(expect, for: self.viewModel.selectedImagePath) {
+            self.viewModel.requestEnterImage()
+            
+            let form = self.newForm{ $0.imagePath = "new" }
+            stubImageInput.onNext(form)
+        }
+        
+        // then
+        XCTAssertEqual(imagePaths, [nil, "new"])
+    }
+    
+    func testViewModel_whenHasNoImageAccessPermission_alertError() {
+        // given
+        let expect = expectation(description: "이미지 선택 이후에 업데이트")
+        self.stubPermissionService.register(key: "preparePermission") {
+            return Maybe<Void>.error(ApplicationErrors.invalid)
+        }
+        
+        self.spyRouter.called(key: "alertError") { _ in
+            expect.fulfill()
+        }
+        // when
+        self.viewModel.showUp()
+        self.viewModel.requestEnterImage()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testViewModel_whenAfterEditImage_notContinueNextEntering() {
         // given
         let expect = expectation(description: "사진정보 입력 이후에 자동으로 다음스탭으로 안넘어감")
@@ -306,7 +311,7 @@ extension MakeHoorayViewModelTests {
         
         // when
         self.viewModel.requestEnterImage()
-        stubImageInput.stubEditedForm.onNext(self.newForm{ _ in })
+        stubImageInput.onNext(self.newForm{ _ in })
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -387,14 +392,15 @@ extension MakeHoorayViewModelTests {
     
     class SpyRouter: MakeHoorayRouting, Stubbable {
         
-        func openEnterHoorayImageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
+        func openEnterHoorayImageScene(_ form: NewHoorayForm) -> Observable<NewHoorayForm>? {
             self.verify(key: "openEnterHoorayImageScene")
-            return self.resolve(EnteringNewHoorayPresenter.self, key: "openEnterHoorayImageScene")
+            return self.resolve(Observable<NewHoorayForm>.self, key: "openEnterHoorayImageScene") ?? nil
         }
         
-        func openEnterHoorayMessageScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
+        func openEnterHoorayMessageScene(_ form: NewHoorayForm,
+                                         inputMode: TextInputMode) -> Observable<NewHoorayForm>? {
             self.verify(key: "openEnterHoorayMessageScene")
-            return self.resolve(EnteringNewHoorayPresenter.self, key: "openEnterHoorayMessageScene")
+            return self.resolve(Observable<NewHoorayForm>.self, key: "openEnterHoorayMessageScene") ?? nil
         }
         
         func openEnterHoorayTagScene(_ form: NewHoorayForm) -> EnteringNewHoorayPresenter? {
@@ -422,12 +428,27 @@ extension MakeHoorayViewModelTests {
             self.verify(key: "closeScene")
             completed?()
         }
+        
+        func alertActionSheet(_ form: ActionSheetForm) {
+            form.actions.first(where: { $0.isCancel == false })?.selected?()
+        }
     }
     
     class StubEnterPresenter: EnteringNewHoorayPresenter {
         let stubEditedForm = PublishSubject<NewHoorayForm>()
         var goNextStepWithForm: Observable<NewHoorayForm> {
             return stubEditedForm
+        }
+    }
+    
+    class StubImagePermissionService: ImagePickPermissionCheckService, Stubbable {
+        
+        func checkHasPermission(for level: ImagePickAccessLevel) -> ImagePickerPermissionStatus {
+            return self.resolve(ImagePickerPermissionStatus.self, key: "checkHasPermission") ?? .avail
+        }
+        
+        func preparePermission(for level: ImagePickAccessLevel) -> Maybe<Void> {
+            return self.resolve(key: "preparePermission") ?? .empty()
         }
     }
 }
