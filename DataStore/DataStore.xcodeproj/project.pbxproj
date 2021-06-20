@@ -33,6 +33,7 @@
 		F660B8EF26747B1E004FB42E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EE26747B1E004FB42E /* Alamofire */; };
 		F67848D12650F2420074C344 /* RepositoryImple+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */; };
 		F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */; };
+		F695BAEC267FC12C003203B7 /* SQLiteStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F695BAEB267FC12C003203B7 /* SQLiteStorage */; };
 		F6A72A3D26483C8A006BE4BD /* RepositoryImple+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */; };
 		F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */; };
 /* End PBXBuildFile section */
@@ -87,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F695BAEC267FC12C003203B7 /* SQLiteStorage in Frameworks */,
 				F660B8EF26747B1E004FB42E /* Alamofire in Frameworks */,
 				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
@@ -262,6 +264,7 @@
 			name = DataStore;
 			packageProductDependencies = (
 				F660B8EE26747B1E004FB42E /* Alamofire */,
+				F695BAEB267FC12C003203B7 /* SQLiteStorage */,
 			);
 			productName = DataStore;
 			productReference = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */;
@@ -315,6 +318,7 @@
 			mainGroup = 2BF00BD5262B7E1300E235C0;
 			packageReferences = (
 				F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F695BAEA267FC12C003203B7 /* XCRemoteSwiftPackageReference "SQLiteStorage" */,
 			);
 			productRefGroup = 2BF00BE0262B7E1300E235C0 /* Products */;
 			projectDirPath = "";
@@ -640,6 +644,14 @@
 				minimumVersion = 5.4.3;
 			};
 		};
+		F695BAEA267FC12C003203B7 /* XCRemoteSwiftPackageReference "SQLiteStorage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/SQLiteStorage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -647,6 +659,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		F695BAEB267FC12C003203B7 /* SQLiteStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F695BAEA267FC12C003203B7 /* XCRemoteSwiftPackageReference "SQLiteStorage" */;
+			productName = SQLiteStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
