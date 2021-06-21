@@ -50,4 +50,8 @@ extension String {
     public var localized: String {
         return NSLocalizedString(self, comment: "")
     }
+    
+    public func with(attribute: [NSAttributedString.Key: Any]) -> NSAttributedString {
+        return NSAttributedString(string: self, attributes: attribute)
+    }
 }

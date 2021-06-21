@@ -75,5 +75,6 @@ extension TextInputViewController: Presenting {
     
     public func setupStyling() {
         
+        self.bottomSlideMenuView.setupStyling()
     }
 }

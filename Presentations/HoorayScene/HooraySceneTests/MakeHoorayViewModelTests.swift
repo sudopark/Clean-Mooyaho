@@ -75,12 +75,10 @@ extension MakeHoorayViewModelTests {
         let expect = expectation(description: "초기상태와 함께 셋업")
         
         // when
-        let imageAndKeyword = Observable.combineLatest(self.viewModel.memberProfileImage,
-                                                       self.viewModel.hoorayKeyword)
-        let pair = self.waitFirstElement(expect, for: imageAndKeyword)
+        let keyword = self.waitFirstElement(expect, for: self.viewModel.hoorayKeyword)
         
         // then
-        XCTAssertNotNil(pair)
+        XCTAssertNotNil(keyword)
     }
 }
 
