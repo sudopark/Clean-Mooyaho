@@ -65,7 +65,7 @@ extension UserLocationUsecaseImple {
 extension UserLocationUsecaseImple {
     
     private var monitoringOption: LocationMonitoringOption {
-        return .init(accuracy: .tenMeters, distanceFilter: 1)
+        return .init(accuracy: .best, distanceFilter: 1)
     }
     
     public func fetchUserLocation() -> Maybe<LastLocation> {
