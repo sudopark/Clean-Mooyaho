@@ -41,7 +41,7 @@ public class IntegratedImageView: UIView {
     }
     
     public func cancelSetupImage() {
-        self.internalImageView.cancelSetupRemoteImage()
+        self.internalImageView.cancelSetupThumbnail()
         self.internalImageView.image = nil
     }
     
@@ -53,7 +53,7 @@ public class IntegratedImageView: UIView {
     }
     
     private func setupRemoteImage(_ path: String) {
-        self.internalImageView.setupRemoteImage(path)
+        self.internalImageView.setupThumbnail(path)
     }
 }
 

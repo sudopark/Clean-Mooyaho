@@ -21,6 +21,25 @@ public final class MakeHoorayViewController: BaseViewController, MakeHoorayScene
     let viewModel: MakeHoorayViewModel
     let makeView = MakeHoorayView()
     
+    enum Attribute {
+        
+        static var tagPlaceHolder: NSAttributedString {
+            return "Enter tags".with(attribute: [
+                .foregroundColor: UIColor.gray,
+                .font: UIFont.systemFont(ofSize: 15)
+            ])
+        }
+        
+        static func tagAttributeText(for tags: [String]) -> NSAttributedString {
+            let tagWords = tags.map{ "#\($0)" }
+            let allTagTexts = tagWords.joined(separator: "")
+            return allTagTexts.with(attribute: [
+                .foregroundColor: UIColor.systemBlue,
+                .font: UIFont.systemFont(ofSize: 15)
+            ])
+        }
+    }
+    
     public init(viewModel: MakeHoorayViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -60,18 +79,18 @@ extension MakeHoorayViewController {
                     self?.viewModel.requestEnterImage()
                 })
             
-            self.makeView.messageLabel.rx.addTapgestureRecognizer()
+            self.makeView.messageTextView.rx.addTapgestureRecognizer()
                 .subscribe(onNext: { [weak self] _ in
                     self?.viewModel.requestEnterMessage()
                 })
             
-            self.makeView.tagInputView.rx.addTapgestureRecognizer()
+            self.makeView.tagInputSectionView.rx.addTapgestureRecognizer()
                 .subscribe(onNext: { [weak self] _ in
                     self?.viewModel.requestEnterTags()
                 })
             
-            self.makeView.placeInputButton.rx.tap
-                .subscribe(onNext: { [weak self] in
+            self.makeView.placeInputSectionView.rx.addTapgestureRecognizer()
+                .subscribe(onNext: { [weak self] _ in
                     self?.viewModel.requestSelectPlace()
                 })
             
@@ -85,24 +104,44 @@ extension MakeHoorayViewController {
                 .subscribe(onNext: { [weak self] _ in
                     self?.view.endEditing(true)
                 })
+            
+            self.rx.viewDidLayoutSubviews.take(1)
+                .subscribe(onNext: { [weak self] _ in
+                    self?.viewModel.showUp()
+                })
         }
         
         self.disposeBag.insert {
             
-            self.viewModel.memberProfileImage
-                .asDriver(onErrorDriveWith: .never())
-                .drive(onNext: { [weak self] source in
-                    self?.makeView.profileImageView.setupImage(using: source)
-                })
-            
             self.viewModel.hoorayKeyword
                 .asDriver(onErrorDriveWith: .never())
                 .drive(onNext: { [weak self] keyword in
-                    self?.makeView.keywordLabel.text = keyword
+                    self?.updateHoorayKeyword(keyword)
                 })
             
-            // TODO: bind selected image
+            self.viewModel.selectedImagePath
+                .asDriver(onErrorDriveWith: .never())
+                .drive(onNext: { [weak self] path in
+                    self?.updateInputImage(path)
+                })
             
+            self.viewModel.enteredMessage
+                .asDriver(onErrorDriveWith: .never())
+                .drive(onNext: { [weak self] message in
+                    self?.updateInputMessage(message)
+                })
+            
+            self.viewModel.enteredTags
+                .asDriver(onErrorDriveWith: .never())
+                .drive(onNext: { [weak self] tags in
+                    self?.updateHoorayTags(tags)
+                })
+            
+            self.viewModel.selectedPlaceName
+                .asDriver(onErrorDriveWith: .never())
+                .drive(onNext: { [weak self] name in
+                    self?.updateSelectedPlace(name)
+                })
             
             self.viewModel.isPublishable
                 .asDriver(onErrorDriveWith: .never())
@@ -113,6 +152,45 @@ extension MakeHoorayViewController {
                 .drive(onNext: { [weak self] isPublishing in
                     self?.makeView.publishButton.updateIsLoading(isPublishing)
                 })
+        }
+    }
+}
+
+
+// MARK: - update view
+
+extension MakeHoorayViewController {
+    
+    private func updateInputImage(_ imagePath: String?) {
+            
+        if let path = imagePath {
+            self.makeView.imageInputButton.isHidden = true
+            self.makeView.inputImageView.setupThumbnail(path)
+        } else {
+            self.makeView.inputImageView.cancelSetupThumbnail()
+            self.makeView.imageInputButton.isHidden = false
+        }
+    }
+    
+    private func updateInputMessage(_ text: String?) {
+        self.makeView.messageTextView.text = text
+        self.makeView.placeHolderLabel.isHidden = (text?.isEmpty ?? true) == false
+    }
+    
+    private func updateHoorayKeyword(_ text: String) {
+        self.makeView.keywordInputSectionView.innerView.text = "Hooray phrase: \(text)"
+    }
+    
+    private func updateHoorayTags(_ tags: [String]) {
+        self.makeView.tagInputSectionView.innerView.attributedText = tags.isEmpty
+            ? Attribute.tagPlaceHolder : Attribute.tagAttributeText(for: tags)
+    }
+    
+    private func updateSelectedPlace(_ placeName: String?) {
+        if let name = placeName, name.isNotEmpty {
+            self.makeView.placeInputSectionView.innerView.text = "Place: \(name)"
+        } else {
+            self.makeView.placeInputSectionView.innerView.text = "Select a place(Recommanded)"
         }
     }
 }
@@ -133,5 +211,4 @@ extension MakeHoorayViewController: Presenting, UITextViewDelegate {
         self.view.backgroundColor = self.uiContext.colors.appBackground
         makeView.setupStyling()
     }
-    
 }

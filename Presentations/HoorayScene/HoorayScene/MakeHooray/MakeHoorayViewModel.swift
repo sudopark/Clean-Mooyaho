@@ -27,7 +27,6 @@ public protocol MakeHoorayViewModel: AnyObject {
     func requestPublishNewHooray()
     
     // presenter
-    var memberProfileImage: Observable<ImageSource> { get }
     var hoorayKeyword: Observable<String> { get }
     
     var selectedImagePath: Observable<String?> { get }
@@ -149,8 +148,9 @@ extension MakeHoorayViewModelImple {
         let nextFlow = currentFlow.next()
         
         var goNextStepWithForm: Observable<NewHoorayForm>?
+        
         switch currentFlow {
-           
+        
         case .message:
             let inputMode = self.messageInputMode(form.message)
             goNextStepWithForm = self.router.openEnterHoorayMessageScene(form, inputMode: inputMode)
@@ -284,11 +284,6 @@ extension MakeHoorayViewModelImple {
 // MARK: - MakeHoorayViewModelImple Presenter
 
 extension MakeHoorayViewModelImple {
-    
-    public var memberProfileImage: Observable<ImageSource> {
-        return self.subjects.currentMember.compactMap{ $0 }
-            .map{ $0.icon ?? Member.memberDefaultEmoji }
-    }
     
     public var hoorayKeyword: Observable<String> {
         return self.subjects.selectedHoorayKeyword.compactMap{ $0 }
