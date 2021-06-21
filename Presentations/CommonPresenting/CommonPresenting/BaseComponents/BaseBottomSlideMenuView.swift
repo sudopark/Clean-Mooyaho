@@ -13,7 +13,7 @@ open class BaseBottomSlideMenuView: BaseUIView {
     public let outsideTouchView = UIView()
     public let containerView = UIView()
     
-    public var containerButtonConstraint: NSLayoutConstraint!
+    public var containerBottomConstraint: NSLayoutConstraint!
 
 }
 
@@ -33,10 +33,11 @@ extension BaseBottomSlideMenuView: Presenting {
         containerView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
+            $0.heightAnchor.constraint(equalTo: $1.heightAnchor, multiplier: 4/7)
         }
-        self.containerButtonConstraint = containerView.bottomAnchor
+        self.containerBottomConstraint = containerView.bottomAnchor
             .constraint(equalTo: self.bottomAnchor, constant: 10)
-        NSLayoutConstraint.activate([self.containerButtonConstraint])
+        NSLayoutConstraint.activate([self.containerBottomConstraint])
     }
     
     public func setupStyling() {
