@@ -23,7 +23,7 @@ public struct Logger {
         
         var key: String {
             switch self {
-            case .debug: return "VERBOS"
+            case .debug: return "DEBUG"
             case .warning: return "WARN"
             case .error: return "ERROR"
             case .info: return "INFO"
