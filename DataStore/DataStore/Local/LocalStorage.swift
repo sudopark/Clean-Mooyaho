@@ -9,11 +9,13 @@
 import Foundation
 
 import RxSwift
+import SQLiteStorage
 
 import Domain
 
-
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage { }
+public enum LocalErrors: Error {
+    case invalidData(_ reason: String?)
+}
 
 
 public protocol AuthLocalStorage {
@@ -60,4 +62,21 @@ public protocol HoorayLocalStorage {
     func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]>
     
     func saveHoorays(_ hooray: [Hooray]) -> Maybe<Void>
+}
+
+
+// MARK: - LocalStorage
+
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage { }
+
+
+// MARK: - LocalStorageImple
+
+public final class LocalStorageImple: LocalStorage {
+    
+    let sqliteStorage: SQLiteStorage
+    
+    public init(sqlite: SQLiteStorage) {
+        self.sqliteStorage = sqlite
+    }
 }

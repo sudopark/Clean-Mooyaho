@@ -10,3 +10,5 @@ import Foundation
 
 
 public protocol UserDefaultStorage { }
+
+extension UserDefaults: UserDefaultStorage { }
