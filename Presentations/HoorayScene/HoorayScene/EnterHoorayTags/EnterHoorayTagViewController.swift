@@ -74,7 +74,7 @@ extension EnterHoorayTagViewController: Presenting {
     public func setupLayout() {
         
         self.view.addSubview(bottomSlideMenuView)
-        bottomSlideMenuView.autoLayout.activeFill(self.view)
+        bottomSlideMenuView.autoLayout.fill(self.view)
         bottomSlideMenuView.setupLayout()
         
         self.bottomSlideMenuView.addSubview(confirmButton)

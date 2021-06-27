@@ -75,7 +75,7 @@ extension AutoLayout {
 
 extension AutoLayout {
     
-    public func fill(_ targetView: UIView, edges: UIEdgeInsets = .zero, withSafeArea: Bool = false) -> [NSLayoutConstraint] {
+    public func makeFill(_ targetView: UIView, edges: UIEdgeInsets = .zero, withSafeArea: Bool = false) -> [NSLayoutConstraint] {
         
         if withSafeArea {
             return self.wrappedView.autoLayout.make(with: targetView) {
@@ -94,8 +94,8 @@ extension AutoLayout {
         }
     }
     
-    public func activeFill(_ targetView: UIView, edges: UIEdgeInsets = .zero, withSafeArea: Bool = false) {
+    public func fill(_ targetView: UIView, edges: UIEdgeInsets = .zero, withSafeArea: Bool = false) {
         
-        NSLayoutConstraint.activate(self.fill(targetView, edges: edges, withSafeArea: withSafeArea))
+        NSLayoutConstraint.activate(self.makeFill(targetView, edges: edges, withSafeArea: withSafeArea))
     }
 }

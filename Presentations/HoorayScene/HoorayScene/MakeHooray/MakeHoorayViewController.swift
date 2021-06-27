@@ -225,7 +225,7 @@ extension MakeHoorayViewController: Presenting, UITextViewDelegate {
     public func setupLayout() {
         
         self.view.addSubview(makeView)
-        makeView.autoLayout.activeFill(self.view, withSafeArea: true)
+        makeView.autoLayout.fill(self.view, withSafeArea: true)
         makeView.setupLayout()
     }
     
