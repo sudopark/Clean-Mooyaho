@@ -56,7 +56,7 @@ public final class LocationMonitoringServiceImple: NSObject, LocationMonitoringS
     
     struct Subjects {
         let currentLocation: BehaviorSubject<LastLocation?> = .init(value: nil)
-        let currentAuthorizationStatus: PublishSubject<CLAuthorizationStatus> = .init()
+        let currentAuthorizationStatus: BehaviorRelay<CLAuthorizationStatus?> = .init(value: nil)
         let monitoringStatus = BehaviorRelay<MonotoringStatus>(value: .idle)
         let occurError = PublishSubject<Error>()
     }
@@ -72,7 +72,9 @@ public final class LocationMonitoringServiceImple: NSObject, LocationMonitoringS
 extension LocationMonitoringServiceImple {
     
     public func checkHasPermission() -> Maybe<LocationServiceAccessPermission> {
-        return Maybe.create { callback in
+        
+        let checking: Maybe<LocationServiceAccessPermission>
+        checking =  Maybe.create { callback in
             guard CLLocationManager.locationServicesEnabled() else {
                 callback(.success(.disabled))
                 return Disposables.create()
@@ -90,6 +92,15 @@ extension LocationMonitoringServiceImple {
             }
             return Disposables.create()
         }
+        
+        let preparePermissionIfNeed: (LocationServiceAccessPermission) -> Maybe<LocationServiceAccessPermission>
+        preparePermissionIfNeed = { [weak self] permission in
+            guard permission == .granted else { return .just(permission) }
+            return self?.requestPermission().map{ _ in permission } ?? .empty()
+        }
+        
+        return checking
+            .flatMap(preparePermissionIfNeed)
     }
     
     public func requestPermission() -> Maybe<Bool> {
@@ -98,15 +109,12 @@ extension LocationMonitoringServiceImple {
             self?.locationManager.requestWhenInUseAuthorization()
         }
         
-        let determineIsGranted: (CLAuthorizationStatus) -> Bool = { status in
-            return status == .authorizedWhenInUse || status == .authorizedAlways
-        }
         return self.subjects.currentAuthorizationStatus
-            .skip(1)
-            .map(determineIsGranted)
-            .first()
             .compactMap{ $0 }
+            .map{ $0.isReady }
+            .take(1)
             .do(onSubscribed: request)
+            .asMaybe()
     }
 }
 
@@ -114,7 +122,9 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager,
                                 didChangeAuthorization status: CLAuthorizationStatus) {
-        self.subjects.currentAuthorizationStatus.onNext(status)
+        
+        logger.print(level: .info, "location status changed, isReady? -> \(status.isReady)")
+        self.subjects.currentAuthorizationStatus.accept(status)
     }
     
     public func locationManager(_ manager: CLLocationManager,
@@ -136,6 +146,7 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        logger.print(level: .error, "location manager error: \(error)")
         self.subjects.occurError.onNext(error)
     }
 }
@@ -208,5 +219,12 @@ private extension LocationMonitoringOption.Accuracy {
         case .kiloMeters: return kCLLocationAccuracyKilometer
         case .threeKilometers: return kCLLocationAccuracyThreeKilometers
         }
+    }
+}
+
+private extension CLAuthorizationStatus {
+    
+    var isReady: Bool {
+        return self == .authorizedWhenInUse || self == .authorizedAlways
     }
 }
