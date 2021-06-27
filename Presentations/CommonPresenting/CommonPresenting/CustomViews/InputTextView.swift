@@ -18,7 +18,7 @@ extension InputTextView: Presenting {
     public func setupLayout() {
         
         self.addSubview(textInputView)
-        textInputView.autoLayout.activeFill(self)
+        textInputView.autoLayout.fill(self)
         
         self.addSubview(placeHolderLabel)
         placeHolderLabel.autoLayout.active(with: textInputView) {

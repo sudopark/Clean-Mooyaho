@@ -63,7 +63,7 @@ extension IntegratedImageView: Presenting {
     public func setupLayout() {
         
         self.addSubview(internalImageView)
-        internalImageView.autoLayout.activeFill(self)
+        internalImageView.autoLayout.fill(self)
     }
     
     public func setupStyling() {

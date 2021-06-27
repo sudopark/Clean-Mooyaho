@@ -66,7 +66,7 @@ extension TextTagInputField: Presenting {
     public func setupLayout() {
         
         self.addSubview(underlyingTextField)
-        underlyingTextField.autoLayout.activeFill(self)
+        underlyingTextField.autoLayout.fill(self)
     }
     
     public func setupStyling() {

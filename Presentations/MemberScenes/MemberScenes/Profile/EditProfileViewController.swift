@@ -102,7 +102,7 @@ extension EditProfileViewController: Presenting {
     public func setupLayout() {
         
         self.view.addSubview(editView)
-        editView.autoLayout.activeFill(self.view)
+        editView.autoLayout.fill(self.view)
         editView.setupLayout()
     }
     
