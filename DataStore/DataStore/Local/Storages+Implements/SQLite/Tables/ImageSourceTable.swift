@@ -19,15 +19,21 @@ extension ImageSource: RowValueType {
     
     public init(_ cursor: CursorIterator) throws {
         let type: String = try cursor.next().unwrap()
+        let path: String? = cursor.next()
+        let desc: String? = cursor.next()
+        let emoji: String? = cursor.next()
         switch type {
         case "path":
-            self = .path(try cursor.next().unwrap())
+            guard let path = path else { throw LocalErrors.deserializeFail("no path for imagesource") }
+            self = .path(path)
             
         case "reference":
-            self = .reference(try cursor.next().unwrap(), description: cursor.next())
+            guard let path = path else { throw LocalErrors.deserializeFail("no path for imagesource") }
+            self = .reference(path, description: desc)
             
         case "emoji":
-            self = .emoji(try cursor.next().unwrap())
+            guard let emoji = emoji else { throw LocalErrors.deserializeFail("no emoji for imagesource") }
+            self = .emoji(emoji)
             
         default: throw LocalErrors.invalidData("ImageSource")
         }
@@ -41,11 +47,16 @@ struct ImageSourceTable: Table {
     
     struct DataModel: RowValueType {
         let ownerID: String
-        let source: ImageSource
+        let source: ImageSource?
         
         init(_ cursor: CursorIterator) throws {
             self.ownerID = try cursor.next().unwrap()
-            self.source = try ImageSource(cursor)
+            self.source = try? ImageSource(cursor)
+        }
+        
+        init(_ ownerID: String, source: ImageSource?) {
+            self.ownerID = ownerID
+            self.source = source
         }
     }
 
@@ -73,16 +84,16 @@ struct ImageSourceTable: Table {
     static func scalar(_ model: DataModel, for column: Column) -> ScalarType? {
         switch column {
         case .ownerID: return model.ownerID
-        case .sourcetype: return model.source.type
-        case .path: return model.source.path
-        case .description: return model.source.description
-        case .emoji: return model.source.emoji
+        case .sourcetype: return model.source?.type
+        case .path: return model.source?.path
+        case .description: return model.source?.description
+        case .emoji: return model.source?.emoji
         }
     }
 }
 
 
-private extension ImageSource {
+extension ImageSource {
     
     var type: String {
         switch self {

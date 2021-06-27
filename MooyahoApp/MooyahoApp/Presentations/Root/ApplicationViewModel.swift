@@ -72,6 +72,7 @@ extension ApplicationViewModelImple {
         }
         self.applicationUsecase.loadLastSignInAccountInfo()
             .map{ $0.auth }
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: routing)
             .disposed(by: self.disposeBag)
     }

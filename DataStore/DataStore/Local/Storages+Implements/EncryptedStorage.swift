@@ -17,8 +17,13 @@ import Domain
 enum EncryptedStorageError: Error {
     case unsupportType
     case saveFail
+    case encodeFail(_ reason: Error)
+    case decodeFail(_ reason: Error)
 }
 
+enum EncrytedDataKeys: String {
+    case auth
+}
 
 public protocol EncryptedStorage {
     
@@ -93,5 +98,36 @@ private extension Optional {
     
     func asResult() -> Result<Self, Error> {
         return .success(self)
+    }
+}
+
+
+extension EncryptedStorage {
+    
+    func saveEncodable<E: Encodable>(_ key: String, value: E) -> Result<Void, Error> {
+        do {
+            let data = try JSONEncoder().encode(value)
+            return self.save(key, value: data)
+        } catch let error {
+            return .failure(EncryptedStorageError.encodeFail(error))
+        }
+    }
+    
+    func fetchDecodable<D: Decodable>(_ key: String) -> Result<D?, Error> {
+        
+        let fetchData: Result<Data?, Error> = self.fetch(key)
+        let thenDecode: (Data?) -> Result<D?, Error> = { data in
+            guard let data = data else { return .success(nil) }
+            do {
+                let model = try JSONDecoder().decode(D.self, from: data)
+                return .success(model)
+                
+            } catch let error {
+                return .failure(EncryptedStorageError.decodeFail(error))
+            }
+        }
+        
+        return fetchData
+            .flatMap(thenDecode)
     }
 }

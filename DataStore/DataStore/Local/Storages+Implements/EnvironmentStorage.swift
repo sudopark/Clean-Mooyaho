@@ -1,5 +1,5 @@
 //
-//  UserDefaultStorage.swift
+//  EnvironmentStorage.swift
 //  DataStore
 //
 //  Created by ParkHyunsoo on 2021/04/24.
@@ -9,6 +9,6 @@
 import Foundation
 
 
-public protocol UserDefaultStorage { }
+public protocol EnvironmentStorage { }
 
-extension UserDefaults: UserDefaultStorage { }
+extension UserDefaults: EnvironmentStorage { }
