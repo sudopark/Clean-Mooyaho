@@ -34,7 +34,12 @@ final class DIContainers {
         let kakaoService: KakaoService = KakaoServiceImple(remote: kakaoOAuthRemote)
         let locationMonirotingService: LocationMonitoringService = LocationMonitoringServiceImple()
         
-        let localStorage: LocalStorage = LocalStorageImple()
+        let localStorage: LocalStorage = {
+            let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
+            let dataModelStorage = DataModelStorageImple(dbPath: AppEnvironment.dataModelDBPath)
+            return LocalStorageImple(encryptedStorage: encryptedStorage,
+                                     dataModelStorage: dataModelStorage)
+        }()
         
         private let dataStoreImple: SharedDataStoreServiceImple = .init()
         var dataStore: SharedDataStoreService {

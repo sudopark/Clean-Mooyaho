@@ -37,7 +37,9 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         let thenLoadExistingCurrentMember: (Auth) -> Maybe<(Auth, Member?)>
         thenLoadExistingCurrentMember = { [weak self] auth in
             guard let self = self else { return .empty() }
-            return self.authLocal.fetchCurrentMember().map{ (auth, $0) }
+            return self.authLocal.fetchCurrentMember()
+                .catchAndReturn(nil)
+                .map{ (auth, $0) }
         }
         
         return getLastAuth
