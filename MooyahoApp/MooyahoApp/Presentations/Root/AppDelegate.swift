@@ -18,17 +18,17 @@ import CommonPresenting
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private var applicationViewModel: ApplicationViewModel!
-    let diContainers: DIContainers
+    let dependencyInjector: DependencyInjector
     
     private let disposeBag = DisposeBag()
     
     override init() {
-        self.diContainers = DIContainers()
-        let router = ApplicationRootRouter(nextSceneBuilders: self.diContainers)
-        let usecase = self.diContainers.applicationUsecase
+        self.dependencyInjector = DependencyInjector()
+        let router = ApplicationRootRouter(nextSceneBuilders: self.dependencyInjector)
+        let usecase = self.dependencyInjector.applicationUsecase
         self.applicationViewModel = ApplicationViewModelImple(applicationUsecase: usecase,
-                                                              firebaseService: self.diContainers.firebaseService,
-                                                              kakaoService: self.diContainers.shared.kakaoService,
+                                                              firebaseService: self.dependencyInjector.firebaseService,
+                                                              kakaoService: self.dependencyInjector.shared.kakaoService,
                                                               router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
         UIContext.updateApp(status: .launched)

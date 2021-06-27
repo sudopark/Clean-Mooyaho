@@ -18,7 +18,7 @@ import HoorayScene
 
 // MARK: - Main Sceens
 
-extension DIContainers: MainSceneBuilable {
+extension DependencyInjector: MainSceneBuilable {
     
     public func makeMainScene(auth: Auth) -> MainScene {
         let router = MainRouter(nextSceneBuilders: self)
@@ -31,7 +31,7 @@ extension DIContainers: MainSceneBuilable {
     }
 }
 
-extension DIContainers: MainSlideMenuSceneBuilable {
+extension DependencyInjector: MainSlideMenuSceneBuilable {
     
     public func makeMainSlideMenuScene() -> MainSlideMenuScene {
         let router = MainSlideMenuRouter(nextSceneBuilders: self)
@@ -45,7 +45,7 @@ extension DIContainers: MainSlideMenuSceneBuilable {
 
 // MARK: - MemberScenes
 
-extension DIContainers: SignInSceneBuilable, EditProfileSceneBuilable {
+extension DependencyInjector: SignInSceneBuilable, EditProfileSceneBuilable {
     
     public func makeSignInScene() -> SignInScene {
         let router = SignInRouter(nextSceneBuilders: self)
@@ -69,7 +69,7 @@ extension DIContainers: SignInSceneBuilable, EditProfileSceneBuilable {
 
 // MARK: - Location Scenes
 
-extension DIContainers: NearbySceneBuilable {
+extension DependencyInjector: NearbySceneBuilable {
     
     public func makeNearbyScene() -> NearbyScene {
         let router = NearbyRouter(nextSceneBuilders: self)
@@ -81,7 +81,7 @@ extension DIContainers: NearbySceneBuilable {
     }
 }
 
-extension DIContainers: LocationSelectSceneBuilable {
+extension DependencyInjector: LocationSelectSceneBuilable {
     
     public func makeLocationSelectScene() -> LocationSelectScene {
         let router = LocationSelectRouter(nextSceneBuilders: self)
@@ -93,7 +93,7 @@ extension DIContainers: LocationSelectSceneBuilable {
 }
 
 
-extension DIContainers: LocationMarkSceneBuilable {
+extension DependencyInjector: LocationMarkSceneBuilable {
     
     public func makeLocationMarkScene() -> LocationMarkScene {
         let router = LocationMarkRouter(nextSceneBuilders: self)
@@ -107,7 +107,7 @@ extension DIContainers: LocationMarkSceneBuilable {
 
 // MARK: Place Scenes
 
-extension DIContainers: RegisterNewPlaceSceneBuilable {
+extension DependencyInjector: RegisterNewPlaceSceneBuilable {
     
     public func makeRegisterNewPlaceScene() -> RegisterNewPlaceScene {
         let router = RegisterNewPlaceRouter(nextSceneBuilders: self)
@@ -118,7 +118,7 @@ extension DIContainers: RegisterNewPlaceSceneBuilable {
     }
 }
 
-extension DIContainers: SearchNewPlaceSceneBuilable {
+extension DependencyInjector: SearchNewPlaceSceneBuilable {
     
     public func makeSearchNewPlaceScene(myID: String) -> SearchNewPlaceScene {
         let router = SearchNewPlaceRouter(nextSceneBuilders: self)
@@ -135,7 +135,7 @@ extension DIContainers: SearchNewPlaceSceneBuilable {
 }
 
 
-extension DIContainers: ManuallyResigterPlaceSceneBuilable {
+extension DependencyInjector: ManuallyResigterPlaceSceneBuilable {
     
     public func makeManuallyResigterPlaceScene(myID: String) -> ManuallyResigterPlaceScene {
         let router = ManuallyResigterPlaceRouter(nextSceneBuilders: self)
@@ -153,7 +153,7 @@ extension DIContainers: ManuallyResigterPlaceSceneBuilable {
 
 // MARK: - Hooray Scenes
 
-extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
+extension DependencyInjector: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
     
     public func makeMakeHoorayScene() -> MakeHoorayScene {
         let router = MakeHoorayRouter(nextSceneBuilders: self)
@@ -200,7 +200,7 @@ extension DIContainers: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
 
 // MARK: - Common Scene
 
-extension DIContainers: ImagePickerSceneBuilable {
+extension DependencyInjector: ImagePickerSceneBuilable {
     
     public func makeImagePickerScene(isCamera: Bool) -> ImagePickerScene {
         let viewController = SimpleImagePickerViewController(isCamera: isCamera)
@@ -208,7 +208,7 @@ extension DIContainers: ImagePickerSceneBuilable {
     }
 }
 
-extension DIContainers: SelectTagSceneBuilable {
+extension DependencyInjector: SelectTagSceneBuilable {
     
     public func makeSelectTagScene(startWith tags: [Tag], total: [Tag]) -> SelectTagScene {
         let router = SelectTagRouter(nextSceneBuilders: self)
@@ -219,7 +219,7 @@ extension DIContainers: SelectTagSceneBuilable {
     }
 }
 
-extension DIContainers: TextInputSceneBuilable {
+extension DependencyInjector: TextInputSceneBuilable {
     
     public func makeTextInputScene(_ inputMode: TextInputMode) -> TextInputScene {
         let router = TextInputRouter(nextSceneBuilders: self)
