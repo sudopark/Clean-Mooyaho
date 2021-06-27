@@ -17,6 +17,11 @@ open class BaseBottomSlideMenuView: BaseUIView {
 
 }
 
+extension BaseBottomSlideMenuView: InputKeyboardHandlable {
+    
+    public var bottomOffset: CGFloat { 10 }
+    public var movingContentBottomConsttaint: NSLayoutConstraint? { self.containerBottomConstraint }
+}
 
 extension BaseBottomSlideMenuView: Presenting {
     
@@ -26,14 +31,13 @@ extension BaseBottomSlideMenuView: Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.heightAnchor.constraint(equalTo: $1.heightAnchor, multiplier: 3/7)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         
         self.addSubview(containerView)
         containerView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.heightAnchor.constraint(equalTo: $1.heightAnchor, multiplier: 4/7)
         }
         self.containerBottomConstraint = containerView.bottomAnchor
             .constraint(equalTo: self.bottomAnchor, constant: 10)
