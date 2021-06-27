@@ -151,7 +151,7 @@ extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
     public func setupLayout() {
         
         self.view.addSubview(selectView)
-        selectView.autoLayout.activeFill(self.view)
+        selectView.autoLayout.fill(self.view)
         self.selectView.setupLayout()
     }
     

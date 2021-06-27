@@ -39,7 +39,7 @@ final class EditProfileView: BaseUIView {
             }
             
             self.borderView.addSubview(imageView)
-            self.imageView.autoLayout.activeFill(borderView, edges: .init(top: 1, left: 1, bottom: 1, right: 1))
+            self.imageView.autoLayout.fill(borderView, edges: .init(top: 1, left: 1, bottom: 1, right: 1))
             self.imageView.setupLayout()
         }
         

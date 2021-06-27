@@ -43,10 +43,10 @@ extension LoadingButton: Presenting {
     public func setupLayout() {
         
         self.addSubview(button)
-        button.autoLayout.activeFill(self)
+        button.autoLayout.fill(self)
         
         self.addSubview(loadingView)
-        loadingView.autoLayout.activeFill(self)
+        loadingView.autoLayout.fill(self)
         loadingView.setupLayout()
     }
     

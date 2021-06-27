@@ -102,10 +102,10 @@ extension NearbyViewController: Presenting {
     public func setupLayout() {
         
         self.view.addSubview(self.mapView)
-        mapView.autoLayout.activeFill(self.view)
+        mapView.autoLayout.fill(self.view)
         
         self.view.addSubview(dimView)
-        dimView.autoLayout.activeFill(self.view)
+        dimView.autoLayout.fill(self.view)
     }
     
     public func setupStyling() {
