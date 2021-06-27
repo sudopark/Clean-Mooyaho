@@ -25,6 +25,12 @@ struct MemberTable: Table {
             self.nickName = cursor.next()
             self.introduction = cursor.next()
         }
+        
+        init(_ uid: String, nickName: String?, intro: String?) {
+            self.uid = uid
+            self.nickName = nickName
+            self.introduction = intro
+        }
     }
     
     enum Column: String, TableColumn {
@@ -60,11 +66,10 @@ extension Member: RowValueType {
     
     public init(_ cursor: CursorIterator) throws {
         let memberTableModel: MemberTable.Model = try .init(cursor)
-        let source: ImageSource = try ImageSource(cursor)
         
         self.init(uid: memberTableModel.uid)
         self.nickName = memberTableModel.nickName
         self.introduction = memberTableModel.introduction
-        self.icon = source
+        self.icon = try? ImageSource(cursor)
     }
 }

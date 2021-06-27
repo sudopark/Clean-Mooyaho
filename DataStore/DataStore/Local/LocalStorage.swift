@@ -9,12 +9,12 @@
 import Foundation
 
 import RxSwift
-import SQLiteStorage
 
 import Domain
 
 public enum LocalErrors: Error {
     case invalidData(_ reason: String?)
+    case deserializeFail(_ for: String?)
 }
 
 
@@ -27,6 +27,10 @@ public protocol AuthLocalStorage {
 }
 
 public protocol MemberLocalStorage {
+    
+    func saveMember(_ member: Member) -> Maybe<Void>
+    
+    func fetchMember(for memberID: String) -> Maybe<Member?>
     
     func updateCurrentMember(_ newValue: Member) -> Maybe<Void>
 }
@@ -74,9 +78,29 @@ public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStor
 
 public final class LocalStorageImple: LocalStorage {
     
-    let sqliteStorage: SQLiteStorage
+    let encryptedStorage: EncryptedStorage
+    let dataModelStorage: DataModelStorage
     
-    public init(sqlite: SQLiteStorage) {
-        self.sqliteStorage = sqlite
+    public init(encryptedStorage: EncryptedStorage,
+                dataModelStorage: DataModelStorage) {
+        
+        self.encryptedStorage = encryptedStorage
+        self.dataModelStorage = dataModelStorage
+    }
+}
+
+
+// MARK: - helper extensions
+
+extension Result where Failure == Error {
+    
+    func runMaybeCallback(_ callback: @escaping (MaybeEvent<Success>) -> Void) {
+        switch self {
+        case let .success(value):
+            callback(.success(value))
+            
+        case let .failure(error):
+            callback(.error(error))
+        }
     }
 }

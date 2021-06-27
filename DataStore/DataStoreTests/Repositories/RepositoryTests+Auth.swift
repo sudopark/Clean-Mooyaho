@@ -88,6 +88,29 @@ extension RepositoryTests_Auth {
         XCTAssertNil(account?.1)
     }
     
+    func testRepo_whenFetchLastSignInMemberError_returnsNil() {
+        // given
+        let expect = expectation(description: "마지막 로그인 멤버정보 로드시에 에러 발생하면 nil 리턴")
+        self.stubLocal.register(key: "fetchCurrentAuth") {
+            return Maybe<Auth?>.just(Auth(userID: "some"))
+        }
+        
+        self.stubLocal.register(key: "fetchCurrentMember") {
+            return Maybe<Member?>.error(ApplicationErrors.invalid)
+        }
+        self.stubRemote.register(key: "requestSignInAnonymously") {
+            return Maybe<Auth>.just(Auth(userID: "dummy"))
+        }
+        
+        // when
+        let requestLoad = self.repository.fetchLastSignInAccountInfo()
+        let account = self.waitFirstElement(expect, for: requestLoad.asObservable()) { } ?? nil
+        
+        // then
+        XCTAssertNotNil(account?.0)
+        XCTAssertNil(account?.1)
+    }
+    
     func testRepo_signInWithEmail() {
         // given
         let expect = expectation(description: "이메일로 로그인")

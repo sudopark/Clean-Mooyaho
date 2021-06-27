@@ -48,6 +48,24 @@ struct AppEnvironment {
     static var legacyAPIPath: String? = {
         return secretJsons["legacy_api_path"] as? String
     }()
+    
+    static var dbFileName: String {
+        if self.isTestBuild {
+            return "test_dummy.db"
+        } else {
+            return "datamodels.db"
+        }
+    }
+    
+    static var dataModelDBPath: String {
+        
+        let dbName = self.dbFileName
+        let dbURL = try? FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            .appendingPathComponent(dbName)
+        
+        return dbURL?.path ?? ""
+    }
 }
 
 enum PlaceCategoryTags: String, CaseIterable {
