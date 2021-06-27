@@ -21,9 +21,20 @@ public enum FilePath {
         case let .raw(value): return value
             
         case let .temp(fileName):
-            return FileManager.default
-                .urls(for: .itemReplacementDirectory, in: .userDomainMask).first?
-                .appendingPathComponent(fileName).path ?? ""
+            return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+                .appendingPathComponent(fileName)
+                .path
+        }
+    }
+    
+    public var absolutePath: String {
+        switch self {
+        case let .raw(path): return path
+        case let .temp(fileName):
+            return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+                .appendingPathComponent(fileName)
+                .standardizedFileURL
+                .absoluteString
         }
     }
 }

@@ -41,30 +41,20 @@ public protocol ImagePickerScene: Scenable {
 public final class SimpleImagePickerViewController: UIImagePickerController {
     
     private let dispobseBag = DisposeBag()
-    private let fileHandleService: FileHandleService
+    public var fileHandleService: FileHandleService = FileManager.default
     private let selectedImagePathSubject = PublishSubject<String>()
     private let pickingErrorSubject = PublishSubject<Error>()
-    
-    public init(isCamera: Bool,
-                fileHandleService: FileHandleService = FileManager.default) {
-        
-        self.fileHandleService = fileHandleService
-        super.init(nibName: nil, bundle: nil)
-        if isCamera {
-            self.sourceType = .camera
-        } else {
-            self.sourceType = .photoLibrary
-        }
-        self.allowsEditing = true
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError()
-    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+    }
+    
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        logger.print(level: .debug, "image picker did disappear -> end result stream")
+        self.selectedImagePathSubject.onCompleted()
+        self.pickingErrorSubject.onCompleted()
     }
 }
 
@@ -80,20 +70,19 @@ extension SimpleImagePickerViewController: UIImagePickerControllerDelegate, UINa
         }
         
         let fileName = imageURL.lastPathComponent
-        let fileType = imageURL.pathExtension
-        let newFileName = "\(TimeStamp.now())_\(fileName).\(fileType)"
+        let newFileName = "\(TimeStamp.now())_\(fileName)"
         let newFilePath = FilePath.temp(newFileName)
         
         func saveEditedImage(_ image: UIImage) -> Maybe<String> {
             guard let data = image.pngData() else { return .error(ApplicationErrors.invalid) }
             return self.fileHandleService.write(data: data, to: newFilePath).map{
-                newFilePath.fullPath
+                newFilePath.absolutePath
             }
         }
         
         func copyImage() -> Maybe<String> {
             return self.fileHandleService.copy(source: FilePath.raw(imageURL.path), to: newFilePath)
-                .map{ newFilePath.fullPath }
+                .map{ newFilePath.absolutePath }
         }
         
         let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
@@ -101,13 +90,17 @@ extension SimpleImagePickerViewController: UIImagePickerControllerDelegate, UINa
         
         movedFilePath
             .subscribe(onSuccess: { [weak self] path in
-                self?.dismiss(animated: true) { [weak self] in
-                    self?.selectedImagePathSubject.onNext(path)
-                }
+                self?.selectedImagePathSubject.onNext(path)
+                self?.dismiss(animated: true, completion: nil)
             }, onError: { [weak self] error in
                 self?.pickingErrorSubject.onNext(error)
+                self?.dismiss(animated: true, completion: nil)
             })
             .disposed(by: self.dispobseBag)
+    }
+    
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

@@ -16,10 +16,23 @@ extension UIImageView {
     public func setupThumbnail(_ source: String,
                                progress: ((Int64, Int64) -> Void)? = nil,
                                completed: ((Result<UIImage, Error>) -> Void)? = nil) {
-        let url = URL(string: source)
-        self.kf.setImage(with: url, progressBlock: progress) { result in
-            let mapResult = result.map{ $0.image }.mapError{ error -> Error in error }
-            completed?(mapResult)
+        guard let url = URL(string: source) else {
+            self.cancelSetupThumbnail()
+            return
+        }
+        
+        if url.absoluteString.hasPrefix("file://") {
+            let provider = LocalFileImageDataProvider(fileURL: url)
+            self.kf.setImage(with: provider) { result in
+                let mapResult = result.map{ $0.image }.mapError{ error -> Error in error }
+                completed?(mapResult)
+            }
+        } else {
+            
+            self.kf.setImage(with: url, progressBlock: progress) { result in
+                let mapResult = result.map{ $0.image }.mapError{ error -> Error in error }
+                completed?(mapResult)
+            }
         }
     }
     
