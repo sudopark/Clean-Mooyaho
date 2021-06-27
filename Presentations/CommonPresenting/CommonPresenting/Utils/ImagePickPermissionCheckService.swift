@@ -33,7 +33,7 @@ public enum ImagePickerPermissionStatus {
     
     init(status: PHAuthorizationStatus) {
         switch status {
-        case .authorized: self = .avail
+        case .authorized, .limited: self = .avail
         case .notDetermined: self = .requestNeed
         default: self = .denied
         }

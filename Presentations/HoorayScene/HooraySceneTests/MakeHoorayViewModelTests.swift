@@ -280,7 +280,7 @@ extension MakeHoorayViewModelTests {
     
     func testViewModel_whenHasNoImageAccessPermission_alertError() {
         // given
-        let expect = expectation(description: "이미지 선택 이후에 업데이트")
+        let expect = expectation(description: "이미지 선택 권한 없을때 에러 알림")
         self.stubPermissionService.register(key: "preparePermission") {
             return Maybe<Void>.error(ApplicationErrors.invalid)
         }

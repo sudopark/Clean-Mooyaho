@@ -203,7 +203,9 @@ extension DependencyInjector: MakeHooraySceneBuilable, WaitNextHooraySceneBuilab
 extension DependencyInjector: ImagePickerSceneBuilable {
     
     public func makeImagePickerScene(isCamera: Bool) -> ImagePickerScene {
-        let viewController = SimpleImagePickerViewController(isCamera: isCamera)
+        let viewController = SimpleImagePickerViewController()
+        viewController.sourceType = isCamera ? .camera : .photoLibrary
+        viewController.allowsEditing = true
         return viewController
     }
 }
