@@ -5,7 +5,7 @@
 //  Created by sudo.park on 2021/05/21.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 
@@ -33,6 +33,26 @@ public struct UIContext {
     }
 }
 
+
+extension UIContext {
+    
+    public enum Decorating {
+        
+        public static let title: (UILabel) -> Void = {
+            $0.font = .systemFont(ofSize: 18, weight: .semibold)
+            $0.textColor = UIContext.currentContext.colors.text
+        }
+        
+        public static let placeHolder: (UILabel) -> Void = {
+            $0.font = .systemFont(ofSize: 14)
+            $0.textColor = UIContext.currentContext.colors.text.withAlphaComponent(0.4)
+        }
+    }
+
+    public var deco: Decorating.Type {
+        return Decorating.self
+    }
+}
 
 extension UIContext {
     

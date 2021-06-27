@@ -54,4 +54,8 @@ extension String {
     public func with(attribute: [NSAttributedString.Key: Any]) -> NSAttributedString {
         return NSAttributedString(string: self, attributes: attribute)
     }
+    
+    public func substring(nsRange: NSRange) -> String {
+        return (self as NSString).substring(with: nsRange)
+    }
 }

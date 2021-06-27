@@ -142,17 +142,26 @@ extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
 
         guard let view = viewController?.view else { return false }
         
-        let scrollView = self.findScrollView(in: view, location: touch.location(in: view))
+        let scrollView = self.findScrollView(in: view, touch: touch)
         guard let contentOffsetY = scrollView?.contentOffset.y else { return true }
         return contentOffsetY <= 20
     }
     
-    private func findScrollView(in view: UIView, location: CGPoint) -> UIScrollView? {
+    private func findScrollView(in view: UIView, touch: UITouch) -> UIScrollView? {
+        
+        let location = touch.location(in: view)
+        if let scrollView = view as? UIScrollView, view.frame.contains(location) {
+           return scrollView
+        }
+        
         for subview in view.subviews {
-            if let scrollView = view as? UIScrollView, view.frame.contains(location) {
+            if let scrollView = subview as? UIScrollView, subview.frame.contains(location) {
                 return scrollView
             } else {
-                return findScrollView(in: subview, location: location)
+                guard let scrollView = findScrollView(in: subview, touch: touch) else {
+                    continue
+                }
+                return scrollView
             }
         }
         return nil

@@ -116,7 +116,7 @@ extension MakeHoorayView: Presenting {
         self.addSubview(messageTextView)
         messageTextView.autoLayout.active(with: inputImageView) {
             $0.leadingAnchor.constraint(equalTo: $1.trailingAnchor, constant: 12)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: 14)
         }

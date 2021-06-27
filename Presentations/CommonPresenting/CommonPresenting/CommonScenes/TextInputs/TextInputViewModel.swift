@@ -17,6 +17,7 @@ import Domain
 public struct TextInputMode {
     
     public let isSingleLine: Bool
+    public let title: String
     public let placeHolder: String?
     public let startWith: String?
     public let maxCharCount: Int?
@@ -24,12 +25,14 @@ public struct TextInputMode {
     public let defaultHeight: Float?
     
     public init(isSingleLine: Bool,
+                title: String,
                 placeHolder: String? = nil,
                 startWith: String? = nil,
                 maxCharCount: Int? = nil,
                 shouldEnterSomething: Bool = false,
                 defaultHeight: Float? = nil) {
         self.isSingleLine = isSingleLine
+        self.title = title
         self.placeHolder = placeHolder
         self.startWith = startWith
         self.maxCharCount = maxCharCount
@@ -45,6 +48,7 @@ public protocol TextInputViewModel: AnyObject {
     // interactor
     func updateInput(text: String)
     func confirm()
+    func close()
     
     // presenter
     var textInputMode: TextInputMode { get }
@@ -86,6 +90,10 @@ extension TextInputViewModelImple {
 
     public func updateInput(text: String) {
         self.subjects.text.accept(text)
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
     
     public func confirm() {

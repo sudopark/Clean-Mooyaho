@@ -20,7 +20,7 @@ public final class TextInputViewController: BaseViewController, TextInputScene {
     let titleLabel = UILabel()
     let inputTextView = InputTextView()
     let charCountLabel = UILabel()
-    let confirmButton = UIButton()
+    let confirmButton = UIButton(type: .system)
     
     let viewModel: TextInputViewModel
     
@@ -56,6 +56,57 @@ extension TextInputViewController {
     
     private func bind() {
         
+        self.bottomSlideMenuView.bindKeyboardFrameChangesIfPossible()?
+            .disposed(by: self.disposeBag)
+        
+        self.inputTextView.rx.text.orEmpty
+            .subscribe(onNext: { [weak self] text in
+                self?.textUpdated(text)
+                self?.viewModel.updateInput(text: text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.view.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirm()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.bottomSlideMenuView.outsideTouchView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.close()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isConfirmable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] enable in
+                self?.confirmButton.isEnabled = enable
+                self?.confirmButton.alpha = enable ? 1.0 : 0.6
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.rx.viewDidAppear.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.inputTextView.textInputView.becomeFirstResponder()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func textUpdated(_ newText: String?) {
+        self.inputTextView.placeHolderLabel.isHidden = newText?.isNotEmpty == true
+        
+        if let max = self.viewModel.textInputMode.maxCharCount {
+            self.charCountLabel.text = "\(newText?.count ?? 0)/\(max)"
+        } else {
+            self.charCountLabel.text = nil
+        }
     }
 }
 
@@ -70,11 +121,62 @@ extension TextInputViewController: Presenting {
         bottomSlideMenuView.autoLayout.fill(self.view)
         bottomSlideMenuView.setupLayout()
         
-        self.view.addSubview(titleLabel)
+        bottomSlideMenuView.containerView.addSubview(titleLabel)
+        titleLabel.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 24)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+        }
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        titleLabel.numberOfLines = 1
+        
+        bottomSlideMenuView.containerView.addSubview(inputTextView)
+        inputTextView.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16)
+        }
+        inputTextView.setContentCompressionResistancePriority(.required, for: .vertical)
+        inputTextView.setupLayout()
+        
+        bottomSlideMenuView.containerView.addSubview(charCountLabel)
+        charCountLabel.autoLayout.active(with: inputTextView) {
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -3)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 6)
+        }
+        charCountLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        charCountLabel.numberOfLines = 1
+        
+        bottomSlideMenuView.containerView.addSubview(confirmButton)
+        confirmButton.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.heightAnchor.constraint(equalToConstant: 40)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            $0.topAnchor.constraint(equalTo: charCountLabel.bottomAnchor, constant: 30)
+        }
     }
     
     public func setupStyling() {
         
         self.bottomSlideMenuView.setupStyling()
+        
+        let inputMode = self.viewModel.textInputMode
+        
+        self.uiContext.deco.title(self.titleLabel)
+        self.titleLabel.text = inputMode.title
+        
+        self.inputTextView.maxCharCount = inputMode.maxCharCount
+        self.inputTextView.setupMultilineStyling(CGFloat(inputMode.defaultHeight ?? 200))
+        self.inputTextView.placeHolderLabel.text = inputMode.placeHolder
+        self.inputTextView.text = inputMode.startWith
+        
+        self.uiContext.deco.placeHolder(self.inputTextView.placeHolderLabel)
+        
+        self.confirmButton.layer.cornerRadius = 5
+        self.confirmButton.clipsToBounds = true
+        self.confirmButton.backgroundColor = UIColor.systemBlue
+        self.confirmButton.setTitle("Confirm", for: .normal)
+        self.confirmButton.setTitleColor(.white, for: .normal)
     }
 }

@@ -135,11 +135,12 @@ extension MakeHoorayViewModelImple {
     
     private func messageInputMode(_ previousMessage: String?) -> TextInputMode {
         return .init(isSingleLine: false,
-                     placeHolder: "placeHolder".localized,
+                     title: "Hooray Message",
+                     placeHolder: "Enter a message...".localized,
                      startWith: previousMessage,
-                     maxCharCount: 150,
+                     maxCharCount: 500,
                      shouldEnterSomething: true,
-                     defaultHeight: 200)
+                     defaultHeight: 120)
     }
     
     private func enterHoorayInfo(_ form: NewHoorayForm,
