@@ -182,6 +182,7 @@ extension MakeHoorayView: Presenting {
         self.inputImageView.backgroundColor = self.uiContext.colors.appSecondBackground
         self.inputImageView.layer.cornerRadius = 5
         self.inputImageView.clipsToBounds = true
+        self.inputImageView.isUserInteractionEnabled = true
         
         self.imageInputButton.image = UIImage(named: "plus")
         self.imageInputButton.isUserInteractionEnabled = false
@@ -197,7 +198,8 @@ extension MakeHoorayView: Presenting {
 
         self.keywordInputSectionView.setupStyling()
         self.keywordInputSectionView.innerView.font = .systemFont(ofSize: 14, weight: .medium)
-        self.keywordInputSectionView.innerView.text = "Hooray phrase"
+        self.keywordInputSectionView.innerView.attributedText = MakeHoorayViewController.Attribute
+            .keyAndValue("Hooray phrase", nil)
         self.keywordInputSectionView.arrowImageView.isHidden = true
         
         self.tagInputSectionView.setupStyling()

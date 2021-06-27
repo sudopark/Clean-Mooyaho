@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라를 이용하여 사진을 업로드합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>다운받은 사진을 저장합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진첩에 있는 사진을 업로드 합니다.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

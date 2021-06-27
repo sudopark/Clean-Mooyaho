@@ -23,20 +23,40 @@ public final class MakeHoorayViewController: BaseViewController, MakeHoorayScene
     
     enum Attribute {
         
-        static var tagPlaceHolder: NSAttributedString {
-            return "Enter tags".with(attribute: [
+        static var placeHolder: [NSAttributedString.Key: Any] {
+            return [
                 .foregroundColor: UIColor.gray,
-                .font: UIFont.systemFont(ofSize: 15)
-            ])
+                .font: UIFont.systemFont(ofSize: 13.5)
+            ]
+        }
+        
+        static var accent: [NSAttributedString.Key: Any] {
+            return [
+                .foregroundColor: UIColor.systemBlue,
+                .font: UIFont.systemFont(ofSize: 14)
+            ]
+        }
+        
+        static var tagPlaceHolder: NSAttributedString {
+            return "Enter tags".with(attribute: self.placeHolder)
         }
         
         static func tagAttributeText(for tags: [String]) -> NSAttributedString {
             let tagWords = tags.map{ "#\($0)" }
             let allTagTexts = tagWords.joined(separator: "")
-            return allTagTexts.with(attribute: [
-                .foregroundColor: UIColor.systemBlue,
-                .font: UIFont.systemFont(ofSize: 15)
-            ])
+            return allTagTexts.with(attribute: self.accent)
+        }
+        
+        static func keyAndValue(_ key: String,
+                                _ keyword: String?) -> NSAttributedString {
+            let phrase = "\(key)   ".with(attribute: self.placeHolder)
+            let attrKeyword = keyword?.with(attribute: self.accent)
+            let mutable = NSMutableAttributedString(attributedString: phrase)
+            guard let attr = attrKeyword else {
+                return mutable
+            }
+            mutable.append(attr)
+            return mutable
         }
     }
     
@@ -74,7 +94,7 @@ extension MakeHoorayViewController {
         
         self.disposeBag.insert {
             
-            self.makeView.imageInputButton.rx.addTapgestureRecognizer()
+            self.makeView.inputImageView.rx.addTapgestureRecognizer()
                 .subscribe(onNext: { [weak self] _ in
                     self?.viewModel.requestEnterImage()
                 })
@@ -178,7 +198,8 @@ extension MakeHoorayViewController {
     }
     
     private func updateHoorayKeyword(_ text: String) {
-        self.makeView.keywordInputSectionView.innerView.text = "Hooray phrase: \(text)"
+        self.makeView.keywordInputSectionView.innerView.attributedText = Attribute
+            .keyAndValue("Hooray phrase", text)
     }
     
     private func updateHoorayTags(_ tags: [String]) {
@@ -188,9 +209,11 @@ extension MakeHoorayViewController {
     
     private func updateSelectedPlace(_ placeName: String?) {
         if let name = placeName, name.isNotEmpty {
-            self.makeView.placeInputSectionView.innerView.text = "Place: \(name)"
+            self.makeView.placeInputSectionView.innerView.attributedText = Attribute
+                .keyAndValue("Place", name)
         } else {
-            self.makeView.placeInputSectionView.innerView.text = "Select a place(Recommanded)"
+            self.makeView.placeInputSectionView.innerView.attributedText = "Select a place(Recommanded)"
+                .with(attribute: Attribute.placeHolder)
         }
     }
 }
