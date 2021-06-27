@@ -1,5 +1,5 @@
 //
-//  DIContainers.swift
+//  DependencyInjector.swift
 //  BreadRoadApp
 //
 //  Created by ParkHyunsoo on 2021/04/23.
@@ -18,7 +18,7 @@ import FirebaseService
 
 class HttpAPIImple: HttpAPI { }
 
-final class DIContainers {
+final class DependencyInjector {
     
     class Shared {
         
@@ -60,11 +60,11 @@ final class DIContainers {
     // TODO: messaging service 구현체는 firebaseService: FCMService
 }
 
-extension DIContainers: EmptyBuilder { }
+extension DependencyInjector: EmptyBuilder { }
 
 // MARK: - Repositories
 
-extension DIContainers {
+extension DependencyInjector {
     
     var remote: Remote {
         if AppEnvironment.isTestBuild {
@@ -97,7 +97,7 @@ extension DIContainers {
 
 // MARK: - Usecases
 
-extension DIContainers {
+extension DependencyInjector {
     
     var authUsecase: AuthUsecase {
         
