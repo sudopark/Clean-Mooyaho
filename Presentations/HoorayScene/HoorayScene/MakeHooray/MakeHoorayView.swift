@@ -69,7 +69,7 @@ final class MakeHoorayView: BaseUIView {
     let messageTextView = UITextView()
     let placeHolderLabel = UILabel()
     let keywordInputSectionView = HoorayInfoSectionView<UILabel>()
-    let tagInputSectionView = HoorayInfoSectionView<UITextView>()
+    let tagInputSectionView = HoorayInfoSectionView<UILabel>()
     let placeInputSectionView = HoorayInfoSectionView<UILabel>()
     let suggestPlaceCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: .init())
@@ -203,8 +203,6 @@ extension MakeHoorayView: Presenting {
         self.keywordInputSectionView.arrowImageView.isHidden = true
         
         self.tagInputSectionView.setupStyling()
-        self.tagInputSectionView.innerView.isEditable = false
-        self.tagInputSectionView.innerView.isScrollEnabled = false
         
         self.placeInputSectionView.setupStyling()
         self.placeInputSectionView.innerView.textColor = self.uiContext.colors.text

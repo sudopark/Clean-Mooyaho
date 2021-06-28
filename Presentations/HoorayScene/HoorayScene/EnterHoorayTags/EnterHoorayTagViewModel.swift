@@ -20,10 +20,11 @@ import CommonPresenting
 public protocol EnterHoorayTagViewModel: AnyObject {
 
     // interactor
-    func skipInput()
+    func close()
     func goNextInputStage(with tags: [String])
     
     // presenter
+    var previousInputTags: [String] { get }
     var goNextStepWithForm: Observable<NewHoorayForm> { get }
 }
 
@@ -59,11 +60,8 @@ public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
 
 extension EnterHoorayTagViewModelImple {
     
-    public func skipInput() {
-        self.router.closeScene(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.subjects.continueNext.onNext(self.form)
-        }
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
     
     public func goNextInputStage(with tags: [String]) {
@@ -79,6 +77,10 @@ extension EnterHoorayTagViewModelImple {
 // MARK: - EnterHoorayTagViewModelImple Presenter
 
 extension EnterHoorayTagViewModelImple {
+    
+    public var previousInputTags: [String] {
+        return self.form.tags
+    }
     
     public var goNextStepWithForm: Observable<NewHoorayForm> {
         return self.subjects.continueNext.asObservable()
