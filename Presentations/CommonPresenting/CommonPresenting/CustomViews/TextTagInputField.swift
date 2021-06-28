@@ -31,6 +31,11 @@ final class UUIDTagInputField: WSTagsField {
         let tagElement = WSTag(tag, context: UUID().uuidString)
         super.addTag(tagElement)
     }
+    
+    
+    override func becomeFirstResponder() -> Bool {
+        return self.textField.becomeFirstResponder()
+    }
 }
 
 public final class TextTagInputField: BaseUIView {
@@ -57,6 +62,10 @@ public final class TextTagInputField: BaseUIView {
     
     public required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    public override func becomeFirstResponder() -> Bool {
+        return self.underlyingTextField.becomeFirstResponder()
     }
 }
 
