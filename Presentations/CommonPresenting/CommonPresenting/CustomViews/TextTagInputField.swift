@@ -27,6 +27,12 @@ public struct TextTag {
 
 final class UUIDTagInputField: WSTagsField {
     
+    override func addTag(_ tag: WSTag) {
+        let context = tag.context ?? UUID().uuidString as AnyHashable
+        let tagElement = WSTag(tag.text, context: context)
+        super.addTag(tagElement)
+    }
+    
     override func addTag(_ tag: String) {
         let tagElement = WSTag(tag, context: UUID().uuidString)
         super.addTag(tagElement)
@@ -67,6 +73,10 @@ public final class TextTagInputField: BaseUIView {
     public override func becomeFirstResponder() -> Bool {
         return self.underlyingTextField.becomeFirstResponder()
     }
+    
+    public func appendTags(_ tagTexts: [String]) {
+        self.underlyingTextField.addTags(tagTexts)
+    }
 }
 
 
@@ -80,10 +90,10 @@ extension TextTagInputField: Presenting {
     
     public func setupStyling() {
         
-        self.underlyingTextField.contentInset = .init(top: 4, left: 0, bottom: 4, right: 0)
-        self.underlyingTextField.spaceBetweenLines = 10
-        self.underlyingTextField.spaceBetweenTags = 10
-        self.underlyingTextField.textField.returnKeyType = .continue
+        self.underlyingTextField.textField.returnKeyType = .default
+        self.underlyingTextField.acceptTagOption = .space
+        self.underlyingTextField.layoutMargins = UIEdgeInsets(top: 2, left: 1, bottom: 2, right: 1)
+        self.underlyingTextField.tintColor = .systemBlue.withAlphaComponent(0.95)
     }
 }
 

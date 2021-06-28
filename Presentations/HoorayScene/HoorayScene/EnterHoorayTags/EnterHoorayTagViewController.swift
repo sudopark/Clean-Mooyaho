@@ -91,7 +91,7 @@ extension EnterHoorayTagViewController {
     
     private func setupPreviousInputTags(_ tags: [String]) {
         
-        
+        self.tagInputView.appendTags(tags)
     }
 }
 
