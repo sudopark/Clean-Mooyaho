@@ -43,7 +43,7 @@ public final class MakeHoorayViewController: BaseViewController, MakeHoorayScene
         
         static func tagAttributeText(for tags: [String]) -> NSAttributedString {
             let tagWords = tags.map{ "#\($0)" }
-            let allTagTexts = tagWords.joined(separator: "")
+            let allTagTexts = tagWords.joined(separator: " ")
             return allTagTexts.with(attribute: self.accent)
         }
         

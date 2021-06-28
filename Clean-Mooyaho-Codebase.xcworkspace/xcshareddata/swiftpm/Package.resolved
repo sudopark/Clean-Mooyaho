@@ -66,11 +66,11 @@
       },
       {
         "package": "WSTagsField",
-        "repositoryURL": "https://github.com/whitesmith/WSTagsField.git",
+        "repositoryURL": "https://github.com/sudopark/WSTagsField.git",
         "state": {
-          "branch": null,
-          "revision": "4a3f36d1903554bb6b65df0e7936df9bb95d7525",
-          "version": "5.4.0"
+          "branch": "master",
+          "revision": "9672b47440a003b841a1c9cb1662ccc7a917f9d6",
+          "version": null
         }
       }
     ]

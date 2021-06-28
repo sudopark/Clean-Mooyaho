@@ -41,7 +41,6 @@
 		F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBF2669DF950027800F /* Scenes+Place.swift */; };
 		F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC12669DF9E0027800F /* Scenes+Location.swift */; };
 		F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TextTagInputField.swift */; };
-		F6502DCC266A12D10027800F /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6502DCB266A12D10027800F /* WSTagsField */; };
 		F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */; };
 		F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE8266CB3A00027800F /* LoadingView.swift */; };
 		F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DEA266CB6F80027800F /* LoadingButton.swift */; };
@@ -62,6 +61,7 @@
 		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
+		F6DA9274268A338800EA67EE /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6DA9273268A338800EA67EE /* WSTagsField */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
@@ -155,7 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6502DCC266A12D10027800F /* WSTagsField in Frameworks */,
+				F6DA9274268A338800EA67EE /* WSTagsField in Frameworks */,
 				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
@@ -413,7 +413,7 @@
 			name = CommonPresenting;
 			packageProductDependencies = (
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
-				F6502DCB266A12D10027800F /* WSTagsField */,
+				F6DA9273268A338800EA67EE /* WSTagsField */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -466,7 +466,7 @@
 			mainGroup = 2B39E24526387B6A003EE954;
 			packageReferences = (
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				F6502DCA266A12D10027800F /* XCRemoteSwiftPackageReference "WSTagsField" */,
+				F6DA9272268A338800EA67EE /* XCRemoteSwiftPackageReference "WSTagsField" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -827,12 +827,12 @@
 				minimumVersion = 6.3.0;
 			};
 		};
-		F6502DCA266A12D10027800F /* XCRemoteSwiftPackageReference "WSTagsField" */ = {
+		F6DA9272268A338800EA67EE /* XCRemoteSwiftPackageReference "WSTagsField" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/whitesmith/WSTagsField.git";
+			repositoryURL = "https://github.com/sudopark/WSTagsField.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.4.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -843,9 +843,9 @@
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		F6502DCB266A12D10027800F /* WSTagsField */ = {
+		F6DA9273268A338800EA67EE /* WSTagsField */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6502DCA266A12D10027800F /* XCRemoteSwiftPackageReference "WSTagsField" */;
+			package = F6DA9272268A338800EA67EE /* XCRemoteSwiftPackageReference "WSTagsField" */;
 			productName = WSTagsField;
 		};
 /* End XCSwiftPackageProductDependency section */
