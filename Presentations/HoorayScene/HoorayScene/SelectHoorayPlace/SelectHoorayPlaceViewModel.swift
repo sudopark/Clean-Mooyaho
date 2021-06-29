@@ -171,6 +171,16 @@ extension SelectHoorayPlaceViewModelImple {
     }
     
     public var cellViewModels: Observable<[SuggestPlaceCellViewModel]> {
+        
+//        let dummies: [SuggestPlaceCellViewModel] = (0..<30).map {
+//            let snip = PlaceSnippet(placeID: "id:\($0)", title: "title:\($0)", latt: Double($0), long: Double($0))
+//            var sender = SuggestPlaceCellViewModel(snippet: snip)
+//            sender.distance = "\($0)m"
+//            return sender
+//        }
+//
+//        return .just(dummies)
+        
         return self.subjects.cellViewModels.asObservable()
     }
     

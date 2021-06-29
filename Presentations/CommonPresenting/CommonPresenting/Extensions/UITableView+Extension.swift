@@ -30,8 +30,7 @@ extension UITableView {
         return cell
     }
     
-    public func dequeueHeaderFooterView<V: UITableViewHeaderFooterView>(_ viewType: V.Type,
-                                                                        with customIdentifier: String? = nil) -> V {
+    public func dequeueHeaderFooterView<V: UITableViewHeaderFooterView>(with customIdentifier: String? = nil) -> V {
         let identifier = customIdentifier ?? String(describing: V.self)
         guard let view = self.dequeueReusableHeaderFooterView(withIdentifier: identifier) as? V else {
             fatalError("not registered headerFooterView..")
