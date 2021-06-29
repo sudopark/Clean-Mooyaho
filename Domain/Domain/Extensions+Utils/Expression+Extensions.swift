@@ -15,6 +15,10 @@ extension Bool {
         guard self else { return }
         action()
     }
+    
+    public func invert() -> Bool {
+        return !self
+    }
 }
 
 extension Optional {

@@ -78,19 +78,11 @@ extension NearbyViewController {
     }
     
     private func updateCameraPosition(_ position: MapCameraPosition) {
-        guard let manualLocationCenter = position.center else {
-            self.refreshUserLocation()
+        guard let center = position.center else {
+            self.mapView.updateCameraToUserLocation()
             return
         }
-        let center = manualLocationCenter
-        let region = MKCoordinateRegion(center: center, latitudinalMeters: 1_500, longitudinalMeters: 1_500)
-        self.mapView.setRegion(region, animated: false)
-    }
-    
-    private func refreshUserLocation() {
-        let location = self.mapView.userLocation
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1_500, longitudinalMeters: 1_500)
-        self.mapView.setRegion(region, animated: true)
+        self.mapView.updateCameraPosition(latt: center.latitude, long: center.longitude)
     }
 }
 
