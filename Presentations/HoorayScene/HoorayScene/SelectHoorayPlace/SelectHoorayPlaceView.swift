@@ -27,8 +27,8 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
         
         self.addSubview(searchBar)
         searchBar.autoLayout.active {
-            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         }
         self.searchBar.setupLayout()
@@ -67,6 +67,11 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
         
         self.searchBar.setupStyling()
         
+        self.addPlaceButton.setImage(UIImage(named: "plus.circle.fill"), for: .normal)
+        self.addPlaceButton.backgroundColor = .white
+        self.addPlaceButton.layer.cornerRadius = 15
+        self.addPlaceButton.clipsToBounds = true
+        
         self.refreshButton.setImage(UIImage(named: "arrow.clockwise.circle.fill"), for: .normal)
     }
 }
@@ -87,17 +92,18 @@ final class SelectHooraySuggestSectionHeaderView: BaseTableViewSectionHeaderFoot
         
         self.contentView.addSubview(label)
         label.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 4)
         }
     }
     
     func setupStyling() {
         
         self.label.numberOfLines = 1
-        self.label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        self.label.textColor = .gray
-        self.label.text = "Search result".localized
+        self.label.text = "Select a place".localized
+        self.label.font = UIFont.systemFont(ofSize: 13)
+        self.label.textColor = self.uiContext.colors.text.withAlphaComponent(0.4)
+        self.backgroundColor = self.uiContext.colors.appBackground
     }
 }
 
@@ -129,7 +135,7 @@ extension SelectHooraySuggestPlaceCell: Presenting {
         
         self.contentView.addSubview(checkImageView)
         checkImageView.autoLayout.active(with: self.contentView) {
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
             $0.widthAnchor.constraint(equalToConstant: 20)
             $0.heightAnchor.constraint(equalToConstant: 20)
@@ -137,7 +143,7 @@ extension SelectHooraySuggestPlaceCell: Presenting {
         
         self.contentView.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
             $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
             $0.trailingAnchor.constraint(equalTo: checkImageView.leadingAnchor, constant: -8)
         }
@@ -145,7 +151,7 @@ extension SelectHooraySuggestPlaceCell: Presenting {
         self.contentView.addSubview(distanceLabel)
         distanceLabel.autoLayout.active {
             $0.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -6)
+            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6)
             $0.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -8)
             $0.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor)
         }
@@ -154,7 +160,7 @@ extension SelectHooraySuggestPlaceCell: Presenting {
     func setupStyling() {
         
         self.titleLabel.textColor = self.uiContext.colors.text
-        self.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        self.titleLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         
         self.distanceLabel.textColor = .darkGray
         self.distanceLabel.font = UIFont.systemFont(ofSize: 12)
@@ -165,21 +171,63 @@ extension SelectHooraySuggestPlaceCell: Presenting {
 }
 
 
+// MARK: - SelectPlaceEmptyResultView
+
+final class SelectPlaceEmptyResultView: BaseUIView, Presenting {
+    
+    let descriptionLabel = UILabel()
+    let addPlaceButton = UIButton(type: .system)
+    
+    func setupLayout() {
+        
+        self.addSubview(descriptionLabel)
+        descriptionLabel.autoLayout.active(with: self) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 100)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+        }
+        
+        self.addSubview(addPlaceButton)
+        addPlaceButton.autoLayout.active(with: descriptionLabel) {
+            $0.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 8)
+        }
+    }
+    
+    func setupStyling() {
+        
+        self.descriptionLabel.decorate(self.uiContext.deco.placeHolder)
+        self.descriptionLabel.text = "No results were found for the place search.".localized
+        self.descriptionLabel.textAlignment = .center
+        
+        let attr: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.systemBlue,
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ]
+        self.addPlaceButton.setAttributedTitle("Add Place".with(attribute: attr), for: .normal)
+    }
+}
+
+
 // MARK: - SelectHoorayView
 
-final class SelectHoorayView: BaseUIView, Presenting {
+final class SelectHoorayPlaceView: BaseUIView, Presenting {
     
     let headerView = SelectHoorayHeaderView()
     let tableView = UITableView()
     let confirmButton = UIButton(type: .system)
+    let emptyView = SelectPlaceEmptyResultView()
     
     func setupLayout() {
         
         self.addSubview(confirmButton)
         confirmButton.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor,
+                                         constant: -20)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
         
         self.addSubview(tableView)
@@ -187,7 +235,7 @@ final class SelectHoorayView: BaseUIView, Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         
         self.addSubview(headerView)
@@ -196,9 +244,11 @@ final class SelectHoorayView: BaseUIView, Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-            $0.heightAnchor.constraint(equalTo: $0.widthAnchor, multiplier: 0.7)
+            $0.heightAnchor.constraint(equalToConstant: 200)
         }
         self.headerView.setupLayout()
+        
+        self.bringSubviewToFront(self.confirmButton)
     }
     
     func setupStyling() {
@@ -207,5 +257,18 @@ final class SelectHoorayView: BaseUIView, Presenting {
         self.tableView.registerHeaderFooter(SelectHooraySuggestSectionHeaderView.self)
         self.tableView.registerCell(SelectHooraySuggestPlaceCell.self)
         self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.separatorStyle = .none
+        self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
+        
+        self.tableView.backgroundView = self.emptyView
+        self.emptyView.setupLayout()
+        self.emptyView.setupStyling()
+        self.emptyView.isHidden = true
+        
+        self.confirmButton.layer.cornerRadius = 5
+        self.confirmButton.clipsToBounds = true
+        self.confirmButton.backgroundColor = UIColor.systemBlue
+        self.confirmButton.setTitle("Confirm", for: .normal)
+        self.confirmButton.setTitleColor(.white, for: .normal)
     }
 }

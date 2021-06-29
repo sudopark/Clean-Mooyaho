@@ -19,7 +19,7 @@ import CommonPresenting
 
 public final class SelectHoorayPlaceViewController: BaseViewController, SelectHoorayPlaceScene {
     
-    let selectView = SelectHoorayView()
+    let selectView = SelectHoorayPlaceView()
     let viewModel: SelectHoorayPlaceViewModel
     
     private typealias CellViewModel = SuggestPlaceCellViewModel
@@ -62,8 +62,9 @@ extension SelectHoorayPlaceViewController {
     private func bind() {
         
         self.viewModel.isFinishInputEnabled
+            .map{ $0.invert() }
             .asDriver(onErrorDriveWith: .never())
-            .drive(self.selectView.confirmButton.rx.isEnabled)
+            .drive(self.selectView.confirmButton.rx.isHidden)
             .disposed(by: self.disposeBag)
         
         self.selectView.headerView.searchBar.rx.text
@@ -96,13 +97,23 @@ extension SelectHoorayPlaceViewController {
                 self?.bindTableView()
             })
             .disposed(by: self.disposeBag)
+        
+        let addTriggers = Observable.merge(self.selectView.emptyView.addPlaceButton.rx.tap.asObservable(),
+                                           self.selectView.headerView.addPlaceButton.rx.tap.asObservable())
+        addTriggers
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.registerNewPlace()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindMapView() {
         self.viewModel.currentUserLocation
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] location in
-                // update user location on map -> move camera
+                self?.selectView.headerView.mapView
+                    .updateCameraPosition(latt: location.lattitude, long: location.longitude,
+                                          zoomDistanceLevel: 500)
             })
             .disposed(by: self.disposeBag)
 
@@ -130,9 +141,15 @@ extension SelectHoorayPlaceViewController {
         
         self.dataSource = self.makeDataSource()
         
+        let updateEmptyViewVisibility: ([Section]) -> Void = { [weak self] section in
+            let isEmpty = section.first?.items.isEmpty ?? true
+            self?.selectView.emptyView.isHidden = isEmpty == false
+        }
+        
         self.viewModel.cellViewModels
             .map{ [Section(model: "suggests", items: $0)] }
             .asDriver(onErrorDriveWith: .never())
+            .do(onNext: updateEmptyViewVisibility)
             .drive(self.selectView.tableView.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
         
@@ -162,8 +179,13 @@ extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
     
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueCell()
+        let headerView: SelectHooraySuggestSectionHeaderView = tableView.dequeueHeaderFooterView()
         return headerView
+    }
+    
+    public func tableView(_ tableView: UITableView,
+                          willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = self.uiContext.colors.appBackground
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

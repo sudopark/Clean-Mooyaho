@@ -20,7 +20,7 @@
 		F6502DE7266CB0040027800F /* MakeHoorayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE6266CB0040027800F /* MakeHoorayView.swift */; };
 		F66CD928266FC1C60031EEC5 /* EnterHoorayTagScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD927266FC1C60031EEC5 /* EnterHoorayTagScene.swift */; };
 		F66CD92A266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD929266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift */; };
-		F66CD930267104D30031EEC5 /* SelectHoorayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD92F267104D30031EEC5 /* SelectHoorayView.swift */; };
+		F66CD930267104D30031EEC5 /* SelectHoorayPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD92F267104D30031EEC5 /* SelectHoorayPlaceView.swift */; };
 		F68CA1D12669202C00344045 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D02669202C00344045 /* Common3rdParty.framework */; };
 		F68CA1D52669203100344045 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D42669203100344045 /* CommonPresenting.framework */; };
 		F68CA1D82669203600344045 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D72669203600344045 /* Domain.framework */; };
@@ -63,7 +63,7 @@
 		F6502DE6266CB0040027800F /* MakeHoorayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayView.swift; sourceTree = "<group>"; };
 		F66CD927266FC1C60031EEC5 /* EnterHoorayTagScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterHoorayTagScene.swift; sourceTree = "<group>"; };
 		F66CD929266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectHoorayPlaceViewModelTests.swift; sourceTree = "<group>"; };
-		F66CD92F267104D30031EEC5 /* SelectHoorayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectHoorayView.swift; sourceTree = "<group>"; };
+		F66CD92F267104D30031EEC5 /* SelectHoorayPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectHoorayPlaceView.swift; sourceTree = "<group>"; };
 		F68CA1D02669202C00344045 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1D42669203100344045 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1D72669203600344045 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,7 +208,7 @@
 				F6F295C0266E6E2A00CDF980 /* SelectHoorayPlaceViewController.swift */,
 				F6F295C2266E6E2A00CDF980 /* SelectHoorayPlaceScene.swift */,
 				F6F295C3266E6E2A00CDF980 /* SelectHoorayPlaceViewModel.swift */,
-				F66CD92F267104D30031EEC5 /* SelectHoorayView.swift */,
+				F66CD92F267104D30031EEC5 /* SelectHoorayPlaceView.swift */,
 			);
 			path = SelectHoorayPlace;
 			sourceTree = "<group>";
@@ -326,7 +326,7 @@
 				F6F295BB266E673E00CDF980 /* EnterHoorayTagViewController.swift in Sources */,
 				F6502DDE266CA7730027800F /* WaitNextHoorayViewController.swift in Sources */,
 				F6F295BE266E673E00CDF980 /* EnterHoorayTagViewModel.swift in Sources */,
-				F66CD930267104D30031EEC5 /* SelectHoorayView.swift in Sources */,
+				F66CD930267104D30031EEC5 /* SelectHoorayPlaceView.swift in Sources */,
 				F6502DB02669D68E0027800F /* MakeHoorayViewController.swift in Sources */,
 				F6F295C4266E6E2A00CDF980 /* SelectHoorayPlaceRouter.swift in Sources */,
 				F6F295BA266E673E00CDF980 /* EnterHoorayTagRouter.swift in Sources */,

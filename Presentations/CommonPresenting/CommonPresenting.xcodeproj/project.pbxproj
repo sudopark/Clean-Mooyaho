@@ -62,6 +62,8 @@
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
 		F6DA9274268A338800EA67EE /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6DA9273268A338800EA67EE /* WSTagsField */; };
+		F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9275268B815A00EA67EE /* UIView+Extension.swift */; };
+		F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
@@ -140,6 +142,8 @@
 		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
 		F6DA564126889A6000032348 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
+		F6DA9275268B815A00EA67EE /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extension.swift"; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickPermissionCheckService.swift; sourceTree = "<group>"; };
@@ -311,6 +315,8 @@
 				F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */,
 				F6DA564126889A6000032348 /* Notification+Extensions.swift */,
 				F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */,
+				F6DA9275268B815A00EA67EE /* UIView+Extension.swift */,
+				F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -514,6 +520,7 @@
 				F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */,
 				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
+				F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
 				F65215852674A395000CAB4B /* TextInputBuilder.swift in Sources */,
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
@@ -529,6 +536,7 @@
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
 				F65215842674A395000CAB4B /* TextInputViewController.swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
+				F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */,
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
 				F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */,
