@@ -78,6 +78,8 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
     
     func setupStyling() {
         
+        self.backgroundColor = self.uiContext.colors.appBackground
+        
         self.mapView.isZoomEnabled = true
         self.mapView.isScrollEnabled = true
         self.mapView.showsUserLocation = false
@@ -203,7 +205,7 @@ final class SelectPlaceEmptyResultView: BaseUIView, Presenting {
         
         self.addSubview(descriptionLabel)
         descriptionLabel.autoLayout.active(with: self) {
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 150)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: -10)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
         }
@@ -236,7 +238,7 @@ final class SelectPlaceEmptyResultView: BaseUIView, Presenting {
 final class SelectHoorayPlaceView: BaseUIView, Presenting {
     
     let headerView = SelectHoorayHeaderView()
-    let tableView = UITableView()
+    let tableView = UITableView(frame: .zero, style: .grouped)
     let confirmButton = UIButton(type: .system)
     let emptyView = SelectPlaceEmptyResultView()
     
@@ -255,23 +257,22 @@ final class SelectHoorayPlaceView: BaseUIView, Presenting {
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
         
+        self.addSubview(headerView)
+        headerView.autoLayout.active(with: self) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 300)
+        }
+        self.headerView.setupLayout()
+        
         self.addSubview(tableView)
         tableView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.topAnchor.constraint(equalTo: headerView.bottomAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
-        
-        self.addSubview(headerView)
-        self.tableView.tableHeaderView = headerView
-        headerView.autoLayout.active(with: self.tableView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 320)
-        }
-        self.headerView.setupLayout()
         
         self.bringSubviewToFront(self.confirmButton)
     }
@@ -286,6 +287,7 @@ final class SelectHoorayPlaceView: BaseUIView, Presenting {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.separatorStyle = .none
         self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
+        self.tableView.backgroundColor = self.uiContext.colors.appBackground
         
         self.tableView.backgroundView = self.emptyView
         self.emptyView.setupLayout()
@@ -309,18 +311,18 @@ public class PlaceAnnotation: NSObject, MKAnnotation {
     @objc public dynamic var coordinate: CLLocationCoordinate2D
     public let title: String?
     public let subtitle: String?
-    public let iconName: String?
     public let placeID: String
+    public let isSelected: Bool
     
     public init(placeID: String,
                 latt: Double, long: Double,
                 title: String, subtitle: String? = nil,
-                iconName: String? = nil) {
+                isSelected: Bool) {
         
         self.placeID = placeID
         self.coordinate = .init(latitude: latt, longitude: long)
         self.title = title
         self.subtitle = subtitle
-        self.iconName = iconName
+        self.isSelected = isSelected
     }
 }

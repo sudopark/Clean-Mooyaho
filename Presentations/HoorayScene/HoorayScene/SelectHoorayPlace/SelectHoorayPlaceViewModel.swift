@@ -52,8 +52,6 @@ public protocol SelectHoorayPlaceViewModel: AnyObject {
     // presenter
     var currentUserLocation: Observable<LastLocation> { get }
     var cellViewModels: Observable<[SuggestPlaceCellViewModel]> { get }
-    var annotationModels: Observable<[SuggestPlaceCellViewModel]> { get }
-    var deselectPlaceID: Observable<String> { get }
     var selectedPlaceID: Observable<String> { get }
     var isFinishInputEnabled: Observable<Bool> { get }
     var goNextStepWithForm: Observable<NewHoorayForm> { get }
@@ -177,27 +175,6 @@ extension SelectHoorayPlaceViewModelImple {
         return self.subjects.cellViewModels.asObservable()
     }
     
-    public var annotationModels: Observable<[SuggestPlaceCellViewModel]> {
-        
-        let compareByID: ([CVM], [CVM]) -> Bool = { lhs, rhs in
-            return lhs.map{ $0.placeID } == rhs.map{ $0.placeID }
-        }
-        return self.subjects.cellViewModels
-            .distinctUntilChanged(compareByID)
-    }
-    
-    public var deselectPlaceID: Observable<String> {
-        let previouSelected = self.subjects.selectedPlaceID
-        let currentSelected = self.subjects.selectedPlaceID.skip(1)
-        let filterPreviousSelectedID: (String?, String?) -> String? = { previous, _ in
-            return previous
-        }
-        
-        return Observable.zip(previouSelected, currentSelected)
-            .map(filterPreviousSelectedID)
-            .compactMap{ $0 }
-    }
-    
     public var selectedPlaceID: Observable<String> {
         return self.subjects.selectedPlaceID.compactMap{ $0 }
     }
@@ -222,9 +199,28 @@ extension SelectHoorayPlaceViewModelImple {
     
     private var suggestedCellViewModels: Observable<[CVM]> {
         
+        // MARK: - Test
+//        let center = (37.33233141, -122.0312186)
+//        let grid = 0.0001
+//
+//        let dummies: () -> [SuggestPlaceCellViewModel] = {
+//            return (0..<30).map {
+//                let latt = center.0 + Double.random(in: 5..<50) * grid
+//                let long = center.1 + Double.random(in: 5..<50) * grid
+//                let snip = PlaceSnippet(placeID: "id:\($0)", title: "title:\($0)", latt: latt, long: long)
+//                var sender = SuggestPlaceCellViewModel(snippet: snip)
+//                sender.distance = "\($0)m"
+//                return sender
+//            }
+//        }
+//
+//        let cellViewModels: Observable<[CVM]> = .just(dummies())
+        // MARK: - Test end
+
+        
         let cellViewModels = self.suggestPlaceUsecase.placeSuggestResult
             .map{ $0?.places.asCellViewModels() ?? [] }
-        
+//
         let applySelectedInfo: ([CVM], String?) -> [CVM] = { cellViewModels, selectedID in
             return cellViewModels.toggleSelected(selectedID)
         }
