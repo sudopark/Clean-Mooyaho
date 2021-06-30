@@ -16,6 +16,8 @@ open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
     
     public var disposeBag = DisposeBag()
     
+    open var useSelectedEffect: Bool { false }
+    
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.afterViewInit()
@@ -25,7 +27,10 @@ open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
         fatalError()
     }
     
-    open override func setSelected(_ selected: Bool, animated: Bool) { }
+    open override func setSelected(_ selected: Bool, animated: Bool) {
+        guard useSelectedEffect else { return }
+        super.setSelected(selected, animated: animated)
+    }
     
     open func afterViewInit() {
         

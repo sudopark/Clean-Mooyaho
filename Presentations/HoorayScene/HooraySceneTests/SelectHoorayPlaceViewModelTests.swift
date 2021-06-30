@@ -153,43 +153,6 @@ extension SelectHoorayPlaceViewModelTests {
         XCTAssertEqual(selectedID, "uid:3")
     }
     
-    func testViewModel_provideAnnotationModels_withoutSelectInfo() {
-        // given
-        let expect = expectation(description: "선택 정보와 관련없이 어노테이션 모델 방출")
-        self.stubDefaultList()
-        
-        // when
-        self.initViewModel()
-        let annotationModels = self.waitElements(expect, for: self.viewModel.annotationModels) {
-            self.viewModel.toggleUpdateSelected("uid:3")
-            self.viewModel.toggleUpdateSelected("uid:4")
-        }
-        
-        // then
-        XCTAssertEqual(annotationModels.count, 1)
-    }
-    
-    func testViewModel_whenSelectedPlaceIDChanegs_emitDeselectEvent() {
-        // given
-        let expect = expectation(description: "선택된 플레이스 아이디 변경시에 선택해제 이벤트도 같이 방출")
-        expect.expectedFulfillmentCount = 4
-        self.stubDefaultList()
-        
-        // when
-        self.initViewModel()
-        let deselectIDs = self.waitElements(expect, for: self.viewModel.deselectPlaceID) {
-            self.viewModel.toggleUpdateSelected("uid:3")
-            self.viewModel.toggleUpdateSelected("uid:4")    // -> 3
-            self.viewModel.toggleUpdateSelected("uid:5")    // -> 4
-            self.viewModel.toggleUpdateSelected("uid:5")    // -> toggle off -> 5
-            self.viewModel.toggleUpdateSelected("uid:5")    // -> toggle on -> ignore
-            self.viewModel.toggleUpdateSelected("uid:5")    // -> toggle off -> 5
-        }
-        
-        // then
-        XCTAssertEqual(deselectIDs, ["uid:3", "uid:4", "uid:5", "uid:5"])
-    }
-    
     // 항목 선택시에 입력종료 버튼 활성화
     func testViewModel_updateFinishInputEnable_bySelectedInfo() {
         // given
