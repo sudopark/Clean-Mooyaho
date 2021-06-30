@@ -21,6 +21,8 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
     let mapView = MKMapView()
     let addPlaceButton = UIButton(type: .system)
     let searchBar = SearchBar()
+    let controlButtonsView = UIView()
+    let controlLineView = UIView()
     let refreshButton = UIButton(type: .system)
     
     func setupLayout() {
@@ -41,20 +43,36 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
             $0.bottomAnchor.constraint(equalTo: searchBar.topAnchor)
         }
         
-        self.addSubview(addPlaceButton)
-        addPlaceButton.autoLayout.active(with: self.mapView) {
-            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.widthAnchor.constraint(equalToConstant: 30)
-            $0.heightAnchor.constraint(equalToConstant: 30)
+        self.addSubview(controlButtonsView)
+        controlButtonsView.autoLayout.active(with: self.mapView) {
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -6)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -12)
         }
         
-        self.addSubview(refreshButton)
-        refreshButton.autoLayout.active(with: self.mapView) {
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -16)
-            $0.widthAnchor.constraint(equalToConstant: 20)
-            $0.heightAnchor.constraint(equalToConstant: 20)
+        controlButtonsView.addSubview(addPlaceButton)
+        addPlaceButton.autoLayout.active(with: self.controlButtonsView) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 6)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -6)
+            $0.widthAnchor.constraint(equalToConstant: 22)
+            $0.heightAnchor.constraint(equalToConstant: 22)
+        }
+        
+        controlButtonsView.addSubview(controlLineView)
+        controlLineView.autoLayout.active(with: self.controlButtonsView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.topAnchor.constraint(equalTo: addPlaceButton.bottomAnchor, constant: 6)
+            $0.heightAnchor.constraint(equalToConstant: 0.5)
+        }
+        
+        controlButtonsView.addSubview(refreshButton)
+        refreshButton.autoLayout.active(with: self.controlButtonsView) {
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.topAnchor.constraint(equalTo: controlLineView.bottomAnchor, constant: 6)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -6)
+            $0.widthAnchor.constraint(equalToConstant: 22)
+            $0.heightAnchor.constraint(equalToConstant: 22)
         }
     }
     
@@ -67,12 +85,15 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
         
         self.searchBar.setupStyling()
         
-        self.addPlaceButton.setImage(UIImage(named: "plus.circle.fill"), for: .normal)
-        self.addPlaceButton.backgroundColor = .white
-        self.addPlaceButton.layer.cornerRadius = 15
-        self.addPlaceButton.clipsToBounds = true
+        self.controlButtonsView.backgroundColor = self.uiContext.colors.appBackground.withAlphaComponent(0.8)
+        self.controlButtonsView.layer.cornerRadius = 5
+        self.controlButtonsView.clipsToBounds = true
+        self.controlLineView.backgroundColor = self.uiContext.colors.text.withAlphaComponent(0.1)
         
-        self.refreshButton.setImage(UIImage(named: "arrow.clockwise.circle.fill"), for: .normal)
+        self.addPlaceButton.setImage(UIImage(named: "plus.circle"), for: .normal)
+        self.addPlaceButton.tintColor = .lightGray
+        self.refreshButton.setImage(UIImage(named: "location.fill"), for: .normal)
+        self.refreshButton.tintColor = .lightGray
     }
 }
 
@@ -182,7 +203,7 @@ final class SelectPlaceEmptyResultView: BaseUIView, Presenting {
         
         self.addSubview(descriptionLabel)
         descriptionLabel.autoLayout.active(with: self) {
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 100)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 150)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
         }
@@ -219,6 +240,10 @@ final class SelectHoorayPlaceView: BaseUIView, Presenting {
     let confirmButton = UIButton(type: .system)
     let emptyView = SelectPlaceEmptyResultView()
     
+    var mapView: MKMapView {
+        return self.headerView.mapView
+    }
+    
     func setupLayout() {
         
         self.addSubview(confirmButton)
@@ -244,7 +269,7 @@ final class SelectHoorayPlaceView: BaseUIView, Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 200)
+            $0.heightAnchor.constraint(equalToConstant: 320)
         }
         self.headerView.setupLayout()
         
@@ -253,6 +278,8 @@ final class SelectHoorayPlaceView: BaseUIView, Presenting {
     
     func setupStyling() {
         self.headerView.setupStyling()
+        
+        self.mapView.registerMarkerAnnotationView(for: PlaceAnnotation.self)
         
         self.tableView.registerHeaderFooter(SelectHooraySuggestSectionHeaderView.self)
         self.tableView.registerCell(SelectHooraySuggestPlaceCell.self)
@@ -270,5 +297,30 @@ final class SelectHoorayPlaceView: BaseUIView, Presenting {
         self.confirmButton.backgroundColor = UIColor.systemBlue
         self.confirmButton.setTitle("Confirm", for: .normal)
         self.confirmButton.setTitleColor(.white, for: .normal)
+    }
+}
+
+
+
+// MARK: - SelectPlaceAnnotationView
+
+public class PlaceAnnotation: NSObject, MKAnnotation {
+    
+    @objc public dynamic var coordinate: CLLocationCoordinate2D
+    public let title: String?
+    public let subtitle: String?
+    public let iconName: String?
+    public let placeID: String
+    
+    public init(placeID: String,
+                latt: Double, long: Double,
+                title: String, subtitle: String? = nil,
+                iconName: String? = nil) {
+        
+        self.placeID = placeID
+        self.coordinate = .init(latitude: latt, longitude: long)
+        self.title = title
+        self.subtitle = subtitle
+        self.iconName = iconName
     }
 }

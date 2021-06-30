@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 import RxSwift
 import RxCocoa
@@ -120,7 +121,15 @@ extension SelectHoorayPlaceViewController {
         self.viewModel.cellViewModels
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] cellViewModels in
-                // toggle icons and selected icon on map
+                self?.updateAnnotations(cellViewModels.map{ $0.asAnnotation()} )
+            })
+            .disposed(by: self.disposeBag)
+        
+        Observable.merge(self.viewModel.deselectPlaceID.map{ ($0, false) },
+                         self.viewModel.selectedPlaceID.map{ ($0, true) })
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] (placeID, shouldOn) in
+                self?.updateAnnotationSelection(placeID, isOn: shouldOn)
             })
             .disposed(by: self.disposeBag)
     }
@@ -161,6 +170,44 @@ extension SelectHoorayPlaceViewController {
     }
 }
 
+
+// MARK: - handle mkmapview delegate
+
+extension SelectHoorayPlaceViewController: MKMapViewDelegate {
+    
+    private func updateAnnotations(_ newAnnotations: [PlaceAnnotation]) {
+        
+        let previousOne = self.selectView.mapView.annotations
+        self.selectView.mapView.removeAnnotations(previousOne)
+        
+        self.selectView.mapView.addAnnotations(newAnnotations)
+    }
+    
+    private func updateAnnotationSelection(_ placeID: String, isOn: Bool) {
+        let annotations = self.selectView.mapView.annotations.compactMap{ $0 as? PlaceAnnotation }
+        guard let annotation = annotations.first(where: { $0.placeID == placeID }) else { return }
+        
+        isOn ? self.selectView.mapView.selectAnnotation(annotation, animated: true)
+            : self.selectView.mapView.deselectAnnotation(annotation, animated: false)
+    }
+    
+    public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        guard annotation.isUserLocation == false else { return nil }
+        
+        guard let placeAnnotation = annotation as? PlaceAnnotation else { return nil }
+        let annotationView = mapView.deqeueMarketAnnotationView(for: placeAnnotation)
+        
+        annotationView.canShowCallout = true
+        
+        let detailButton = UIButton(type: .detailDisclosure)
+        annotationView.rightCalloutAccessoryView = detailButton
+        
+        return annotationView
+    }
+}
+
+
 // MARK: - setup presenting
 
 extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
@@ -175,6 +222,7 @@ extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
     public func setupStyling() {
         self.selectView.setupStyling()
         self.selectView.tableView.delegate = self
+        self.selectView.mapView.delegate = self
     }
     
     
@@ -190,5 +238,17 @@ extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
+    }
+}
+
+
+
+extension SuggestPlaceCellViewModel {
+    
+    func asAnnotation() -> PlaceAnnotation {
+        
+        return PlaceAnnotation(placeID: self.placeID,
+                               latt: self.position.latt, long: self.position.long,
+                               title: self.title,  subtitle: self.distance)
     }
 }

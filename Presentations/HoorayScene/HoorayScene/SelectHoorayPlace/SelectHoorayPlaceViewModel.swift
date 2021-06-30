@@ -52,6 +52,8 @@ public protocol SelectHoorayPlaceViewModel: AnyObject {
     // presenter
     var currentUserLocation: Observable<LastLocation> { get }
     var cellViewModels: Observable<[SuggestPlaceCellViewModel]> { get }
+    var annotationModels: Observable<[SuggestPlaceCellViewModel]> { get }
+    var deselectPlaceID: Observable<String> { get }
     var selectedPlaceID: Observable<String> { get }
     var isFinishInputEnabled: Observable<Bool> { get }
     var goNextStepWithForm: Observable<NewHoorayForm> { get }
@@ -172,16 +174,28 @@ extension SelectHoorayPlaceViewModelImple {
     
     public var cellViewModels: Observable<[SuggestPlaceCellViewModel]> {
         
-//        let dummies: [SuggestPlaceCellViewModel] = (0..<30).map {
-//            let snip = PlaceSnippet(placeID: "id:\($0)", title: "title:\($0)", latt: Double($0), long: Double($0))
-//            var sender = SuggestPlaceCellViewModel(snippet: snip)
-//            sender.distance = "\($0)m"
-//            return sender
-//        }
-//
-//        return .just(dummies)
-        
         return self.subjects.cellViewModels.asObservable()
+    }
+    
+    public var annotationModels: Observable<[SuggestPlaceCellViewModel]> {
+        
+        let compareByID: ([CVM], [CVM]) -> Bool = { lhs, rhs in
+            return lhs.map{ $0.placeID } == rhs.map{ $0.placeID }
+        }
+        return self.subjects.cellViewModels
+            .distinctUntilChanged(compareByID)
+    }
+    
+    public var deselectPlaceID: Observable<String> {
+        let previouSelected = self.subjects.selectedPlaceID
+        let currentSelected = self.subjects.selectedPlaceID.skip(1)
+        let filterPreviousSelectedID: (String?, String?) -> String? = { previous, _ in
+            return previous
+        }
+        
+        return Observable.zip(previouSelected, currentSelected)
+            .map(filterPreviousSelectedID)
+            .compactMap{ $0 }
     }
     
     public var selectedPlaceID: Observable<String> {
