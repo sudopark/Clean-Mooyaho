@@ -125,11 +125,10 @@ extension SelectHoorayPlaceViewController {
             })
             .disposed(by: self.disposeBag)
         
-        Observable.merge(self.viewModel.deselectPlaceID.map{ ($0, false) },
-                         self.viewModel.selectedPlaceID.map{ ($0, true) })
+        self.viewModel.selectedPlaceID
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] (placeID, shouldOn) in
-                self?.updateAnnotationSelection(placeID, isOn: shouldOn)
+            .drive(onNext: { [weak self] placeID in
+                self?.updateAnnotationSelection(placeID)
             })
             .disposed(by: self.disposeBag)
     }
@@ -171,7 +170,7 @@ extension SelectHoorayPlaceViewController {
 }
 
 
-// MARK: - handle mkmapview delegate
+// MARK: - handle mkmapview
 
 extension SelectHoorayPlaceViewController: MKMapViewDelegate {
     
@@ -183,12 +182,11 @@ extension SelectHoorayPlaceViewController: MKMapViewDelegate {
         self.selectView.mapView.addAnnotations(newAnnotations)
     }
     
-    private func updateAnnotationSelection(_ placeID: String, isOn: Bool) {
+    private func updateAnnotationSelection(_ placeID: String) {
         let annotations = self.selectView.mapView.annotations.compactMap{ $0 as? PlaceAnnotation }
         guard let annotation = annotations.first(where: { $0.placeID == placeID }) else { return }
-        
-        isOn ? self.selectView.mapView.selectAnnotation(annotation, animated: true)
-            : self.selectView.mapView.deselectAnnotation(annotation, animated: false)
+
+        self.selectView.mapView.selectAnnotation(annotation, animated: true)
     }
     
     public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -200,31 +198,41 @@ extension SelectHoorayPlaceViewController: MKMapViewDelegate {
         
         annotationView.canShowCallout = true
         
+        annotationView.markerTintColor = placeAnnotation.isSelected ? UIColor.systemBlue : UIColor.gray
+        
+        let checkImageName = placeAnnotation.isSelected ? "checkmark.circle.fill" : "checkmark.circle"
+        annotationView.leftCalloutAccessoryView = UIImageView(image: UIImage(named: checkImageName))
+        
         let detailButton = UIButton(type: .detailDisclosure)
         annotationView.rightCalloutAccessoryView = detailButton
         
         return annotationView
     }
+    
+    public func mapView(_ mapView: MKMapView,
+                        annotationView view: MKAnnotationView,
+                        calloutAccessoryControlTapped control: UIControl) {
+        guard let placeAnnotation = view.annotation as? PlaceAnnotation else { return }
+        
+        // TODO: open place detail
+    }
+    
+    public func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let placeAnnotation = view.annotation as? PlaceAnnotation else { return }
+        self.scrollToPlaceItem(placeAnnotation.placeID)
+    }
 }
 
+// MARK: - handle tableview
 
-// MARK: - setup presenting
-
-extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
+extension SelectHoorayPlaceViewController: UITableViewDelegate {
     
-    public func setupLayout() {
+    private func scrollToPlaceItem(_ placeID: String) {
         
-        self.view.addSubview(selectView)
-        selectView.autoLayout.fill(self.view)
-        self.selectView.setupLayout()
+        guard let index = self.dataSource[0].items.firstIndex(where: { $0.placeID == placeID }) else { return }
+        let indexPath = IndexPath(row: index, section: 0)
+        self.selectView.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
     }
-    
-    public func setupStyling() {
-        self.selectView.setupStyling()
-        self.selectView.tableView.delegate = self
-        self.selectView.mapView.delegate = self
-    }
-    
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView: SelectHooraySuggestSectionHeaderView = tableView.dequeueHeaderFooterView()
@@ -241,6 +249,24 @@ extension SelectHoorayPlaceViewController: Presenting, UITableViewDelegate {
     }
 }
 
+// MARK: - setup presenting
+
+extension SelectHoorayPlaceViewController: Presenting {
+    
+    public func setupLayout() {
+        
+        self.view.addSubview(selectView)
+        selectView.autoLayout.fill(self.view)
+        self.selectView.setupLayout()
+    }
+    
+    public func setupStyling() {
+        self.selectView.setupStyling()
+        self.selectView.tableView.delegate = self
+        self.selectView.mapView.delegate = self
+    }
+}
+
 
 
 extension SuggestPlaceCellViewModel {
@@ -249,6 +275,7 @@ extension SuggestPlaceCellViewModel {
         
         return PlaceAnnotation(placeID: self.placeID,
                                latt: self.position.latt, long: self.position.long,
-                               title: self.title,  subtitle: self.distance)
+                               title: self.title,  subtitle: self.distance,
+                               isSelected: self.isSelected)
     }
 }
