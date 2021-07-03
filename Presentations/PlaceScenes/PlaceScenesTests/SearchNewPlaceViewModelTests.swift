@@ -64,8 +64,22 @@ extension SearchNewPlaceViewModelTests {
     private func dummySearchResult(for query: SuggestPlaceQuery,
                                    pageIndex: Int? = nil,
                                    isFinalPage: Bool = false,
+                                   randPosition: Bool = false,
                                    range: Range<Int>) -> SearchingPlaceCollection {
-        let places = range.map(SearchingPlace.dummy(_:))
+        
+        
+        let places: [SearchingPlace] = {
+            if randPosition {
+                return range.map { int -> SearchingPlace in
+                    return .init(uid: "uid:\(int)",
+                                 title: "title:\(int)",
+                                 coordinate: .init(latt: Double.random(in: 20..<30), long: Double.random(in: 20..<30)),
+                                 address: "some", categories: [])
+                }
+            } else {
+                return range.map(SearchingPlace.dummy(_:))
+            }
+        }()
         return .init(query: query.string, currentPage: pageIndex, places: places, isFinalPage: isFinalPage)
     }
     
@@ -84,6 +98,25 @@ extension SearchNewPlaceViewModelTests {
         // then
         XCTAssertEqual(cellViewModels?.first?.isAddNewPlaceCell, true)
         XCTAssertEqual(cellViewModels?.placeCellCount, 10)
+    }
+    
+    func testViewModel_whenShowPlaces_orderByDistance() {
+        // given
+        let expect = expectation(description: "장소 검색결과 노출시에 거리 기준으로 정렬")
+        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+            return self.dummySearchResult(for: .empty, randPosition: true, range: (0..<10))
+        }
+        
+        // when
+        self.initViewModel()
+        let cellViewModels = self.waitFirstElement(expect, for: self.viewModel.cellViewModels)
+        
+        // then
+        let placeCells = cellViewModels?.compactMap{ $0 as? SearchinNewPlaceCellViewModel }
+        let distances = placeCells?.map{ $0.distance }
+        let orderedDistance = distances?.sorted()
+        XCTAssertNotNil(distances)
+        XCTAssertEqual(distances, orderedDistance)
     }
     
     // 결과 갱신시에 다시 유저위치 불러와서 디폴트 목록 보여줌
@@ -180,25 +213,25 @@ extension SearchNewPlaceViewModelTests {
 
 extension SearchNewPlaceViewModelTests {
     
-    // 선택시에 장소 상세화면으로 넘어감(링크 있으면) -> 웹뷰
-    func testViewModel_whenSelectPlaceWhichHasDetailLink_showDetail() {
-        // given
-        let expect = expectation(description: "장소 선택시에 링크 있으면 상세화면으로 넘김")
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
-            return self.dummySearchResult(for: .empty, range: (0..<10))
-        }
-        self.initViewModel()
-        
-        self.spyRouter.called(key: "showPlaceDetail") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.toggleSelectPlace("uid:0")
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
+//    // 선택시에 장소 상세화면으로 넘어감(링크 있으면) -> 웹뷰
+//    func testViewModel_whenSelectPlaceWhichHasDetailLink_showDetail() {
+//        // given
+//        let expect = expectation(description: "장소 선택시에 링크 있으면 상세화면으로 넘김")
+//        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+//            return self.dummySearchResult(for: .empty, range: (0..<10))
+//        }
+//        self.initViewModel()
+//
+//        self.spyRouter.called(key: "showPlaceDetail") { _ in
+//            expect.fulfill()
+//        }
+//
+//        // when
+//        self.viewModel.toggleSelectPlace("uid:0")
+//
+//        // then
+//        self.wait(for: [expect], timeout: self.timeout)
+//    }
     
     // 선택시 선택 토글
     func testViewModel_toggleUpdateSelect() {
@@ -226,9 +259,7 @@ extension SearchNewPlaceViewModelTests {
         XCTAssertEqual(cellViewModelLists[1].selectedCellID, "uid:0")
         XCTAssertEqual(cellViewModelLists[2].selectedCellID, "uid:1")
         XCTAssertEqual(cellViewModelLists[3].selectedCellID, nil)
-        
     }
-    
     // 선택시에 완료버튼 활성화
     func testViewModel_updateConfirmButton_whenSelectPlaceExists() {
         // given
@@ -283,7 +314,7 @@ extension SearchNewPlaceViewModelTests {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
-        self.spyRouter.called(key: "showPlaceDetail") { _ in
+        self.spyRouter.called(key: "showSelectPlaceCateTag") { _ in
             expect.fulfill()
         }
         

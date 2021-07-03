@@ -275,7 +275,7 @@ extension SuggestPlaceCellViewModel {
         
         return PlaceAnnotation(placeID: self.placeID,
                                latt: self.position.latt, long: self.position.long,
-                               title: self.title,  subtitle: self.distance,
+                               title: self.title,  subtitle: self.distanceText,
                                isSelected: self.isSelected)
     }
 }

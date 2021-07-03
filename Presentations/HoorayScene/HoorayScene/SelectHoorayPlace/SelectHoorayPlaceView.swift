@@ -147,7 +147,7 @@ final class SelectHooraySuggestPlaceCell: BaseTableViewCell {
 
     func setupCell(_ cellViewModel: SuggestPlaceCellViewModel) {
         self.titleLabel.text = cellViewModel.title
-        self.distanceLabel.text = cellViewModel.distance
+        self.distanceLabel.text = cellViewModel.distanceText
         self.checkImageView.isHidden = cellViewModel.isSelected == false
     }
 }

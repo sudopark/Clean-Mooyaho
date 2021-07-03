@@ -63,7 +63,7 @@ extension SearchNewPlaceViewController {
     private func bind() {
         
         self.searchBar.rx.text
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.search(text)
@@ -79,12 +79,6 @@ extension SearchNewPlaceViewController {
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { _ in
                 self.bindTableView()
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.view.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.view.endEditing(true)
             })
             .disposed(by: self.disposeBag)
         
@@ -139,6 +133,7 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
         
         self.tableView.rx.modelSelected(CellType.self)
             .subscribe(onNext: { [weak self] celltype in
+                self?.view.endEditing(true)
                 switch celltype {
                 case is SeerchingNewPlaceAddNewCellViewModel:
                     break
@@ -173,6 +168,17 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
                           willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = self.uiContext.colors.appBackground
     }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollVelocity = scrollView.panGestureRecognizer.velocity(in: self.view)
+        if scrollVelocity.y > 2000 {
+            self.view.endEditing(true)
+        }
+    }
 }
 
 // MARK: - setup presenting
@@ -204,6 +210,7 @@ extension SearchNewPlaceViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
+        confirmButton.setupLayout()
     }
     
     public func setupStyling() {

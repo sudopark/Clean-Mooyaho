@@ -54,6 +54,11 @@ class SearchNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
             return Maybe<SearchingPlaceCollection>.just(result)
         }
     }
+    
+    func dummySinglePage(for query: String) -> SearchingPlaceCollection {
+        let places = (0..<10).map{ SearchingPlace.dummy($0) }
+        return .init(query: query, places: places, isFinalPage: true)
+    }
 }
 
 
@@ -62,15 +67,11 @@ extension SearchNewPlaceUsecaseTests {
     func testUsecase_searchNewPlace() {
         // given
         let expect = expectation(description: "새로운 장소 탐색")
-        expect.expectedFulfillmentCount = 1 + 2 + 1 + 1
-        let q1Results = self.dummyResults(for: "q1", size: 3)
-        let q2Results = self.dummyResults(for: "q2", size: 2)
-        q1Results.enumerated().forEach { offset, result in
-            self.stubResult(result, for: "q1", of: offset == 0 ? nil : offset)
-        }
-        q2Results.enumerated().forEach { offset, result in
-            self.stubResult(result, for: "q2", of: offset == 0 ? nil : offset)
-        }
+        expect.expectedFulfillmentCount = 1 + 1 + 1 + 1
+        let page1 = self.dummySinglePage(for: "q1")
+        let page2 = self.dummySinglePage(for: "q2")
+        self.stubResult(page1, for: "q1")
+        self.stubResult(page2, for: "q2")
         
         // when
         let collections = self.waitElements(expect, for: self.usecase.newPlaceSearchResult, skip: 1) {
@@ -78,14 +79,14 @@ extension SearchNewPlaceUsecaseTests {
             
             let p1 = SuggestPlaceQuery.some("q1")
             self.usecase.startSearchPlace(for: p1, in: .dummy())
-            self.usecase.loadMorePlaceSearchResult()
-            self.usecase.loadMorePlaceSearchResult()    // 마지막 페이지 걸려점
-            self.usecase.loadMorePlaceSearchResult()    // over request
+//            self.usecase.loadMorePlaceSearchResult()
+//            self.usecase.loadMorePlaceSearchResult()    // 마지막 페이지 걸려점
+//            self.usecase.loadMorePlaceSearchResult()    // over request
             
             let p2 = SuggestPlaceQuery.some("q2")
             self.usecase.startSearchPlace(for: p2, in: .dummy())
-            self.usecase.loadMorePlaceSearchResult()    // 마지막 페이지 걸러짐
-            self.usecase.loadMorePlaceSearchResult()    // over request
+//            self.usecase.loadMorePlaceSearchResult()    // 마지막 페이지 걸러짐
+//            self.usecase.loadMorePlaceSearchResult()    // over request
             
             self.usecase.finishSearchPlace()            // 초기화
         }
@@ -93,11 +94,11 @@ extension SearchNewPlaceUsecaseTests {
         // then
         let queries = collections.map{ $0?.query }
         let placeIDLists = collections.map{ $0?.placeIDs }
-        XCTAssertEqual(queries, ["", "q1", "q1", "q2", nil])
+        XCTAssertEqual(queries, ["", "q1", "q2", nil])
         XCTAssertEqual(placeIDLists, [
             [],
             (0..<10).placeIDs,
-            (0..<20).placeIDs,
+//            (0..<20).placeIDs,
             (0..<10).placeIDs,
             nil
         ])

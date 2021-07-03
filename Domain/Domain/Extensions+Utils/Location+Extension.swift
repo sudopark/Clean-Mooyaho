@@ -19,3 +19,16 @@ extension Coordinate {
         return cllTo.distance(from: cllFrom)
     }
 }
+
+
+extension Meters {
+    
+    public func asDistanceText() -> String {
+        
+        if self >= 1000 {
+            return String(format: "%.1f", self/1000) + "km"
+        } else {
+            return String(format: "%.1f", self) + "m"
+        }
+    }
+}

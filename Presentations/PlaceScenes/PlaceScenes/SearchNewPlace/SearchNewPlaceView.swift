@@ -111,7 +111,7 @@ final class SearchNewPlaceCell: BaseTableViewCell, Presenting {
         
         self.titleLabel.text = cellViewModel.placeName
         
-        self.distanceLabel.text = "\(cellViewModel.distance) | \(cellViewModel.address)"
+        self.distanceLabel.text = "\(cellViewModel.distanceText) | \(cellViewModel.address)"
         
         self.updateCheckImageShowing(cellViewModel.isSelected)
         self.updatePlaceImageShowing(cellViewModel.thumbNail)
