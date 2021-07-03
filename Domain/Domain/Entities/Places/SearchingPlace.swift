@@ -51,4 +51,8 @@ public struct SearchingPlaceCollection {
         self.places = places
         self.isFinalPage = isFinalPage
     }
+    
+    public static func empty(_ query: String) -> Self {
+        return .init(query: query, places: [], isFinalPage: true)
+    }
 }
