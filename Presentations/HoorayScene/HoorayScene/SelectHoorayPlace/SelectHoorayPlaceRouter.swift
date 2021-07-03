@@ -20,20 +20,24 @@ import CommonPresenting
 
 public protocol SelectHoorayPlaceRouting: Routing {
     
-    func presentNewPlaceRegisterScene()
+    func presentNewPlaceRegisterScene(myID: String) -> SearchNewPlaceSceneOutput?
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SelectHoorayPlaceRouterBuildables = EmptyBuilder
+public typealias SelectHoorayPlaceRouterBuildables = SearchNewPlaceSceneBuilable
 
 public final class SelectHoorayPlaceRouter: Router<SelectHoorayPlaceRouterBuildables>, SelectHoorayPlaceRouting { }
 
 
 extension SelectHoorayPlaceRouter {
     
-    public func presentNewPlaceRegisterScene() {
+    public func presentNewPlaceRegisterScene(myID: String) -> SearchNewPlaceSceneOutput? {
         
+        guard let next = self.nextScenesBuilder?.makeSearchNewPlaceScene(myID: myID) else { return nil }
+        next.modalPresentationStyle = .fullScreen
+        self.currentScene?.present(next, animated: true, completion: nil)
+        return next.output
     }
 }

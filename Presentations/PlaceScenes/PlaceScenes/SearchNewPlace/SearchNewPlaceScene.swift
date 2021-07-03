@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-
+import CommonPresenting
 
 
 
@@ -21,19 +21,13 @@ import RxCocoa
 //
 //}
 //
-//extension SearchNewPlaceViewModelImple: SearchNewPlaceScenePresenter {
-//
-//}
+extension SearchNewPlaceViewModelImple: SearchNewPlaceSceneOutput { }
 
 // MARK: - SearchNewPlaceViewController provide SearchNewPlaceSceneInteractor or SearchNewPlaceScenePresenter
 
-//extension SearchNewPlaceViewController {
-//
-//    public var interactor: SearchNewPlaceSceneInteractor? {
-//        return self.viewModel as? SearchNewPlaceSceneInteractor
-//    }
-//
-//    public var presenter: SearchNewPlaceScenePresenter? {
-//        return self.viewModel as? SearchNewPlaceScenePresenter
-//    }
-//}
+extension SearchNewPlaceViewController {
+
+    public var output: SearchNewPlaceSceneOutput? {
+        return self.viewModel as? SearchNewPlaceSceneOutput
+    }
+}

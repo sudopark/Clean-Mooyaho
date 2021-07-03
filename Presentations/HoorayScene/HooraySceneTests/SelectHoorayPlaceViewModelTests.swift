@@ -243,6 +243,26 @@ extension SelectHoorayPlaceViewModelTests {
     }
     
     // 새위치 추가 완료시 위치 표시하고 닫기
+    func testViewModel_whenRegisterNewPlaceEnd_finishPlaceSelection() {
+        // given
+        let expect = expectation(description: "신규 장소등록 다 끝낸 이후에 장소선택 완료")
+        self.initViewModel()
+        
+        let output = StubSearchNewPlaceSceneOutput()
+        self.spyRouter.stubOutput = output
+        
+        // when
+        let newForm = self.waitFirstElement(expect, for: self.viewModel.goNextStepWithForm) {
+            self.viewModel.registerNewPlace()
+            
+            let newPlace = Place.dummy(0)
+            output.place.onNext(newPlace)
+        }
+        
+        // then
+        XCTAssertEqual(newForm?.placeID, "uid:0")
+        XCTAssertEqual(newForm?.placeName, "title:0")
+    }
 }
 
 
@@ -254,12 +274,21 @@ extension SelectHoorayPlaceViewModelTests {
             self.verify(key: "alertForConfirm")
         }
         
-        func presentNewPlaceRegisterScene() {
+        var stubOutput: StubSearchNewPlaceSceneOutput?
+        func presentNewPlaceRegisterScene(myID: String) -> SearchNewPlaceSceneOutput? {
             self.verify(key: "presentNewPlaceRegisterScene")
+            return stubOutput
         }
         
         func closeScene(animated: Bool, completed: (() -> Void)?) {
             completed?()
+        }
+    }
+    
+    class StubSearchNewPlaceSceneOutput: SearchNewPlaceSceneOutput {
+        let place = PublishSubject<Place>()
+        var newRegistered: Observable<Place> {
+            return self.place.asObservable()
         }
     }
 }

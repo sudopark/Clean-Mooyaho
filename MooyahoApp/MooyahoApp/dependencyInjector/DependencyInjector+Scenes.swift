@@ -107,17 +107,6 @@ extension DependencyInjector: LocationMarkSceneBuilable {
 
 // MARK: Place Scenes
 
-extension DependencyInjector: RegisterNewPlaceSceneBuilable {
-    
-    public func makeRegisterNewPlaceScene() -> RegisterNewPlaceScene {
-        let router = RegisterNewPlaceRouter(nextSceneBuilders: self)
-        let viewModel = RegisterNewPlaceViewModelImple(router: router)
-        let viewController = RegisterNewPlaceViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
 extension DependencyInjector: SearchNewPlaceSceneBuilable {
     
     public func makeSearchNewPlaceScene(myID: String) -> SearchNewPlaceScene {
