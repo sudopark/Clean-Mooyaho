@@ -36,7 +36,6 @@ extension SelectHoorayPlaceRouter {
     public func presentNewPlaceRegisterScene(myID: String) -> SearchNewPlaceSceneOutput? {
         
         guard let next = self.nextScenesBuilder?.makeSearchNewPlaceScene(myID: myID) else { return nil }
-        next.modalPresentationStyle = .fullScreen
         self.currentScene?.present(next, animated: true, completion: nil)
         return next.output
     }
