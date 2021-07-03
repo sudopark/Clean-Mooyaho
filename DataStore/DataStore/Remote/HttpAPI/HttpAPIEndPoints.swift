@@ -50,6 +50,12 @@ public enum NaverMapPlaceAPIEndPoint: HttpAPIEndPoint {
         return .get
     }
     
+    public var customHeader: [String : String]? {
+        return [
+            "Content-Type": "application/json;charset=UTF-8"
+        ]
+    }
+    
     public var defaultParams: [String : Any]? {
         return [
             "lang": "ko",

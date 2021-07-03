@@ -112,7 +112,7 @@ extension FirebaseServiceImple {
         let endpoint = NaverMapPlaceAPIEndPoint.places
         var params: [String: Any] = [:]
         params["query"] = query
-        params["coords"] = [location.lastLocation.lattitude, location.lastLocation.longitude]
+        params["searchCoord"] = "\(location.lastLocation.longitude);\(location.lastLocation.lattitude)"
         params["page"] = pageIndex
         
         typealias ResultCollection = SearchingPlaceCollection
