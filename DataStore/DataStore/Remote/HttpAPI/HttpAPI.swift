@@ -11,6 +11,8 @@ import Foundation
 import RxSwift
 import Alamofire
 
+import Domain
+
 
 // MARK: - wrpa alamofire session
 
@@ -34,6 +36,7 @@ extension Session: HttpSession {
     public func requestData(path: String, method: HttpAPIMethods, parameters: [String : Any], header: [String : String]?) -> Maybe<HttpResponse> {
         
         return Maybe.create { callback in
+            let encoding = method.encoding
             let method = method.asAFMethod
             let headers = header.map{ HTTPHeaders($0) }
             
@@ -46,7 +49,7 @@ extension Session: HttpSession {
             
             let request = self.request(path, method: method,
                                        parameters: parameters,
-                                       encoding: JSONEncoding.default,
+                                       encoding: encoding,
                                        headers: headers)
                 .responseData(completionHandler: handleResponse)
             request.resume()
@@ -112,6 +115,11 @@ extension HttpAPI {
         }
         
         let decode: (HttpResponse) throws -> T = { response in
+            
+            let code = response.urlResponse?.statusCode ?? -1
+            logger.print(level: .debug, "status code: \(code)")
+            logger.print(level: .debug, "url: \(response.urlResponse?.url?.absoluteString ?? "")")
+            
             let decodeResult: Result<T, Error> = response.dataResult.asDecodeResult()
             switch decodeResult {
             case let .success(model): return model
@@ -152,5 +160,15 @@ private extension Result where Success == Data, Failure == Error {
         }
         
         return self.flatMap(decodeResult)
+    }
+}
+
+private extension HttpAPIMethods {
+    
+    var encoding: ParameterEncoding {
+        switch self {
+        case .post, .patch: return JSONEncoding.default
+        default: return URLEncoding.default
+        }
     }
 }
