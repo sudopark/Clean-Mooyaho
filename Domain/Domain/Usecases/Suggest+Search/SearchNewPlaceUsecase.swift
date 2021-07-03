@@ -97,11 +97,11 @@ public final class SearchNewPlaceUsecaseImple: SearchNewPlaceUsecase {
     }
     
     private func search(_ params: ReqParama) -> Maybe<ResultCollection> {
-        guard params.query != .empty else { return .empty() }
+        guard params.query != .empty else { return .just(.empty("")) }
         let queryString = params.query.string
         return self.repository
             .requestSearchNewPlace(queryString, in: params.location, of: params.currentPage)
-            .catch{ _ in .empty() }
+            .catch{ _ in .just(.empty(queryString)) }
     }
 }
 
