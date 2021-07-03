@@ -274,7 +274,7 @@ extension SearchNewPlaceViewModelImple {
     }
     
     public var currentPlaceMark: String? {
-        return self.subjects.curentUserLocation.value.flatMap { $0.placeMark }
+        return self.subjects.curentUserLocation.value.flatMap { $0.placeMark?.address }
     }
     
     public var isPlaceSelectConfirmable: Observable<Bool> {

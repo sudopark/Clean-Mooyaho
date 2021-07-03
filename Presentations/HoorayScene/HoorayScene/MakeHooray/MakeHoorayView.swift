@@ -12,55 +12,6 @@ import CommonPresenting
 
 // MARK: - MakeHoorayView
 
-final class HoorayInfoSectionView<InnerView: UIView>: BaseUIView, Presenting {
-
-    let innerView = InnerView()
-    let arrowImageView = UIImageView()
-    let underLineView = UIView()
-    
-    private var innderViewLeadingConstraint: NSLayoutConstraint!
-    
-    func setupLayout() {
-        
-        self.addSubview(arrowImageView)
-        arrowImageView.autoLayout.active(with: self) {
-            $0.widthAnchor.constraint(equalToConstant: 20)
-            $0.heightAnchor.constraint(equalToConstant: 20)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -10)
-        }
-        
-        self.addSubview(innerView)
-        innerView.autoLayout.active(with: self) {
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 16)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -16-1)
-            $0.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -8)
-        }
-        self.innderViewLeadingConstraint = innerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-        self.innderViewLeadingConstraint.isActive = true
-        (self.innerView as? Presenting)?.setupLayout()
-        self.innerView.setContentCompressionResistancePriority(.required, for: .vertical)
-        
-        self.addSubview(underLineView)
-        underLineView.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 1)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-        }
-    }
-    
-    func setupStyling() {
-        (self.innerView as? Presenting)?.setupStyling()
-        
-        self.arrowImageView.image = UIImage(named: "chevron.right")
-        self.arrowImageView.contentMode = .scaleAspectFit
-        self.arrowImageView.tintColor = .lightGray.withAlphaComponent(0.5)
-        
-        self.underLineView.backgroundColor = .groupTableViewBackground
-    }
-}
-
 final class MakeHoorayView: BaseUIView {
     
     let titleLabel = UILabel()
@@ -68,9 +19,9 @@ final class MakeHoorayView: BaseUIView {
     let inputImageView = UIImageView()
     let messageTextView = UITextView()
     let placeHolderLabel = UILabel()
-    let keywordInputSectionView = HoorayInfoSectionView<UILabel>()
-    let tagInputSectionView = HoorayInfoSectionView<UILabel>()
-    let placeInputSectionView = HoorayInfoSectionView<UILabel>()
+    let keywordInputSectionView = InfoSectionView<UILabel>()
+    let tagInputSectionView = InfoSectionView<UILabel>()
+    let placeInputSectionView = InfoSectionView<UILabel>()
     let suggestPlaceCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: .init())
     let blurView = UIView()
@@ -198,7 +149,7 @@ extension MakeHoorayView: Presenting {
 
         self.keywordInputSectionView.setupStyling()
         self.keywordInputSectionView.innerView.font = .systemFont(ofSize: 14, weight: .medium)
-        self.keywordInputSectionView.innerView.attributedText = MakeHoorayViewController.Attribute
+        self.keywordInputSectionView.innerView.attributedText = Attribute
             .keyAndValue("Hooray phrase", nil)
         self.keywordInputSectionView.arrowImageView.isHidden = true
         
@@ -212,7 +163,6 @@ extension MakeHoorayView: Presenting {
         self.placeInputSectionView.underLineView.isHidden = true
         
         self.suggestPlaceCollectionView.backgroundColor = .clear
-        // TODO: setup blur view
         
         self.publishButton.backgroundColor = UIColor.systemBlue
         self.publishButton.title = "Publish"

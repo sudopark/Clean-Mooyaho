@@ -21,45 +21,6 @@ public final class MakeHoorayViewController: BaseViewController, MakeHoorayScene
     let viewModel: MakeHoorayViewModel
     let makeView = MakeHoorayView()
     
-    enum Attribute {
-        
-        static var placeHolder: [NSAttributedString.Key: Any] {
-            return [
-                .foregroundColor: UIColor.gray,
-                .font: UIFont.systemFont(ofSize: 13.5)
-            ]
-        }
-        
-        static var accent: [NSAttributedString.Key: Any] {
-            return [
-                .foregroundColor: UIColor.systemBlue,
-                .font: UIFont.systemFont(ofSize: 14)
-            ]
-        }
-        
-        static var tagPlaceHolder: NSAttributedString {
-            return "Enter tags".with(attribute: self.placeHolder)
-        }
-        
-        static func tagAttributeText(for tags: [String]) -> NSAttributedString {
-            let tagWords = tags.map{ "#\($0)" }
-            let allTagTexts = tagWords.joined(separator: " ")
-            return allTagTexts.with(attribute: self.accent)
-        }
-        
-        static func keyAndValue(_ key: String,
-                                _ keyword: String?) -> NSAttributedString {
-            let phrase = "\(key)   ".with(attribute: self.placeHolder)
-            let attrKeyword = keyword?.with(attribute: self.accent)
-            let mutable = NSMutableAttributedString(attributedString: phrase)
-            guard let attr = attrKeyword else {
-                return mutable
-            }
-            mutable.append(attr)
-            return mutable
-        }
-    }
-    
     public init(viewModel: MakeHoorayViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)

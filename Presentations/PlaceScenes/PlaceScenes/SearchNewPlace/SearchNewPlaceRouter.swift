@@ -24,7 +24,7 @@ public protocol SearchNewPlaceRouting: Routing {
     func showPlaceDetail(_ placeID: String, link: String)
     
     func showSelectPlaceCateTag(startWith tags: [Tag],
-                                total: [Tag]) -> SelectTagScenePresenter?
+                                total: [Tag]) -> SelectTagSceneOutput?
 }
 
 // MARK: - Routers
@@ -46,7 +46,7 @@ extension SearchNewPlaceRouter {
     }
     
     public func showSelectPlaceCateTag(startWith tags: [Tag],
-                                       total: [Tag]) -> SelectTagScenePresenter? {
+                                       total: [Tag]) -> SelectTagSceneOutput? {
         guard let next = self.nextScenesBuilder?
                 .makeSelectTagScene(startWith: tags, total: total) else { return nil }
         next.modalPresentationStyle = .custom

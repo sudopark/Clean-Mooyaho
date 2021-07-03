@@ -20,7 +20,7 @@ import CommonPresenting
 //
 //}
 //
-extension LocationSelectViewModelImple: LocationSelectScenePresenter {
+extension LocationSelectViewModelImple: LocationSelectSceneOutput {
 
 }
 
@@ -32,7 +32,7 @@ extension LocationSelectViewController {
 //        return self.viewModel as? LocationSelectSceneInteractor
 //    }
 
-    public var presenter: LocationSelectScenePresenter? {
-        return self.viewModel as? LocationSelectScenePresenter
+    public var output: LocationSelectSceneOutput? {
+        return self.viewModel as? LocationSelectSceneOutput
     }
 }

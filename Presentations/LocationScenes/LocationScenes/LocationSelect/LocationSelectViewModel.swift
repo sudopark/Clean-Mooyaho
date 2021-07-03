@@ -31,9 +31,12 @@ public protocol LocationSelectViewModel: AnyObject {
 
 public final class LocationSelectViewModelImple: LocationSelectViewModel {
     
+    private let previousInfo: PreviousSelectedLocationInfo?
     private let router: LocationSelectRouting
     
-    public init(router: LocationSelectRouting) {
+    public init(_ previousInfo: PreviousSelectedLocationInfo?,
+                router: LocationSelectRouting) {
+        self.previousInfo = previousInfo
         self.router = router
     }
     

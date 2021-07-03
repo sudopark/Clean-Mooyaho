@@ -42,7 +42,7 @@ public protocol NearbySceneBuilable {
 
 //public protocol LocationSelectSceneInteractor { }
 //
-public protocol LocationSelectScenePresenter {
+public protocol LocationSelectSceneOutput {
     
     var selectedLocation: Observable<CurrentPosition> { get }
 }
@@ -54,18 +54,30 @@ public protocol LocationSelectScene: Scenable {
     
 //    var interactor: LocationSelectSceneInteractor? { get }
 //
-    var presenter: LocationSelectScenePresenter? { get }
+    var output: LocationSelectSceneOutput? { get }
+}
+
+public struct PreviousSelectedLocationInfo {
+    public let latt: Double
+    public let long: Double
+    public let address: String
+    
+    public init(latt: Double, long: Double, address: String) {
+        self.latt = latt
+        self.long = long
+        self.address = address
+    }
 }
 
 public protocol LocationSelectSceneBuilable {
     
-    func makeLocationSelectScene() -> LocationSelectScene
+    func makeLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectScene
 }
 
 
-// MARK: - LocationMarkScene Interactor & Presenter
+// MARK: - LocationMarkScene input & output
 
-public protocol LocationMarkSceneInteractor {
+public protocol LocationMarkSceneInput {
     
     func updatePlaceMark(at coordinate: Coordinate)
 }
@@ -77,7 +89,7 @@ public protocol LocationMarkSceneInteractor {
 
 public protocol LocationMarkScene: Scenable {
     
-    var interactor: LocationMarkSceneInteractor? { get }
+    var input: LocationMarkSceneInput? { get }
 //
 //    var presenter: LocationMarkScenePresenter? { get }
 }

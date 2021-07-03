@@ -20,6 +20,7 @@ import CommonPresenting
 public protocol ManuallyResigterPlaceViewModel: AnyObject {
 
     // interactor
+    func showup()
     func requestEnterText()
     func requestSelectPosition()
     func requestEnterCategoryTag()
@@ -45,6 +46,8 @@ public final class ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceVie
     private let userLocationUsecase: UserLocationUsecase
     private let registerUsecase: RegisterNewPlaceUsecase
     private let router: ManuallyResigterPlaceRouting
+    
+    private var locationMarkInput: LocationMarkSceneInput!
     
     public init(userID: String,
                 userLocationUsecase: UserLocationUsecase,
@@ -77,9 +80,23 @@ public final class ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceVie
 
 extension ManuallyResigterPlaceViewModelImple {
     
+    public func showup() {
+        guard self.locationMarkInput == nil else { return }
+        self.locationMarkInput = self.router.addSmallMapView()
+    }
+    
     public func requestEnterText() {
         
-        guard let result = self.router.openPlaceTitleInputScene() else { return }
+        let title = self.subjects.pendingForm.value?.title
+        
+        let mode = TextInputMode(isSingleLine: true, title: "Place name",
+                                 placeHolder: "Enter a place name...",
+                                 startWith: title,
+                                 maxCharCount: 100,
+                                 shouldEnterSomething: true,
+                                 defaultHeight: 120)
+        
+        guard let result = self.router.openPlaceTitleInputScene(mode) else { return }
         result.enteredText.take(1)
             .subscribe(onNext: { [weak self] text in
                 self?.updateForm{ $0.title = text }
@@ -89,11 +106,16 @@ extension ManuallyResigterPlaceViewModelImple {
     
     public func requestSelectPosition() {
         
-        guard let result = self.router.openLocationSelectScene() else { return }
+        let form = self.subjects.pendingForm.value
+        let info: PreviousSelectedLocationInfo? = {
+            guard let position = form?.coordinate, let addres = form?.address else { return nil }
+            return .init(latt: position.latt, long: position.long, address: addres)
+        }()
+        guard let result = self.router.openLocationSelectScene(info) else { return }
         result.selectedLocation.take(1)
             .subscribe(onNext: { [weak self] location in
                 self?.updateForm{
-                    $0.address = location.placeMark ?? ""
+                    $0.address = location.placeMark?.address ?? ""
                     $0.coordinate = .init(latt: location.lattitude, long: location.longitude)
                 }
             })
@@ -101,7 +123,9 @@ extension ManuallyResigterPlaceViewModelImple {
     }
     
     public func requestEnterCategoryTag() {
-        guard let result = self.router.openTagSelectScene() else { return }
+        let total = self.registerUsecase.placeCategoryTags()
+        let tags = self.subjects.pendingForm.value?.categoryTags ?? []
+        guard let result = self.router.openTagSelectScene(tags, total: total) else { return }
         result.selectedTags.take(1)
             .subscribe(onNext: { [weak self] tags in
                 self?.updateForm {
