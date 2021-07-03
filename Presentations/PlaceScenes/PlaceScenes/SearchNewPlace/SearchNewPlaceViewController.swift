@@ -64,6 +64,7 @@ extension SearchNewPlaceViewController {
         
         self.searchBar.rx.text
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.search(text)
             })
@@ -149,7 +150,7 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
             })
             .disposed(by: self.disposeBag)
         
-        self.tableView.rx.scrollBottomHit(wait: .empty())
+        self.tableView.rx.scrollBottomHit(wait: .just())
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.loadMore()
             })

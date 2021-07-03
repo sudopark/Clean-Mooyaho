@@ -11,6 +11,14 @@ import RxSwift
 import RxCocoa
 
 
+extension UIScrollView {
+    
+    public var verticalScrollableHeight: CGFloat {
+        let height = self.contentSize.height - self.frame.height + self.contentInset.top + self.contentInset.bottom
+        return max(height, 0)
+    }
+}
+
 extension Reactive where Base: UIScrollView {
     
     public func scrollBottomHit(wait: Observable<Void>,
@@ -19,8 +27,10 @@ extension Reactive where Base: UIScrollView {
         
         return self.contentOffset
             .skip(until: wait)
-            .distinctUntilChanged()
-            .map{ $0.y <= threshold }
+            .compactMap { [weak base] offset -> Bool? in
+                guard let base = base else { return nil }
+                return base.verticalScrollableHeight - threshold <= offset.y
+            }
             .distinctUntilChanged()
             .filter{ $0 }
             .throttle(.milliseconds(throttleTimeMillis), scheduler: MainScheduler.instance)

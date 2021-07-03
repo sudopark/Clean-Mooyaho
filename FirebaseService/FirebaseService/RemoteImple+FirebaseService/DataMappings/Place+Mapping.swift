@@ -56,8 +56,8 @@ extension SearchingPlace: Decodable {
     private enum CodingKeys: String, CodingKey {
         case uid = "id"
         case title = "name"
-        case latt = "x"
-        case long = "y"
+        case latt = "y"
+        case long = "x"
         case contact = "tel"
         case categories = "category"
         case address = "address"
