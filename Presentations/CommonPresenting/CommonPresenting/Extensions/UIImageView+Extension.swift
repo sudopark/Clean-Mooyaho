@@ -28,7 +28,7 @@ extension UIImageView {
         }
         
         let targetSize = self.resizeTargetSize(resize)
-        let processor = ResizingImageProcessor(referenceSize: targetSize)
+        let processor = DownsamplingImageProcessor(size: targetSize)
         
         if url.absoluteString.hasPrefix("file://") {
             let provider = LocalFileImageDataProvider(fileURL: url)

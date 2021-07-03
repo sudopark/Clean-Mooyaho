@@ -24,7 +24,7 @@ public class IntegratedImageView: UIView {
         self.internalImageView.image = image
     }
     
-    public func setupImage(using source: ImageSource) {
+    public func setupImage(using source: ImageSource, resize: CGSize? = nil) {
         self.cancelSetupImage()
         
         switch source {
@@ -32,10 +32,10 @@ public class IntegratedImageView: UIView {
             self.drawEmoji(value)
             
         case let .path(path):
-            self.setupRemoteImage(path)
+            self.setupRemoteImage(path, resize: resize)
             
         case let .reference(path, _):
-            self.setupRemoteImage(path)
+            self.setupRemoteImage(path, resize: resize)
             // TOOD: show reference or not
         }
     }
@@ -52,8 +52,8 @@ public class IntegratedImageView: UIView {
         self.internalImageView.image = value.drawText(size: size, fontSize: fontSize, scale: scale)
     }
     
-    private func setupRemoteImage(_ path: String) {
-        self.internalImageView.setupThumbnail(path)
+    private func setupRemoteImage(_ path: String, resize: CGSize? = nil) {
+        self.internalImageView.setupThumbnail(path, resize: resize)
     }
 }
 
