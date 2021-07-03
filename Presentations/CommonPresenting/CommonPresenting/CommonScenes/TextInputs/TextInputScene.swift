@@ -16,7 +16,7 @@ import RxCocoa
 
 //public protocol TextInputSceneInteractor { }
 //
-public protocol TextInputScenePresenter {
+public protocol TextInputSceneOutput {
     var enteredText: Observable<String> { get }
 }
 
@@ -27,7 +27,7 @@ public protocol TextInputScene: Scenable, PangestureDismissableScene {
     
 //    var interactor: TextInputSceneInteractor? { get }
 //
-    var presenter: TextInputScenePresenter? { get }
+    var output: TextInputSceneOutput? { get }
 }
 
 
@@ -37,7 +37,7 @@ public protocol TextInputScene: Scenable, PangestureDismissableScene {
 //
 //}
 //
-extension TextInputViewModelImple: TextInputScenePresenter {
+extension TextInputViewModelImple: TextInputSceneOutput {
 
 }
 
@@ -49,7 +49,7 @@ extension TextInputViewController {
 //        return self.viewModel as? TextInputSceneInteractor
 //    }
 //
-    public var presenter: TextInputScenePresenter? {
-        return self.viewModel as? TextInputScenePresenter
+    public var output: TextInputSceneOutput? {
+        return self.viewModel as? TextInputSceneOutput
     }
 }

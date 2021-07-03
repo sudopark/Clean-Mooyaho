@@ -139,8 +139,7 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
                 self.subjects.currentLocation.onNext(userLocation)
                 return
             }
-            let marks = [placeMark.subLocality, placeMark.locality]
-            userLocation.placeMark = marks.compactMap{ $0 }.joined(separator: " ")
+            userLocation.placeMark = placeMark.convert()
             self.subjects.currentLocation.onNext(userLocation)
             logger.print(level: .debug, "user location changed => \(userLocation.lattitude) x \(userLocation.longitude)")
         }
@@ -227,5 +226,25 @@ private extension CLAuthorizationStatus {
     
     var isReady: Bool {
         return self == .authorizedWhenInUse || self == .authorizedAlways
+    }
+}
+
+
+import Contacts
+
+private extension CLPlacemark {
+    
+    func convert() -> LastLocation.PlaceMark {
+        
+        let form = CNPostalAddressFormatter()
+        form.style = .mailingAddress
+        let postalAddress = self.postalAddress.map{ form.string(from: $0) }
+        
+        return .init(placeName: self.name,
+                     subLocality: self.subLocality,
+                     thoroughfare: self.thoroughfare,
+                     locality: self.locality,
+                     postalCode: self.postalCode,
+                     postalAddress: postalAddress)
     }
 }

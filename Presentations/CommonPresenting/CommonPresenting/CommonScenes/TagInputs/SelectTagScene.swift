@@ -18,7 +18,7 @@ import Domain
 
 //public protocol SelectTagSceneInteractor { }
 //
-public protocol SelectTagScenePresenter {
+public protocol SelectTagSceneOutput {
     
     var selectedTags: Observable<[Tag]> { get }
 }
@@ -30,7 +30,7 @@ public protocol SelectTagScene: Scenable, PangestureDismissableScene {
     
 //    var interactor: SelectTagSceneInteractor? { get }
 //
-    var presenter: SelectTagScenePresenter? { get }
+    var presenter: SelectTagSceneOutput? { get }
 }
 
 
@@ -40,7 +40,7 @@ public protocol SelectTagScene: Scenable, PangestureDismissableScene {
 //
 //}
 //
-extension SelectTagViewModelImple: SelectTagScenePresenter { }
+extension SelectTagViewModelImple: SelectTagSceneOutput { }
 //
 // MARK: - SelectTagViewController provide SelectTagSceneInteractor or SelectTagScenePresenter
 //
@@ -50,7 +50,7 @@ extension SelectTagViewController {
 //        return self.viewModel as? SelectTagSceneInteractor
 //    }
 //
-    public var presenter: SelectTagScenePresenter? {
-        return self.viewModel as? SelectTagScenePresenter
+    public var presenter: SelectTagSceneOutput? {
+        return self.viewModel as? SelectTagSceneOutput
     }
 }

@@ -85,7 +85,7 @@ extension ManuallyResigterPlaceViewModelTests {
     
     private func stubEnterText() -> StubTextInputScenePresenter {
         let stubResult = StubTextInputScenePresenter()
-        self.spyRouter.register(type: TextInputScenePresenter.self,
+        self.spyRouter.register(type: TextInputSceneOutput.self,
                                 key: "openPlaceTitleInputScene") {
             return stubResult
         }
@@ -94,7 +94,7 @@ extension ManuallyResigterPlaceViewModelTests {
     
     private func stubSelectLocation() -> StubLocationSelectScenePresenter {
         let stubResult = StubLocationSelectScenePresenter()
-        self.spyRouter.register(type: LocationSelectScenePresenter.self,
+        self.spyRouter.register(type: LocationSelectSceneOutput.self,
                                 key: "openLocationSelectScene") {
             return stubResult
         }
@@ -128,7 +128,7 @@ extension ManuallyResigterPlaceViewModelTests {
         let address = self.waitFirstElement(expect, for: self.viewModel.placeAddress) {
             self.viewModel.requestSelectPosition()
             var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-            location.placeMark = "addr"
+            location.placeMark = .init(address: "addr")
             stubResult.subject.onNext(location)
         }
         
@@ -146,7 +146,7 @@ extension ManuallyResigterPlaceViewModelTests {
         let location = self.waitFirstElement(expect, for: self.viewModel.placeLocation) {
             self.viewModel.requestSelectPosition()
             var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-            location.placeMark = "addr"
+            location.placeMark = .init(address: "addr")
             stubResult.subject.onNext(location)
         }
         
@@ -160,7 +160,7 @@ extension ManuallyResigterPlaceViewModelTests {
         let expect = expectation(description: "태그 입력 이후에 업데이트")
         
         let stubResult = StubSelectTagScenePresenter()
-        self.spyRouter.register(type: SelectTagScenePresenter.self,
+        self.spyRouter.register(type: SelectTagSceneOutput.self,
                                 key: "openTagSelectScene") {
             return stubResult
         }
@@ -187,7 +187,7 @@ extension ManuallyResigterPlaceViewModelTests {
         
         self.viewModel.requestSelectPosition()
         var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-        location.placeMark = "addr"
+        location.placeMark = .init(address: "addr")
         stubLocationResult.subject.onNext(location)
     }
     
@@ -250,20 +250,20 @@ extension ManuallyResigterPlaceViewModelTests {
     
     class SpyRouter: ManuallyResigterPlaceRouting, Stubbable {
         
-        func addSmallMapView() -> LocationMarkSceneInteractor? {
+        func addSmallMapView() -> LocationMarkSceneInput? {
             return nil
         }
         
-        func openPlaceTitleInputScene() -> TextInputScenePresenter? {
-            return self.resolve(TextInputScenePresenter.self, key: "openPlaceTitleInputScene")
+        func openPlaceTitleInputScene(_ mode: TextInputMode) -> TextInputSceneOutput? {
+            return self.resolve(TextInputSceneOutput.self, key: "openPlaceTitleInputScene")
         }
         
-        func openLocationSelectScene() -> LocationSelectScenePresenter? {
-            return self.resolve(LocationSelectScenePresenter.self, key: "openLocationSelectScene")
+        func openLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectSceneOutput? {
+            return self.resolve(LocationSelectSceneOutput.self, key: "openLocationSelectScene")
         }
         
-        func openTagSelectScene() -> SelectTagScenePresenter? {
-            return self.resolve(SelectTagScenePresenter.self, key: "openTagSelectScene")
+        func openTagSelectScene(_ tags: [Tag], total: [Tag]) -> SelectTagSceneOutput? {
+            return self.resolve(SelectTagSceneOutput.self, key: "openTagSelectScene")
         }
         
         func closeScene(animated: Bool, completed: (() -> Void)?) {
@@ -271,21 +271,21 @@ extension ManuallyResigterPlaceViewModelTests {
         }
     }
     
-    class StubTextInputScenePresenter: TextInputScenePresenter {
+    class StubTextInputScenePresenter: TextInputSceneOutput {
         let subject = PublishSubject<String>()
         var enteredText: Observable<String> {
             return self.subject.asObservable()
         }
     }
     
-    class StubLocationSelectScenePresenter: LocationSelectScenePresenter {
+    class StubLocationSelectScenePresenter: LocationSelectSceneOutput {
         let subject = PublishSubject<CurrentPosition>()
         var selectedLocation: Observable<CurrentPosition> {
             return self.subject.asObservable()
         }
     }
     
-    class StubSelectTagScenePresenter: SelectTagScenePresenter {
+    class StubSelectTagScenePresenter: SelectTagSceneOutput {
         let subject = PublishSubject<[Tag]>()
         var selectedTags: Observable<[Tag]> {
             return subject.asObservable()

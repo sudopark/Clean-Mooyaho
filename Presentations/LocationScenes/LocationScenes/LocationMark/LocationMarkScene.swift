@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - LocationMarkViewModelImple conform LocationMarkSceneInteractor or LocationMarkScenePresenter
 
-extension LocationMarkViewModelImple: LocationMarkSceneInteractor {
+extension LocationMarkViewModelImple: LocationMarkSceneInput {
 
 }
 //
@@ -27,9 +27,9 @@ extension LocationMarkViewModelImple: LocationMarkSceneInteractor {
 // MARK: - LocationMarkViewController provide LocationMarkSceneInteractor or LocationMarkScenePresenter
 
 extension LocationMarkViewController {
-
-    public var interactor: LocationMarkSceneInteractor? {
-        return self.viewModel as? LocationMarkSceneInteractor
+    
+    public var input: LocationMarkSceneInput? {
+        return self.viewModel as? LocationMarkSceneInput
     }
 
 //    public var presenter: LocationMarkScenePresenter? {

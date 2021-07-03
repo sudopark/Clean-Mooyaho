@@ -5,7 +5,7 @@
 //  Created by sudo.park on 2021/06/04.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 
@@ -64,7 +64,7 @@ public protocol SearchNewPlaceSceneBuilable {
 
 //public protocol ManuallyResigterPlaceSceneInteractor { }
 //
-//public protocol ManuallyResigterPlaceScenePresenter { }
+public protocol ManuallyResigterPlaceSceneOutput { }
 
 
 // MARK: - ManuallyResigterPlaceScene
@@ -72,8 +72,10 @@ public protocol SearchNewPlaceSceneBuilable {
 public protocol ManuallyResigterPlaceScene: Scenable {
     
 //    var interactor: ManuallyResigterPlaceSceneInteractor? { get }
-//
-//    var presenter: ManuallyResigterPlaceScenePresenter? { get }
+    
+    var output: ManuallyResigterPlaceSceneOutput? { get }
+    
+    var childContainerView: UIView { get }
 }
 
 public protocol ManuallyResigterPlaceSceneBuilable {

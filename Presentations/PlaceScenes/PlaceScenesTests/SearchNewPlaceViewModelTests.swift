@@ -335,7 +335,7 @@ extension SearchNewPlaceViewModelTests {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         let stubResult = StubSelectTagScenePresenter()
-        self.spyRouter.register(type: SelectTagScenePresenter.self, key: "showSelectPlaceCateTag") { stubResult }
+        self.spyRouter.register(type: SelectTagSceneOutput.self, key: "showSelectPlaceCateTag") { stubResult }
         self.stubRegisterUsecase.register(key: "uploadNewPlace") { Maybe<Place>.just(.dummy(0)) }
         self.initViewModel()
         
@@ -354,7 +354,7 @@ extension SearchNewPlaceViewModelTests {
 
 extension SearchNewPlaceViewModelTests {
     
-    class StubSelectTagScenePresenter: SelectTagScenePresenter {
+    class StubSelectTagScenePresenter: SelectTagSceneOutput {
         
         let stubTag = PublishSubject<[Domain.Tag]>()
         var selectedTags: Observable<[Domain.Tag]> {
@@ -368,9 +368,9 @@ extension SearchNewPlaceViewModelTests {
             self.verify(key: "showPlaceDetail")
         }
         
-        func showSelectPlaceCateTag(startWith tags: [Tag], total: [Tag]) -> SelectTagScenePresenter? {
+        func showSelectPlaceCateTag(startWith tags: [Tag], total: [Tag]) -> SelectTagSceneOutput? {
             self.verify(key: "showSelectPlaceCateTag")
-            return self.resolve(SelectTagScenePresenter.self, key: "showSelectPlaceCateTag")
+            return self.resolve(SelectTagSceneOutput.self, key: "showSelectPlaceCateTag")
         }
         
         func closeScene(animated: Bool, completed: (() -> Void)?) {
