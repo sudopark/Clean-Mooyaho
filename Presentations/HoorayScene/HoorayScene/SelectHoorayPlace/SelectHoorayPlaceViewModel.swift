@@ -147,7 +147,23 @@ extension SelectHoorayPlaceViewModelImple {
     
     public func registerNewPlace() {
 
-        self.router.presentNewPlaceRegisterScene()
+        let userID = self.form.publisherID
+        let output = self.router.presentNewPlaceRegisterScene(myID: userID)
+        
+        let newPlaceRegistered: (Place) -> Void = { [weak self] newPlace in
+            guard let self = self else { return }
+            let newForm = self.form
+            newForm.placeID = newPlace.uid
+            newForm.placeName = newPlace.title
+            
+            self.router.closeScene(animated: true) {
+                self.subjects.continueNext.onNext(newForm)
+            }
+        }
+        
+        output?.newRegistered
+            .subscribe(onNext: newPlaceRegistered)
+            .disposed(by: self.disposeBag)
     }
     
     private var memberID: String {

@@ -12,11 +12,6 @@
 		F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */; };
 		F65215932674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */; };
 		F65215AB2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */; };
-		F66CD9392673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */; };
-		F66CD93A2673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */; };
-		F66CD93B2673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */; };
-		F66CD93C2673A7BB0031EEC5 /* RegisterNewPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9372673A7BB0031EEC5 /* RegisterNewPlaceScene.swift */; };
-		F66CD93D2673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9382673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift */; };
 		F66CD93F2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */; };
 		F66CD9472673B0CB0031EEC5 /* SearchNewPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */; };
 		F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */; };
@@ -50,11 +45,6 @@
 		F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceScene.swift; sourceTree = "<group>"; };
 		F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewModel.swift; sourceTree = "<group>"; };
 		F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewModelTests.swift; sourceTree = "<group>"; };
-		F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceRouter.swift; sourceTree = "<group>"; };
-		F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewController.swift; sourceTree = "<group>"; };
-		F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceBuilder.swift; sourceTree = "<group>"; };
-		F66CD9372673A7BB0031EEC5 /* RegisterNewPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceScene.swift; sourceTree = "<group>"; };
-		F66CD9382673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewModel.swift; sourceTree = "<group>"; };
 		F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceRouter.swift; sourceTree = "<group>"; };
 		F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceViewController.swift; sourceTree = "<group>"; };
@@ -100,18 +90,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F66CD9332673A6EE0031EEC5 /* RegisterPlace */ = {
-			isa = PBXGroup;
-			children = (
-				F66CD9342673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift */,
-				F66CD9352673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift */,
-				F66CD9362673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift */,
-				F66CD9372673A7BB0031EEC5 /* RegisterNewPlaceScene.swift */,
-				F66CD9382673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift */,
-			);
-			path = RegisterPlace;
-			sourceTree = "<group>";
-		};
 		F66CD9402673A87D0031EEC5 /* SearchNewPlace */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,7 +134,6 @@
 		F6E8313A26601A9800C91F3B /* PlaceScenes */ = {
 			isa = PBXGroup;
 			children = (
-				F66CD9332673A6EE0031EEC5 /* RegisterPlace */,
 				F66CD9402673A87D0031EEC5 /* SearchNewPlace */,
 				F66CD9412673A8870031EEC5 /* ManuallyResigterPlace */,
 				F6E8313B26601A9800C91F3B /* PlaceScenes.h */,
@@ -298,16 +275,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F66CD93C2673A7BB0031EEC5 /* RegisterNewPlaceScene.swift in Sources */,
 				F66CD9472673B0CB0031EEC5 /* SearchNewPlaceRouter.swift in Sources */,
 				F66CD94A2673B0CB0031EEC5 /* SearchNewPlaceScene.swift in Sources */,
 				F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */,
-				F66CD93A2673A7BB0031EEC5 /* RegisterNewPlaceViewController.swift in Sources */,
 				F65215932674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift in Sources */,
-				F66CD9392673A7BB0031EEC5 /* RegisterNewPlaceRouter.swift in Sources */,
-				F66CD93D2673A7BB0031EEC5 /* RegisterNewPlaceViewModel.swift in Sources */,
 				F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */,
-				F66CD93B2673A7BB0031EEC5 /* RegisterNewPlaceBuilder.swift in Sources */,
 				F652158F2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift in Sources */,
 				F66CD94B2673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift in Sources */,
 				F65215902674B935000CAB4B /* ManuallyResigterPlaceViewController.swift in Sources */,
