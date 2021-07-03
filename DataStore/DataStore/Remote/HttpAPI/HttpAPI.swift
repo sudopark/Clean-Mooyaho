@@ -168,7 +168,7 @@ private extension HttpAPIMethods {
     var encoding: ParameterEncoding {
         switch self {
         case .post, .patch: return JSONEncoding.default
-        default: return URLEncoding.default
+        default: return URLEncoding(arrayEncoding: .noBrackets)
         }
     }
 }
