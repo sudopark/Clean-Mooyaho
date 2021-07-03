@@ -74,7 +74,7 @@ extension SearchingPlaceCollection: SuggestResultCollectionType {
     
     public static func distinguisForSuggest(_ lhs: SearchingPlaceCollection,
                                             _ rhs: SearchingPlaceCollection) -> Bool {
-        return lhs.places.map{ $0.uid } == rhs.places.map{ $0.uid }
+        return lhs.query == rhs.query && lhs.places.map{ $0.uid } == rhs.places.map{ $0.uid }
     }
 }
 
@@ -120,7 +120,7 @@ extension SearchNewPlaceUsecaseImple {
     }
     
     public func loadMorePlaceSearchResult() {
-        self.internalSuggestUsecase.suggestMore()
+//        self.internalSuggestUsecase.suggestMore()
     }
 }
 

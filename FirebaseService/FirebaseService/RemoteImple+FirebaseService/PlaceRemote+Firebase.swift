@@ -48,7 +48,7 @@ extension FirebaseServiceImple {
         let collectionRef = self.fireStoreDB.collection(.placeSnippet)
         let (latt, long) = (location.lastLocation.lattitude, location.lastLocation.longitude)
         let center2D = CLLocationCoordinate2D(latitude: latt, longitude: long)
-        let radiusKilometers: Double = searchDistanceMeters / 1000
+        let radiusKilometers: Double = hoorayRefPlaceRangeMeters / 1000
         
         let queryBounds = GFUtils.queryBounds(forLocation: center2D, withRadius: radiusKilometers)
         
@@ -114,6 +114,7 @@ extension FirebaseServiceImple {
         params["query"] = query
         params["searchCoord"] = "\(location.lastLocation.longitude);\(location.lastLocation.lattitude)"
         params["page"] = pageIndex
+        params["displayCount"] = 30
         
         typealias ResultCollection = SearchingPlaceCollection
         

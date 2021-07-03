@@ -139,7 +139,8 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
                 self.subjects.currentLocation.onNext(userLocation)
                 return
             }
-            userLocation.placeMark = placeMark.name ?? placeMark.subLocality ?? placeMark.locality
+            let marks = [placeMark.subLocality, placeMark.locality]
+            userLocation.placeMark = marks.compactMap{ $0 }.joined(separator: " ")
             self.subjects.currentLocation.onNext(userLocation)
             logger.print(level: .debug, "user location changed => \(userLocation.lattitude) x \(userLocation.longitude)")
         }

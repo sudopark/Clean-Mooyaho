@@ -33,7 +33,7 @@ open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
     }
     
     open func afterViewInit() {
-        
+        self.selectionStyle = .none
     }
     
     open override func prepareForReuse() {

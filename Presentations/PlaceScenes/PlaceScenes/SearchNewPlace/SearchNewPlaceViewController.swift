@@ -63,7 +63,7 @@ extension SearchNewPlaceViewController {
     private func bind() {
         
         self.searchBar.rx.text
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.search(text)
@@ -82,9 +82,10 @@ extension SearchNewPlaceViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.view.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.view.endEditing(true)
+        self.searchBar.clearButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.searchBar.inputField.text = nil
+                self?.viewModel.finishSearch()
             })
             .disposed(by: self.disposeBag)
         
@@ -139,6 +140,7 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
         
         self.tableView.rx.modelSelected(CellType.self)
             .subscribe(onNext: { [weak self] celltype in
+                self?.view.endEditing(true)
                 switch celltype {
                 case is SeerchingNewPlaceAddNewCellViewModel:
                     break
@@ -166,12 +168,28 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView: SearchNewPlaceSectionHeaderView = tableView.dequeueHeaderFooterView()
+        if let placeMark = self.viewModel.currentPlaceMark {
+            headerView.titleLabel.text = "Current place: \(placeMark)"
+        } else {
+            headerView.titleLabel.text = "Place search result".localized
+        }
         return headerView
     }
     
     public func tableView(_ tableView: UITableView,
                           willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = self.uiContext.colors.appBackground
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollVelocity = scrollView.panGestureRecognizer.velocity(in: self.view)
+        if scrollVelocity.y > 2000 {
+            self.view.endEditing(true)
+        }
     }
 }
 
@@ -204,6 +222,7 @@ extension SearchNewPlaceViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
+        confirmButton.setupLayout()
     }
     
     public func setupStyling() {
@@ -221,6 +240,7 @@ extension SearchNewPlaceViewController: Presenting {
         self.tableView.estimatedRowHeight = 76
         self.tableView.separatorStyle = .none
         self.tableView.delegate = self
+        self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
         
         self.confirmButton.layer.cornerRadius = 5
         self.confirmButton.clipsToBounds = true

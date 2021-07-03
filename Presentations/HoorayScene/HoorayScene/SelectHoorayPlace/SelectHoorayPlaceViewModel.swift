@@ -22,7 +22,8 @@ public struct SuggestPlaceCellViewModel {
     public let placeID: String
     public let title: String
     public let position: Coordinate
-    public var distance: String = ""
+    public var distance: Meters = 0
+    public var distanceText: String = ""
     public var isSelected: Bool = false
     
     public init(snippet: PlaceSnippet) {
@@ -34,7 +35,8 @@ public struct SuggestPlaceCellViewModel {
     func distanceCalculated(from userPosition: Coordinate) -> Self {
         var sender = self
         let distanceMeters = sender.position.distance(from: userPosition)
-        sender.distance = "\(distanceMeters)m"
+        sender.distance = distanceMeters
+        sender.distanceText = distanceMeters.asDistanceText()
         return sender
     }
 }
@@ -45,7 +47,6 @@ public protocol SelectHoorayPlaceViewModel: AnyObject {
     func suggestPlace(by title: String)
     func refreshUserLocation()
     func toggleUpdateSelected(_ placeID: String)
-    func skipPlaceInput()
     func confirmSelectPlace()
     func registerNewPlace()
     
@@ -117,19 +118,6 @@ extension SelectHoorayPlaceViewModelImple {
         } else {
             self.subjects.selectedPlaceID.accept(nil)
         }
-    }
-    
-    public func skipPlaceInput() {
-        
-        let confirmed: () -> Void = { [weak self] in
-            logger.todoImplement("should move to place select scene")
-        }
-        guard let form = AlertBuilder(base: .init())
-                .message("[TBD] message")
-                .confirmed(confirmed)
-                .build() else { return }
-        
-        self.router.alertForConfirm(form)
     }
     
     public func confirmSelectPlace() {
@@ -245,6 +233,7 @@ extension SelectHoorayPlaceViewModelImple {
             guard let location = location else { return cellViewModels }
             let coordinate = Coordinate(latt: location.lattitude, long: location.longitude)
             return cellViewModels.map{ $0.distanceCalculated(from: coordinate) }
+                .sorted(by: { $0.distance < $1.distance })
         }
 
         return Observable

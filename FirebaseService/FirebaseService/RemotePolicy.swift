@@ -7,7 +7,4 @@
 
 import Foundation
 
-
-let searchDistanceMeters: Double = 50
-
 let maxFcmSendrequestCount: Int = 1000

@@ -30,7 +30,8 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
     public let thumbNail: ImageSource?
     public let link: String?
     public let contact: String?
-    public var distance: String = ""
+    public var distance: Meters = 0
+    public var distanceText: String = ""
     public var isSelected: Bool = false
     
     public init(place: SearchingPlace) {
@@ -46,7 +47,8 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
     func distanceCalculated(from userPosition: Coordinate) -> Self {
         var sender = self
         let distanceMeters = sender.position.distance(from: userPosition)
-        sender.distance = "\(distanceMeters)m"
+        sender.distance = distanceMeters
+        sender.distanceText = distanceMeters.asDistanceText()
         return sender
     }
 }
@@ -61,10 +63,12 @@ public protocol SearchNewPlaceViewModel: AnyObject {
     func loadMore()
     func search(_ title: String)
     func toggleSelectPlace(_ placeID: String)
+    func finishSearch()
     func confirmSelect()
     
     // presenter
     var cellViewModels: Observable<[SearchingNewPlaceCellViewModelType]> { get }
+    var currentPlaceMark: String? { get }
     var isPlaceSelectConfirmable: Observable<Bool> { get }
     var isRegistering: Observable<Bool> { get }
     var newRegistered: Observable<Place> { get }
@@ -157,13 +161,10 @@ extension SearchNewPlaceViewModelImple {
     public func toggleSelectPlace(_ placeID: String) {
         
         let cellViewModels = self.subjects.cellViewModels.value.compactMap{ $0 as? PlaceCVM }
-        guard let place = cellViewModels.first(where: { $0.placeID == placeID }) else { return }
+        guard let _ = cellViewModels.first(where: { $0.placeID == placeID }) else { return }
         
         func select() {
             self.subjects.selectPlaceID.accept(placeID)
-            place.link.whenExists {
-                self.router.showPlaceDetail(placeID, link: $0)
-            }
         }
         
         func deselect() {
@@ -173,6 +174,10 @@ extension SearchNewPlaceViewModelImple {
         let currentSelectedID = self.subjects.selectPlaceID.value
         let alreadySelected = currentSelectedID != nil && currentSelectedID == placeID
         return alreadySelected ? deselect() : select()
+    }
+    
+    public func finishSearch() {
+        self.searchNewPlaceUsecase.finishSearchPlace()
     }
     
     public func confirmSelect() {
@@ -225,6 +230,7 @@ extension SearchNewPlaceViewModelImple {
             guard let userLocation = self?.subjects.curentUserLocation.value else { return cellViewModels }
             let coordinate = Coordinate(latt: userLocation.lattitude, long: userLocation.longitude)
             return cellViewModels.map{ $0.distanceCalculated(from: coordinate) }
+                .sorted(by: { $0.distance < $1.distance })
         }
         let cellViewModels = self.searchNewPlaceUsecase.newPlaceSearchResult
             .map{ $0?.places.map(PlaceCVM.init(place:)) ?? []}
@@ -265,6 +271,10 @@ extension SearchNewPlaceViewModelImple {
     
     public var cellViewModels: Observable<[SearchingNewPlaceCellViewModelType]> {
         return self.subjects.cellViewModels.asObservable()
+    }
+    
+    public var currentPlaceMark: String? {
+        return self.subjects.curentUserLocation.value.flatMap { $0.placeMark }
     }
     
     public var isPlaceSelectConfirmable: Observable<Bool> {
