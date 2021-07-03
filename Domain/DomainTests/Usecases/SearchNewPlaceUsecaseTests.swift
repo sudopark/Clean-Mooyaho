@@ -62,7 +62,7 @@ extension SearchNewPlaceUsecaseTests {
     func testUsecase_searchNewPlace() {
         // given
         let expect = expectation(description: "새로운 장소 탐색")
-        expect.expectedFulfillmentCount =  2 + 1 + 1
+        expect.expectedFulfillmentCount = 1 + 2 + 1 + 1
         let q1Results = self.dummyResults(for: "q1", size: 3)
         let q2Results = self.dummyResults(for: "q2", size: 2)
         q1Results.enumerated().forEach { offset, result in
@@ -93,8 +93,9 @@ extension SearchNewPlaceUsecaseTests {
         // then
         let queries = collections.map{ $0?.query }
         let placeIDLists = collections.map{ $0?.placeIDs }
-        XCTAssertEqual(queries, ["q1", "q1", "q2", nil])
+        XCTAssertEqual(queries, ["", "q1", "q1", "q2", nil])
         XCTAssertEqual(placeIDLists, [
+            [],
             (0..<10).placeIDs,
             (0..<20).placeIDs,
             (0..<10).placeIDs,
