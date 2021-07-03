@@ -7,6 +7,10 @@
 
 import Foundation
 
+import RxSwift
+
+import Domain
+
 
 // MARK: - RegisterNewPlaceScene Interactor & Presenter
 
@@ -35,7 +39,10 @@ public protocol RegisterNewPlaceSceneBuilable {
 
 //public protocol SearchNewPlaceSceneInteractor { }
 //
-//public protocol SearchNewPlaceScenePresenter { }
+public protocol SearchNewPlaceSceneOutput {
+    
+    var newRegistered: Observable<Place> { get }
+}
 
 
 // MARK: - SearchNewPlaceScene
@@ -44,7 +51,7 @@ public protocol SearchNewPlaceScene: Scenable {
     
 //    var interactor: SearchNewPlaceSceneInteractor? { get }
 //
-//    var presenter: SearchNewPlaceScenePresenter? { get }
+    var output: SearchNewPlaceSceneOutput? { get }
 }
 
 public protocol SearchNewPlaceSceneBuilable {

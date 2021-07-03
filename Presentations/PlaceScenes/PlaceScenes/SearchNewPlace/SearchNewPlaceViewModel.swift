@@ -62,8 +62,17 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
 public protocol SearchNewPlaceViewModel: AnyObject {
 
     // interactor
+    func refreshList()
+    func loadMore()
+    func search(_ title: String)
+    func toggleSelectPlace(_ placeID: String)
+    func confirmSelect()
     
     // presenter
+    var cellViewModels: Observable<[SearchingNewPlaceCellViewModelType]> { get }
+    var isPlaceSelectConfirmable: Observable<Bool> { get }
+    var isRegistering: Observable<Bool> { get }
+    var newRegistered: Observable<Place> { get }
 }
 
 
