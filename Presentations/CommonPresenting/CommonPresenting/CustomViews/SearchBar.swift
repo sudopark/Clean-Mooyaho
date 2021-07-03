@@ -60,6 +60,9 @@ extension SearchBar: Presenting {
     
     public func setupStyling() {
         
+        self.inputField.autocorrectionType = .no
+        self.inputField.autocapitalizationType = .none
+        
         self.inputBackgroundView.backgroundColor = UIColor.gray.withAlphaComponent(0.1)
         self.inputBackgroundView.layer.cornerRadius = 4
         self.inputBackgroundView.clipsToBounds = true

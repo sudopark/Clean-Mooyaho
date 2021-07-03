@@ -19,12 +19,7 @@ import CommonPresenting
 
 public protocol SearchingNewPlaceCellViewModelType { }
 
-public struct SeerchingNewPlaceAddNewCellViewModel: SearchingNewPlaceCellViewModelType {
-    public let providerName: String
-    public init(providerName: String) {
-        self.providerName = providerName
-    }
-}
+public struct SeerchingNewPlaceAddNewCellViewModel: SearchingNewPlaceCellViewModelType { }
 
 public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType {
     
@@ -155,7 +150,8 @@ extension SearchNewPlaceViewModelImple {
     public func search(_ title: String) {
         guard let location = self.subjects.curentUserLocation.value else { return }
         let userLocation = UserLocation(userID: self.userID, lastLocation: location)
-        self.searchNewPlaceUsecase.startSearchPlace(for: .some(title), in: userLocation)
+        let params: SuggestPlaceQuery = title.isEmpty ? .empty : .some(title)
+        self.searchNewPlaceUsecase.startSearchPlace(for: params, in: userLocation)
     }
     
     public func toggleSelectPlace(_ placeID: String) {
@@ -244,11 +240,9 @@ extension SearchNewPlaceViewModelImple {
     }
     
     private func internalBinding() {
-        
-        let serviceProviderName = self.searchServiceProvider.serviceName
-        
+//
         let insertAddCell: ([PlaceCVM]) -> [CVMType] = { placeCellViewModels in
-            return [AddCVM(providerName: serviceProviderName)] + placeCellViewModels
+            return [AddCVM()] + placeCellViewModels
         }
         
         self.placeCellViewModels
