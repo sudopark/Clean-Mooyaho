@@ -83,9 +83,9 @@ extension DependencyInjector: NearbySceneBuilable {
 
 extension DependencyInjector: LocationSelectSceneBuilable {
     
-    public func makeLocationSelectScene() -> LocationSelectScene {
+    public func makeLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectScene {
         let router = LocationSelectRouter(nextSceneBuilders: self)
-        let viewModel = LocationSelectViewModelImple(router: router)
+        let viewModel = LocationSelectViewModelImple(previousInfo, router: router)
         let viewController = LocationSelectViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

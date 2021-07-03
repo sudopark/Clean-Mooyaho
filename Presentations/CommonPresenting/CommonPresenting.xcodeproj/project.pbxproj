@@ -37,6 +37,8 @@
 		F637205D266511570089D0B3 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205C266511570089D0B3 /* String+Extension.swift */; };
 		F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */; };
 		F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372060266538EA0089D0B3 /* UITableView+Extension.swift */; };
+		F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6572690B52200E04D29 /* InfoSectionView.swift */; };
+		F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6592690BA8E00E04D29 /* Attribute.swift */; };
 		F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBD2669DF800027800F /* Scenes+Member.swift */; };
 		F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBF2669DF950027800F /* Scenes+Place.swift */; };
 		F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC12669DF9E0027800F /* Scenes+Location.swift */; };
@@ -119,6 +121,8 @@
 		F637205C266511570089D0B3 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		F6372060266538EA0089D0B3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		F645A6572690B52200E04D29 /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
+		F645A6592690BA8E00E04D29 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		F6502DBD2669DF800027800F /* Scenes+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Member.swift"; sourceTree = "<group>"; };
 		F6502DBF2669DF950027800F /* Scenes+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Place.swift"; sourceTree = "<group>"; };
 		F6502DC12669DF9E0027800F /* Scenes+Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Location.swift"; sourceTree = "<group>"; };
@@ -292,6 +296,7 @@
 				F61014732657210600D32E38 /* StringsSet.swift */,
 				F610147026571FDE00D32E38 /* UIContext.swift */,
 				F65215AC26755626000CAB4B /* ApplicationStatus.swift */,
+				F645A6592690BA8E00E04D29 /* Attribute.swift */,
 			);
 			path = UIContext;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 				F6502DEA266CB6F80027800F /* LoadingButton.swift */,
 				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
 				F65215882674A7C0000CAB4B /* InputTextView.swift */,
+				F645A6572690B52200E04D29 /* InfoSectionView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -529,6 +535,7 @@
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
 				F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
+				F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */,
 				F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */,
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
@@ -554,6 +561,7 @@
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
+				F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */,
 				F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */,
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,

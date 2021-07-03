@@ -131,6 +131,6 @@ extension MakeHoorayRouter {
         
         self.currentScene?.present(next, animated: true, completion: nil)
         
-        return next.presenter?.enteredText.map(fillMessage)
+        return next.output?.enteredText.map(fillMessage)
     }
 }

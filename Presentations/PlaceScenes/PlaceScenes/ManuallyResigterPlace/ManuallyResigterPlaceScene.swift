@@ -11,6 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import CommonPresenting
+
 
 // MARK: - ManuallyResigterPlaceViewModelImple conform ManuallyResigterPlaceSceneInteractor or ManuallyResigterPlaceScenePresenter
 
@@ -18,19 +20,15 @@ import RxCocoa
 //
 //}
 //
-//extension ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceScenePresenter {
-//
-//}
+extension ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceSceneOutput {
+
+}
 
 // MARK: - ManuallyResigterPlaceViewController provide ManuallyResigterPlaceSceneInteractor or ManuallyResigterPlaceScenePresenter
 
-//extension ManuallyResigterPlaceViewController {
-//
-//    public var interactor: ManuallyResigterPlaceSceneInteractor? {
-//        return self.viewModel as? ManuallyResigterPlaceSceneInteractor
-//    }
-//
-//    public var presenter: ManuallyResigterPlaceScenePresenter? {
-//        return self.viewModel as? ManuallyResigterPlaceScenePresenter
-//    }
-//}
+extension ManuallyResigterPlaceViewController {
+
+    public var output: ManuallyResigterPlaceSceneOutput? {
+        return self.viewModel as? ManuallyResigterPlaceSceneOutput
+    }
+}
