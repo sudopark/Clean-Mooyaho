@@ -12,6 +12,7 @@
 		F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */; };
 		F65215932674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */; };
 		F65215AB2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */; };
+		F6646F3D269027CF00E5A53B /* SearchNewPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3C269027CF00E5A53B /* SearchNewPlaceView.swift */; };
 		F66CD93F2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */; };
 		F66CD9472673B0CB0031EEC5 /* SearchNewPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */; };
 		F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */; };
@@ -45,6 +46,7 @@
 		F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceScene.swift; sourceTree = "<group>"; };
 		F652158E2674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewModel.swift; sourceTree = "<group>"; };
 		F65215AA2674C05F000CAB4B /* ManuallyResigterPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewModelTests.swift; sourceTree = "<group>"; };
+		F6646F3C269027CF00E5A53B /* SearchNewPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceView.swift; sourceTree = "<group>"; };
 		F66CD93E2673A8250031EEC5 /* RegisterNewPlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceViewModelTests.swift; sourceTree = "<group>"; };
 		F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceRouter.swift; sourceTree = "<group>"; };
 		F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNewPlaceViewController.swift; sourceTree = "<group>"; };
@@ -94,9 +96,10 @@
 			isa = PBXGroup;
 			children = (
 				F66CD9422673B0CB0031EEC5 /* SearchNewPlaceRouter.swift */,
-				F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */,
 				F66CD9452673B0CB0031EEC5 /* SearchNewPlaceScene.swift */,
 				F66CD9462673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift */,
+				F66CD9432673B0CB0031EEC5 /* SearchNewPlaceViewController.swift */,
+				F6646F3C269027CF00E5A53B /* SearchNewPlaceView.swift */,
 			);
 			path = SearchNewPlace;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				F66CD9482673B0CB0031EEC5 /* SearchNewPlaceViewController.swift in Sources */,
 				F65215932674B935000CAB4B /* ManuallyResigterPlaceViewModel.swift in Sources */,
 				F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */,
+				F6646F3D269027CF00E5A53B /* SearchNewPlaceView.swift in Sources */,
 				F652158F2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift in Sources */,
 				F66CD94B2673B0CB0031EEC5 /* SearchNewPlaceViewModel.swift in Sources */,
 				F65215902674B935000CAB4B /* ManuallyResigterPlaceViewController.swift in Sources */,
