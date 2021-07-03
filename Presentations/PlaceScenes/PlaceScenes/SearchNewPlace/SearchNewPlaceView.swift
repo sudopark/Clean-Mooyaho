@@ -28,7 +28,8 @@ final class SearchNewPlaceSectionHeaderView: BaseTableViewSectionHeaderFooterVie
         
         self.contentView.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 4)
         }
     }
@@ -111,7 +112,7 @@ final class SearchNewPlaceCell: BaseTableViewCell, Presenting {
         
         self.titleLabel.text = cellViewModel.placeName
         
-        self.distanceLabel.text = "\(cellViewModel.distance) | \(cellViewModel.address)"
+        self.distanceLabel.text = "\(cellViewModel.distanceText) | \(cellViewModel.address)"
         
         self.updateCheckImageShowing(cellViewModel.isSelected)
         self.updatePlaceImageShowing(cellViewModel.thumbNail)

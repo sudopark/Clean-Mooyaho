@@ -190,24 +190,6 @@ extension SelectHoorayPlaceViewModelTests {
 
 extension SelectHoorayPlaceViewModelTests {
     
-    // 스킵시 알럿
-    func testViewModel_whenSkipPlaceInput_alert() {
-        // given
-        let expect = expectation(description: "장소정보 입력 스킵시도시에 알럿")
-        self.stubDefaultList(0..<10)
-        self.initViewModel()
-        
-        self.spyRouter.called(key: "alertForConfirm") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.skipPlaceInput()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
     func testViewModel_whenAfterConfirmSelect_closeSceneAndEmitEvent() {
         // given
         let expect = expectation(description: "장소선택 완료 이후에 화면 닫고 이벤트 전달")
