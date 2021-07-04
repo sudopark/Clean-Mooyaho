@@ -124,6 +124,8 @@ extension ManuallyResigterPlaceViewModelTests {
         let expect = expectation(description: "장소 입력 이후에 주소 업데이트")
         let stubResult = self.stubSelectLocation()
         
+        self.viewModel.showup()
+        
         // when
         let address = self.waitFirstElement(expect, for: self.viewModel.placeAddress) {
             self.viewModel.requestSelectPosition()
