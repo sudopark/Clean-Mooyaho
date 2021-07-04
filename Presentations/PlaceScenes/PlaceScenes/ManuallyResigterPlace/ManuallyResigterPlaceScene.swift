@@ -20,9 +20,7 @@ import CommonPresenting
 //
 //}
 //
-extension ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceSceneOutput {
-
-}
+extension ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceSceneOutput { }
 
 // MARK: - ManuallyResigterPlaceViewController provide ManuallyResigterPlaceSceneInteractor or ManuallyResigterPlaceScenePresenter
 
