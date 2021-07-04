@@ -246,6 +246,7 @@ extension SearchNewPlaceViewModelImple {
         }
         
         output.newPlace
+            .take(1)
             .subscribe(onNext: finishRegister)
             .disposed(by: self.disposeBag)
     }

@@ -17,35 +17,52 @@ public struct LastLocation {
         public var subLocality: String?
         public var thoroughfare: String?
         public var locality: String?
+        public var city: String?
         public var postalCode: String?
         
-        public var postalAddress: String?
-        
+        public var userDefineAddress: String?
+
         public var address: String {
             
-            let defaultAddress = [self.placeName, self.subLocality, self.thoroughfare,
-                                  self.locality, self.postalCode].compactMap{ $0 }
-                .joined(separator: ", ")
+            var sender = ""
+            if let code = postalCode {
+                sender = "(\(code)) "
+            }
+            if let name = self.placeName {
+                sender = "\(sender)\(name)"
+            } else if let subLocal = self.subLocality {
+                sender = "\(sender)\(subLocal)"
+            } else if let street = self.thoroughfare {
+                sender = "\(sender)\(street)"
+            }
             
-            return postalAddress ?? defaultAddress
+            if let local = self.locality {
+                sender = "\(sender) \(local)"
+            }
+            
+            if let city = self.city {
+                sender = "\(sender) \(city)"
+            }
+            
+            return userDefineAddress ?? sender
         }
         
-        public init(placeName: String?,
+        public init(city: String?,
+                    placeName: String?,
                     subLocality: String?,
                     thoroughfare: String?,
                     locality: String?,
-                    postalCode: String?,
-                    postalAddress: String?) {
+                    postalCode: String?) {
+            self.city = city
             self.placeName = placeName
             self.subLocality = subLocality
             self.thoroughfare = thoroughfare
             self.locality = locality
             self.postalCode = postalCode
-            self.postalAddress = postalAddress
         }
         
         public init(address: String) {
-            self.postalAddress = address
+            self.userDefineAddress = address
         }
     }
     
