@@ -11,12 +11,18 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - ManuallyResigterPlaceViewController
 
 public final class ManuallyResigterPlaceViewController: BaseViewController, ManuallyResigterPlaceScene {
+    
+    enum Metric {
+        static let hideMapTopConstant: CGFloat = 24
+        static let showMapTopConstant: CGFloat = 24 + 120
+    }
     
     let titleLabel = UILabel()
     let mapContainerView = UIView()
@@ -55,7 +61,6 @@ public final class ManuallyResigterPlaceViewController: BaseViewController, Manu
         super.viewDidLoad()
         self.bind()
     }
-    
 }
 
 // MARK: - bind
@@ -63,7 +68,86 @@ public final class ManuallyResigterPlaceViewController: BaseViewController, Manu
 extension ManuallyResigterPlaceViewController {
     
     private func bind() {
+     
+        self.rx.viewDidDisappear.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.showup()
+            })
+            .disposed(by: self.disposeBag)
         
+        self.titleLabel.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.requestEnterText()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.placeInfoSectionView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.requestSelectPosition()
+            })
+            .disposed(by: self.disposeBag)
+        
+        UIContext.currentAppStatus
+            .filter{ $0 == .background || $0 == .terminate }
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.savePendingInput()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.requestRegister()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.placeTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.titleLabel.text = title
+                self?.titleLabel.textColor = self?.uiContext.colors.text
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.placeAddress
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] address in
+                self?.placeInfoSectionView.innerView.attributedText = Attribute.keyAndValue("Address", address)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.placeLocation
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] _ in
+                self?.showInnderMapViewIfNeed()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.selectedTags
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] tags in
+                // TODO: update tags
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isRegistable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] enable in
+                self?.confirmButton.isEnabled = enable
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isRegistering
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isRegistering in
+                self?.confirmButton.updateIsLoading(isRegistering)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func showInnderMapViewIfNeed() {
+        guard self.mapContainerView.isHidden == true else { return }
+        self.titleTopConstraint.constant = Metric.showMapTopConstant
+        self.mapContainerView.isHidden = false
     }
 }
 
@@ -73,14 +157,6 @@ extension ManuallyResigterPlaceViewController: Presenting {
     
     public func setupLayout() {
         
-        self.view.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 16)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        }
-        self.titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 24)
-        self.titleTopConstraint.isActive = true
-        
         self.view.addSubview(mapContainerView)
         mapContainerView.autoLayout.active(with: self.view) {
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
@@ -89,18 +165,26 @@ extension ManuallyResigterPlaceViewController: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 120)
         }
         
+        self.view.addSubview(titleLabel)
+        titleLabel.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        }
+        self.titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 24)
+        self.titleTopConstraint.isActive = true
+        
         self.view.addSubview(placeInfoSectionView)
-        placeInfoSectionView.autoLayout.active(with: titleLabel) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+        placeInfoSectionView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
+            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }
         placeInfoSectionView.setupLayout()
         
         self.view.addSubview(tagInfoSectionView)
         tagInfoSectionView.autoLayout.active(with: self.placeInfoSectionView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
         }
         tagInfoSectionView.setupLayout()
@@ -119,6 +203,8 @@ extension ManuallyResigterPlaceViewController: Presenting {
     }
     
     public func setupStyling() {
+        
+        self.view.backgroundColor = self.uiContext.colors.appBackground
         
         self.titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         self.titleLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.6)

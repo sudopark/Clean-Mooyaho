@@ -64,7 +64,10 @@ public protocol SearchNewPlaceSceneBuilable {
 
 //public protocol ManuallyResigterPlaceSceneInteractor { }
 //
-public protocol ManuallyResigterPlaceSceneOutput { }
+public protocol ManuallyResigterPlaceSceneOutput {
+    
+    var newPlace: Observable<Place> { get }
+}
 
 
 // MARK: - ManuallyResigterPlaceScene

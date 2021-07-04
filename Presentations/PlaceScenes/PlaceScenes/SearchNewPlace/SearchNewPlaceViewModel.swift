@@ -34,6 +34,10 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
     public var distanceText: String = ""
     public var isSelected: Bool = false
     
+    public var hasLink: Bool {
+        return self.link != nil
+    }
+    
     public init(place: SearchingPlace) {
         self.placeID = place.uid
         self.placeName = place.title
@@ -53,6 +57,9 @@ public struct SearchinNewPlaceCellViewModel: SearchingNewPlaceCellViewModelType 
     }
 }
 
+enum SearchinNewPlaceCellAction {
+    case showDetail(_ placeID: String)
+}
 
 // MARK: - SearchNewPlaceViewModel
 
@@ -62,9 +69,11 @@ public protocol SearchNewPlaceViewModel: AnyObject {
     func refreshList()
     func loadMore()
     func search(_ title: String)
+    func showPlaceDetail(_ placeID: String)
     func toggleSelectPlace(_ placeID: String)
     func finishSearch()
     func confirmSelect()
+    func requestManualRegisterPlace()
     
     // presenter
     var cellViewModels: Observable<[SearchingNewPlaceCellViewModelType]> { get }
@@ -158,6 +167,14 @@ extension SearchNewPlaceViewModelImple {
         self.searchNewPlaceUsecase.startSearchPlace(for: params, in: userLocation)
     }
     
+    public func showPlaceDetail(_ placeID: String) {
+        let cellViewModels = self.subjects.cellViewModels.value.compactMap{ $0 as? PlaceCVM }
+        guard let detailLink = cellViewModels.first(where: { $0.placeID == placeID })?.link else {
+            return
+        }
+        self.router.showPlaceDetail(placeID, link: detailLink)
+    }
+    
     public func toggleSelectPlace(_ placeID: String) {
         
         let cellViewModels = self.subjects.cellViewModels.value.compactMap{ $0 as? PlaceCVM }
@@ -215,6 +232,21 @@ extension SearchNewPlaceViewModelImple {
         self.registerNewPlaceUsecase
             .uploadNewPlace(form)
             .subscribe(onSuccess: handleRegistered, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func requestManualRegisterPlace() {
+        
+        guard let output = self.router.showManuallyRegisterPlaceScene(myID: self.userID) else { return  }
+        
+        let finishRegister: (Place) -> Void = { [weak self] newPlace in
+            self?.router.closeScene(animated: false) {
+                self?.subjects.newPlace.onNext(newPlace)
+            }
+        }
+        
+        output.newPlace
+            .subscribe(onNext: finishRegister)
             .disposed(by: self.disposeBag)
     }
 }

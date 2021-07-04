@@ -214,24 +214,24 @@ extension SearchNewPlaceViewModelTests {
 extension SearchNewPlaceViewModelTests {
     
 //    // 선택시에 장소 상세화면으로 넘어감(링크 있으면) -> 웹뷰
-//    func testViewModel_whenSelectPlaceWhichHasDetailLink_showDetail() {
-//        // given
-//        let expect = expectation(description: "장소 선택시에 링크 있으면 상세화면으로 넘김")
-//        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
-//            return self.dummySearchResult(for: .empty, range: (0..<10))
-//        }
-//        self.initViewModel()
-//
-//        self.spyRouter.called(key: "showPlaceDetail") { _ in
-//            expect.fulfill()
-//        }
-//
-//        // when
-//        self.viewModel.toggleSelectPlace("uid:0")
-//
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
+    func testViewModel_whenSelectPlaceWhichHasDetailLink_showDetail() {
+        // given
+        let expect = expectation(description: "장소 선택시에 링크 있으면 상세화면으로 넘김")
+        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+            return self.dummySearchResult(for: .empty, range: (0..<10))
+        }
+        self.initViewModel()
+
+        self.spyRouter.called(key: "showPlaceDetail") { _ in
+            expect.fulfill()
+        }
+
+        // when
+        self.viewModel.showPlaceDetail("uid:0")
+
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
     
     // 선택시 선택 토글
     func testViewModel_toggleUpdateSelect() {
@@ -351,6 +351,23 @@ extension SearchNewPlaceViewModelTests {
     }
 }
 
+extension SearchNewPlaceViewModelTests {
+    
+    func testViewModel_whenSelectPlaceFromManuallyRegister_updateFormAndCloseScene() {
+        // given
+        let expect = expectation(description: "수동으로 입력한 장소 선택시에 폼정보 업데이트해서 방출하고 화면 닫기")
+        
+        // when
+        let form = self.waitFirstElement(expect, for: self.viewModel.newRegistered) {
+            self.viewModel.requestManualRegisterPlace()
+            self.spyRouter.stubManualRegisterPlaceOutput.place.onNext(Place.dummy(0))
+        }
+        
+        // then
+        XCTAssertNotNil(form)
+    }
+}
+
 
 extension SearchNewPlaceViewModelTests {
     
@@ -359,6 +376,14 @@ extension SearchNewPlaceViewModelTests {
         let stubTag = PublishSubject<[Domain.Tag]>()
         var selectedTags: Observable<[Domain.Tag]> {
             return self.stubTag.asObservable()
+        }
+    }
+    
+    class StubManualRegisterPlaceOutput: ManuallyResigterPlaceSceneOutput {
+        
+        let place = PublishSubject<Place>()
+        var newPlace: Observable<Place> {
+            return place.asObservable()
         }
     }
     
@@ -377,6 +402,10 @@ extension SearchNewPlaceViewModelTests {
             completed?()
         }
 
+        let stubManualRegisterPlaceOutput = StubManualRegisterPlaceOutput()
+        func showManuallyRegisterPlaceScene(myID: String) -> ManuallyResigterPlaceSceneOutput? {
+            return self.stubManualRegisterPlaceOutput
+        }
     }
 }
 

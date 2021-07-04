@@ -30,6 +30,8 @@ public final class SearchNewPlaceViewController: BaseViewController, SearchNewPl
     let viewModel: SearchNewPlaceViewModel
     var dataSource: DataSource!
     
+    private let cellActionSubject = PublishSubject<SearchinNewPlaceCellAction>()
+    
     public init(viewModel: SearchNewPlaceViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -111,7 +113,7 @@ extension SearchNewPlaceViewController {
 extension SearchNewPlaceViewController: UITableViewDelegate {
     
     private func makeDataSource() -> DataSource {
-        return DataSource { _, tableView, indexPath, cellViewModel in
+        return DataSource { [weak self] _, tableView, indexPath, cellViewModel in
             
             switch cellViewModel {
             case is SeerchingNewPlaceAddNewCellViewModel:
@@ -120,6 +122,7 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
             
             case let cvm as SearchinNewPlaceCellViewModel:
                 let cell: SearchNewPlaceCell = tableView.dequeueCell()
+                cell.cellActionSubject = self?.cellActionSubject
                 cell.setupCell(cvm)
                 return cell
             
@@ -143,7 +146,8 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
                 self?.view.endEditing(true)
                 switch celltype {
                 case is SeerchingNewPlaceAddNewCellViewModel:
-                    break
+                    self?.viewModel.requestManualRegisterPlace()
+                    
                 case let cvm as SearchinNewPlaceCellViewModel:
                     self?.viewModel.toggleSelectPlace(cvm.placeID)
                     
@@ -162,6 +166,13 @@ extension SearchNewPlaceViewController: UITableViewDelegate {
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 self?.view.endEditing(true)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.cellActionSubject
+            .subscribe(onNext: { [weak self] action in
+                guard case let .showDetail(placeID) = action else { return }
+                self?.viewModel.showPlaceDetail(placeID)
             })
             .disposed(by: self.disposeBag)
     }

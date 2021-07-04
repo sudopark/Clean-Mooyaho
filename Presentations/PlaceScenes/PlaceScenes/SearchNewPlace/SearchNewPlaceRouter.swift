@@ -25,12 +25,14 @@ public protocol SearchNewPlaceRouting: Routing {
     
     func showSelectPlaceCateTag(startWith tags: [Tag],
                                 total: [Tag]) -> SelectTagSceneOutput?
+    
+    func showManuallyRegisterPlaceScene(myID: String) -> ManuallyResigterPlaceSceneOutput?
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SearchNewPlaceRouterBuildables = SelectTagSceneBuilable
+public typealias SearchNewPlaceRouterBuildables = SelectTagSceneBuilable & ManuallyResigterPlaceSceneBuilable
 
 public final class SearchNewPlaceRouter: Router<SearchNewPlaceRouterBuildables>, SearchNewPlaceRouting {
     
@@ -54,5 +56,14 @@ extension SearchNewPlaceRouter {
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
         return next.presenter
+    }
+    
+    public func showManuallyRegisterPlaceScene(myID: String) -> ManuallyResigterPlaceSceneOutput? {
+        
+        guard let next = self.nextScenesBuilder?.makeManuallyResigterPlaceScene(myID: myID) else {
+            return nil
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
+        return next.output
     }
 }
