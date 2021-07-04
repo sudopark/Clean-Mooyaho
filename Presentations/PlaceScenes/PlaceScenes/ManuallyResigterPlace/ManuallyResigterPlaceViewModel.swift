@@ -118,7 +118,7 @@ extension ManuallyResigterPlaceViewModelImple {
                     $0.address = location.placeMark?.address ?? ""
                     $0.coordinate = .init(latt: location.lattitude, long: location.longitude)
                 }
-                self?.locationMarkInput.updatePlaceMark(at: .init(latt: location.lattitude, long: location.longitude))
+                self?.locationMarkInput?.updatePlaceMark(at: .init(latt: location.lattitude, long: location.longitude))
             })
             .disposed(by: self.disposeBag)
     }

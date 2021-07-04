@@ -21,8 +21,12 @@ public protocol LocationSelectViewModel: AnyObject {
 
     // interactor
     func selectCurrentLocation(_ position: CurrentPosition)
+    func updateAddress(_ text: String)
+    func confirmSelect()
     
     // presenter
+    var previousSelectedInfo: PreviousSelectedLocationInfo? { get }
+    var isConfirmable: Observable<Bool> { get }
     var selectedLocation: Observable<CurrentPosition> { get }
 }
 
@@ -38,6 +42,10 @@ public final class LocationSelectViewModelImple: LocationSelectViewModel {
                 router: LocationSelectRouting) {
         self.previousInfo = previousInfo
         self.router = router
+        
+        guard let previous = previousInfo else { return }
+        self.subjects.position.accept((previous.latt, previous.long))
+        self.subjects.address.accept(previous.address)
     }
     
     deinit {
@@ -45,6 +53,8 @@ public final class LocationSelectViewModelImple: LocationSelectViewModel {
     }
     
     fileprivate final class Subjects {
+        let position = BehaviorRelay<(Double, Double)?>(value: nil)
+        let address = BehaviorRelay<String?>(value: nil)
         let selectedPosition = PublishSubject<CurrentPosition>()
     }
     
@@ -59,11 +69,25 @@ extension LocationSelectViewModelImple {
     
     public func selectCurrentLocation(_ position: CurrentPosition) {
         
-        let emitEvent: () -> Void = { [weak self] in
-            self?.subjects.selectedPosition.onNext(position)
-        }
+        let pair = (position.lattitude, position.longitude)
+        let address = position.placeMark?.address
+        self.subjects.position.accept(pair)
+        self.subjects.address.accept(address)
+    }
+    
+    public func updateAddress(_ text: String) {
         
-        self.router.closeScene(animated: true, completed: emitEvent)
+        self.subjects.address.accept(text)
+    }
+    
+    public func confirmSelect() {
+        guard let position = self.subjects.position.value,
+              let address = self.subjects.address.value, address.isNotEmpty else { return }
+        var currentPosition = CurrentPosition(lattitude: position.0, longitude: position.1, timeStamp: .now())
+        currentPosition.placeMark = .init(address: address)
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.subjects.selectedPosition.onNext(currentPosition)
+        }
     }
 }
 
@@ -72,7 +96,23 @@ extension LocationSelectViewModelImple {
 
 extension LocationSelectViewModelImple {
     
+    public var previousSelectedInfo: PreviousSelectedLocationInfo? {
+        return self.previousInfo
+    }
+    
+    public var isConfirmable: Observable<Bool> {
+        
+        let checkSelectedPlaceInfo: ((Double, Double)?, String?) -> Bool = { pair, address in
+            return pair != nil && address?.isNotEmpty == true
+        }
+        
+        return Observable.combineLatest(self.subjects.position,
+                                        self.subjects.address,
+                                        resultSelector: checkSelectedPlaceInfo)
+            .distinctUntilChanged()
+    }
+    
     public var selectedLocation: Observable<CurrentPosition> {
-        return self.subjects.selectedPosition.asObservable()
+        return self.subjects.selectedPosition.compactMap{ $0 }
     }
 }

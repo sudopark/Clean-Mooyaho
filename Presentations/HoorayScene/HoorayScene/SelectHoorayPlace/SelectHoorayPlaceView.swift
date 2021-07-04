@@ -82,7 +82,6 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
         
         self.mapView.isZoomEnabled = true
         self.mapView.isScrollEnabled = true
-        self.mapView.showsUserLocation = false
         self.mapView.showsUserLocation = true
         
         self.searchBar.setupStyling()

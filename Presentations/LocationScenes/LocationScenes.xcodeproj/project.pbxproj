@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F603258D265954F400E4E769 /* NearbyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258C265954F400E4E769 /* NearbyViewModelTests.swift */; };
 		F60325C82659586F00E4E769 /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325C72659586F00E4E769 /* StubUsecases.framework */; };
+		F645A65C2691893900E04D29 /* LocationSelectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */; };
 		F652159B2674BBF9000CAB4B /* LocationSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */; };
 		F652159C2674BBF9000CAB4B /* LocationSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */; };
 		F652159E2674BBF9000CAB4B /* LocationSelectScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215992674BBF9000CAB4B /* LocationSelectScene.swift */; };
@@ -44,6 +45,7 @@
 /* Begin PBXFileReference section */
 		F603258C265954F400E4E769 /* NearbyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModelTests.swift; sourceTree = "<group>"; };
 		F60325C72659586F00E4E769 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewModelTests.swift; sourceTree = "<group>"; };
 		F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectRouter.swift; sourceTree = "<group>"; };
 		F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewController.swift; sourceTree = "<group>"; };
 		F65215992674BBF9000CAB4B /* LocationSelectScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectScene.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				F6F8730A26593F3400FDB24E /* LocationScenesTests.swift */,
 				F6F8730C26593F3400FDB24E /* Info.plist */,
 				F603258C265954F400E4E769 /* NearbyViewModelTests.swift */,
+				F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */,
 			);
 			path = LocationScenesTests;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6F8730B26593F3400FDB24E /* LocationScenesTests.swift in Sources */,
+				F645A65C2691893900E04D29 /* LocationSelectViewModelTests.swift in Sources */,
 				F603258D265954F400E4E769 /* NearbyViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

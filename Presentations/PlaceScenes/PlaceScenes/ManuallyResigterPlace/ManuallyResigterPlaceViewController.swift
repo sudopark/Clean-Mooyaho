@@ -21,7 +21,7 @@ public final class ManuallyResigterPlaceViewController: BaseViewController, Manu
     
     enum Metric {
         static let hideMapTopConstant: CGFloat = 24
-        static let showMapTopConstant: CGFloat = 24 + 120
+        static let showMapTopConstant: CGFloat = 160
     }
     
     let titleLabel = UILabel()
@@ -69,7 +69,7 @@ extension ManuallyResigterPlaceViewController {
     
     private func bind() {
      
-        self.rx.viewDidDisappear.take(1)
+        self.rx.viewDidAppear.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.showup()
             })
@@ -205,6 +205,8 @@ extension ManuallyResigterPlaceViewController: Presenting {
     public func setupStyling() {
         
         self.view.backgroundColor = self.uiContext.colors.appBackground
+        
+        self.mapContainerView.isHidden = true
         
         self.titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         self.titleLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.6)

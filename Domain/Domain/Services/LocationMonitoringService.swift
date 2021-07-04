@@ -230,21 +230,15 @@ private extension CLAuthorizationStatus {
 }
 
 
-import Contacts
-
-private extension CLPlacemark {
+extension CLPlacemark {
     
-    func convert() -> LastLocation.PlaceMark {
+    public func convert() -> LastLocation.PlaceMark {
         
-        let form = CNPostalAddressFormatter()
-        form.style = .mailingAddress
-        let postalAddress = self.postalAddress.map{ form.string(from: $0) }
-        
-        return .init(placeName: self.name,
+        return .init(city: self.administrativeArea,
+                     placeName: self.name,
                      subLocality: self.subLocality,
                      thoroughfare: self.thoroughfare,
                      locality: self.locality,
-                     postalCode: self.postalCode,
-                     postalAddress: postalAddress)
+                     postalCode: self.postalCode)
     }
 }
