@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 import Domain
 import CommonPresenting
 
@@ -97,6 +99,8 @@ final class SearchNewPlaceCell: BaseTableViewCell, Presenting {
     private var labelLeading: NSLayoutConstraint!
     private var labelTrailing: NSLayoutConstraint!
     
+    weak var cellActionSubject: PublishSubject<SearchinNewPlaceCellAction>?
+    
     override func afterViewInit() {
         super.afterViewInit()
         self.setupLayout()
@@ -116,6 +120,13 @@ final class SearchNewPlaceCell: BaseTableViewCell, Presenting {
         
         self.updateCheckImageShowing(cellViewModel.isSelected)
         self.updatePlaceImageShowing(cellViewModel.thumbNail)
+        
+        let placeID = cellViewModel.placeID
+        self.titleLabel.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.cellActionSubject?.onNext(.showDetail(placeID))
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func updateCheckImageShowing(_ show: Bool) {
@@ -200,7 +211,7 @@ final class SearchNewPlaceCell: BaseTableViewCell, Presenting {
         self.titleLabel.textColor = self.uiContext.colors.text
         self.titleLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         self.titleLabel.numberOfLines = 0
-        
+
         self.distanceLabel.textColor = .darkGray
         self.distanceLabel.font = UIFont.systemFont(ofSize: 12)
         self.distanceLabel.numberOfLines = 2

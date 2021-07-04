@@ -62,6 +62,7 @@ extension ManuallyResigterPlaceRouter {
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
         
         return next.output
     }
