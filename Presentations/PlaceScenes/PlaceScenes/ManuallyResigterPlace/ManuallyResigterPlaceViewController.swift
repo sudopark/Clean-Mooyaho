@@ -21,7 +21,7 @@ public final class ManuallyResigterPlaceViewController: BaseViewController, Manu
     
     enum Metric {
         static let hideMapTopConstant: CGFloat = 24
-        static let showMapTopConstant: CGFloat = 160
+        static let showMapTopConstant: CGFloat = 24 + 200
     }
     
     let titleLabel = UILabel()
@@ -101,6 +101,7 @@ extension ManuallyResigterPlaceViewController {
             .disposed(by: self.disposeBag)
         
         self.viewModel.placeTitle
+            .filter{ $0.isNotEmpty }
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] title in
                 self?.titleLabel.text = title
@@ -162,7 +163,7 @@ extension ManuallyResigterPlaceViewController: Presenting {
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 120)
+            $0.heightAnchor.constraint(equalToConstant: 200)
         }
         
         self.view.addSubview(titleLabel)
@@ -216,7 +217,7 @@ extension ManuallyResigterPlaceViewController: Presenting {
         self.placeInfoSectionView.innerView.numberOfLines = 1
         self.placeInfoSectionView.innerView.lineBreakMode = .byTruncatingTail
         self.placeInfoSectionView.underLineView.isHidden = true
-        self.placeInfoSectionView.innerView.attributedText = "Select a place".with(attribute: Attribute.placeHolder)
+        self.placeInfoSectionView.innerView.attributedText = "Address".with(attribute: Attribute.placeHolder)
         
         self.tagInfoSectionView.setupStyling()
         self.tagInfoSectionView.innerView.attributedText = Attribute.tagPlaceHolder
