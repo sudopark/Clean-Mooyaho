@@ -112,10 +112,11 @@ extension LocationSelectViewController {
     
     private func showPreviousSelectedInfoIfNeed() {
         guard let info = self.viewModel.previousSelectedInfo else {
-            self.mapView.updateCameraToUserLocation()
+            self.mapView.updateCameraToUserLocation(zoomDistanceLevel: 150, with: false)
             return
         }
-        self.mapView.updateCameraPosition(latt: info.latt, long: info.long)
+        self.mapView.updateCameraPosition(latt: info.latt, long: info.long,
+                                          zoomDistanceLevel: 150, with: false)
         self.addressTextView.text = info.address
     }
 }

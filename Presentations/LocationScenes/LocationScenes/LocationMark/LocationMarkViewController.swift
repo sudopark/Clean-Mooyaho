@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import MapKit
 
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
@@ -19,6 +21,7 @@ import CommonPresenting
 public final class LocationMarkViewController: BaseViewController, LocationMarkScene {
     
     let viewModel: LocationMarkViewModel
+    let mapView = MKMapView()
     
     public init(viewModel: LocationMarkViewModel) {
         self.viewModel = viewModel
@@ -52,6 +55,23 @@ extension LocationMarkViewController {
     
     private func bind() {
         
+        self.viewModel.markerPosition
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] coordinate in
+                self?.updateMarker(coordinate)
+                self?.mapView
+                    .updateCameraPosition(latt: coordinate.latt, long: coordinate.long,
+                                          zoomDistanceLevel: 100, with: false)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateMarker(_ coordinate: Coordinate) {
+        let previousOne = self.mapView.annotations
+        self.mapView.removeAnnotations(previousOne)
+        
+        let newAnnotation = MarkerAnnotation(coordinate)
+        self.mapView.addAnnotation(newAnnotation)
     }
 }
 
@@ -62,9 +82,24 @@ extension LocationMarkViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(mapView)
+        mapView.autoLayout.fill(self.view)
     }
     
     public func setupStyling() {
-        
+        self.mapView.registerMarkerAnnotationView(for: MarkerAnnotation.self)
+        self.mapView.isZoomEnabled = false
+        self.mapView.isScrollEnabled = false
+        self.mapView.showsUserLocation = false
+    }
+}
+
+
+class MarkerAnnotation: NSObject, MKAnnotation {
+
+    @objc var coordinate: CLLocationCoordinate2D
+
+    init(_ coordinate: Coordinate) {
+        self.coordinate = .init(latitude: coordinate.latt, longitude: coordinate.long)
     }
 }
