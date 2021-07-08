@@ -30,7 +30,7 @@ public final class LocationSelectViewController: BaseViewController, LocationSel
     let bottomSlideMenuView = BottomContainerView()
     let addressExplainLabel = UILabel()
     let addressTextView = UITextView()
-    let confirmButton = UIButton(type: .system)
+    let confirmButton = ConfirmButton(type: .system)
 
     private let centerCoordinate = PublishSubject<CLLocationCoordinate2D>()
     let viewModel: LocationSelectViewModel
@@ -174,11 +174,8 @@ extension LocationSelectViewController: Presenting {
         }
         
         bottomSlideMenuView.addSubview(confirmButton)
-        confirmButton.autoLayout.active(with: bottomSlideMenuView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
-            $0.heightAnchor.constraint(equalToConstant: 40)
+        confirmButton.setupLayout(self.bottomSlideMenuView)
+        confirmButton.autoLayout.active {
             $0.topAnchor.constraint(equalTo: addressTextView.bottomAnchor, constant: 12)
         }
     }
@@ -205,11 +202,8 @@ extension LocationSelectViewController: Presenting {
         self.addressTextView.textColor = self.uiContext.colors.text
         self.addressTextView.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         
-        self.confirmButton.layer.cornerRadius = 5
-        self.confirmButton.clipsToBounds = true
-        self.confirmButton.backgroundColor = UIColor.systemBlue
+        self.confirmButton.setupStyling()
         self.confirmButton.setTitle("Confirm Select", for: .normal)
-        self.confirmButton.setTitleColor(.white, for: .normal)
     }
 }
 

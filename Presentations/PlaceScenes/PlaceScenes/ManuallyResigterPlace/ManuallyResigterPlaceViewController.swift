@@ -28,6 +28,7 @@ public final class ManuallyResigterPlaceViewController: BaseViewController, Manu
     let mapContainerView = UIView()
     let placeInfoSectionView = InfoSectionView<UILabel>()
     let tagInfoSectionView = InfoSectionView<UILabel>()
+    let wordTokensView = WordTokensView()
     let confirmButton = LoadingButton()
     
     public var childContainerView: UIView {
@@ -87,6 +88,14 @@ extension ManuallyResigterPlaceViewController {
             })
             .disposed(by: self.disposeBag)
         
+        let selectTag = Observable.merge(self.tagInfoSectionView.rx.addTapgestureRecognizer(),
+                                         self.wordTokensView.rx.addTapgestureRecognizer())
+        selectTag
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.requestEnterCategoryTag()
+            })
+            .disposed(by: self.disposeBag)
+        
         UIContext.currentAppStatus
             .filter{ $0 == .background || $0 == .terminate }
             .subscribe(onNext: { [weak self] _ in
@@ -126,7 +135,7 @@ extension ManuallyResigterPlaceViewController {
         self.viewModel.selectedTags
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] tags in
-                // TODO: update tags
+                self?.updateSelectedTags(tags)
             })
             .disposed(by: self.disposeBag)
         
@@ -149,6 +158,20 @@ extension ManuallyResigterPlaceViewController {
         guard self.mapContainerView.isHidden == true else { return }
         self.titleTopConstraint.constant = Metric.showMapTopConstant
         self.mapContainerView.isHidden = false
+    }
+    
+    private func updateSelectedTags(_ tags: [PlaceCategoryTag]) {
+        
+        let showTags: () -> Void = {
+            self.wordTokensView.isHidden = false
+            let tokens = tags.map{ WordToken(word: $0.keyword, isHighlighted: true) }
+            self.wordTokensView.updateTokens(tokens)
+        }
+        let hideTags: () -> Void = {
+            self.wordTokensView.isHidden = true
+        }
+        
+        return tags.isEmpty ? hideTags() : showTags()
     }
 }
 
@@ -193,6 +216,15 @@ extension ManuallyResigterPlaceViewController: Presenting {
             $0.heightAnchor.constraint(lessThanOrEqualToConstant: 150)
         }
         
+        self.view.addSubview(wordTokensView)
+        wordTokensView.autoLayout.active(with: self.tagInfoSectionView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 4)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+            $0.heightAnchor.constraint(equalToConstant: 200)
+        }
+        wordTokensView.setupLayout()
+        
         self.view.addSubview(confirmButton)
         confirmButton.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
@@ -221,6 +253,8 @@ extension ManuallyResigterPlaceViewController: Presenting {
         
         self.tagInfoSectionView.setupStyling()
         self.tagInfoSectionView.innerView.attributedText = Attribute.tagPlaceHolder
+        self.wordTokensView.setupStyling()
+        self.wordTokensView.isHidden = true
         
         self.confirmButton.backgroundColor = UIColor.systemBlue
         self.confirmButton.title = "Confirm"

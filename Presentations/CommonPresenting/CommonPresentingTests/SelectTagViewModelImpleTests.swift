@@ -92,7 +92,12 @@ extension SelectTagViewModelImpleTests {
 
 extension SelectTagViewModelImpleTests {
     
-    class EmptyRouter: SelectTagRouting, Stubbable {}
+    class EmptyRouter: SelectTagRouting, Stubbable {
+        
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            completed?()
+        }
+    }
 }
 
 

@@ -59,3 +59,17 @@ extension String {
         return (self as NSString).substring(with: nsRange)
     }
 }
+
+
+extension String {
+    
+    public func expectWidth(font: UIFont) -> CGFloat {
+        let constraintSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
+                                    height: CGFloat.greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintSize,
+                                            options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                            attributes: [.font: font],
+                                            context: nil)
+        return ceil(boundingBox.width)
+    }
+}

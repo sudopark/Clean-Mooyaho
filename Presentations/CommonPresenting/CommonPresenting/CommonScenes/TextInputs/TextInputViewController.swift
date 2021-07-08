@@ -20,7 +20,7 @@ public final class TextInputViewController: BaseViewController, TextInputScene {
     let titleLabel = UILabel()
     let inputTextView = InputTextView()
     let charCountLabel = UILabel()
-    let confirmButton = UIButton(type: .system)
+    let confirmButton = ConfirmButton(type: .system)
     
     let viewModel: TextInputViewModel
     
@@ -148,11 +148,8 @@ extension TextInputViewController: Presenting {
         charCountLabel.numberOfLines = 1
         
         bottomSlideMenuView.containerView.addSubview(confirmButton)
-        confirmButton.autoLayout.active(with: bottomSlideMenuView.containerView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.heightAnchor.constraint(equalToConstant: 40)
-            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        confirmButton.setupLayout(bottomSlideMenuView.containerView)
+        confirmButton.autoLayout.active {
             $0.topAnchor.constraint(equalTo: charCountLabel.bottomAnchor, constant: 30)
         }
     }
@@ -173,10 +170,6 @@ extension TextInputViewController: Presenting {
         
         self.uiContext.deco.placeHolder(self.inputTextView.placeHolderLabel)
         
-        self.confirmButton.layer.cornerRadius = 5
-        self.confirmButton.clipsToBounds = true
-        self.confirmButton.backgroundColor = UIColor.systemBlue
-        self.confirmButton.setTitle("Confirm", for: .normal)
-        self.confirmButton.setTitleColor(.white, for: .normal)
+        self.confirmButton.setupStyling()
     }
 }
