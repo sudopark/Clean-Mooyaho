@@ -41,6 +41,7 @@ public protocol SelectTagViewModel: AnyObject {
     // interactor
     func toggleSelect(_ cellViewModel: TagCellViewModel)
     func confirmSelect()
+    func closeScene()
     
     // presenter
     var cellViewModels: Observable<[TagCellViewModel]> { get }
@@ -106,7 +107,14 @@ extension SelectTagViewModelImple {
         let cellViewModels = self.subjects.cellViewModels.value
         let selectedSet = self.subjects.selectionSet.value
         let selectedTags = cellViewModels.filter{ selectedSet.contains($0.keyword) }.map{ $0.tag }
-        self.subjects.selectedTag.onNext(selectedTags)
+        
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.subjects.selectedTag.onNext(selectedTags)
+        }
+    }
+    
+    public func closeScene() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 
