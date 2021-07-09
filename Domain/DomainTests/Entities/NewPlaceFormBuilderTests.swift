@@ -97,7 +97,7 @@ extension NewPlaceFormBuilderTests {
         XCTAssertNil(newBuilder.build())
     }
     
-    func testBuilder_whenCategoryTagInfoInvalid_buildFail() {
+    func testBuilder_whenCategoryTagInfoEmpty_buildSuccess() {
         // given
         let builder = self.fullFilledBuilder()
         
@@ -107,6 +107,6 @@ extension NewPlaceFormBuilderTests {
         
         
         newBuilder = builder.categoryTags([])
-        XCTAssertNil(newBuilder.build())
+        XCTAssertNotNil(newBuilder.build())
     }
 }

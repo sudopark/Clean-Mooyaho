@@ -49,11 +49,11 @@ public protocol TagLocalStorage {
 
 public protocol PlaceLocalStorage {
     
-    func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?>
+    func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?>
     
     func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
     
-    func removePendingRegisterForm() -> Maybe<Void>
+    func removePendingRegisterForm(_ memberID: String) -> Maybe<Void>
     
     func savePlaces(_ places: [Place]) -> Maybe<Void>
 }
@@ -79,12 +79,15 @@ public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStor
 public final class LocalStorageImple: LocalStorage {
     
     let encryptedStorage: EncryptedStorage
+    let environmentStorage: EnvironmentStorage
     let dataModelStorage: DataModelStorage
     
     public init(encryptedStorage: EncryptedStorage,
+                environmentStorage: EnvironmentStorage,
                 dataModelStorage: DataModelStorage) {
         
         self.encryptedStorage = encryptedStorage
+        self.environmentStorage = environmentStorage
         self.dataModelStorage = dataModelStorage
     }
 }

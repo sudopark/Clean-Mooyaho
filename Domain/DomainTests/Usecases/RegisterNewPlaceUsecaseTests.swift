@@ -66,7 +66,8 @@ extension RegisterNewPlaceUsecaseTests {
         
         // when
         let currentUserLocation = self.dummyPosition()
-        let loading = self.usecase.loadRegisterPendingNewPlaceForm(withIn: currentUserLocation)
+        let loading = self.usecase.loadRegisterPendingNewPlaceForm(for: "uid",
+                                                                   withIn: currentUserLocation)
         let pendingForm = self.waitFirstElement(expect, for: loading.asObservable()) {}
         
         // then
@@ -83,7 +84,8 @@ extension RegisterNewPlaceUsecaseTests {
         
         // when
         let currentUserLocation = self.dummyPosition()
-        let loading = self.usecase.loadRegisterPendingNewPlaceForm(withIn: currentUserLocation)
+        let loading = self.usecase.loadRegisterPendingNewPlaceForm(for: "uid",
+                                                                   withIn: currentUserLocation)
         let pendingForm = self.waitFirstElement(expect, for: loading.asObservable()) {}
         
         // then
@@ -100,7 +102,8 @@ extension RegisterNewPlaceUsecaseTests {
         
         // when
         let currentUserLocation = self.outOfRangePosition()
-        let loading = self.usecase.loadRegisterPendingNewPlaceForm(withIn: currentUserLocation)
+        let loading = self.usecase.loadRegisterPendingNewPlaceForm(for: "uid",
+                                                                   withIn: currentUserLocation)
         let pendingForm = self.waitFirstElement(expect, for: loading.asObservable()) {}
         
         // then
@@ -118,7 +121,8 @@ extension RegisterNewPlaceUsecaseTests {
         
         // when
         let currentUserLocation = self.outOfRangePosition()
-        let loading = self.usecase.loadRegisterPendingNewPlaceForm(withIn: currentUserLocation)
+        let loading = self.usecase.loadRegisterPendingNewPlaceForm(for: "uid",
+                                                                   withIn: currentUserLocation)
         let pendingForm = self.waitFirstElement(expect, for: loading.asObservable()) {}
         
         // then

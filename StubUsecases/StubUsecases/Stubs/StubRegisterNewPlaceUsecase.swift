@@ -17,7 +17,8 @@ open class StubRegisterNewPlaceUsecase: RegisterNewPlaceUsecase, Stubbable {
     
     public init() {}
     
-    open func loadRegisterPendingNewPlaceForm(withIn position: Coordinate) -> Maybe<NewPlaceForm?> {
+    open func loadRegisterPendingNewPlaceForm(for memberID: String,
+                                              withIn position: Coordinate) -> Maybe<NewPlaceForm?> {
         return self.resolve(key: "loadRegisterPendingNewPlaceForm") ?? .empty()
     }
     

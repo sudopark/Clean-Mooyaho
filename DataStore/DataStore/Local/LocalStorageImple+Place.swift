@@ -15,16 +15,16 @@ import Domain
 
 extension LocalStorageImple {
     
-    public func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
-        return .empty()
+    public func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
+        return self.environmentStorage.fetchPendingNewPlaceForm(memberID)
     }
     
     public func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
-        return .empty()
+        return self.environmentStorage.savePendingNewPlaceForm(form)
     }
     
-    public func removePendingRegisterForm() -> Maybe<Void> {
-        return .empty()
+    public func removePendingRegisterForm(_ memberID: String) -> Maybe<Void> {
+        return self.environmentStorage.removePendingNewPlaceForm(memberID)
     }
     
     public func savePlaces(_ places: [Place]) -> Maybe<Void> {

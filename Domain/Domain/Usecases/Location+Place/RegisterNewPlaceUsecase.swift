@@ -28,7 +28,8 @@ public struct ValidPendingRegisterNewPlacePolicy {
 
 public protocol RegisterNewPlaceUsecase {
     
-    func loadRegisterPendingNewPlaceForm(withIn position: Coordinate) -> Maybe<NewPlaceForm?>
+    func loadRegisterPendingNewPlaceForm(for memberID: String,
+                                         withIn position: Coordinate) -> Maybe<NewPlaceForm?>
     
     func finishInputPlaceInfo(_ form: NewPlaceForm) -> Maybe<NewPlaceForm>
     
@@ -60,7 +61,8 @@ extension RegisterNewPlaceUsecaseImple {
         return 100
     }
     
-    public func loadRegisterPendingNewPlaceForm(withIn position: Coordinate) -> Maybe<NewPlaceForm?> {
+    public func loadRegisterPendingNewPlaceForm(for memberID: String,
+                                                withIn position: Coordinate) -> Maybe<NewPlaceForm?> {
         
         let policy = self.policy
         let filteringByDistanceAndTime: (PendingRegisterNewPlaceForm?) -> NewPlaceForm?
@@ -78,7 +80,7 @@ extension RegisterNewPlaceUsecaseImple {
             default: return nil
             }
         }
-        return self.placeRepository.fetchRegisterPendingNewPlaceForm()
+        return self.placeRepository.fetchRegisterPendingNewPlaceForm(memberID)
             .map(filteringByDistanceAndTime)
     }
     

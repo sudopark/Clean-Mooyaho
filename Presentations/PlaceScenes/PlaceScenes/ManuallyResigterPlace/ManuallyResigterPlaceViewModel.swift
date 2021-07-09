@@ -83,6 +83,8 @@ extension ManuallyResigterPlaceViewModelImple {
     public func showup() {
         guard self.locationMarkInput == nil else { return }
         self.locationMarkInput = self.router.addSmallMapView()
+        guard let coordinate = self.subjects.pendingForm.value?.coordinate else { return }
+        self.locationMarkInput?.updatePlaceMark(at: coordinate)
     }
     
     public func requestEnterText() {
@@ -175,12 +177,13 @@ extension ManuallyResigterPlaceViewModelImple {
     
     private func loadPreviousInput() {
         
+        let myID = self.userID
         let fetchCurrentPosition = self.userLocationUsecase.fetchUserLocation()
         
         let thenLoadPreviousInput: (LastLocation) -> Maybe<NewPlaceForm?> = { [weak self] location in
             guard let self = self else { return .empty() }
             let coordinate: Coordinate = .init(latt: location.lattitude, long: location.longitude)
-            return self.registerUsecase.loadRegisterPendingNewPlaceForm(withIn: coordinate)
+            return self.registerUsecase.loadRegisterPendingNewPlaceForm(for: myID, withIn: coordinate)
         }
         
         let updateForm: (NewPlaceForm) -> Void = { [weak self] previousForm in

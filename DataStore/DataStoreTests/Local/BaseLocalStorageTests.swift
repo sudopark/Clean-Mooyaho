@@ -19,6 +19,7 @@ import UnitTestHelpKit
 class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var stubEnvironmentStorage: StubEnvironmentStorage!
     var stubEncrytedStorage: StubEncryptedStorage!
     var local: LocalStorageImple!
     
@@ -37,13 +38,17 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         
         self.stubEncrytedStorage = StubEncryptedStorage()
+        self.stubEnvironmentStorage = .init()
         let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0)
-        self.local = LocalStorageImple(encryptedStorage: stubEncrytedStorage, dataModelStorage: dataModelStorage)
+        self.local = LocalStorageImple(encryptedStorage: stubEncrytedStorage,
+                                       environmentStorage: UserDefaults.standard,
+                                       dataModelStorage: dataModelStorage)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.stubEncrytedStorage = nil
+        self.stubEnvironmentStorage = nil
         self.local = nil
         try? FileManager.default.removeItem(atPath: self.testDBPath)
     }
@@ -65,6 +70,25 @@ extension BaseLocalStorageTests {
 
         func delete(_ key: String) -> Bool {
             return true
+        }
+    }
+}
+
+
+extension BaseLocalStorageTests {
+    
+    class StubEnvironmentStorage: EnvironmentStorage, Stubbable {
+        
+        func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void> {
+            return self.resolve(key: "savePendingNewPlaceForm") ?? .empty()
+        }
+        
+        func fetchPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
+            return self.resolve(key: "fetchPendingNewPlaceForm") ?? .empty()
+        }
+        
+        func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void> {
+            return self.resolve(key: "removePendingNewPlaceForm") ?? .empty()
         }
     }
 }
