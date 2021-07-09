@@ -55,8 +55,8 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
             .do(onNext: updateLocalCache)
     }
     
-    public func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
-        return self.placeLocal.fetchRegisterPendingNewPlaceForm()
+    public func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
+        return self.placeLocal.fetchRegisterPendingNewPlaceForm(memberID)
     }
     
     public func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
@@ -74,7 +74,7 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
         
         let removePendingInput: (Place) -> Void = { [weak self] _ in
             guard let self = self else { return }
-            self.placeLocal.removePendingRegisterForm()
+            self.placeLocal.removePendingRegisterForm(form.reporterID)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }

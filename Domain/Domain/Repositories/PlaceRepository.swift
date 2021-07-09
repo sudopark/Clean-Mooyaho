@@ -25,9 +25,9 @@ public protocol PlaceRepository {
     
     func requestLoadPlace(_ placeID: String) -> Maybe<Place>
     
-    func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?>
+    func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?>
     
     func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
-    
+
     func requestRegister(newPlace form: NewPlaceForm) -> Maybe<Place>
 }

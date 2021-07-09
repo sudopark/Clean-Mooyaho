@@ -66,7 +66,7 @@ class StubLocal: LocalStorage, Stubbable {
         return .just()
     }
     
-    func fetchRegisterPendingNewPlaceForm() -> Maybe<PendingRegisterNewPlaceForm?> {
+    func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
         return self.resolve(key: "fetchRegisterPendingNewPlaceForm") ?? .empty()
     }
     
@@ -74,7 +74,7 @@ class StubLocal: LocalStorage, Stubbable {
         return self.resolve(key: "savePendingRegister") ?? .empty()
     }
     
-    func removePendingRegisterForm() -> Maybe<Void> {
+    func removePendingRegisterForm(_ memberID: String) -> Maybe<Void> {
         self.verify(key: "removePendingRegisterForm")
         return self.resolve(key: "removePendingRegisterForm") ?? .empty()
     }
