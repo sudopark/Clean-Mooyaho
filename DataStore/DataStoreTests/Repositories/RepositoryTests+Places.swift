@@ -139,7 +139,7 @@ extension RepositoryTests_Places {
         }
         
         // when
-        let requestLoad = self.repository.fetchRegisterPendingNewPlaceForm()
+        let requestLoad = self.repository.fetchRegisterPendingNewPlaceForm("some")
         let form = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
         
         // then

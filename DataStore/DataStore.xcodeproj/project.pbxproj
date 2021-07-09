@@ -27,6 +27,7 @@
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F62202BA2698918700B26B50 /* LocalStorageTests+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202B92698918700B26B50 /* LocalStorageTests+Place.swift */; };
 		F625EDC526821DB4000C87F0 /* LocalStorageImple+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDC426821DB4000C87F0 /* LocalStorageImple+Auth.swift */; };
 		F625EDC726821E3B000C87F0 /* LocalStorageImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDC626821E3B000C87F0 /* LocalStorageImple+Member.swift */; };
 		F625EDC926821E4E000C87F0 /* LocalStorageImple+Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDC826821E4E000C87F0 /* LocalStorageImple+Tag.swift */; };
@@ -85,6 +86,7 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F62202B92698918700B26B50 /* LocalStorageTests+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Place.swift"; sourceTree = "<group>"; };
 		F625EDC426821DB4000C87F0 /* LocalStorageImple+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Auth.swift"; sourceTree = "<group>"; };
 		F625EDC626821E3B000C87F0 /* LocalStorageImple+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Member.swift"; sourceTree = "<group>"; };
 		F625EDC826821E4E000C87F0 /* LocalStorageImple+Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Tag.swift"; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 			children = (
 				F66BB8902686E7F400B46A99 /* BaseLocalStorageTests.swift */,
 				F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */,
+				F62202B92698918700B26B50 /* LocalStorageTests+Place.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
 				2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */,
+				F62202BA2698918700B26B50 /* LocalStorageTests+Place.swift in Sources */,
 				2BABA28F2642A0E7007E2D1E /* RepositoryTests+Places.swift in Sources */,
 				2BD54F75263DB51A004B3EB0 /* RepositoryTests+Auth.swift in Sources */,
 				2BD54F79263DB59E004B3EB0 /* StubLocal.swift in Sources */,

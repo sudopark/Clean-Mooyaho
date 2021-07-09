@@ -112,8 +112,7 @@ extension NewPlaceFormBuilder {
         let asserting: (NewPlaceForm) -> Bool = { form in
             guard form.title.isNotEmpty,
                   form.coordinate != nil,
-                  form.address.isNotEmpty,
-                  form.categoryTags.isNotEmpty else { return false }
+                  form.address.isNotEmpty else { return false }
             return true
         }
         return build(with: asserting)
