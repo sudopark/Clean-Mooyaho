@@ -70,10 +70,11 @@ extension SelectHoorayPlaceViewModelTests {
         
         // when
         self.initViewModel()
-        let location = self.waitFirstElement(expect, for: self.viewModel.currentUserLocation) { }
+        let focus = self.waitFirstElement(expect, for: self.viewModel.cameraFocus) { }
         
         // then
-        XCTAssertNotNil(location)
+        XCTAssertNotNil(focus)
+        XCTAssertEqual(focus?.animation, false)
     }
     
     // 현재 유저위치 불러와서 -> 리스트 구성
