@@ -58,4 +58,20 @@ extension LocalStorageTests_Place {
         XCTAssertEqual(form?.categoryTags.first?.keyword, "t1")
         XCTAssertEqual(form?.categoryTags.last?.keyword, "t2")
     }
+    
+    func testLocalStorage_deletePendingNewPlaceForm() {
+        // given
+        let expect = expectation(description: "저장된 보류중인 새로운 장소 삭제")
+        
+        // when
+        let save = self.local.savePendingRegister(newPlace: self.dummyPlaceForm)
+        let load = self.local.fetchRegisterPendingNewPlaceForm("myID").filter{ $0 != nil }
+        let remove = self.local.removePendingRegisterForm("myID")
+        let loadAfter = self.local.fetchRegisterPendingNewPlaceForm("myID")
+        let action = save.flatMap{ _ in load }.flatMap{ _ in remove }.flatMap{ _ in loadAfter }
+        let form = self.waitFirstElement(expect, for: action.asObservable())
+        
+        // then
+        XCTAssertNil(form)
+    }
 }

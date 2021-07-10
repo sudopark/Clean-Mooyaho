@@ -203,13 +203,12 @@ extension Place: DocumentMappable {
               let reporterID = json[Key.reporterID] as? String,
               let providerValue = json[Key.infoProvider] as? String,
               let provider = RequireInfoProvider(rawValue: providerValue),
-              let tagsJsonArray = json[Key.categoryTags] as? [[String: Any]],
               let createdAt = json[Key.createdAt] as? Double,
               let pickCount = json[Key.pickCount] as? Int,
               let lastPickedAt = json[Key.lastPickedAt] as? Double else { return nil }
         
+        let tagsJsonArray = json[Key.categoryTags] as? [[String: Any]] ?? []
         let tags = tagsJsonArray.compactMap{ PlaceCategoryTag(json: $0) }
-        guard tags.isNotEmpty else { return nil }
         
         self.init(uid: docuID,
                   title: title,
@@ -266,16 +265,15 @@ extension NewPlaceForm: JSONMappable {
               let address = json[Key.address] as? String,
               let reporterID = json[Key.reporterID] as? String,
               let providerValue = json[Key.infoProvider] as? String,
-              let provider = Place.RequireInfoProvider(rawValue: providerValue),
-              let tagsJsonArray = json[Key.categoryTags] as? [[String: Any]] else { return nil }
-        
-        let tags = tagsJsonArray.compactMap{ PlaceCategoryTag(json: $0) }
-        guard tags.isNotEmpty else { return nil }
+              let provider = Place.RequireInfoProvider(rawValue: providerValue) else { return nil }
         
         self.init(reporterID: reporterID, infoProvider: provider)
         self.title = title
         self.coordinate = .init(latt: latt, long: long)
         self.address = address
+        
+        let tagsJsonArray = json[Key.categoryTags] as? [[String: Any]] ?? []
+        let tags = tagsJsonArray.compactMap{ PlaceCategoryTag(json: $0) }
         self.categoryTags = tags
     }
     
@@ -292,9 +290,9 @@ extension NewPlaceForm: JSONMappable {
         json[Key.categoryTags] = self.categoryTags.map{ $0.asJSON() }
         json[Key.reporterID] = self.reporterID
         json[Key.infoProvider] = self.infoProvider.rawValue
-        json[Key.createdAt] = TimeStamp.now
+        json[Key.createdAt] = TimeStamp.now()
         json[Key.pickCount] = 1
-        json[Key.lastPickedAt] = TimeStamp.now
+        json[Key.lastPickedAt] = TimeStamp.now()
         
         return json
     }
