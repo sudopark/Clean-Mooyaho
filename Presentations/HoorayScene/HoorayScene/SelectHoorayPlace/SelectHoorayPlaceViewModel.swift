@@ -105,7 +105,8 @@ extension SelectHoorayPlaceViewModelImple {
         guard let coordinate = try? self.subjects.cameraFocus.value()?.coordinate else { return }
         let lastLocation = LastLocation(lattitude: coordinate.latt, longitude: coordinate.long,
                                         timeStamp: .now())
-        self.requestSuggestPlace(.some(title), in: lastLocation)
+        let query: SuggestPlaceQuery = title.isEmpty ? .empty : .some(title)
+        self.requestSuggestPlace(query, in: lastLocation)
     }
     
     public func refreshUserLocation() {
