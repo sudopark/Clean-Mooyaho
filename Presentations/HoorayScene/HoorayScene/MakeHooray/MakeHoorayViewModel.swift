@@ -316,10 +316,9 @@ extension MakeHoorayViewModelImple {
     }
     
     public var isPublishable: Observable<Bool> {
-//        return self.subjects.pendingInputMessage
-//            .map{ $0.isNotEmpty }
-//            .distinctUntilChanged()
-        return .empty()
+        return self.subjects.pendingForm
+            .map{ $0?.message?.isNotEmpty == true }
+            .distinctUntilChanged()
     }
     
     public var isPublishing: Observable<Bool> {
