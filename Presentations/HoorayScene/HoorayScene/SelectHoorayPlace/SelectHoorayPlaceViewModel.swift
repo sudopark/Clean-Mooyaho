@@ -51,7 +51,7 @@ public protocol SelectHoorayPlaceViewModel: AnyObject {
     func registerNewPlace()
     
     // presenter
-    var currentUserLocation: Observable<LastLocation> { get }
+    var cameraFocus: Observable<MapCameraFocus> { get }
     var cellViewModels: Observable<[SuggestPlaceCellViewModel]> { get }
     var selectedPlaceID: Observable<String> { get }
     var isFinishInputEnabled: Observable<Bool> { get }
@@ -86,7 +86,7 @@ public final class SelectHoorayPlaceViewModelImple: SelectHoorayPlaceViewModel {
     }
     
     fileprivate final class Subjects {
-        let currentUserLocation = BehaviorRelay<LastLocation?>(value: nil)
+        let cameraFocus = BehaviorSubject<MapCameraFocus?>(value: nil)
         let selectedPlaceID = BehaviorRelay<String?>(value: nil)
         let cellViewModels = BehaviorRelay<[SuggestPlaceCellViewModel]>(value: [])
         let continueNext = PublishSubject<NewHoorayForm>()
@@ -102,7 +102,9 @@ public final class SelectHoorayPlaceViewModelImple: SelectHoorayPlaceViewModel {
 extension SelectHoorayPlaceViewModelImple {
     
     public func suggestPlace(by title: String) {
-        guard let lastLocation = self.subjects.currentUserLocation.value else { return }
+        guard let coordinate = try? self.subjects.cameraFocus.value()?.coordinate else { return }
+        let lastLocation = LastLocation(lattitude: coordinate.latt, longitude: coordinate.long,
+                                        timeStamp: .now())
         self.requestSuggestPlace(.some(title), in: lastLocation)
     }
     
@@ -167,8 +169,8 @@ extension SelectHoorayPlaceViewModelImple {
 
 extension SelectHoorayPlaceViewModelImple {
     
-    public var currentUserLocation: Observable<LastLocation> {
-        return self.subjects.currentUserLocation.compactMap{ $0 }
+    public var cameraFocus: Observable<MapCameraFocus> {
+        return self.subjects.cameraFocus.compactMap{ $0 }
     }
     
     public var cellViewModels: Observable<[SuggestPlaceCellViewModel]> {
@@ -199,36 +201,18 @@ extension SelectHoorayPlaceViewModelImple {
     private typealias CVM = SuggestPlaceCellViewModel
     
     private var suggestedCellViewModels: Observable<[CVM]> {
-        
-        // MARK: - Test
-//        let center = (37.33233141, -122.0312186)
-//        let grid = 0.0001
-//
-//        let dummies: () -> [SuggestPlaceCellViewModel] = {
-//            return (0..<30).map {
-//                let latt = center.0 + Double.random(in: 5..<50) * grid
-//                let long = center.1 + Double.random(in: 5..<50) * grid
-//                let snip = PlaceSnippet(placeID: "id:\($0)", title: "title:\($0)", latt: latt, long: long)
-//                var sender = SuggestPlaceCellViewModel(snippet: snip)
-//                sender.distance = "\($0)m"
-//                return sender
-//            }
-//        }
-//
-//        let cellViewModels: Observable<[CVM]> = .just(dummies())
-        // MARK: - Test end
-
-        
+                
         let cellViewModels = self.suggestPlaceUsecase.placeSuggestResult
             .map{ $0?.places.asCellViewModels() ?? [] }
-//
+
         let applySelectedInfo: ([CVM], String?) -> [CVM] = { cellViewModels, selectedID in
             return cellViewModels.toggleSelected(selectedID)
         }
         
-        let applyDistance: ([CVM], LastLocation?) -> [CVM] = { cellViewModels, location in
-            guard let location = location else { return cellViewModels }
-            let coordinate = Coordinate(latt: location.lattitude, long: location.longitude)
+        let applyDistance: ([CVM], MapCameraFocus?) -> [CVM] = { cellViewModels, focus in
+            guard let coordinate = focus?.coordinate else {
+                return cellViewModels
+            }
             return cellViewModels.map{ $0.distanceCalculated(from: coordinate) }
                 .sorted(by: { $0.distance < $1.distance })
         }
@@ -236,7 +220,7 @@ extension SelectHoorayPlaceViewModelImple {
         return Observable
             .combineLatest(cellViewModels, self.subjects.selectedPlaceID,
                            resultSelector: applySelectedInfo)
-            .withLatestFrom(self.subjects.currentUserLocation,
+            .withLatestFrom(self.subjects.cameraFocus,
                             resultSelector: applyDistance)
     }
     
@@ -248,13 +232,14 @@ extension SelectHoorayPlaceViewModelImple {
             })
             .disposed(by: self.disposeBag)
         
-        self.fetchUserLocationAndUpdateList()
+        self.fetchUserLocationAndUpdateList(with: false)
     }
     
-    private func fetchUserLocationAndUpdateList() {
+    private func fetchUserLocationAndUpdateList(with animation: Bool = true) {
         self.userLocationUsecase.fetchUserLocation()
             .subscribe(onSuccess: { [weak self] location in
-                self?.subjects.currentUserLocation.accept(location)
+                let coordinate = Coordinate(latt: location.lattitude, long: location.longitude)
+                self?.subjects.cameraFocus.onNext(.init(coordinate: coordinate, withAnimation: animation))
                 self?.requestSuggestPlace(.empty, in: location)
             })
             .disposed(by: self.disposeBag)
@@ -286,3 +271,4 @@ private extension Array where Element == SuggestPlaceCellViewModel {
         }
     }
 }
+
