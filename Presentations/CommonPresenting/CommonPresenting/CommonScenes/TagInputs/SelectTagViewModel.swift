@@ -108,9 +108,7 @@ extension SelectTagViewModelImple {
         let selectedSet = self.subjects.selectionSet.value
         let selectedTags = cellViewModels.filter{ selectedSet.contains($0.keyword) }.map{ $0.tag }
         
-        self.router.closeScene(animated: true) { [weak self] in
-            self?.subjects.selectedTag.onNext(selectedTags)
-        }
+        self.subjects.selectedTag.onNext(selectedTags)
     }
     
     public func closeScene() {

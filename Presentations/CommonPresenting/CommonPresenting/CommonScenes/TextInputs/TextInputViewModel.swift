@@ -98,12 +98,7 @@ extension TextInputViewModelImple {
     
     public func confirm() {
         let text = self.subjects.text.value
-        
-        let emitText: () -> Void = { [weak self] in
-            self?.subjects.confirmedText.onNext(text)
-        }
-        
-        self.router.closeScene(animated: true, completed: emitText)
+        self.subjects.confirmedText.onNext(text)
     }
 }
 

@@ -344,14 +344,10 @@ extension MakeHoorayViewModelTests {
     func testViewModel_whenAfterPublishHooray_closeSceneAndEmitNewHoorayEvent() {
         // given
         let expect = expectation(description: "발급 완료시에 화면 닫고 외부로 후레이 전파")
-        expect.expectedFulfillmentCount = 2
 
         self.stubUsecase.register(key: "isAvailToPublish") { Maybe<Void>.just() }
         self.stubUsecase.register(key: "publish:newHooray") { Maybe<Hooray>.just(.dummy(0)) }
 
-        self.spyRouter.called(key: "closeScene") { _ in
-            expect.fulfill()
-        }
         self.viewModel.publishedNewHooray
             .subscribe(onNext: { _ in
                 expect.fulfill()
