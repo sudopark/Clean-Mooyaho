@@ -69,6 +69,8 @@ extension SelectHoorayPlaceViewController {
             .disposed(by: self.disposeBag)
         
         self.selectView.headerView.searchBar.rx.text
+            .skip(1)
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.suggestPlace(by: text)
             })
