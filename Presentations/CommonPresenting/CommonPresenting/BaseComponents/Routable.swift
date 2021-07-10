@@ -164,3 +164,31 @@ public class ActionSheetForm {
         self.actions.append(action)
     }
 }
+
+
+
+import RxSwift
+import RxCocoa
+
+
+extension Routing {
+    
+    public func close(animated: Bool) -> Observable<Void> {
+        return Observable.create { [weak self] observer in
+            self?.closeScene(animated: true) {
+                observer.onNext(())
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public func waitFirstEventAndClosePresented<E>(_ eventSource: Observable<E>) -> Observable<E> {
+        
+        return eventSource
+            .take(1)
+            .observe(on: MainScheduler.instance)
+            .flatMap{ [weak self] element -> Observable<E> in
+                return self?.close(animated: true).map{ element } ?? .empty()
+            }
+    }
+}

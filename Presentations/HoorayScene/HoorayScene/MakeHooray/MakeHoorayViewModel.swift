@@ -171,8 +171,9 @@ extension MakeHoorayViewModelImple {
             self?.enterHoorayInfo(newForm, currentFlow: next)
         }
         
-        goNextStepWithForm?
-            .take(1)
+        guard let nextStep = goNextStepWithForm else { return }
+        router
+            .waitFirstEventAndClosePresented(nextStep)
             .do(onNext: updateForm)
             .subscribe(onNext: continueEnteringOrNot)
             .disposed(by: self.disposeBag)

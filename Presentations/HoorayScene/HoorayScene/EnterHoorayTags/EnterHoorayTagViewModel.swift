@@ -65,11 +65,8 @@ extension EnterHoorayTagViewModelImple {
     }
     
     public func goNextInputStage(with tags: [String]) {
-        self.router.closeScene(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.form.tags = tags
-            self.subjects.continueNext.onNext(self.form)
-        }
+        self.form.tags = tags
+        self.subjects.continueNext.onNext(self.form)
     }
 }
 

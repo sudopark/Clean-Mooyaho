@@ -203,7 +203,8 @@ extension SearchNewPlaceViewModelImple {
         guard let result = self.router.showSelectPlaceCateTag(startWith: [], total: total) else {
             return
         }
-        result.selectedTags.take(1)
+        self.router
+            .waitFirstEventAndClosePresented(result.selectedTags)
             .subscribe(onNext: { [weak self] tags in
                 self?.requestRegisterNewPlace(tags)
             })
@@ -218,9 +219,7 @@ extension SearchNewPlaceViewModelImple {
         
         let handleRegistered: (Place) -> Void = { [weak self] newPlace in
             self?.subjects.isRegistering.accept(false)
-            self?.router.closeScene(animated: true) {
-                self?.subjects.newPlace.onNext(newPlace)
-            }
+            self?.subjects.newPlace.onNext(newPlace)
         }
         let handleError: (Error) -> Void = { [weak self] error in
             self?.subjects.isRegistering.accept(false)
@@ -240,9 +239,7 @@ extension SearchNewPlaceViewModelImple {
         guard let output = self.router.showManuallyRegisterPlaceScene(myID: self.userID) else { return  }
         
         let finishRegister: (Place) -> Void = { [weak self] newPlace in
-            self?.router.closeScene(animated: false) {
-                self?.subjects.newPlace.onNext(newPlace)
-            }
+            self?.subjects.newPlace.onNext(newPlace)
         }
         
         output.newPlace
