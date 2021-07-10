@@ -57,4 +57,8 @@ public struct SuggestPlaceResult {
         self.places = places
         self.cursor = nil
     }
+    
+    public static func empty(_ query: String) -> SuggestPlaceResult {
+        return .init(query: query, places: [], cursor: nil)
+    }
 }
