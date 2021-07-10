@@ -125,18 +125,16 @@ extension SelectHoorayPlaceViewModelImple {
         let cellViewModels = self.subjects.cellViewModels.value
         let selectedPlaceID = self.subjects.selectedPlaceID.value
         let selectedPlaceName = cellViewModels.first(where: { $0.placeID == selectedPlaceID })?.title
-        self.router.closeScene(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.form.placeID = selectedPlaceID
-            self.form.placeName = selectedPlaceName
-            self.subjects.continueNext.onNext(self.form)
-        }
+        
+        self.form.placeID = selectedPlaceID
+        self.form.placeName = selectedPlaceName
+        self.subjects.continueNext.onNext(self.form)
     }
     
     public func registerNewPlace() {
 
         let userID = self.form.publisherID
-        let output = self.router.presentNewPlaceRegisterScene(myID: userID)
+        guard let output = self.router.presentNewPlaceRegisterScene(myID: userID) else { return }
         
         let newPlaceRegistered: (Place) -> Void = { [weak self] newPlace in
             guard let self = self else { return }
@@ -144,12 +142,11 @@ extension SelectHoorayPlaceViewModelImple {
             newForm.placeID = newPlace.uid
             newForm.placeName = newPlace.title
             
-            self.router.closeScene(animated: true) {
-                self.subjects.continueNext.onNext(newForm)
-            }
+            self.subjects.continueNext.onNext(newForm)
         }
         
-        output?.newRegistered
+        self.router
+            .waitFirstEventAndClosePresented(output.newRegistered)
             .subscribe(onNext: newPlaceRegistered)
             .disposed(by: self.disposeBag)
     }

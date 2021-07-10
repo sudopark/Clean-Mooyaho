@@ -99,7 +99,8 @@ extension ManuallyResigterPlaceViewModelImple {
                                  defaultHeight: 120)
         
         guard let result = self.router.openPlaceTitleInputScene(mode) else { return }
-        result.enteredText.take(1)
+        self.router
+            .waitFirstEventAndClosePresented(result.enteredText)
             .subscribe(onNext: { [weak self] text in
                 self?.updateForm{ $0.title = text }
             })
@@ -114,7 +115,8 @@ extension ManuallyResigterPlaceViewModelImple {
             return .init(latt: position.latt, long: position.long, address: addres)
         }()
         guard let result = self.router.openLocationSelectScene(info) else { return }
-        result.selectedLocation.take(1)
+        self.router
+            .waitFirstEventAndClosePresented(result.selectedLocation)
             .subscribe(onNext: { [weak self] location in
                 self?.updateForm{
                     $0.address = location.placeMark?.address ?? ""
@@ -129,7 +131,8 @@ extension ManuallyResigterPlaceViewModelImple {
         let total = self.registerUsecase.placeCategoryTags()
         let tags = self.subjects.pendingForm.value?.categoryTags ?? []
         guard let result = self.router.openTagSelectScene(tags, total: total) else { return }
-        result.selectedTags.take(1)
+        self.router
+            .waitFirstEventAndClosePresented(result.selectedTags)
             .subscribe(onNext: { [weak self] tags in
                 self?.updateForm {
                     $0.categoryTags = tags
@@ -158,12 +161,11 @@ extension ManuallyResigterPlaceViewModelImple {
         
         let closeAndEmitEvent: (Place) -> Void = { [weak self] place in
             self?.subjects.isRegistering.accept(false)
-            self?.router.closeScene(animated: true) {
-                self?.subjects.newPlace.onNext(place)
-            }
+            self?.subjects.newPlace.onNext(place)
         }
         
         self.subjects.isRegistering.accept(true)
+        
         self.registerUsecase.uploadNewPlace(form)
             .subscribe(onSuccess: closeAndEmitEvent, onError: handleError)
             .disposed(by: self.disposeBag)
