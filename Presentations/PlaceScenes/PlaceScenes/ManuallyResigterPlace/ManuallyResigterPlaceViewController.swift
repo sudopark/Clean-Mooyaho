@@ -96,8 +96,10 @@ extension ManuallyResigterPlaceViewController {
             })
             .disposed(by: self.disposeBag)
         
-        UIContext.currentAppStatus
-            .filter{ $0 == .background || $0 == .terminate }
+        let viewWillDispapear = self.rx.viewWillDisappear
+        let leaveApp = UIContext.currentAppStatus.filter{ $0 == .background || $0 == .terminate }
+        Observable.merge(viewWillDispapear.map{ _ in }, leaveApp.map{ _ in })
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.savePendingInput()
             })
