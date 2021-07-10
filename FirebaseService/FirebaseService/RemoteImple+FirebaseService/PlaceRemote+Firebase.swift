@@ -48,9 +48,9 @@ extension FirebaseServiceImple {
         let collectionRef = self.fireStoreDB.collection(.placeSnippet)
         let (latt, long) = (location.lastLocation.lattitude, location.lastLocation.longitude)
         let center2D = CLLocationCoordinate2D(latitude: latt, longitude: long)
-        let radiusKilometers: Double = hoorayRefPlaceRangeMeters / 1000
+        let radiusMeters: Meters = hoorayRefPlaceRangeMeters
         
-        let queryBounds = GFUtils.queryBounds(forLocation: center2D, withRadius: radiusKilometers)
+        let queryBounds = GFUtils.queryBounds(forLocation: center2D, withRadius: radiusMeters)
         
         let queries = queryBounds.map { bound -> Query in
             
@@ -76,7 +76,7 @@ extension FirebaseServiceImple {
         
         let then2ndFilterByDistance: ([PlaceSnippet]) -> [PlaceSnippet]
         then2ndFilterByDistance = { places in
-            return places.withIn(kilometers: radiusKilometers, center2D: center2D)
+            return places.withIn(kilometers: radiusMeters, center2D: center2D)
         }
         
         let thenConvertToResult: ([PlaceSnippet]) -> SuggestPlaceResult = { places in
@@ -92,8 +92,7 @@ extension FirebaseServiceImple {
                        colletionRef: CollectionReference,
                        geoHaskKey: String = "geohash") -> Maybe<[T]> where T: DocumentMappable {
         let center2D = CLLocationCoordinate2D(latitude: center.latt, longitude: center.long)
-        let radiusKilometer = radius / 1000
-        let queryBounds = GFUtils.queryBounds(forLocation: center2D, withRadius: radiusKilometer)
+        let queryBounds = GFUtils.queryBounds(forLocation: center2D, withRadius: radius)
         let queries = queryBounds.map { bound -> Query in
             
             let query = colletionRef
