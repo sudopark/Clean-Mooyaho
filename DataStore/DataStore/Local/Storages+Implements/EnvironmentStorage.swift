@@ -81,7 +81,7 @@ extension UserDefaults: EnvironmentStorage {
     func remove(_ key: String) -> Maybe<Void> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            _ = self.remove(key)
+            self.removeObject(forKey: key)
             callback(.success(()))
             return Disposables.create()
         }
