@@ -104,9 +104,9 @@ public final class SuggestPlaceUsecaseImple: SuggestPlaceUsecase {
     private let placeRepository: PlaceRepository
     private var internalSuggestUsecase: SuggestUsecase<PlaceSuggestReqParams, SuggestPlaceResult>!
     
-    public init(placeRepository: PlaceRepository) {
+    public init(placeRepository: PlaceRepository, throttleInterval: Int = 500) {
         self.placeRepository = placeRepository
-        self.internalSuggestUsecase = .init { [weak self] params in
+        self.internalSuggestUsecase = .init(throttleInterval: throttleInterval) { [weak self] params in
             return self?.suggestByQuery(params).asObservable() ?? .empty()
         }
     }

@@ -70,9 +70,15 @@ extension SelectHoorayPlaceViewController {
         
         self.selectView.headerView.searchBar.rx.text
             .skip(1)
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.suggestPlace(by: text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.selectView.headerView.searchBar.rx.tapClear
+            .subscribe(onNext: { [weak self] in
+                self?.selectView.headerView.searchBar.inputField.text = nil
+                self?.viewModel.suggestPlace(by: "")
             })
             .disposed(by: self.disposeBag)
         
@@ -168,6 +174,7 @@ extension SelectHoorayPlaceViewController {
         self.selectView.tableView.rx.modelSelected(CellViewModel.self)
             .subscribe(onNext: { [weak self] cellViewModel in
                 self?.viewModel.toggleUpdateSelected(cellViewModel.placeID)
+                self?.view.endEditing(true)
             })
             .disposed(by: self.disposeBag)
     }

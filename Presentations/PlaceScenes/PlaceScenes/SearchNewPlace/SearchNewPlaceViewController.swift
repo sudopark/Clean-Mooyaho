@@ -65,8 +65,6 @@ extension SearchNewPlaceViewController {
     private func bind() {
         
         self.searchBar.rx.text
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.search(text)
             })

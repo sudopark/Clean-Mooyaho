@@ -78,9 +78,9 @@ public final class SuggestTagUsecaseImple: SuggestTagUsecase {
     private let tagRepository: TagRespository
     private var internalSuggestUsecase: SuggestUsecase<SuggestTagReqParams, SuggestTagResultCollection>!
     
-    public init(tagRepository: TagRespository) {
+    public init(tagRepository: TagRespository, throttleInterval: Int = 500) {
         self.tagRepository = tagRepository
-        self.internalSuggestUsecase = .init { [weak self] params in
+        self.internalSuggestUsecase = .init(throttleInterval: throttleInterval) { [weak self] params in
             return self?.suggest(params) ?? .empty()
         }
     }
