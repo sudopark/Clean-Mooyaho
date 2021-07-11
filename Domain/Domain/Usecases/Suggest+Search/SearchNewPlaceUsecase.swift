@@ -89,9 +89,9 @@ public final class SearchNewPlaceUsecaseImple: SearchNewPlaceUsecase {
     private let repository: PlaceRepository
     private var internalSuggestUsecase: SuggestUsecase<ReqParama, ResultCollection>!
     
-    public init(placeRepository: PlaceRepository) {
+    public init(placeRepository: PlaceRepository, throttleInterval: Int = 500) {
         self.repository = placeRepository
-        self.internalSuggestUsecase = .init { [weak self] params in
+        self.internalSuggestUsecase = .init(throttleInterval: throttleInterval) { [weak self] params in
             return self?.search(params).asObservable() ?? .empty()
         }
     }

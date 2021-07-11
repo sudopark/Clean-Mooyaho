@@ -25,7 +25,8 @@ class SuggestTagUsecaseTests: BaseTestCase, WaitObservableEvents {
         super.setUp()
         self.disposeBag = .init()
         self.stubTagRepository = .init()
-        self.usecase = .init(tagRepository: self.stubTagRepository)
+        self.usecase = .init(tagRepository: self.stubTagRepository,
+                             throttleInterval: 0)
     }
     
     override func tearDown() {

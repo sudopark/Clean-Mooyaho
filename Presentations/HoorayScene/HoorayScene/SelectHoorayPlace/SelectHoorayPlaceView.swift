@@ -85,6 +85,7 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
         self.mapView.showsUserLocation = true
         
         self.searchBar.setupStyling()
+        self.searchBar.inputField.placeholder = "Enter a place title"
         
         self.controlButtonsView.backgroundColor = self.uiContext.colors.appBackground.withAlphaComponent(0.8)
         self.controlButtonsView.layer.cornerRadius = 5

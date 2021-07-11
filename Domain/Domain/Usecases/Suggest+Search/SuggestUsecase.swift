@@ -45,7 +45,10 @@ open class SuggestUsecase<ReqType: SuggestReqParamType, ResultType: SuggestResul
     public typealias API = (ReqType) -> Observable<ResultType>
     private let api: API
     
-    public init(api: @escaping API) {
+    public let throttleInterval: Int
+    
+    public init(throttleInterval: Int, api: @escaping API) {
+        self.throttleInterval = throttleInterval
         self.api = api
         self.internalBinding()
     }
@@ -95,7 +98,11 @@ extension SuggestUsecase {
             case (.none, .none), (_, .none): return nil
             case let (.none, .some(new)): return new
             case let (.some(previous), .some(next)):
-                return previous.query != next.query ? next : previous.append(next)
+                guard previous.query == next.query,
+                      ResultType.distinguisForSuggest(previous, next) == false else {
+                    return newResult
+                }
+                return previous.append(next)
             }
         }
         
@@ -131,6 +138,7 @@ extension SuggestUsecase {
         
         self.requestParamsRelay
             .compactMap{ $0 }
+            .throttle(.milliseconds(self.throttleInterval), scheduler: MainScheduler.instance)
             .flatMapLatest(requestSuggesting)
             .subscribe(onNext: updateResult)
             .disposed(by: self.disposeBag)
