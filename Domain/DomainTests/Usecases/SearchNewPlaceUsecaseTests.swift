@@ -25,7 +25,8 @@ class SearchNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
         super.setUp()
         self.disposeBag = .init()
         self.stubPlaceRepository = .init()
-        self.usecase = SearchNewPlaceUsecaseImple(placeRepository: self.stubPlaceRepository)
+        self.usecase = SearchNewPlaceUsecaseImple(placeRepository: self.stubPlaceRepository,
+                                                  throttleInterval: 0)
     }
     
     override func tearDown() {

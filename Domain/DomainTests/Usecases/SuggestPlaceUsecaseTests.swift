@@ -25,7 +25,8 @@ class SuggestPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
         super.setUp()
         self.disposeBag = DisposeBag()
         self.stubPlaceRepository = .init()
-        self.usecase = SuggestPlaceUsecaseImple(placeRepository: self.stubPlaceRepository)
+        self.usecase = SuggestPlaceUsecaseImple(placeRepository: self.stubPlaceRepository,
+                                                throttleInterval: 0)
     }
     
     override func tearDown() {
