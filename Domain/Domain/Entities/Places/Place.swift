@@ -31,7 +31,7 @@ public struct Place {
     
     public let uid: String
     public let title: String
-    public let thumbnail: ImageSource?
+    public var thumbnail: ImageSource?
     public let externalSearchID: String?
     public let detailLink: String?
     

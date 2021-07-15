@@ -38,8 +38,6 @@ public typealias PlaceCategoryTag = Tag
 
 extension PlaceCategoryTag {
     
-    private static var serviceDefined: String { "service" }
-    
     public init(placeCat keyword: String, emoji: String) {
         self.tagType = .placeCategory
         self.keyword = keyword

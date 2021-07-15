@@ -75,3 +75,66 @@ extension LocalStorageTests_Place {
         XCTAssertNil(form)
     }
 }
+
+
+extension LocalStorageTests_Place {
+    
+    private var dummyPlace: Place {
+        
+        let tags = [
+            PlaceCategoryTag(placeCat: "t1", emoji: "😍"),
+            PlaceCategoryTag(placeCat: "t2", emoji: "🍿")
+        ]
+        
+        return Place(uid: "pid", title: "title",
+                     thumbnail: .path("path value"), externalSearchID: "ext_id",
+                     detailLink: "detailLink", coordinate: .init(latt: 100, long: 100),
+                     address: "address", contact: "contact",
+                     categoryTags: tags,
+                     reporterID: "rid", infoProvider: .userDefine,
+                     createdAt: 100, pickCount: 2, lastPickedAt: 130)
+    }
+    
+    func testLocalStorage_savePlaceAndLoad() {
+        // given
+        let expect = expectation(description: "place 저장하고 로드")
+        let dummyPlace = self.dummyPlace
+        
+        // when
+        let save = self.local.savePlace(dummyPlace)
+        let load = self.local.fetchPlace("pid")
+        let saveAndload = save.flatMap{ _ in load }
+        let place = self.waitFirstElement(expect, for: saveAndload.asObservable())
+        
+        // then
+        XCTAssertEqual(place?.uid, dummyPlace.uid)
+        XCTAssertEqual(place?.title, dummyPlace.title)
+        XCTAssertEqual(place?.thumbnail, dummyPlace.thumbnail)
+        XCTAssertEqual(place?.coordinate, dummyPlace.coordinate)
+        XCTAssertEqual(place?.address, dummyPlace.address)
+        XCTAssertEqual(place?.contact, dummyPlace.contact)
+        XCTAssertEqual(place?.placeCategoryTags.count, dummyPlace.placeCategoryTags.count)
+        XCTAssertEqual(place?.reporterID, dummyPlace.reporterID)
+        XCTAssertEqual(place?.requireInfoProvider, dummyPlace.requireInfoProvider)
+        XCTAssertEqual(place?.createdAt, dummyPlace.createdAt)
+        XCTAssertEqual(place?.placePickCount, dummyPlace.placePickCount)
+        XCTAssertEqual(place?.lastPickedAt, dummyPlace.lastPickedAt)
+    }
+    
+    func testLocalStorage_saveNoThumbnailPlaceAndLoad() {
+        // given
+        let expect = expectation(description: "thumbnail 없는 place 저장하고 로드")
+        var dummyPlace = self.dummyPlace
+        dummyPlace.thumbnail = nil
+        
+        // when
+        let save = self.local.savePlace(dummyPlace)
+        let load = self.local.fetchPlace("pid")
+        let saveAndload = save.flatMap{ _ in load }
+        let place = self.waitFirstElement(expect, for: saveAndload.asObservable())
+        
+        // then
+        XCTAssertNotNil(place)
+        XCTAssertNil(place?.thumbnail)
+    }
+}

@@ -46,7 +46,7 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
         
         let updateLocalCache: (Place) -> Void = { [weak self] place in
             guard let self = self else { return }
-            self.placeLocal.savePlaces([place])
+            self.placeLocal.savePlace(place)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
@@ -67,7 +67,7 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
         
         let saveAtLocal: (Place) -> Void = { [weak self] newPlace in
             guard let self = self else { return }
-            self.placeLocal.savePlaces([newPlace])
+            self.placeLocal.savePlace(newPlace)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }

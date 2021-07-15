@@ -55,7 +55,9 @@ public protocol PlaceLocalStorage {
     
     func removePendingRegisterForm(_ memberID: String) -> Maybe<Void>
     
-    func savePlaces(_ places: [Place]) -> Maybe<Void>
+    func savePlace(_ place: Place) -> Maybe<Void>
+    
+    func fetchPlace(_ placeID: String) -> Maybe<Place?>
 }
 
 

@@ -23,6 +23,10 @@ public protocol DataModelStorage {
     func save(member: Member) -> Maybe<Void>
     
     func updateMember(_ member: Member) -> Maybe<Void>
+    
+    func savePlace(_ place: Place) -> Maybe<Void>
+    
+    func fetchPlace(_ placeID: String) -> Maybe<Place?>
 }
 
 
@@ -125,6 +129,61 @@ extension DataModelStorageImple {
 }
 
 
+// MARK: - place
+
+extension DataModelStorageImple {
+    
+    public func savePlace(_ place: Place) -> Maybe<Void> {
+        
+        let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
+        
+        let placeInfo = places.DataModel(place: place)
+        let savePlace = self.sqliteService.run{ try $0.insert(places, models: [placeInfo]) }
+        let thenSaveThumbnails: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let imageModel = ImageSourceTable.DataModel(place.reporterID, source: place.thumbnail)
+            return self.sqliteService.run { try $0.insert(images, models: [imageModel]) }
+                .catchAndReturn(())
+        }
+        let thenSaveTags: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.sqliteService.run { try $0.insert(tags, models: place.placeCategoryTags) }
+                .catchAndReturn(())
+        }
+        
+        return savePlace
+            .flatMap(thenSaveThumbnails)
+            .flatMap(thenSaveTags)
+    }
+    
+    public func fetchPlace(_ placeID: String) -> Maybe<Place?> {
+        
+        typealias PlaceInfo = PlaceInfoTable.DataModel
+        
+        let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
+        
+        let placeQuery = places.selectAll{ $0.uid == placeID }
+        let imageQuery = images.selectSome{ [$0.sourcetype, $0.path, $0.description, $0.emoji] }
+        let joinQuery = placeQuery.outerJoin(with: imageQuery, on: { ($0.reporterID, $1.ownerID) })
+       
+        let fetchPlaceInfo = self.sqliteService
+            .run{ try $0.loadOne(joinQuery, mapping: CursorIterator.makePlaceInfoAndThumbnail) }
+        
+        let appendCategoryTagsOrNot: ((PlaceInfo, ImageSource?)?) -> Maybe<Place?> = { [weak self] pair in
+            guard let self = self else { return .empty() }
+            guard let pair = pair else { return .just(nil) }
+            let tagsQuery = tags.selectAll{ $0.keyword.in(pair.0.categoryIDs) }
+            let fetchTags = self.sqliteService.run { try $0.load(tags, query: tagsQuery) }.catchAndReturn([])
+            return fetchTags
+                .map{ Place(info: pair.0, thumbnail: pair.1, tags: $0) }
+        }
+        
+        return fetchPlaceInfo
+            .flatMap(appendCategoryTagsOrNot)
+    }
+}
+
+
 // MARK: - DataModelStorageImpl + Migration
 
 extension DataModelStorageImple {
@@ -133,6 +192,28 @@ extension DataModelStorageImple {
         
         let requireVersion = Int32(version)
         let migrationSteps: (Int32, DataBase) throws -> Void = { _, _ in }
-        return self.sqliteStorage.migrate(upto: requireVersion, steps: migrationSteps)
+        return self.sqliteService.migrate(upto: requireVersion, steps: migrationSteps)
+    }
+}
+
+
+private extension CursorIterator {
+    
+    static func makePlaceInfoAndThumbnail(_ cursor: CursorIterator) throws -> (PlaceInfoTable.DataModel, ImageSource?) {
+        let placeInfo = try PlaceInfoTable.DataModel(cursor)
+        let thumbnail = try? ImageSource(cursor)
+        return (placeInfo, thumbnail)
+    }
+}
+
+private extension Place {
+    
+    init?(info: PlaceInfoTable.DataModel, thumbnail: ImageSource?, tags: [Tag]) {
+        self.init(uid: info.uid, title: info.title, thumbnail: thumbnail,
+                  externalSearchID: info.externalSearchID, detailLink: info.detailLink,
+                  coordinate: .init(latt: info.latt, long: info.long),
+                  address: info.address, contact: info.contact, categoryTags: tags,
+                  reporterID: info.reporterID, infoProvider: info.infoProvider,
+                  createdAt: info.createAt, pickCount: info.placePickCount, lastPickedAt: info.lastPickedAt)
     }
 }
