@@ -27,7 +27,11 @@ extension LocalStorageImple {
         return self.environmentStorage.removePendingNewPlaceForm(memberID)
     }
     
-    public func savePlaces(_ places: [Place]) -> Maybe<Void> {
-        return .empty()
+    public func savePlace(_ place: Place) -> Maybe<Void> {
+        return self.dataModelStorage.savePlace(place)
+    }
+    
+    public func fetchPlace(_ placeID: String) -> Maybe<Place?> {
+        return self.dataModelStorage.fetchPlace(placeID)
     }
 }
