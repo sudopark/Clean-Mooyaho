@@ -8,7 +8,7 @@
 
 import Foundation
 
-import SQLiteStorage
+import SQLiteService
 
 import Domain
 
