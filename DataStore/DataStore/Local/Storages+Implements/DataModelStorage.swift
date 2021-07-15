@@ -9,7 +9,7 @@
 import Foundation
 
 import RxSwift
-import SQLiteStorage
+import SQLiteService
 
 import Domain
 
@@ -30,23 +30,23 @@ public protocol DataModelStorage {
 
 public class DataModelStorageImple: DataModelStorage {
     
-    private let sqliteStorage: SQLiteStorage
+    private let sqliteService: SQLiteService
     
     private let disposeBag = DisposeBag()
     
     public init(dbPath: String, verstion: Int = 0) {
         
-        self.sqliteStorage = SQLiteStorage()
+        self.sqliteService = SQLiteService()
         self.openAndStartMigrationIfNeed(dbPath, version: verstion)
     }
     
     deinit {
-        self.sqliteStorage.close()
+        self.sqliteService.close()
     }
     
     private func openAndStartMigrationIfNeed(_ path: String, version: Int) {
         
-        let openResult = self.sqliteStorage.open(path: path)
+        let openResult = self.sqliteService.open(path: path)
         guard case .success = openResult else {
             logger.print(level: .error, "fail to open sqlite database -> path: \(path)")
             return
@@ -73,7 +73,7 @@ extension DataModelStorageImple {
         let imageQuery = images.selectSome{ [$0.sourcetype, $0.path, $0.description, $0.emoji] }
         
         let joinQuery = memberQuery.innerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
-        let fetchedMembers: Maybe<[Member]> = self.sqliteStorage.run(execute: { try $0.load(joinQuery) })
+        let fetchedMembers: Maybe<[Member]> = self.sqliteService.run(execute: { try $0.load(joinQuery) })
         
         return fetchedMembers.map{ $0.first }
     }
@@ -86,12 +86,12 @@ extension DataModelStorageImple {
         let members = MemberTable.self
         let memberPropertyModel = MemberTable.DataModel(member.uid, nickName: member.nickName, intro: member.introduction)
         
-        let insertMember = self.sqliteStorage
+        let insertMember = self.sqliteService
             .run{ try $0.insertOne(members, model: memberPropertyModel, shouldReplace: true) }
         
         let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteStorage.run{ try $0.insertOne(images, model: iconModel, shouldReplace: true) }
+            return self.sqliteService.run{ try $0.insertOne(images, model: iconModel, shouldReplace: true) }
                 .catchAndReturn(())
         }
         
@@ -113,10 +113,10 @@ extension DataModelStorageImple {
         }
         .where{ $0.ownerID == member.uid }
         
-        let updateMember = self.sqliteStorage.run{ try $0.update(members, query: updateMemberQuery) }
+        let updateMember = self.sqliteService.run{ try $0.update(members, query: updateMemberQuery) }
         let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteStorage.run { try $0.update(images, query: updateIconQuery) }
+            return self.sqliteService.run { try $0.update(images, query: updateIconQuery) }
                 .catchAndReturn(())
         }
         return updateMember

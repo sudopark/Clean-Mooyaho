@@ -9,12 +9,12 @@
 import Foundation
 
 import RxSwift
-import SQLiteStorage
+import SQLiteService
 
 import Domain
 
 
-extension SQLiteStorage {
+extension SQLiteService {
     
     public func run<T>(execute: @escaping (DataBase) throws -> T) -> Maybe<T> {
         
