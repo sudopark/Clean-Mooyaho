@@ -10,8 +10,8 @@ import UIKit
 
 import Domain
 import CommonPresenting
+import MapScenes
 import MemberScenes
-import LocationScenes
 import PlaceScenes
 import HoorayScene
 

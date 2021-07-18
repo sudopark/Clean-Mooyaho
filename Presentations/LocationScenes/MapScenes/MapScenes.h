@@ -1,6 +1,6 @@
 //
-//  LocationScenes.h
-//  LocationScenes
+//  MapScenes.h
+//  MapScenes
 //
 //  Created by sudo.park on 2021/05/22.
 //

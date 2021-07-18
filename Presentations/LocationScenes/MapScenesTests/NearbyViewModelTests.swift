@@ -13,7 +13,7 @@ import Domain
 import UnitTestHelpKit
 import StubUsecases
 
-@testable import LocationScenes
+@testable import MapScenes
 
 
 class NearbyViewModelTests: BaseTestCase, WaitObservableEvents {

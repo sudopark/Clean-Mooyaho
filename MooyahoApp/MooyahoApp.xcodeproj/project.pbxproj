@@ -34,8 +34,6 @@
 		2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787C263962280000C0C6 /* UnitTestHelpKit.framework */; };
 		2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9787E2639624C0000C0C6 /* Common3rdParty.framework */; };
-		F6032581265940E300E4E769 /* LocationScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6032580265940E300E4E769 /* LocationScenes.framework */; };
-		F6032582265940E300E4E769 /* LocationScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6032580265940E300E4E769 /* LocationScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC406263C5D7F002BA1AC /* UserMessagingPlatform.xcframework */; };
 		F603258826594E3C00E4E769 /* Repositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258726594E3C00E4E769 /* Repositories.swift */; };
 		F6101467265708B700D32E38 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101466265708B700D32E38 /* MainView.swift */; };
@@ -56,6 +54,8 @@
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
 		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
+		F6C0784126A47D0D0070E75E /* MapScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C0784026A47D0D0070E75E /* MapScenes.framework */; };
+		F6C0784226A47D0D0070E75E /* MapScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6C0784026A47D0D0070E75E /* MapScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6E8311E265C4D5400C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8311D265C4D5400C91F3B /* StubUsecases.framework */; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
 		F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */; };
@@ -94,7 +94,7 @@
 				F6E8317026601BE300C91F3B /* PlaceScenes.framework in Embed Frameworks */,
 				F6502DB62669D6BB0027800F /* HoorayScene.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
-				F6032582265940E300E4E769 /* LocationScenes.framework in Embed Frameworks */,
+				F6C0784226A47D0D0070E75E /* MapScenes.framework in Embed Frameworks */,
 				2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -149,6 +149,7 @@
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
+		F6C0784026A47D0D0070E75E /* MapScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MapScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubApplicationUsecase.swift; sourceTree = "<group>"; };
@@ -176,10 +177,10 @@
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
+				F6C0784126A47D0D0070E75E /* MapScenes.framework in Frameworks */,
 				F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */,
 				F6E8316F26601BE300C91F3B /* PlaceScenes.framework in Frameworks */,
 				F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */,
-				F6032581265940E300E4E769 /* LocationScenes.framework in Frameworks */,
 				F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */,
 				F6502DB52669D6BB0027800F /* HoorayScene.framework in Frameworks */,
 			);
@@ -353,6 +354,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6C0784026A47D0D0070E75E /* MapScenes.framework */,
 				F6502DB42669D6BB0027800F /* HoorayScene.framework */,
 				F62DFFB3266188C800C4A080 /* MemberScenes.framework */,
 				F6E8316E26601BE300C91F3B /* PlaceScenes.framework */,

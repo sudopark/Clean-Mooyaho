@@ -12,7 +12,6 @@ import RxSwift
 import RxRelay
 
 import Domain
-import LocationScenes
 import MemberScenes
 import CommonPresenting
 

@@ -12,7 +12,7 @@ import RxSwift
 import Domain
 import UnitTestHelpKit
 
-@testable import LocationScenes
+@testable import MapScenes
 
 
 class LocationSelectViewModelTests: BaseTestCase, WaitObservableEvents {

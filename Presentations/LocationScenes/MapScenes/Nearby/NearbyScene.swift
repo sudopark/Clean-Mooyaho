@@ -1,6 +1,6 @@
 //
 //  NearbyScene.swift
-//  LocationScenes
+//  MapScenes
 //
 //  Created by sudo.park on 2021/06/04.
 //
