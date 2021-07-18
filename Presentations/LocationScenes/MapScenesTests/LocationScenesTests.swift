@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import LocationScenes
+@testable import MapScenes
 
 class LocationScenesTests: XCTestCase {
 

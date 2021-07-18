@@ -1,6 +1,6 @@
 //
 //  LocationSelectViewModel.swift
-//  LocationScenes
+//  MapScenes
 //
 //  Created sudo.park on 2021/06/12.
 //  Copyright © 2021 ___ORGANIZATIONNAME___. All rights reserved.

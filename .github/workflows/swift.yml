@@ -61,12 +61,12 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: Location Scenes Unit Tests
-        id: test_location_scenes
+      - name: Map Scenes Unit Tests
+        id: test_map_scenes
         run: |
           xcodebuild clean test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme LocationScenes \
+          -scheme MapScenes \
           -destination "${destination}" \
           -configuration Debug \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
@@ -144,8 +144,8 @@ jobs:
         run: |
           echo "Tests Failed"; exit 1
 
-      - name: Check Tests Location Scenes
-        if: steps.test_location_scenes.outputs.result != 0
+      - name: Check Tests Map Scenes
+        if: steps.test_map_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
 

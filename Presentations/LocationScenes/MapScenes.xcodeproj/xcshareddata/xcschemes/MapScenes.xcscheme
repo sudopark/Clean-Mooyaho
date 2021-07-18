@@ -15,9 +15,23 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6F872FB26593F3400FDB24E"
-               BuildableName = "LocationScenes.framework"
-               BlueprintName = "LocationScenes"
-               ReferencedContainer = "container:LocationScenes.xcodeproj">
+               BuildableName = "MapScenes.framework"
+               BlueprintName = "MapScenes"
+               ReferencedContainer = "container:MapScenes.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F6F8730426593F3400FDB24E"
+               BuildableName = "MapScenesTests.xctest"
+               BlueprintName = "MapScenesTests"
+               ReferencedContainer = "container:MapScenes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6F8730426593F3400FDB24E"
-               BuildableName = "LocationScenesTests.xctest"
-               BlueprintName = "LocationScenesTests"
-               ReferencedContainer = "container:LocationScenes.xcodeproj">
+               BuildableName = "MapScenesTests.xctest"
+               BlueprintName = "MapScenesTests"
+               ReferencedContainer = "container:MapScenes.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -61,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F6F872FB26593F3400FDB24E"
-            BuildableName = "LocationScenes.framework"
-            BlueprintName = "LocationScenes"
-            ReferencedContainer = "container:LocationScenes.xcodeproj">
+            BuildableName = "MapScenes.framework"
+            BlueprintName = "MapScenes"
+            ReferencedContainer = "container:MapScenes.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

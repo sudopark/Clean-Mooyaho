@@ -12,7 +12,6 @@ import RxSwift
 
 import Domain
 import CommonPresenting
-import LocationScenes
 import PlaceScenes
 import MemberScenes
 import StubUsecases
