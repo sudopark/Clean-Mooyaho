@@ -41,7 +41,4 @@
    <FileRef
       location = "group:Common3rdParty/Common3rdParty.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:PreviewUIView/PreviewUIView.xcodeproj">
-   </FileRef>
 </Workspace>
