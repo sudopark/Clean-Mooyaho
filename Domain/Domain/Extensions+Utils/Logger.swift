@@ -61,8 +61,9 @@ extension Logger {
         Swift.print("\(current): [\(level.emoji)][\(level.key)][\(self.fileName(file)) \(line)L] -> \(message)")
     }
     
-    public func todoImplement(_ function: StaticString = #function,
+    public func todoImplement(message: String? = nil,
+                              _ function: StaticString = #function,
                               file: StaticString = #file, line: UInt = #line) {
-        Swift.print("\n\n\(current): [☠️☠️☠️☠️☠️][TODO][\(self.fileName(file)) \(line)L] -> \(function) [☠️☠️☠️☠️☠️]")
+        Swift.print("\n\n\(current): [☠️☠️☠️☠️☠️][TODO] \(message ?? "") [\(self.fileName(file)) \(line)L] -> \(function) [☠️☠️☠️☠️☠️]")
     }
 }

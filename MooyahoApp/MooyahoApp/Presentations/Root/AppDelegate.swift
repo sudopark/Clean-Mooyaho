@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let usecase = self.dependencyInjector.applicationUsecase
         self.applicationViewModel = ApplicationViewModelImple(applicationUsecase: usecase,
                                                               firebaseService: self.dependencyInjector.firebaseService,
+                                                              fcmService: self.dependencyInjector.fcmService,
                                                               kakaoService: self.dependencyInjector.shared.kakaoService,
                                                               router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
@@ -68,6 +69,22 @@ extension AppDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         self.applicationViewModel.appWillTerminate()
         UIContext.updateApp(status: .terminate)
+    }
+}
+
+
+// MARK: - handle notification
+
+extension AppDelegate {
+    
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        self.applicationViewModel.apnsTokenUpdated(deviceToken)
+    }
+    
+    func application(_ application: UIApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        logger.print(level: .error, "fail to register remote notification: \(error)")
     }
 }
 

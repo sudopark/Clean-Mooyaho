@@ -20,6 +20,10 @@ public protocol ApplicationUsecase {
     func updateApplicationActiveStatus(_ newStatus: ApplicationStatus)
     
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
+    
+    func userFCMTokenUpdated(_ newToken: String?)
+    
+    func newNotificationReceived(_ userInfo: [AnyHashable: Any])
 }
 
 // MARK: - ApplicationUsecaseImple
@@ -100,6 +104,21 @@ extension ApplicationUsecaseImple {
         return Observable
             .combineLatest(preparedAuth, permissionGranted)
             .map{ $0.0 }
+    }
+}
+
+// MARK: - input: handle notification
+
+extension ApplicationUsecaseImple {
+    
+    public func userFCMTokenUpdated(_ newToken: String?) {
+        // TODO: bind new fcmToken + curent auth
+        // => update token value or not
+        // TODO: UserDevice에 device UUID 필요
+    }
+    
+    public func newNotificationReceived(_ userInfo: [AnyHashable: Any]) {
+        // TODO: send message to message service instance
     }
 }
 

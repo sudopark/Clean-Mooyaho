@@ -15,6 +15,8 @@ import CommonPresenting
 public protocol ApplicationRootRouting: Routing {
     
     func routeMain(auth: Auth)
+    
+    func showNotificationAuthorizationNeedBanner()
 }
 
 // MARK: - builders
@@ -37,5 +39,9 @@ extension ApplicationRootRouter {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window.rootViewController = main
         self.window.makeKeyAndVisible()
+    }
+    
+    public func showNotificationAuthorizationNeedBanner() {
+        
     }
 }

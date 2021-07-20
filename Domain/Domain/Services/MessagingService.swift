@@ -15,7 +15,5 @@ import RxSwift
 
 public protocol MessagingService {
     
-    func sendMessages(_ messages: [Messsage]) -> Maybe<Void>
-    
     var receivedMessage: Observable<Messsage> { get }
 }
