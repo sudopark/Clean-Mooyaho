@@ -22,3 +22,36 @@ class StubFirebaseService: FirebaseService, Stubbable {
         self.verify(key: "setupService")
     }
 }
+
+
+class StubFCMService: FCMService {
+    
+    var isNotificationGrant: Bool?
+    
+    func setupFCMService() {
+        guard let isGrant: Bool = self.isNotificationGrant else { return }
+        self.stubGrant.onNext(isGrant)
+    }
+    
+    func apnsTokenUpdated(_ token: Data) { }
+    
+    private let stubGrant = PublishSubject<Bool>()
+    func checkIsGranted() {
+        guard let isGrant: Bool = self.isNotificationGrant else { return }
+        self.stubGrant.onNext(isGrant)
+    }
+    
+    var isNotificationGranted: Observable<Bool> {
+        return stubGrant.asObservable()
+    }
+    
+    let stubToken = PublishSubject<String?>()
+    var currentFCMToken: Observable<String?> {
+        return stubToken.asObservable()
+    }
+    
+    let stubUserInfo = PublishSubject<[AnyHashable: Any]>()
+    var receiveNotificationUserInfo: Observable<[AnyHashable : Any]> {
+        return stubUserInfo.asObservable()
+    }
+}

@@ -63,6 +63,7 @@
 		F67848D726510CB50074C344 /* Hooray+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D626510CB50074C344 /* Hooray+Mapping.swift */; };
 		F67848DA2651229A0074C344 /* DistanceUtills.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D92651229A0074C344 /* DistanceUtills.swift */; };
 		F67848DC265123D20074C344 /* RemotePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848DB265123D20074C344 /* RemotePolicy.swift */; };
+		F68B209B26A5D2B200DB30CC /* FCM+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */; };
 		F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */; };
 		F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */; };
 		F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */; };
@@ -173,6 +174,7 @@
 		F67848D626510CB50074C344 /* Hooray+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Hooray+Mapping.swift"; sourceTree = "<group>"; };
 		F67848D92651229A0074C344 /* DistanceUtills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceUtills.swift; sourceTree = "<group>"; };
 		F67848DB265123D20074C344 /* RemotePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePolicy.swift; sourceTree = "<group>"; };
+		F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FCM+Firebase.swift"; sourceTree = "<group>"; };
 		F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Mapping.swift"; sourceTree = "<group>"; };
 		F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceRemote+Firebase.swift"; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				F67848DB265123D20074C344 /* RemotePolicy.swift */,
 				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
 				2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */,
+				F68B209926A5D29500DB30CC /* FCM+Firebase */,
 				F67848D8265122690074C344 /* Utills */,
 				2B8AC38B263BB147002BA1AC /* FirebaseFrameworks */,
 				2B39E17226386CEC003EE954 /* FirebaseService.h */,
@@ -456,6 +459,14 @@
 			path = Utills;
 			sourceTree = "<group>";
 		};
+		F68B209926A5D29500DB30CC /* FCM+Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */,
+			);
+			path = "FCM+Firebase";
+			sourceTree = "<group>";
+		};
 		F6CFA579264660D800F9A049 /* Stub */ = {
 			isa = PBXGroup;
 			children = (
@@ -608,6 +619,7 @@
 				F67848D726510CB50074C344 /* Hooray+Mapping.swift in Sources */,
 				F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */,
 				F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */,
+				F68B209B26A5D2B200DB30CC /* FCM+Firebase.swift in Sources */,
 				F6684DFC2647CC1000820368 /* GFGeoQueryBounds.m in Sources */,
 				F67848D526510B170074C344 /* HoorayRemote+Firebase.swift in Sources */,
 				F6684E042647E33400820368 /* Member+Mapping.swift in Sources */,

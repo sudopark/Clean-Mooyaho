@@ -17,7 +17,7 @@ public protocol FirebaseService {
     func setupService()
 }
 
-public final class FirebaseServiceImple: FirebaseService {
+public final class FirebaseServiceImple: NSObject, FirebaseService {
     
     let httpAPI: HttpAPI
     var fireStoreDB: Firestore!
@@ -36,4 +36,9 @@ public final class FirebaseServiceImple: FirebaseService {
         self.fireStoreDB = Firestore.firestore()
         self.storage = Storage.storage()
     }
+    
+    // subjects for fcmService
+    let notificationAuthorizationGranted = BehaviorSubject<Bool?>(value: nil)
+    let fcmToken = BehaviorSubject<String?>(value: nil)
+    let incommingNotificationUserInfo = PublishSubject<[AnyHashable: Any]>()
 }
