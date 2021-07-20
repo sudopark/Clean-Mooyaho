@@ -23,6 +23,7 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     var stubUsecase: StubApplicationUsecase!
     var spyRouter: SpyRouter!
     var stubFirebaseService: StubFirebaseService!
+    var stubFCMService: StubFCMService!
     var stubKakaoService: StubKakaoService!
     var viewModel: ApplicationViewModel!
     
@@ -32,9 +33,11 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         self.stubUsecase = .init()
         self.spyRouter = SpyRouter()
         self.stubFirebaseService = .init()
+        self.stubFCMService = .init()
         self.stubKakaoService = .init()
         self.viewModel = ApplicationViewModelImple(applicationUsecase: self.stubUsecase,
                                                    firebaseService: self.stubFirebaseService,
+                                                   fcmService: self.stubFCMService,
                                                    kakaoService: self.stubKakaoService,
                                                    router: self.spyRouter)
     }
@@ -43,10 +46,21 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         self.disposeBag = nil
         self.spyRouter = nil
         self.stubFirebaseService = nil
+        self.stubFCMService = nil
         self.stubKakaoService = nil
         self.stubUsecase = nil
         self.viewModel = nil
         super.tearDown()
+    }
+    
+    private func makeViewModel(_ isNotificationGranted: Bool = true) -> ApplicationViewModel {
+        self.stubFCMService.isNotificationGrant = isNotificationGranted
+        self.viewModel = ApplicationViewModelImple(applicationUsecase: self.stubUsecase,
+                                                   firebaseService: self.stubFirebaseService,
+                                                   fcmService: self.stubFCMService,
+                                                   kakaoService: self.stubKakaoService,
+                                                   router: self.spyRouter)
+        return viewModel
     }
 }
 
@@ -70,6 +84,26 @@ extension ApplicationViewModelTests {
         
         // when
         self.viewModel.appDidLaunched()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
+// MARK: - test notification
+
+extension ApplicationViewModelTests {
+    
+    func testViewModel_whenRequestNotificationAuthorizationAndDenied_showGrantNeedBanner() {
+        // given
+        let expect = expectation(description: "앱 론칭 이후에 알림권한없으면 필요 배너 알림")
+        let _ = self.makeViewModel(false)
+        
+        self.spyRouter.called(key: "showNotificationAuthorizationNeedBanner") { _ in
+            expect.fulfill()
+        }
+        // when
+        self.stubFCMService.checkIsGranted()
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -101,6 +135,10 @@ extension ApplicationViewModelTests {
         
         func routeMain(auth: Auth) {
             self.verify(key: "routeMain", with: auth)
+        }
+        
+        func showNotificationAuthorizationNeedBanner() {
+            self.verify(key: "showNotificationAuthorizationNeedBanner")
         }
     }
 }

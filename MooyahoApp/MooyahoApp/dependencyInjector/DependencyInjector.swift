@@ -58,6 +58,10 @@ final class DependencyInjector {
         return self.shared.firebaseServiceImple
     }
     
+    var fcmService: FCMService {
+        return self.shared.firebaseServiceImple
+    }
+    
     // TODO: messaging service 구현체는 firebaseService: FCMService
 }
 
@@ -137,7 +141,7 @@ extension DependencyInjector {
         return HoorayUsecaseImple(authInfoProvider: self.shared.dataStore,
                                   memberUsecase: self.memberUsecase,
                                   hoorayRepository: self.appReposiotry,
-                                  messagingService: FCMService())
+                                  messagingService: DummyMessagingService())
     }
     
     var searchNewPlaceUsecase: SearchNewPlaceUsecase {
@@ -150,4 +154,13 @@ extension DependencyInjector {
         return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry,
                                             categoryTags: tags)
     }
+}
+
+
+
+import RxSwift
+
+struct DummyMessagingService: MessagingService {
+    var receivedMessage: Observable<Messsage> { return .empty() }
+    
 }
