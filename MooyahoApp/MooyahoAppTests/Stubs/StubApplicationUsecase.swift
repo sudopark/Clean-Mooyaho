@@ -19,6 +19,15 @@ import UnitTestHelpKit
 
 class StubApplicationUsecase: ApplicationUsecase, Stubbable {
     
+    func userFCMTokenUpdated(_ newToken: String?) {
+        
+    }
+    
+    func newNotificationReceived(_ userInfo: [AnyHashable : Any]) {
+        
+    }
+    
+    
     func updateApplicationActiveStatus(_ newStatus: ApplicationStatus) {
         
     }

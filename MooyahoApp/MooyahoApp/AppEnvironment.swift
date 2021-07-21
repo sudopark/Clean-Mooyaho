@@ -66,6 +66,22 @@ struct AppEnvironment {
         
         return dbURL?.path ?? ""
     }
+    
+    static var deviceID: String {
+        let key = "moyaho.device.uuid"
+        
+        func makeAndSaveID() -> String {
+            let newUUID = UUID().uuidString
+            UserDefaults.standard.setValue(newUUID, forKey: key)
+            return newUUID
+        }
+        
+        func loadExisting() -> String? {
+            return UserDefaults.standard.string(forKey: key)
+        }
+        
+        return loadExisting() ?? makeAndSaveID()
+    }
 }
 
 enum PlaceCategoryTags: String, CaseIterable {

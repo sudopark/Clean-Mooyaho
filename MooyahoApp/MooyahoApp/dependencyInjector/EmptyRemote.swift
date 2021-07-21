@@ -35,7 +35,11 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
+    func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void> {
         return .empty()
     }
     

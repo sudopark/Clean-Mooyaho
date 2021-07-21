@@ -17,9 +17,14 @@ import UnitTestHelpKit
 
 class StubMemberRepository: MemberRepository, Stubbable {
     
-    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
+    func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
         self.verify(key: "requestUpdateUserPresence", with: isOnline)
         return self.resolve(key: "requestUpdateUserPresence") ?? .empty()
+    }
+    
+    func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void> {
+        self.verify(key: "requestUpdatePushToken")
+        return self.resolve(key: "requestUpdatePushToken") ?? .empty()
     }
     
 //    func requestLoadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {

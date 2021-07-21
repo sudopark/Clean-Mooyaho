@@ -52,7 +52,8 @@ extension RepositoryTests_Member {
         }
         
         // when
-        let requestUpdate = self.repository.requestUpdateUserPresence("som", isOnline: true)
+        let requestUpdate = self.repository
+            .requestUpdateUserPresence("som", deviceID: "dev_id", isOnline: true)
         let void: Void? = self.waitFirstElement(expect, for: requestUpdate.asObservable()) { }
         
         // then
