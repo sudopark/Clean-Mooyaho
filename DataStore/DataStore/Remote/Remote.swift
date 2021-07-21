@@ -58,7 +58,9 @@ public protocol OAuthRemote {
 
 public protocol MemberRemote {
     
-    func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void>
+    func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void>
+    
+    func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void>
     
     func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
     

@@ -152,7 +152,7 @@ extension ApplicationUsecaseTests {
 }
 
 
-// MARK: - update user is online status
+// MARK: - update user device info
 
 extension ApplicationUsecaseTests {
     
@@ -177,6 +177,23 @@ extension ApplicationUsecaseTests {
         
         // then
         XCTAssertEqual(isOnlineFlags, [true, false, true])
+    }
+    
+    func testUsecase_whenFCMTokenIsUpdated_uploadToken() {
+        // given
+        let expect = expectation(description: "fcm 토큰 업데이트시에 업로드")
+        
+        self.stubMemberUsecase.called(key: "updatePushToken") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.stubMemberUsecase.stubCurrentMember.onNext(Member.init(uid: "some"))
+        self.usecase.userFCMTokenUpdated(nil)
+        self.usecase.userFCMTokenUpdated("new token")
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
     }
 }
 
