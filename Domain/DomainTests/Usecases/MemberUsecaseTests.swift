@@ -54,7 +54,22 @@ extension MemberUsecaseTests {
         
         
         // when
-        self.usecase.updateUserIsOnline("some", isOnline: true)
+        self.usecase.updateUserIsOnline("some", deviceID: "dev_id", isOnline: true)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testUsecase_updatePushToken() {
+        // given
+        let expect = expectation(description: "push token 업데이트")
+        
+        self.stubRepository.called(key: "requestUpdatePushToken") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.usecase.updatePushToken("some", deviceID: "dev_id", newToken: "new_value")
         
         // then
         self.wait(for: [expect], timeout: self.timeout)

@@ -35,7 +35,9 @@ public protocol MemberUsecase {
     
     func fetchCurrentMember() -> Member?
     
-    func updateUserIsOnline(_ userID: String, isOnline: Bool)
+    func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool)
+    
+    func updatePushToken(_ userID: String, deviceID: String, newToken: String)
     
     func updateCurrent(memberID: String,
                        updateFields: [MemberUpdateField],
@@ -70,8 +72,14 @@ extension MemberUsecaseImple {
         return self.sharedDataStoreService.fetch(.currentMember)
     }
     
-    public func updateUserIsOnline(_ userID: String, isOnline: Bool) {
-        self.memberRepository.requestUpdateUserPresence(userID, isOnline: isOnline)
+    public func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {
+        self.memberRepository.requestUpdateUserPresence(userID, deviceID: deviceID, isOnline: isOnline)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func updatePushToken(_ userID: String, deviceID: String, newToken: String) {
+        self.memberRepository.requestUpdatePushToken(userID, deviceID: deviceID, newToken: newToken)
             .subscribe()
             .disposed(by: self.disposeBag)
     }

@@ -27,8 +27,12 @@ public protocol MemberRepositoryDefImpleDependency {
 extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
     
     
-    public func requestUpdateUserPresence(_ userID: String, isOnline: Bool) -> Maybe<Void> {
-        return self.memberRemote.requestUpdateUserPresence(userID, isOnline: isOnline)
+    public func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
+        return self.memberRemote.requestUpdateUserPresence(userID, deviceID: deviceID, isOnline: isOnline)
+    }
+    
+    public func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void> {
+        return self.memberRemote.requestUpdatePushToken(userID, deviceID: deviceID, newToken: newToken)
     }
     
     public func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {

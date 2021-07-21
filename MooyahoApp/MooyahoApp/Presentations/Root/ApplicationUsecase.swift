@@ -42,10 +42,12 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
         self.locationUsecase = locationUsecase
         
         self.bindApplicationStatus()
+        self.bindPushTokenUpload()
     }
     
     fileprivate struct Subjects {
         let applicationStatus = BehaviorRelay<ApplicationStatus>(value: .idle)
+        let fcmToken = BehaviorSubject<String?>(value: nil)
     }
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -84,10 +86,11 @@ extension ApplicationUsecaseImple {
             })
             .disposed(by: self.disposeBag)
         
+        let deviceID = AppEnvironment.deviceID
         let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
         Observable.combineLatest(preparedAuth, isUserInUseApp)
             .subscribe(onNext: { [weak self] auth, isUse in
-                self?.memberUsecase.updateUserIsOnline(auth.userID, isOnline: isUse)
+                self?.memberUsecase.updateUserIsOnline(auth.userID, deviceID: deviceID, isOnline: isUse)
             })
             .disposed(by: self.disposeBag)
     }
@@ -112,13 +115,26 @@ extension ApplicationUsecaseImple {
 extension ApplicationUsecaseImple {
     
     public func userFCMTokenUpdated(_ newToken: String?) {
-        // TODO: bind new fcmToken + curent auth
-        // => update token value or not
-        // TODO: UserDevice에 device UUID 필요
+        self.subjects.fcmToken.onNext(newToken)
     }
     
     public func newNotificationReceived(_ userInfo: [AnyHashable: Any]) {
         // TODO: send message to message service instance
+    }
+    
+    private func bindPushTokenUpload() {
+        
+        let deviceID = AppEnvironment.deviceID
+        let uploadToken: (String, String) -> Void = { [weak self] memberID, token in
+            self?.memberUsecase.updatePushToken(memberID, deviceID: deviceID, newToken: token)
+        }
+        
+        let currentMemberID = self.memberUsecase.currentMember.compactMap{ $0?.uid }.distinctUntilChanged()
+        let fcmToken = self.subjects.fcmToken.compactMap{ $0 }.distinctUntilChanged()
+        
+        Observable.combineLatest(currentMemberID, fcmToken)
+            .subscribe(onNext: uploadToken)
+            .disposed(by: self.disposeBag)
     }
 }
 
