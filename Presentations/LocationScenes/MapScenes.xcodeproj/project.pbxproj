@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6025FF326A9D16A007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FF226A9D16A007A1AA8 /* UsecaseDoubles.framework */; };
 		F603258D265954F400E4E769 /* NearbyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258C265954F400E4E769 /* NearbyViewModelTests.swift */; };
-		F60325C82659586F00E4E769 /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325C72659586F00E4E769 /* StubUsecases.framework */; };
 		F645A65C2691893900E04D29 /* LocationSelectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */; };
 		F652159B2674BBF9000CAB4B /* LocationSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */; };
 		F652159C2674BBF9000CAB4B /* LocationSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */; };
@@ -43,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6025FF226A9D16A007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F603258C265954F400E4E769 /* NearbyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModelTests.swift; sourceTree = "<group>"; };
 		F60325C72659586F00E4E769 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewModelTests.swift; sourceTree = "<group>"; };
@@ -86,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F60325C82659586F00E4E769 /* StubUsecases.framework in Frameworks */,
+				F6025FF326A9D16A007A1AA8 /* UsecaseDoubles.framework in Frameworks */,
 				F6F8732426593F7300FDB24E /* UnitTestHelpKit.framework in Frameworks */,
 				F6F8732226593F6D00FDB24E /* Common3rdParty.framework in Frameworks */,
 				F6F8730626593F3400FDB24E /* MapScenes.framework in Frameworks */,
@@ -163,6 +164,7 @@
 		F6F8731626593F5500FDB24E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6025FF226A9D16A007A1AA8 /* UsecaseDoubles.framework */,
 				F60325C72659586F00E4E769 /* StubUsecases.framework */,
 				F6F8732326593F7300FDB24E /* UnitTestHelpKit.framework */,
 				F6F8732126593F6D00FDB24E /* Common3rdParty.framework */,

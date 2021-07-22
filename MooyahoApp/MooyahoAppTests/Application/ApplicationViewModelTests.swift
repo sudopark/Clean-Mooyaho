@@ -12,7 +12,7 @@ import RxSwift
 
 import Domain
 import UnitTestHelpKit
-import StubUsecases
+import UsecaseDoubles
 
 @testable import MooyahoApp
 

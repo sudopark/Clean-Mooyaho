@@ -14,7 +14,7 @@ import Domain
 import CommonPresenting
 import PlaceScenes
 import MemberScenes
-import StubUsecases
+import UsecaseDoubles
 import UnitTestHelpKit
 
 @testable import MooyahoApp

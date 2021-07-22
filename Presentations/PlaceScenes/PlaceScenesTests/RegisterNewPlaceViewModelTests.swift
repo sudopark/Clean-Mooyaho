@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 import UnitTestHelpKit
-import StubUsecases
+import UsecaseDoubles
 
 @testable import PlaceScenes
 

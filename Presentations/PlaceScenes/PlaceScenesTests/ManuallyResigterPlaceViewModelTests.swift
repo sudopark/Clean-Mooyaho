@@ -13,7 +13,7 @@ import RxCocoa
 import Domain
 import CommonPresenting
 import UnitTestHelpKit
-import StubUsecases
+import UsecaseDoubles
 
 @testable import PlaceScenes
 

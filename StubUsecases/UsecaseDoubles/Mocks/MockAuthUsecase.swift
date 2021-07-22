@@ -1,6 +1,6 @@
 //
 //  MockAuthUsecase.swift
-//  StubUsecases
+//  UsecaseDoubles
 //
 //  Created by sudo.park on 2021/05/25.
 //

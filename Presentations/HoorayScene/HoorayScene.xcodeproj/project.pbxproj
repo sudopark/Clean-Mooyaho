@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6025FF526A9D198007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FF426A9D198007A1AA8 /* UsecaseDoubles.framework */; };
 		F6502DAF2669D68E0027800F /* MakeHoorayRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAA2669D68E0027800F /* MakeHoorayRouter.swift */; };
 		F6502DB02669D68E0027800F /* MakeHoorayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAB2669D68E0027800F /* MakeHoorayViewController.swift */; };
 		F6502DB22669D68E0027800F /* MakeHoorayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DAD2669D68E0027800F /* MakeHoorayScene.swift */; };
@@ -25,7 +26,6 @@
 		F68CA1D52669203100344045 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D42669203100344045 /* CommonPresenting.framework */; };
 		F68CA1D82669203600344045 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D72669203600344045 /* Domain.framework */; };
 		F68CA1DB2669204E00344045 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1DA2669204E00344045 /* Common3rdParty.framework */; };
-		F68CA1DD2669205300344045 /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1DC2669205300344045 /* StubUsecases.framework */; };
 		F68CA1DF2669205A00344045 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1DE2669205A00344045 /* UnitTestHelpKit.framework */; };
 		F6D96F5D26691FDD00D0F507 /* HoorayScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96F5326691FDD00D0F507 /* HoorayScene.framework */; };
 		F6D96F6226691FDD00D0F507 /* HooraySceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D96F6126691FDD00D0F507 /* HooraySceneTests.swift */; };
@@ -50,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6025FF426A9D198007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6502DAA2669D68E0027800F /* MakeHoorayRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayRouter.swift; sourceTree = "<group>"; };
 		F6502DAB2669D68E0027800F /* MakeHoorayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayViewController.swift; sourceTree = "<group>"; };
 		F6502DAD2669D68E0027800F /* MakeHoorayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeHoorayScene.swift; sourceTree = "<group>"; };
@@ -100,8 +101,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6025FF526A9D198007A1AA8 /* UsecaseDoubles.framework in Frameworks */,
 				F68CA1DF2669205A00344045 /* UnitTestHelpKit.framework in Frameworks */,
-				F68CA1DD2669205300344045 /* StubUsecases.framework in Frameworks */,
 				F68CA1DB2669204E00344045 /* Common3rdParty.framework in Frameworks */,
 				F6D96F5D26691FDD00D0F507 /* HoorayScene.framework in Frameworks */,
 			);
@@ -136,6 +137,7 @@
 		F68CA1CF2669202C00344045 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6025FF426A9D198007A1AA8 /* UsecaseDoubles.framework */,
 				F68CA1DE2669205A00344045 /* UnitTestHelpKit.framework */,
 				F68CA1DC2669205300344045 /* StubUsecases.framework */,
 				F68CA1DA2669204E00344045 /* Common3rdParty.framework */,

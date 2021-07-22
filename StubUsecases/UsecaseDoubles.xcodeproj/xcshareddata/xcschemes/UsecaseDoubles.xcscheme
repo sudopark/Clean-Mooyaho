@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F60325972659564900E4E769"
-               BuildableName = "StubUsecases.framework"
-               BlueprintName = "StubUsecases"
-               ReferencedContainer = "container:StubUsecases.xcodeproj">
+               BuildableName = "UsecaseDoubles.framework"
+               BlueprintName = "UsecaseDoubles"
+               ReferencedContainer = "container:UsecaseDoubles.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F60325A02659564900E4E769"
-               BuildableName = "StubUsecasesTests.xctest"
-               BlueprintName = "StubUsecasesTests"
-               ReferencedContainer = "container:StubUsecases.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -61,9 +51,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F60325972659564900E4E769"
-            BuildableName = "StubUsecases.framework"
-            BlueprintName = "StubUsecases"
-            ReferencedContainer = "container:StubUsecases.xcodeproj">
+            BuildableName = "UsecaseDoubles.framework"
+            BlueprintName = "UsecaseDoubles"
+            ReferencedContainer = "container:UsecaseDoubles.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
