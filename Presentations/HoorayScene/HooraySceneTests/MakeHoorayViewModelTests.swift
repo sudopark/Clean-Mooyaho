@@ -12,7 +12,7 @@ import RxSwift
 import Domain
 import CommonPresenting
 import UnitTestHelpKit
-import StubUsecases
+import UsecaseDoubles
 
 @testable import HoorayScene
 

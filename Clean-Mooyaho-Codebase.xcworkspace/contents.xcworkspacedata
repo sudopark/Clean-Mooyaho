@@ -36,7 +36,7 @@
       location = "group:UnitTestHelpKit/UnitTestHelpKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:StubUsecases/StubUsecases.xcodeproj">
+      location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/StubUsecases/UsecaseDoubles.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Common3rdParty/Common3rdParty.xcodeproj">

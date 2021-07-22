@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6025FF726A9D1C7007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FF626A9D1C7007A1AA8 /* UsecaseDoubles.framework */; };
 		F652158F2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158A2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift */; };
 		F65215902674B935000CAB4B /* ManuallyResigterPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158B2674B935000CAB4B /* ManuallyResigterPlaceViewController.swift */; };
 		F65215922674B935000CAB4B /* ManuallyResigterPlaceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */; };
@@ -25,7 +26,6 @@
 		F6E8315426601AE400C91F3B /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315326601AE400C91F3B /* Common3rdParty.framework */; };
 		F6E8315826601AE900C91F3B /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315726601AE900C91F3B /* CommonPresenting.framework */; };
 		F6E8315B26601AEE00C91F3B /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315A26601AEE00C91F3B /* Domain.framework */; };
-		F6E8315E26601B0A00C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315D26601B0A00C91F3B /* StubUsecases.framework */; };
 		F6E8316026601B1000C91F3B /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8315F26601B1000C91F3B /* UnitTestHelpKit.framework */; };
 		F6E8316226601B1500C91F3B /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8316126601B1500C91F3B /* Common3rdParty.framework */; };
 /* End PBXBuildFile section */
@@ -41,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6025FF626A9D1C7007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F652158A2674B935000CAB4B /* ManuallyResigterPlaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceRouter.swift; sourceTree = "<group>"; };
 		F652158B2674B935000CAB4B /* ManuallyResigterPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceViewController.swift; sourceTree = "<group>"; };
 		F652158D2674B935000CAB4B /* ManuallyResigterPlaceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyResigterPlaceScene.swift; sourceTree = "<group>"; };
@@ -82,9 +83,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6025FF726A9D1C7007A1AA8 /* UsecaseDoubles.framework in Frameworks */,
 				F6E8316226601B1500C91F3B /* Common3rdParty.framework in Frameworks */,
 				F6E8316026601B1000C91F3B /* UnitTestHelpKit.framework in Frameworks */,
-				F6E8315E26601B0A00C91F3B /* StubUsecases.framework in Frameworks */,
 				F6E8314226601A9800C91F3B /* PlaceScenes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,6 +161,7 @@
 		F6E8315226601AE400C91F3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6025FF626A9D1C7007A1AA8 /* UsecaseDoubles.framework */,
 				F6E8316126601B1500C91F3B /* Common3rdParty.framework */,
 				F6E8315F26601B1000C91F3B /* UnitTestHelpKit.framework */,
 				F6E8315D26601B0A00C91F3B /* StubUsecases.framework */,
