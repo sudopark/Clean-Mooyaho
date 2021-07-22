@@ -18,20 +18,20 @@ import UnitTestHelpKit
 class SuggestTagUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubTagRepository: StubTagRepository!
+    var mockTagRepository: MockTagRepository!
     var usecase: SuggestTagUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubTagRepository = .init()
-        self.usecase = .init(tagRepository: self.stubTagRepository,
+        self.mockTagRepository = .init()
+        self.usecase = .init(tagRepository: self.mockTagRepository,
                              throttleInterval: 0)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubTagRepository = nil
+        self.mockTagRepository = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -53,7 +53,7 @@ extension SuggestTagUsecaseTests {
         // given
         let expect = expectation(description: "장소 코멘트 서제스트 키워드가 없는경우 최근 검색했던 태그 노출")
         let type = Tag.TagType.userComments
-        self.stubTagRepository.register(type: Maybe<[Tag]>.self, key: "fetchRecentTags:\(type)-") {
+        self.mockTagRepository.register(type: Maybe<[Tag]>.self, key: "fetchRecentTags:\(type)-") {
             let tags = (0..<10).map{ Tag(type: type, keyword: "k\($0)") }
             return .just(tags)
         }
@@ -82,12 +82,12 @@ extension SuggestTagUsecaseTests {
             .init(query: query, tags: remotePage2, cursor: nil)
         ]
         
-        let keyPage1 = self.stubTagRepository.userCommentStubKey(query: query)
-        self.stubTagRepository.register(key: keyPage1) {
+        let keyPage1 = self.mockTagRepository.userCommentStubKey(query: query)
+        self.mockTagRepository.register(key: keyPage1) {
             return Observable<SuggestTagResultCollection>.from([results[0], results[1]])
         }
-        let keyPage2 = self.stubTagRepository.userCommentStubKey(query: query, cursor: remotePage1.last?.keyword)
-        self.stubTagRepository.register(key: keyPage2) {
+        let keyPage2 = self.mockTagRepository.userCommentStubKey(query: query, cursor: remotePage1.last?.keyword)
+        self.mockTagRepository.register(key: keyPage2) {
             return Observable<SuggestTagResultCollection>.just(results[2])
         }
         
@@ -115,8 +115,8 @@ extension SuggestTagUsecaseTests {
             let cursorForStub = offset == 0 ? nil : tagLists[offset-1].last?.keyword
             
             let result = SuggestTagResultCollection(query: query, tags: tags, cursor: cursorInResult)
-            let key = self.stubTagRepository.userCommentStubKey(query: query, cursor: cursorForStub)
-            self.stubTagRepository.register(key: key) {
+            let key = self.mockTagRepository.userCommentStubKey(query: query, cursor: cursorForStub)
+            self.mockTagRepository.register(key: key) {
                 return Observable<SuggestTagResultCollection>.just(result)
             }
         }
@@ -142,7 +142,7 @@ extension SuggestTagUsecaseTests {
         let expect = expectation(description: "유저 소유에 해당하는 유저 필링 태그 서제스트")
         let (query, type) = ("k", Tag.TagType.userFeeling)
         let key = "fetchRecentTags:\(type)-\(query)"
-        self.stubTagRepository.register(key: key) {
+        self.mockTagRepository.register(key: key) {
             return Maybe<[Tag]>.just(self.dummyTags(size: 2, offset: 0, type: type))
         }
         
@@ -170,8 +170,8 @@ extension SuggestTagUsecaseTests {
             let cursorForStub = offset == 0 ? nil : tagLists[offset-1].last?.keyword
 
             let result = SuggestTagResultCollection(query: query, tags: tags, cursor: cursorInResult)
-            let key = self.stubTagRepository.userFeelingStubKey(query: query, cursor: cursorForStub)
-            self.stubTagRepository.register(key: key) {
+            let key = self.mockTagRepository.userFeelingStubKey(query: query, cursor: cursorForStub)
+            self.mockTagRepository.register(key: key) {
                 return Observable<SuggestTagResultCollection>.just(result)
             }
         }

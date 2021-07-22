@@ -21,8 +21,8 @@
 		2BD54F69263D4C3D004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */; };
 		2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */; };
 		2BD54F75263DB51A004B3EB0 /* RepositoryTests+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F74263DB51A004B3EB0 /* RepositoryTests+Auth.swift */; };
-		2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F76263DB58F004B3EB0 /* StubRemote.swift */; };
-		2BD54F79263DB59E004B3EB0 /* StubLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F78263DB59E004B3EB0 /* StubLocal.swift */; };
+		2BD54F77263DB58F004B3EB0 /* MockRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F76263DB58F004B3EB0 /* MockRemote.swift */; };
+		2BD54F79263DB59E004B3EB0 /* MockLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F78263DB59E004B3EB0 /* MockLocal.swift */; };
 		2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F7C263DB826004B3EB0 /* Dummies.swift */; };
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
@@ -79,8 +79,8 @@
 		2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD54F6B263D4C67004B3EB0 /* RepositoryImple+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Auth.swift"; sourceTree = "<group>"; };
 		2BD54F74263DB51A004B3EB0 /* RepositoryTests+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Auth.swift"; sourceTree = "<group>"; };
-		2BD54F76263DB58F004B3EB0 /* StubRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRemote.swift; sourceTree = "<group>"; };
-		2BD54F78263DB59E004B3EB0 /* StubLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLocal.swift; sourceTree = "<group>"; };
+		2BD54F76263DB58F004B3EB0 /* MockRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemote.swift; sourceTree = "<group>"; };
+		2BD54F78263DB59E004B3EB0 /* MockLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocal.swift; sourceTree = "<group>"; };
 		2BD54F7C263DB826004B3EB0 /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		2BF00BDF262B7E1300E235C0 /* DataStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BE2262B7E1300E235C0 /* DataStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataStore.h; sourceTree = "<group>"; };
@@ -208,8 +208,8 @@
 			isa = PBXGroup;
 			children = (
 				2BD54F7C263DB826004B3EB0 /* Dummies.swift */,
-				2BD54F76263DB58F004B3EB0 /* StubRemote.swift */,
-				2BD54F78263DB59E004B3EB0 /* StubLocal.swift */,
+				2BD54F76263DB58F004B3EB0 /* MockRemote.swift */,
+				2BD54F78263DB59E004B3EB0 /* MockLocal.swift */,
 			);
 			path = Stub;
 			sourceTree = "<group>";
@@ -451,14 +451,14 @@
 				F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */,
 				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
 				F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */,
-				2BD54F77263DB58F004B3EB0 /* StubRemote.swift in Sources */,
+				2BD54F77263DB58F004B3EB0 /* MockRemote.swift in Sources */,
 				F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
 				2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */,
 				F62202BA2698918700B26B50 /* LocalStorageTests+Place.swift in Sources */,
 				2BABA28F2642A0E7007E2D1E /* RepositoryTests+Places.swift in Sources */,
 				2BD54F75263DB51A004B3EB0 /* RepositoryTests+Auth.swift in Sources */,
-				2BD54F79263DB59E004B3EB0 /* StubLocal.swift in Sources */,
+				2BD54F79263DB59E004B3EB0 /* MockLocal.swift in Sources */,
 				F6419BF626822FB000C7919B /* LocalStorageTests+Auth&Member.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

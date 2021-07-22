@@ -1,5 +1,5 @@
 //
-//  StubUserLocationUsecase.swift
+//  MockUserLocationUsecase.swift
 //  StubUsecases
 //
 //  Created by sudo.park on 2021/05/23.
@@ -13,7 +13,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubUserLocationUsecase: UserLocationUsecase, Stubbable {
+open class MockUserLocationUsecase: UserLocationUsecase, Mocking {
     
     public init() {}
     
@@ -42,8 +42,8 @@ open class StubUserLocationUsecase: UserLocationUsecase, Stubbable {
         return stubMonitoringError.asObservable()
     }
     
-    public let stubIsAuthorized = PublishSubject<Bool>()
+    public let isAuthorizedSubject = PublishSubject<Bool>()
     open var isAuthorized: Observable<Bool> {
-        return self.stubIsAuthorized.asObservable()
+        return self.isAuthorizedSubject.asObservable()
     }
 }

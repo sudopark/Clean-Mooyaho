@@ -23,25 +23,25 @@ import UnitTestHelpKit
 class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubMemberUsecase: StubMemberUsecase!
-    var stubHoorayUsecase: StubHoorayUsecase!
+    var mockMemberUsecase: MockMemberUsecase!
+    var mockHoorayUsecase: MockHoorayUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubMemberUsecase = .init()
-        self.stubHoorayUsecase = .init()
+        self.mockMemberUsecase = .init()
+        self.mockHoorayUsecase = .init()
         self.spyRouter = .init()
-        self.viewModel = .init(memberUsecase: self.stubMemberUsecase,
-                               hoorayUsecase: self.stubHoorayUsecase,
+        self.viewModel = .init(memberUsecase: self.mockMemberUsecase,
+                               hoorayUsecase: self.mockHoorayUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubMemberUsecase = nil
-        self.stubHoorayUsecase = nil
+        self.mockMemberUsecase = nil
+        self.mockHoorayUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -83,7 +83,7 @@ extension MainViewModelTests {
     func testViewModel_requestMakeNewHooray_withoutSignIn_routeToSignIn() {
         // given
         let expect = expectation(description: "새로운 후레이 발급 요청시 로그인되어있지 않다면 로그인 라우팅")
-        self.stubHoorayUsecase.register(key: "isAvailToPublish") {
+        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
             return Maybe<Void>.error(ApplicationErrors.sigInNeed)
         }
         
@@ -101,7 +101,7 @@ extension MainViewModelTests {
     func testViewModel_requestMakeNewHooray_withoutProfileSetup_routeToAlertEditProfile() {
         // given
         let expect = expectation(description: "새로운 후레이 발급 요청시 프로필이 세팅되어있지 않다면 않다면 입력 화면으로 이동 알럿")
-        self.stubHoorayUsecase.register(key: "isAvailToPublish") {
+        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
             return Maybe<Void>.error(ApplicationErrors.profileNotSetup)
         }
         
@@ -119,7 +119,7 @@ extension MainViewModelTests {
     func testViewModel_whenTooSoonLatestHoorayExists_alertShouldWait() {
         // given
         let expect = expectation(description: "너무 이른 최근 후레이가 존재한다면 대기해야함을 알림")
-        self.stubHoorayUsecase.register(key: "isAvailToPublish") {
+        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
             return Maybe<Void>.error(ApplicationErrors.shouldWaitPublishHooray(until: TimeStamp.now()))
         }
         
@@ -138,7 +138,7 @@ extension MainViewModelTests {
         // given
         let expect = expectation(description: "후레이 발급화면으로 이동")
         
-        self.stubHoorayUsecase.register(key: "isAvailToPublish") { Maybe<Void>.just() }
+        self.mockHoorayUsecase.register(key: "isAvailToPublish") { Maybe<Void>.just() }
         self.spyRouter.called(key: "presentMakeNewHoorayScene") { _ in
             expect.fulfill()
         }
@@ -163,7 +163,7 @@ extension MainViewModelTests {
         let profileImages = self.waitElements(expect, for: self.viewModel.currentMemberProfileImage) {
             var newMember = Member(uid: "some")
             newMember.icon = .emoji("😱")
-            self.stubMemberUsecase.stubCurrentMember.onNext(newMember)
+            self.mockMemberUsecase.currentMemberSubject.onNext(newMember)
         }
         
         // then
@@ -174,7 +174,7 @@ extension MainViewModelTests {
 
 extension MainViewModelTests {
     
-    class SpyRouter: MainRouting, Stubbable {
+    class SpyRouter: MainRouting, Mocking {
         
         func presentSignInScene() -> SignInScenePresenter? {
             self.verify(key: "presentSignInScene")
@@ -212,7 +212,7 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyNearbySceneInteractor: NearbySceneInteractor, Stubbable {
+    class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {
         
         func moveMapCameraToCurrentUserPosition() {
             self.verify(key: "moveMapCameraToCurrentUserPosition")

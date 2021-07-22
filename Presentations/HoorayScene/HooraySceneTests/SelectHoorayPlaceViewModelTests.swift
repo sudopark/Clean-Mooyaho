@@ -20,42 +20,42 @@ import StubUsecases
 class SelectHoorayPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubLocationUsecase: StubUserLocationUsecase!
-    var stubSuggestUsecase: StubSuggestPlaceUsecase!
+    var mockLocationUsecase: MockUserLocationUsecase!
+    var mockSuggestUsecase: MockSuggestPlaceUsecase!
     var spyRouter: SpyRouter!
     var viewModel: SelectHoorayPlaceViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubLocationUsecase = .init()
-        self.stubSuggestUsecase = .init()
+        self.mockLocationUsecase = .init()
+        self.mockSuggestUsecase = .init()
         self.spyRouter = .init()
         self.initViewModel()
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubLocationUsecase = nil
-        self.stubSuggestUsecase = nil
+        self.mockLocationUsecase = nil
+        self.mockSuggestUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
     
     private func initViewModel() {
         self.viewModel = .init(form: .init(publisherID: "some"),
-                               userLocationUsecase: self.stubLocationUsecase,
-                               suggestPlaceUsecase: self.stubSuggestUsecase,
+                               userLocationUsecase: self.mockLocationUsecase,
+                               suggestPlaceUsecase: self.mockSuggestUsecase,
                                router: self.spyRouter)
     }
 }
 
 extension SelectHoorayPlaceViewModelTests {
     
-    private func stubDefaultList(_ range: Range<Int> = (0..<1)) {
-        self.stubLocationUsecase.register(key: "fetchUserLocation") {
+    private func registerDefaultList(_ range: Range<Int> = (0..<1)) {
+        self.mockLocationUsecase.register(key: "fetchUserLocation") {
             return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
         }
-        self.stubSuggestUsecase.register(type: SuggestPlaceResult.self, key: "startSuggestPlace:") {
+        self.mockSuggestUsecase.register(type: SuggestPlaceResult.self, key: "startSuggestPlace:") {
             let dummies = range.map{ PlaceSnippet.dummy($0) }
             let result = SuggestPlaceResult(default: dummies)
             return result
@@ -66,7 +66,7 @@ extension SelectHoorayPlaceViewModelTests {
     func testViewModel_firstLoadCurrentUserLocation() {
         // given
         let expect = expectation(description: "최초에 현재 유저위치 표시")
-        self.stubDefaultList()
+        self.registerDefaultList()
         
         // when
         self.initViewModel()
@@ -81,7 +81,7 @@ extension SelectHoorayPlaceViewModelTests {
     func testViewModel_firstSuggestPlacesNearbyUser() {
         // given
         let expect = expectation(description: "최초에 현재 유저위치 기준으로 장소 서제스트")
-        self.stubDefaultList()
+        self.registerDefaultList()
         
         // when
         self.initViewModel()
@@ -97,8 +97,8 @@ extension SelectHoorayPlaceViewModelTests {
         let expect = expectation(description: "장소 서제스트목록 키워드 필터링")
         expect.expectedFulfillmentCount = 2
         
-        self.stubDefaultList()
-        self.stubSuggestUsecase.register(type: SuggestPlaceResult.self, key: "startSuggestPlace:some") {
+        self.registerDefaultList()
+        self.mockSuggestUsecase.register(type: SuggestPlaceResult.self, key: "startSuggestPlace:some") {
             let result = SuggestPlaceResult(default: [PlaceSnippet.dummy(1)])
             return result
         }
@@ -122,7 +122,7 @@ extension SelectHoorayPlaceViewModelTests {
         // given
         let expect = expectation(description: "장소 선택시에 선택플래그 토글")
         expect.expectedFulfillmentCount = 4
-        self.stubDefaultList(0..<10)
+        self.registerDefaultList(0..<10)
         
         // when
         self.initViewModel()
@@ -142,7 +142,7 @@ extension SelectHoorayPlaceViewModelTests {
     func testViewModel_whenSelectPlace_updateSelectPlaceID() {
         // given
         let expect = expectation(description: "장소 선택시에 선택플래그 토글")
-        self.stubDefaultList(0..<10)
+        self.registerDefaultList(0..<10)
         
         // when
         self.initViewModel()
@@ -159,7 +159,7 @@ extension SelectHoorayPlaceViewModelTests {
         // given
         let expect = expectation(description: "선택된 장소정보 여부에 따라 입력 종료버튼 활성화")
         expect.expectedFulfillmentCount = 3
-        self.stubDefaultList(0..<10)
+        self.registerDefaultList(0..<10)
 
         // when
         self.initViewModel()
@@ -176,7 +176,7 @@ extension SelectHoorayPlaceViewModelTests {
         // given
         let expect = expectation(description: "유저위치 기준 서제스트 새로고침")
         expect.expectedFulfillmentCount = 2
-        self.stubDefaultList(0..<2)
+        self.registerDefaultList(0..<2)
         self.initViewModel()
         
         // when
@@ -194,7 +194,7 @@ extension SelectHoorayPlaceViewModelTests {
     func testViewModel_whenAfterConfirmSelect_closeSceneAndEmitEvent() {
         // given
         let expect = expectation(description: "장소선택 완료 이후에 화면 닫고 이벤트 전달")
-        self.stubDefaultList(0..<10)
+        self.registerDefaultList(0..<10)
         self.initViewModel()
         
         // when
@@ -211,7 +211,7 @@ extension SelectHoorayPlaceViewModelTests {
     func testViewModel_routeToRegisterNewPlace() {
         // given
         let expect = expectation(description: "장소정보 입력 스킵시도시에 알럿")
-        self.stubDefaultList(0..<10)
+        self.registerDefaultList(0..<10)
         self.initViewModel()
         
         self.spyRouter.called(key: "presentNewPlaceRegisterScene") { _ in
@@ -231,8 +231,8 @@ extension SelectHoorayPlaceViewModelTests {
         let expect = expectation(description: "신규 장소등록 다 끝낸 이후에 장소선택 완료")
         self.initViewModel()
         
-        let output = StubSearchNewPlaceSceneOutput()
-        self.spyRouter.stubOutput = output
+        let output = MockSearchNewPlaceSceneOutput()
+        self.spyRouter.output = output
         
         // when
         let newForm = self.waitFirstElement(expect, for: self.viewModel.goNextStepWithForm) {
@@ -251,16 +251,16 @@ extension SelectHoorayPlaceViewModelTests {
 
 extension SelectHoorayPlaceViewModelTests {
     
-    class SpyRouter: SelectHoorayPlaceRouting, Stubbable {
+    class SpyRouter: SelectHoorayPlaceRouting, Mocking {
         
         func alertForConfirm(_ form: AlertForm) {
             self.verify(key: "alertForConfirm")
         }
         
-        var stubOutput: StubSearchNewPlaceSceneOutput?
+        var output: MockSearchNewPlaceSceneOutput?
         func presentNewPlaceRegisterScene(myID: String) -> SearchNewPlaceSceneOutput? {
             self.verify(key: "presentNewPlaceRegisterScene")
-            return stubOutput
+            return output
         }
         
         func closeScene(animated: Bool, completed: (() -> Void)?) {
@@ -268,7 +268,7 @@ extension SelectHoorayPlaceViewModelTests {
         }
     }
     
-    class StubSearchNewPlaceSceneOutput: SearchNewPlaceSceneOutput {
+    class MockSearchNewPlaceSceneOutput: SearchNewPlaceSceneOutput {
         let place = PublishSubject<Place>()
         var newRegistered: Observable<Place> {
             return self.place.asObservable()

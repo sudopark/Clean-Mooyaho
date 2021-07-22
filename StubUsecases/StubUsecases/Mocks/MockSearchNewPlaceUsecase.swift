@@ -1,5 +1,5 @@
 //
-//  StubSearchNewPlaceUsecase.swift
+//  MockSearchNewPlaceUsecase.swift
 //  StubUsecases
 //
 //  Created by sudo.park on 2021/06/11.
@@ -13,7 +13,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubSearchNewPlaceUsecase: SearchNewPlaceUsecase, Stubbable {
+open class MockSearchNewPlaceUsecase: SearchNewPlaceUsecase, Mocking {
     
     public init() {}
     

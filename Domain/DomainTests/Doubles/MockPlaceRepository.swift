@@ -1,5 +1,5 @@
 //
-//  StubLocationRepository.swift
+//  MockPlaceRepository.swift
 //  DomainTests
 //
 //  Created by ParkHyunsoo on 2021/05/03.
@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubPlaceRepository: PlaceRepository, Stubbable {
+class MockPlaceRepository: PlaceRepository, Mocking {
     
     func uploadLocation(_ location: UserLocation) -> Maybe<Void> {
         self.verify(key: "uploadLocation", with: location)

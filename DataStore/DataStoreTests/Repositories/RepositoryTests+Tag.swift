@@ -19,22 +19,22 @@ import UnitTestHelpKit
 class RepositoryTests_Tag: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubRemote: StubRemote!
-    var stubLocal: StubLocal!
+    var mockRemote: MockRemote!
+    var mockLocal: MockLocal!
     var repository: DummyRepository!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubLocal = .init()
-        self.stubRemote = .init()
-        self.repository = .init(remote: self.stubRemote, local: self.stubLocal)
+        self.mockLocal = .init()
+        self.mockRemote = .init()
+        self.repository = .init(remote: self.mockRemote, local: self.mockLocal)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubRemote = nil
-        self.stubLocal = nil
+        self.mockRemote = nil
+        self.mockLocal = nil
         self.repository = nil
         super.tearDown()
     }
@@ -45,7 +45,7 @@ extension RepositoryTests_Tag {
     func testRepository_fetchRecentTags() {
         // given
         let expect = expectation(description: "로컬에 저장된 최근 태그 로드")
-        self.stubLocal.register(key: "fetchRecentSelectTags") {
+        self.mockLocal.register(key: "fetchRecentSelectTags") {
             return Maybe<[Tag]>.just([Tag.init(type: .userComments, keyword: "some")])
         }
         
@@ -60,7 +60,7 @@ extension RepositoryTests_Tag {
     func testRepository_removeRecentTag() {
         // given
         let expect = expectation(description: "로컬에 저장된 최근 태그 삭제")
-        self.stubLocal.register(key: "removeRecentSelect") {
+        self.mockLocal.register(key: "removeRecentSelect") {
             return Maybe<Void>.just()
         }
         
@@ -76,10 +76,10 @@ extension RepositoryTests_Tag {
         // given
         let expect = expectation(description: "태그 생성시에 업로드 + 최근 선택한 테그 업데이트")
         expect.expectedFulfillmentCount = 2
-        self.stubRemote.register(key: "requestRegisterTag") { Maybe<Void>.just() }
-        self.stubLocal.register(key: "updateRecentSelect") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestRegisterTag") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "updateRecentSelect") { Maybe<Void>.just() }
         
-        self.stubLocal.called(key: "updateRecentSelect") { _ in
+        self.mockLocal.called(key: "updateRecentSelect") { _ in
             expect.fulfill()
         }
         
@@ -94,7 +94,7 @@ extension RepositoryTests_Tag {
     func testRepository_selectTag() {
         // given
         let expect = expectation(description: "태그 선택시에 최근 선택한 테그 업데이트")
-        self.stubLocal.register(key: "updateRecentSelect") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "updateRecentSelect") { Maybe<Void>.just() }
         
         
         // when
@@ -110,10 +110,10 @@ extension RepositoryTests_Tag {
         // given
         let expect = expectation(description: "유저 커멘트 커서 없을때는 캐시 히트해서 불러옴")
         expect.expectedFulfillmentCount = 2
-        self.stubLocal.register(key: "fetchRecentSelectTags") {
+        self.mockLocal.register(key: "fetchRecentSelectTags") {
             return Maybe<[Tag]>.just([Tag.init(type: .userComments, keyword: "cache")])
         }
-        self.stubRemote.register(key: "requestLoadPlaceCommnetTags") {
+        self.mockRemote.register(key: "requestLoadPlaceCommnetTags") {
             return Maybe<SuggestTagResultCollection>.just(.init(query: "k", tags: [.init(type: .userComments, keyword: "remote")], cursor: nil))
         }
         
@@ -128,10 +128,10 @@ extension RepositoryTests_Tag {
         // given
         let expect = expectation(description: "유저 커멘트 커서는 조회시에 캐싱됨")
         
-        self.stubLocal.called(key: "saveTags") { _ in
+        self.mockLocal.called(key: "saveTags") { _ in
             expect.fulfill()
         }
-        self.stubRemote.register(key: "requestLoadPlaceCommnetTags") {
+        self.mockRemote.register(key: "requestLoadPlaceCommnetTags") {
             return Maybe<SuggestTagResultCollection>.just(.init(query: "k", tags: [.init(type: .userComments, keyword: "remote")], cursor: nil))
         }
         
@@ -148,7 +148,7 @@ extension RepositoryTests_Tag {
     func testRepository_loadUserCommentTagsWithCursor() {
         // given
         let expect = expectation(description: "유저 커멘트 커서 있는경우 로드")
-        self.stubRemote.register(key: "requestLoadPlaceCommnetTags") {
+        self.mockRemote.register(key: "requestLoadPlaceCommnetTags") {
             return Maybe<SuggestTagResultCollection>.just(.init(query: "k", tags: [.init(type: .userComments, keyword: "remote")], cursor: nil))
         }
         
@@ -164,10 +164,10 @@ extension RepositoryTests_Tag {
         // given
         let expect = expectation(description: "유저 기분 커서 없을때는 캐시 히트해서 불러옴")
         expect.expectedFulfillmentCount = 2
-        self.stubLocal.register(key: "fetchRecentSelectTags") {
+        self.mockLocal.register(key: "fetchRecentSelectTags") {
             return Maybe<[Tag]>.just([Tag.init(type: .userFeeling, keyword: "cache")])
         }
-        self.stubRemote.register(key: "requestLoadUserFeelingTags") {
+        self.mockRemote.register(key: "requestLoadUserFeelingTags") {
             return Maybe<SuggestTagResultCollection>.just(.init(query: "k", tags: [.init(type: .userFeeling, keyword: "remote")], cursor: nil))
         }
         
@@ -182,7 +182,7 @@ extension RepositoryTests_Tag {
     func testRepository_loadUserFeelingTagsWithCursor() {
         // given
         let expect = expectation(description: "유저 기분 커서 있는경우 로드")
-        self.stubRemote.register(key: "requestLoadUserFeelingTags") {
+        self.mockRemote.register(key: "requestLoadUserFeelingTags") {
             return Maybe<SuggestTagResultCollection>.just(.init(query: "k", tags: [.init(type: .userFeeling, keyword: "remote")], cursor: nil))
         }
         

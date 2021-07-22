@@ -19,22 +19,22 @@ import UnitTestHelpKit
 class RepositoryTests_Member: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubRemote: StubRemote!
-    var stubLocal: StubLocal!
+    var mockRemote: MockRemote!
+    var mockLocal: MockLocal!
     var repository: DummyRepository!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubLocal = .init()
-        self.stubRemote = .init()
-        self.repository = .init(remote: self.stubRemote, local: self.stubLocal)
+        self.mockLocal = .init()
+        self.mockRemote = .init()
+        self.repository = .init(remote: self.mockRemote, local: self.mockLocal)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubRemote = nil
-        self.stubLocal = nil
+        self.mockRemote = nil
+        self.mockLocal = nil
         self.repository = nil
         super.tearDown()
     }
@@ -47,7 +47,7 @@ extension RepositoryTests_Member {
         // given
         let expect = expectation(description: "user presence 업데이트")
         
-        self.stubRemote.register(key: "requestUpdateUserPresence") {
+        self.mockRemote.register(key: "requestUpdateUserPresence") {
             return Maybe<Void>.just()
         }
         
@@ -94,8 +94,8 @@ extension RepositoryTests_Member {
         let requestUpload = self.repository
             .requestUploadMemberProfileImage("some", source: .data(Data(), extension: "jpg"))
         let status = self.waitElements(expect, for: requestUpload) {
-            self.stubRemote.stubUploadMemberProfileImageStatus.onNext(.uploading(0.5))
-            self.stubRemote.stubUploadMemberProfileImageStatus.onNext(.completed(.path("some")))
+            self.mockRemote.uploadMemberProfileImageStatus.onNext(.uploading(0.5))
+            self.mockRemote.uploadMemberProfileImageStatus.onNext(.completed(.path("some")))
         }
         
         // then
@@ -117,7 +117,7 @@ extension RepositoryTests_Member {
         // given
         let expect = expectation(description: "멤버 필드 새로운 값으로 업데이트")
         
-        self.stubRemote.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRemote.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.just(Member.init(uid: "some"))
         }
         
@@ -134,11 +134,11 @@ extension RepositoryTests_Member {
         // given
         let expect = expectation(description: "멤버 업데이트 이후에 캐시 업데이트")
         
-        self.stubRemote.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRemote.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.just(Member.init(uid: "some"))
         }
         
-        self.stubLocal.called(key: "updateCurrentMember") { _ in
+        self.mockLocal.called(key: "updateCurrentMember") { _ in
             expect.fulfill()
         }
         

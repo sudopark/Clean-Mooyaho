@@ -24,7 +24,7 @@ extension HoorayReceiveUsecaseTests {
         // given
         let expect = expectation(description: "근처에 있는 최근 후레이 조회")
         
-        self.stubHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
+        self.mockHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
             let hoorays: [Hooray] = (0..<10).map(Hooray.dummy(_:))
             return .just(hoorays)
         }
@@ -42,11 +42,11 @@ extension HoorayReceiveUsecaseTests {
         let expect = expectation(description: "근처에 있는 후레이 조회 + ack 전송시에 후레이에 ackID 저장")
         expect.expectedFulfillmentCount = 5
         
-        self.stubHoorayRepository.called(key: "requestAckHooray") { _ in
+        self.mockHoorayRepository.called(key: "requestAckHooray") { _ in
             expect.fulfill()
         }
         
-        self.stubHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
+        self.mockHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
             let hoorays: [Hooray] = (0..<10).map(Hooray.dummy(_:))
                 .enumerated().map { offset, hry -> Hooray in
                     var hry = hry
@@ -70,11 +70,11 @@ extension HoorayReceiveUsecaseTests {
         let expect = expectation(description: "근처에 있는 최근 후레이 조회해서 읽음처리시 내꺼에는 ack x")
         expect.expectedFulfillmentCount = 9
         
-        self.stubHoorayRepository.called(key: "requestAckHooray") { _ in
+        self.mockHoorayRepository.called(key: "requestAckHooray") { _ in
             expect.fulfill()
         }
         
-        self.stubHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
+        self.mockHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
             let hoorays: [Hooray] = (0..<10).map(Hooray.dummy(_:))
             return .just(hoorays)
         }
@@ -102,7 +102,7 @@ extension HoorayReceiveUsecaseTests {
         let newHoorays = self.waitElements(expect, for: self.usecase.newReceivedHooray) {
             let newMessage: [NewHoorayMessage] = (0..<3).map{ .dummy($0) }
             newMessage.forEach {
-                self.stubMessagingService.stubNewMessage.onNext($0)
+                self.mockMessagingService.newMessage.onNext($0)
             }
         }
         
@@ -117,7 +117,7 @@ extension HoorayReceiveUsecaseTests {
         
         self.sharedStore.updateAuth(Auth(userID: "myID"))
         
-        self.stubHoorayRepository.called(key: "requestAckHooray") { _ in
+        self.mockHoorayRepository.called(key: "requestAckHooray") { _ in
             expect.fulfill()
         }
         
@@ -128,7 +128,7 @@ extension HoorayReceiveUsecaseTests {
         // when
         let newMessage: [NewHoorayMessage] = (0..<3).map{ .dummy($0) }
         newMessage.forEach {
-            self.stubMessagingService.stubNewMessage.onNext($0)
+            self.mockMessagingService.newMessage.onNext($0)
         }
         
         // then

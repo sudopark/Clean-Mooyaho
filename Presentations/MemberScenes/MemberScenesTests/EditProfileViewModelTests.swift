@@ -20,21 +20,21 @@ import StubUsecases
 class EditProfileViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubMemberUsecase: StubMemberUsecase!
+    var mockMemberUsecase: MockMemberUsecase!
     var spyRouter: SpyRouter!
     var viewModel: EditProfileViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubMemberUsecase = .init()
+        self.mockMemberUsecase = .init()
         self.spyRouter = .init()
-        self.viewModel = .init(usecase: self.stubMemberUsecase,
+        self.viewModel = .init(usecase: self.mockMemberUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubMemberUsecase = nil
+        self.mockMemberUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -48,13 +48,13 @@ extension EditProfileViewModelTests {
     func testViewModel_showPreviousEnteredImage() {
         // given
         let expect = expectation(description: "이전에 입력한 프로필 이미지 소스 방출")
-        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             let member = Member(uid: "uid", nickName: nil, icon: .emoji("⛳️"))
             return member
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         let source = self.waitFirstElement(expect, for: self.viewModel.profileImageSource)
         
         // then
@@ -69,13 +69,13 @@ extension EditProfileViewModelTests {
     func testViewModel_initialCellViewModels() {
         // given
         let expect = expectation(description: "셀뷰모델 구성")
-        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             let member = Member(uid: "uid", nickName: "nick", icon: .emoji("⛳️"))
             return member
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         let types = self.waitFirstElement(expect, for: self.viewModel.cellTypes)
         
         // then
@@ -96,13 +96,13 @@ extension EditProfileViewModelTests {
         // given
         let expect = expectation(description: "닉네임이 nil이 아닌 경우에만 저장버튼 활성화")
         expect.expectedFulfillmentCount = 3
-        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             let member = Member(uid: "uid", nickName: nil, icon: .emoji("⛳️"))
             return member
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.inputTextChanges(type: .introduction, to: "some")
             self.viewModel.inputTextChanges(type: .nickName, to: "")
@@ -119,14 +119,14 @@ extension EditProfileViewModelTests {
         let expect = expectation(description: "수정모드에서 수정내역이 발생 + 닉네임이 있을때만 저장버튼 활성화")
         expect.expectedFulfillmentCount = 4
         
-        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             var member = Member(uid: "uid", nickName: "some", icon: .emoji("⛳️"))
             member.introduction = "old"
             return member
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.inputTextChanges(type: .introduction, to: "new")     // true
             self.viewModel.inputTextChanges(type: .nickName, to: nil)           // false
@@ -144,14 +144,14 @@ extension EditProfileViewModelTests {
         let expect = expectation(description: "이미지 입력시에는 저장가능여부 업데이트")
         expect.expectedFulfillmentCount = 2
         
-        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             var member = Member(uid: "uid", nickName: "some", icon: nil)
             member.introduction = "old"
             return member
         }
         
         // when
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
             self.viewModel.selectEmoji("😂")
             self.viewModel.inputTextChanges(type: .introduction, to: "new")
@@ -165,13 +165,13 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-    private func stubViewModelSavable() {
-        self.stubMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+    private func registerViewModelSavable() {
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             var member = Member(uid: "uid", nickName: "some", icon: nil)
             member.introduction = "old"
             return member
         }
-        self.viewModel = .init(usecase: self.stubMemberUsecase, router: self.spyRouter)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         self.viewModel.inputTextChanges(type: .introduction, to: "new")
     }
     
@@ -180,15 +180,15 @@ extension EditProfileViewModelTests {
         let expect = expectation(description: "이미지 데이터와 함께 프로파일 변경정보 저장")
         expect.expectedFulfillmentCount = 3
         
-        self.stubViewModelSavable()
+        self.registerViewModelSavable()
         
         // when
         let isSavings = self.waitElements(expect, for: self.viewModel.isSaveChanges) {
             self.viewModel.selectMemoji(Data())
             self.viewModel.saveChanges()
-            self.stubMemberUsecase.stubUpdateStatus.onNext(.pending)
-            self.stubMemberUsecase.stubUpdateStatus.onNext(.updating(0.1))
-            self.stubMemberUsecase.stubUpdateStatus.onNext(.finished)
+            self.mockMemberUsecase.updateStatus.onNext(.pending)
+            self.mockMemberUsecase.updateStatus.onNext(.updating(0.1))
+            self.mockMemberUsecase.updateStatus.onNext(.finished)
         }
         
         // then
@@ -201,7 +201,7 @@ extension EditProfileViewModelTests {
         let expect = expectation(description: "저장 완료시에 화면 닫고 외부로 이벤트 전파")
         expect.expectedFulfillmentCount = 2
         
-        self.stubViewModelSavable()
+        self.registerViewModelSavable()
         
         self.spyRouter.called(key: "closeScene") { _ in
             expect.fulfill()
@@ -213,7 +213,7 @@ extension EditProfileViewModelTests {
         
         // when
         self.viewModel.saveChanges()
-        self.stubMemberUsecase.stubUpdateStatus.onNext(.finished)
+        self.mockMemberUsecase.updateStatus.onNext(.finished)
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -224,7 +224,7 @@ extension EditProfileViewModelTests {
         // given
         let expect = expectation(description: "사진 저장만 실패한 경우에는 토스트 노출하고 화면은 안닫음")
         
-        self.stubViewModelSavable()
+        self.registerViewModelSavable()
         
         self.spyRouter.called(key: "showToast") { _ in
             expect.fulfill()
@@ -233,7 +233,7 @@ extension EditProfileViewModelTests {
         // when
         self.viewModel.selectMemoji(Data())
         self.viewModel.saveChanges()
-        self.stubMemberUsecase.stubUpdateStatus.onNext(.finishedWithImageUploadFail(ApplicationErrors.invalid))
+        self.mockMemberUsecase.updateStatus.onNext(.finishedWithImageUploadFail(ApplicationErrors.invalid))
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -243,7 +243,7 @@ extension EditProfileViewModelTests {
         // given
         let expect = expectation(description: "프로필 업데이트에 실패한 경우에는 에러 알림")
         
-        self.stubViewModelSavable()
+        self.registerViewModelSavable()
         
         self.spyRouter.called(key: "alertError") { _ in
             expect.fulfill()
@@ -252,7 +252,7 @@ extension EditProfileViewModelTests {
         // when
         self.viewModel.selectMemoji(Data())
         self.viewModel.saveChanges()
-        self.stubMemberUsecase.stubUpdateStatus.onError(ApplicationErrors.invalid)
+        self.mockMemberUsecase.updateStatus.onError(ApplicationErrors.invalid)
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -282,7 +282,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.stubViewModelSavable()
+        self.registerViewModelSavable()
         self.viewModel.saveChanges()
         self.viewModel.requestCloseScene()
         
@@ -294,7 +294,7 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-    class SpyRouter: EditProfileRouting, Stubbable {
+    class SpyRouter: EditProfileRouting, Mocking {
         
         func showToast(_ message: String) {
             self.verify(key: "showToast")

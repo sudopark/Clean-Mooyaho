@@ -21,19 +21,19 @@ import StubUsecases
 class SearchNewPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubUserLocationUsecase: StubUserLocationUsecase!
-    var stubPlaceSearchUsecase: StubSearchNewPlaceUsecase!
-    var stubRegisterUsecase: StubRegisterNewPlaceUsecase!
+    var mockUserLocationUsecase: MockUserLocationUsecase!
+    var mockPlaceSearchUsecase: MockSearchNewPlaceUsecase!
+    var mockRegisterUsecase: MockRegisterNewPlaceUsecase!
     var spyRouter: SpyRouter!
     var viewModel: SearchNewPlaceViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubUserLocationUsecase = .init()
-        self.stubPlaceSearchUsecase = .init()
-        self.stubRegisterUsecase = .init()
+        self.mockUserLocationUsecase = .init()
+        self.mockPlaceSearchUsecase = .init()
+        self.mockRegisterUsecase = .init()
         self.spyRouter = .init()
-        self.stubUserLocationUsecase.register(key: "fetchUserLocation") {
+        self.mockUserLocationUsecase.register(key: "fetchUserLocation") {
             Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
         }
         self.initViewModel()
@@ -43,17 +43,17 @@ class SearchNewPlaceViewModelTests: BaseTestCase, WaitObservableEvents {
         self.viewModel = nil
         self.viewModel = .init(userID: "some",
                                searchServiceProvider: SearchServiceProviders.naver,
-                               userLocationUsecase: self.stubUserLocationUsecase,
-                               searchNewPlaceUsecase: self.stubPlaceSearchUsecase,
-                               registerNewPlaceUsecase: self.stubRegisterUsecase,
+                               userLocationUsecase: self.mockUserLocationUsecase,
+                               searchNewPlaceUsecase: self.mockPlaceSearchUsecase,
+                               registerNewPlaceUsecase: self.mockRegisterUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubUserLocationUsecase = nil
-        self.stubPlaceSearchUsecase = nil
-        self.stubRegisterUsecase = nil
+        self.mockUserLocationUsecase = nil
+        self.mockPlaceSearchUsecase = nil
+        self.mockRegisterUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -87,7 +87,7 @@ extension SearchNewPlaceViewModelTests {
     func testViewModel_whenFirst_showDefaultListByUserCurrentLocation() {
         // given
         let expect = expectation(description: "초기에 현재 위치 기준으로 디폴트 검색결과 노출")
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         
@@ -103,7 +103,7 @@ extension SearchNewPlaceViewModelTests {
     func testViewModel_whenShowPlaces_orderByDistance() {
         // given
         let expect = expectation(description: "장소 검색결과 노출시에 거리 기준으로 정렬")
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, randPosition: true, range: (0..<10))
         }
         
@@ -125,14 +125,14 @@ extension SearchNewPlaceViewModelTests {
         let expect = expectation(description: "결과 갱신시에 유저위치도 갱신하고 다시 리스트 보여줌")
         expect.expectedFulfillmentCount = 2
         
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
         
         // when
         let cellViewModelsList = self.waitElements(expect, for: self.viewModel.cellViewModels) {
-            self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+            self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
                 return self.dummySearchResult(for: .empty, range: (0..<20))
             }
             self.viewModel.refreshList()
@@ -155,19 +155,19 @@ extension SearchNewPlaceViewModelTests {
         let page2 = self.dummySearchResult(for: .empty, pageIndex: 2, range: (10..<20))
         let page3 = self.dummySearchResult(for: .empty, pageIndex: 3, isFinalPage: true, range: (20..<30))
         
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return page1
         }
         self.initViewModel()
         
         // when
         let cellViewModelsList = self.waitElements(expect, for: self.viewModel.cellViewModels) {
-            self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "loadMorePlaceSearchResult") {
+            self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "loadMorePlaceSearchResult") {
                 return page2
             }
             self.viewModel.loadMore()
             
-            self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "loadMorePlaceSearchResult") {
+            self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "loadMorePlaceSearchResult") {
                 return page3
             }
             self.viewModel.loadMore()
@@ -189,14 +189,14 @@ extension SearchNewPlaceViewModelTests {
         let expect = expectation(description: "검색결과로 리스트 업데이트")
         expect.expectedFulfillmentCount = 2
         
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
         
         // when
         let cellViewModelsList = self.waitElements(expect, for: self.viewModel.cellViewModels) {
-            self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:dummy") {
+            self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:dummy") {
                 return self.dummySearchResult(for: .some("dummy"), range: (0..<20))
             }
             self.viewModel.search("dummy")
@@ -217,7 +217,7 @@ extension SearchNewPlaceViewModelTests {
     func testViewModel_whenSelectPlaceWhichHasDetailLink_showDetail() {
         // given
         let expect = expectation(description: "장소 선택시에 링크 있으면 상세화면으로 넘김")
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
@@ -238,7 +238,7 @@ extension SearchNewPlaceViewModelTests {
         // given
         let expect = expectation(description: "선택 토글")
         expect.expectedFulfillmentCount = 4
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
@@ -266,7 +266,7 @@ extension SearchNewPlaceViewModelTests {
         // given
         let expect = expectation(description: "선택된 장소가있으면 확인버튼 활성화 업데이트")
         expect.expectedFulfillmentCount = 3
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
@@ -286,7 +286,7 @@ extension SearchNewPlaceViewModelTests {
         // given
         let expect = expectation(description: "선택된 장소가 검색으로 인해 목록에서 사라지면 비활성화")
         expect.expectedFulfillmentCount = 3
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
@@ -295,7 +295,7 @@ extension SearchNewPlaceViewModelTests {
         let isConfirmables = self.waitElements(expect, for: self.viewModel.isPlaceSelectConfirmable) {
             self.viewModel.toggleSelectPlace("uid:0")
             
-            self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:dummy") {
+            self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:dummy") {
                 return self.dummySearchResult(for: .some("dummy"), range: (10..<20))
             }
             self.viewModel.search("dummy")
@@ -311,7 +311,7 @@ extension SearchNewPlaceViewModelTests {
     func testViewModel_whenSelectConfirmed_routeToPlaceCateTagSelectScene() {
         // given
         let expect = expectation(description: "입력 완료시에 장소 종류 태그 입력화면으로 이동")
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
         self.initViewModel()
@@ -331,19 +331,19 @@ extension SearchNewPlaceViewModelTests {
     func testViewModel_whenAfterSelectTags_makeNewPlaceAndEmitEvent() {
         // given
         let expect = expectation(description: "태그 입력까지 끝났으면 스페이스 생성해서 외부로 전파")
-        self.stubPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
+        self.mockPlaceSearchUsecase.register(type: SearchingPlaceCollection.self, key: "startSearchPlace:") {
             return self.dummySearchResult(for: .empty, range: (0..<10))
         }
-        let stubResult = StubSelectTagScenePresenter()
-        self.spyRouter.register(type: SelectTagSceneOutput.self, key: "showSelectPlaceCateTag") { stubResult }
-        self.stubRegisterUsecase.register(key: "uploadNewPlace") { Maybe<Place>.just(.dummy(0)) }
+        let mockResult = MockSelectTagScenePresenter()
+        self.spyRouter.register(type: SelectTagSceneOutput.self, key: "showSelectPlaceCateTag") { mockResult }
+        self.mockRegisterUsecase.register(key: "uploadNewPlace") { Maybe<Place>.just(.dummy(0)) }
         self.initViewModel()
         
         // when
         let newPlace = self.waitFirstElement(expect, for: self.viewModel.newRegistered) {
             self.viewModel.toggleSelectPlace("uid:0")
             self.viewModel.confirmSelect()
-            stubResult.stubTag.onNext([Domain.Tag(placeCat: "some", emoji: "😱")])
+            mockResult.tag.onNext([Domain.Tag(placeCat: "some", emoji: "😱")])
         }
         
         // then
@@ -360,7 +360,7 @@ extension SearchNewPlaceViewModelTests {
         // when
         let form = self.waitFirstElement(expect, for: self.viewModel.newRegistered) {
             self.viewModel.requestManualRegisterPlace()
-            self.spyRouter.stubManualRegisterPlaceOutput.place.onNext(Place.dummy(0))
+            self.spyRouter.manualRegisterPlaceOutput.place.onNext(Place.dummy(0))
         }
         
         // then
@@ -371,15 +371,15 @@ extension SearchNewPlaceViewModelTests {
 
 extension SearchNewPlaceViewModelTests {
     
-    class StubSelectTagScenePresenter: SelectTagSceneOutput {
+    class MockSelectTagScenePresenter: SelectTagSceneOutput {
         
-        let stubTag = PublishSubject<[Domain.Tag]>()
+        let tag = PublishSubject<[Domain.Tag]>()
         var selectedTags: Observable<[Domain.Tag]> {
-            return self.stubTag.asObservable()
+            return self.tag.asObservable()
         }
     }
     
-    class StubManualRegisterPlaceOutput: ManuallyResigterPlaceSceneOutput {
+    class MockManualRegisterPlaceOutput: ManuallyResigterPlaceSceneOutput {
         
         let place = PublishSubject<Place>()
         var newPlace: Observable<Place> {
@@ -387,7 +387,7 @@ extension SearchNewPlaceViewModelTests {
         }
     }
     
-    class SpyRouter: SearchNewPlaceRouting, Stubbable {
+    class SpyRouter: SearchNewPlaceRouting, Mocking {
         
         func showPlaceDetail(_ placeID: String, link: String) {
             self.verify(key: "showPlaceDetail")
@@ -402,9 +402,9 @@ extension SearchNewPlaceViewModelTests {
             completed?()
         }
 
-        let stubManualRegisterPlaceOutput = StubManualRegisterPlaceOutput()
+        let manualRegisterPlaceOutput = MockManualRegisterPlaceOutput()
         func showManuallyRegisterPlaceScene(myID: String) -> ManuallyResigterPlaceSceneOutput? {
-            return self.stubManualRegisterPlaceOutput
+            return self.manualRegisterPlaceOutput
         }
     }
 }

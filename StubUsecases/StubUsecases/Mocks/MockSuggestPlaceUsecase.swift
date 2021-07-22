@@ -1,5 +1,5 @@
 //
-//  StubSuggestPlaceUsecase.swift
+//  MockSuggestPlaceUsecase.swift
 //  StubUsecases
 //
 //  Created by sudo.park on 2021/06/09.
@@ -13,7 +13,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubSuggestPlaceUsecase: SuggestPlaceUsecase, Stubbable {
+open class MockSuggestPlaceUsecase: SuggestPlaceUsecase, Mocking {
     
     public init() {}
     

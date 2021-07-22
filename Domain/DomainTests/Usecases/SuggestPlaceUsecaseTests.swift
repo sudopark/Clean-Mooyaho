@@ -18,20 +18,20 @@ import UnitTestHelpKit
 class SuggestPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubPlaceRepository: StubPlaceRepository!
+    var mockPlaceRepository: MockPlaceRepository!
     var usecase: SuggestPlaceUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = DisposeBag()
-        self.stubPlaceRepository = .init()
-        self.usecase = SuggestPlaceUsecaseImple(placeRepository: self.stubPlaceRepository,
+        self.mockPlaceRepository = .init()
+        self.usecase = SuggestPlaceUsecaseImple(placeRepository: self.mockPlaceRepository,
                                                 throttleInterval: 0)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubPlaceRepository = nil
+        self.mockPlaceRepository = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -57,7 +57,7 @@ class SuggestPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
 extension SuggestPlaceUsecaseTests {
     
     private func stubDefaultList(_ result: SuggestPlaceResult? = nil) {
-        self.stubPlaceRepository.register(key: "reqeustLoadDefaultPlaceSuggest") {
+        self.mockPlaceRepository.register(key: "reqeustLoadDefaultPlaceSuggest") {
             return Maybe<SuggestPlaceResult>.just(result ?? self.dummyDefaultSuggestResult)
         }
     }
@@ -66,16 +66,16 @@ extension SuggestPlaceUsecaseTests {
                                    result: SuggestPlaceResult,
                                    matching cursor: String? = nil) {
         let key = "requestSuggestPlace:\(query)-\(String(describing: cursor))"
-        self.stubPlaceRepository.register(key: key) {
+        self.mockPlaceRepository.register(key: key) {
             return Maybe<SuggestPlaceResult>.just(result)
         }
     }
     
     private func updateOrClearSuggestErrorStubbing(_ error: Error?) {
         if let error = error {
-            self.stubPlaceRepository.register(key: "requestSuggestPlace") { error }
+            self.mockPlaceRepository.register(key: "requestSuggestPlace") { error }
         } else {
-            self.stubPlaceRepository.clear(key: "requestSuggestPlace")
+            self.mockPlaceRepository.clear(key: "requestSuggestPlace")
         }
     }
     

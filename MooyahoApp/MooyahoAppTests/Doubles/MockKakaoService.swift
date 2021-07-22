@@ -1,5 +1,5 @@
 //
-//  StubKakaoService.swift
+//  MockKakaoService.swift
 //  MooyahoAppTests
 //
 //  Created by ParkHyunsoo on 2021/05/01.
@@ -16,7 +16,7 @@ import UnitTestHelpKit
 @testable import MooyahoApp
 
 
-class StubKakaoService: KakaoService, Stubbable {
+class MockKakaoService: KakaoService, Mocking {
     
     let providerType: OAuthServiceProviderType = OAuthServiceProviderTypes.kakao
     

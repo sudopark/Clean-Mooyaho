@@ -1,5 +1,5 @@
 //
-//  StubHttpRemote.swift
+//  MockSession.swift
 //  FirebaseServiceTests
 //
 //  Created by sudo.park on 2021/05/08.
@@ -17,14 +17,14 @@ import UnitTestHelpKit
 
 func readJsonAsData(_ fileName: String) -> Data? {
     
-    let bundle = Bundle(for: StubSession.self)
+    let bundle = Bundle(for: MockSession.self)
     let fileURL = bundle.url(forResource: fileName, withExtension: ".json")
     let data = fileURL.flatMap{ try? Data(contentsOf: $0) }
     return data
 }
 
 
-class StubSession: HttpSession, Stubbable {
+class MockSession: HttpSession, Mocking {
     
     func requestData(path: String, method: HttpAPIMethods,
                      parameters: [String : Any],
