@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */; };
-		2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */; };
-		2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22E263D3012003F25D1 /* StubKakaoService.swift */; };
+		2B47B22D263D2FC5003F25D1 /* MockFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22C263D2FC5003F25D1 /* MockFirebaseService.swift */; };
+		2B47B22F263D3012003F25D1 /* MockKakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47B22E263D3012003F25D1 /* MockKakaoService.swift */; };
 		2B4FD24C2632A7BA00A99624 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD24B2632A7BA00A99624 /* DependencyInjector.swift */; };
 		2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56932B263D10F5009F85E1 /* KakaoService.swift */; };
 		2B6140C6263350250091460D /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6140C5263350250091460D /* Test.swift */; };
@@ -51,13 +51,14 @@
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
+		F69C1CC926A9C3AC0067315B /* StubFCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C1CC826A9C3AC0067315B /* StubFCMService.swift */; };
 		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
 		F6C0784126A47D0D0070E75E /* MapScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C0784026A47D0D0070E75E /* MapScenes.framework */; };
 		F6C0784226A47D0D0070E75E /* MapScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6C0784026A47D0D0070E75E /* MapScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6E8311E265C4D5400C91F3B /* StubUsecases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8311D265C4D5400C91F3B /* StubUsecases.framework */; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
-		F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */; };
+		F6E83122265C509800C91F3B /* MockApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* MockApplicationUsecase.swift */; };
 		F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */; };
 		F6E8312D266009A000C91F3B /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8312C266009A000C91F3B /* MainViewModelTests.swift */; };
 		F6E8316F26601BE300C91F3B /* PlaceScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E8316E26601BE300C91F3B /* PlaceScenes.framework */; };
@@ -106,8 +107,8 @@
 		2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCrashlytics.framework; path = ../other_static_frameworks/FirebaseCrashlytics.framework; sourceTree = "<group>"; };
 		2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = ../other_static_frameworks/UserMessagingPlatform.xcframework; sourceTree = "<group>"; };
 		2B47B226263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KakaoService+OAuth2RepositoryImple.swift"; sourceTree = "<group>"; };
-		2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFirebaseService.swift; sourceTree = "<group>"; };
-		2B47B22E263D3012003F25D1 /* StubKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubKakaoService.swift; sourceTree = "<group>"; };
+		2B47B22C263D2FC5003F25D1 /* MockFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebaseService.swift; sourceTree = "<group>"; };
+		2B47B22E263D3012003F25D1 /* MockKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockKakaoService.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
 		2B56932B263D10F5009F85E1 /* KakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoService.swift; sourceTree = "<group>"; };
 		2B6140C5263350250091460D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -145,12 +146,13 @@
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		F69C1CC826A9C3AC0067315B /* StubFCMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFCMService.swift; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
 		F6C0784026A47D0D0070E75E /* MapScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MapScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
-		F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubApplicationUsecase.swift; sourceTree = "<group>"; };
+		F6E83121265C509800C91F3B /* MockApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecaseTests.swift; sourceTree = "<group>"; };
 		F6E8312C266009A000C91F3B /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
 		F6E8316C26601BD300C91F3B /* PlaceScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlaceScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,14 +199,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2B47B22B263D2FB5003F25D1 /* Stubs */ = {
+		2B47B22B263D2FB5003F25D1 /* Doubles */ = {
 			isa = PBXGroup;
 			children = (
-				2B47B22C263D2FC5003F25D1 /* StubFirebaseService.swift */,
-				2B47B22E263D3012003F25D1 /* StubKakaoService.swift */,
-				F6E83121265C509800C91F3B /* StubApplicationUsecase.swift */,
+				2B47B22C263D2FC5003F25D1 /* MockFirebaseService.swift */,
+				2B47B22E263D3012003F25D1 /* MockKakaoService.swift */,
+				F6E83121265C509800C91F3B /* MockApplicationUsecase.swift */,
+				F69C1CC826A9C3AC0067315B /* StubFCMService.swift */,
 			);
-			path = Stubs;
+			path = Doubles;
 			sourceTree = "<group>";
 		};
 		2B4FD2522632B04600A99624 /* DependencyInjector */ = {
@@ -292,7 +295,7 @@
 		2B79FC61262B640F0006291F /* MooyahoAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				2B47B22B263D2FB5003F25D1 /* Stubs */,
+				2B47B22B263D2FB5003F25D1 /* Doubles */,
 				2BA4074726316F24000CC122 /* Application */,
 				F6E8312B2660099500C91F3B /* Main */,
 				F6AC569E266166B70009B0CE /* Services */,
@@ -560,13 +563,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B47B22D263D2FC5003F25D1 /* StubFirebaseService.swift in Sources */,
+				2B47B22D263D2FC5003F25D1 /* MockFirebaseService.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,
 				F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */,
-				F6E83122265C509800C91F3B /* StubApplicationUsecase.swift in Sources */,
+				F6E83122265C509800C91F3B /* MockApplicationUsecase.swift in Sources */,
+				F69C1CC926A9C3AC0067315B /* StubFCMService.swift in Sources */,
 				F6E8312D266009A000C91F3B /* MainViewModelTests.swift in Sources */,
 				F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */,
-				2B47B22F263D3012003F25D1 /* StubKakaoService.swift in Sources */,
+				2B47B22F263D3012003F25D1 /* MockKakaoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

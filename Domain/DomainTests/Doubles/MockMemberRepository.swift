@@ -1,5 +1,5 @@
 //
-//  StubMemberRepository.swift
+//  MockMemberRepository.swift
 //  DomainTests
 //
 //  Created by sudo.park on 2021/05/15.
@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubMemberRepository: MemberRepository, Stubbable {
+class MockMemberRepository: MemberRepository, Mocking {
     
     func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
         self.verify(key: "requestUpdateUserPresence", with: isOnline)
@@ -35,9 +35,9 @@ class StubMemberRepository: MemberRepository, Stubbable {
         return self.resolve(key: "requestLoadMembership") ?? .empty()
     }
     
-    let stubUploadStatus = PublishSubject<MemberProfileUploadStatus>()
+    let uploadStatus = PublishSubject<MemberProfileUploadStatus>()
     func requestUploadMemberProfileImage(_ memberID: String, source: ImageUploadReqParams) -> Observable<MemberProfileUploadStatus> {
-        return self.stubUploadStatus.asObservable()
+        return self.uploadStatus.asObservable()
     }
     
     func requestUpdateMemberProfileFields(_ memberID: String,

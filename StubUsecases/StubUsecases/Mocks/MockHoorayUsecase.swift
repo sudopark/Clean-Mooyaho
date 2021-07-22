@@ -1,5 +1,5 @@
 //
-//  StubHoorayUsecase.swift
+//  MockHoorayUsecase.swift
 //  StubUsecases
 //
 //  Created by sudo.park on 2021/05/29.
@@ -13,7 +13,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubHoorayUsecase: HoorayUsecase, Stubbable {
+open class MockHoorayUsecase: HoorayUsecase, Mocking {
     
     public init() {}
     

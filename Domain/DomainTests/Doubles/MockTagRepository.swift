@@ -1,5 +1,5 @@
 //
-//  StubTagRespotiory.swift
+//  MockTagRepository.swift
 //  DomainTests
 //
 //  Created by sudo.park on 2021/05/09.
@@ -14,7 +14,7 @@ import UnitTestHelpKit
 
 @testable import Domain
 
-class StubTagRepository: TagRespository, Stubbable {
+class MockTagRepository: TagRespository, Mocking {
     
     func makeNew(tag: Tag) -> Maybe<Void> {
         return self.resolve(key: "makeNew:tag") ?? .empty()

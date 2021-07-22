@@ -19,8 +19,8 @@ import UnitTestHelpKit
 class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubEnvironmentStorage: StubEnvironmentStorage!
-    var stubEncrytedStorage: StubEncryptedStorage!
+    var mockEnvironmentStorage: MockEnvironmentStorage!
+    var mockEncrytedStorage: MockEncryptedStorage!
     var local: LocalStorageImple!
     
     private var testDBPath: String {
@@ -37,18 +37,18 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         
         self.disposeBag = .init()
         
-        self.stubEncrytedStorage = StubEncryptedStorage()
-        self.stubEnvironmentStorage = .init()
+        self.mockEncrytedStorage = MockEncryptedStorage()
+        self.mockEnvironmentStorage = .init()
         let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0)
-        self.local = LocalStorageImple(encryptedStorage: stubEncrytedStorage,
+        self.local = LocalStorageImple(encryptedStorage: mockEncrytedStorage,
                                        environmentStorage: UserDefaults.standard,
                                        dataModelStorage: dataModelStorage)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubEncrytedStorage = nil
-        self.stubEnvironmentStorage = nil
+        self.mockEncrytedStorage = nil
+        self.mockEnvironmentStorage = nil
         self.local = nil
         try? FileManager.default.removeItem(atPath: self.testDBPath)
     }
@@ -57,7 +57,7 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
 
 extension BaseLocalStorageTests {
     
-    class StubEncryptedStorage: EncryptedStorage, Stubbable {
+    class MockEncryptedStorage: EncryptedStorage, Mocking {
         
         func save<V>(_ key: String, value: V) -> Result<Void, Error> {
             self.register(key: "fetch") { Result<V?, Error>.success(value) }
@@ -77,7 +77,7 @@ extension BaseLocalStorageTests {
 
 extension BaseLocalStorageTests {
     
-    class StubEnvironmentStorage: EnvironmentStorage, Stubbable {
+    class MockEnvironmentStorage: EnvironmentStorage, Mocking {
         
         func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void> {
             return self.resolve(key: "savePendingNewPlaceForm") ?? .empty()

@@ -1,5 +1,5 @@
 //
-//  StubAuthRepository.swift
+//  MockAuthRepository.swift
 //  DomainTests
 //
 //  Created by ParkHyunsoo on 2021/04/30.
@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubAuthRepository: AuthRepository, Stubbable {
+class MockAuthRepository: AuthRepository, Mocking {
     
     func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)> {
         return self.resolve(key: "fetchLastSignInAccountInfo") ?? .empty()

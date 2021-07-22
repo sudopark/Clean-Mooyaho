@@ -1,5 +1,5 @@
 //
-//  StubMemberUsecase.swift
+//  MockMemberUsecase.swift
 //  StubUsecases
 //
 //  Created by sudo.park on 2021/05/25.
@@ -13,7 +13,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubMemberUsecase: MemberUsecase, Stubbable {
+open class MockMemberUsecase: MemberUsecase, Mocking {
     
     public init() {}
     
@@ -29,19 +29,19 @@ open class StubMemberUsecase: MemberUsecase, Stubbable {
         return self.resolve(key: "loadCurrentMembership") ?? .empty()
     }
     
-    public let stubCurrentMember = PublishSubject<Member?>()
+    public let currentMemberSubject = PublishSubject<Member?>()
     public var currentMember: Observable<Member?> {
-        return stubCurrentMember.asObservable()
+        return currentMemberSubject.asObservable()
     }
     
     public func fetchCurrentMember() -> Member? {
         return self.resolve(key: "fetchCurrentMember")
     }
     
-    public let stubUpdateStatus = PublishSubject<UpdateMemberProfileStatus>()
+    public let updateStatus = PublishSubject<UpdateMemberProfileStatus>()
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
         self.verify(key: "updateCurrent")
-        return self.stubUpdateStatus.asObservable()
+        return self.updateStatus.asObservable()
     }
 }
 

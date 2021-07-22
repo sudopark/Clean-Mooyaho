@@ -1,5 +1,5 @@
 //
-//  StubMessagingService.swift
+//  MockMessagingService.swift
 //  DomainTests
 //
 //  Created by sudo.park on 2021/05/15.
@@ -15,11 +15,11 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubMessagingService: MessagingService, Stubbable {
+class MockMessagingService: MessagingService, Mocking {
     
     
-    let stubNewMessage = PublishSubject<Messsage>()
+    let newMessage = PublishSubject<Messsage>()
     var receivedMessage: Observable<Messsage> {
-        return self.stubNewMessage.asObservable()
+        return self.newMessage.asObservable()
     }
 }

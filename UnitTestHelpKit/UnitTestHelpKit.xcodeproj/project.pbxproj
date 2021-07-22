@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		2BF00C1A262D588C00E235C0 /* UnitTestHelpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00C18262D588C00E235C0 /* UnitTestHelpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2BF00C22262D58BE00E235C0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00C21262D58BE00E235C0 /* XCTest.framework */; };
-		2BF00C24262D5BAD00E235C0 /* Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C23262D5BAD00E235C0 /* Stubs.swift */; };
+		2BF00C24262D5BAD00E235C0 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C23262D5BAD00E235C0 /* Mocks.swift */; };
 		2BF00C33262D746E00E235C0 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00C15262D588C00E235C0 /* UnitTestHelpKit.framework */; };
-		2BF00C3A262D7E9D00E235C0 /* StubsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C39262D7E9D00E235C0 /* StubsTests.swift */; };
+		2BF00C3A262D7E9D00E235C0 /* MocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C39262D7E9D00E235C0 /* MocksTests.swift */; };
 		2BF00C3C262D85E000E235C0 /* BaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */; };
 		2BFB481C263AED7A00FB025F /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BFB481B263AED7A00FB025F /* Common3rdParty.framework */; };
 		2BFB4820263AEDC700FB025F /* WaitObservableEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */; };
@@ -35,10 +35,10 @@
 		2BF00C18262D588C00E235C0 /* UnitTestHelpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnitTestHelpKit.h; sourceTree = "<group>"; };
 		2BF00C19262D588C00E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BF00C21262D58BE00E235C0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		2BF00C23262D5BAD00E235C0 /* Stubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubs.swift; sourceTree = "<group>"; };
+		2BF00C23262D5BAD00E235C0 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		2BF00C2E262D746E00E235C0 /* UnitTestHelpKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTestHelpKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00C32262D746E00E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2BF00C39262D7E9D00E235C0 /* StubsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubsTests.swift; sourceTree = "<group>"; };
+		2BF00C39262D7E9D00E235C0 /* MocksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MocksTests.swift; sourceTree = "<group>"; };
 		2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTestCase.swift; sourceTree = "<group>"; };
 		2BFB481B263AED7A00FB025F /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitObservableEvents.swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 			children = (
 				2BF00C18262D588C00E235C0 /* UnitTestHelpKit.h */,
 				2BF00C19262D588C00E235C0 /* Info.plist */,
-				2BF00C23262D5BAD00E235C0 /* Stubs.swift */,
+				2BF00C23262D5BAD00E235C0 /* Mocks.swift */,
 				2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */,
 				2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */,
 			);
@@ -114,7 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF00C32262D746E00E235C0 /* Info.plist */,
-				2BF00C39262D7E9D00E235C0 /* StubsTests.swift */,
+				2BF00C39262D7E9D00E235C0 /* MocksTests.swift */,
 				2BFB4821263AEDF800FB025F /* WaitObservableEventTests.swift */,
 			);
 			path = UnitTestHelpKitTests;
@@ -236,7 +236,7 @@
 			files = (
 				2BFB4820263AEDC700FB025F /* WaitObservableEvents.swift in Sources */,
 				2BF00C3C262D85E000E235C0 /* BaseTestCase.swift in Sources */,
-				2BF00C24262D5BAD00E235C0 /* Stubs.swift in Sources */,
+				2BF00C24262D5BAD00E235C0 /* Mocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BF00C3A262D7E9D00E235C0 /* StubsTests.swift in Sources */,
+				2BF00C3A262D7E9D00E235C0 /* MocksTests.swift in Sources */,
 				2BFB4822263AEDF800FB025F /* WaitObservableEventTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

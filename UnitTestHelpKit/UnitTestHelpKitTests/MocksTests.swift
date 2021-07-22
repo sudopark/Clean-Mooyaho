@@ -1,5 +1,5 @@
 //
-//  StubsTests.swift
+//  MocksTests.swift
 //  UnitTestHelpKitTests
 //
 //  Created by ParkHyunsoo on 2021/04/19.
@@ -10,77 +10,77 @@ import XCTest
 @testable import UnitTestHelpKit
 
 
-class StubsTests: XCTestCase {
+class MocksTests: XCTestCase {
     
     
-    func testStub_registerAndResolve() {
+    func testMock_registerAndResolve() {
         // given
-        let stub = Stub()
+        let mock = Mock()
         
         // when
-        stub.register(key: "bar") { "some" }
+        mock.register(key: "bar") { "some" }
         
         // then
-        let result = stub.bar(0)
+        let result = mock.bar(0)
         XCTAssertEqual(result, "some")
     }
     
-    func testStub_resolveNotRegisteredValue() {
+    func testMock_resolveNotRegisteredValue() {
         // given
-        let stub = Stub()
+        let mock = Mock()
         
         // when
         // then
-        let result = stub.bar(0)
+        let result = mock.bar(0)
         XCTAssertEqual(result, nil)
     }
     
-    func testStub_whenResolveNotRegisterValueWithDefaultValue_returnDefaultValue() {
+    func testMock_whenResolveNotRegisterValueWithDefaultValue_returnDefaultValue() {
         // given
-        let stub = Stub()
+        let mock = Mock()
         
         // when
         // then
-        let result = stub.barwithDefault()
+        let result = mock.barwithDefault()
         XCTAssertEqual(result, "default value")
     }
     
-    func testStub_called() {
+    func testMock_called() {
         // given
-        let stub = Stub()
+        let mock = Mock()
         var isCalled = false
         
-        stub.called(key: "bar") { args in
+        mock.called(key: "bar") { args in
             if let int = args as? Int, int == 100 {
                 isCalled = true
             }
         }
         
         // when
-        _ = stub.bar(100)
+        _ = mock.bar(100)
         
         // then
         XCTAssertEqual(isCalled, true)
     }
     
-    func testStub_stubAndClear() {
+    func testMock_mockAndClear() {
         // given
-        let stub = Stub()
-        stub.register(key: "some") { 1 }
+        let mock = Mock()
+        mock.register(key: "some") { 1 }
         
         // when
-        stub.clear(key: "some")
+        mock.clear(key: "some")
         
         // then
-        let resolved = stub.resolve(Int.self, key: "some")
+        let resolved = mock.resolve(Int.self, key: "some")
         XCTAssertNil(resolved)
     }
 }
 
 
-extension StubsTests {
+extension MocksTests {
     
-    class Stub: Stubbable {
+    class Mock: Mocking {
         
         func bar(_ int: Int) -> String? {
             self.verify(key: "bar", with: int)

@@ -20,26 +20,26 @@ import StubUsecases
 class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubAuthUsecase: StubAuthUsecase!
-    var stubMemberUsecase: StubMemberUsecase!
-    var stubLocationUsecase: StubUserLocationUsecase!
+    var mockAuthUsecase: MockAuthUsecase!
+    var mockMemberUsecase: MockMemberUsecase!
+    var mockUserLocationUsecase: MockUserLocationUsecase!
     var usecase: ApplicationUsecaseImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubAuthUsecase = .init()
-        self.stubMemberUsecase = .init()
-        self.stubLocationUsecase = .init()
-        self.usecase = .init(authUsecase: self.stubAuthUsecase,
-                             memberUsecase: self.stubMemberUsecase,
-                             locationUsecase: self.stubLocationUsecase)
+        self.mockAuthUsecase = .init()
+        self.mockMemberUsecase = .init()
+        self.mockUserLocationUsecase = .init()
+        self.usecase = .init(authUsecase: self.mockAuthUsecase,
+                             memberUsecase: self.mockMemberUsecase,
+                             locationUsecase: self.mockUserLocationUsecase)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubAuthUsecase = nil
-        self.stubMemberUsecase = nil
-        self.stubLocationUsecase = nil
+        self.mockAuthUsecase = nil
+        self.mockMemberUsecase = nil
+        self.mockUserLocationUsecase = nil
         self.usecase = nil
     }
 }
@@ -52,17 +52,17 @@ extension ApplicationUsecaseTests {
         // given
         let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 있으면 업로드 시작")
         
-        self.stubLocationUsecase.register(key: "checkHasPermission") {
+        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
             return Maybe<LocationServiceAccessPermission>.just(.granted)
         }
         
-        self.stubLocationUsecase.called(key: "startUploadUserLocation") { _ in
+        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
             expect.fulfill()
         }
         
         // when
         self.usecase.updateApplicationActiveStatus(.launched)
-        self.stubAuthUsecase.stubAuth.onNext(Auth(userID: "some"))
+        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -73,17 +73,17 @@ extension ApplicationUsecaseTests {
         let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 없으면 업로드 시작 안함")
         expect.isInverted = true
         
-        self.stubLocationUsecase.register(key: "checkHasPermission") {
+        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
             return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
         }
         
-        self.stubLocationUsecase.called(key: "startUploadUserLocation") { _ in
+        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
             expect.fulfill()
         }
         
         // when
         self.usecase.updateApplicationActiveStatus(.launched)
-        self.stubAuthUsecase.stubAuth.onNext(Auth(userID: "some"))
+        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -92,17 +92,17 @@ extension ApplicationUsecaseTests {
     func testUsecase_whenAfterLocationPermissionChangeToGrant_startUploadUserLocation() {
         // given
         let expect = expectation(description: "앱 실행중 위치권한이 실행중으로 바뀌면 업로드 시작")
-        self.stubLocationUsecase.register(key: "checkHasPermission") {
+        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
             return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
         }
-        self.stubLocationUsecase.called(key: "startUploadUserLocation") { _ in
+        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
             expect.fulfill()
         }
         
         // when
         self.usecase.updateApplicationActiveStatus(.launched)
-        self.stubAuthUsecase.stubAuth.onNext(Auth(userID: "some"))
-        self.stubLocationUsecase.stubIsAuthorized.onNext(true)
+        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+        self.mockUserLocationUsecase.isAuthorizedSubject.onNext(true)
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -111,16 +111,16 @@ extension ApplicationUsecaseTests {
     func testUsecase_whenAfterEnterBackground_stopUploadUserLocation() {
         // given
         let expect = expectation(description: "앱 백그라운드 진입시 업로드 중지 요청")
-        self.stubLocationUsecase.register(key: "checkHasPermission") {
+        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
             return Maybe<LocationServiceAccessPermission>.just(.granted)
         }
-        self.stubLocationUsecase.called(key: "stopUplocationUserLocation") { _ in
+        self.mockUserLocationUsecase.called(key: "stopUplocationUserLocation") { _ in
             expect.fulfill()
         }
         
         // when
         self.usecase.updateApplicationActiveStatus(.launched)
-        self.stubAuthUsecase.stubAuth.onNext(Auth(userID: "some"))
+        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
         self.usecase.updateApplicationActiveStatus(.background)
         
         // then
@@ -132,17 +132,17 @@ extension ApplicationUsecaseTests {
         let expect = expectation(description: "백그라운드 진입 이후에 업로드할 수 있으면 다시 업로드 시작")
         expect.expectedFulfillmentCount = 2
         
-        self.stubLocationUsecase.register(key: "checkHasPermission") {
+        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
             return Maybe<LocationServiceAccessPermission>.just(.granted)
         }
-        self.stubLocationUsecase.called(key: "startUploadUserLocation") { _ in
+        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
             expect.fulfill()
         }
         
         
         // when
         self.usecase.updateApplicationActiveStatus(.launched)
-        self.stubAuthUsecase.stubAuth.onNext(Auth(userID: "some"))
+        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
         self.usecase.updateApplicationActiveStatus(.background)
         self.usecase.updateApplicationActiveStatus(.forground)
         
@@ -162,7 +162,7 @@ extension ApplicationUsecaseTests {
         expect.expectedFulfillmentCount = 3
         var isOnlineFlags = [Bool]()
         
-        self.stubMemberUsecase.called(key: "updateUserIsOnline") { args in
+        self.mockMemberUsecase.called(key: "updateUserIsOnline") { args in
             guard let flag = args as? Bool else { return }
             isOnlineFlags.append(flag)
             expect.fulfill()
@@ -170,7 +170,7 @@ extension ApplicationUsecaseTests {
         
         // when
         self.usecase.updateApplicationActiveStatus(.launched)
-        self.stubAuthUsecase.stubAuth.onNext(Auth(userID: "some"))
+        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
         self.usecase.updateApplicationActiveStatus(.background)
         self.usecase.updateApplicationActiveStatus(.forground)
         self.wait(for: [expect], timeout: self.timeout)
@@ -183,12 +183,12 @@ extension ApplicationUsecaseTests {
         // given
         let expect = expectation(description: "fcm 토큰 업데이트시에 업로드")
         
-        self.stubMemberUsecase.called(key: "updatePushToken") { _ in
+        self.mockMemberUsecase.called(key: "updatePushToken") { _ in
             expect.fulfill()
         }
         
         // when
-        self.stubMemberUsecase.stubCurrentMember.onNext(Member.init(uid: "some"))
+        self.mockMemberUsecase.currentMemberSubject.onNext(Member.init(uid: "some"))
         self.usecase.userFCMTokenUpdated(nil)
         self.usecase.userFCMTokenUpdated("new token")
         
@@ -204,7 +204,7 @@ extension ApplicationUsecaseTests {
         // given
         let expect = expectation(description: "마지막 로그인한 계정정보 로드")
         
-        self.stubAuthUsecase.register(key: "loadLastSignInAccountInfo") {
+        self.mockAuthUsecase.register(key: "loadLastSignInAccountInfo") {
             return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
         }
         

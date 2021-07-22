@@ -18,27 +18,27 @@ import UnitTestHelpKit
 class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    private var stubAuthRepo: StubAuthRepository!
-    private var stubOAuth2Repo: StubOAuthService!
+    private var mockAuthRepo: MockAuthRepository!
+    private var mockOAuth2Repo: MockOAuthService!
     private var store: SharedDataStoreServiceImple!
     private var usecase: AuthUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = DisposeBag()
-        self.stubAuthRepo = .init()
-        self.stubOAuth2Repo = .init()
+        self.mockAuthRepo = .init()
+        self.mockOAuth2Repo = .init()
         self.store = .init()
-        self.usecase = AuthUsecaseImple(authRepository: self.stubAuthRepo,
-                                        oathServiceProviders: [self.stubOAuth2Repo],
+        self.usecase = AuthUsecaseImple(authRepository: self.mockAuthRepo,
+                                        oathServiceProviders: [self.mockOAuth2Repo],
                                         authInfoManager: self.store,
                                         sharedDataStroeService: self.store)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubAuthRepo = nil
-        self.stubOAuth2Repo = nil
+        self.mockAuthRepo = nil
+        self.mockOAuth2Repo = nil
         self.store = nil
         self.usecase = nil
         super.tearDown()
@@ -53,7 +53,7 @@ extension AuthUsecaseTests {
     func testUsecase_loadLastAccountInfo() {
         // given
         let expect = expectation(description: "마지막 이용한 계정정보 반환")
-        self.stubAuthRepo.register(key: "fetchLastSignInAccountInfo") {
+        self.mockAuthRepo.register(key: "fetchLastSignInAccountInfo") {
             return Maybe<(Auth, Member?)>.just((Auth(userID: "dummy"), Member(uid: "dummy")))
         }
         
@@ -79,7 +79,7 @@ extension AuthUsecaseTests {
     func testUsecase_whenLoadLastAccountInfo_updateOnStores() {
         // given
         let expect = expectation(description: "마지막 이용한 계정정보 로드시 공용 스토어에 저장")
-        self.stubAuthRepo.register(key: "fetchLastSignInAccountInfo") {
+        self.mockAuthRepo.register(key: "fetchLastSignInAccountInfo") {
             return Maybe<(Auth, Member?)>.just((Auth(userID: "dummy"), Member(uid: "dummy")))
         }
         
@@ -94,7 +94,7 @@ extension AuthUsecaseTests {
     func testUsecase_signInUsingEmailBaseSecret() {
         // given
         let expect = expectation(description: "이메일 정보로 로그인")
-        self.stubAuthRepo.register(key: "requestSignIn:secret") {
+        self.mockAuthRepo.register(key: "requestSignIn:secret") {
             return Maybe<SigninResult>.just(.dummy("new_uuid"))
         }
         
@@ -109,7 +109,7 @@ extension AuthUsecaseTests {
     func testUsecase_whenAfterEmailBaseLogin_updateResultOnStore() {
         // given
         let expect = expectation(description: "이메일로 로그인 이후에 스토어에 정보 업데이트")
-        self.stubAuthRepo.register(key: "requestSignIn:secret") {
+        self.mockAuthRepo.register(key: "requestSignIn:secret") {
             return Maybe<SigninResult>.just(.dummy("new_uuid"))
         }
         
@@ -126,10 +126,10 @@ extension AuthUsecaseTests {
         // given
         let expect = expectation(description: "소셜 로그인 요청 이후에 서비스 로그인 성공시 새로운 멤버 정보 반환")
         
-        self.stubOAuth2Repo.register(key: "requestSignIn") {
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
             return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
         }
-        self.stubAuthRepo.register(key: "requestSignIn:credential") {
+        self.mockAuthRepo.register(key: "requestSignIn:credential") {
             return Maybe<SigninResult>.just(.dummy("new_uuid"))
         }
         
@@ -144,10 +144,10 @@ extension AuthUsecaseTests {
     func testUsecase_whenAfterSocialLogin_updateResultOnStore() {
         // given
         let expect = expectation(description: "소셜 로그인 이후에 스토어에 정보 업데이트")
-        self.stubOAuth2Repo.register(key: "requestSignIn") {
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
             return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
         }
-        self.stubAuthRepo.register(key: "requestSignIn:credential") {
+        self.mockAuthRepo.register(key: "requestSignIn:credential") {
             return Maybe<SigninResult>.just(.dummy("new_uuid"))
         }
         
@@ -163,7 +163,7 @@ extension AuthUsecaseTests {
         // given
         let expect = expectation(description: "소셜 로그인 실패시에 로그인 실패")
         struct DummyError: Error {}
-        self.stubOAuth2Repo.register(key: "requestSignIn") {
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
             return Maybe<OAuthCredential>.error(AuthErrors.oauth2Fail(DummyError()))
         }
         
@@ -184,11 +184,11 @@ extension AuthUsecaseTests {
         // given
         let expect = expectation(description: "소셜 로그인 성공 이후에 서비스 로그인 실패")
         
-        self.stubOAuth2Repo.register(key: "requestSignIn") {
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
             return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
         }
         struct DummyError: Error {}
-        self.stubAuthRepo.register(key: "requestSignIn:credential") {
+        self.mockAuthRepo.register(key: "requestSignIn:credential") {
             return Maybe<SigninResult>.error(DummyError())
         }
         

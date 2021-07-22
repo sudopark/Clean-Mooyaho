@@ -18,20 +18,20 @@ import UnitTestHelpKit
 class SearchNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubPlaceRepository: StubPlaceRepository!
+    var mockPlaceRepository: MockPlaceRepository!
     var usecase: SearchNewPlaceUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubPlaceRepository = .init()
-        self.usecase = SearchNewPlaceUsecaseImple(placeRepository: self.stubPlaceRepository,
+        self.mockPlaceRepository = .init()
+        self.usecase = SearchNewPlaceUsecaseImple(placeRepository: self.mockPlaceRepository,
                                                   throttleInterval: 0)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubPlaceRepository = nil
+        self.mockPlaceRepository = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -51,7 +51,7 @@ class SearchNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     func stubResult(_ result: SearchingPlaceCollection, for query: String, of page: Int? = nil) {
         let key = "requestSearchNewPlace:\(query)-\(String(describing: page))"
-        self.stubPlaceRepository.register(key: key) {
+        self.mockPlaceRepository.register(key: key) {
             return Maybe<SearchingPlaceCollection>.just(result)
         }
     }

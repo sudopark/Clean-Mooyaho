@@ -44,7 +44,7 @@ extension WaitNextHoorayViewModelTests {
 
 extension WaitNextHoorayViewModelTests {
     
-    class SpyRouter: WaitNextHoorayRouting, Stubbable {
+    class SpyRouter: WaitNextHoorayRouting, Mocking {
         
     }
 }

@@ -19,21 +19,21 @@ import UnitTestHelpKit
 class FirebaseServiceImpleTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubSession: StubSession!
+    var mockSession: MockSession!
     var fakeHttpAPI: FakeHttpAPI!
     var service: FirebaseServiceImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubSession = .init()
-        self.fakeHttpAPI = FakeHttpAPI(session: self.stubSession)
+        self.mockSession = .init()
+        self.fakeHttpAPI = FakeHttpAPI(session: self.mockSession)
         self.service = FirebaseServiceImple(httpAPI: self.fakeHttpAPI, serverKey: "dummy")
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubSession = nil
+        self.mockSession = nil
         self.fakeHttpAPI = nil
         self.service = nil
         super.tearDown()
@@ -48,7 +48,7 @@ extension FirebaseServiceImpleTests {
     func test_loadSearchPlaceCollection() {
         // given
         let expect = expectation(description: "장소 검색결과 로드해서 디코딩")
-        self.stubSession.register(type: Maybe<HttpResponse>.self, key: "requestData") {
+        self.mockSession.register(type: Maybe<HttpResponse>.self, key: "requestData") {
             let data = readJsonAsData("SearchPlace")!
             let response = HttpResponse(urlResponse: nil, dataResult: .success(data))
             return .just(response)

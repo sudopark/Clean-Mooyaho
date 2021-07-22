@@ -20,45 +20,45 @@ import StubUsecases
 class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     
     var disposeBag: DisposeBag!
-    var stubUsecase: StubApplicationUsecase!
+    var mockUsecase: MockApplicationUsecase!
     var spyRouter: SpyRouter!
-    var stubFirebaseService: StubFirebaseService!
+    var mockFirebaseService: MockFirebaseService!
     var stubFCMService: StubFCMService!
-    var stubKakaoService: StubKakaoService!
+    var mockKakaoService: MockKakaoService!
     var viewModel: ApplicationViewModel!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = DisposeBag()
-        self.stubUsecase = .init()
+        self.mockUsecase = .init()
         self.spyRouter = SpyRouter()
-        self.stubFirebaseService = .init()
+        self.mockFirebaseService = .init()
         self.stubFCMService = .init()
-        self.stubKakaoService = .init()
-        self.viewModel = ApplicationViewModelImple(applicationUsecase: self.stubUsecase,
-                                                   firebaseService: self.stubFirebaseService,
+        self.mockKakaoService = .init()
+        self.viewModel = ApplicationViewModelImple(applicationUsecase: self.mockUsecase,
+                                                   firebaseService: self.mockFirebaseService,
                                                    fcmService: self.stubFCMService,
-                                                   kakaoService: self.stubKakaoService,
+                                                   kakaoService: self.mockKakaoService,
                                                    router: self.spyRouter)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.spyRouter = nil
-        self.stubFirebaseService = nil
+        self.mockFirebaseService = nil
         self.stubFCMService = nil
-        self.stubKakaoService = nil
-        self.stubUsecase = nil
+        self.mockKakaoService = nil
+        self.mockUsecase = nil
         self.viewModel = nil
         super.tearDown()
     }
     
     private func makeViewModel(_ isNotificationGranted: Bool = true) -> ApplicationViewModel {
         self.stubFCMService.isNotificationGrant = isNotificationGranted
-        self.viewModel = ApplicationViewModelImple(applicationUsecase: self.stubUsecase,
-                                                   firebaseService: self.stubFirebaseService,
+        self.viewModel = ApplicationViewModelImple(applicationUsecase: self.mockUsecase,
+                                                   firebaseService: self.mockFirebaseService,
                                                    fcmService: self.stubFCMService,
-                                                   kakaoService: self.stubKakaoService,
+                                                   kakaoService: self.mockKakaoService,
                                                    router: self.spyRouter)
         return viewModel
     }
@@ -73,7 +73,7 @@ extension ApplicationViewModelTests {
         // given
         let expect = expectation(description: "론칭 이후에 론칭신으로 라우팅")
         
-        self.stubUsecase.register(key: "loadLastSignInAccountInfo") {
+        self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
             return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
         }
         
@@ -117,8 +117,8 @@ extension ApplicationViewModelTests {
     
     func testViewModel_ifOpenURLIsKakaoURL_handleURL() {
         // given
-        self.stubKakaoService.register(key: "canHandleURL") { true }
-        self.stubKakaoService.register(key: "handle:url") { true }
+        self.mockKakaoService.register(key: "canHandleURL") { true }
+        self.mockKakaoService.register(key: "handle:url") { true }
         
         // when
         let handled = self.viewModel.handleOpenURL(url: URL(string: "dummy.url")!, options: nil)
@@ -131,7 +131,7 @@ extension ApplicationViewModelTests {
 
 extension ApplicationViewModelTests {
     
-    class SpyRouter: ApplicationRootRouting, Stubbable {
+    class SpyRouter: ApplicationRootRouting, Mocking {
         
         func routeMain(auth: Auth) {
             self.verify(key: "routeMain", with: auth)

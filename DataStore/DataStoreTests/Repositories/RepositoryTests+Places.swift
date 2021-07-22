@@ -19,22 +19,22 @@ import UnitTestHelpKit
 class RepositoryTests_Places: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubRemote: StubRemote!
-    var stubLocal: StubLocal!
+    var mockRemote: MockRemote!
+    var mockLocal: MockLocal!
     var repository: DummyRepository!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = DisposeBag()
-        self.stubRemote = StubRemote()
-        self.stubLocal = StubLocal()
-        self.repository = DummyRepository(remote: self.stubRemote, local: self.stubLocal)
+        self.mockRemote = MockRemote()
+        self.mockLocal = MockLocal()
+        self.repository = DummyRepository(remote: self.mockRemote, local: self.mockLocal)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubRemote = nil
-        self.stubLocal = nil
+        self.mockRemote = nil
+        self.mockLocal = nil
         self.repository = nil
         super.tearDown()
     }
@@ -46,7 +46,7 @@ extension RepositoryTests_Places {
     func testRepo_uploadUserLocation() {
         // given
         let expect = expectation(description: "유저 현재위치 업로드")
-        self.stubRemote.register(key: "requesUpload:location") {
+        self.mockRemote.register(key: "requesUpload:location") {
             return Maybe<Void>.just()
         }
         
@@ -61,7 +61,7 @@ extension RepositoryTests_Places {
     func testRepo_requestDefaultPlaceSuggest() {
         // given
         let expect = expectation(description: "해당 장소의 디폴트 서제스트 로드")
-        self.stubRemote.register(type: Maybe<SuggestPlaceResult>.self,key: "requestLoadDefaultPlaceSuggest") {
+        self.mockRemote.register(type: Maybe<SuggestPlaceResult>.self,key: "requestLoadDefaultPlaceSuggest") {
             return .just(.init(default: []))
         }
         
@@ -76,7 +76,7 @@ extension RepositoryTests_Places {
     func testRepo_requestPlaceSuggest() {
         // given
         let expect = expectation(description: "해당 장소 + 쿼리에 해당하는 서제스트 로드")
-        self.stubRemote.register(type: Maybe<SuggestPlaceResult>.self,key: "requestSuggestPlace") {
+        self.mockRemote.register(type: Maybe<SuggestPlaceResult>.self,key: "requestSuggestPlace") {
             return .just(.init(query: "some", places: []))
         }
 
@@ -91,7 +91,7 @@ extension RepositoryTests_Places {
     func testRepo_loadPlace() {
         // given
         let expect = expectation(description: "특정 장소 로드")
-        self.stubRemote.register(key: "requestLoadPlace") {
+        self.mockRemote.register(key: "requestLoadPlace") {
             return Maybe<Place>.just(self.dummyPlace)
         }
         
@@ -106,11 +106,11 @@ extension RepositoryTests_Places {
     func testRepo_whenAfterLoadPlace_updateCache() {
         // given
         let expect = expectation(description: "특정 장소 로드 이후에 케시 업데이트")
-        self.stubRemote.register(key: "requestLoadPlace") {
+        self.mockRemote.register(key: "requestLoadPlace") {
             return Maybe<Place>.just(self.dummyPlace)
         }
         
-        self.stubLocal.called(key: "savePlaces") { _ in
+        self.mockLocal.called(key: "savePlaces") { _ in
             expect.fulfill()
         }
         
@@ -133,7 +133,7 @@ extension RepositoryTests_Places {
         // given
         let expect = expectation(description: "등록 대기중인 새 장소 양식 로드")
         
-        self.stubLocal.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
+        self.mockLocal.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
             let form = NewPlaceForm(reporterID: "some", infoProvider: .userDefine)
             return .just((form, Date()))
         }
@@ -149,7 +149,7 @@ extension RepositoryTests_Places {
     func testRepository_savePendingRegisterNewPlaceForm() {
         // given
         let expect = expectation(description: "등록 대기중인 장소정보 저장")
-        self.stubLocal.register(key: "savePendingRegister") {
+        self.mockLocal.register(key: "savePendingRegister") {
             return Maybe<Void>.just()
         }
         
@@ -169,7 +169,7 @@ extension RepositoryTests_Places {
         // given
         let expect = expectation(description: "새로운 장소 등록 요청")
         
-        self.stubRemote.register(key: "requestRegister:place") {
+        self.mockRemote.register(key: "requestRegister:place") {
             return Maybe<Place>.just(self.dummyPlace)
         }
         
@@ -185,11 +185,11 @@ extension RepositoryTests_Places {
         // given
         let expect = expectation(description: "새로운 장소 등록 하고 로컬에도 저장")
         
-        self.stubRemote.register(key: "requestRegister:place") {
+        self.mockRemote.register(key: "requestRegister:place") {
             return Maybe<Place>.just(self.dummyPlace)
         }
         
-        self.stubLocal.called(key: "savePlaces") { _ in
+        self.mockLocal.called(key: "savePlaces") { _ in
             expect.fulfill()
         }
         
@@ -206,11 +206,11 @@ extension RepositoryTests_Places {
         // given
         let expect = expectation(description: "새로운 장소 등록 하고 이전에 입력중이던 항목 삭제")
         
-        self.stubRemote.register(key: "requestRegister:place") {
+        self.mockRemote.register(key: "requestRegister:place") {
             return Maybe<Place>.just(self.dummyPlace)
         }
         
-        self.stubLocal.called(key: "removePendingRegisterForm") { _ in
+        self.mockLocal.called(key: "removePendingRegisterForm") { _ in
             expect.fulfill()
         }
         

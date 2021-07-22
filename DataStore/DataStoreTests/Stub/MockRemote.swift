@@ -16,7 +16,7 @@ import UnitTestHelpKit
 @testable import DataStore
 
 
-class StubRemote: Remote, Stubbable {
+class MockRemote: Remote, Mocking {
     
     // auth
     func requestSignInAnonymously() -> Maybe<Auth> {
@@ -45,10 +45,10 @@ class StubRemote: Remote, Stubbable {
         return self.resolve(key: "requestLoadMembership") ?? .empty()
     }
     
-    let stubUploadMemberProfileImageStatus = PublishSubject<MemberProfileUploadStatus>()
+    let uploadMemberProfileImageStatus = PublishSubject<MemberProfileUploadStatus>()
     func requestUploadMemberProfileImage(_ memberID: String,
                                          data: Data, ext: String) -> Observable<MemberProfileUploadStatus> {
-        return self.stubUploadMemberProfileImageStatus.asObservable()
+        return self.uploadMemberProfileImageStatus.asObservable()
     }
     
     func requestUpdateMemberProfileFields(_ memberID: String,
