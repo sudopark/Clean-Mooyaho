@@ -19,20 +19,20 @@ class MemberUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var store: SharedDataStoreServiceImple!
-    var stubRepository: StubMemberRepository!
+    var mockRepository: MockMemberRepository!
     var usecase: MemberUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubRepository = .init()
+        self.mockRepository = .init()
         self.store = .init()
-        self.usecase = MemberUsecaseImple(memberRepository: self.stubRepository, sharedDataService: self.store)
+        self.usecase = MemberUsecaseImple(memberRepository: self.mockRepository, sharedDataService: self.store)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubRepository = nil
+        self.mockRepository = nil
         self.store = nil
         self.usecase = nil
         super.tearDown()
@@ -46,7 +46,7 @@ extension MemberUsecaseTests {
         // given
         let expect = expectation(description: "유저 온라인 여부 업데이트")
         
-        self.stubRepository.called(key: "requestUpdateUserPresence") { args in
+        self.mockRepository.called(key: "requestUpdateUserPresence") { args in
             if let isOnline = args as? Bool, isOnline {
                 expect.fulfill()
             }
@@ -64,7 +64,7 @@ extension MemberUsecaseTests {
         // given
         let expect = expectation(description: "push token 업데이트")
         
-        self.stubRepository.called(key: "requestUpdatePushToken") { _ in
+        self.mockRepository.called(key: "requestUpdatePushToken") { _ in
             expect.fulfill()
         }
         
@@ -108,7 +108,7 @@ extension MemberUsecaseTests {
         // given
         let expect = expectation(description: "공유 저장소에 멤버쉽 존재 안하는 경우 로드")
         self.store.save(.currentMember, Member(uid: "dummy"))
-        self.stubRepository.register(key: "requestLoadMembership") {
+        self.mockRepository.register(key: "requestLoadMembership") {
             return Maybe<MemberShip>.just(.init())
         }
         
@@ -165,7 +165,7 @@ extension MemberUsecaseTests {
         // given
         let expect = expectation(description: "프로필 이미지 업로드 없이 필드만 업데이트")
         
-        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRepository.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.just(.init(uid: "some"))
         }
         
@@ -182,7 +182,7 @@ extension MemberUsecaseTests {
         let expect = expectation(description: "새 프사와 함께 멤버 업데이트")
         expect.expectedFulfillmentCount = 3
         
-        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRepository.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.just(.init(uid: "some"))
         }
         
@@ -191,9 +191,9 @@ extension MemberUsecaseTests {
         let image = ImageUploadReqParams.data(Data(), extension: "jpg")
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let status = self.waitElements(expect, for: requestUpload) {
-            self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
-            self.stubRepository.stubUploadStatus.onNext(.completed(.path("some")))
-            self.stubRepository.stubUploadStatus.onCompleted()
+            self.mockRepository.uploadStatus.onNext(.uploading(0.5))
+            self.mockRepository.uploadStatus.onNext(.completed(.path("some")))
+            self.mockRepository.uploadStatus.onCompleted()
         }
         
         // then
@@ -205,7 +205,7 @@ extension MemberUsecaseTests {
         // given
         let expect = expectation(description: "프로필 이미지 업로드에 성공하더라도 필드업데이트 실패하면 전체 실패처리")
         
-        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRepository.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.error(ApplicationErrors.invalid)
         }
         
@@ -214,9 +214,9 @@ extension MemberUsecaseTests {
         let image = ImageUploadReqParams.data(Data(), extension: "jpg")
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let error = self.waitError(expect, for: requestUpload) {
-            self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
-            self.stubRepository.stubUploadStatus.onNext(.completed(.path("some")))
-            self.stubRepository.stubUploadStatus.onCompleted()
+            self.mockRepository.uploadStatus.onNext(.uploading(0.5))
+            self.mockRepository.uploadStatus.onNext(.completed(.path("some")))
+            self.mockRepository.uploadStatus.onCompleted()
         }
         
         // then
@@ -229,7 +229,7 @@ extension MemberUsecaseTests {
         let expect = expectation(description: "멤버프로필 업로드에 실패해도 필드는 업데이트함")
         expect.expectedFulfillmentCount = 3
         
-        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRepository.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.just(.init(uid: "some"))
         }
         
@@ -238,8 +238,8 @@ extension MemberUsecaseTests {
         let image = ImageUploadReqParams.data(Data(), extension: "jpg")
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let status = self.waitElements(expect, for: requestUpload) {
-            self.stubRepository.stubUploadStatus.onNext(.uploading(0.5))
-            self.stubRepository.stubUploadStatus.onError(ApplicationErrors.invalid)
+            self.mockRepository.uploadStatus.onNext(.uploading(0.5))
+            self.mockRepository.uploadStatus.onError(ApplicationErrors.invalid)
         }
         
         // then
@@ -250,7 +250,7 @@ extension MemberUsecaseTests {
         // given
         let expect = expectation(description: "멤버 업데이트 이후에 새로운 유저값 share event 발생")
         
-        self.stubRepository.register(key: "requestUpdateMemberProfileFields") {
+        self.mockRepository.register(key: "requestUpdateMemberProfileFields") {
             return Maybe<Member>.just(.init(uid: "some"))
         }
         

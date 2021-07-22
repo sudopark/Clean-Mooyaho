@@ -18,32 +18,32 @@ import UnitTestHelpKit
 class BaseHoorayUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubMemberRepository: StubMemberRepository!
+    var mockMemberRepository: MockMemberRepository!
     var sharedStore: SharedDataStoreServiceImple!
-    var stubHoorayRepository: StubHoorayRepository!
-    var stubMessagingService: StubMessagingService!
+    var mockHoorayRepository: MockHoorayRepository!
+    var mockMessagingService: MockMessagingService!
     var usecase: HoorayUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubMemberRepository = .init()
-        self.stubHoorayRepository = .init()
-        self.stubMessagingService = .init()
+        self.mockMemberRepository = .init()
+        self.mockHoorayRepository = .init()
+        self.mockMessagingService = .init()
         self.sharedStore = .init()
-        let memberUsecase = MemberUsecaseImple(memberRepository: self.stubMemberRepository,
+        let memberUsecase = MemberUsecaseImple(memberRepository: self.mockMemberRepository,
                                                sharedDataService: self.sharedStore)
         self.usecase = .init(authInfoProvider: self.sharedStore,
                              memberUsecase: memberUsecase,
-                             hoorayRepository: self.stubHoorayRepository,
-                             messagingService: self.stubMessagingService)
+                             hoorayRepository: self.mockHoorayRepository,
+                             messagingService: self.mockMessagingService)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubMemberRepository = nil
-        self.stubHoorayRepository = nil
-        self.stubMessagingService = nil
+        self.mockMemberRepository = nil
+        self.mockHoorayRepository = nil
+        self.mockMessagingService = nil
         self.usecase = nil
         super.tearDown()
     }

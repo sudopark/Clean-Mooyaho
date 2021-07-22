@@ -18,19 +18,19 @@ import UnitTestHelpKit
 class RegisterNewPlaceUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubPlaceRepository: StubPlaceRepository!
+    var mockPlaceRepository: MockPlaceRepository!
     var usecase: RegisterNewPlaceUsecaseImple!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubPlaceRepository = .init()
-        self.usecase = .init(placeRepository: self.stubPlaceRepository, categoryTags: [])
+        self.mockPlaceRepository = .init()
+        self.usecase = .init(placeRepository: self.mockPlaceRepository, categoryTags: [])
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubPlaceRepository = nil
+        self.mockPlaceRepository = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -60,7 +60,7 @@ extension RegisterNewPlaceUsecaseTests {
         // given
         let expect = expectation(description: "최근에 입력중이던 form이 없으면 결과는 nil")
         
-        self.stubPlaceRepository.register(key: "fetchRegisterPendingNewPlaceForm") {
+        self.mockPlaceRepository.register(key: "fetchRegisterPendingNewPlaceForm") {
             return Maybe<PendingRegisterNewPlaceForm?>.just(nil)
         }
         
@@ -77,7 +77,7 @@ extension RegisterNewPlaceUsecaseTests {
     func testUsecase_whenLoadPendingRegisterNewPlaceFormWithDistance_returnPendingForm() {
         // give
         let expect = expectation(description: "유효범위내에 입력중이던 플레이스 정보가 존재하면 폼 리턴")
-        self.stubPlaceRepository.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
+        self.mockPlaceRepository.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
             let pendingForm = PendingRegisterNewPlaceForm(self.dummyPendingForm(), Date())
             return .just(pendingForm)
         }
@@ -95,7 +95,7 @@ extension RegisterNewPlaceUsecaseTests {
     func testUsecase_whenPendingRegisterNewPlaceFormExistsButOutofDistance_returnFormIfNotTooOld() {
         // given
         let expect = expectation(description: "폼이 존재하는데 현재위치랑 너무 멀더라도 너무 오래되지 않았다면 리턴")
-        self.stubPlaceRepository.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
+        self.mockPlaceRepository.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
             let pendingForm = PendingRegisterNewPlaceForm(self.dummyPendingForm(), Date())
             return .just(pendingForm)
         }
@@ -113,7 +113,7 @@ extension RegisterNewPlaceUsecaseTests {
     func testUsecase_whenPendingRegisterNewPlaceFormExistsAndOutOfDistanceAndTooOld_resultIsNil() {
         // given
         let expect = expectation(description: "폼이 존재하는데 현재위치랑 너무 멀고 너무 오래되었다면 nil 리턴")
-        self.stubPlaceRepository.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
+        self.mockPlaceRepository.register(type: Maybe<PendingRegisterNewPlaceForm?>.self, key: "fetchRegisterPendingNewPlaceForm") {
             let oldDate = Date().addingTimeInterval(-60*24)
             let pendingForm = PendingRegisterNewPlaceForm(self.dummyPendingForm(), oldDate)
             return .just(pendingForm)
@@ -136,7 +136,7 @@ extension RegisterNewPlaceUsecaseTests {
         // given
         let expect = expectation(description: "place 정보 입력 완료시에 캐시에 저장")
         
-        self.stubPlaceRepository.called(key: "savePendingRegister") { _ in
+        self.mockPlaceRepository.called(key: "savePendingRegister") { _ in
             expect.fulfill()
         }
         
@@ -156,7 +156,7 @@ extension RegisterNewPlaceUsecaseTests {
         // given
         let expect = expectation(description: "신규장소 업로드")
         
-        self.stubPlaceRepository.register(key: "requestUpload") {
+        self.mockPlaceRepository.register(key: "requestUpload") {
             return Maybe<Place>.just(Place.dummy(0))
         }
         

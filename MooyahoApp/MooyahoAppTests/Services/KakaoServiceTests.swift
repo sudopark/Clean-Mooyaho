@@ -20,18 +20,18 @@ import UnitTestHelpKit
 class KakaoServiceTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubRemote: StubRemote!
+    var mockRemote: MockRemote!
     var service: KakaoServiceImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubRemote = .init()
-        self.service = .init(remote: self.stubRemote)
+        self.mockRemote = .init()
+        self.service = .init(remote: self.mockRemote)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubRemote = nil
+        self.mockRemote = nil
         self.service = nil
     }
 }
@@ -42,9 +42,9 @@ extension KakaoServiceTests {
     func testService_signinAndVerify_withKakaoTalk() {
         // given
         let expect = expectation(description: "카톡으로 로그인해서 credential 발급")
-        self.stubRemote.register(key: "isKakaoTalkLoginAvailable") { true }
-        self.stubRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.just("ko_token") }
-        self.stubRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.just("firebase_token") }
+        self.mockRemote.register(key: "isKakaoTalkLoginAvailable") { true }
+        self.mockRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.just("ko_token") }
+        self.mockRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.just("firebase_token") }
         
         // when
         let requestSignin = self.service.requestSignIn()
@@ -57,9 +57,9 @@ extension KakaoServiceTests {
     func testService_signinAndVerify_withKakaoAccount() {
         // given
         let expect = expectation(description: "카카오 계정으로 로그인해서 credential 발급")
-        self.stubRemote.register(key: "isKakaoTalkLoginAvailable") { false }
-        self.stubRemote.register(key: "loginWithKakaoAccount") { Maybe<String>.just("ko_token") }
-        self.stubRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.just("firebase_token") }
+        self.mockRemote.register(key: "isKakaoTalkLoginAvailable") { false }
+        self.mockRemote.register(key: "loginWithKakaoAccount") { Maybe<String>.just("ko_token") }
+        self.mockRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.just("firebase_token") }
         
         // when
         let requestSignin = self.service.requestSignIn()
@@ -72,8 +72,8 @@ extension KakaoServiceTests {
     func testService_whenRequestSignin_kakaoTalkSigninFail() {
         // given
         let expect = expectation(description: "카카오톡 로그인 실패")
-        self.stubRemote.register(key: "isKakaoTalkLoginAvailable") { true }
-        self.stubRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.error(KakaoOAuthErrors.failToSignIn(nil)) }
+        self.mockRemote.register(key: "isKakaoTalkLoginAvailable") { true }
+        self.mockRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.error(KakaoOAuthErrors.failToSignIn(nil)) }
         
         // when
         let requestSignin = self.service.requestSignIn()
@@ -86,8 +86,8 @@ extension KakaoServiceTests {
     func testService_whenRequestSignin_kakaoAccountSigninFail() {
         // given
         let expect = expectation(description: "카카오 계정으로 로그인 실패")
-        self.stubRemote.register(key: "isKakaoTalkLoginAvailable") { false }
-        self.stubRemote.register(key: "loginWithKakaoAccount") { Maybe<String>.error(KakaoOAuthErrors.failToSignIn(nil)) }
+        self.mockRemote.register(key: "isKakaoTalkLoginAvailable") { false }
+        self.mockRemote.register(key: "loginWithKakaoAccount") { Maybe<String>.error(KakaoOAuthErrors.failToSignIn(nil)) }
         
         // when
         let requestSignin = self.service.requestSignIn()
@@ -100,9 +100,9 @@ extension KakaoServiceTests {
     func testService_whenKakaoSignInEnd_butVerifyFail() {
         // given
         let expect = expectation(description: "카카오 로그인은 성공했지만 인증은 실패")
-        self.stubRemote.register(key: "isKakaoTalkLoginAvailable") { true }
-        self.stubRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.just("ko_token") }
-        self.stubRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.error(KakaoOAuthErrors.failToSignIn(nil)) }
+        self.mockRemote.register(key: "isKakaoTalkLoginAvailable") { true }
+        self.mockRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.just("ko_token") }
+        self.mockRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.error(KakaoOAuthErrors.failToSignIn(nil)) }
         
         // when
         let requestSignin = self.service.requestSignIn()
@@ -117,7 +117,7 @@ extension KakaoServiceTests {
 extension KakaoServiceTests {
     
     
-    class StubRemote: KakaoOAuthRemote, Stubbable {
+    class MockRemote: KakaoOAuthRemote, Mocking {
         
         func isKakaoTalkLoginAvailable() -> Bool {
             return self.resolve(key: "isKakaoTalkLoginAvailable") ?? false

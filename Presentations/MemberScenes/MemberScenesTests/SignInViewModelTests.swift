@@ -19,21 +19,21 @@ import UnitTestHelpKit
 class SignInViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubAuthUsecase: StubAuthUsecase!
+    var mockAuthUsecase: MockAuthUsecase!
     var spyRouter: SpyRouter!
     var viewModel: SignInViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.stubAuthUsecase = .init()
+        self.mockAuthUsecase = .init()
         self.spyRouter = .init()
-        self.viewModel = .init(authUsecase: self.stubAuthUsecase,
+        self.viewModel = .init(authUsecase: self.mockAuthUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.stubAuthUsecase = nil
+        self.mockAuthUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -44,7 +44,7 @@ extension SignInViewModelTests {
     
     func testViewModel_presentSupportingOAuthProviderTypes() {
         // given
-        self.stubAuthUsecase.stubSupportingOAuthServiceProviders = [
+        self.mockAuthUsecase.supportingOAuthProviders = [
             OAuthServiceProviderTypes.kakao,
             OAuthServiceProviderTypes.apple
         ]
@@ -60,7 +60,7 @@ extension SignInViewModelTests {
         let expect = expectation(description: "로그인시 처리중 상태 변경 -> 종료 이후에 처리중 false로 안바꿈")
         expect.expectedFulfillmentCount = 2
         
-        self.stubAuthUsecase.register(key: "requestSocialSignIn") {
+        self.mockAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.just(Member(uid: "dummy"))
         }
         
@@ -77,7 +77,7 @@ extension SignInViewModelTests {
         // given
         let expect = expectation(description: "로그인 완료시에 현재 화면 닫음")
         expect.expectedFulfillmentCount = 2
-        self.stubAuthUsecase.register(key: "requestSocialSignIn") {
+        self.mockAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.just(Member(uid: "dummy"))
         }
         
@@ -101,7 +101,7 @@ extension SignInViewModelTests {
     func testViewModel_whenSignInFail_alertError() {
         // given
         let expect = expectation(description: "로그인 실패시에 에러 알림")
-        self.stubAuthUsecase.register(key: "requestSocialSignIn") {
+        self.mockAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.error(ApplicationErrors.invalid)
         }
         
@@ -120,7 +120,7 @@ extension SignInViewModelTests {
 
 extension SignInViewModelTests {
     
-    class SpyRouter: SignInRouting, Stubbable {
+    class SpyRouter: SignInRouting, Mocking {
         
         func alertError(_ error: Error) {
             self.verify(key: "alertError")

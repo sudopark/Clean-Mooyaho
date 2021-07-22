@@ -19,22 +19,22 @@ import UnitTestHelpKit
 class RepositoryTests_Hooray: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var stubRemote: StubRemote!
-    var stubLocal: StubLocal!
+    var MockRemote: MockRemote!
+    var mockLocal: MockLocal!
     var repository: DummyRepository!
     
     override func setUp() {
         super.setUp()
         self.disposeBag = .init()
-        self.stubLocal = .init()
-        self.stubRemote = .init()
-        self.repository = .init(remote: self.stubRemote, local: self.stubLocal)
+        self.mockLocal = .init()
+        self.MockRemote = .init()
+        self.repository = .init(remote: self.MockRemote, local: self.mockLocal)
     }
     
     override func tearDown() {
         self.disposeBag = nil
-        self.stubRemote = nil
-        self.stubLocal = nil
+        self.MockRemote = nil
+        self.mockLocal = nil
         self.repository = nil
         super.tearDown()
     }
@@ -55,7 +55,7 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "로컬에 저장된 최근 후레이 조회")
         
-        self.stubLocal.register(key: "fetchLatestHooray") {
+        self.mockLocal.register(key: "fetchLatestHooray") {
             return Maybe<Hooray?>.just(self.dummyHooray())
         }
         
@@ -71,7 +71,7 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "리모트에서 최근 후레이 조회")
         
-        self.stubRemote.register(key: "requestLoadLatestHooray") {
+        self.MockRemote.register(key: "requestLoadLatestHooray") {
             return Maybe<Hooray?>.just(self.dummyHooray())
         }
         
@@ -87,11 +87,11 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "리모트에서 최근 후레이 조회 이후에 로컬에 저장")
         
-        self.stubRemote.register(key: "requestLoadLatestHooray") {
+        self.MockRemote.register(key: "requestLoadLatestHooray") {
             return Maybe<Hooray?>.just(self.dummyHooray())
         }
         
-        self.stubLocal.called(key: "saveHoorays") { _ in
+        self.mockLocal.called(key: "saveHoorays") { _ in
             expect.fulfill()
         }
         
@@ -108,7 +108,7 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "리모트에서 후레이 ack 처리")
         
-        self.stubRemote.register(key: "requestAckHooray") {
+        self.MockRemote.register(key: "requestAckHooray") {
             return Maybe<Void>.just()
         }
         
@@ -128,7 +128,7 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "새로운 후레이 발행")
         
-        self.stubRemote.register(key: "requestPublishHooray") {
+        self.MockRemote.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(self.dummyHooray())
         }
         
@@ -144,11 +144,11 @@ extension RepositoryTests_Hooray {
     func testRepository_whenAfterPublishNewHooray_saveAtLocal() {
         // given
         let expect = expectation(description: "새로운 후레이 발행 이후 로컬에 저장")
-        self.stubRemote.register(key: "requestPublishHooray") {
+        self.MockRemote.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(self.dummyHooray())
         }
         
-        self.stubLocal.called(key: "saveHoorays") { _ in
+        self.mockLocal.called(key: "saveHoorays") { _ in
             expect.fulfill()
         }
         
@@ -166,7 +166,7 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "주변에 있는 최근 후레이 조회")
         
-        self.stubRemote.register(key: "requestLoadNearbyRecentHoorays") {
+        self.MockRemote.register(key: "requestLoadNearbyRecentHoorays") {
             return Maybe<[Hooray]>.just([self.dummyHooray()])
         }
         

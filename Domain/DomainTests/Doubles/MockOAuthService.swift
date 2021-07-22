@@ -1,5 +1,5 @@
 //
-//  StubSocialAuthRepository.swift
+//  MockOAuthService.swift
 //  DomainTests
 //
 //  Created by ParkHyunsoo on 2021/04/30.
@@ -19,7 +19,7 @@ struct DummyOAuthType: OAuthServiceProviderType {
     let uniqueIdentifier: String = "DummyOAuthType"
 }
 
-class StubOAuthService: OAuthService, OAuthServiceProviderTypeRepresentable, Stubbable {
+class MockOAuthService: OAuthService, OAuthServiceProviderTypeRepresentable, Mocking {
     
     var providerType: OAuthServiceProviderType {
         return DummyOAuthType()

@@ -16,7 +16,7 @@ import Domain
 @testable import DataStore
 
 
-class StubLocal: LocalStorage, Stubbable {
+class MockLocal: LocalStorage, Mocking {
     
     func fetchCurrentAuth() -> Maybe<Auth?> {
         return self.resolve(key: "fetchCurrentAuth") ?? .empty()

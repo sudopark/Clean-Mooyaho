@@ -1,8 +1,8 @@
 //
-//  StubFirebaseService.swift
+//  StubFCMService.swift
 //  MooyahoAppTests
 //
-//  Created by ParkHyunsoo on 2021/05/01.
+//  Created by sudo.park on 2021/07/23.
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
@@ -10,18 +10,9 @@ import Foundation
 
 import RxSwift
 
-import UnitTestHelpKit
 import FirebaseService
 
 @testable import MooyahoApp
-
-
-class StubFirebaseService: FirebaseService, Stubbable {
-    
-    func setupService() {
-        self.verify(key: "setupService")
-    }
-}
 
 
 class StubFCMService: FCMService {
@@ -55,3 +46,4 @@ class StubFCMService: FCMService {
         return stubUserInfo.asObservable()
     }
 }
+

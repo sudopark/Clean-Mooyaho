@@ -1,5 +1,5 @@
 //
-//  Stubs.swift
+//  Mocks.swift
 //  UnitTestHelpKit
 //
 //  Created by ParkHyunsoo on 2021/04/19.
@@ -53,29 +53,29 @@ extension Containable {
 }
 
 
-// MARK: - Stub
+// MARK: - Mocking
 
-public protocol Stubbable: Containable { }
+public protocol Mocking: Containable { }
 
 // MARK: Stub for register
 
-extension Stubbable {
+extension Mocking {
     
     public func register<R>(key: String, resultProvider: @escaping () -> R) {
-        self.put(key: key.withStubPrefix, value: resultProvider)
+        self.put(key: key.withResultPrefix, value: resultProvider)
     }
     
     public func register<R>(type: R.Type, key: String, resultProvider: @escaping () -> R) {
-        self.put(key: key.withStubPrefix, value: resultProvider)
+        self.put(key: key.withResultPrefix, value: resultProvider)
     }
 }
 
 // MARK: Stub for resolve
 
-extension Stubbable {
+extension Mocking {
     
     public func resolve<R>(key: String) -> R? {
-        guard let provider = self.get(key: key.withStubPrefix, mapping: { $0 as? () -> R }) else {
+        guard let provider = self.get(key: key.withResultPrefix, mapping: { $0 as? () -> R }) else {
             return nil
         }
         
@@ -83,39 +83,40 @@ extension Stubbable {
     }
     
     public func resolve<R>(_ type: R.Type, key: String) -> R? {
-        guard let provider = self.get(key: key.withStubPrefix, mapping: { $0 as? () -> R }) else {
+        guard let provider = self.get(key: key.withResultPrefix, mapping: { $0 as? () -> R }) else {
             return nil
         }
         return provider()
     }
     
     public func resolve<R>(key: String, defaultResult: R) -> R {
-        guard let provider = self.get(key: key.withStubPrefix, mapping: { $0 as? () -> R }) else {
+        guard let provider = self.get(key: key.withResultPrefix, mapping: { $0 as? () -> R }) else {
             return defaultResult
         }
         return provider()
     }
 }
 
-extension Stubbable {
+extension Mocking {
     
     public func clear(key: String) {
-        self.clearContainer(for: key.withStubPrefix)
+        self.clearContainer(for: key.withResultPrefix)
+        self.clearContainer(for: key.withCalledPrefix)
     }
 }
 
 // MARK: - Stub for register and invoke verify
 
-extension Stubbable {
+extension Mocking {
     
     public func verify(key: String, with args: Any? = nil) {
         typealias Verifier = (Any?) -> Void
-        let verifier = self.get(key: key.withSpyPrefix, mapping: { $0 as? Verifier })
+        let verifier = self.get(key: key.withCalledPrefix, mapping: { $0 as? Verifier })
         verifier?(args)
     }
     
     public func called(key: String, callback: @escaping (Any?) -> Void) {
-        self.put(key: key.withSpyPrefix, value: callback)
+        self.put(key: key.withCalledPrefix, value: callback)
     }
 }
 
@@ -124,29 +125,11 @@ extension Stubbable {
 
 private extension String {
     
-    var withStubPrefix: String {
-        return "stub_\(self)"
+    var withResultPrefix: String {
+        return "result_\(self)"
     }
     
-    var withSpyPrefix: String {
-        return "spy_\(self)"
+    var withCalledPrefix: String {
+        return "call_\(self)"
     }
-}
-
-
-private extension Optional {
-    
-    var descriptionForKey: String? {
-        return self.map { wrapped in
-            return "\(wrapped)"
-        }
-    }
-}
-
-
-private func functionAddress<A, R>(of f: @escaping (A) throws -> R) -> Int {
-  let (_, lo) = unsafeBitCast(f, to: (Int, Int).self)
-  let offset = MemoryLayout<Int>.size == 8 ? 16 : 12
-  let pointer = UnsafePointer<Int>(bitPattern: lo + offset)!
-  return pointer.pointee
 }

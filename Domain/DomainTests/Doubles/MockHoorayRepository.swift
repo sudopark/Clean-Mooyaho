@@ -1,5 +1,5 @@
 //
-//  StubHoorayRepository.swift
+//  MockHoorayRepository.swift
 //  DomainTests
 //
 //  Created by sudo.park on 2021/05/15.
@@ -14,7 +14,7 @@ import UnitTestHelpKit
 
 @testable import Domain
 
-class StubHoorayRepository: HoorayRepository, Stubbable {
+class MockHoorayRepository: HoorayRepository, Mocking {
     
     func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
         return self.resolve(key: "fetchLatestHooray") ?? .empty()

@@ -32,10 +32,10 @@ extension HoorayPublisherUsecaseTests {
         // given
         let expect = expectation(description: "한번도 후레이 쏜적 없으면 쏠수있음")
         self.stubMemberShip()
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
             return .just(nil)
         }
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             return .just(nil)
         }
         
@@ -51,7 +51,7 @@ extension HoorayPublisherUsecaseTests {
         // given
         let expect = expectation(description: "로컬에 최근에 발행한 후레이가 있으면 새로 생성 불가")
         self.stubMemberShip()
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime
             let latest = LatestHooray("latest", TimeStamp.now() - defCooltime.asTimeInterval() + 5)
             return .just(latest)
@@ -74,10 +74,10 @@ extension HoorayPublisherUsecaseTests {
         let expect = expectation(description: "마지막 후레이 이후 일정시간이 지나지 않은경우 후레이 불가")
         
         self.stubMemberShip()
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
             return .just(nil)
         }
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime
             let latest = LatestHooray("latest", TimeStamp.now() - defCooltime.asTimeInterval() + 5)
             return .just(latest)
@@ -100,10 +100,10 @@ extension HoorayPublisherUsecaseTests {
         let expect = expectation(description: "마지막 후레이 이후 일정시간이 지났다면 후레이 가능")
         
         self.stubMemberShip()
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
             return .just(nil)
         }
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime.asTimeInterval()
             let latest = LatestHooray("latest", TimeStamp.now() - defCooltime * 10)
             return .just(latest)
@@ -157,15 +157,15 @@ extension HoorayPublisherUsecaseTests {
         // given
         let expect = expectation(description: "후레이 발행 이전에 멤버쉽 조회에 실패하면 실패처리")
         
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
             return .just(nil)
         }
-        self.stubHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
             let defCooltime = HoorayPublishPolicy.defaultCooltime.asTimeInterval()
             let latest = LatestHooray("latest", TimeStamp.now() - defCooltime * 10)
             return .just(latest)
         }
-        self.stubMemberRepository.register(key: "requestLoadMembership") {
+        self.mockMemberRepository.register(key: "requestLoadMembership") {
             return Maybe<MemberShip>.error(ApplicationErrors.sigInNeed)
         }
         
@@ -186,7 +186,7 @@ extension HoorayPublisherUsecaseTests {
     func testUsecase_publishNewHooray() {
         // given
         let expect = expectation(description: "새로운 후레이 등록")
-        self.stubHoorayRepository.register(key: "requestPublishHooray") {
+        self.mockHoorayRepository.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(Hooray.dummy(0))
         }
         
@@ -202,7 +202,7 @@ extension HoorayPublisherUsecaseTests {
     func testUsecase_publishNewHooray_withNewPlace() {
         // given
         let expect = expectation(description: "신규 등록할 장소와 함께 새로운 후레이 등록")
-        self.stubHoorayRepository.register(key: "requestPublishHooray") {
+        self.mockHoorayRepository.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(Hooray.dummy(0))
         }
         
@@ -231,7 +231,7 @@ extension HoorayPublisherUsecaseTests {
         let acks = self.waitElements(expect, for: self.usecase.receiveHoorayAck) {
             (0..<3).forEach { int in
                 let message = HoorayAckMessage(hoorayID: "id", publisherID: "pub", ackUserID: "id:\(int)")
-                self.stubMessagingService.stubNewMessage.onNext(message)
+                self.mockMessagingService.newMessage.onNext(message)
             }
         }
         
@@ -249,7 +249,7 @@ extension HoorayPublisherUsecaseTests {
             (0..<3).forEach { int in
                 let info = HoorayReaction.ReactionInfo(reactMemberID: "res:\(int)", icon: .emoji("😾"), reactAt: 0)
                 let message = HoorayReactionMessage(hoorayID: "id", publisherID: "pub", reactionInfo: info)
-                self.stubMessagingService.stubNewMessage.onNext(message)
+                self.mockMessagingService.newMessage.onNext(message)
             }
         }
         

@@ -1,5 +1,5 @@
 //
-//  StubLocationService.swift
+//  MockLocationMonitoringService.swift
 //  DomainTests
 //
 //  Created by ParkHyunsoo on 2021/05/03.
@@ -15,7 +15,7 @@ import UnitTestHelpKit
 @testable import Domain
 
 
-class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
+class MockLocationMonitoringService: LocationMonitoringService, Mocking {
     
     func fetchLastLocation() -> Maybe<LastLocation> {
         return self.resolve(key: "fetchLastLocation") ?? .empty()
@@ -32,7 +32,7 @@ class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
     func startMonitoring(with option: LocationMonitoringOption) {
         self.verify(key: "startMonitoring", with: option)
         if let stubLocation: LastLocation = self.resolve(key: "startMonitoring:result") {
-            self.stubLocationSubject.onNext(stubLocation)
+            self.locationSubject.onNext(stubLocation)
         }
     }
     
@@ -40,17 +40,17 @@ class StubLocationMonitoringService: LocationMonitoringService, Stubbable {
         self.verify(key: "stopMonitoring")
     }
     
-    let stubLocationSubject = PublishSubject<LastLocation>()
+    let locationSubject = PublishSubject<LastLocation>()
     var currentUserLocation: Observable<LastLocation> {
-        return self.stubLocationSubject.asObservable()
+        return self.locationSubject.asObservable()
     }
     
     var occurError: Observable<Error> {
         return .empty()
     }
     
-    let stubAutorized = PublishSubject<Bool>()
+    let autorized = PublishSubject<Bool>()
     var isAuthorized: Observable<Bool> {
-        return stubAutorized.asObservable()
+        return autorized.asObservable()
     }
 }

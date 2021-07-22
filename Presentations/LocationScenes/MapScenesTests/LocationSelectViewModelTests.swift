@@ -71,5 +71,5 @@ extension LocationSelectViewModelTests {
 
 extension LocationSelectViewModelTests {
     
-    class SpyRouter: LocationSelectRouting, Stubbable { }
+    class SpyRouter: LocationSelectRouting, Mocking { }
 }

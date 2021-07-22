@@ -1,5 +1,5 @@
 //
-//  StubApplicationUsecase.swift
+//  MockApplicationUsecase.swift
 //  MooyahoAppTests
 //
 //  Created by sudo.park on 2021/05/25.
@@ -17,7 +17,7 @@ import UnitTestHelpKit
 @testable import MooyahoApp
 
 
-class StubApplicationUsecase: ApplicationUsecase, Stubbable {
+class MockApplicationUsecase: ApplicationUsecase, Mocking {
     
     func userFCMTokenUpdated(_ newToken: String?) {
         
