@@ -1,14 +1,14 @@
 //
-//  StubUsecasesTests.swift
-//  StubUsecasesTests
+//  UsecaseDoublesTests.swift
+//  UsecaseDoubles
 //
 //  Created by sudo.park on 2021/05/23.
 //
 
 import XCTest
-@testable import StubUsecases
+@testable import UsecaseDoubles
 
-class StubUsecasesTests: XCTestCase {
+class UsecaseDoublesTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

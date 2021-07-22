@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F60325A92659564900E4E769 /* StubUsecases.h in Headers */ = {isa = PBXBuildFile; fileRef = F603259B2659564900E4E769 /* StubUsecases.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F60325A92659564900E4E769 /* UsecaseDoubles.h in Headers */ = {isa = PBXBuildFile; fileRef = F603259B2659564900E4E769 /* UsecaseDoubles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F60325B82659570D00E4E769 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325B72659570D00E4E769 /* UnitTestHelpKit.framework */; };
 		F60325BC2659571400E4E769 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325BB2659571400E4E769 /* Domain.framework */; };
 		F60325BF2659571900E4E769 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325BE2659571900E4E769 /* Common3rdParty.framework */; };
@@ -23,10 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F60325982659564900E4E769 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F603259B2659564900E4E769 /* StubUsecases.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StubUsecases.h; sourceTree = "<group>"; };
+		F60325982659564900E4E769 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F603259B2659564900E4E769 /* UsecaseDoubles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsecaseDoubles.h; sourceTree = "<group>"; };
 		F603259C2659564900E4E769 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F60325A62659564900E4E769 /* StubUsecasesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUsecasesTests.swift; sourceTree = "<group>"; };
+		F60325A62659564900E4E769 /* UsecaseDoublesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsecaseDoublesTests.swift; sourceTree = "<group>"; };
 		F60325A82659564900E4E769 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F60325B3265956EA00E4E769 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		F60325B5265956F100E4E769 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,8 +61,8 @@
 		F603258E2659564900E4E769 = {
 			isa = PBXGroup;
 			children = (
-				F603259A2659564900E4E769 /* StubUsecases */,
-				F60325A52659564900E4E769 /* StubUsecasesTests */,
+				F603259A2659564900E4E769 /* UsecaseDoubles */,
+				F60325A52659564900E4E769 /* UsecaseDoublesTests */,
 				F60325992659564900E4E769 /* Products */,
 				F60325B2265956EA00E4E769 /* Frameworks */,
 			);
@@ -71,29 +71,29 @@
 		F60325992659564900E4E769 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F60325982659564900E4E769 /* StubUsecases.framework */,
+				F60325982659564900E4E769 /* UsecaseDoubles.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F603259A2659564900E4E769 /* StubUsecases */ = {
+		F603259A2659564900E4E769 /* UsecaseDoubles */ = {
 			isa = PBXGroup;
 			children = (
 				F6502DD2266CA49B0027800F /* Dummies.swift */,
 				F60325C12659572A00E4E769 /* Mocks */,
-				F603259B2659564900E4E769 /* StubUsecases.h */,
+				F603259B2659564900E4E769 /* UsecaseDoubles.h */,
 				F603259C2659564900E4E769 /* Info.plist */,
 			);
-			path = StubUsecases;
+			path = UsecaseDoubles;
 			sourceTree = "<group>";
 		};
-		F60325A52659564900E4E769 /* StubUsecasesTests */ = {
+		F60325A52659564900E4E769 /* UsecaseDoublesTests */ = {
 			isa = PBXGroup;
 			children = (
-				F60325A62659564900E4E769 /* StubUsecasesTests.swift */,
+				F60325A62659564900E4E769 /* UsecaseDoublesTests.swift */,
 				F60325A82659564900E4E769 /* Info.plist */,
 			);
-			path = StubUsecasesTests;
+			path = UsecaseDoublesTests;
 			sourceTree = "<group>";
 		};
 		F60325B2265956EA00E4E769 /* Frameworks */ = {
@@ -129,16 +129,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F60325A92659564900E4E769 /* StubUsecases.h in Headers */,
+				F60325A92659564900E4E769 /* UsecaseDoubles.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F60325972659564900E4E769 /* StubUsecases */ = {
+		F60325972659564900E4E769 /* UsecaseDoubles */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F60325AC2659564900E4E769 /* Build configuration list for PBXNativeTarget "StubUsecases" */;
+			buildConfigurationList = F60325AC2659564900E4E769 /* Build configuration list for PBXNativeTarget "UsecaseDoubles" */;
 			buildPhases = (
 				F60325932659564900E4E769 /* Headers */,
 				F60325942659564900E4E769 /* Sources */,
@@ -149,9 +149,9 @@
 			);
 			dependencies = (
 			);
-			name = StubUsecases;
+			name = UsecaseDoubles;
 			productName = StubUsecases;
-			productReference = F60325982659564900E4E769 /* StubUsecases.framework */;
+			productReference = F60325982659564900E4E769 /* UsecaseDoubles.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -169,7 +169,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F60325922659564900E4E769 /* Build configuration list for PBXProject "StubUsecases" */;
+			buildConfigurationList = F60325922659564900E4E769 /* Build configuration list for PBXProject "UsecaseDoubles" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -182,7 +182,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F60325972659564900E4E769 /* StubUsecases */,
+				F60325972659564900E4E769 /* UsecaseDoubles */,
 			);
 		};
 /* End PBXProject section */
@@ -348,14 +348,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StubUsecases/Info.plist;
+				INFOPLIST_FILE = UsecaseDoubles/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.StubUsecases;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.UsecaseDoubles;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -374,14 +374,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = StubUsecases/Info.plist;
+				INFOPLIST_FILE = UsecaseDoubles/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.StubUsecases;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.UsecaseDoubles;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -392,7 +392,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F60325922659564900E4E769 /* Build configuration list for PBXProject "StubUsecases" */ = {
+		F60325922659564900E4E769 /* Build configuration list for PBXProject "UsecaseDoubles" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F60325AA2659564900E4E769 /* Debug */,
@@ -401,7 +401,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F60325AC2659564900E4E769 /* Build configuration list for PBXNativeTarget "StubUsecases" */ = {
+		F60325AC2659564900E4E769 /* Build configuration list for PBXNativeTarget "UsecaseDoubles" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F60325AD2659564900E4E769 /* Debug */,

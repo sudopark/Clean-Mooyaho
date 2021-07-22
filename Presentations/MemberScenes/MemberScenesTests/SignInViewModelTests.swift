@@ -10,7 +10,7 @@ import XCTest
 import RxSwift
 
 import Domain
-import StubUsecases
+import UsecaseDoubles
 import UnitTestHelpKit
 
 @testable import MemberScenes
