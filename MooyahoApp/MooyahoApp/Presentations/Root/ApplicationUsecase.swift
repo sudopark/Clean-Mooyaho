@@ -22,8 +22,6 @@ public protocol ApplicationUsecase {
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
     
     func userFCMTokenUpdated(_ newToken: String?)
-    
-    func newNotificationReceived(_ userInfo: [AnyHashable: Any])
 }
 
 // MARK: - ApplicationUsecaseImple
@@ -116,10 +114,6 @@ extension ApplicationUsecaseImple {
     
     public func userFCMTokenUpdated(_ newToken: String?) {
         self.subjects.fcmToken.onNext(newToken)
-    }
-    
-    public func newNotificationReceived(_ userInfo: [AnyHashable: Any]) {
-        // TODO: send message to message service instance
     }
     
     private func bindPushTokenUpload() {

@@ -18,8 +18,8 @@ import UnitTestHelpKit
 class MockMessagingService: MessagingService, Mocking {
     
     
-    let newMessage = PublishSubject<Messsage>()
-    var receivedMessage: Observable<Messsage> {
+    let newMessage = PublishSubject<Message>()
+    var receivedMessage: Observable<Message> {
         return self.newMessage.asObservable()
     }
 }

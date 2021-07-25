@@ -75,7 +75,7 @@ extension FirebaseServiceImpleTests {
         let hoorayAckMessage = HoorayAckMessage(hoorayID: "dummy", publisherID: "h_owner", ackUserID: "ack_sender")
         
         // when
-        let payload = hoorayAckMessage.dataPayload()
+        let payload = hoorayAckMessage.asDataPayload()
         
         // then
         

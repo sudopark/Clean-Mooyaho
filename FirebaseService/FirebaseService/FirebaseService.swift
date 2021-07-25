@@ -40,5 +40,5 @@ public final class FirebaseServiceImple: NSObject, FirebaseService {
     // subjects for fcmService
     let notificationAuthorizationGranted = BehaviorSubject<Bool?>(value: nil)
     let fcmToken = BehaviorSubject<String?>(value: nil)
-    let incommingNotificationUserInfo = PublishSubject<[AnyHashable: Any]>()
+    let incommingDataMessageUserInfo = PublishSubject<[AnyHashable: Any]>()
 }
