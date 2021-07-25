@@ -120,7 +120,7 @@ class MockRemote: Remote, Mocking {
     
     
     // messaging
-    func requestSendForground(message: Messsage, to userID: String) -> Maybe<Void> {
+    func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         return self.resolve(key: "requestSendForground") ?? .empty()
     }
 }

@@ -23,11 +23,6 @@ class MockApplicationUsecase: ApplicationUsecase, Mocking {
         
     }
     
-    func newNotificationReceived(_ userInfo: [AnyHashable : Any]) {
-        
-    }
-    
-    
     func updateApplicationActiveStatus(_ newStatus: ApplicationStatus) {
         
     }

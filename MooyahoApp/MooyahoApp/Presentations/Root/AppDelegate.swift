@@ -86,6 +86,13 @@ extension AppDelegate {
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         logger.print(level: .error, "fail to register remote notification: \(error)")
     }
+    
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        self.applicationViewModel.newPushMessageRecived(userInfo)
+        completionHandler(.noData)
+    }
 }
 
 

@@ -99,7 +99,7 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestSendForground(message: Messsage, to userID: String) -> Maybe<Void> {
+    func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         return .empty()
     }
 }
