@@ -15,5 +15,5 @@ import RxSwift
 
 public protocol MessagingService {
     
-    var receivedMessage: Observable<Messsage> { get }
+    var receivedMessage: Observable<Message> { get }
 }

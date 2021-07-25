@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - HoorayMessage
 
-public protocol HoorayMessage: Messsage {
+public protocol HoorayMessage: Message {
     
     var hoorayID: String { get }
 }

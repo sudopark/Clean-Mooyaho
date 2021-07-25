@@ -37,6 +37,7 @@
 		F6025FF926A9D201007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FF826A9D201007A1AA8 /* UsecaseDoubles.framework */; };
 		F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC406263C5D7F002BA1AC /* UserMessagingPlatform.xcframework */; };
 		F603258826594E3C00E4E769 /* Repositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258726594E3C00E4E769 /* Repositories.swift */; };
+		F6078F0D26AD3C4F000B8AA4 /* PushBaseMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6078F0C26AD3C4F000B8AA4 /* PushBaseMessageService.swift */; };
 		F6101467265708B700D32E38 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101466265708B700D32E38 /* MainView.swift */; };
 		F6101484265792C400D32E38 /* MainSlideMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */; };
 		F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */; };
@@ -136,6 +137,7 @@
 		F6025FF826A9D201007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6032580265940E300E4E769 /* LocationScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LocationScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F603258726594E3C00E4E769 /* Repositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repositories.swift; sourceTree = "<group>"; };
+		F6078F0C26AD3C4F000B8AA4 /* PushBaseMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushBaseMessageService.swift; sourceTree = "<group>"; };
 		F60BB33526745B3F0024FC5C /* MooyahoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MooyahoApp.entitlements; sourceTree = "<group>"; };
 		F6101466265708B700D32E38 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F6101480265792C400D32E38 /* MainSlideMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuRouter.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 		2B8AC404263C5D42002BA1AC /* ServiceImplements */ = {
 			isa = PBXGroup;
 			children = (
+				F6078F0B26AD3C30000B8AA4 /* Messaging */,
 				2B56932A263D10E4009F85E1 /* KakaoServices */,
 				2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */,
 			);
@@ -375,6 +378,14 @@
 				2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6078F0B26AD3C30000B8AA4 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				F6078F0C26AD3C4F000B8AA4 /* PushBaseMessageService.swift */,
+			);
+			path = Messaging;
 			sourceTree = "<group>";
 		};
 		F66E813B265522F000682625 /* Resources */ = {
@@ -552,6 +563,7 @@
 				F6101484265792C400D32E38 /* MainSlideMenuRouter.swift in Sources */,
 				F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */,
 				2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */,
+				F6078F0D26AD3C4F000B8AA4 /* PushBaseMessageService.swift in Sources */,
 				F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */,
 				F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */,
 				F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */,

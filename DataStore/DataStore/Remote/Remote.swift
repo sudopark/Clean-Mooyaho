@@ -127,5 +127,5 @@ public protocol HoorayRemote {
 
 public protocol MessagingRemote {
     
-    func requestSendForground(message: Messsage, to userID: String) -> Maybe<Void>
+    func requestSendForground(message: Message, to userID: String) -> Maybe<Void>
 }

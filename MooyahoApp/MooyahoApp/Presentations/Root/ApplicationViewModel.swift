@@ -26,6 +26,7 @@ public protocol ApplicationViewModel {
     func appWillTerminate()
     
     func apnsTokenUpdated(_ token: Data)
+    func newPushMessageRecived(_ userInfo: [AnyHashable: Any])
 }
 
 
@@ -65,17 +66,10 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
             })
             .disposed(by: self.disposeBag)
         
-        // TODO: bind fcm token -> to usecase
         self.fcmService.currentFCMToken
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] token in
                 self?.applicationUsecase.userFCMTokenUpdated(token)
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.fcmService.receiveNotificationUserInfo
-            .subscribe(onNext: { [weak self] userInfo in
-                self?.applicationUsecase.newNotificationReceived(userInfo)
             })
             .disposed(by: self.disposeBag)
     }
@@ -136,6 +130,10 @@ extension ApplicationViewModelImple {
     
     public func apnsTokenUpdated(_ token: Data) {
         self.fcmService.apnsTokenUpdated(token)
+    }
+    
+    public func newPushMessageRecived(_ userInfo: [AnyHashable: Any]) {
+        self.fcmService.didReceiveDataMessage(userInfo)
     }
 }
 

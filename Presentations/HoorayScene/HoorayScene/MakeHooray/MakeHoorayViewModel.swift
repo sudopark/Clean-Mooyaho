@@ -243,6 +243,7 @@ extension MakeHoorayViewModelImple {
             self?.presentImageSelectMethod()
         }
         self.permissionService.preparePermission(for: .readWrite)
+            .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: askSelectMethod,
                        onError: alertWhenHasNoPermission)
             .disposed(by: self.disposeBag)

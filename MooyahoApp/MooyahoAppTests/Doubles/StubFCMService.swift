@@ -10,6 +10,7 @@ import Foundation
 
 import RxSwift
 
+import Domain
 import FirebaseService
 
 @testable import MooyahoApp
@@ -41,9 +42,13 @@ class StubFCMService: FCMService {
         return stubToken.asObservable()
     }
     
-    let stubUserInfo = PublishSubject<[AnyHashable: Any]>()
-    var receiveNotificationUserInfo: Observable<[AnyHashable : Any]> {
-        return stubUserInfo.asObservable()
+    let mockPushMessages = PublishSubject<Message>()
+    var receivePushMessage: Observable<Message> {
+        return self.mockPushMessages.asObservable()
+    }
+    
+    func didReceiveDataMessage(_ userInfo: [AnyHashable : Any]) {
+        
     }
 }
 

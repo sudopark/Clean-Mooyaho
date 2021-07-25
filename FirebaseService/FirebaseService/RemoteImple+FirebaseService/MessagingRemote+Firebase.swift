@@ -27,9 +27,9 @@ extension FirebaseServiceImple {
         return self.load(query: query)
     }
     
-    public func requestSendForground(message: Messsage, to userID: String) -> Maybe<Void> {
+    public func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         
-        guard let payload = (message as? MessagePayloadConvertable)?.dataPayload() else {
+        guard let payload = (message as? MessagePayloadConvertable)?.asDataPayload() else {
             return .empty()
         }
         
@@ -49,10 +49,10 @@ extension FirebaseServiceImple {
             .flatMap(sendMessages)
     }
     
-    func batchSendForgroundMessages(_ message: Messsage, toUsers userIDs: [String]) {
+    func batchSendForgroundMessages(_ message: Message, toUsers userIDs: [String]) {
         typealias Key = UserDeviceMappingKey
         
-        guard let payload = (message as? MessagePayloadConvertable)?.dataPayload() else { return }
+        guard let payload = (message as? MessagePayloadConvertable)?.asDataPayload() else { return }
         
         let collectionRef = self.fireStoreDB.collection(.userDevice)
         let slices = userIDs.slice(by: 10)
@@ -65,7 +65,8 @@ extension FirebaseServiceImple {
             let sliceDevices = devices.slice(by: maxFcmSendrequestCount)
             return sliceDevices.map {
                 [
-                    "registration_ids": $0.map{ $0.token },
+                    "registration_ids": $0.compactMap{ $0.token },
+                    "content_available": true,
                     "data": payload
                 ]
             }
@@ -85,30 +86,5 @@ extension FirebaseServiceImple {
         guard self.serverKey.isNotEmpty else { return .empty() }
         let endpoint = FcmAPIEndPoint(serverKey: self.serverKey)
         return self.httpAPI.requestResult(endpoint, parameters: payload)
-    }
-}
-
-
-
-protocol MessagePayloadConvertable {
-    
-    func dataPayload() -> [String: Any]
-    
-    func notificationPayload(for device: UserDevices) -> [String: Any]
-}
-
-extension MessagePayloadConvertable {
-    func notificationPayload(for device: UserDevices) -> [String: Any] { [:] }
-}
-
-
-extension HoorayAckMessage: MessagePayloadConvertable {
-    
-    func dataPayload() -> [String : Any] {
-        return [
-            "m_type": "hooray_ack",
-            "ack_uid": self.ackUserID,
-            "hid": self.hoorayID
-        ]
     }
 }
