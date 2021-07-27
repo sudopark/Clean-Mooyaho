@@ -9,18 +9,6 @@
 import Foundation
 
 
-public struct Coordinate {
-    
-    public let latt: Double
-    public let long: Double
-    
-    public init(latt: Double, long: Double) {
-        self.latt = latt
-        self.long = long
-    }
-}
-
-
 public struct Place {
     
     public enum RequireInfoProvider: String {

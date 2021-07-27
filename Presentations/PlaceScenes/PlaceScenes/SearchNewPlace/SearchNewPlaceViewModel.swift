@@ -121,7 +121,7 @@ public final class SearchNewPlaceViewModelImple: SearchNewPlaceViewModel {
     }
     
     fileprivate final class Subjects {
-        let curentUserLocation = BehaviorRelay<LastLocation?>(value: nil)
+        let currentLocation = BehaviorRelay<Location?>(value: nil)
         let cellViewModels = BehaviorRelay<[CVMType]>(value: [])
         let selectPlaceID = BehaviorRelay<String?>(value: nil)
         let isRegistering = BehaviorRelay<Bool>(value: false)
@@ -141,16 +141,19 @@ extension SearchNewPlaceViewModelImple {
         
         let userID = self.userID
         
-        let updateUserLocation: (LastLocation) -> Void = { [weak self] location in
-            self?.subjects.curentUserLocation.accept(location)
+        let updateUserLocation: (Location) -> Void = { [weak self] location in
+            self?.subjects.currentLocation.accept(location)
         }
         
-        let refreshDefaultListNearby: (LastLocation) -> Void = { [weak self] location in
-            let userLocation = UserLocation(userID: userID, lastLocation: location)
+        let refreshDefaultListNearby: (Location) -> Void = { [weak self] location in
+            let lastLocation = LastLocation(lattitude: location.coordinate.latt,
+                                            longitude: location.coordinate.long,
+                                            timeStamp: .now())
+            let userLocation = UserLocation(userID: userID, lastLocation: lastLocation)
             self?.searchNewPlaceUsecase.startSearchPlace(for: .empty, in: userLocation)
         }
         
-        self.userLocationUsecase.fetchUserLocation()
+        self.userLocationUsecase.fetchCurrentLocation()
             .do(onNext: updateUserLocation)
             .subscribe(onSuccess: refreshDefaultListNearby)
             .disposed(by: self.disposeBag)
@@ -161,8 +164,11 @@ extension SearchNewPlaceViewModelImple {
     }
     
     public func search(_ title: String) {
-        guard let location = self.subjects.curentUserLocation.value else { return }
-        let userLocation = UserLocation(userID: self.userID, lastLocation: location)
+        guard let location = self.subjects.currentLocation.value else { return }
+        let lastLocation = LastLocation(lattitude: location.coordinate.latt,
+                                        longitude: location.coordinate.long,
+                                        timeStamp: .now())
+        let userLocation = UserLocation(userID: userID, lastLocation: lastLocation)
         let params: SuggestPlaceQuery = title.isEmpty ? .empty : .some(title)
         self.searchNewPlaceUsecase.startSearchPlace(for: params, in: userLocation)
     }
@@ -257,8 +263,8 @@ extension SearchNewPlaceViewModelImple {
     private var placeCellViewModels: Observable<[PlaceCVM]> {
         
         let applyDistance: ([PlaceCVM]) -> [PlaceCVM] = { [weak self] cellViewModels in
-            guard let userLocation = self?.subjects.curentUserLocation.value else { return cellViewModels }
-            let coordinate = Coordinate(latt: userLocation.lattitude, long: userLocation.longitude)
+            guard let userLocation = self?.subjects.currentLocation.value else { return cellViewModels }
+            let coordinate = userLocation.coordinate
             return cellViewModels.map{ $0.distanceCalculated(from: coordinate) }
                 .sorted(by: { $0.distance < $1.distance })
         }
@@ -304,7 +310,7 @@ extension SearchNewPlaceViewModelImple {
     }
     
     public var currentPlaceMark: String? {
-        return self.subjects.curentUserLocation.value.flatMap { $0.placeMark?.address }
+        return self.subjects.currentLocation.value?.placeMark.address
     }
     
     public var isPlaceSelectConfirmable: Observable<Bool> {

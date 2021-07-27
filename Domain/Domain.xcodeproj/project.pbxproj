@@ -76,6 +76,7 @@
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
 		F637206326653F960089D0B3 /* MemberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206226653F960089D0B3 /* MemberTests.swift */; };
 		F63A3D8A266227E400DAF4AE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A3D89266227E400DAF4AE /* Logger.swift */; };
+		F63AB5D126B06A1E00115A25 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63AB5D026B06A1E00115A25 /* Coordinate.swift */; };
 		F64CCB6A2654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB692654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift */; };
 		F6502DD5266CA4D50027800F /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD4266CA4D50027800F /* Dummies.swift */; };
 		F6646F422690700D00E5A53B /* Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F412690700D00E5A53B /* Policy.swift */; };
@@ -180,6 +181,7 @@
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
 		F637206226653F960089D0B3 /* MemberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTests.swift; sourceTree = "<group>"; };
 		F63A3D89266227E400DAF4AE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		F63AB5D026B06A1E00115A25 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		F64CCB692654F0AD0007F7C6 /* NewHoorayFormBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHoorayFormBuilderTests.swift; sourceTree = "<group>"; };
 		F6502DD4266CA4D50027800F /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		F6646F412690700D00E5A53B /* Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Policy.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 		2B40BF85263F09990031C7A6 /* Locations */ = {
 			isa = PBXGroup;
 			children = (
+				F63AB5D026B06A1E00115A25 /* Coordinate.swift */,
 				2B40BF86263F09AF0031C7A6 /* LocationServiceAccessPermission.swift */,
 				2B40BF8A263F0D070031C7A6 /* UserLocation.swift */,
 				2B40BF8C263F0E400031C7A6 /* LocationMonitoringOption.swift */,
@@ -670,6 +673,7 @@
 				F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
 				F61529672650171A003BCB59 /* Auth.swift in Sources */,
+				F63AB5D126B06A1E00115A25 /* Coordinate.swift in Sources */,
 				F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
 				F615293D264DA999003BCB59 /* HoorayAck+Reaction.swift in Sources */,

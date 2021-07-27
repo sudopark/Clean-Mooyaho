@@ -7,9 +7,7 @@
 //
 
 import Foundation
-
 import CoreLocation
-
 
 extension Coordinate {
     

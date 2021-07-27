@@ -129,8 +129,7 @@ extension ManuallyResigterPlaceViewModelTests {
         // when
         let address = self.waitFirstElement(expect, for: self.viewModel.placeAddress) {
             self.viewModel.requestSelectPosition()
-            var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-            location.placeMark = .init(address: "addr")
+            let location = Location(coordinate: .init(latt: 0, long: 0), placeMark: .userDefine("addr"))
             resultMocking.subject.onNext(location)
         }
         
@@ -147,8 +146,7 @@ extension ManuallyResigterPlaceViewModelTests {
         // when
         let location = self.waitFirstElement(expect, for: self.viewModel.placeLocation) {
             self.viewModel.requestSelectPosition()
-            var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-            location.placeMark = .init(address: "addr")
+            let location = Location(coordinate: .init(latt: 0, long: 0), placeMark: .userDefine("addr"))
             resultMocking.subject.onNext(location)
         }
         
@@ -188,8 +186,7 @@ extension ManuallyResigterPlaceViewModelTests {
         titleResultMocking.subject.onNext("some")
         
         self.viewModel.requestSelectPosition()
-        var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-        location.placeMark = .init(address: "addr")
+        let location = Location(coordinate: .init(latt: 0, long: 0), placeMark: .userDefine("addr"))
         locationResultMocking.subject.onNext(location)
     }
     
@@ -260,7 +257,7 @@ extension ManuallyResigterPlaceViewModelTests {
             return self.resolve(TextInputSceneOutput.self, key: "openPlaceTitleInputScene")
         }
         
-        func openLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectSceneOutput? {
+        func openLocationSelectScene(_ previousInfo: Location?) -> LocationSelectSceneOutput? {
             return self.resolve(LocationSelectSceneOutput.self, key: "openLocationSelectScene")
         }
         
@@ -281,8 +278,8 @@ extension ManuallyResigterPlaceViewModelTests {
     }
     
     class MockLocationSelectScenePresenter: LocationSelectSceneOutput {
-        let subject = PublishSubject<CurrentPosition>()
-        var selectedLocation: Observable<CurrentPosition> {
+        let subject = PublishSubject<Location>()
+        var selectedLocation: Observable<Location> {
             return self.subject.asObservable()
         }
     }
