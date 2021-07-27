@@ -130,19 +130,11 @@ extension LocationMonitoringServiceImple: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager,
                                 didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        var userLocation = LastLocation(lattitude: location.coordinate.latitude,
+        let userLocation = LastLocation(lattitude: location.coordinate.latitude,
                                         longitude: location.coordinate.longitude,
                                         timeStamp: location.timestamp.timeIntervalSince1970)
-        let geoCoder = CLGeocoder()
-        geoCoder.reverseGeocodeLocation(location) { placeMarks, error in
-            guard error == nil, let placeMark = placeMarks?.first else {
-                self.subjects.currentLocation.onNext(userLocation)
-                return
-            }
-            userLocation.placeMark = placeMark.convert()
-            self.subjects.currentLocation.onNext(userLocation)
-            logger.print(level: .debug, "user location changed => \(userLocation.lattitude) x \(userLocation.longitude)")
-        }
+        self.subjects.currentLocation.onNext(userLocation)
+        logger.print(level: .debug, "user location changed => \(userLocation.lattitude) x \(userLocation.longitude)")
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -226,19 +218,5 @@ private extension CLAuthorizationStatus {
     
     var isReady: Bool {
         return self == .authorizedWhenInUse || self == .authorizedAlways
-    }
-}
-
-
-extension CLPlacemark {
-    
-    public func convert() -> LastLocation.PlaceMark {
-        
-        return .init(city: self.administrativeArea,
-                     placeName: self.name,
-                     subLocality: self.subLocality,
-                     thoroughfare: self.thoroughfare,
-                     locality: self.locality,
-                     postalCode: self.postalCode)
     }
 }

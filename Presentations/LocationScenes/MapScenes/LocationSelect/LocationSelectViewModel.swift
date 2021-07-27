@@ -20,14 +20,16 @@ import CommonPresenting
 public protocol LocationSelectViewModel: AnyObject {
 
     // interactor
-    func selectCurrentLocation(_ position: CurrentPosition)
-    func updateAddress(_ text: String)
+    func selectCurrentLocation(_ coordinate: Coordinate)
+    func updateAddress(_ address: String)
     func confirmSelect()
     
     // presenter
-    var previousSelectedInfo: PreviousSelectedLocationInfo? { get }
+    var previousSelectedInfo: Location? { get }
     var isConfirmable: Observable<Bool> { get }
-    var selectedLocation: Observable<CurrentPosition> { get }
+    var addrees: Observable<String> { get }
+    
+    var selectedLocation: Observable<Location> { get }
 }
 
 
@@ -35,17 +37,25 @@ public protocol LocationSelectViewModel: AnyObject {
 
 public final class LocationSelectViewModelImple: LocationSelectViewModel {
     
-    private let previousInfo: PreviousSelectedLocationInfo?
+    private let previousInfo: Location?
+    private let throttleInterval: Int
+    private let userLocationUsecase: UserLocationUsecase
     private let router: LocationSelectRouting
     
-    public init(_ previousInfo: PreviousSelectedLocationInfo?,
+    public init(_ previousInfo: Location?,
+                throttleInterval: Int = 700,
+                userLocationUsecase: UserLocationUsecase,
                 router: LocationSelectRouting) {
         self.previousInfo = previousInfo
+        self.throttleInterval = throttleInterval
+        self.userLocationUsecase = userLocationUsecase
         self.router = router
         
+        self.internalBind()
+        
         guard let previous = previousInfo else { return }
-        self.subjects.position.accept((previous.latt, previous.long))
-        self.subjects.address.accept(previous.address)
+        self.subjects.centerCoordinate.onNext(previous.coordinate)
+        self.subjects.centerLocation.accept(previous)
     }
     
     deinit {
@@ -53,13 +63,35 @@ public final class LocationSelectViewModelImple: LocationSelectViewModel {
     }
     
     fileprivate final class Subjects {
-        let position = BehaviorRelay<(Double, Double)?>(value: nil)
-        let address = BehaviorRelay<String?>(value: nil)
-        let selectedPosition = PublishSubject<CurrentPosition>()
+        let centerCoordinate = BehaviorSubject<Coordinate?>(value: nil)
+        let centerLocation = BehaviorRelay<Location?>(value: nil)
+        let selectedPosition = PublishSubject<Location>()
     }
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    private func internalBind() {
+        
+        let fetchPlaceMark: (Coordinate) -> Observable<Location> = { [weak self] coord in
+            guard let self = self else { return .empty() }
+            return self.userLocationUsecase.convertToPlaceMark(coord)
+                .catch{ _ in .empty() }
+                .map{ Location(coordinate: coord, placeMark: $0) }
+                .asObservable()
+        }
+        
+        let interval = self.throttleInterval
+        self.subjects.centerCoordinate.compactMap{ $0 }
+            .throttle(.milliseconds(interval), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .flatMapLatest(fetchPlaceMark)
+            .subscribe(onNext: { [weak self] location in
+                self?.subjects.centerLocation.accept(location)
+            })
+            .disposed(by: self.disposeBag)
+        
+    }
 }
 
 
@@ -67,26 +99,21 @@ public final class LocationSelectViewModelImple: LocationSelectViewModel {
 
 extension LocationSelectViewModelImple {
     
-    public func selectCurrentLocation(_ position: CurrentPosition) {
-        
-        let pair = (position.lattitude, position.longitude)
-        let address = position.placeMark?.address
-        self.subjects.position.accept(pair)
-        self.subjects.address.accept(address)
+    public func selectCurrentLocation(_ coordinate: Coordinate) {
+        self.subjects.centerCoordinate.onNext(coordinate)
     }
     
-    public func updateAddress(_ text: String) {
-        
-        self.subjects.address.accept(text)
+    public func updateAddress(_ address: String) {
+        guard var location = self.subjects.centerLocation.value else { return }
+        location.placeMark = .userDefine(address)
+        self.subjects.centerLocation.accept(location)
     }
     
     public func confirmSelect() {
-        guard let position = self.subjects.position.value,
-              let address = self.subjects.address.value, address.isNotEmpty else { return }
-        var currentPosition = CurrentPosition(lattitude: position.0, longitude: position.1, timeStamp: .now())
-        currentPosition.placeMark = .init(address: address)
+        guard let location = self.subjects.centerLocation.value else { return }
+        
         self.router.closeScene(animated: true) { [weak self] in
-            self?.subjects.selectedPosition.onNext(currentPosition)
+            self?.subjects.selectedPosition.onNext(location)
         }
     }
 }
@@ -96,23 +123,24 @@ extension LocationSelectViewModelImple {
 
 extension LocationSelectViewModelImple {
     
-    public var previousSelectedInfo: PreviousSelectedLocationInfo? {
+    public var previousSelectedInfo: Location? {
         return self.previousInfo
+    }
+    
+    public var addrees: Observable<String> {
+        return self.subjects.centerLocation
+            .compactMap{ $0?.placeMark.address }
+            .distinctUntilChanged()
     }
     
     public var isConfirmable: Observable<Bool> {
         
-        let checkSelectedPlaceInfo: ((Double, Double)?, String?) -> Bool = { pair, address in
-            return pair != nil && address?.isNotEmpty == true
-        }
-        
-        return Observable.combineLatest(self.subjects.position,
-                                        self.subjects.address,
-                                        resultSelector: checkSelectedPlaceInfo)
+        return self.subjects.centerLocation
+            .map{ $0?.placeMark.address.isNotEmpty == true }
             .distinctUntilChanged()
     }
     
-    public var selectedLocation: Observable<CurrentPosition> {
+    public var selectedLocation: Observable<Location> {
         return self.subjects.selectedPosition.compactMap{ $0 }
     }
 }

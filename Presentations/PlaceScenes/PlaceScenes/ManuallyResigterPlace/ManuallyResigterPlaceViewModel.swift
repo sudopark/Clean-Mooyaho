@@ -110,19 +110,19 @@ extension ManuallyResigterPlaceViewModelImple {
     public func requestSelectPosition() {
         
         let form = self.subjects.pendingForm.value
-        let info: PreviousSelectedLocationInfo? = {
-            guard let position = form?.coordinate, let addres = form?.address else { return nil }
-            return .init(latt: position.latt, long: position.long, address: addres)
+        let info: Location? = {
+            guard let coordinate = form?.coordinate, let address = form?.address else { return nil }
+            return .init(coordinate: coordinate, placeMark: .userDefine(address))
         }()
         guard let result = self.router.openLocationSelectScene(info) else { return }
         self.router
             .waitFirstEventAndClosePresented(result.selectedLocation)
             .subscribe(onNext: { [weak self] location in
                 self?.updateForm{
-                    $0.address = location.placeMark?.address ?? ""
-                    $0.coordinate = .init(latt: location.lattitude, long: location.longitude)
+                    $0.address = location.placeMark.address
+                    $0.coordinate = location.coordinate
                 }
-                self?.locationMarkInput?.updatePlaceMark(at: .init(latt: location.lattitude, long: location.longitude))
+                self?.locationMarkInput?.updatePlaceMark(at: location.coordinate)
             })
             .disposed(by: self.disposeBag)
     }

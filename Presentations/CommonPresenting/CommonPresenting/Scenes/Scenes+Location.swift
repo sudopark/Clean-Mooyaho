@@ -44,7 +44,7 @@ public protocol NearbySceneBuilable {
 //
 public protocol LocationSelectSceneOutput {
     
-    var selectedLocation: Observable<CurrentPosition> { get }
+    var selectedLocation: Observable<Location> { get }
 }
 
 
@@ -57,21 +57,9 @@ public protocol LocationSelectScene: Scenable {
     var output: LocationSelectSceneOutput? { get }
 }
 
-public struct PreviousSelectedLocationInfo {
-    public let latt: Double
-    public let long: Double
-    public let address: String
-    
-    public init(latt: Double, long: Double, address: String) {
-        self.latt = latt
-        self.long = long
-        self.address = address
-    }
-}
-
 public protocol LocationSelectSceneBuilable {
     
-    func makeLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectScene
+    func makeLocationSelectScene(_ previousInfo: Location?) -> LocationSelectScene
 }
 
 

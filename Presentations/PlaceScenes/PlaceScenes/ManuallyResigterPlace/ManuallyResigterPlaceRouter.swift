@@ -25,7 +25,7 @@ public protocol ManuallyResigterPlaceRouting: Routing {
     
     func openPlaceTitleInputScene(_ mode: TextInputMode) -> TextInputSceneOutput?
     
-    func openLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectSceneOutput?
+    func openLocationSelectScene(_ previousInfo: Location?) -> LocationSelectSceneOutput?
     
     func openTagSelectScene(_ tags: [Tag], total: [Tag]) -> SelectTagSceneOutput?
 }
@@ -67,7 +67,7 @@ extension ManuallyResigterPlaceRouter {
         return next.output
     }
     
-    public func openLocationSelectScene(_ previousInfo: PreviousSelectedLocationInfo?) -> LocationSelectSceneOutput? {
+    public func openLocationSelectScene(_ previousInfo: Location?) -> LocationSelectSceneOutput? {
         guard let next = self.nextScenesBuilder?.makeLocationSelectScene(previousInfo) else { return nil }
         self.currentScene?.present(next, animated: true, completion: nil)
         return next.output

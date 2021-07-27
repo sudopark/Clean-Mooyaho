@@ -32,7 +32,6 @@ public final class LocationSelectViewController: BaseViewController, LocationSel
     let addressTextView = UITextView()
     let confirmButton = ConfirmButton(type: .system)
 
-    private let centerCoordinate = PublishSubject<CLLocationCoordinate2D>()
     let viewModel: LocationSelectViewModel
     
     public init(viewModel: LocationSelectViewModel) {
@@ -70,26 +69,14 @@ extension LocationSelectViewController {
         self.bottomSlideMenuView.bindKeyboardFrameChangesIfPossible()?
             .disposed(by: self.disposeBag)
         
+        self.viewModel.addrees
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.addressTextView.rx.text)
+            .disposed(by: self.disposeBag)
+        
         self.addressTextView.rx.text.orEmpty
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.updateAddress(text)
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.centerCoordinate
-            .flatMapLatest { location -> Observable<(CLLocationCoordinate2D, String?)> in
-                print("location: \(location)")
-                return location.placeMark().map{ (location, $0) }
-            }
-            .compactMap { pair -> (CLLocationCoordinate2D, String)? in
-                guard let addr = pair.1 else { return nil }
-                return (pair.0, addr)
-            }
-            .subscribe(onNext: { [weak self] pair in
-                let position = CurrentPosition(lattitude: pair.0.latitude, longitude: pair.0.longitude, timeStamp: .now())
-                self?.viewModel.selectCurrentLocation(position)
-                self?.viewModel.updateAddress(pair.1)
-                self?.addressTextView.text = pair.1
             })
             .disposed(by: self.disposeBag)
         
@@ -115,9 +102,8 @@ extension LocationSelectViewController {
             self.mapView.updateCameraToUserLocation(zoomDistanceLevel: 150, with: false)
             return
         }
-        self.mapView.updateCameraPosition(latt: info.latt, long: info.long,
+        self.mapView.updateCameraPosition(latt: info.coordinate.latt, long: info.coordinate.long,
                                           zoomDistanceLevel: 150, with: false)
-        self.addressTextView.text = info.address
     }
 }
 
@@ -125,7 +111,7 @@ extension LocationSelectViewController: MKMapViewDelegate {
     
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let center = mapView.centerCoordinate
-        self.centerCoordinate.onNext(center)
+        self.viewModel.selectCurrentLocation(.init(latt: center.latitude, long: center.longitude))
         self.view.endEditing(true)
     }
 }
