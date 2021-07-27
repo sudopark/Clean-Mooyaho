@@ -11,6 +11,7 @@ import RxSwift
 
 import Domain
 import UnitTestHelpKit
+import UsecaseDoubles
 
 @testable import MapScenes
 
@@ -18,15 +19,19 @@ import UnitTestHelpKit
 class LocationSelectViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var mockUsecase: MockUserLocationUsecase!
     var viewModel: LocationSelectViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.viewModel = .init(nil, router: SpyRouter())
+        self.mockUsecase = .init()
+        self.viewModel = .init(nil, throttleInterval: 0,
+                               userLocationUsecase: self.mockUsecase, router: SpyRouter())
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.mockUsecase = nil
         self.viewModel = nil
     }
 }
@@ -40,9 +45,7 @@ extension LocationSelectViewModelTests {
         
         // when
         let flags = self.waitElements(expect, for: self.viewModel.isConfirmable) {
-            var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-            location.placeMark = .init(address: "some")
-            self.viewModel.selectCurrentLocation(location)
+            self.viewModel.selectCurrentLocation(.init(latt: 0, long: 0))
         }
         
         // then
@@ -56,10 +59,7 @@ extension LocationSelectViewModelTests {
         
         // when
         let flags = self.waitElements(expect, for: self.viewModel.isConfirmable) {
-            var location = CurrentPosition(lattitude: 0, longitude: 0, timeStamp: 0)
-            location.placeMark = .init(address: "some")
-            self.viewModel.selectCurrentLocation(location)
-            
+            self.viewModel.selectCurrentLocation(.init(latt: 0, long: 0))
             self.viewModel.updateAddress("")
         }
         

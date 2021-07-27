@@ -46,4 +46,8 @@ open class MockUserLocationUsecase: UserLocationUsecase, Mocking {
     open var isAuthorized: Observable<Bool> {
         return self.isAuthorizedSubject.asObservable()
     }
+    
+    public func convertToPlaceMark(_ coordinate: Coordinate) -> Maybe<PlaceMark> {
+        return .just(PlaceMark(address: "user define address"))
+    }
 }
