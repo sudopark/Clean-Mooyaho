@@ -25,6 +25,7 @@ public final class HoorayUsecaseImple: HoorayUsecase,
     public let hoorayRepository: HoorayRepository
     public let messagingService: MessagingService
     public let authInfoProvider: AuthInfoProvider
+    public let publishedHooray: PublishSubject<Hooray> = .init()
     
     public init(authInfoProvider: AuthInfoProvider, memberUsecase: MemberUsecase,
                 hoorayRepository: HoorayRepository, messagingService: MessagingService) {

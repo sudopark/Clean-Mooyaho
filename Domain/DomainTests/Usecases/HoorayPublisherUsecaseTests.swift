@@ -215,6 +215,25 @@ extension HoorayPublisherUsecaseTests {
         // then
         XCTAssertNotNil(newHooray)
     }
+    
+    func testUsecase_whenAfterPublishNewHooray_emitEvent() {
+        // given
+        let expect = expectation(description: "새로운 후레이 발급 이후에 이벤트 방출")
+        self.mockHoorayRepository.register(key: "requestPublishHooray") {
+            return Maybe<Hooray>.just(Hooray.dummy(0))
+        }
+        
+        // when
+        let newHooray = self.waitFirstElement(expect, for: self.usecase.newHoorayPublished) {
+            let newForm = NewHoorayForm(publisherID: "dummy")
+            self.usecase.publish(newHooray: newForm, withNewPlace: nil)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(newHooray)
+    }
 }
 
 
