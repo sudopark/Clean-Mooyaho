@@ -57,10 +57,10 @@ extension NearbyViewController {
     
     private func bind() {
         
-        self.viewModel.cameraPosition
+        self.viewModel.moveCamera
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] camera in
-                self?.updateCameraPosition(camera)
+            .drive(onNext: { [weak self] movement in
+                self?.mapView.moveCamera(using: movement)
             })
             .disposed(by: self.disposeBag)
         
@@ -75,14 +75,6 @@ extension NearbyViewController {
                 self?.viewModel.preparePermission()
             })
             .disposed(by: self.disposeBag)
-    }
-    
-    private func updateCameraPosition(_ position: MapCameraPosition) {
-        guard let center = position.center else {
-            self.mapView.updateCameraToUserLocation()
-            return
-        }
-        self.mapView.updateCameraPosition(latt: center.latitude, long: center.longitude)
     }
 }
 
@@ -128,19 +120,3 @@ extension NearbyViewController: MKMapViewDelegate {
         }
     }
 }
-
-
-private extension MapCameraPosition {
-    
-    var center: CLLocationCoordinate2D? {
-        switch self {
-        case let .default(position):
-            return .init(latitude: position.latt, longitude: position.long)
-         case let .userLocation(position):
-            guard let position = position else { return nil }
-            return .init(latitude: position.latt, longitude: position.long)
-        }
-    }
-}
-
-class UserLocationAnnotation: MKPointAnnotation { }

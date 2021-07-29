@@ -9,27 +9,37 @@ import UIKit
 
 import MapKit
 
+import Domain
+
 
 extension MKMapView {
     
-    
-    public func updateCameraToUserLocation(zoomDistanceLevel meters: Double = 1_500,
-                                           with animation: Bool = true) {
-        let location = self.userLocation
-        self.updateCameraPosition(location.coordinate, distance: meters, animation: animation)
+    public func moveCamera(using movement: MapCameramovement) {
+        switch movement.center {
+        case .currentUserPosition:
+            self.moveCameraToUserLocation(zoomDistanceLevel: movement.radius, with: movement.withAnimation)
+        case let .coordinate(coord):
+            self.moveCameraPosition(coord, zoomDistanceLevel: movement.radius, with: movement.withAnimation)
+        }
     }
     
-    public func updateCameraPosition(latt: Double, long: Double,
-                                     zoomDistanceLevel meters: Double = 1_500,
-                                     with animation: Bool = true) {
-        let center = CLLocationCoordinate2D(latitude: latt, longitude: long)
-        self.updateCameraPosition(center, distance: meters, animation: animation)
+    private func moveCameraToUserLocation(zoomDistanceLevel meters: Double,
+                                           with animation: Bool) {
+        let location = self.userLocation
+        self.moveCameraPosition(location.coordinate, distance: meters, animation: animation)
+    }
+    
+    private func moveCameraPosition(_ coordinate: Coordinate,
+                                    zoomDistanceLevel meters: Double,
+                                     with animation: Bool) {
+        let center = CLLocationCoordinate2D(latitude: coordinate.latt, longitude: coordinate.long)
+        self.moveCameraPosition(center, distance: meters, animation: animation)
         
     }
     
-    private func updateCameraPosition(_ center: CLLocationCoordinate2D,
-                                      distance: Double,
-                                      animation: Bool) {
+    private func moveCameraPosition(_ center: CLLocationCoordinate2D,
+                                    distance: Double,
+                                    animation: Bool) {
         let distance = CLLocationDistance(distance)
         let region = MKCoordinateRegion(center: center,
                                         latitudinalMeters: distance,

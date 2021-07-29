@@ -26,22 +26,27 @@ open class MockHoorayUsecase: HoorayUsecase, Mocking {
         return self.resolve(key: "publish:newHooray") ?? .empty()
     }
     
-    public let stubHoorayAck = PublishSubject<HoorayAckMessage>()
+    public let mockHoorayAck = PublishSubject<HoorayAckMessage>()
     open var receiveHoorayAck: Observable<HoorayAckMessage> {
-        return stubHoorayAck.asObservable()
+        return mockHoorayAck.asObservable()
     }
     
-    public let stubHoorayReaction = PublishSubject<HoorayReactionMessage>()
+    public let mockHoorayReaction = PublishSubject<HoorayReactionMessage>()
     open var receiveHoorayReaction: Observable<HoorayReactionMessage> {
-        return stubHoorayReaction.asObservable()
+        return mockHoorayReaction.asObservable()
     }
     
     open func loadNearbyRecentHoorays(_ userID: String, at location: Coordinate) -> Maybe<[Hooray]> {
         return self.resolve(key: "loadNearbyRecentHoorays") ?? .empty()
     }
     
-    public let stubNewHooray = PublishSubject<NewHoorayMessage>()
+    public let mockNewHooray = PublishSubject<NewHoorayMessage>()
     open var newReceivedHooray: Observable<NewHoorayMessage> {
-        return stubNewHooray.asObservable()
+        return mockNewHooray.asObservable()
+    }
+    
+    private let mockPublishedNewHooray = PublishSubject<Hooray>()
+    public var newHoorayPublished: Observable<Hooray> {
+        return self.mockPublishedNewHooray.asObservable()
     }
 }

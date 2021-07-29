@@ -51,12 +51,12 @@ extension NearbyViewModelTests {
         }
         
         // when
-        let moving = self.waitFirstElement(expect, for: self.viewModel.cameraPosition) {
+        let moving = self.waitFirstElement(expect, for: self.viewModel.moveCamera) {
             self.viewModel.preparePermission()
         }
         
         // then
-        if case .default = moving {
+        if case .coordinate = moving?.center {
             XCTAssert(true)
         } else {
             XCTFail("기대하는 카메라 위치가 아님")
@@ -78,12 +78,12 @@ extension NearbyViewModelTests {
         }
         
         // when
-        let moving = self.waitFirstElement(expect, for: self.viewModel.cameraPosition) {
+        let moving = self.waitFirstElement(expect, for: self.viewModel.moveCamera) {
             self.viewModel.preparePermission()
         }
         
         // then
-        if case .userLocation = moving {
+        if case .coordinate = moving?.center {
             XCTAssert(true)
         } else {
             XCTFail("기대하는 카메라 위치가 아님")
@@ -103,12 +103,12 @@ extension NearbyViewModelTests {
         }
         
         // when
-        let moving = self.waitFirstElement(expect, for: self.viewModel.cameraPosition) {
+        let moving = self.waitFirstElement(expect, for: self.viewModel.moveCamera) {
             self.viewModel.preparePermission()
         }
         
         // then
-        if case .default = moving {
+        if case .coordinate = moving?.center {
             XCTAssert(true)
         } else {
             XCTFail("기대하는 카메라 위치가 아님")
@@ -144,12 +144,12 @@ extension NearbyViewModelTests {
         }
         
         // when
-        let moving = self.waitFirstElement(expect, for: self.viewModel.cameraPosition) {
+        let moving = self.waitFirstElement(expect, for: self.viewModel.moveCamera) {
             self.viewModel.preparePermission()
         }
         
         // then
-        if case .default = moving {
+        if case .coordinate = moving?.center {
             XCTAssert(true)
         } else {
             XCTFail("기대하는 카메라 위치가 아님")

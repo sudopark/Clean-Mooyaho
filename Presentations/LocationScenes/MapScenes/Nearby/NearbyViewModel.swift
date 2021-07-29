@@ -16,11 +16,6 @@ import CommonPresenting
 
 // MARK: - NearbyViewModel
 
-public enum MapCameraPosition {
-    case `default`(_ position: Coordinate)
-    case userLocation(_ manualPosition: Coordinate?)
-}
-
 public protocol NearbyViewModel: AnyObject {
 
     // interactor
@@ -29,7 +24,7 @@ public protocol NearbyViewModel: AnyObject {
     func moveMapCameraToCurrentUserPosition()
     
     // presenter
-    var cameraPosition: Observable<MapCameraPosition> { get }
+    var moveCamera: Observable<MapCameramovement> { get }
     var alertUnavailToUseService: Observable<Void> { get }
 }
 
@@ -44,7 +39,7 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     fileprivate final class Subjects {
         // define subjects
-        let moveCameraPosition = PublishSubject<MapCameraPosition>()
+        let moveCameraPosition = PublishSubject<MapCameramovement>()
         @AutoCompletable var unavailToUse = PublishSubject<Void>()
         @AutoCompletable var placeMark = PublishSubject<String>()
     }
@@ -83,18 +78,24 @@ extension NearbyViewModelImple {
             }
         }
         
-        let setupCameraPosition: (Bool) -> Maybe<MapCameraPosition> = { [weak self] grant in
+        let setupCameraPosition: (Bool) -> Maybe<Coordinate?> = { [weak self] grant in
             guard let self = self else { return .empty() }
-            return grant ? self.locationUsecase.fetchUserLocation().map{ .userLocation($0.coordinate) }
-                : .just(.default(self.defaultLocation))
+            return grant ? self.locationUsecase.fetchUserLocation().map{ $0.coordinate }
+                : .just(nil)
         }
         
-        let handleFetchResult: (MapCameraPosition) -> Void = { [weak self] position in
+        let handleFetchResult: (Coordinate?) -> Void = { [weak self] coordinate in
+            guard let self = self else { return }
+            let isGrantDenied = coordinate == nil
             
-            self?.subjects.moveCameraPosition.onNext(position)
+            let center = coordinate ?? self.defaultLocation
+            let movement = MapCameramovement(center: .coordinate(center), withAnimation: false)
             
-            guard case .default = position else { return }
-            self?.subjects.unavailToUse.onNext()
+            self.subjects.moveCameraPosition.onNext(movement)
+            
+            isGrantDenied.then {
+                self.subjects.unavailToUse.onNext()
+            }
         }
         
         self.locationUsecase.checkHasPermission()
@@ -109,7 +110,8 @@ extension NearbyViewModelImple {
     }
     
     public func moveMapCameraToCurrentUserPosition() {
-        self.subjects.moveCameraPosition.onNext(.userLocation(nil))
+        let movement = MapCameramovement(center: .currentUserPosition)
+        self.subjects.moveCameraPosition.onNext(movement)
     }
 }
 
@@ -118,7 +120,7 @@ extension NearbyViewModelImple {
 
 extension NearbyViewModelImple {
     
-    public var cameraPosition: Observable<MapCameraPosition> {
+    public var moveCamera: Observable<MapCameramovement> {
         return self.subjects.moveCameraPosition.asObservable()
     }
     
