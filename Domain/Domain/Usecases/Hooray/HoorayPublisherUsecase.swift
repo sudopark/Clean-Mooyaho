@@ -28,6 +28,8 @@ public protocol HoorayPublisherUsecase {
     func publish(newHooray hoorayForm: NewHoorayForm,
                  withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray>
     
+    var newHoorayPublished: Observable<Hooray> { get }
+    
     var receiveHoorayAck: Observable<HoorayAckMessage> { get }
     
     var receiveHoorayReaction: Observable<HoorayReactionMessage> { get }
@@ -40,6 +42,7 @@ public protocol HoorayPubisherUsecaseDefaultImpleDependency: AnyObject {
     var memberUsecase: MemberUsecase { get }
     var hoorayRepository: HoorayRepository { get }
     var messagingService: MessagingService { get }
+    var publishedHooray: PublishSubject<Hooray> { get }
 }
 
 
@@ -94,8 +97,13 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
     
     public func publish(newHooray hoorayForm: NewHoorayForm,
                         withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray> {
-         
+        
+        let emitPublishedEvent: (Hooray) -> Void = { [weak self] hooray in
+            self?.publishedHooray.onNext(hooray)
+        }
+        
         return self.hoorayRepository.requestPublishHooray(hoorayForm, withNewPlace: placeForm)
+            .do(afterNext: emitPublishedEvent)
     }
 }
 
@@ -103,6 +111,10 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
 // MARK: HoorayPubisher default implementation -> handle hooray responses
 
 extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
+    
+    public var newHoorayPublished: Observable<Hooray> {
+        return self.publishedHooray.asObservable()
+    }
     
     public var receiveHoorayAck: Observable<HoorayAckMessage> {
         return self.messagingService.receivedMessage
