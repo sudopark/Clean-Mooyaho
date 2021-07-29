@@ -59,9 +59,10 @@ extension LocationMarkViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] coordinate in
                 self?.updateMarker(coordinate)
-                self?.mapView
-                    .updateCameraPosition(latt: coordinate.latt, long: coordinate.long,
-                                          zoomDistanceLevel: 100, with: false)
+                
+                let movement = MapCameramovement(center: .coordinate(coordinate),
+                                                 radius: 100, withAnimation: false)
+                self?.mapView.moveCamera(using: movement)
             })
             .disposed(by: self.disposeBag)
     }

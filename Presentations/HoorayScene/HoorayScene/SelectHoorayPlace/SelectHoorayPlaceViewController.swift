@@ -118,13 +118,10 @@ extension SelectHoorayPlaceViewController {
     
     private func bindMapView() {
         
-        self.viewModel.cameraFocus
+        self.viewModel.moveCamera
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] focus in
-                self?.selectView.headerView.mapView
-                    .updateCameraPosition(latt: focus.coordinate.latt,
-                                          long: focus.coordinate.long,
-                                          zoomDistanceLevel: 500, with: focus.animation)
+            .drive(onNext: { [weak self] movement in
+                self?.selectView.headerView.mapView.moveCamera(using: movement)
             })
             .disposed(by: self.disposeBag)
 

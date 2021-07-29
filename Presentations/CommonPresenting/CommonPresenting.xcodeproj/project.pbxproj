@@ -31,7 +31,7 @@
 		F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */; };
 		F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */; };
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
-		F62202BE269972FE00B26B50 /* MapCameraFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202BD269972FE00B26B50 /* MapCameraFocus.swift */; };
+		F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202BD269972FE00B26B50 /* MapCameramovement.swift */; };
 		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
 		F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* IntegratedImageView.swift */; };
 		F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */; };
@@ -120,7 +120,7 @@
 		F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureDismissInteractors.swift; sourceTree = "<group>"; };
 		F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
-		F62202BD269972FE00B26B50 /* MapCameraFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCameraFocus.swift; sourceTree = "<group>"; };
+		F62202BD269972FE00B26B50 /* MapCameramovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCameramovement.swift; sourceTree = "<group>"; };
 		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
 		F637205526650B440089D0B3 /* IntegratedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedImageView.swift; sourceTree = "<group>"; };
 		F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
@@ -279,7 +279,7 @@
 				F610146B26570B7B00D32E38 /* AutoLayout */,
 				F610146A26570B6F00D32E38 /* LeakDetector */,
 				F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */,
-				F62202BD269972FE00B26B50 /* MapCameraFocus.swift */,
+				F62202BD269972FE00B26B50 /* MapCameramovement.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -535,7 +535,7 @@
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
 				F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
-				F62202BE269972FE00B26B50 /* MapCameraFocus.swift in Sources */,
+				F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */,
 				F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
 				F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */,
