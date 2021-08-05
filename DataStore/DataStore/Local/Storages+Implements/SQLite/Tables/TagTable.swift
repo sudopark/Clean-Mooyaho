@@ -46,14 +46,14 @@ struct TagTable: Table {
         return "tags"
     }
     
-    typealias Model = Tag
+    typealias EntityType = Tag
     typealias ColumnType = Columns
     
-    static func scalar(_ model: Tag, for column: Columns) -> ScalarType? {
+    static func scalar(_ entity: EntityType, for column: Columns) -> ScalarType? {
         switch column {
-        case .type: return model.tagType.rawValue
-        case .keyword: return model.keyword
-        case .emoji: return model.emoji
+        case .type: return entity.tagType.rawValue
+        case .keyword: return entity.keyword
+        case .emoji: return entity.emoji
         }
     }
 }

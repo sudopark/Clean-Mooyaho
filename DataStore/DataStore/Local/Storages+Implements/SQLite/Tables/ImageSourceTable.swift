@@ -45,7 +45,7 @@ extension ImageSource: RowValueType {
 
 struct ImageSourceTable: Table {
     
-    struct DataModel: RowValueType {
+    struct Entity: RowValueType {
         let ownerID: String
         let source: ImageSource?
         
@@ -76,18 +76,18 @@ struct ImageSourceTable: Table {
         }
     }
     
-    typealias Model = DataModel
+    typealias EntityType = Entity
     typealias ColumnType = Column
     
     static var tableName: String { "image_sources" }
     
-    static func scalar(_ model: DataModel, for column: Column) -> ScalarType? {
+    static func scalar(_ entity: Entity, for column: Column) -> ScalarType? {
         switch column {
-        case .ownerID: return model.ownerID
-        case .sourcetype: return model.source?.type
-        case .path: return model.source?.path
-        case .description: return model.source?.description
-        case .emoji: return model.source?.emoji
+        case .ownerID: return entity.ownerID
+        case .sourcetype: return entity.source?.type
+        case .path: return entity.source?.path
+        case .description: return entity.source?.description
+        case .emoji: return entity.source?.emoji
         }
     }
 }
