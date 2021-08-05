@@ -76,7 +76,7 @@ extension DataModelStorageImple {
         let images = ImageSourceTable.self
         let imageQuery = images.selectSome{ [$0.sourcetype, $0.path, $0.description, $0.emoji] }
         
-        let joinQuery = memberQuery.innerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
+        let joinQuery = memberQuery.outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
         let fetchedMembers: Maybe<[Member]> = self.sqliteService.run(execute: { try $0.load(joinQuery) })
         
         return fetchedMembers.map{ $0.first }
@@ -85,17 +85,17 @@ extension DataModelStorageImple {
     public func save(member: Member) -> Maybe<Void> {
         
         let images = ImageSourceTable.self
-        let iconModel = ImageSourceTable.DataModel(member.uid, source: member.icon)
+        let iconEntity = ImageSourceTable.Entity(member.uid, source: member.icon)
         
-        let members = MemberTable.self
-        let memberPropertyModel = MemberTable.DataModel(member.uid, nickName: member.nickName, intro: member.introduction)
+        let memberTable = MemberTable.self
+        let memberEntity = MemberTable.Entity(member.uid, nickName: member.nickName, intro: member.introduction)
         
         let insertMember = self.sqliteService
-            .run{ try $0.insertOne(members, model: memberPropertyModel, shouldReplace: true) }
+            .run{ try $0.insertOne(memberTable, entity: memberEntity, shouldReplace: true) }
         
         let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.run{ try $0.insertOne(images, model: iconModel, shouldReplace: true) }
+            return self.sqliteService.run{ try $0.insertOne(images, entity: iconEntity, shouldReplace: true) }
                 .catchAndReturn(())
         }
         
@@ -137,17 +137,17 @@ extension DataModelStorageImple {
         
         let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
         
-        let placeInfo = places.DataModel(place: place)
-        let savePlace = self.sqliteService.run{ try $0.insert(places, models: [placeInfo]) }
+        let placeInfo = places.EntityType(place: place)
+        let savePlace = self.sqliteService.run{ try $0.insert(places, entities: [placeInfo]) }
         let thenSaveThumbnails: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            let imageModel = ImageSourceTable.DataModel(place.reporterID, source: place.thumbnail)
-            return self.sqliteService.run { try $0.insert(images, models: [imageModel]) }
+            let imageModel = ImageSourceTable.Entity(place.reporterID, source: place.thumbnail)
+            return self.sqliteService.run { try $0.insert(images, entities: [imageModel]) }
                 .catchAndReturn(())
         }
         let thenSaveTags: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.run { try $0.insert(tags, models: place.placeCategoryTags) }
+            return self.sqliteService.run { try $0.insert(tags, entities: place.placeCategoryTags) }
                 .catchAndReturn(())
         }
         
@@ -215,5 +215,18 @@ private extension Place {
                   address: info.address, contact: info.contact, categoryTags: tags,
                   reporterID: info.reporterID, infoProvider: info.infoProvider,
                   createdAt: info.createAt, pickCount: info.placePickCount, lastPickedAt: info.lastPickedAt)
+    }
+}
+
+extension Member: RowValueType {
+    
+    public init(_ cursor: CursorIterator) throws {
+        let uid: String = try cursor.next().unwrap()
+        let nickName: String = try cursor.next().unwrap()
+        let intro: String? = cursor.next()
+        let image: ImageSource? = try? ImageSource(cursor)
+        var member = Member(uid: uid, nickName: nickName, icon: image)
+        member.introduction = intro
+        self = member
     }
 }

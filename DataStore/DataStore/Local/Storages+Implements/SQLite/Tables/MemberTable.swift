@@ -15,7 +15,7 @@ import Domain
 
 struct MemberTable: Table {
     
-    struct DataModel: RowValueType {
+    struct Entity: RowValueType {
         let uid: String
         let nickName: String?
         let introduction: String?
@@ -47,12 +47,12 @@ struct MemberTable: Table {
         }
     }
     
-    typealias Model = DataModel
+    typealias EntityType = Entity
     typealias ColumnType = Column
     
     static var tableName: String { "members" }
     
-    static func scalar(_ model: DataModel, for column: Column) -> ScalarType? {
+    static func scalar(_ model: Entity, for column: Column) -> ScalarType? {
         switch column {
         case .uid: return model.uid
         case .nickName: return model.nickName
@@ -61,15 +61,3 @@ struct MemberTable: Table {
     }
 }
 
-
-extension Member: RowValueType {
-    
-    public init(_ cursor: CursorIterator) throws {
-        let memberTableModel: MemberTable.Model = try .init(cursor)
-        
-        self.init(uid: memberTableModel.uid)
-        self.nickName = memberTableModel.nickName
-        self.introduction = memberTableModel.introduction
-        self.icon = try? ImageSource(cursor)
-    }
-}
