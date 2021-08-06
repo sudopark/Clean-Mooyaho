@@ -125,7 +125,7 @@ public final class SearchNewPlaceViewModelImple: SearchNewPlaceViewModel {
         let cellViewModels = BehaviorRelay<[CVMType]>(value: [])
         let selectPlaceID = BehaviorRelay<String?>(value: nil)
         let isRegistering = BehaviorRelay<Bool>(value: false)
-        let newPlace = PublishSubject<Place>()
+        @AutoCompletable var newPlace = PublishSubject<Place>()
     }
     
     private let subjects = Subjects()
@@ -210,7 +210,7 @@ extension SearchNewPlaceViewModelImple {
             return
         }
         self.router
-            .waitFirstEventAndClosePresented(result.selectedTags)
+            .waitEventAndClosePresented(result.selectedTags)
             .subscribe(onNext: { [weak self] tags in
                 self?.requestRegisterNewPlace(tags)
             })

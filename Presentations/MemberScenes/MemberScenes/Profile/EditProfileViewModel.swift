@@ -70,7 +70,7 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
         let pendingInputs = BehaviorRelay<[EditProfileCellType: String]>(value: [:])
         let cellViewModels = BehaviorRelay<[EditProfileCellType]>(value: [])
         let isSaveChanges = BehaviorRelay<Bool>(value: false)
-        let isSaveCompleted = PublishSubject<Void>()
+        @AutoCompletable var isSaveCompleted = PublishSubject<Void>()
     }
     private let disposeBag = DisposeBag()
     private let subjects = Subjects()
@@ -200,7 +200,7 @@ extension EditProfileViewModelImple {
     }
     
     public var editCompleted: Observable<Void> {
-        return self.subjects.isSaveCompleted
+        return self.subjects.isSaveCompleted.asObservable()
     }
 }
 

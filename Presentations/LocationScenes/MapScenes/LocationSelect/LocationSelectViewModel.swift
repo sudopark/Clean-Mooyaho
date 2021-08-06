@@ -65,7 +65,7 @@ public final class LocationSelectViewModelImple: LocationSelectViewModel {
     fileprivate final class Subjects {
         let centerCoordinate = BehaviorSubject<Coordinate?>(value: nil)
         let centerLocation = BehaviorRelay<Location?>(value: nil)
-        let selectedPosition = PublishSubject<Location>()
+        @AutoCompletable var selectedPosition = PublishSubject<Location>()
     }
     
     private let subjects = Subjects()

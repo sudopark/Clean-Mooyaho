@@ -177,15 +177,15 @@ extension Routing {
         return Observable.create { [weak self] observer in
             self?.closeScene(animated: true) {
                 observer.onNext(())
+                observer.onCompleted()
             }
             return Disposables.create()
         }
     }
     
-    public func waitFirstEventAndClosePresented<E>(_ eventSource: Observable<E>) -> Observable<E> {
+    public func waitEventAndClosePresented<E>(_ eventSource: Observable<E>) -> Observable<E> {
         
         return eventSource
-            .take(1)
             .observe(on: MainScheduler.instance)
             .flatMap{ [weak self] element -> Observable<E> in
                 return self?.close(animated: true).map{ element } ?? .empty()

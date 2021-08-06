@@ -45,8 +45,8 @@ public final class NearbyViewModelImple: NearbyViewModel {
     fileprivate final class Subjects {
         // define subjects
         let moveCameraPosition = PublishSubject<MapCameraPosition>()
-        let unavailToUse = PublishSubject<Void>()
-        let placeMark = PublishSubject<String>()
+        @AutoCompletable var unavailToUse = PublishSubject<Void>()
+        @AutoCompletable var placeMark = PublishSubject<String>()
     }
     
     private let locationUsecase: UserLocationUsecase

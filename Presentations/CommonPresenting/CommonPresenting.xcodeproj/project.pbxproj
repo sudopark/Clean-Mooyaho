@@ -65,6 +65,7 @@
 		F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */; };
 		F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */; };
 		F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */; };
+		F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */; };
 		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
@@ -152,6 +153,7 @@
 		F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagScene.swift; sourceTree = "<group>"; };
 		F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModel.swift; sourceTree = "<group>"; };
 		F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompletable.swift; sourceTree = "<group>"; };
 		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
 		F6DA564126889A6000032348 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				2B39E27726387BCB003EE954 /* Presenting.swift */,
 				2B39E27526387BCB003EE954 /* Routable.swift */,
 				2B39E27626387BCB003EE954 /* Sceneable.swift */,
+				F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */,
 				F645A66226936AA600E04D29 /* ConfrimButton.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
+				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
 				F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */,

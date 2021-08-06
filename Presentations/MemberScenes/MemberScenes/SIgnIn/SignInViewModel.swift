@@ -48,7 +48,7 @@ public final class SignInViewModelImple: SignInViewModel {
     fileprivate final class Subjects {
         
         let isProcessing = BehaviorRelay<Bool>(value: false)
-        let signedIn = PublishSubject<Void>()
+        @AutoCompletable var signedIn = PublishSubject<Void>()
     }
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -105,6 +105,6 @@ extension SignInViewModelImple {
     }
     
     public var signedIn: Observable<Void> {
-        return self.subjects.signedIn
+        return self.subjects.signedIn.asObservable()
     }
 }

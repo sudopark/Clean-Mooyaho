@@ -48,7 +48,7 @@ public final class EnterHoorayTagViewModelImple: EnterHoorayTagViewModel {
     }
     
     fileprivate final class Subjects {
-        let continueNext = PublishSubject<NewHoorayForm>()
+        @AutoCompletable var continueNext = PublishSubject<NewHoorayForm>()
     }
     
     private let subjects = Subjects()

@@ -70,7 +70,7 @@ public final class SelectTagViewModelImple: SelectTagViewModel {
     fileprivate final class Subjects {
         let cellViewModels = BehaviorRelay<[TagCellViewModel]>(value: [])
         let selectionSet = BehaviorRelay<Set<String>>(value: [])
-        let selectedTag = PublishSubject<[Tag]>()
+        @AutoCompletable var selectedTag = PublishSubject<[Tag]>()
     }
     
     private let subjects = Subjects()
