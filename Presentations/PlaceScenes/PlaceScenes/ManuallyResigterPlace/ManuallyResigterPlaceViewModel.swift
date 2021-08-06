@@ -68,7 +68,7 @@ public final class ManuallyResigterPlaceViewModelImple: ManuallyResigterPlaceVie
     fileprivate final class Subjects {
         let pendingForm = BehaviorRelay<NewPlaceForm?>(value: nil)
         let isRegistering = BehaviorRelay<Bool>(value: false)
-        let newPlace = PublishSubject<Place>()
+        @AutoCompletable var newPlace = PublishSubject<Place>()
     }
     
     private let subjects = Subjects()
@@ -100,7 +100,7 @@ extension ManuallyResigterPlaceViewModelImple {
         
         guard let result = self.router.openPlaceTitleInputScene(mode) else { return }
         self.router
-            .waitFirstEventAndClosePresented(result.enteredText)
+            .waitEventAndClosePresented(result.enteredText)
             .subscribe(onNext: { [weak self] text in
                 self?.updateForm{ $0.title = text }
             })
@@ -116,7 +116,7 @@ extension ManuallyResigterPlaceViewModelImple {
         }()
         guard let result = self.router.openLocationSelectScene(info) else { return }
         self.router
-            .waitFirstEventAndClosePresented(result.selectedLocation)
+            .waitEventAndClosePresented(result.selectedLocation)
             .subscribe(onNext: { [weak self] location in
                 self?.updateForm{
                     $0.address = location.placeMark.address
@@ -132,7 +132,7 @@ extension ManuallyResigterPlaceViewModelImple {
         let tags = self.subjects.pendingForm.value?.categoryTags ?? []
         guard let result = self.router.openTagSelectScene(tags, total: total) else { return }
         self.router
-            .waitFirstEventAndClosePresented(result.selectedTags)
+            .waitEventAndClosePresented(result.selectedTags)
             .subscribe(onNext: { [weak self] tags in
                 self?.updateForm {
                     $0.categoryTags = tags

@@ -76,7 +76,7 @@ public final class TextInputViewModelImple: TextInputViewModel {
     
     fileprivate final class Subjects {
         let text = BehaviorRelay<String>(value: "")
-        let confirmedText = PublishSubject<String>()
+        @AutoCompletable var confirmedText = PublishSubject<String>()
     }
     
     private let subjects = Subjects()

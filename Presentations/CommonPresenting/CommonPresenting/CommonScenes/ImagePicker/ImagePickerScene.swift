@@ -42,8 +42,8 @@ public final class SimpleImagePickerViewController: UIImagePickerController {
     
     private let dispobseBag = DisposeBag()
     public var fileHandleService: FileHandleService = FileManager.default
-    private let selectedImagePathSubject = PublishSubject<String>()
-    private let pickingErrorSubject = PublishSubject<Error>()
+    @AutoCompletable private var selectedImagePathSubject = PublishSubject<String>()
+    @AutoCompletable private var pickingErrorSubject = PublishSubject<Error>()
     
     public override func viewDidLoad() {
         super.viewDidLoad()

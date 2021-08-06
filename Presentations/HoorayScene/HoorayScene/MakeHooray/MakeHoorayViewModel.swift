@@ -173,7 +173,7 @@ extension MakeHoorayViewModelImple {
         
         guard let nextStep = goNextStepWithForm else { return }
         router
-            .waitFirstEventAndClosePresented(nextStep)
+            .waitEventAndClosePresented(nextStep)
             .do(onNext: updateForm)
             .subscribe(onNext: continueEnteringOrNot)
             .disposed(by: self.disposeBag)

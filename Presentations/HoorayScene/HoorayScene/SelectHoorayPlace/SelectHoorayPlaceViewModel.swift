@@ -89,7 +89,7 @@ public final class SelectHoorayPlaceViewModelImple: SelectHoorayPlaceViewModel {
         let cameraFocus = BehaviorSubject<MapCameraFocus?>(value: nil)
         let selectedPlaceID = BehaviorRelay<String?>(value: nil)
         let cellViewModels = BehaviorRelay<[SuggestPlaceCellViewModel]>(value: [])
-        let continueNext = PublishSubject<NewHoorayForm>()
+        @AutoCompletable var continueNext = PublishSubject<NewHoorayForm>()
     }
     
     private let subjects = Subjects()
@@ -149,7 +149,7 @@ extension SelectHoorayPlaceViewModelImple {
         }
         
         self.router
-            .waitFirstEventAndClosePresented(output.newRegistered)
+            .waitEventAndClosePresented(output.newRegistered)
             .subscribe(onNext: newPlaceRegistered)
             .disposed(by: self.disposeBag)
     }
