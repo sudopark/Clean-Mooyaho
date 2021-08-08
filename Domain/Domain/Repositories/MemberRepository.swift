@@ -30,4 +30,20 @@ public protocol MemberRepository: AnyObject {
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
                                           imageSource: ImageSource?) -> Maybe<Member>
+    
+    func fetchMembers(_ ids: [String]) -> Maybe<[Member]>
+    
+    func requestLoadMembers(_ ids: [String]) -> Maybe<[Member]>
+}
+
+
+extension MemberRepository {
+    
+    public func fetchMember(_ id: String) -> Maybe<Member?> {
+        return self.fetchMembers([id]).map{ $0.first }
+    }
+    
+    public func requestLoadMember(_ id: String) -> Maybe<Member?> {
+        return self.requestLoadMembers([id]).map{ $0.first }
+    }
 }

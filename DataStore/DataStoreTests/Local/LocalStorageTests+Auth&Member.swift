@@ -77,4 +77,25 @@ extension LocalStorageTests_AuthAndMember {
         XCTAssertEqual(loadedMember?.introduction, "new hello world!")
         XCTAssertEqual(loadedMember?.icon, .emoji("🎒"))
     }
+    
+    func testStorage_saveMembersAndLoad() {
+        // given
+        let expect = expectation(description: "멤버정보 복수로 저장하고 로드")
+        
+        let members = (0..<10).map{ int -> Member in
+            let icon: ImageSource? = int % 2 == 0 ? .emoji("👻") : nil
+            return Member(uid: "uid:\(int)", nickName: "nick:\(int)", icon: icon)
+        }
+        
+        // when
+        let ids = (0..<100).map{ "uid:\($0)" }
+        let saveMembers = self.local.saveMembers(members)
+        let loadMembers = self.local.fetchMembers(ids)
+        let saveAndLoad = saveMembers.flatMap{ _ in loadMembers }
+            
+        let loadedMembers = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(loadedMembers?.map{ $0.uid }, Array(ids[0..<10]))
+    }
 }

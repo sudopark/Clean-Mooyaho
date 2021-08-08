@@ -68,4 +68,21 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
             .requestUpdateMemberProfileFields(memberID, fields: fields, imageSource: imageSource)
             .do(onNext: thenUpdateLocal)
     }
+    
+    public func fetchMembers(_ ids: [String]) -> Maybe<[Member]> {
+        return self.memberLocal.fetchMembers(ids)
+    }
+    
+    public func requestLoadMembers(_ ids: [String]) -> Maybe<[Member]> {
+        
+        let loadMembers = self.memberRemote.requestLoadMember(ids)
+        let thenUpdateCache: ([Member]) -> Void = { [weak self] members in
+            guard let self = self else { return }
+            self.memberLocal.saveMembers(members)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        return loadMembers
+            .do(onNext: thenUpdateCache)
+    }
 }
