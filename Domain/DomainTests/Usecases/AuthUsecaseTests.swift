@@ -69,7 +69,7 @@ extension AuthUsecaseTests {
     private func assertAuthAndMemberInfoUpdatedOnStore(_ expect: XCTestExpectation,
                                                        _ action: @escaping () -> Void) {
         let auths: Observable<Auth> = self.usecase.currentAuth.compactMap{ $0 }
-        let members: Observable<Member> = self.store.observe(SharedDataKeys.currentMember.rawValue)
+        let members = self.store.observe(Member.self, key:SharedDataKeys.currentMember.rawValue)
         let source = Observable.combineLatest(auths, members)
         let pair = self.waitFirstElement(expect, for: source, action: action)
         XCTAssertNotNil(pair?.0)
@@ -159,6 +159,31 @@ extension AuthUsecaseTests {
         }
     }
     
+    // 로그인 성공시 공유되는 현제 멤버정보 방출
+    func testUsecase_whenAfterSignInSuccess_updateSharedMemberInfo() {
+        // given
+        let expect = expectation(description: "로그인 이후 스토어에 currentMember 업데이트시에 memberMap도 업데이트")
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
+            return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
+        }
+        self.mockAuthRepo.register(key: "requestSignIn:credential") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when
+        let key = SharedDataKeys.memberMap.rawValue
+        let memberMapSource = self.store.observe([String: Member].self, key: key)
+        let memberMap = self.waitFirstElement(expect, for: memberMapSource) {
+            self.usecase.requestSocialSignIn(DummyOAuthType())
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        let me = memberMap?["new_uuid"]
+        XCTAssertNotNil(me)
+    }
+    
     func testUsecase_whenOauth2SignInFail_resultIsFail() {
         // given
         let expect = expectation(description: "소셜 로그인 실패시에 로그인 실패")
@@ -199,8 +224,6 @@ extension AuthUsecaseTests {
         // then
         XCTAssertNotNil(error)
     }
-    
-    // 로그인 성공시 공유되는 현제 멤버정보 방출
 }
 
 

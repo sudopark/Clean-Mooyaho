@@ -69,7 +69,7 @@ public final class MemberUsecaseImple: MemberUsecase {
 extension MemberUsecaseImple {
     
     public func fetchCurrentMember() -> Member? {
-        return self.sharedDataStoreService.fetch(.currentMember)
+        return self.sharedDataStoreService.fetch(Member.self, key: .currentMember)
     }
     
     public func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {
@@ -90,7 +90,12 @@ extension MemberUsecaseImple {
                                     imageUploadFail: Error? = nil) -> Observable<UpdateMemberProfileStatus> {
         
         let shareUpdatedMember: (Member) -> Void = { [weak self] member in
-            self?.sharedDataStoreService.update(SharedDataKeys.currentMember.rawValue, value: member)
+            self?.sharedDataStoreService
+                .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: member)
+            self?.sharedDataStoreService
+                .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
+                    return (dict ?? [:]).merging([member.uid: member], uniquingKeysWith: { $1 })
+                }
         }
         
         return self.memberRepository
@@ -152,7 +157,7 @@ extension MemberUsecaseImple {
     
     public func loadCurrentMembership() -> Maybe<MemberShip> {
         
-        if let existing: MemberShip = self.sharedDataStoreService.fetch(.membership) {
+        if let existing = self.sharedDataStoreService.fetch(MemberShip.self, key: .membership) {
             return .just(existing)
         }
         
@@ -207,7 +212,7 @@ extension MemberUsecaseImple {
     private func getMembersOnStore(_ ids: [String]) -> Maybe<[String: Member]> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            let memberMap: [String: Member] = self.sharedDataStoreService.fetch(.memberMap) ?? [:]
+            let memberMap = self.sharedDataStoreService.fetch([String: Member].self, key: .memberMap) ?? [:]
             let memberOnMemory = ids.reduce(into: [String: Member]()) { acc, id in
                 memberMap[id].whenExists { acc[id] = $0 }
             }
@@ -228,7 +233,7 @@ extension MemberUsecaseImple {
     
     private func addMembersOnStore(_ newDict: [String: Member]) {
         let key = SharedDataKeys.memberMap.rawValue
-        self.sharedDataStoreService.update(key) { (dict: [String: Member]?) -> [String: Member]? in
+        self.sharedDataStoreService.update([String: Member].self, key: key) {  dict in
             return (dict ?? [:]).merging(newDict, uniquingKeysWith: { $1} )
         }
     }
@@ -239,7 +244,7 @@ extension MemberUsecaseImple {
     
     public var currentMember: Observable<Member?> {
         return self.sharedDataStoreService
-            .observe(SharedDataKeys.currentMember.rawValue)
+            .observe(Member.self, key: SharedDataKeys.currentMember.rawValue)
     }
     
     
@@ -251,7 +256,8 @@ extension MemberUsecaseImple {
             }
         }
         let key = SharedDataKeys.memberMap.rawValue
-        let memberMap: Observable<[String: Member]> = self.sharedDataStoreService.observeWithCache(key)
+        let memberMap = self.sharedDataStoreService.observeWithCache([String: Member].self, key: key)
+            .compactMap{ $0 }
         
         return memberMap.map(filtering)
     }
