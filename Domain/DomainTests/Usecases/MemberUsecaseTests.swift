@@ -267,3 +267,67 @@ extension MemberUsecaseTests {
         XCTAssertNotNil(newMember)
     }
 }
+
+
+extension MemberUsecaseTests {
+    
+    func testUsecase_whenLoadMemberUseCaches() {
+        // given
+        let expect = expectation(description: "member load시에 cache 활용")
+        
+        let memberOnMemory = Member(uid: "uid:0", nickName: "memory")
+        self.store.save(SharedDataKeys.memberMap, ["uid:0": memberOnMemory])
+        self.mockRepository.register(key: "fetchMembers") {
+            return Maybe<[Member]>.just([Member(uid: "uid:1", nickName: "disk")])
+        }
+        self.mockRepository.register(key: "requestLoadMembers") {
+            return Maybe<[Member]>.just([Member(uid: "uid:2", nickName: "remote")])
+        }
+        
+        // when
+        let load = self.usecase.loadMembers((0..<3).map{ "uid:\($0)" })
+        let members = self.waitFirstElement(expect, for: load.asObservable())
+        
+        // then
+        let names = members?.map{ $0.nickName }
+        XCTAssertEqual(names, ["memory", "disk", "remote"])
+    }
+    
+    func testUsecase_whenAfterLoadMembers_updateStore() {
+        // given
+        let expect = expectation(description: "member load이후에 shared store 업데이트")
+        
+        self.mockRepository.register(key: "fetchMembers") { Maybe<[Member]>.just([]) }
+        self.mockRepository.register(key: "requestLoadMembers") {
+            return Maybe<[Member]>.just((0..<3).map{ Member(uid: "uid:\($0)") })
+        }
+        
+        // when
+        let ids = (0..<3).map{ "uid:\($0)" }
+        let updatedmembers = self.usecase.members(for: ids)
+        let members = self.waitFirstElement(expect, for: updatedmembers) {
+            self.usecase.loadMembers(ids).subscribe().disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(members?.count, 3)
+    }
+    
+    func testUsecase_refreshMembers() {
+        // given
+        let expect = expectation(description: "member 정보 업데이트")
+        self.mockRepository.register(key: "requestLoadMembers") {
+            return Maybe<[Member]>.just((0..<3).map{ Member(uid: "uid:\($0)") })
+        }
+        
+        // when
+        let ids = (0..<3).map{ "uid:\($0)" }
+        let updatedmembers = self.usecase.members(for: ids)
+        let members = self.waitFirstElement(expect, for: updatedmembers) {
+            self.usecase.refreshMembers(ids)
+        }
+        
+        // then
+        XCTAssertEqual(members?.count, 3)
+    }
+}

@@ -16,7 +16,7 @@ import RxRelay
 
 public protocol SharedDataStoreService: AuthInfoProvider {
     
-    func update<V>(_ key: String, value: V)
+    func update<V>(_ key: String, mutating: (V?) -> V?)
     
     func get<V>(_ key: String) -> V?
     
@@ -24,7 +24,16 @@ public protocol SharedDataStoreService: AuthInfoProvider {
     
     func observe<V>(_ key: String) -> Observable<V>
     
+    func observeWithCache<V>(_ key: String) -> Observable<V>
+    
     func flush()
+}
+
+extension SharedDataStoreService {
+    
+    func update<V>(_ key: String, value: V) {
+        self.update(key, mutating: { _ in value })
+    }
 }
 
 
@@ -32,6 +41,7 @@ public protocol SharedDataStoreService: AuthInfoProvider {
 
 public final class SharedDataStoreServiceImple: SharedDataStoreService {
     
+    private let updatedKey = BehaviorSubject<String?>(value: nil)
     private let internalStore: BehaviorRelay<[String: Any]> = .init(value: [:])
     private let lock: NSRecursiveLock = .init()
     
@@ -44,10 +54,14 @@ public final class SharedDataStoreServiceImple: SharedDataStoreService {
 
 extension SharedDataStoreServiceImple {
     
-    public func update<V>(_ key: String, value: V) {
+    public func update<V>(_ key: String, mutating: (V?) -> V?) {
         self.lock.lock(); defer { self.lock.unlock() }
-        let newDict = self.internalStore.value.merging([key: value], uniquingKeysWith: { $1 })
-        self.internalStore.accept(newDict)
+        var dict = self.internalStore.value
+        let stored = dict[key] as? V
+        let newvalue = mutating(stored)
+        dict[key] = newvalue
+        self.internalStore.accept(dict)
+        self.updatedKey.onNext(key)
     }
     
     public func get<V>(_ key: String) -> V? {
@@ -59,20 +73,35 @@ extension SharedDataStoreServiceImple {
         var dict = self.internalStore.value
         dict[key] = nil
         self.internalStore.accept(dict)
+        self.updatedKey.onNext(key)
     }
     
     public func observe<V>(_ key: String) -> Observable<V> {
         
-        let transform: ([String: Any]) -> V? = { dict in
+        let dataChanges: (String?, [String: Any]) -> V? = { key, dict in
+            guard let key = key else { return nil }
             return dict[key] as? V
+            
         }
-        return self.internalStore.compactMap(transform)
+        return self.updatedKey
+            .filter{ $0 == key }
+            .withLatestFrom(self.internalStore, resultSelector: dataChanges)
+            .compactMap { $0 }
             .observe(on: self.observingScheduler)
+    }
+    
+    public func observeWithCache<V>(_ key: String) -> Observable<V> {
+        let cached: V? = self.get(key)
+        let updates: Observable<V?> = self.observe(key).map{ v -> V? in v }
+        return updates
+            .startWith(cached)
+            .compactMap{ $0 }
     }
     
     public func flush() {
         self.lock.lock(); defer { self.lock.unlock() }
         self.internalStore.accept([:])
+        self.updatedKey.onNext(nil)
     }
 }
 
