@@ -24,8 +24,8 @@ extension HoorayPublisherUsecaseTests {
     
     private func stubMemberShip() {
         let dummyMember = Member(uid: "dummy", nickName: "hi", icon: nil)
-        self.sharedStore.save(.currentMember, dummyMember)
-        self.sharedStore.save(.membership, MemberShip())
+        self.sharedStore.save(Member.self, key: .currentMember, dummyMember)
+        self.sharedStore.save(MemberShip.self, key: .membership, MemberShip())
     }
     
     func testUsecase_whenLatestHoorayNotExists_availToPublishHooray() {
@@ -138,7 +138,7 @@ extension HoorayPublisherUsecaseTests {
         let expect = expectation(description: "후레이 시도시 유저 프로필 미입력 상태면 에러")
         
         let emptyMember = Member(uid: "dummy")
-        self.sharedStore.update(SharedDataKeys.currentMember.rawValue, value: emptyMember)
+        self.sharedStore.update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: emptyMember)
         
         // when
         let requestCheck = usecase.isAvailToPublish()
