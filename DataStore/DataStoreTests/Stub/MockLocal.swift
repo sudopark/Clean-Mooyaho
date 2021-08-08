@@ -39,8 +39,16 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "saveMember") ?? .empty()
     }
     
+    func saveMembers(_ members: [Member]) -> Maybe<Void> {
+        return self.resolve(key: "saveMembers") ?? .empty()
+    }
+    
     func fetchMember(for memberID: String) -> Maybe<Member?> {
         return self.resolve(key: "fetchMember") ?? .empty()
+    }
+    
+    func fetchMembers(_ ids: [String]) -> Maybe<[Member]> {
+        return self.resolve(key: "fetchMembers") ?? .empty()
     }
     
     func updateCurrentMember(_ newValue: Member) -> Maybe<Void> {

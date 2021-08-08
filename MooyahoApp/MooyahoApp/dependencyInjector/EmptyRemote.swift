@@ -102,4 +102,8 @@ final class EmptyRemote: Remote {
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         return .empty()
     }
+    
+    func requestLoadMember(_ ids: [String]) -> Maybe<[Member]> {
+        return .empty()
+    }
 }

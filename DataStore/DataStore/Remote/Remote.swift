@@ -70,6 +70,8 @@ public protocol MemberRemote {
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
                                           imageSource: ImageSource?) -> Maybe<Member>
+    
+    func requestLoadMember(_ ids: [String]) -> Maybe<[Member]>
 }
 
 

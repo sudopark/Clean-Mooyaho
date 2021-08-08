@@ -28,4 +28,14 @@ extension LocalStorageImple {
         
         return self.dataModelStorage.updateMember(newValue)
     }
+    
+    public func fetchMembers(_ ids: [String]) -> Maybe<[Member]> {
+        
+        return self.dataModelStorage.fetchMembers(ids)
+    }
+    
+    public func saveMembers(_ members: [Member]) -> Maybe<Void> {
+        
+        return self.dataModelStorage.insertOrUpdateMembers(members)
+    }
 }

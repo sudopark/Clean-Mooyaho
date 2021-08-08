@@ -78,6 +78,16 @@ extension FirebaseServiceImple {
         return self.update(docuID: memberID, newFields: updating, at: .member)
             .flatMap(thenLoadMember)
     }
+    
+    
+    public func requestLoadMember(_ ids: [String]) -> Maybe<[Member]> {
+        
+        typealias Key = MemberMappingKey
+        
+        let collectionRef = self.fireStoreDB.collection(.member)
+        let query = collectionRef.whereField(FieldPath.documentID(), in: ids)
+        return self.load(query: query)
+    }
 }
 
 
