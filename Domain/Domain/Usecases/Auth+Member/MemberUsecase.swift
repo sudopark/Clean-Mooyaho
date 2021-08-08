@@ -159,6 +159,79 @@ extension MemberUsecaseImple {
         guard let curent = self.fetchCurrentMember() else { return .error(ApplicationErrors.sigInNeed) }
         return self.memberRepository.requestLoadMembership(for: curent.uid)
     }
+    
+    func refreshMembers(_ ids: [String]) {
+        
+        let updateStore: ([Member]) -> Void = { [weak self] members in
+            let memberMap = members.reduce(into: [String: Member]()) { $0[$1.uid] = $1 }
+            self?.addMembersOnStore(memberMap)
+        }
+        
+        self.memberRepository.requestLoadMembers(ids)
+            .subscribe(onSuccess: updateStore)
+            .disposed(by: self.disposeBag)
+    }
+    
+    func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
+        
+        typealias MemberMap = [String: Member]
+        
+        let appendMembersOnCacheIfNeed: (MemberMap) -> Maybe<MemberMap>
+        appendMembersOnCacheIfNeed = { [weak self] preparedMemberMap in
+            guard let self = self else { return .empty() }
+            return self.loadAndAppendMembersIfNeed(preparedMemberMap, total: ids,
+                                                   loading: self.memberRepository.fetchMembers(_:))
+        }
+        let appendMembersFromRemoteIfNeed: (MemberMap) -> Maybe<MemberMap>
+        appendMembersFromRemoteIfNeed = { [weak self] prepareMap in
+            guard let self = self else { return .empty() }
+            return self.loadAndAppendMembersIfNeed(prepareMap, total: ids,
+                                                   loading: self.memberRepository.requestLoadMembers(_:))
+        }
+        
+        let updateStore: (MemberMap) -> Void = { [weak self] memberMap in
+            self?.addMembersOnStore(memberMap)
+        }
+        
+        let asArray: (MemberMap) -> [Member] = { memberMap in
+            return ids.compactMap{ memberMap[$0] }
+        }
+        
+        return self.getMembersOnStore(ids)
+            .flatMap(appendMembersOnCacheIfNeed)
+            .flatMap(appendMembersFromRemoteIfNeed)
+            .do(onNext: updateStore)
+            .map(asArray)
+    }
+    
+    private func getMembersOnStore(_ ids: [String]) -> Maybe<[String: Member]> {
+        return Maybe.create { [weak self] callback in
+            guard let self = self else { return Disposables.create() }
+            let memberMap: [String: Member] = self.sharedDataStoreService.fetch(.memberMap) ?? [:]
+            let memberOnMemory = ids.reduce(into: [String: Member]()) { acc, id in
+                memberMap[id].whenExists { acc[id] = $0 }
+            }
+            callback(.success(memberOnMemory))
+            return Disposables.create()
+        }
+    }
+    
+    private func loadAndAppendMembersIfNeed(_ prepared: [String: Member],
+                                            total: [String],
+                                            loading: @escaping ([String]) -> Maybe<[Member]>) -> Maybe<[String: Member]> {
+        let requireIDs = total.filter{ prepared[$0] == nil }
+        guard requireIDs.isNotEmpty else { return .just(prepared) }
+        
+        return loading(requireIDs)
+            .map{ prepared.append($0) }
+    }
+    
+    private func addMembersOnStore(_ newDict: [String: Member]) {
+        let key = SharedDataKeys.memberMap.rawValue
+        self.sharedDataStoreService.update(key) { (dict: [String: Member]?) -> [String: Member]? in
+            return (dict ?? [:]).merging(newDict, uniquingKeysWith: { $1} )
+        }
+    }
 }
 
 
@@ -167,6 +240,20 @@ extension MemberUsecaseImple {
     public var currentMember: Observable<Member?> {
         return self.sharedDataStoreService
             .observe(SharedDataKeys.currentMember.rawValue)
+    }
+    
+    
+    public func members(for ids: [String]) -> Observable<[String: Member]> {
+        
+        let filtering: ([String: Member]) -> [String: Member] = { memberMap in
+            return ids.reduce(into: [String: Member]()) { acc, id in
+                memberMap[id].whenExists{ acc[id] = $0 }
+            }
+        }
+        let key = SharedDataKeys.memberMap.rawValue
+        let memberMap: Observable<[String: Member]> = self.sharedDataStoreService.observeWithCache(key)
+        
+        return memberMap.map(filtering)
     }
 }
 
@@ -181,5 +268,17 @@ private extension MemberProfileUploadStatus {
     var completedSource: ImageSource? {
         guard case let .completed(source) = self else { return nil }
         return source
+    }
+}
+
+
+private extension Dictionary where Key == String, Value == Member {
+    
+    func append(_ members: [Member]) -> Dictionary {
+        var newDict = self
+        members.forEach {
+            newDict[$0.uid] = $0
+        }
+        return newDict
     }
 }

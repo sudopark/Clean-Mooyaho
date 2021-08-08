@@ -13,6 +13,7 @@ public enum SharedDataKeys: String {
     case auth
     case currentMember
     case membership
+    case memberMap
 }
 
 
