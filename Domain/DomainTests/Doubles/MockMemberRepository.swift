@@ -45,4 +45,12 @@ class MockMemberRepository: MemberRepository, Mocking {
                                           imageSource: ImageSource?) -> Maybe<Member> {
         return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
     }
+    
+    func fetchMembers(_ ids: [String]) -> Maybe<[Member]> {
+        return self.resolve(key: "fetchMembers") ?? .empty()
+    }
+    
+    func requestLoadMembers(_ ids: [String]) -> Maybe<[Member]> {
+        return self.resolve(key: "requestLoadMembers") ?? .empty()
+    }
 }

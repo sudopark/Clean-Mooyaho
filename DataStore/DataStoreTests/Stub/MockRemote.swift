@@ -57,6 +57,10 @@ class MockRemote: Remote, Mocking {
         return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
     }
     
+    func requestLoadMember(_ ids: [String]) -> Maybe<[Member]> {
+        return self.resolve(key: "requestLoadMember") ?? .empty()
+    }
+    
     // place
     func requesUpload(_ location: UserLocation) -> Maybe<Void> {
         return self.resolve(key: "requesUpload:location") ?? .empty()

@@ -20,7 +20,11 @@ public protocol DataModelStorage {
     
     func fetchMember(for memberID: String) -> Maybe<Member?>
     
+    func fetchMembers(_ memberIDs: [String]) -> Maybe<[Member]>
+    
     func save(member: Member) -> Maybe<Void>
+    
+    func insertOrUpdateMembers(_ members: [Member]) -> Maybe<Void>
     
     func updateMember(_ member: Member) -> Maybe<Void>
     
@@ -70,37 +74,49 @@ public class DataModelStorageImple: DataModelStorage {
 extension DataModelStorageImple {
     
     public func fetchMember(for memberID: String) -> Maybe<Member?> {
-        let members = MemberTable.self
-        let memberQuery = members.selectAll{ $0.uid == memberID }
+        return self.fetchMembers([memberID])
+            .map{ $0.first }
+    }
+    
+    public func fetchMembers(_ memberIDs: [String]) -> Maybe<[Member]> {
         
-        let images = ImageSourceTable.self
-        let imageQuery = images.selectSome{ [$0.sourcetype, $0.path, $0.description, $0.emoji] }
+        let memberQuery = MemberTable.selectAll{ $0.uid.in(memberIDs) }
+        let imageQuery = ImageSourceTable.selectAll()
         
         let joinQuery = memberQuery.outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
-        let fetchedMembers: Maybe<[Member]> = self.sqliteService.run(execute: { try $0.load(joinQuery) })
+        let mapping: (CursorIterator) throws -> (Member) = { cursor in
+            let memberEntity = try MemberTable.Entity(cursor)
+            let iconEntity = try? ImageSourceTable.Entity(cursor)
+            var member = Member(uid: memberEntity.uid, nickName: memberEntity.nickName)
+            member.introduction = memberEntity.introduction
+            member.icon = iconEntity?.source
+            return member
+        }
         
-        return fetchedMembers.map{ $0.first }
+        return self.sqliteService.run{ try $0.load(joinQuery, mapping: mapping) }
     }
     
     public func save(member: Member) -> Maybe<Void> {
         
-        let images = ImageSourceTable.self
-        let iconEntity = ImageSourceTable.Entity(member.uid, source: member.icon)
+        return self.insertOrUpdateMembers([member])
+    }
+    
+    public func insertOrUpdateMembers(_ members: [Member]) -> Maybe<Void> {
         
-        let memberTable = MemberTable.self
-        let memberEntity = MemberTable.Entity(member.uid, nickName: member.nickName, intro: member.introduction)
+        let (memberTable, imageTable) = (MemberTable.self, ImageSourceTable.self)
+        let memberEntities = members.map{ $0.asEntity() }
+        let iconEntities = members.compactMap{ $0.iconEntity() }
         
-        let insertMember = self.sqliteService
-            .run{ try $0.insertOne(memberTable, entity: memberEntity, shouldReplace: true) }
-        
-        let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
+        let insertMembers = self.sqliteService
+            .run{ try $0.insert(memberTable, entities: memberEntities) }
+        let thenInsertIcons: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.run{ try $0.insertOne(images, entity: iconEntity, shouldReplace: true) }
+            return self.sqliteService.run { try $0.insert(imageTable, entities: iconEntities)}
                 .catchAndReturn(())
         }
         
-        return insertMember
-            .flatMap(thenUpdateIcon)
+        return insertMembers
+            .flatMap(thenInsertIcons)
     }
     
     public func updateMember(_ member: Member) -> Maybe<Void> {
@@ -228,5 +244,15 @@ extension Member: RowValueType {
         var member = Member(uid: uid, nickName: nickName, icon: image)
         member.introduction = intro
         self = member
+    }
+    
+    func asEntity() -> MemberTable.Entity {
+        return .init(self.uid, nickName: self.nickName, intro: self.introduction)
+    }
+    
+    func iconEntity() -> ImageSourceTable.Entity? {
+        
+        let ownerID = self.uid
+        return self.icon.map{ ImageSourceTable.Entity(ownerID, source: $0) }
     }
 }

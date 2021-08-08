@@ -155,6 +155,40 @@ extension RepositoryTests_Member {
 
 extension RepositoryTests_Member {
     
+    func testRepository_fetchMembers() {
+        // given
+        let expect = expectation(description: "fetch members")
+        self.mockLocal.register(key: "fetchMembers") {
+            return Maybe<[Member]>.just([])
+        }
+        
+        // when
+        let fetching = self.repository.fetchMembers(["uid:1", "uid:2"])
+        let members = self.waitFirstElement(expect, for: fetching.asObservable())
+        
+        // then
+        XCTAssertNotNil(members)
+    }
+    
+    func testReposiotry_whenAfterLoadMembersFromRemote_updateCache() {
+        // given
+        let expect = expectation(description: "리모트에서 멤버 로드 이후에 캐시 업데이트")
+        
+        self.mockRemote.register(key: "requestLoadMember") { Maybe<[Member]>.just([]) }
+        self.mockLocal.called(key: "saveMembers") { _ in
+            expect.fulfill()
+        }
+        // when
+        let load = self.repository.requestLoadMembers(["uid:1", "uid:2"])
+        let members = self.waitFirstElement(expect, for: load.asObservable())
+        
+        // then
+        XCTAssertNotNil(members)
+    }
+}
+
+extension RepositoryTests_Member {
+    
     class DummyRepository: MemberRepository, MemberRepositoryDefImpleDependency {
         
         let memberRemote: MemberRemote

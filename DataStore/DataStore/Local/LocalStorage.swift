@@ -33,6 +33,10 @@ public protocol MemberLocalStorage {
     func fetchMember(for memberID: String) -> Maybe<Member?>
     
     func updateCurrentMember(_ newValue: Member) -> Maybe<Void>
+    
+    func fetchMembers(_ ids: [String]) -> Maybe<[Member]>
+    
+    func saveMembers(_ members: [Member]) -> Maybe<Void>
 }
 
 public protocol TagLocalStorage {
