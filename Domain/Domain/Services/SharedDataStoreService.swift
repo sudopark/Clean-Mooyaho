@@ -35,7 +35,11 @@ public final class SharedDataStoreServiceImple: SharedDataStoreService {
     private let internalStore: BehaviorRelay<[String: Any]> = .init(value: [:])
     private let lock: NSRecursiveLock = .init()
     
-    public init() { }
+    private let observingScheduler: SchedulerType
+    
+    public init(observingScheduler: SchedulerType = MainScheduler.instance) {
+        self.observingScheduler = observingScheduler
+    }
 }
 
 extension SharedDataStoreServiceImple {
@@ -47,7 +51,6 @@ extension SharedDataStoreServiceImple {
     }
     
     public func get<V>(_ key: String) -> V? {
-        self.lock.lock(); defer { self.lock.unlock() }
         return self.internalStore.value[key] as? V
     }
     
@@ -64,6 +67,7 @@ extension SharedDataStoreServiceImple {
             return dict[key] as? V
         }
         return self.internalStore.compactMap(transform)
+            .observe(on: self.observingScheduler)
     }
     
     public func flush() {
