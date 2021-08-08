@@ -94,7 +94,7 @@ extension MemberUsecaseTests {
     func testUsecase_whenLoadCurrentMemberShip_existOnSharedStore() {
         // given
         let expect = expectation(description: "공유 저장소에 멤버쉽 존재하는 경우 로드")
-        self.store.save(.membership, MemberShip())
+        self.store.save(MemberShip.self, key: .membership, MemberShip())
         
         // when
         let requestLoad = self.usecase.loadCurrentMembership()
@@ -107,7 +107,7 @@ extension MemberUsecaseTests {
     func testUsecase_whenLoadCurrentMemberShip_notExistOnSharedStore() {
         // given
         let expect = expectation(description: "공유 저장소에 멤버쉽 존재 안하는 경우 로드")
-        self.store.save(.currentMember, Member(uid: "dummy"))
+        self.store.save(Member.self, key: .currentMember, Member(uid: "dummy"))
         self.mockRepository.register(key: "requestLoadMembership") {
             return Maybe<MemberShip>.just(.init())
         }
@@ -126,7 +126,7 @@ extension MemberUsecaseTests {
         
         // when
         let member = self.waitFirstElement(expect, for: self.usecase.currentMember.compactMap{ $0 }) {
-            self.store.update(SharedDataKeys.currentMember.rawValue, value: Member(uid: "some"))
+            self.store.update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: Member(uid: "some"))
         }
         
         // then
@@ -141,7 +141,7 @@ extension MemberUsecaseTests {
         memner = self.usecase.fetchCurrentMember()
         XCTAssertNil(memner)
         
-        self.store.update(SharedDataKeys.currentMember.rawValue, value: Member.init(uid: "some"))
+        self.store.update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: Member.init(uid: "some"))
         memner = self.usecase.fetchCurrentMember()
         XCTAssertNotNil(memner)
     }
@@ -255,7 +255,7 @@ extension MemberUsecaseTests {
         }
         
         // when
-        let memberSource: Observable<Member> = self.store.observe(SharedDataKeys.currentMember.rawValue).compactMap{ $0 }
+        let memberSource = self.store.observe(Member.self, key: SharedDataKeys.currentMember.rawValue).compactMap{ $0 }
         let newMember = self.waitFirstElement(expect, for: memberSource) {
             let intro = MemberUpdateField.introduction("new")
             self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: nil)
@@ -265,6 +265,28 @@ extension MemberUsecaseTests {
         
         // then
         XCTAssertNotNil(newMember)
+    }
+    
+    func testUsecase_whenAfterUpdateMember_emitViaSharedStoreMemberMapUpdated() {
+        // given
+        let expect = expectation(description: "멤버 업데이트 이후에 새로운 memberMap share event로 발생")
+        
+        self.mockRepository.register(key: "requestUpdateMemberProfileFields") {
+            return Maybe<Member>.just(.init(uid: "some"))
+        }
+        
+        // when
+        let memberMapSource = self.store.observe([String: Member].self, key: SharedDataKeys.memberMap.rawValue)
+        let memberMap = self.waitFirstElement(expect, for: memberMapSource) {
+            let intro = MemberUpdateField.introduction("new")
+            self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: nil)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        let member = memberMap?["some"]
+        XCTAssertNotNil(member)
     }
 }
 
@@ -276,7 +298,7 @@ extension MemberUsecaseTests {
         let expect = expectation(description: "member load시에 cache 활용")
         
         let memberOnMemory = Member(uid: "uid:0", nickName: "memory")
-        self.store.save(SharedDataKeys.memberMap, ["uid:0": memberOnMemory])
+        self.store.save([String: Member].self, key: SharedDataKeys.memberMap, ["uid:0": memberOnMemory])
         self.mockRepository.register(key: "fetchMembers") {
             return Maybe<[Member]>.just([Member(uid: "uid:1", nickName: "disk")])
         }

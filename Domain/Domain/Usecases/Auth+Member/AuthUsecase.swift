@@ -95,14 +95,20 @@ extension AuthUsecaseImple {
     private func updateAccountInfoOnSharedStore(_ auth: Auth, member: Member?) {
         logger.print(level: .info, "current auth changed: \(auth) and member: \(String(describing: member))")
         self.authInfoManager.updateAuth(auth)
-        member.whenExists {
-            self.sharedDataStroeService.update(SharedDataKeys.currentMember.rawValue, value: $0)
+        member.whenExists { me in
+            
+            self.sharedDataStroeService
+                .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: me)
+            self.sharedDataStroeService
+                .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
+                    return (dict ?? [:]).merging([me.uid: me], uniquingKeysWith: { $1 })
+                }
         }
     }
     
     public var currentAuth: Observable<Auth?> {
         return self.sharedDataStroeService
-            .observe(SharedDataKeys.auth.rawValue)
+            .observe(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     
     public var supportingOAuthServiceProviders: [OAuthServiceProviderType] {

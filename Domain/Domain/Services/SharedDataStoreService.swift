@@ -16,23 +16,23 @@ import RxRelay
 
 public protocol SharedDataStoreService: AuthInfoProvider {
     
-    func update<V>(_ key: String, mutating: (V?) -> V?)
+    func update<V>(_ type: V.Type, key: String, mutating: (V?) -> V?)
     
-    func get<V>(_ key: String) -> V?
+    func get<V>(_ type: V.Type, key: String) -> V?
     
     func delete(_ key: String)
     
-    func observe<V>(_ key: String) -> Observable<V>
+    func observe<V>(_ type: V.Type, key: String) -> Observable<V?>
     
-    func observeWithCache<V>(_ key: String) -> Observable<V>
+    func observeWithCache<V>(_ type: V.Type, key: String) -> Observable<V?>
     
     func flush()
 }
 
 extension SharedDataStoreService {
     
-    func update<V>(_ key: String, value: V) {
-        self.update(key, mutating: { _ in value })
+    func update<V>(_ type: V.Type, key: String, value: V) {
+        self.update(type, key: key, mutating: { _ in value })
     }
 }
 
@@ -54,7 +54,7 @@ public final class SharedDataStoreServiceImple: SharedDataStoreService {
 
 extension SharedDataStoreServiceImple {
     
-    public func update<V>(_ key: String, mutating: (V?) -> V?) {
+    public func update<V>(_ type: V.Type, key: String, mutating: (V?) -> V?) {
         self.lock.lock(); defer { self.lock.unlock() }
         var dict = self.internalStore.value
         let stored = dict[key] as? V
@@ -64,7 +64,7 @@ extension SharedDataStoreServiceImple {
         self.updatedKey.onNext(key)
     }
     
-    public func get<V>(_ key: String) -> V? {
+    public func get<V>(_ type: V.Type, key: String) -> V? {
         return self.internalStore.value[key] as? V
     }
     
@@ -76,7 +76,7 @@ extension SharedDataStoreServiceImple {
         self.updatedKey.onNext(key)
     }
     
-    public func observe<V>(_ key: String) -> Observable<V> {
+    public func observe<V>(_ type: V.Type, key: String) -> Observable<V?> {
         
         let dataChanges: (String?, [String: Any]) -> V? = { key, dict in
             guard let key = key else { return nil }
@@ -86,16 +86,16 @@ extension SharedDataStoreServiceImple {
         return self.updatedKey
             .filter{ $0 == key }
             .withLatestFrom(self.internalStore, resultSelector: dataChanges)
-            .compactMap { $0 }
             .observe(on: self.observingScheduler)
     }
     
-    public func observeWithCache<V>(_ key: String) -> Observable<V> {
-        let cached: V? = self.get(key)
-        let updates: Observable<V?> = self.observe(key).map{ v -> V? in v }
-        return updates
-            .startWith(cached)
-            .compactMap{ $0 }
+    public func observeWithCache<V>(_ type: V.Type, key: String) -> Observable<V?> {
+        let cached: V? = self.get(type, key: key)
+        let updates: Observable<V?> = self.observe(type, key: key).map{ v -> V? in v }
+        guard let cache = cached else {
+            return updates
+        }
+        return updates.startWith(cache)
     }
     
     public func flush() {
@@ -111,11 +111,11 @@ extension SharedDataStoreServiceImple {
 extension SharedDataStoreServiceImple: AuthInfoManger {
     
     public func currentAuth() -> Auth? {
-        return self.get(SharedDataKeys.auth.rawValue)
+        return self.get(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     
     public func updateAuth(_ newValue: Auth) {
-        self.update(SharedDataKeys.auth.rawValue, value: newValue)
+        self.update(Auth.self, key: SharedDataKeys.auth.rawValue, value: newValue)
     }
     
     public func clearAuth() {
