@@ -45,3 +45,14 @@ extension ObserverType where Element == Void {
         self.onNext(())
     }
 }
+
+
+extension Result {
+    
+    public func asMaybe() -> Maybe<Success> {
+        switch self {
+        case let .success(value): return .just(value)
+        case let .failure(error): return .error(error)
+        }
+    }
+}

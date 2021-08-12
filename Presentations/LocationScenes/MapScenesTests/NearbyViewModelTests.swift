@@ -21,13 +21,14 @@ class NearbyViewModelTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var mockLocationUsecase: MockUserLocationUsecase!
     var spyRouter: SpyRouter!
-    var viewModel: NearbyViewModelImple!
+    var viewModel: NearbyViewModel!
     
     override func setUpWithError() throws {
         self.disposeBag = DisposeBag()
         self.mockLocationUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
+                                              hoorayUsecase: MockHoorayUsecase(),
                                               router: self.spyRouter)
     }
     
@@ -185,13 +186,58 @@ extension NearbyViewModelTests {
         }
         
         // when
-        let void: Void? = self.waitFirstElement(expect, for: self.viewModel.unavailToUseService) {
+        let void: Void? = self.waitFirstElement(expect, for: self.viewModel.alertUnavailToUseService) {
             self.viewModel.preparePermission()
         }
         
         // then
         XCTAssertNotNil(void)
     }
+}
+
+
+// MARK: - interact with hooray usecase
+
+class HoorayNearbyViewModelTests: NearbyViewModelTests {
+    
+    private var stubHoorayUsecase: BaseStubHoorayUsecase!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubHoorayUsecase = .init()
+        self.viewModel = NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
+                                              hoorayUsecase: self.stubHoorayUsecase,
+                                              router: self.spyRouter)
+    }
+    
+    override func tearDownWithError() throws {
+        self.stubHoorayUsecase = nil
+        self.viewModel = nil
+    }
+}
+
+extension HoorayNearbyViewModelTests {
+    
+    func testViewModel_whenAfterNewHoorayPublished_addHoorayMarkerAndStartAnimation() {
+        // given
+        let expect = expectation(description: "신규 후레이 발급 이후에 후레이 마커 추가")
+        
+        // when
+        let marker = self.waitFirstElement(expect, for: viewModel.newUserHooray) {
+            let form = NewHoorayForm(publisherID: "some")
+            self.stubHoorayUsecase.publish(newHooray: form, withNewPlace: nil)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(marker)
+        XCTAssertEqual(marker?.isMine, true)
+    }
+    
+    // ack 수신시에 후레이 마커 업데이트
+    
+    // reaction 수신시에 후레이 마커 업데이트
 }
 
 extension NearbyViewModelTests {
