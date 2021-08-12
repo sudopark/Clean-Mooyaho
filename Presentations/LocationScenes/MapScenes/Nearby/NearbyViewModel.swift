@@ -16,6 +16,23 @@ import CommonPresenting
 
 // MARK: - NearbyViewModel
 
+
+public struct HoorayMarker {
+    
+    let isMine: Bool
+    let hoorayID: String
+    let publisherID: String
+    let hoorayKeyword: String
+    let timeLabel: String
+    let message: String
+    let image: ImageSource?
+    let spreadDistance: Meters
+    let aliveDuration: TimeInterval
+    
+    var ackCount: Int = 0
+    var reactions: [HoorayReaction] = []
+}
+
 public protocol NearbyViewModel: AnyObject {
 
     // interactor
@@ -26,6 +43,7 @@ public protocol NearbyViewModel: AnyObject {
     // presenter
     var moveCamera: Observable<MapCameramovement> { get }
     var alertUnavailToUseService: Observable<Void> { get }
+    var newUserHooray: Observable<HoorayMarker> { get }
 }
 
 
@@ -45,11 +63,14 @@ public final class NearbyViewModelImple: NearbyViewModel {
     }
     
     private let locationUsecase: UserLocationUsecase
+    private let hoorayUsecase: HoorayUsecase
     private let router: NearbyRouting
     
     public init(locationUsecase: UserLocationUsecase,
+                hoorayUsecase: HoorayUsecase,
                 router: NearbyRouting) {
         self.locationUsecase = locationUsecase
+        self.hoorayUsecase = hoorayUsecase
         self.router = router
     }
     
@@ -130,6 +151,23 @@ extension NearbyViewModelImple {
     
     public var currentPositionPlaceMark: Observable<String> {
         return self.subjects.placeMark.distinctUntilChanged()
+    }
+    
+    public var newUserHooray: Observable<HoorayMarker> {
+        
+        let asMarker: (Hooray) -> HoorayMarker = { hooray in
+            
+            let timeAgo = hooray.timeStamp.timeAgoText
+            return HoorayMarker(isMine: true,
+                                hoorayID: hooray.uid, publisherID: hooray.publisherID,
+                                hoorayKeyword: hooray.hoorayKeyword,
+                                timeLabel: timeAgo, message: hooray.message, image: hooray.image,
+                                spreadDistance: hooray.spreadDistance, aliveDuration: hooray.aliveDuration)
+        }
+        
+        return self.hoorayUsecase.newHoorayPublished
+            .distinctUntilChanged{ $0.uid == $1.uid }
+            .map(asMarker)
     }
 }
 

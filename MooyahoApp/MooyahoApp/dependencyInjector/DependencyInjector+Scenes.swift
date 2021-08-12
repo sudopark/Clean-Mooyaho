@@ -74,6 +74,7 @@ extension DependencyInjector: NearbySceneBuilable {
     public func makeNearbyScene() -> NearbyScene {
         let router = NearbyRouter(nextSceneBuilders: self)
         let viewModel = NearbyViewModelImple(locationUsecase: self.userLocationUsecase,
+                                             hoorayUsecase: self.hoorayUsecase,
                                              router: router)
         let viewController = NearbyViewController(viewModel: viewModel)
         router.currentScene = viewController
