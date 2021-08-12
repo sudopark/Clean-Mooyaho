@@ -14,6 +14,16 @@ import UnitTestHelpKit
 
 
 open class MockMemberUsecase: MemberUsecase, Mocking {
+    public func refreshMembers(_ ids: [String]) { }
+    
+    public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
+        return self.resolve(key: "loadMembers") ?? .empty()
+    }
+    
+    public func members(for ids: [String]) -> Observable<[String : Member]> {
+        return self.resolve(key: "members:for") ?? .empty()
+    }
+    
     
     public init() {}
     

@@ -39,6 +39,10 @@ public protocol MemberUsecase {
     
     func updatePushToken(_ userID: String, deviceID: String, newToken: String)
     
+    func refreshMembers(_ ids: [String])
+    
+    func loadMembers(_ ids: [String]) -> Maybe<[Member]>
+    
     func updateCurrent(memberID: String,
                        updateFields: [MemberUpdateField],
                        with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus>
@@ -46,6 +50,8 @@ public protocol MemberUsecase {
     func loadCurrentMembership() -> Maybe<MemberShip>
     
     var currentMember: Observable<Member?> { get }
+    
+    func members(for ids: [String]) -> Observable<[String: Member]>
 }
 
 
@@ -165,7 +171,7 @@ extension MemberUsecaseImple {
         return self.memberRepository.requestLoadMembership(for: curent.uid)
     }
     
-    func refreshMembers(_ ids: [String]) {
+    public func refreshMembers(_ ids: [String]) {
         
         let updateStore: ([Member]) -> Void = { [weak self] members in
             let memberMap = members.reduce(into: [String: Member]()) { $0[$1.uid] = $1 }
@@ -177,7 +183,7 @@ extension MemberUsecaseImple {
             .disposed(by: self.disposeBag)
     }
     
-    func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
+    public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
         
         typealias MemberMap = [String: Member]
         
