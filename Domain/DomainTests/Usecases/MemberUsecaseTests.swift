@@ -293,32 +293,57 @@ extension MemberUsecaseTests {
 
 extension MemberUsecaseTests {
     
-    func testUsecase_whenLoadMemberUseCaches() {
+    func testUsecase_loadMembers() {
         // given
-        let expect = expectation(description: "member load시에 cache 활용")
-        
-        let memberOnMemory = Member(uid: "uid:0", nickName: "memory")
-        self.store.save([String: Member].self, key: SharedDataKeys.memberMap, ["uid:0": memberOnMemory])
-        self.mockRepository.register(key: "fetchMembers") {
-            return Maybe<[Member]>.just([Member(uid: "uid:1", nickName: "disk")])
-        }
+        let expect = expectation(description: "멤버 정보 로드")
         self.mockRepository.register(key: "requestLoadMembers") {
             return Maybe<[Member]>.just([Member(uid: "uid:2", nickName: "remote")])
         }
         
         // when
-        let load = self.usecase.loadMembers((0..<3).map{ "uid:\($0)" })
-        let members = self.waitFirstElement(expect, for: load.asObservable())
+        let loading = self.usecase.loadMembers(["uid:2"]).asObservable()
+        let members = self.waitFirstElement(expect, for: loading)
         
         // then
-        let names = members?.map{ $0.nickName }
-        XCTAssertEqual(names, ["memory", "disk", "remote"])
+        XCTAssertEqual(members?.count, 1)
     }
     
-    func testUsecase_whenAfterLoadMembers_updateStore() {
+    func testUsecase_whenAfterLoadMembers_updateOnShareStore() {
         // given
-        let expect = expectation(description: "member load이후에 shared store 업데이트")
+        let expect = expectation(description: "멤버 로드 이후에 shared store에 업데이트")
+        self.mockRepository.register(key: "requestLoadMembers") {
+            return Maybe<[Member]>.just([Member(uid: "uid:2", nickName: "remote")])
+        }
         
+        // when
+        let key = SharedDataKeys.memberMap.rawValue
+        let memberSource = self.store.observe([String: Member].self, key: key)
+            .compactMap{ $0?["uid:2"] }
+        let updatedMember = self.waitFirstElement(expect, for: memberSource) {
+            self.usecase.loadMembers(["uid:2"])
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(updatedMember)
+    }
+    
+    func testUsecase_subscribeMembersInfo_withExistingCaches() {
+        // given
+        let expect = expectation(description: "캐시에 존재하는 정보와 함께 멤버정보 구독")
+        self.mockRepository.register(key: "fetchMembers") { Maybe<[Member]>.just([Member(uid: "uid:1")]) }
+        
+        // when
+        let members = self.waitElements(expect, for: self.usecase.members(for: ["uid:1"]))
+        
+        // then
+        XCTAssertEqual(members.count, 1)
+    }
+    
+    func testUsecase_refreshMembers() {
+        // given
+        let expect = expectation(description: "member 정보 업데이트")
         self.mockRepository.register(key: "fetchMembers") { Maybe<[Member]>.just([]) }
         self.mockRepository.register(key: "requestLoadMembers") {
             return Maybe<[Member]>.just((0..<3).map{ Member(uid: "uid:\($0)") })
@@ -327,25 +352,7 @@ extension MemberUsecaseTests {
         // when
         let ids = (0..<3).map{ "uid:\($0)" }
         let updatedmembers = self.usecase.members(for: ids)
-        let members = self.waitFirstElement(expect, for: updatedmembers) {
-            self.usecase.loadMembers(ids).subscribe().disposed(by: self.disposeBag)
-        }
-        
-        // then
-        XCTAssertEqual(members?.count, 3)
-    }
-    
-    func testUsecase_refreshMembers() {
-        // given
-        let expect = expectation(description: "member 정보 업데이트")
-        self.mockRepository.register(key: "requestLoadMembers") {
-            return Maybe<[Member]>.just((0..<3).map{ Member(uid: "uid:\($0)") })
-        }
-        
-        // when
-        let ids = (0..<3).map{ "uid:\($0)" }
-        let updatedmembers = self.usecase.members(for: ids)
-        let members = self.waitFirstElement(expect, for: updatedmembers) {
+        let members = self.waitFirstElement(expect, for: updatedmembers, skip: 1) {
             self.usecase.refreshMembers(ids)
         }
         
