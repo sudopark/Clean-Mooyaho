@@ -14,7 +14,7 @@ import Domain
 
 struct PlaceInfoTable: Table {
     
-    struct DataModel: RowValueType {
+    struct Entity: RowValueType {
         
         let uid: String
         let title: String
@@ -107,10 +107,10 @@ struct PlaceInfoTable: Table {
     }
     
     static var tableName: String { "placeinfos" }
-    typealias Model = DataModel
+    typealias EntityType = Entity
     typealias ColumnType = Columns
     
-    static func scalar(_ model: DataModel, for column: Columns) -> ScalarType? {
+    static func scalar(_ model: Entity, for column: Columns) -> ScalarType? {
         switch column {
         case .uid: return model.uid
         case .title: return model.title
