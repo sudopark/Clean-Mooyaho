@@ -30,4 +30,8 @@ public protocol PlaceRepository {
     func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
 
     func requestRegister(newPlace form: NewPlaceForm) -> Maybe<Place>
+    
+    func fetchPlace(for placeID: String) -> Maybe<Place?>
+    
+    func savePlace(_ place: Place) -> Maybe<Void>
 }

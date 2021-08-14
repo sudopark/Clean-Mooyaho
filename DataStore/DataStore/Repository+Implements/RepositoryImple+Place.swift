@@ -83,4 +83,12 @@ extension PlaceRepository where Self: PlaceRepositoryDefImpleDependency {
             .do(onNext: saveAtLocal)
             .do(onNext: removePendingInput)
     }
+    
+    public func fetchPlace(for placeID: String) -> Maybe<Place?> {
+        return self.placeLocal.fetchPlace(placeID)
+    }
+    
+    public func savePlace(_ place: Place) -> Maybe<Void> {
+        return self.placeLocal.savePlace(place)
+    }
 }
