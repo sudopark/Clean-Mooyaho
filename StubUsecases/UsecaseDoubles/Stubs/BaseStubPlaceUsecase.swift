@@ -39,8 +39,8 @@ open class BaseStubPlaceUsecase: PlaceUsecase {
         
         return self.scenario.placeResult.asMaybe()
             .do(onNext: { place in
-                let map = (try? self.placeMap.value()) ?? [:]
-                map[placeId] = place
+                var map = (try? self.placeMap.value()) ?? [:]
+                map[placeID] = place
                 self.placeMap.onNext(map)
             })
     }
