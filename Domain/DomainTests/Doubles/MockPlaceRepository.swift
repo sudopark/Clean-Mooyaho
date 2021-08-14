@@ -60,4 +60,12 @@ class MockPlaceRepository: PlaceRepository, Mocking {
     func requestRegister(newPlace form: NewPlaceForm) -> Maybe<Place> {
         return self.resolve(key: "requestUpload") ?? .empty()
     }
+    
+    func fetchPlace(for placeID: String) -> Maybe<Place?> {
+        return self.resolve(key: "fetchPlace") ?? .empty()
+    }
+    
+    func savePlace(_ place: Place) -> Maybe<Void> {
+        return self.resolve(key: "savePlace") ?? .empty()
+    }
 }
