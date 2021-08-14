@@ -12,7 +12,7 @@ import RxSwift
 import Domain
 
 
-public class BaseStubHoorayUsecase: HoorayUsecase {
+open class BaseStubHoorayUsecase: HoorayUsecase {
     
     public struct Scenario {
         public var isAvailToPublishHooray: Result<Void, Error> = .success(())
@@ -27,11 +27,11 @@ public class BaseStubHoorayUsecase: HoorayUsecase {
         self.scenario = scenario
     }
     
-    public func isAvailToPublish() -> Maybe<Void> {
+    open func isAvailToPublish() -> Maybe<Void> {
         return self.scenario.isAvailToPublishHooray.asMaybe()
     }
     
-    public func publish(newHooray hoorayForm: NewHoorayForm, withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray> {
+    open func publish(newHooray hoorayForm: NewHoorayForm, withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray> {
         return self.scenario.publishNewHoorayResult.asMaybe()
             .do(afterNext: {
                 self.newHooraySubject.onNext($0)
@@ -39,26 +39,26 @@ public class BaseStubHoorayUsecase: HoorayUsecase {
     }
     
     public let mockReceivedHoorayAck = PublishSubject<HoorayAckMessage>()
-    public var receiveHoorayAck: Observable<HoorayAckMessage> {
+    open var receiveHoorayAck: Observable<HoorayAckMessage> {
         return self.mockReceivedHoorayAck.asObservable()
     }
     
     public let mockReceivedReaction = PublishSubject<HoorayReactionMessage>()
-    public var receiveHoorayReaction: Observable<HoorayReactionMessage> {
+    open var receiveHoorayReaction: Observable<HoorayReactionMessage> {
         return self.mockReceivedReaction.asObservable()
     }
     
-    public func loadNearbyRecentHoorays(_ userID: String, at location: Coordinate) -> Maybe<[Hooray]> {
+    open func loadNearbyRecentHoorays(_ userID: String, at location: Coordinate) -> Maybe<[Hooray]> {
         return self.scenario.nearbyRecentHoorays.asMaybe()
     }
     
     public let mockNewHooray = PublishSubject<NewHoorayMessage>()
-    public var newReceivedHooray: Observable<NewHoorayMessage> {
+    open var newReceivedHooray: Observable<NewHoorayMessage> {
         return self.mockNewHooray.asObservable()
     }
     
     private let newHooraySubject = PublishSubject<Hooray>()
-    public var newHoorayPublished: Observable<Hooray> {
+    open var newHoorayPublished: Observable<Hooray> {
         return self.newHooraySubject.asObservable()
     }
 }
