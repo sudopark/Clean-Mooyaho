@@ -174,7 +174,7 @@ extension DataModelStorageImple {
     
     public func fetchPlace(_ placeID: String) -> Maybe<Place?> {
         
-        typealias PlaceInfo = PlaceInfoTable.DataModel
+        typealias PlaceInfo = PlaceInfoTable.Entity
         
         let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
         
@@ -215,8 +215,8 @@ extension DataModelStorageImple {
 
 private extension CursorIterator {
     
-    static func makePlaceInfoAndThumbnail(_ cursor: CursorIterator) throws -> (PlaceInfoTable.DataModel, ImageSource?) {
-        let placeInfo = try PlaceInfoTable.DataModel(cursor)
+    static func makePlaceInfoAndThumbnail(_ cursor: CursorIterator) throws -> (PlaceInfoTable.Entity, ImageSource?) {
+        let placeInfo = try PlaceInfoTable.Entity(cursor)
         let thumbnail = try? ImageSource(cursor)
         return (placeInfo, thumbnail)
     }
@@ -224,7 +224,7 @@ private extension CursorIterator {
 
 private extension Place {
     
-    init?(info: PlaceInfoTable.DataModel, thumbnail: ImageSource?, tags: [Tag]) {
+    init?(info: PlaceInfoTable.Entity, thumbnail: ImageSource?, tags: [Tag]) {
         self.init(uid: info.uid, title: info.title, thumbnail: thumbnail,
                   externalSearchID: info.externalSearchID, detailLink: info.detailLink,
                   coordinate: .init(latt: info.latt, long: info.long),

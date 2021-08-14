@@ -225,6 +225,25 @@ extension RepositoryTests_Places {
 }
 
 
+extension RepositoryTests_Places {
+    
+    func testRepository_saveAndFetchPlace() {
+        // given
+        let expect = expectation(description: "placec 저장하고 로드")
+        self.mockLocal.register(key: "savePlaces") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "fetchPlace") { Maybe<Place?>.just(self.dummyPlace) }
+        
+        // when
+        let place = self.dummyPlace
+        let savePlace = self.repository.savePlace(place)
+        let loadPlace = self.repository.fetchPlace(for: place.uid)
+        let saveAndLoad = savePlace.flatMap{ _ in loadPlace }
+        let loadedPlace = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        
+        // then
+        XCTAssertNotNil(loadedPlace)
+    }
+}
 
 extension RepositoryTests_Places {
     

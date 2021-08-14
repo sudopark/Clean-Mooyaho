@@ -38,9 +38,9 @@
 		F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212826557924000D7456 /* RepositoryTests+Member.swift */; };
 		F63D29F8269AE7DD007580E2 /* PlaceInfoTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63D29F7269AE7DD007580E2 /* PlaceInfoTable.swift */; };
 		F63D29FA269C906D007580E2 /* TagTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63D29F9269C906D007580E2 /* TagTable.swift */; };
-		F63D2B8626A08088007580E2 /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F63D2B8526A08088007580E2 /* SQLiteService */; };
 		F6419BF626822FB000C7919B /* LocalStorageTests+Auth&Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */; };
 		F660B8EF26747B1E004FB42E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EE26747B1E004FB42E /* Alamofire */; };
+		F66B7D7426C7850000D31FAC /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F66B7D7326C7850000D31FAC /* SQLiteService */; };
 		F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F66BB88E2684F64F00B46A99 /* KeychainSwift */; };
 		F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66BB8902686E7F400B46A99 /* BaseLocalStorageTests.swift */; };
 		F66BB8942686EF3E00B46A99 /* SQLiteStorage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66BB8932686EF3E00B46A99 /* SQLiteStorage+Extension.swift */; };
@@ -119,7 +119,7 @@
 				F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */,
 				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
-				F63D2B8626A08088007580E2 /* SQLiteService in Frameworks */,
+				F66B7D7426C7850000D31FAC /* SQLiteService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +330,7 @@
 			packageProductDependencies = (
 				F660B8EE26747B1E004FB42E /* Alamofire */,
 				F66BB88E2684F64F00B46A99 /* KeychainSwift */,
-				F63D2B8526A08088007580E2 /* SQLiteService */,
+				F66B7D7326C7850000D31FAC /* SQLiteService */,
 			);
 			productName = DataStore;
 			productReference = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */;
@@ -385,7 +385,7 @@
 			packageReferences = (
 				F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				F66BB88D2684F64F00B46A99 /* XCRemoteSwiftPackageReference "keychain-swift" */,
-				F63D2B8426A08088007580E2 /* XCRemoteSwiftPackageReference "SQLiteStorage" */,
+				F66B7D7226C7850000D31FAC /* XCRemoteSwiftPackageReference "SQLiteStorage" */,
 			);
 			productRefGroup = 2BF00BE0262B7E1300E235C0 /* Products */;
 			projectDirPath = "";
@@ -716,20 +716,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F63D2B8426A08088007580E2 /* XCRemoteSwiftPackageReference "SQLiteStorage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sudopark/SQLiteStorage.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.2;
-			};
-		};
 		F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.4.3;
+			};
+		};
+		F66B7D7226C7850000D31FAC /* XCRemoteSwiftPackageReference "SQLiteStorage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/SQLiteStorage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
 			};
 		};
 		F66BB88D2684F64F00B46A99 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
@@ -743,15 +743,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F63D2B8526A08088007580E2 /* SQLiteService */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F63D2B8426A08088007580E2 /* XCRemoteSwiftPackageReference "SQLiteStorage" */;
-			productName = SQLiteService;
-		};
 		F660B8EE26747B1E004FB42E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		F66B7D7326C7850000D31FAC /* SQLiteService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F66B7D7226C7850000D31FAC /* XCRemoteSwiftPackageReference "SQLiteStorage" */;
+			productName = SQLiteService;
 		};
 		F66BB88E2684F64F00B46A99 /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;
