@@ -12,14 +12,6 @@ import RxSwift
 import Overture
 
 
-// MARK: - Hooray PublishPolicy
-
-public enum HoorayPublishPolicy {
-    
-    public static let defaultCooltime: Seconds  = 10 * 60
-    public static let defaultSpreadDistance: Meters = 1_000
-}
-
 // MARK: - HoorayPublisherUsecase
 
 public protocol HoorayPublisherUsecase {
@@ -43,7 +35,7 @@ public protocol HoorayPubisherUsecaseDefaultImpleDependency: AnyObject {
     var memberUsecase: MemberUsecase { get }
     var hoorayRepository: HoorayRepository { get }
     var messagingService: MessagingService { get }
-    var publishedHooray: PublishSubject<Hooray> { get }
+    var sharedStoreService: SharedDataStoreService { get }
 }
 
 
@@ -55,8 +47,8 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
         func checkShouldWaitUntil(_ latest: LatestHooray?, with memberShip: MemberShip) -> TimeStamp? {
             guard let latest = latest else { return nil }
             // TODO: 멤버쉽에 따라 쿨타임 조정
-            let coolTime = HoorayPublishPolicy.defaultCooltime
-            let waitNeedUntil = latest.time + coolTime.asTimeInterval()
+            let coolTime = Policy.defaultCooltime
+            let waitNeedUntil = latest.time + coolTime
             return waitNeedUntil > TimeStamp.now() ? waitNeedUntil : nil
         }
         
@@ -117,7 +109,9 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
         }
         
         let emitPublishedEvent: (Hooray) -> Void = { [weak self] hooray in
-            self?.publishedHooray.onNext(hooray)
+            logger.print(level: .goal, "new hooray published: \(hooray)")
+            let shareKey = SharedDataKeys.newHooray.rawValue
+            self?.sharedStoreService.update(Hooray.self, key: shareKey, value: hooray)
         }
         
         return checkAndLoadMemberShip
@@ -133,7 +127,9 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
 extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
     
     public var newHoorayPublished: Observable<Hooray> {
-        return self.publishedHooray.asObservable()
+        return self.sharedStoreService
+            .observe(Hooray.self, key: SharedDataKeys.newHooray.rawValue)
+            .compactMap{ $0 }
     }
     
     public var receiveHoorayAck: Observable<HoorayAckMessage> {

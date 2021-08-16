@@ -33,10 +33,11 @@ class BaseHoorayUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.sharedStore = .init()
         let memberUsecase = MemberUsecaseImple(memberRepository: self.mockMemberRepository,
                                                sharedDataService: self.sharedStore)
-        self.usecase = .init(authInfoProvider: self.sharedStore,
+        self.usecase = .init(authInfoProvider: sharedStore,
                              memberUsecase: memberUsecase,
                              hoorayRepository: self.mockHoorayRepository,
-                             messagingService: self.mockMessagingService)
+                             messagingService: self.mockMessagingService,
+                             sharedStoreService: self.sharedStore)
     }
     
     override func tearDown() {

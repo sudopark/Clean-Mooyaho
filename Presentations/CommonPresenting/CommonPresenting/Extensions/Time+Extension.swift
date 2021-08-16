@@ -10,7 +10,7 @@ import Foundation
 
 extension TimeInterval {
     
-    private var minute: TimeInterval { 60 * 1000 }
+    private var minute: TimeInterval { 60 }
     
     private var hour: TimeInterval { minute * 60 }
     
@@ -34,19 +34,19 @@ extension TimeInterval {
             return "now".localized
             
         case minute..<hour:
-            return "minute_ago".localized(with: self.divide(minute))
+            return "minute_ago".localized(with: interval.divide(minute))
             
         case hour..<day:
-            return "hour_ago".localized(with: self.divide(hour))
+            return "hour_ago".localized(with: interval.divide(hour))
             
         case day..<week:
-            return "day_ago".localized(with: self.divide(day))
+            return "day_ago".localized(with: interval.divide(day))
             
         case week..<month:
-            return "week_ago".localized(with: self.divide(week))
+            return "week_ago".localized(with: interval.divide(week))
             
         case year...:
-            return "year_ago".localized(with: self.divide(year))
+            return "year_ago".localized(with: interval.divide(year))
             
         default: return ""
         }
