@@ -64,13 +64,16 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private let locationUsecase: UserLocationUsecase
     private let hoorayUsecase: HoorayUsecase
+    private let memberUsecase: MemberUsecase
     private let router: NearbyRouting
     
     public init(locationUsecase: UserLocationUsecase,
                 hoorayUsecase: HoorayUsecase,
+                memberUsecase: MemberUsecase,
                 router: NearbyRouting) {
         self.locationUsecase = locationUsecase
         self.hoorayUsecase = hoorayUsecase
+        self.memberUsecase = memberUsecase
         self.router = router
     }
     
@@ -161,6 +164,11 @@ extension NearbyViewModelImple {
         return Observable
             .merge(publishedHooray, receivedHooray)
             .distinctUntilChanged{ $0.hoorayID == $1.hoorayID }
+    }
+    
+    public func memberInfo(_ id: String) -> Observable<Member> {
+        return self.memberUsecase.members(for: [id])
+            .compactMap{ $0[id] }
     }
 }
 
