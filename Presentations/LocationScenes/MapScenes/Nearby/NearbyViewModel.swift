@@ -25,6 +25,7 @@ public struct HoorayMarker {
     let publisherID: String
     let hoorayKeyword: String
     let timeLabel: String
+    let removeAt: TimeInterval
     let message: String
     let image: ImageSource?
     let coordinate: Coordinate
@@ -44,6 +45,7 @@ public protocol NearbyViewModel: AnyObject {
     var alertUnavailToUseService: Observable<Void> { get }
     var newHooray: Observable<HoorayMarker> { get }
     var recentNearbyHoorays: Observable<[HoorayMarker]> { get }
+    func memberInfo(_ id: String) -> Observable<Member>
 }
 
 
@@ -204,7 +206,9 @@ private extension Hooray {
         let timeAgo = self.timeStamp.timeAgoText
         let marker = HoorayMarker(hoorayID: self.uid, publisherID: self.publisherID,
                                   hoorayKeyword: self.hoorayKeyword,
-                                  timeLabel: timeAgo, message: self.message,
+                                  timeLabel: timeAgo,
+                                  removeAt: self.timeStamp + self.aliveDuration,
+                                  message: self.message,
                                   image: self.image,
                                   coordinate: self.location,
                                   spreadDistance: self.spreadDistance,

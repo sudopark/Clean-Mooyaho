@@ -15,6 +15,7 @@ public enum SharedDataKeys: String {
     case membership
     case memberMap
     case placeMap
+    case newHooray
 }
 
 

@@ -29,7 +29,7 @@ public class IntegratedImageView: UIView {
         
         switch source {
         case let .emoji(value):
-            self.drawEmoji(value)
+            self.drawEmoji(value, resize: resize)
             
         case let .path(path):
             self.setupRemoteImage(path, resize: resize)
@@ -45,8 +45,8 @@ public class IntegratedImageView: UIView {
         self.internalImageView.image = nil
     }
     
-    private func drawEmoji(_ value: String) {
-        let size = self.frame.size
+    private func drawEmoji(_ value: String, resize: CGSize? = nil) {
+        let size = resize ?? self.frame.size
         let fontSize = size.width * 0.75
         let scale = UIScreen.main.scale
         self.internalImageView.image = value.drawText(size: size, fontSize: fontSize, scale: scale)

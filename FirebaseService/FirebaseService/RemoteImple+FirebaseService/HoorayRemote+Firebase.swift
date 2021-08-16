@@ -44,7 +44,7 @@ extension FirebaseServiceImple {
         
         let filterByLocation: ([Hooray]) -> [Hooray] = { hoorays in
             let center2D = CLLocationCoordinate2D(latitude: location.latt, longitude: location.long)
-            return hoorays.withIn(kilometers: { $0.spreadDistance / 1000 }, center2D: center2D)
+            return hoorays.withIn(meters: { $0.spreadDistance }, center2D: center2D)
         }
         
         return loadRecentIndexes
@@ -118,10 +118,7 @@ extension FirebaseServiceImple {
         switch placeForm {
         case let .some(form):
             return self.requestRegister(new: form).map{ hoorayForm.append($0.uid) }
-            
-        case .none where hoorayForm.placeID == nil:
-            return .error(RemoteErrors.invalidRequest("no place id defined for newHooray"))
-            
+
         default:
             return .just(hoorayForm)
         }

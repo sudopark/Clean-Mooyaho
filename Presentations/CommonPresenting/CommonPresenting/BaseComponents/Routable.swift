@@ -56,6 +56,7 @@ extension Router {
     
     public func alertError(_ error: Error) {
         logger.todoImplement()
+        logger.print(level: .debug, "alert error: \(error)")
     }
     
     public func showToast(_ message: String) {

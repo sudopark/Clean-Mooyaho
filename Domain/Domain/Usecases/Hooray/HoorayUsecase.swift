@@ -21,18 +21,20 @@ public final class HoorayUsecaseImple: HoorayUsecase,
                                        HoorayPubisherUsecaseDefaultImpleDependency,
                                        HoorayReceiveUsecaseDefaultImpleDependency {
     
+    public let authInfoProvider: AuthInfoProvider
     public let memberUsecase: MemberUsecase
     public let hoorayRepository: HoorayRepository
     public let messagingService: MessagingService
-    public let authInfoProvider: AuthInfoProvider
-    public let publishedHooray: PublishSubject<Hooray> = .init()
+    public let sharedStoreService: SharedDataStoreService
     
     public init(authInfoProvider: AuthInfoProvider, memberUsecase: MemberUsecase,
-                hoorayRepository: HoorayRepository, messagingService: MessagingService) {
+                hoorayRepository: HoorayRepository,
+                messagingService: MessagingService, sharedStoreService: SharedDataStoreService) {
         self.authInfoProvider = authInfoProvider
         self.memberUsecase = memberUsecase
         self.hoorayRepository = hoorayRepository
         self.messagingService = messagingService
+        self.sharedStoreService = sharedStoreService
     }
     
     public let disposeBag: DisposeBag = DisposeBag()

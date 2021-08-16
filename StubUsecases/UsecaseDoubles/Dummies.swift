@@ -22,7 +22,7 @@ extension PlaceSnippet {
     public static func dummy(_ int: Int) -> PlaceSnippet {
         return PlaceSnippet(placeID: "uid:\(int)",
                             title: "title:\(int)",
-                            latt: 0, long: 0)
+                            latt: Double(int), long: Double(int))
     }
 }
 
