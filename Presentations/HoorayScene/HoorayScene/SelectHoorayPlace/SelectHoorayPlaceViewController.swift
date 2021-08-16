@@ -202,7 +202,7 @@ extension SelectHoorayPlaceViewController: MKMapViewDelegate {
         guard annotation.isUserLocation == false else { return nil }
         
         guard let placeAnnotation = annotation as? PlaceAnnotation else { return nil }
-        let annotationView = mapView.deqeueMarketAnnotationView(for: placeAnnotation)
+        let annotationView = mapView.deqeueMarkerAnnotationView(for: placeAnnotation)
         
         annotationView.canShowCallout = true
         

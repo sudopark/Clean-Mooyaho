@@ -108,7 +108,7 @@ extension AuthUsecaseImple {
     
     public var currentAuth: Observable<Auth?> {
         return self.sharedDataStroeService
-            .observe(Auth.self, key: SharedDataKeys.auth.rawValue)
+            .observeWithCache(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     
     public var supportingOAuthServiceProviders: [OAuthServiceProviderType] {

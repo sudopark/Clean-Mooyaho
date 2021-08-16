@@ -23,6 +23,7 @@ extension HoorayReceiveUsecaseTests {
     func testUsecase_loadNearbyRecentHoorays() {
         // given
         let expect = expectation(description: "근처에 있는 최근 후레이 조회")
+        self.sharedStore.updateAuth(Auth(userID: "myID"))
         
         self.mockHoorayRepository.register(type: Maybe<[Hooray]>.self, key: "requestLoadNearbyRecentHoorays") {
             let hoorays: [Hooray] = (0..<10).map(Hooray.dummy(_:))
@@ -30,7 +31,7 @@ extension HoorayReceiveUsecaseTests {
         }
         
         // when
-        let requestLoad = self.usecase.loadNearbyRecentHoorays("myID", at: .init(latt: 0, long: 0))
+        let requestLoad = self.usecase.loadNearbyRecentHoorays(at: .init(latt: 0, long: 0))
         let hoorays = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
         
         // then
@@ -41,6 +42,7 @@ extension HoorayReceiveUsecaseTests {
         // given
         let expect = expectation(description: "근처에 있는 후레이 조회 + ack 전송시에 후레이에 ackID 저장")
         expect.expectedFulfillmentCount = 5
+        self.sharedStore.updateAuth(Auth(userID: "myID"))
         
         self.mockHoorayRepository.called(key: "requestAckHooray") { _ in
             expect.fulfill()
@@ -57,7 +59,7 @@ extension HoorayReceiveUsecaseTests {
         }
         
         // when
-        self.usecase.loadNearbyRecentHoorays("myID", at: .init(latt: 0, long: 0))
+        self.usecase.loadNearbyRecentHoorays(at: .init(latt: 0, long: 0))
             .subscribe()
             .disposed(by: self.disposeBag)
         
@@ -69,6 +71,7 @@ extension HoorayReceiveUsecaseTests {
         // given
         let expect = expectation(description: "근처에 있는 최근 후레이 조회해서 읽음처리시 내꺼에는 ack x")
         expect.expectedFulfillmentCount = 9
+        self.sharedStore.updateAuth(Auth(userID: "pub:0"))
         
         self.mockHoorayRepository.called(key: "requestAckHooray") { _ in
             expect.fulfill()
@@ -80,7 +83,7 @@ extension HoorayReceiveUsecaseTests {
         }
         
         // when
-        self.usecase.loadNearbyRecentHoorays("pub:0", at: .init(latt: 0, long: 0))
+        self.usecase.loadNearbyRecentHoorays(at: .init(latt: 0, long: 0))
             .subscribe()
             .disposed(by: self.disposeBag)
         
