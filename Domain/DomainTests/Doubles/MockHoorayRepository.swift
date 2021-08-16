@@ -36,4 +36,8 @@ class MockHoorayRepository: HoorayRepository, Mocking {
         self.verify(key: "requestAckHooray")
         return self.resolve(key: "requestAckHooray") ?? .empty()
     }
+    
+    func requestLoadHooray(_ id: String) -> Maybe<Hooray> {
+        return self.resolve(key: "requestLoadHooray") ?? .empty()
+    }
 }

@@ -16,9 +16,11 @@ import RxSwift
 public protocol HoorayReceiverUsecase: AnyObject {
     
     func loadNearbyRecentHoorays(_ userID: String,
-                                        at location: Coordinate) -> Maybe<[Hooray]>
+                                 at location: Coordinate) -> Maybe<[Hooray]>
     
-    var newReceivedHooray: Observable<NewHoorayMessage> { get }
+    func loadHooray(_ id: String) -> Maybe<Hooray>
+    
+    var newReceivedHoorayMessage: Observable<NewHoorayMessage> { get }
 }
 
 
@@ -54,7 +56,7 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
             .do(onNext: sendAcksIfNeed)
     }
     
-    public var newReceivedHooray: Observable<NewHoorayMessage> {
+    public var newReceivedHoorayMessage: Observable<NewHoorayMessage> {
         
         let sendAck: (NewHoorayMessage) -> Void = { [weak self] hoorayMessage in
             guard let auth = self?.authInfoProvider.currentAuth() else { return }
@@ -74,6 +76,10 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
         let ackings = acks
             .map{ self.hoorayRepository.requestAckHooray($0).subscribe() }
         self.disposeBag.insert(ackings)
+    }
+    
+    public func loadHooray(_ id: String) -> Maybe<Hooray> {
+        return self.hoorayRepository.requestLoadHooray(id)
     }
 }
 
