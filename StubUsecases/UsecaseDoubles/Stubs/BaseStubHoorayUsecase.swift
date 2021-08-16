@@ -18,7 +18,7 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
         public var isAvailToPublishHooray: Result<Void, Error> = .success(())
         public var publishNewHoorayResult: Result<Hooray, Error> = .success(Hooray.dummy(0))
         public var nearbyRecentHoorays: Result<[Hooray], Error> = .success([])
-        
+        public var loadHoorayResult: Result<Hooray, Error> = .success(Hooray.dummy(0))
         public init() { }
     }
     
@@ -53,12 +53,16 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
     }
     
     public let mockNewHooray = PublishSubject<NewHoorayMessage>()
-    open var newReceivedHooray: Observable<NewHoorayMessage> {
+    open var newReceivedHoorayMessage: Observable<NewHoorayMessage> {
         return self.mockNewHooray.asObservable()
     }
     
     private let newHooraySubject = PublishSubject<Hooray>()
     open var newHoorayPublished: Observable<Hooray> {
         return self.newHooraySubject.asObservable()
+    }
+    
+    open func loadHooray(_ id: String) -> Maybe<Hooray> {
+        return self.scenario.loadHoorayResult.asMaybe()
     }
 }

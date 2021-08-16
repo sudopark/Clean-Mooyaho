@@ -41,12 +41,16 @@ open class MockHoorayUsecase: HoorayUsecase, Mocking {
     }
     
     public let mockNewHooray = PublishSubject<NewHoorayMessage>()
-    open var newReceivedHooray: Observable<NewHoorayMessage> {
+    open var newReceivedHoorayMessage: Observable<NewHoorayMessage> {
         return mockNewHooray.asObservable()
     }
     
     private let mockPublishedNewHooray = PublishSubject<Hooray>()
     public var newHoorayPublished: Observable<Hooray> {
         return self.mockPublishedNewHooray.asObservable()
+    }
+    
+    public func loadHooray(_ id: String) -> Maybe<Hooray> {
+        return self.resolve(key: "loadHooray") ?? .empty()
     }
 }

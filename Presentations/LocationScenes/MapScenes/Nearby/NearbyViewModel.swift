@@ -43,7 +43,7 @@ public protocol NearbyViewModel: AnyObject {
     // presenter
     var moveCamera: Observable<MapCameramovement> { get }
     var alertUnavailToUseService: Observable<Void> { get }
-    var newUserHooray: Observable<HoorayMarker> { get }
+    var newHooray: Observable<HoorayMarker> { get }
 }
 
 
@@ -153,21 +153,14 @@ extension NearbyViewModelImple {
         return self.subjects.placeMark.distinctUntilChanged()
     }
     
-    public var newUserHooray: Observable<HoorayMarker> {
+    public var newHooray: Observable<HoorayMarker> {
         
-        let asMarker: (Hooray) -> HoorayMarker = { hooray in
-            
-            let timeAgo = hooray.timeStamp.timeAgoText
-            return HoorayMarker(isMine: true,
-                                hoorayID: hooray.uid, publisherID: hooray.publisherID,
-                                hoorayKeyword: hooray.hoorayKeyword,
-                                timeLabel: timeAgo, message: hooray.message, image: hooray.image,
-                                spreadDistance: hooray.spreadDistance, aliveDuration: hooray.aliveDuration)
-        }
+        let publishedHooray = self.hoorayUsecase.newHoorayPublished.map{ $0.asMarker(isMine: true) }
+        let receivedHooray = self.hoorayUsecase.receivedNewHooray().map{ $0.asMarker(isMine: false) }
         
-        return self.hoorayUsecase.newHoorayPublished
-            .distinctUntilChanged{ $0.uid == $1.uid }
-            .map(asMarker)
+        return Observable
+            .merge(publishedHooray, receivedHooray)
+            .distinctUntilChanged{ $0.hoorayID == $1.hoorayID }
     }
 }
 
@@ -176,5 +169,33 @@ private extension LastLocation {
     
     var coordinate: Coordinate {
         return .init(latt: self.lattitude, long: self.longitude)
+    }
+}
+
+private extension Hooray {
+    
+    func asMarker(isMine: Bool) -> HoorayMarker {
+        let timeAgo = self.timeStamp.timeAgoText
+        return HoorayMarker(isMine: isMine,
+                            hoorayID: self.uid, publisherID: self.publisherID,
+                            hoorayKeyword: self.hoorayKeyword,
+                            timeLabel: timeAgo, message: self.message, image: self.image,
+                            spreadDistance: self.spreadDistance, aliveDuration: self.aliveDuration)
+    }
+}
+
+private extension HoorayUsecase {
+    
+    func receivedNewHooray() -> Observable<Hooray> {
+        
+        let thenLoadHooray: (NewHoorayMessage) -> Maybe<Hooray> = { [weak self] message in
+            return self?.loadHooray(message.hoorayID) ?? .empty()
+        }
+        
+        return self.newReceivedHoorayMessage
+            .flatMap(thenLoadHooray)
+            .map{ hooray -> Hooray? in hooray }
+            .catchAndReturn(nil)
+            .compactMap{ $0 }
     }
 }

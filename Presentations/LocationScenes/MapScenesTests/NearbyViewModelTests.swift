@@ -204,15 +204,25 @@ class HoorayNearbyViewModelTests: NearbyViewModelTests {
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        self.stubHoorayUsecase = .init()
-        self.viewModel = NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
-                                              hoorayUsecase: self.stubHoorayUsecase,
-                                              router: self.spyRouter)
+        self.viewModel = self.makeViewModel()
     }
     
     override func tearDownWithError() throws {
         self.stubHoorayUsecase = nil
         self.viewModel = nil
+    }
+    
+    private func makeViewModel(shouldLoadHoorayFail: Bool = false) -> NearbyViewModel {
+        
+        var scenario = BaseStubHoorayUsecase.Scenario()
+        shouldLoadHoorayFail.then {
+            scenario.loadHoorayResult = .failure(ApplicationErrors.invalid)
+        }
+        self.stubHoorayUsecase = .init(scenario)
+        
+        return NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
+                                    hoorayUsecase: self.stubHoorayUsecase,
+                                    router: self.spyRouter)
     }
 }
 
@@ -223,7 +233,7 @@ extension HoorayNearbyViewModelTests {
         let expect = expectation(description: "신규 후레이 발급 이후에 후레이 마커 추가")
         
         // when
-        let marker = self.waitFirstElement(expect, for: viewModel.newUserHooray) {
+        let marker = self.waitFirstElement(expect, for: viewModel.newHooray) {
             let form = NewHoorayForm(publisherID: "some")
             self.stubHoorayUsecase.publish(newHooray: form, withNewPlace: nil)
                 .subscribe()
@@ -235,9 +245,38 @@ extension HoorayNearbyViewModelTests {
         XCTAssertEqual(marker?.isMine, true)
     }
     
-    // ack 수신시에 후레이 마커 업데이트
+    func testViewModel_receiveNewHooray() {
+        // given
+        let expect = expectation(description: "신규 후레이 수신 이후에 후레이 마커 추가")
+        
+        // when
+        let marker = self.waitFirstElement(expect, for: viewModel.newHooray) {
+            let dummyHooray = Hooray.dummy(0)
+            let message = NewHoorayMessage(new: dummyHooray)
+            self.stubHoorayUsecase.mockNewHooray.onNext(message)
+        }
+        
+        // then
+        XCTAssertNotNil(marker)
+        XCTAssertEqual(marker?.isMine, false)
+    }
     
-    // reaction 수신시에 후레이 마커 업데이트
+    func testViewModel_whenReceiveNewHoorayMessageButLoadHoorayFail_ignore() {
+        // given
+        let expect = expectation(description: "신규 후레이 메세지는 수신했지만 조회 실패시 무시")
+        expect.isInverted = true
+        self.viewModel = self.makeViewModel(shouldLoadHoorayFail: true)
+        
+        // when
+        let marker = self.waitFirstElement(expect, for: viewModel.newHooray) {
+            let dummyHooray = Hooray.dummy(0)
+            let message = NewHoorayMessage(new: dummyHooray)
+            self.stubHoorayUsecase.mockNewHooray.onNext(message)
+        }
+        
+        // then
+        XCTAssertNil(marker)
+    }
 }
 
 extension NearbyViewModelTests {
