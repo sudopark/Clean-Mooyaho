@@ -52,8 +52,8 @@ extension HoorayPublisherUsecaseTests {
         let expect = expectation(description: "로컬에 최근에 발행한 후레이가 있으면 새로 생성 불가")
         self.stubMemberShip()
         self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
-            let defCooltime = HoorayPublishPolicy.defaultCooltime
-            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime.asTimeInterval() + 5)
+            let defCooltime = Policy.defaultCooltime
+            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime + 5)
             return .just(latest)
         }
         
@@ -78,8 +78,8 @@ extension HoorayPublisherUsecaseTests {
             return .just(nil)
         }
         self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
-            let defCooltime = HoorayPublishPolicy.defaultCooltime
-            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime.asTimeInterval() + 5)
+            let defCooltime = Policy.defaultCooltime
+            let latest = LatestHooray("latest", TimeStamp.now() - defCooltime + 5)
             return .just(latest)
         }
         
@@ -104,7 +104,7 @@ extension HoorayPublisherUsecaseTests {
             return .just(nil)
         }
         self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
-            let defCooltime = HoorayPublishPolicy.defaultCooltime.asTimeInterval()
+            let defCooltime = Policy.defaultCooltime
             let latest = LatestHooray("latest", TimeStamp.now() - defCooltime * 10)
             return .just(latest)
         }
@@ -161,7 +161,7 @@ extension HoorayPublisherUsecaseTests {
             return .just(nil)
         }
         self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
-            let defCooltime = HoorayPublishPolicy.defaultCooltime.asTimeInterval()
+            let defCooltime = Policy.defaultCooltime
             let latest = LatestHooray("latest", TimeStamp.now() - defCooltime * 10)
             return .just(latest)
         }

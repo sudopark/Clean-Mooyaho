@@ -148,7 +148,8 @@ extension DependencyInjector {
         return HoorayUsecaseImple(authInfoProvider: self.shared.dataStore,
                                   memberUsecase: self.memberUsecase,
                                   hoorayRepository: self.appReposiotry,
-                                  messagingService: self.messagingService)
+                                  messagingService: self.messagingService,
+                                  sharedStoreService: self.shared.dataStore)
     }
     
     var searchNewPlaceUsecase: SearchNewPlaceUsecase {
