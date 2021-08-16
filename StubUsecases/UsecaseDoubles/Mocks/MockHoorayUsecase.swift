@@ -36,7 +36,7 @@ open class MockHoorayUsecase: HoorayUsecase, Mocking {
         return mockHoorayReaction.asObservable()
     }
     
-    open func loadNearbyRecentHoorays(_ userID: String, at location: Coordinate) -> Maybe<[Hooray]> {
+    open func loadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
         return self.resolve(key: "loadNearbyRecentHoorays") ?? .empty()
     }
     

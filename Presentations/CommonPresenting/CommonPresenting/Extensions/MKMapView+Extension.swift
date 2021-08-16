@@ -78,7 +78,7 @@ extension MKMapView {
         return self.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! V
     }
     
-    public func deqeueMarketAnnotationView<A: MKAnnotation>(for annotation: A,
+    public func deqeueMarkerAnnotationView<A: MKAnnotation>(for annotation: A,
                                                             with customIdentifier: String? = nil) -> MKMarkerAnnotationView {
         let identifier = customIdentifier ?? NSStringFromClass(A.self)
         return self.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation.self) as! MKMarkerAnnotationView

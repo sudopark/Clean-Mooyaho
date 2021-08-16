@@ -15,8 +15,7 @@ import RxSwift
 
 public protocol HoorayReceiverUsecase: AnyObject {
     
-    func loadNearbyRecentHoorays(_ userID: String,
-                                 at location: Coordinate) -> Maybe<[Hooray]>
+    func loadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
     
     func loadHooray(_ id: String) -> Maybe<Hooray>
     
@@ -39,11 +38,11 @@ public protocol HoorayReceiveUsecaseDefaultImpleDependency {
 
 extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDependency {
     
-    public func loadNearbyRecentHoorays(_ userID: String,
-                                        at location: Coordinate) -> Maybe<[Hooray]> {
+    public func loadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
         
         
         let sendAcksIfNeed: ([Hooray]) -> Void = { [weak self] hoorays in
+            guard let userID = self?.authInfoProvider.currentAuth()?.userID else { return }
             let targetHoorays: [Hooray] = hoorays
                 .filter{ $0.publisherID != userID }
                 .filter{ $0.ackUserIDs.contains(userID) == false }

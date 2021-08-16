@@ -10,6 +10,7 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Overture
 
 import Domain
 import CommonPresenting
@@ -19,18 +20,16 @@ import CommonPresenting
 
 public struct HoorayMarker {
     
-    let isMine: Bool
+    var withFocusAnimation: Bool = false
     let hoorayID: String
     let publisherID: String
     let hoorayKeyword: String
     let timeLabel: String
     let message: String
     let image: ImageSource?
+    let coordinate: Coordinate
     let spreadDistance: Meters
     let aliveDuration: TimeInterval
-    
-    var ackCount: Int = 0
-    var reactions: [HoorayReaction] = []
 }
 
 public protocol NearbyViewModel: AnyObject {
@@ -44,6 +43,7 @@ public protocol NearbyViewModel: AnyObject {
     var moveCamera: Observable<MapCameramovement> { get }
     var alertUnavailToUseService: Observable<Void> { get }
     var newHooray: Observable<HoorayMarker> { get }
+    var recentNearbyHoorays: Observable<[HoorayMarker]> { get }
 }
 
 
@@ -58,6 +58,7 @@ public final class NearbyViewModelImple: NearbyViewModel {
     fileprivate final class Subjects {
         // define subjects
         let moveCameraPosition = PublishSubject<MapCameramovement>()
+        let recentNearbyHoorays = PublishSubject<[Hooray]>()
         @AutoCompletable var unavailToUse = PublishSubject<Void>()
         @AutoCompletable var placeMark = PublishSubject<String>()
     }
@@ -120,6 +121,7 @@ extension NearbyViewModelImple {
             isGrantDenied.then {
                 self.subjects.unavailToUse.onNext()
             }
+            self.loadRecentNearbyHooraysIfPossible(coordinate)
         }
         
         self.locationUsecase.checkHasPermission()
@@ -136,6 +138,17 @@ extension NearbyViewModelImple {
     public func moveMapCameraToCurrentUserPosition() {
         let movement = MapCameramovement(center: .currentUserPosition)
         self.subjects.moveCameraPosition.onNext(movement)
+    }
+    
+    private func loadRecentNearbyHooraysIfPossible(_ coordinate: Coordinate?) {
+        guard let coord = coordinate else { return }
+        
+        let updateRecentHoorays: ([Hooray]) -> Void = { [weak self] hoorays in
+            self?.subjects.recentNearbyHoorays.onNext(hoorays)
+        }
+        self.hoorayUsecase.loadNearbyRecentHoorays(at: coord)
+            .subscribe(onSuccess: updateRecentHoorays)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -158,12 +171,17 @@ extension NearbyViewModelImple {
     
     public var newHooray: Observable<HoorayMarker> {
         
-        let publishedHooray = self.hoorayUsecase.newHoorayPublished.map{ $0.asMarker(isMine: true) }
-        let receivedHooray = self.hoorayUsecase.receivedNewHooray().map{ $0.asMarker(isMine: false) }
+        let publishedHooray = self.hoorayUsecase.newHoorayPublished.map{ $0.asMarker(withFocus: true) }
+        let receivedHooray = self.hoorayUsecase.receivedNewHooray().map{ $0.asMarker(withFocus: false) }
         
         return Observable
             .merge(publishedHooray, receivedHooray)
             .distinctUntilChanged{ $0.hoorayID == $1.hoorayID }
+    }
+    
+    public var recentNearbyHoorays: Observable<[HoorayMarker]> {
+        return self.subjects.recentNearbyHoorays
+            .map{ $0.map{ $0.asMarker(withFocus: false) } }
     }
     
     public func memberInfo(_ id: String) -> Observable<Member> {
@@ -182,13 +200,16 @@ private extension LastLocation {
 
 private extension Hooray {
     
-    func asMarker(isMine: Bool) -> HoorayMarker {
+    func asMarker(withFocus: Bool) -> HoorayMarker {
         let timeAgo = self.timeStamp.timeAgoText
-        return HoorayMarker(isMine: isMine,
-                            hoorayID: self.uid, publisherID: self.publisherID,
-                            hoorayKeyword: self.hoorayKeyword,
-                            timeLabel: timeAgo, message: self.message, image: self.image,
-                            spreadDistance: self.spreadDistance, aliveDuration: self.aliveDuration)
+        let marker = HoorayMarker(hoorayID: self.uid, publisherID: self.publisherID,
+                                  hoorayKeyword: self.hoorayKeyword,
+                                  timeLabel: timeAgo, message: self.message,
+                                  image: self.image,
+                                  coordinate: self.location,
+                                  spreadDistance: self.spreadDistance,
+                                  aliveDuration: self.aliveDuration)
+        return update(marker) { $0.withFocusAnimation = withFocus }
     }
 }
 
@@ -202,7 +223,7 @@ private extension HoorayUsecase {
         
         return self.newReceivedHoorayMessage
             .flatMap(thenLoadHooray)
-            .map{ hooray -> Hooray? in hooray }
+            .mapAsOptional()
             .catchAndReturn(nil)
             .compactMap{ $0 }
     }

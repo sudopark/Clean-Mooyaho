@@ -16,7 +16,7 @@ extension Observable {
         return self.catch{ _ in .empty() }
     }
     
-    public func asOptional() -> Observable<Element?> {
+    public func mapAsOptional() -> Observable<Element?> {
         return self.map { element -> Element? in
             return element
         }
@@ -35,6 +35,13 @@ extension Maybe where Element == Void {
     
     public static func just() -> Maybe<Element> {
         return .just(())
+    }
+}
+
+extension PrimitiveSequenceType where Trait == MaybeTrait {
+    
+    public func mapAsOptional() -> Maybe<Element?> {
+        return self.map{ element -> Element? in element }
     }
 }
 
