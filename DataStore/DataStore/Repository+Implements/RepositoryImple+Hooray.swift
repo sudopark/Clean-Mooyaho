@@ -62,6 +62,18 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
             .subscribe()
             .disposed(by: self.disposeBag)
     }
+    
+    public func requestLoadHooray(_ id: String) -> Maybe<Hooray> {
+        
+        let checkExists: (Hooray?) throws -> Hooray = { hooray in
+            guard let hooray = hooray else {
+                throw RemoteErrors.notFound("Hooray", reason: nil)
+            }
+            return hooray
+        }
+        return self.hoorayRemote.requestLoadHooray(id)
+            .map(checkExists)
+    }
 }
 
 

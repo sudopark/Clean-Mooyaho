@@ -99,6 +99,14 @@ extension FirebaseServiceImple {
         return updateHooray
             .do(onNext: sendAckMessage)
     }
+    
+    public func requestLoadHooray(_ id: String) -> Maybe<Hooray?> {
+        
+        let collectionRef = self.fireStoreDB.collection(.hooray)
+        let query = collectionRef.whereField(FieldPath.documentID(), isEqualTo: id)
+        
+        return self.load(query: query).map{ $0.first }
+    }
 }
 
 
