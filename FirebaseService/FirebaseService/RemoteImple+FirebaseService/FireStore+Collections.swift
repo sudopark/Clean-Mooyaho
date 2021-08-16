@@ -60,16 +60,12 @@ extension FirebaseServiceImple {
         }
     }
     
-    func saveNew<D: DocumentMappable>(_ form: JSONMappable,
+    func saveNew<D: DocumentMappable>(_ json: JSON,
                                       at collectionType: FireStoreCollectionType) -> Maybe<D> {
-        
         return Maybe.create { [weak self] callback in
             guard let db = self?.fireStoreDB else { return Disposables.create() }
-            
-            let json = form.asJSON()
             let documentRef = db.collection(collectionType).document()
             let docuID = documentRef.documentID
-            
             documentRef.setData(json) { error in
                 
                 guard error == nil else {
@@ -88,9 +84,15 @@ extension FirebaseServiceImple {
                 
                 callback(.success(model))
             }
-
             return Disposables.create()
         }
+    }
+    
+    func saveNew<D: DocumentMappable>(_ form: JSONMappable,
+                                      at collectionType: FireStoreCollectionType) -> Maybe<D> {
+        
+        let json = form.asJSON()
+        return self.saveNew(json, at: collectionType)
     }
     
     func update(docuID: String,

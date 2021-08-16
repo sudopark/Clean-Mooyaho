@@ -198,13 +198,7 @@ extension MakeHoorayViewModelImple {
         
         guard self.subjects.isPublishing.value == false,
               let form = self.subjects.pendingForm.value else { return }
-        
-        let checkIsAvailable = self.hoorayPublishUsecase.isAvailToPublish()
-        
-        let thenRequestPulish: () -> Maybe<Hooray> = { [weak self] in
-            return self?.hoorayPublishUsecase.publish(newHooray: form, withNewPlace: nil) ?? .empty()
-        }
-        
+    
         let handleRequestFail: (Error) -> Void = { [weak self] error in
             self?.subjects.isPublishing.accept(false)
             guard let applicationError = error as? ApplicationErrors,
@@ -222,8 +216,7 @@ extension MakeHoorayViewModelImple {
         
         self.subjects.isPublishing.accept(true)
         
-        checkIsAvailable
-            .flatMap(thenRequestPulish)
+        self.hoorayPublishUsecase.publish(newHooray: form, withNewPlace: nil)
             .subscribe(onSuccess: newHoorayPublished, onError: handleRequestFail)
             .disposed(by: self.disposeBag)
     }

@@ -325,8 +325,8 @@ extension MakeHoorayViewModelTests {
     func testViewModel_whenUnavailtoPublish_alert() {
         // given
         let expect = expectation(description: "발급 불가능할때 불가능 알림")
-        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
-            Maybe<Void>.error(ApplicationErrors.shouldWaitPublishHooray(until: TimeStamp.now()))
+        self.mockHoorayUsecase.register(key: "publish:newHooray") {
+            return Maybe<Hooray>.error(ApplicationErrors.shouldWaitPublishHooray(until: TimeStamp.now()))
         }
 
         self.spyRouter.called(key: "alertShouldWaitPublishNewHooray") { _ in

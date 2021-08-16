@@ -25,7 +25,7 @@ public struct NewHoorayMessage: HoorayMessage {
     public let publisherID: String
     public let publishedAt: TimeStamp
     
-    public let placeID: String
+    public let placeID: String?
     public let location: Coordinate
     
     public let spreadDistance: Meters
