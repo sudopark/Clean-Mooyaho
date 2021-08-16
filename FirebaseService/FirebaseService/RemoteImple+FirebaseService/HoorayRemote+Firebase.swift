@@ -44,8 +44,7 @@ extension FirebaseServiceImple {
         
         let filterByLocation: ([Hooray]) -> [Hooray] = { hoorays in
             let center2D = CLLocationCoordinate2D(latitude: location.latt, longitude: location.long)
-            let radiusKilometers: Double = hoorayRefPlaceRangeMeters / 1000
-            return hoorays.withIn(kilometers: radiusKilometers, center2D: center2D)
+            return hoorays.withIn(kilometers: { $0.spreadDistance / 1000 }, center2D: center2D)
         }
         
         return loadRecentIndexes
@@ -55,7 +54,7 @@ extension FirebaseServiceImple {
     
     private func loadRecentHoorayIndexes() -> Maybe<[HoorayIndex]> {
         let collectionRef = self.fireStoreDB.collection(.hoorayIndex)
-        let lowBoundTime = TimeStamp.now() - 10 * 60
+        let lowBoundTime = TimeStamp.now() - Policy.recentHoorayTime
         let query = collectionRef
             .whereField(HoorayMappingKey.timestamp.rawValue, isGreaterThanOrEqualTo: lowBoundTime)
         return self.load(query: query)

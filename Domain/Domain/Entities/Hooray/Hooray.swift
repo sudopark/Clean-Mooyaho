@@ -51,7 +51,7 @@ extension HoorayReaction.ReactionInfo: Hashable {
 public struct Hooray {
     
     public let uid: String
-    public let placeID: String
+    public let placeID: String?
     public let publisherID: String
     
     public let hoorayKeyword: String
@@ -68,7 +68,7 @@ public struct Hooray {
     public let spreadDistance: Meters
     public let aliveDuration: TimeInterval
     
-    public init(uid: String, placeID: String, publisherID: String,
+    public init(uid: String, placeID: String?, publisherID: String,
                 hoorayKeyword: String, message: String, tags: [String] = [], image:ImageSource? = nil,
                 location: Coordinate, timestamp: TimeStamp,
                 ackUserIDs: [HoorayAckInfo] = [], reactions: [HoorayReaction.ReactionInfo],
@@ -105,6 +105,9 @@ public final class NewHoorayForm {
     
     public var location: Coordinate!
     public var timeStamp: TimeStamp!
+    
+    public var spreadDistance: Meters!
+    public var aliveTime: TimeInterval!
     
     public init(publisherID: String) {
         self.publisherID = publisherID

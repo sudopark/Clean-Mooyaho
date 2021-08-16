@@ -97,25 +97,26 @@ extension HoorayReaction: DocumentMappable {
 extension Hooray: DocumentMappable {
     
     init?(docuID: String, json: JSON) {
-        guard let placeID = json[Key.placeID] as? String,
-              let publisherID = json[Key.publisherID] as? String,
+        guard let publisherID = json[Key.publisherID] as? String,
               let keyword = json[Key.keyword] as? String,
-              let message = json[Key.keyword] as? String,
+              let message = json[Key.message] as? String,
               let latt = json[Key.latt] as? Double,
               let long = json[Key.long] as? Double,
               let time = json[Key.timestamp] as? Double,
-              let acksJSONArrray = json[Key.ackUserIDs] as? [JSON],
-              let reactionJSONArray = json[Key.reactions] as? [JSON],
               let distance = json[Key.spreadDistance] as? Double,
               let duration = json[Key.aliveDuration] as? Double else {
             return nil
         }
         
+        let acksJSONArrray = json[Key.ackUserIDs] as? [JSON]
+        let reactionJSONArray = json[Key.reactions] as? [JSON]
+        
+        let placeID = json[Key.placeID] as? String
         let tags = json[Key.tags] as? [String] ?? []
         let image = (json[Key.image] as? JSON).flatMap(ImageSource.init(json:))
         let coordinate = Coordinate(latt: latt, long: long)
-        let acks = acksJSONArrray.compactMap{ j -> HoorayAckInfo? in .init(json: j) }
-        let reactions = reactionJSONArray.compactMap{ j -> HoorayReaction.ReactionInfo? in .init(json: j) }
+        let acks = acksJSONArrray?.compactMap{ j -> HoorayAckInfo? in .init(json: j) } ?? []
+        let reactions = reactionJSONArray?.compactMap{ j -> HoorayReaction.ReactionInfo? in .init(json: j) } ?? []
         
         self.init(uid: docuID, placeID: placeID, publisherID: publisherID,
                   hoorayKeyword: keyword, message: message, tags: tags, image: image,
@@ -156,9 +157,7 @@ extension NewHoorayForm: JSONMappable {
               let placeID = json[Key.placeID] as? String,
               let latt = json[Key.latt] as? Double,
               let long = json[Key.long] as? Double,
-              let time = json[Key.timestamp] as? Double,
-              let distance = json[Key.spreadDistance] as? Double,
-              let duration = json[Key.aliveDuration] as? Double else { return nil }
+              let time = json[Key.timestamp] as? Double else { return nil }
         self.init(publisherID: pubID)
         self.placeID = placeID
         self.location = .init(latt: latt, long: long)
@@ -168,10 +167,17 @@ extension NewHoorayForm: JSONMappable {
     func asJSON() -> JSON {
         var json: JSON = [:]
         json[Key.publisherID] = self.publisherID
-        json[Key.placeID] = self.placeID
+        json[Key.keyword] = self.hoorayKeyword
+        json[Key.message] = self.message
         json[Key.latt] = self.location.latt
         json[Key.long] = self.location.long
         json[Key.timestamp] = self.timeStamp
+        json[Key.spreadDistance] = self.spreadDistance
+        json[Key.aliveDuration] = self.aliveTime
+        json[Key.placeID] = self.placeID
+        json[Key.tags] = self.tags
+        let imageSource = self.imagePath.map{ ImageSource.path($0) }
+        json[Key.image] = imageSource?.asJSON
         return json
     }
 }

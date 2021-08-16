@@ -9,6 +9,7 @@
 import Foundation
 
 import RxSwift
+import Overture
 
 
 // MARK: - Hooray PublishPolicy
@@ -49,9 +50,8 @@ public protocol HoorayPubisherUsecaseDefaultImpleDependency: AnyObject {
 // MARK: HoorayPubisher default implementation -> publish hoorays
 
 extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDependency {
-
-    public func isAvailToPublish() -> Maybe<Void> {
-        
+    
+    private func checkAndLoadMemberShipWhenAvailToPublish() -> Maybe<MemberShip> {
         func checkShouldWaitUntil(_ latest: LatestHooray?, with memberShip: MemberShip) -> TimeStamp? {
             guard let latest = latest else { return nil }
             // TODO: 멤버쉽에 따라 쿨타임 조정
@@ -78,13 +78,13 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
             }
             throw ApplicationErrors.shouldWaitPublishHooray(until: shouldwaitUntil)
         }
-        let thenLoadRecentHoorayFromRemoteAndCheck: (MemberShip) -> Maybe<Void>
+        let thenLoadRecentHoorayFromRemoteAndCheck: (MemberShip) -> Maybe<MemberShip>
         thenLoadRecentHoorayFromRemoteAndCheck = { [weak self] memberShip in
             guard let self = self else { return .empty() }
             return self.hoorayRepository.requestLoadLatestHooray(member.uid)
                 .map { latest in
                     guard let shouldwaitUntil = checkShouldWaitUntil(latest, with: memberShip) else {
-                        return ()
+                        return memberShip
                     }
                     throw ApplicationErrors.shouldWaitPublishHooray(until: shouldwaitUntil)
                 }
@@ -94,16 +94,36 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
             .map(throwWhenTooSoonHoorayExistsOnLocal)
             .flatMap(thenLoadRecentHoorayFromRemoteAndCheck)
     }
+
+    public func isAvailToPublish() -> Maybe<Void> {
+        return self.checkAndLoadMemberShipWhenAvailToPublish()
+            .map{ _ in }
+    }
     
     public func publish(newHooray hoorayForm: NewHoorayForm,
                         withNewPlace placeForm: NewPlaceForm?) -> Maybe<Hooray> {
+        
+        let checkAndLoadMemberShip = self.checkAndLoadMemberShipWhenAvailToPublish()
+        let applyPolicy: (MemberShip) -> NewHoorayForm = { memberShip in
+            return update(hoorayForm) {
+                $0.spreadDistance = memberShip.hooraySpreadDistance()
+                $0.aliveTime = memberShip.hoorayAliveTime()
+                $0.timeStamp = .now()
+            }
+        }
+        let thenPublish: (NewHoorayForm) -> Maybe<Hooray> = { [weak self] form in
+            guard let self = self else { return .empty() }
+            return self.hoorayRepository.requestPublishHooray(form, withNewPlace: placeForm)
+        }
         
         let emitPublishedEvent: (Hooray) -> Void = { [weak self] hooray in
             self?.publishedHooray.onNext(hooray)
         }
         
-        return self.hoorayRepository.requestPublishHooray(hoorayForm, withNewPlace: placeForm)
-            .do(afterNext: emitPublishedEvent)
+        return checkAndLoadMemberShip
+            .map(applyPolicy)
+            .flatMap(thenPublish)
+            .do(onNext: emitPublishedEvent)
     }
 }
 
@@ -124,5 +144,17 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
     public var receiveHoorayReaction: Observable<HoorayReactionMessage> {
         return self.messagingService.receivedMessage
             .compactMap{ $0 as? HoorayReactionMessage }
+    }
+}
+
+
+private extension MemberShip {
+    
+    func hoorayAliveTime() -> TimeInterval {
+        return Policy.hoorayAliveTime
+    }
+    
+    func hooraySpreadDistance() -> Meters {
+        return Policy.hoorayDefaultSpreadDistance
     }
 }

@@ -183,9 +183,46 @@ extension HoorayPublisherUsecaseTests {
 
 extension HoorayPublisherUsecaseTests {
     
+    private func mockCheckPublishable(_ isAvail: Bool) {
+        
+        let dummyMember = Member(uid: "dummy", nickName: "some")
+        self.sharedStore.update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: dummyMember)
+        
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "fetchLatestHooray") {
+            return .just(nil)
+        }
+        self.mockHoorayRepository.register(type: Maybe<LatestHooray?>.self, key: "requestLoadLatestHooray") {
+            return .just(nil)
+        }
+        if isAvail {
+            self.mockMemberRepository.register(key: "requestLoadMembership") {
+                return Maybe<MemberShip>.just(.init())
+            }
+        } else {
+            self.mockMemberRepository.register(key: "requestLoadMembership") {
+                return Maybe<MemberShip>.error(ApplicationErrors.invalid)
+            }
+        }
+    }
+    
+    func testUsecase_whenRequestPublishButNotPublishable_error() {
+        // given
+        let expect = expectation(description: "후레이 발급이 요청되었지만 불가능한경우 에러")
+        self.mockCheckPublishable(false)
+        
+        // when
+        let newForm = NewHoorayForm(publisherID: "dummy")
+        let requestPublish = self.usecase.publish(newHooray: newForm, withNewPlace: nil)
+        let error = self.waitError(expect, for: requestPublish.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
     func testUsecase_publishNewHooray() {
         // given
         let expect = expectation(description: "새로운 후레이 등록")
+        self.mockCheckPublishable(true)
         self.mockHoorayRepository.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(Hooray.dummy(0))
         }
@@ -202,6 +239,7 @@ extension HoorayPublisherUsecaseTests {
     func testUsecase_publishNewHooray_withNewPlace() {
         // given
         let expect = expectation(description: "신규 등록할 장소와 함께 새로운 후레이 등록")
+        self.mockCheckPublishable(true)
         self.mockHoorayRepository.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(Hooray.dummy(0))
         }
@@ -219,6 +257,7 @@ extension HoorayPublisherUsecaseTests {
     func testUsecase_whenAfterPublishNewHooray_emitEvent() {
         // given
         let expect = expectation(description: "새로운 후레이 발급 이후에 이벤트 방출")
+        self.mockCheckPublishable(true)
         self.mockHoorayRepository.register(key: "requestPublishHooray") {
             return Maybe<Hooray>.just(Hooray.dummy(0))
         }

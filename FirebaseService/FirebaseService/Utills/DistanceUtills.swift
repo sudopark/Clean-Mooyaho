@@ -44,7 +44,20 @@ extension Array where Element: DistanceCalculatable {
             let center = CLLocation(latitude: center2D.latitude, longitude: center2D.longitude)
             
             let distance = GFUtils.distance(from: center, to: coordi)
-            guard distance <= kilometers else { return nil }
+            guard abs(distance) <= kilometers else { return nil }
+            return element
+        }
+    }
+    
+    func withIn(kilometers: (Element) -> Double, center2D: CLLocationCoordinate2D) -> [Element] {
+        return self.compactMap { element -> Element? in
+            let (x, y) = (element.centerPosition.latt, element.centerPosition.long)
+            let coordi = CLLocation(latitude: x, longitude: y)
+            let center = CLLocation(latitude: center2D.latitude, longitude: center2D.longitude)
+            
+            let distance = GFUtils.distance(from: center, to: coordi)
+            let max = kilometers(element)
+            guard abs(distance) <= max else { return nil }
             return element
         }
     }

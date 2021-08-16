@@ -50,7 +50,7 @@ extension FirebaseServiceImple {
         let collectionRef = self.fireStoreDB.collection(.placeSnippet)
         let (latt, long) = (location.lastLocation.lattitude, location.lastLocation.longitude)
         let center2D = CLLocationCoordinate2D(latitude: latt, longitude: long)
-        let radiusMeters: Meters = hoorayRefPlaceRangeMeters
+        let radiusMeters: Meters = Policy.hoorayDefaultSpreadDistance
         
         func suggestByTitle(_ text: String) -> Maybe<[PlaceSnippet]> {
             

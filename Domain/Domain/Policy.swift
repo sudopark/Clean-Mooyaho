@@ -8,5 +8,11 @@
 
 import Foundation
 
-
-public let hoorayRefPlaceRangeMeters: Double = 100
+public enum Policy {
+    
+    public static let hoorayMaxSpreadDistance: Meters = 5_1000
+    public static let hoorayDefaultSpreadDistance: Meters = 500
+    
+    public static let hoorayAliveTime: TimeInterval = 24 * 60 * 60 * 1000
+    public static let recentHoorayTime: TimeInterval = 30 * 60 * 1000
+}
