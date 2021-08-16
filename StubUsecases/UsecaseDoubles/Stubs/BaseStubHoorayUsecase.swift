@@ -17,7 +17,7 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
     public struct Scenario {
         public var isAvailToPublishHooray: Result<Void, Error> = .success(())
         public var publishNewHoorayResult: Result<Hooray, Error> = .success(Hooray.dummy(0))
-        public var nearbyRecentHoorays: Result<[Hooray], Error> = .success([])
+        public var nearbyRecentHoorays: Result<[Hooray], Error> = .success([Hooray.dummy(0)])
         public var loadHoorayResult: Result<Hooray, Error> = .success(Hooray.dummy(0))
         public init() { }
     }
@@ -48,7 +48,7 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
         return self.mockReceivedReaction.asObservable()
     }
     
-    open func loadNearbyRecentHoorays(_ userID: String, at location: Coordinate) -> Maybe<[Hooray]> {
+    open func loadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
         return self.scenario.nearbyRecentHoorays.asMaybe()
     }
     

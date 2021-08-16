@@ -247,7 +247,7 @@ extension HoorayNearbyViewModelTests {
         
         // then
         XCTAssertNotNil(marker)
-        XCTAssertEqual(marker?.isMine, true)
+        XCTAssertEqual(marker?.withFocusAnimation, true)
     }
     
     func testViewModel_receiveNewHooray() {
@@ -263,7 +263,27 @@ extension HoorayNearbyViewModelTests {
         
         // then
         XCTAssertNotNil(marker)
-        XCTAssertEqual(marker?.isMine, false)
+        XCTAssertEqual(marker?.withFocusAnimation, false)
+    }
+    
+    func testViewModel_whenAfterLoadCoordinate_loadNearbyRecentHoorays() {
+        // given
+        let expect = expectation(description: "현재위치 로드 이후에 최근 근처 후레이 조회")
+        self.mockLocationUsecase.register(key: "checkHasPermission") {
+            return Maybe<LocationServiceAccessPermission>.just(.granted)
+        }
+        self.mockLocationUsecase.register(key: "fetchUserLocation") {
+            return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
+        }
+        
+        // when
+        let markers = self.waitFirstElement(expect, for: self.viewModel.recentNearbyHoorays) {
+            self.viewModel.preparePermission()
+        }
+        
+        // then
+        XCTAssertEqual(markers?.count, 1)
+        XCTAssertEqual(markers?.first?.withFocusAnimation, false)
     }
     
     func testViewModel_whenReceiveNewHoorayMessageButLoadHoorayFail_ignore() {
