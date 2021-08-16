@@ -184,7 +184,7 @@ extension MemberUsecaseImple {
     
     public var currentMember: Observable<Member?> {
         return self.sharedDataStoreService
-            .observe(Member.self, key: SharedDataKeys.currentMember.rawValue)
+            .observeWithCache(Member.self, key: SharedDataKeys.currentMember.rawValue)
     }
     
     public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {

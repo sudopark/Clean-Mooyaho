@@ -20,21 +20,25 @@ class NearbyViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var mockLocationUsecase: MockUserLocationUsecase!
+    var mockMemberUsecase: MockMemberUsecase!
     var spyRouter: SpyRouter!
     var viewModel: NearbyViewModel!
     
     override func setUpWithError() throws {
         self.disposeBag = DisposeBag()
         self.mockLocationUsecase = .init()
+        self.mockMemberUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
                                               hoorayUsecase: MockHoorayUsecase(),
+                                              memberUsecase: self.mockMemberUsecase,
                                               router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockLocationUsecase = nil
+        self.mockMemberUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -222,6 +226,7 @@ class HoorayNearbyViewModelTests: NearbyViewModelTests {
         
         return NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
                                     hoorayUsecase: self.stubHoorayUsecase,
+                                    memberUsecase: self.mockMemberUsecase,
                                     router: self.spyRouter)
     }
 }
