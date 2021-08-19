@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F6025FF326A9D16A007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FF226A9D16A007A1AA8 /* UsecaseDoubles.framework */; };
 		F603258D265954F400E4E769 /* NearbyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258C265954F400E4E769 /* NearbyViewModelTests.swift */; };
+		F61B00CA26CEC8790084EE1B /* HoorayMarkerAnnotation+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61B00C926CEC8790084EE1B /* HoorayMarkerAnnotation+View.swift */; };
 		F645A65C2691893900E04D29 /* LocationSelectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */; };
 		F652159B2674BBF9000CAB4B /* LocationSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */; };
 		F652159C2674BBF9000CAB4B /* LocationSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */; };
@@ -46,6 +47,7 @@
 		F6025FF226A9D16A007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F603258C265954F400E4E769 /* NearbyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyViewModelTests.swift; sourceTree = "<group>"; };
 		F60325C72659586F00E4E769 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F61B00C926CEC8790084EE1B /* HoorayMarkerAnnotation+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoorayMarkerAnnotation+View.swift"; sourceTree = "<group>"; };
 		F645A65B2691893900E04D29 /* LocationSelectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewModelTests.swift; sourceTree = "<group>"; };
 		F65215962674BBF9000CAB4B /* LocationSelectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectRouter.swift; sourceTree = "<group>"; };
 		F65215972674BBF9000CAB4B /* LocationSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				F6F873282659402200FDB24E /* NearbyRouter.swift */,
 				F6F873292659402200FDB24E /* NearbyViewController.swift */,
 				F6F8732B2659402200FDB24E /* NearbyViewModel.swift */,
+				F61B00C926CEC8790084EE1B /* HoorayMarkerAnnotation+View.swift */,
 			);
 			path = Nearby;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				F65215A62674BC01000CAB4B /* LocationMarkViewController.swift in Sources */,
 				F65215A52674BC01000CAB4B /* LocationMarkRouter.swift in Sources */,
 				F65215A92674BC01000CAB4B /* LocationMarkViewModel.swift in Sources */,
+				F61B00CA26CEC8790084EE1B /* HoorayMarkerAnnotation+View.swift in Sources */,
 				F6E663782669BD5900794E2B /* NearbyScene.swift in Sources */,
 				F6F8732F2659402200FDB24E /* NearbyViewModel.swift in Sources */,
 				F652159B2674BBF9000CAB4B /* LocationSelectRouter.swift in Sources */,
