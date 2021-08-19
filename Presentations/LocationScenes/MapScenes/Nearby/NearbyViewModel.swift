@@ -20,6 +20,7 @@ import CommonPresenting
 
 public struct HoorayMarker {
     
+    let isNew: Bool
     var withFocusAnimation: Bool = false
     let hoorayID: String
     let publisherID: String
@@ -173,8 +174,10 @@ extension NearbyViewModelImple {
     
     public var newHooray: Observable<HoorayMarker> {
         
-        let publishedHooray = self.hoorayUsecase.newHoorayPublished.map{ $0.asMarker(withFocus: true) }
-        let receivedHooray = self.hoorayUsecase.receivedNewHooray().map{ $0.asMarker(withFocus: false) }
+        let publishedHooray = self.hoorayUsecase.newHoorayPublished
+            .map{ $0.asMarker(isNew: true, withFocus: true) }
+        let receivedHooray = self.hoorayUsecase.receivedNewHooray()
+            .map{ $0.asMarker(isNew: true, withFocus: false) }
         
         return Observable
             .merge(publishedHooray, receivedHooray)
@@ -183,7 +186,7 @@ extension NearbyViewModelImple {
     
     public var recentNearbyHoorays: Observable<[HoorayMarker]> {
         return self.subjects.recentNearbyHoorays
-            .map{ $0.map{ $0.asMarker(withFocus: false) } }
+            .map{ $0.map{ $0.asMarker(isNew: false, withFocus: false) } }
     }
     
     public func memberInfo(_ id: String) -> Observable<Member> {
@@ -192,19 +195,12 @@ extension NearbyViewModelImple {
     }
 }
 
-
-private extension LastLocation {
-    
-    var coordinate: Coordinate {
-        return .init(latt: self.lattitude, long: self.longitude)
-    }
-}
-
 private extension Hooray {
     
-    func asMarker(withFocus: Bool) -> HoorayMarker {
+    func asMarker(isNew: Bool, withFocus: Bool) -> HoorayMarker {
         let timeAgo = self.timeStamp.timeAgoText
-        let marker = HoorayMarker(hoorayID: self.uid, publisherID: self.publisherID,
+        let marker = HoorayMarker(isNew: isNew,
+                                  hoorayID: self.uid, publisherID: self.publisherID,
                                   hoorayKeyword: self.hoorayKeyword,
                                   timeLabel: timeAgo,
                                   removeAt: self.timeStamp + self.aliveDuration,
