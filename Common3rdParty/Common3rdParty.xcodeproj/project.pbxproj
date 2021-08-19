@@ -13,7 +13,7 @@
 		2BA40744263160E1000CC122 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2BA40743263160E1000CC122 /* RxRelay */; };
 		F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F603CCA02667D3D500FE6A8A /* RxDataSources */; };
 		F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = F603CCA22667D3D500FE6A8A /* Differentiator */; };
-		F697E8EF26BFC21200521049 /* Overture in Frameworks */ = {isa = PBXBuildFile; productRef = F697E8EE26BFC21200521049 /* Overture */; };
+		F61B00CD26CEDF410084EE1B /* Overture in Frameworks */ = {isa = PBXBuildFile; productRef = F61B00CC26CEDF410084EE1B /* Overture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +29,7 @@
 			files = (
 				2BA40744263160E1000CC122 /* RxRelay in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
-				F697E8EF26BFC21200521049 /* Overture in Frameworks */,
+				F61B00CD26CEDF410084EE1B /* Overture in Frameworks */,
 				F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */,
 				2BA40742263160E1000CC122 /* RxCocoa in Frameworks */,
 				2BA40740263160E1000CC122 /* RxSwift in Frameworks */,
@@ -98,7 +98,7 @@
 				2BA40743263160E1000CC122 /* RxRelay */,
 				F603CCA02667D3D500FE6A8A /* RxDataSources */,
 				F603CCA22667D3D500FE6A8A /* Differentiator */,
-				F697E8EE26BFC21200521049 /* Overture */,
+				F61B00CC26CEDF410084EE1B /* Overture */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -129,7 +129,7 @@
 			packageReferences = (
 				2BA4073E263160E1000CC122 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				F697E8ED26BFC21200521049 /* XCRemoteSwiftPackageReference "swift-overture" */,
+				F61B00CB26CEDF410084EE1B /* XCRemoteSwiftPackageReference "swift-overture" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -461,12 +461,12 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		F697E8ED26BFC21200521049 /* XCRemoteSwiftPackageReference "swift-overture" */ = {
+		F61B00CB26CEDF410084EE1B /* XCRemoteSwiftPackageReference "swift-overture" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-overture.git";
+			repositoryURL = "https://github.com/sudopark/swift-overture.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -497,9 +497,9 @@
 			package = F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = Differentiator;
 		};
-		F697E8EE26BFC21200521049 /* Overture */ = {
+		F61B00CC26CEDF410084EE1B /* Overture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F697E8ED26BFC21200521049 /* XCRemoteSwiftPackageReference "swift-overture" */;
+			package = F61B00CB26CEDF410084EE1B /* XCRemoteSwiftPackageReference "swift-overture" */;
 			productName = Overture;
 		};
 /* End XCSwiftPackageProductDependency section */

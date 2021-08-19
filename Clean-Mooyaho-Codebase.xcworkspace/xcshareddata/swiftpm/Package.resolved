@@ -65,12 +65,12 @@
         }
       },
       {
-        "package": "Overture",
-        "repositoryURL": "https://github.com/pointfreeco/swift-overture.git",
+        "package": "swift-overture",
+        "repositoryURL": "https://github.com/sudopark/swift-overture.git",
         "state": {
-          "branch": null,
-          "revision": "7977acd7597f413717058acc1e080731249a1d7e",
-          "version": "0.5.0"
+          "branch": "main",
+          "revision": "fded02a5bffba30e32fa6cf032f30a1d5426af21",
+          "version": null
         }
       },
       {
