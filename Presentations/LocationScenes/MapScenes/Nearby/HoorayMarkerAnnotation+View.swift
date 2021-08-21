@@ -57,16 +57,15 @@ final class HoorayMarkerAnnotationView: MKAnnotationView, AnnotationView, Presen
     }
     
     func setup(for annotation: HoorayMarkerAnnotation) { }
-    
-    func bindUserInfo(_ source: Observable<Member>) {
+
+    func bindMarkerIcon(_ source: Observable<ImageSource>) {
         
         source
-            .distinctUntilChanged{ $0.icon == $1.icon }
+            .distinctUntilChanged()
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] member in
-                let icon = member.icon ?? Member.memberDefaultEmoji
-                self?.publisherImageView
-                    .setupImage(using: icon, resize: .init(width: 25, height: 25))
+            .drive(onNext: { [weak self] icon in
+                let iconSizeWhenExpanding: CGSize = .init(width: 25, height: 25)
+                self?.publisherImageView.setupImage(using: icon, resize: iconSizeWhenExpanding)
             })
             .disposed(by: self.disposeBag)
     }
