@@ -8,6 +8,7 @@
 import XCTest
 
 import RxSwift
+import Overture
 
 import Domain
 import UnitTestHelpKit
@@ -216,11 +217,15 @@ class HoorayNearbyViewModelTests: NearbyViewModelTests {
         self.viewModel = nil
     }
     
-    private func makeViewModel(shouldLoadHoorayFail: Bool = false) -> NearbyViewModel {
+    private func makeViewModel(shouldLoadHoorayFail: Bool = false,
+                               recentNearbyHoorays: [Hooray]? = nil) -> NearbyViewModel {
         
         var scenario = BaseStubHoorayUsecase.Scenario()
         shouldLoadHoorayFail.then {
             scenario.loadHoorayResult = .failure(ApplicationErrors.invalid)
+        }
+        recentNearbyHoorays.whenExists {
+            scenario.nearbyRecentHoorays = .success($0)
         }
         self.stubHoorayUsecase = .init(scenario)
         
@@ -302,12 +307,57 @@ extension HoorayNearbyViewModelTests {
         // then
         XCTAssertNil(marker)
     }
+    
+    func testViewModel_provideHoorayMarkerImageInfo() {
+        // given
+        let expect = expectation(description: "후레이 마커이미지 정보 제공")
+        let hoorayWithImage = update(Hooray.dummy(0)) { $0.image = .path("some") }
+        let hoorayWithOutImage = update(Hooray.dummy(1)) { $0.image = nil }
+        let hoorayWithoutImageAndProfileIcon = update(Hooray.dummy(2)) { $0.image = nil }
+        self.viewModel = self.makeViewModel(recentNearbyHoorays: [
+            hoorayWithImage, hoorayWithOutImage, hoorayWithoutImageAndProfileIcon
+        ])
+        
+        self.mockLocationUsecase.register(key: "checkHasPermission") {
+            return Maybe<LocationServiceAccessPermission>.just(.granted)
+        }
+        self.mockLocationUsecase.register(key: "fetchUserLocation") {
+            return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
+        }
+        self.mockMemberUsecase.register(type: Observable<[String: Member]>.self, key: "members:for") {
+            let member1 = Member(uid: "pub:1", nickName: "m1", icon: .emoji("🎒"))
+            let member2 = Member(uid: "pub:2", nickName: "m2", icon: nil)
+            return .just([member1.uid: member1, member2.uid: member2])
+        }
+        
+        // when
+        let markerImageSource = Observable.combineLatest(
+            self.viewModel.hoorayMarkerImage(hoorayWithImage.asMarker()),
+            self.viewModel.hoorayMarkerImage(hoorayWithOutImage.asMarker()),
+            self.viewModel.hoorayMarkerImage(hoorayWithoutImageAndProfileIcon.asMarker())
+        )
+        let images = self.waitFirstElement(expect, for: markerImageSource) {
+            self.viewModel.preparePermission()
+        }
+        
+        // then
+        XCTAssertEqual(images?.0, .path("some"))
+        XCTAssertEqual(images?.1, .emoji("🎒"))
+        XCTAssertEqual(images?.2, .emoji("🤪"))
+    }
 }
 
 extension NearbyViewModelTests {
     
-    class SpyRouter: NearbyRouting {
-        
-        
+    class SpyRouter: NearbyRouting { }
+}
+
+private extension Hooray {
+    
+    func asMarker() -> HoorayMarker {
+        return .init(isNew: false, hoorayID: self.uid, publisherID: self.publisherID,
+                     hoorayKeyword: self.hoorayKeyword, timeLabel: "\(self.timeStamp)",
+                     removeAt: self.timeStamp + 10, message: self.message, image: self.image,
+                     coordinate: self.location, spreadDistance: self.spreadDistance, aliveDuration: self.aliveDuration)
     }
 }

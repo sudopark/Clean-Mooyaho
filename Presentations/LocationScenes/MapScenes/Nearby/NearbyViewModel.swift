@@ -46,7 +46,7 @@ public protocol NearbyViewModel: AnyObject {
     var alertUnavailToUseService: Observable<Void> { get }
     var newHooray: Observable<HoorayMarker> { get }
     var recentNearbyHoorays: Observable<[HoorayMarker]> { get }
-    func memberInfo(_ id: String) -> Observable<Member>
+    func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<ImageSource>
 }
 
 
@@ -56,14 +56,6 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private var defaultLocation: Coordinate {
         return .init(latt: 37.5657332, long: 126.97297)
-    }
-    
-    fileprivate final class Subjects {
-        // define subjects
-        let moveCameraPosition = PublishSubject<MapCameramovement>()
-        let recentNearbyHoorays = PublishSubject<[Hooray]>()
-        @AutoCompletable var unavailToUse = PublishSubject<Void>()
-        @AutoCompletable var placeMark = PublishSubject<String>()
     }
     
     private let locationUsecase: UserLocationUsecase
@@ -87,6 +79,14 @@ public final class NearbyViewModelImple: NearbyViewModel {
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    fileprivate final class Subjects {
+        // define subjects
+        let moveCameraPosition = PublishSubject<MapCameramovement>()
+        let recentNearbyHooraysMap = BehaviorSubject<[String: Hooray]>(value: [:])
+        @AutoCompletable var unavailToUse = PublishSubject<Void>()
+        @AutoCompletable var placeMark = PublishSubject<String>()
+    }
 }
 
 
@@ -147,7 +147,8 @@ extension NearbyViewModelImple {
         guard let coord = coordinate else { return }
         
         let updateRecentHoorays: ([Hooray]) -> Void = { [weak self] hoorays in
-            self?.subjects.recentNearbyHoorays.onNext(hoorays)
+            let map = hoorays.reduce(into: [String: Hooray]()) { $0[$1.uid] = $1 }
+            self?.subjects.recentNearbyHooraysMap.onNext(map)
         }
         self.hoorayUsecase.loadNearbyRecentHoorays(at: coord)
             .subscribe(onSuccess: updateRecentHoorays)
@@ -185,13 +186,27 @@ extension NearbyViewModelImple {
     }
     
     public var recentNearbyHoorays: Observable<[HoorayMarker]> {
-        return self.subjects.recentNearbyHoorays
+        return self.subjects.recentNearbyHooraysMap
+            .filter{ $0.isNotEmpty }
+            .map{ $0.values }
             .map{ $0.map{ $0.asMarker(isNew: false, withFocus: false) } }
     }
     
-    public func memberInfo(_ id: String) -> Observable<Member> {
-        return self.memberUsecase.members(for: [id])
-            .compactMap{ $0[id] }
+    public func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<ImageSource> {
+
+        let hoorayImage: Observable<ImageSource?> = .just(marker.image)
+        
+        let orUsePublisherIconIfExists: (ImageSource?) -> Observable<ImageSource?>
+        orUsePublisherIconIfExists = { [weak self] hoorayImage in
+            guard let self = self else { return .empty() }
+            return hoorayImage.map{ .just($0)} ?? self.memberUsecase.memberIcon(marker.publisherID)
+        }
+        
+        let orUseDefaultImageBothNotExist: (ImageSource?) -> ImageSource = { $0 ?? Hooray.defaultMarkerIcon }
+        
+        return hoorayImage
+            .flatMap(orUsePublisherIconIfExists)
+            .map(orUseDefaultImageBothNotExist)
     }
 }
 
@@ -211,6 +226,10 @@ private extension Hooray {
                                   aliveDuration: self.aliveDuration)
         return update(marker) { $0.withFocusAnimation = withFocus }
     }
+    
+    static var defaultMarkerIcon: ImageSource {
+        return .emoji("🤪")
+    }
 }
 
 private extension HoorayUsecase {
@@ -226,5 +245,14 @@ private extension HoorayUsecase {
             .mapAsOptional()
             .catchAndReturn(nil)
             .compactMap{ $0 }
+    }
+}
+
+private extension MemberUsecase {
+    
+    func memberIcon(_ uid: String) -> Observable<ImageSource?> {
+        return self.members(for: [uid])
+            .map{ $0[uid] }
+            .map{ $0?.icon }
     }
 }
