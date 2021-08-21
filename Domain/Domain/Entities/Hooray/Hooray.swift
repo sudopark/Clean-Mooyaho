@@ -57,7 +57,7 @@ public struct Hooray {
     public let hoorayKeyword: String
     public let message: String
     public let tags: [String]
-    public let image: ImageSource?
+    public var image: ImageSource?
     
     public let location: Coordinate
     public let timeStamp: TimeStamp

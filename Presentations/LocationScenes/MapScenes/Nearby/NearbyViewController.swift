@@ -255,7 +255,7 @@ extension NearbyViewController: MKMapViewDelegate {
         
         let annotationView: HoorayMarkerAnnotationView = mapView.dequeue(for: hoorayAnnotation)
         annotationView.canShowCallout = false
-        annotationView.bindUserInfo(self.viewModel.memberInfo(hoorayAnnotation.marker.publisherID))
+        annotationView.bindMarkerIcon(self.viewModel.hoorayMarkerImage(hoorayAnnotation.marker))
         return annotationView
     }
     
