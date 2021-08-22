@@ -261,6 +261,20 @@ extension NearbyViewController: MKMapViewDelegate {
         return annotationView
     }
     
+    public func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let hoorayAnnotationView = view as? HoorayMarkerAnnotationView,
+              let annotation = hoorayAnnotationView.annotation as? HoorayMarkerAnnotation else { return }
+        hoorayAnnotationView.markerSelected()
+        self.viewModel.toggleSelectHooray(annotation.marker.hoorayID, isSelected: true)
+    }
+    
+    public func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        guard let hoorayAnnotationView = view as? HoorayMarkerAnnotationView,
+              let annotation = hoorayAnnotationView.annotation as? HoorayMarkerAnnotation else { return }
+        hoorayAnnotationView.markerDeSelected()
+        self.viewModel.toggleSelectHooray(annotation.marker.hoorayID, isSelected: false)
+    }
+    
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
         guard let spreadingOverlay = overlay as? SpreadingOverlayCircle else {
@@ -269,17 +283,9 @@ extension NearbyViewController: MKMapViewDelegate {
 
         let decorating = concat(
             set(\MKCircleRenderer.fillColor, .red),
-            set(\MKCircleRenderer.alpha, 0.5)
+            set(\MKCircleRenderer.alpha, spreadingOverlay.alpha)
         )
         return with(MKCircleRenderer(overlay: spreadingOverlay), decorating)
-    }
-    
-    public func mapView(_ mapView: MKMapView, didAdd renderers: [MKOverlayRenderer]) {
-        renderers.forEach { renderer in
-            if let circleOverlay = renderer.overlay as? SpreadingOverlayCircle {
-                renderer.alpha = circleOverlay.alpha
-            }
-        }
     }
     
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) { }

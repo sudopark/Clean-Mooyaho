@@ -69,6 +69,14 @@ final class HoorayMarkerAnnotationView: MKAnnotationView, AnnotationView, Presen
             })
             .disposed(by: self.disposeBag)
     }
+    
+    func markerSelected() {
+        self.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+    }
+    
+    func markerDeSelected() {
+        self.transform = .identity
+    }
 }
 
 

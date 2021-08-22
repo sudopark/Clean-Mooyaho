@@ -229,6 +229,13 @@ class HoorayNearbyViewModelTests: NearbyViewModelTests {
         }
         self.stubHoorayUsecase = .init(scenario)
         
+        self.mockLocationUsecase.register(key: "checkHasPermission") {
+            return Maybe<LocationServiceAccessPermission>.just(.granted)
+        }
+        self.mockLocationUsecase.register(key: "fetchUserLocation") {
+            return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
+        }
+        
         return NearbyViewModelImple(locationUsecase: self.mockLocationUsecase,
                                     hoorayUsecase: self.stubHoorayUsecase,
                                     memberUsecase: self.mockMemberUsecase,
@@ -274,12 +281,6 @@ extension HoorayNearbyViewModelTests {
     func testViewModel_whenAfterLoadCoordinate_loadNearbyRecentHoorays() {
         // given
         let expect = expectation(description: "현재위치 로드 이후에 최근 근처 후레이 조회")
-        self.mockLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.granted)
-        }
-        self.mockLocationUsecase.register(key: "fetchUserLocation") {
-            return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
-        }
         
         // when
         let markers = self.waitFirstElement(expect, for: self.viewModel.recentNearbyHoorays) {
@@ -318,12 +319,6 @@ extension HoorayNearbyViewModelTests {
             hoorayWithImage, hoorayWithOutImage, hoorayWithoutImageAndProfileIcon
         ])
         
-        self.mockLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.granted)
-        }
-        self.mockLocationUsecase.register(key: "fetchUserLocation") {
-            return Maybe<LastLocation>.just(.init(lattitude: 0, longitude: 0, timeStamp: 0))
-        }
         self.mockMemberUsecase.register(type: Observable<[String: Member]>.self, key: "members:for") {
             let member1 = Member(uid: "pub:1", nickName: "m1", icon: .emoji("🎒"))
             let member2 = Member(uid: "pub:2", nickName: "m2", icon: nil)
@@ -344,6 +339,27 @@ extension HoorayNearbyViewModelTests {
         XCTAssertEqual(images?.0, .path("some"))
         XCTAssertEqual(images?.1, .emoji("🎒"))
         XCTAssertEqual(images?.2, .emoji("🤪"))
+    }
+    
+    func testViewModel_whenSelectHooray_updateToggleShowDetail() {
+        // given
+        let expect = expectation(description: "후레이 상세내용 조회 토글")
+        expect.expectedFulfillmentCount = 3
+        let hooray = Hooray.dummy(0)
+        
+        self.viewModel = self.makeViewModel(recentNearbyHoorays: [hooray])
+        
+        // when
+        let toggleInfos = self.waitElements(expect, for: self.viewModel.toggleShowHoorayDetail) {
+            self.viewModel.preparePermission()
+            self.viewModel.toggleSelectHooray(hooray.uid, isSelected: true)
+            self.viewModel.toggleSelectHooray(hooray.uid, isSelected: false)
+            self.viewModel.toggleSelectHooray(hooray.uid, isSelected: true)
+        }
+        
+        // then
+        XCTAssertEqual(toggleInfos.map{ $0.0 }, [true, false, true])
+        XCTAssertEqual(toggleInfos.map{ $0.1 }, Array(repeating: hooray.uid, count: 3))
     }
 }
 
