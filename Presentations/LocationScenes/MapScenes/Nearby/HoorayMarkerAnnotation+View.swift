@@ -107,24 +107,13 @@ extension HoorayMarkerAnnotationView {
 
 final class SpreadingOverlayCircle: MKCircle {
     
-    let uuid: String = UUID().uuidString
+    var uuid: String?
+    var alpha: CGFloat = 0.5
+    
+    convenience init(center coord: CLLocationCoordinate2D,
+                     radius: CLLocationDistance,
+                     uuid: String?) {
+        self.init(center: coord, radius: radius)
+        self.uuid = uuid
+    }
 }
-
-//
-//final class SpreadingOverlayRenderer: MKOverlayRenderer {
-//    
-//    private var spreadingView: UIView?
-//    
-//    func startSpreading() {
-//        self.stopSpreading()
-//        
-//        let view = UIView()
-//        view.backgroundColor = .red
-//        
-//        
-//    }
-//    
-//    func stopSpreading() {
-//        
-//    }
-//}

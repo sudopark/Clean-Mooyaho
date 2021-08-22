@@ -26,8 +26,6 @@ public final class NearbyViewController: BaseViewController, NearbyScene {
     
     let viewModel: NearbyViewModel
     
-    private let spread_circle_animation_duration: TimeInterval = 5.0
-    
     public init(viewModel: NearbyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -65,7 +63,8 @@ extension NearbyViewController {
             .drive(onNext: { [weak self] movement in
                 self?.mapView.moveCamera(using: movement)
 //                guard case let .coordinate(coordi) = movement.center else { return }
-//                self?.startHoorayFocusInOutAnimation(at: coordi)
+//                self?.startHoorayFocusInOutAnimation(at: coordi,
+//                                                     withSpreading: Policy.hoorayDefaultSpreadDistance)
             })
             .disposed(by: self.disposeBag)
         
@@ -96,11 +95,9 @@ extension NearbyViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] marker in
                 self?.appendHoorayMarkers([marker])
-                marker.isNew.then {
-                    self?.startSpreadAnimations(marker.coordinate)
-                }
                 marker.withFocusAnimation.then {
-                    self?.startHoorayFocusInOutAnimation(at: marker.coordinate)
+                    self?.startHoorayFocusInOutAnimation(at: marker.coordinate,
+                                                         withSpreading: marker.isNew ? marker.spreadDistance : nil)
                 }
             })
             .disposed(by: self.disposeBag)
@@ -167,7 +164,8 @@ extension NearbyViewController {
         self.disposeBag.insert(futureRemovings.map{ $0.subscribe(onNext: removeHooray) })
     }
     
-    private func startHoorayFocusInOutAnimation(at coordinate: Coordinate) {
+    private func startHoorayFocusInOutAnimation(at coordinate: Coordinate,
+                                                withSpreading distance: Meters?) {
         
         let originSpan = self.mapView.region.span
         
@@ -180,7 +178,8 @@ extension NearbyViewController {
         let focusedIn = self.regionChanged().filter{ $0 }.take(1)
         
         let startSpreadAnimation: (Bool) -> Void = { [weak self] _ in
-            self?.startSpreadAnimations(coordinate)
+            guard let self = self, let distance = distance else { return }
+            self.startSpreadAnimations(coordinate, distance: distance )
         }
         
         let thenFocusOut: (Bool) -> Void = { [weak self] _ in
@@ -193,42 +192,45 @@ extension NearbyViewController {
         
         focusedIn
             .do(onNext: startSpreadAnimation)
-            .delay(.milliseconds(1_500), scheduler: MainScheduler.instance)
+            .delay(.milliseconds(350), scheduler: MainScheduler.instance)
             .subscribe(onNext: thenFocusOut)
             .disposed(by: self.disposeBag)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: startFocusIn)
     }
     
-    private func startSpreadAnimations(_ center: Coordinate) {
+    private func startSpreadAnimations(_ center: Coordinate, distance: Meters) {
         (0..<3).forEach { index in
             let delay = TimeInterval(index) * 1.2
-            self.appendOverlayAndScheduleRemoving(center, delay: delay)
+            self.appendAndUpdateSpraedOverlay(center, spreadDistance: distance, delay: delay)
         }
     }
     
-    private func appendOverlayAndScheduleRemoving(_ center: Coordinate, delay: TimeInterval) {
+    private func appendAndUpdateSpraedOverlay(_ center: Coordinate, spreadDistance: Meters, delay: TimeInterval) {
         
-        let appendOverlay: () -> String? = { [weak self] in
-            guard let self = self else { return nil }
-            let center = CLLocationCoordinate2D(latitude: center.latt, longitude: center.long)
-            let overlay = SpreadingOverlayCircle(center: center, radius: 100)
-            self.mapView.addOverlay(overlay)
+        let uuid = UUID().uuidString
+        
+        let spreadMetersPerSec: Double = 200
+        let (interval, duration) = (TimeInterval(0.05), spreadDistance / spreadMetersPerSec)
+        let frameCount = Int(duration / interval)
+        
+        let animationProgresses: Observable<Double> = Observable<Int>
+            .interval(.milliseconds(Int(interval * 1000)), scheduler: MainScheduler.instance)
+            .map{ Double($0) / Double(frameCount-1) }
+            .take(frameCount)
+        
+        let refreshOverlayByProgress: (Double) -> Void = { [weak self] progress in
+            guard let self = self else { return }
+            self.mapView.removeCircleOverlay(uuid)
             
-            return overlay.uuid
+            guard progress < 1.0 else { return }
+            self.mapView.appendCircleOverlay(uuid, at: center, progess: progress, finalDistance: spreadDistance)
         }
         
-        let waitAndRemoveOverlay: (String?) -> Void = { [weak self] overlayID in
-            guard let self = self, let id = overlayID else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + self.spread_circle_animation_duration) {
-                let targetOverlays = self.mapView.overlays.compactMap{ $0 as? SpreadingOverlayCircle }
-                    .filter{ $0.uuid == id }
-                self.mapView.removeOverlays(targetOverlays)
-            }
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay,
-                                      execute: pipe(appendOverlay, waitAndRemoveOverlay))
+        animationProgresses
+            .delaySubscription(.milliseconds(Int(delay * 1_000)), scheduler: MainScheduler.instance)
+            .subscribe(onNext: refreshOverlayByProgress)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -260,32 +262,24 @@ extension NearbyViewController: MKMapViewDelegate {
     }
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        
         guard let spreadingOverlay = overlay as? SpreadingOverlayCircle else {
             return MKCircleRenderer()
         }
 
         let decorating = concat(
             set(\MKCircleRenderer.fillColor, .red),
-            set(\MKCircleRenderer.strokeColor, .clear),
             set(\MKCircleRenderer.alpha, 0.5)
         )
-        return with(MKCircleRenderer(circle: spreadingOverlay), decorating)
+        return with(MKCircleRenderer(overlay: spreadingOverlay), decorating)
     }
     
     public func mapView(_ mapView: MKMapView, didAdd renderers: [MKOverlayRenderer]) {
-        
-        let spreadRenders = renderers.filter{ $0.overlay is SpreadingOverlayCircle }
-        
-        let expandingWithFadeOutAnimation: (MKOverlayRenderer) -> Void = { renderer in
-            
-            renderer.alpha = 0.5
-            
-            UIView.animate(withDuration: self.spread_circle_animation_duration) {
-                renderer.alpha = 0.0
+        renderers.forEach { renderer in
+            if let circleOverlay = renderer.overlay as? SpreadingOverlayCircle {
+                renderer.alpha = circleOverlay.alpha
             }
         }
-        
-        spreadRenders.forEach(expandingWithFadeOutAnimation)
     }
     
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) { }
@@ -297,5 +291,25 @@ private extension NearbyViewController {
     func regionChanged() -> Observable<Bool> {
         return self.rx.methodInvoked(#selector(mapView(_:regionDidChangeAnimated:)))
             .compactMap{ $0.last as? Bool }
+    }
+}
+
+private extension MKMapView {
+    
+    func removeCircleOverlay(_ uuid: String) {
+        guard let overlay = self.overlays.first(where: { ($0 as? SpreadingOverlayCircle)?.uuid == uuid }) else {
+            return
+        }
+        self.removeOverlay(overlay)
+    }
+    
+    func appendCircleOverlay(_ uuid: String, at center: Coordinate, progess: Double, finalDistance: Meters) {
+        
+        let radius = finalDistance * progess
+        let alpha = 0.5 - progess/2
+        let center = CLLocationCoordinate2D(latitude: center.latt, longitude: center.long)
+        let overlay = SpreadingOverlayCircle(center: center, radius: radius, uuid: uuid)
+        overlay.alpha = CGFloat(alpha)
+        self.addOverlay(overlay)
     }
 }
