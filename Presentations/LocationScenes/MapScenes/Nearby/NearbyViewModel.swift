@@ -40,6 +40,7 @@ public protocol NearbyViewModel: AnyObject {
     func preparePermission()
     func userPositionChanged(_ placeMark: String)
     func moveMapCameraToCurrentUserPosition()
+    func toggleSelectHooray(_ id: String, isSelected: Bool)
     
     // presenter
     var moveCamera: Observable<MapCameramovement> { get }
@@ -47,6 +48,7 @@ public protocol NearbyViewModel: AnyObject {
     var newHooray: Observable<HoorayMarker> { get }
     var recentNearbyHoorays: Observable<[HoorayMarker]> { get }
     func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<ImageSource>
+    var toggleShowHoorayDetail: Observable<(Bool, String)> { get }
 }
 
 
@@ -86,6 +88,7 @@ public final class NearbyViewModelImple: NearbyViewModel {
         let recentNearbyHooraysMap = BehaviorSubject<[String: Hooray]>(value: [:])
         @AutoCompletable var unavailToUse = PublishSubject<Void>()
         @AutoCompletable var placeMark = PublishSubject<String>()
+        @AutoCompletable var toggleShowHoorayDetail = PublishSubject<(Bool, String)>()
     }
 }
 
@@ -154,6 +157,10 @@ extension NearbyViewModelImple {
             .subscribe(onSuccess: updateRecentHoorays)
             .disposed(by: self.disposeBag)
     }
+    
+    public func toggleSelectHooray(_ id: String, isSelected: Bool) {
+        self.subjects.toggleShowHoorayDetail.onNext((isSelected, id))
+    }
 }
 
 
@@ -207,6 +214,10 @@ extension NearbyViewModelImple {
         return hoorayImage
             .flatMap(orUsePublisherIconIfExists)
             .map(orUseDefaultImageBothNotExist)
+    }
+    
+    public var toggleShowHoorayDetail: Observable<(Bool, String)> {
+        return self.subjects.toggleShowHoorayDetail
     }
 }
 

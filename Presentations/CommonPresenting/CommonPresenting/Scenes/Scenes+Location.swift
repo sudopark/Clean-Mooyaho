@@ -24,6 +24,8 @@ public protocol NearbyScenePresenter {
     var currentPositionPlaceMark: Observable<String> { get }
     
     var unavailToUseService: Observable<Void> { get }
+    
+    var toggleShowHoorayDetail: Observable<(Bool, String)> { get }
 }
 
 public protocol NearbyScene: Scenable {
