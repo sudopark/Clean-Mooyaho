@@ -27,6 +27,12 @@
 		F68CA1D82669203600344045 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1D72669203600344045 /* Domain.framework */; };
 		F68CA1DB2669204E00344045 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1DA2669204E00344045 /* Common3rdParty.framework */; };
 		F68CA1DF2669205A00344045 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68CA1DE2669205A00344045 /* UnitTestHelpKit.framework */; };
+		F6CF34A426D7D734003B52CD /* HoorayDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF349F26D7D734003B52CD /* HoorayDetailRouter.swift */; };
+		F6CF34A526D7D734003B52CD /* HoorayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34A026D7D734003B52CD /* HoorayDetailViewController.swift */; };
+		F6CF34A626D7D734003B52CD /* HoorayDetailBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34A126D7D734003B52CD /* HoorayDetailBuilder.swift */; };
+		F6CF34A726D7D734003B52CD /* HoorayDetailScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34A226D7D734003B52CD /* HoorayDetailScene.swift */; };
+		F6CF34A826D7D734003B52CD /* HoorayDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34A326D7D734003B52CD /* HoorayDetailViewModel.swift */; };
+		F6CF34AA26D7D805003B52CD /* HoorayDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34A926D7D805003B52CD /* HoorayDetailViewModelTests.swift */; };
 		F6D96F5D26691FDD00D0F507 /* HoorayScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96F5326691FDD00D0F507 /* HoorayScene.framework */; };
 		F6D96F6226691FDD00D0F507 /* HooraySceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D96F6126691FDD00D0F507 /* HooraySceneTests.swift */; };
 		F6D96F6426691FDD00D0F507 /* HoorayScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D96F5626691FDD00D0F507 /* HoorayScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -71,6 +77,12 @@
 		F68CA1DA2669204E00344045 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1DC2669205300344045 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68CA1DE2669205A00344045 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6CF349F26D7D734003B52CD /* HoorayDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayDetailRouter.swift; sourceTree = "<group>"; };
+		F6CF34A026D7D734003B52CD /* HoorayDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayDetailViewController.swift; sourceTree = "<group>"; };
+		F6CF34A126D7D734003B52CD /* HoorayDetailBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayDetailBuilder.swift; sourceTree = "<group>"; };
+		F6CF34A226D7D734003B52CD /* HoorayDetailScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayDetailScene.swift; sourceTree = "<group>"; };
+		F6CF34A326D7D734003B52CD /* HoorayDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayDetailViewModel.swift; sourceTree = "<group>"; };
+		F6CF34A926D7D805003B52CD /* HoorayDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayDetailViewModelTests.swift; sourceTree = "<group>"; };
 		F6D96F5326691FDD00D0F507 /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D96F5626691FDD00D0F507 /* HoorayScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoorayScene.h; sourceTree = "<group>"; };
 		F6D96F5726691FDD00D0F507 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -148,6 +160,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F6CF349D26D7D6C1003B52CD /* HoorayDetail */ = {
+			isa = PBXGroup;
+			children = (
+				F6CF349F26D7D734003B52CD /* HoorayDetailRouter.swift */,
+				F6CF34A026D7D734003B52CD /* HoorayDetailViewController.swift */,
+				F6CF34A126D7D734003B52CD /* HoorayDetailBuilder.swift */,
+				F6CF34A226D7D734003B52CD /* HoorayDetailScene.swift */,
+				F6CF34A326D7D734003B52CD /* HoorayDetailViewModel.swift */,
+			);
+			path = HoorayDetail;
+			sourceTree = "<group>";
+		};
 		F6D96F4926691FDD00D0F507 = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +198,7 @@
 				F6F2956D266D0BCB00CDF980 /* EnterHoorayTags */,
 				F6F2956E266D0BEA00CDF980 /* SelectHoorayPlace */,
 				F6502DD7266CA7560027800F /* WaitNextHooray */,
+				F6CF349D26D7D6C1003B52CD /* HoorayDetail */,
 				F6D96F5626691FDD00D0F507 /* HoorayScene.h */,
 				F6D96F5726691FDD00D0F507 /* Info.plist */,
 			);
@@ -188,6 +213,7 @@
 				F6502DB72669D7E00027800F /* MakeHoorayViewModelTests.swift */,
 				F6502DE4266CAA240027800F /* WaitNextHoorayViewModelTests.swift */,
 				F66CD929266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift */,
+				F6CF34A926D7D805003B52CD /* HoorayDetailViewModelTests.swift */,
 			);
 			path = HooraySceneTests;
 			sourceTree = "<group>";
@@ -334,9 +360,14 @@
 				F6F295BA266E673E00CDF980 /* EnterHoorayTagRouter.swift in Sources */,
 				F6502DAF2669D68E0027800F /* MakeHoorayRouter.swift in Sources */,
 				F6502DB32669D68E0027800F /* MakeHoorayViewModel.swift in Sources */,
+				F6CF34A726D7D734003B52CD /* HoorayDetailScene.swift in Sources */,
+				F6CF34A426D7D734003B52CD /* HoorayDetailRouter.swift in Sources */,
+				F6CF34A826D7D734003B52CD /* HoorayDetailViewModel.swift in Sources */,
 				F6502DB22669D68E0027800F /* MakeHoorayScene.swift in Sources */,
 				F6502DE1266CA7730027800F /* WaitNextHoorayViewModel.swift in Sources */,
+				F6CF34A526D7D734003B52CD /* HoorayDetailViewController.swift in Sources */,
 				F6F295C5266E6E2A00CDF980 /* SelectHoorayPlaceViewController.swift in Sources */,
+				F6CF34A626D7D734003B52CD /* HoorayDetailBuilder.swift in Sources */,
 				F6502DE7266CB0040027800F /* MakeHoorayView.swift in Sources */,
 				F6502DE0266CA7730027800F /* WaitNextHoorayScene.swift in Sources */,
 				F6F295C8266E6E2A00CDF980 /* SelectHoorayPlaceViewModel.swift in Sources */,
@@ -348,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6CF34AA26D7D805003B52CD /* HoorayDetailViewModelTests.swift in Sources */,
 				F6502DE5266CAA240027800F /* WaitNextHoorayViewModelTests.swift in Sources */,
 				F66CD92A266FC9AC0031EEC5 /* SelectHoorayPlaceViewModelTests.swift in Sources */,
 				F6502DB82669D7E00027800F /* MakeHoorayViewModelTests.swift in Sources */,
