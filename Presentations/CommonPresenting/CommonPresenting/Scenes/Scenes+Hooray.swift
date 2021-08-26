@@ -71,3 +71,20 @@ public protocol WaitNextHooraySceneBuilable {
     
     func makeWaitNextHoorayScene(_ waitUntil: TimeStamp) -> WaitNextHoorayScene
 }
+
+
+// MARK: - HoorayDetailScene Input & Output
+
+public protocol HoorayDetailSceneInput { }
+
+public protocol HoorayDetailSceneOutput { }
+
+
+// MARK: - HoorayDetailScene
+
+public protocol HoorayDetailScene: Scenable {
+    
+    var input: HoorayDetailSceneInput? { get }
+
+    var output: HoorayDetailSceneOutput? { get }
+}
