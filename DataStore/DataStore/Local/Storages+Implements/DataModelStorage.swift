@@ -36,6 +36,8 @@ public protocol DataModelStorage {
     func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void>
     
     func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]>
+    
+    func fetchLatestHoorays(for memberID: String, limit count: Int) -> Maybe<[Hooray]>
 }
 
 
@@ -252,11 +254,25 @@ extension DataModelStorageImple {
     
     public func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]> {
         
-        let hooraysQuery = HoorayTable.selectAll{ $0.uid.in(ids) }
-        let imagesQuery = ImageSourceTable.selectSome({ [$0.sourcetype, $0.path, $0.description, $0.emoji] },
-                                                      with: { $0.ownerID.in(ids) })
+        let hooraysQuery = HoorayTable.selectAll { $0.uid.in(ids) }
+        let imagesQuery = ImageSourceTable.selectAll { $0.ownerID.in(ids) }
         let joinQuery = hooraysQuery.outerJoin(with: imagesQuery, on: { ($0.uid, $1.ownerID) })
-        let loadHoorays = self.sqliteService.run{ try $0.load(joinQuery, mapping: Hooray.fromImageSource(_:)) }
+        return self.fetchHoorays(with: joinQuery)
+    }
+    
+    public func fetchLatestHoorays(for memberID: String, limit count: Int) -> Maybe<[Hooray]> {
+        let hoorayQuery = HoorayTable.selectAll { $0.publisherID == memberID }
+            .orderBy(isAscending: false) { $0.timeStamp }
+            .limit(count)
+        let imageQuery = ImageSourceTable.selectAll()
+        let joinQuery = hoorayQuery
+            .outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
+        
+        return self.fetchHoorays(with: joinQuery)
+    }
+    
+    private func fetchHoorays(with joinQuery: JoinQuery<HoorayTable>) -> Maybe<[Hooray]> {
+        let loadHoorays = self.sqliteService.run { try $0.load(joinQuery, mapping: Hooray.fromImageSource(_:)) }
         
         let appendAckUserInfos: ([Hooray]) -> Maybe<[Hooray]> = { [weak self] hoorays in
             return self?.loadAndAppendHoorayAckUserInfos(hoorays).catchAndReturn(hoorays) ?? .empty()
@@ -276,7 +292,7 @@ extension DataModelStorageImple {
         typealias Entity = HoorayAckUserTable.Entity
         
         let hoorayIDs = hoorays.map{ $0.uid }
-        let query = HoorayAckUserTable.selectAll{ $0.hoorayID.in(hoorayIDs) }
+        let query = HoorayAckUserTable.selectAll { $0.hoorayID.in(hoorayIDs) }
         let loadAcks: Maybe<[Entity]> = self.sqliteService.run{ try $0.load(query) }
         let asAckInfosMapPerHooray: ([Entity]) -> [String: [HoorayAckInfo]] = { entities in
             return entities.asEntityMapPerHooray().mapValues{ $0.map{ $0.asAckInfo()} }
@@ -294,14 +310,14 @@ extension DataModelStorageImple {
         typealias ReactionEntity = HoorayReactionTable.Entity
         typealias ImageEntity = ImageSourceTable.Entity
         
-        let hoorayIDs = hoorays.map{ $0.uid }
+        let hoorayIDs = hoorays.map { $0.uid }
         let reactionsQuery = HoorayReactionTable.selectAll { $0.hoorayID.in(hoorayIDs) }
         let loadReactions: Maybe<[ReactionEntity]> = self.sqliteService.run { try $0.load(reactionsQuery) }
             
         let thenLoadReactionImages: ([ReactionEntity]) -> Maybe<([ReactionEntity], [ImageEntity])>
         thenLoadReactionImages = { [weak self] entities in
             guard let self = self else { return .empty() }
-            let query = ImageSourceTable.selectAll{ $0.ownerID.in(entities.map{ $0.reactionID } ) }
+            let query = ImageSourceTable.selectAll { $0.ownerID.in(entities.map{ $0.reactionID } ) }
             return self.sqliteService.run{ try $0.load(query) }
                 .map{ (entities, $0) }
                 .catchAndReturn((entities, []))
@@ -402,10 +418,10 @@ private extension Hooray {
     
     static func fromImageSource(_ cursor: CursorIterator) throws -> Hooray {
         let entity = try HoorayTable.Entity(cursor)
-        let imageSource = try? ImageSource(cursor)
+        let imageEntity = try? ImageSourceTable.Entity(cursor)
         return Hooray(uid: entity.uid, placeID: entity.placeID, publisherID: entity.publisherID,
                       hoorayKeyword: entity.keyword, message: entity.message,
-                      tags: entity.tags, image: imageSource,
+                      tags: entity.tags, image: imageEntity?.source,
                       location: entity.coordinate, timestamp: entity.timeStamp, reactions: [],
                       spreadDistance: entity.spreadDistance, aliveDuration: entity.aliveTime)
     }
