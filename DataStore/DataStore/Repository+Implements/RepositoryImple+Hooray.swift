@@ -50,7 +50,13 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
     }
     
     public func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
+        
+        let saveHoorays: ([Hooray]) -> Void = { [weak self] hoorays in
+            self?.saveHoorays(hoorays)
+        }
+        
         return self.hoorayRemote.requestLoadNearbyRecentHoorays(at: location)
+            .do(onNext: saveHoorays)
     }
     
     public func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
@@ -71,8 +77,18 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
             }
             return hooray
         }
+        
+        let saveHooray: (Hooray) -> Void = { [weak self] hooray in
+            self?.saveHoorays([hooray])
+        }
         return self.hoorayRemote.requestLoadHooray(id)
             .map(checkExists)
+            .do(onNext: saveHooray)
+    }
+    
+    public func fetchHooray(_ id: String) -> Maybe<Hooray?> {
+        
+        return self.hoorayLocal.fetchHooray(id)
     }
 }
 

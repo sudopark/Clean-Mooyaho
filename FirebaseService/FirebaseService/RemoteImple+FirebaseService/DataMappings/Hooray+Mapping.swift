@@ -32,6 +32,7 @@ enum HoorayMappingKey: String, JSONMappingKeys {
     case ackUserID = "ack_uid"
     case ackAt = "ack_at"
     
+    case reactID = "rct_uid"
     case reactMemberID = "rct_mid"
     case icon = "icon"
     case reactAt = "rct_at"
@@ -62,15 +63,17 @@ extension HoorayAckInfo: JSONMappable {
 extension HoorayReaction.ReactionInfo: JSONMappable {
     
     init?(json: JSON) {
-        guard let memberID = json[Key.reactMemberID] as? String,
+        guard let reactID = json[Key.reactID] as? String,
+              let memberID = json[Key.reactMemberID] as? String,
               let sourceJSON = json[Key.icon] as? JSON,
               let icon = ImageSource(json: sourceJSON),
               let reactAt = json[Key.reactAt] as? Double else { return nil }
-        self.init(reactMemberID: memberID, icon: icon, reactAt: reactAt)
+        self.init(reactionID: reactID, reactMemberID: memberID, icon: icon, reactAt: reactAt)
     }
     
     func asJSON() -> JSON {
         return [
+            Key.reactID.rawValue: self.reactionID,
             Key.reactMemberID.rawValue: self.reactMemberID,
             Key.icon.rawValue: self.icon.asJSON(),
             Key.reactAt.rawValue: self.reactAt

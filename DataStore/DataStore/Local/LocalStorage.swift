@@ -67,9 +67,7 @@ public protocol PlaceLocalStorage {
 
 public protocol HoorayLocalStorage {
 
-    func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?>
-    
-    func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]>
+    func fetchLatestHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]>
     
     func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void>
     
@@ -84,6 +82,10 @@ extension HoorayLocalStorage {
     
     public func fetchHooray(_ id: String) -> Maybe<Hooray?> {
         return self.fetchHoorays([id]).map{ $0.first }
+    }
+    
+    public func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?> {
+        return self.fetchLatestHoorays(for: memberID, limit: 1).map{ $0.first }
     }
 }
 

@@ -1,8 +1,8 @@
 //
-//  MockHoorayRepository.swift
+//  BaseStubHoorayRepository.swift
 //  DomainTests
 //
-//  Created by sudo.park on 2021/05/15.
+//  Created by sudo.park on 2021/08/26.
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
@@ -10,38 +10,36 @@ import Foundation
 
 import RxSwift
 
-import UnitTestHelpKit
+import Domain
 
-@testable import Domain
 
-class MockHoorayRepository: HoorayRepository, Mocking {
+class BaseStubHoorayRepository: HoorayRepository {
     
     func fetchLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
-        return self.resolve(key: "fetchLatestHooray") ?? .empty()
+        return .empty()
     }
     
     func requestLoadLatestHooray(_ memberID: String) -> Maybe<LatestHooray?> {
-        return self.resolve(key: "requestLoadLatestHooray") ?? .empty()
+        return .empty()
     }
     
     func requestPublishHooray(_ newForm: NewHoorayForm, withNewPlace: NewPlaceForm?) -> Maybe<Hooray> {
-        return self.resolve(key: "requestPublishHooray") ?? .empty()
+        return .empty()
     }
     
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
-        return self.resolve(key: "requestLoadNearbyRecentHoorays") ?? .empty()
+        return .empty()
     }
     
     func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        self.verify(key: "requestAckHooray")
-        return self.resolve(key: "requestAckHooray") ?? .empty()
+        return .empty()
     }
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray> {
-        return self.resolve(key: "requestLoadHooray") ?? .empty()
+        return .empty()
     }
     
     func fetchHooray(_ id: String) -> Maybe<Hooray?> {
-        return self.resolve(key: "fetchHooray") ?? .empty()
+        return .empty()
     }
 }
