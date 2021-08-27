@@ -48,6 +48,10 @@
 		F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */; };
 		F6A72A3D26483C8A006BE4BD /* RepositoryImple+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */; };
 		F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */; };
+		F6CF34B026D7DC6B003B52CD /* LocalStorageTests+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34AF26D7DC6B003B52CD /* LocalStorageTests+Hooray.swift */; };
+		F6CF34B226D7E55C003B52CD /* HoorayTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34B126D7E55C003B52CD /* HoorayTable.swift */; };
+		F6CF34B426D7E56E003B52CD /* HoorayAckUserTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34B326D7E56E003B52CD /* HoorayAckUserTable.swift */; };
+		F6CF34B626D7E576003B52CD /* HoorayReactionsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34B526D7E576003B52CD /* HoorayReactionsTable.swift */; };
 		F6D401B1268223C6003647C3 /* MemberTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D401B0268223C6003647C3 /* MemberTable.swift */; };
 		F6D401B3268224C8003647C3 /* ImageSourceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D401B2268224C8003647C3 /* ImageSourceTable.swift */; };
 /* End PBXBuildFile section */
@@ -106,6 +110,10 @@
 		F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Hooray.swift"; sourceTree = "<group>"; };
 		F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Tags.swift"; sourceTree = "<group>"; };
 		F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Tag.swift"; sourceTree = "<group>"; };
+		F6CF34AF26D7DC6B003B52CD /* LocalStorageTests+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Hooray.swift"; sourceTree = "<group>"; };
+		F6CF34B126D7E55C003B52CD /* HoorayTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayTable.swift; sourceTree = "<group>"; };
+		F6CF34B326D7E56E003B52CD /* HoorayAckUserTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayAckUserTable.swift; sourceTree = "<group>"; };
+		F6CF34B526D7E576003B52CD /* HoorayReactionsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayReactionsTable.swift; sourceTree = "<group>"; };
 		F6D401B0268223C6003647C3 /* MemberTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTable.swift; sourceTree = "<group>"; };
 		F6D401B2268224C8003647C3 /* ImageSourceTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSourceTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -275,6 +283,7 @@
 				F66BB8902686E7F400B46A99 /* BaseLocalStorageTests.swift */,
 				F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */,
 				F62202B92698918700B26B50 /* LocalStorageTests+Place.swift */,
+				F6CF34AF26D7DC6B003B52CD /* LocalStorageTests+Hooray.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -295,6 +304,9 @@
 				F6D401B2268224C8003647C3 /* ImageSourceTable.swift */,
 				F63D29F7269AE7DD007580E2 /* PlaceInfoTable.swift */,
 				F63D29F9269C906D007580E2 /* TagTable.swift */,
+				F6CF34B126D7E55C003B52CD /* HoorayTable.swift */,
+				F6CF34B326D7E56E003B52CD /* HoorayAckUserTable.swift */,
+				F6CF34B526D7E576003B52CD /* HoorayReactionsTable.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -426,11 +438,14 @@
 				2B9F277D2633E7D500FEBCE3 /* EncryptedStorage.swift in Sources */,
 				F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */,
 				F63D29FA269C906D007580E2 /* TagTable.swift in Sources */,
+				F6CF34B226D7E55C003B52CD /* HoorayTable.swift in Sources */,
 				F63D29F8269AE7DD007580E2 /* PlaceInfoTable.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				F625EDC926821E4E000C87F0 /* LocalStorageImple+Tag.swift in Sources */,
+				F6CF34B426D7E56E003B52CD /* HoorayAckUserTable.swift in Sources */,
 				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
+				F6CF34B626D7E576003B52CD /* HoorayReactionsTable.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */,
 				F625EDC726821E3B000C87F0 /* LocalStorageImple+Member.swift in Sources */,
 				F625EDCD26821E75000C87F0 /* LocalStorageImple+Hooray.swift in Sources */,
@@ -459,6 +474,7 @@
 				2BABA28F2642A0E7007E2D1E /* RepositoryTests+Places.swift in Sources */,
 				2BD54F75263DB51A004B3EB0 /* RepositoryTests+Auth.swift in Sources */,
 				2BD54F79263DB59E004B3EB0 /* MockLocal.swift in Sources */,
+				F6CF34B026D7DC6B003B52CD /* LocalStorageTests+Hooray.swift in Sources */,
 				F6419BF626822FB000C7919B /* LocalStorageTests+Auth&Member.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

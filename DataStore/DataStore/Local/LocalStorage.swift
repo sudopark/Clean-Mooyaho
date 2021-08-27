@@ -71,7 +71,20 @@ public protocol HoorayLocalStorage {
     
     func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]>
     
-    func saveHoorays(_ hooray: [Hooray]) -> Maybe<Void>
+    func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void>
+    
+    func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]>
+}
+
+extension HoorayLocalStorage {
+    
+    public func saveHooray(_ hooray: Hooray) -> Maybe<Void> {
+        return self.saveHoorays([hooray])
+    }
+    
+    public func fetchHooray(_ id: String) -> Maybe<Hooray?> {
+        return self.fetchHoorays([id]).map{ $0.first }
+    }
 }
 
 
