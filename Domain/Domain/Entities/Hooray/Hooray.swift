@@ -36,13 +36,11 @@ extension HoorayAckInfo: Hashable {
 extension HoorayReaction.ReactionInfo: Hashable {
     
     public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
-        return lhs.reactMemberID == rhs.reactMemberID
-            && lhs.reactAt == rhs.reactAt
+        return lhs.reactionID == rhs.reactionID
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.reactMemberID)
-        hasher.combine(self.reactAt)
+        hasher.combine(self.reactionID)
     }
 }
 

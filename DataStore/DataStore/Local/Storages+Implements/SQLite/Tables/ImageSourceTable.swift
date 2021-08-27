@@ -70,7 +70,7 @@ struct ImageSourceTable: Table {
         var dataType: ColumnDataType {
             switch self {
             case .ownerID: return .text([.primaryKey(autoIncrement: false), .notNull])
-            case .sourcetype: return .text([.unique, .notNull])
+            case .sourcetype: return .text([])
             case .path, .description, .emoji: return .text([])
             }
         }
