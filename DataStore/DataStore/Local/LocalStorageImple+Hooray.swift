@@ -23,7 +23,11 @@ extension LocalStorageImple {
         return .empty()
     }
     
-    public func saveHoorays(_ hooray: [Hooray]) -> Maybe<Void> {
-        return .empty()
+    public func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void> {
+        return self.dataModelStorage.saveHoorays(hoorays)
+    }
+    
+    public func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]> {
+        return self.dataModelStorage.fetchHoorays(ids)
     }
 }
