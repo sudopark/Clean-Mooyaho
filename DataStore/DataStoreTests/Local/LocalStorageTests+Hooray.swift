@@ -25,8 +25,25 @@ extension LocalStorageTests_Hooray {
         
         return Hooray(uid: "hid:\(int)", placeID: "pid", publisherID: "pub_id", hoorayKeyword: "kwd",
                       message: "msg", tags: ["t1", "t2"], image: .path("path"),
-                      location: .init(latt: 100, long: 300.2), timestamp: 100,
+                      location: .init(latt: 100, long: 300.2), timestamp: TimeInterval(int) + 100,
                       reactions: [], spreadDistance: 100.2, aliveDuration: 200.3)
+    }
+    
+    func testStorage_loadLatestHoorayForMember() {
+        // given
+        let expect = expectation(description: "유저의 가장 최근 후레이 3개 조회")
+        
+        // when
+        let hoorays = (0..<10).map{ self.dummyHooray($0) }
+        let save = self.local.saveHoorays(hoorays)
+        let load = self.local.fetchLatestHoorays(for: "pub_id", limit: 3)
+        let saveAndLoad = save.flatMap{ _ in load }
+        let loadedHoorays = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(loadedHoorays?.count, 3)
+        let timeStamps = loadedHoorays?.map{ $0.timeStamp }
+        XCTAssertEqual(timeStamps, [109, 108, 107])
     }
     
     func testStorage_saveAndLoadHooray() {

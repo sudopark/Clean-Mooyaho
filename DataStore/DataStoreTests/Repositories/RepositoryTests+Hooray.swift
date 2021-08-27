@@ -55,8 +55,8 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "로컬에 저장된 최근 후레이 조회")
         
-        self.mockLocal.register(key: "fetchLatestHooray") {
-            return Maybe<Hooray?>.just(self.dummyHooray())
+        self.mockLocal.register(key: "fetchLatestHoorays") {
+            return Maybe<[Hooray]>.just([self.dummyHooray()])
         }
         
         // when
@@ -65,6 +65,22 @@ extension RepositoryTests_Hooray {
         
         // then
         XCTAssertEqual(lastest?.id, self.dummyHooray().uid)
+    }
+    
+    func testRepository_fetchHooray() {
+        // given
+        let expect = expectation(description: "로컬에 저장된 후레이 조회")
+        
+        self.mockLocal.register(key: "fetchHoorays") {
+            return Maybe<[Hooray]>.just([self.dummyHooray()])
+        }
+        
+        // when
+        let requestFetch = self.repository.fetchHooray("some")
+        let hooray = self.waitFirstElement(expect, for: requestFetch.asObservable()) { } ?? nil
+        
+        // then
+        XCTAssertEqual(hooray?.uid, self.dummyHooray().uid)
     }
     
     func testRepository_loadLatestHoorayFromRemote() {
@@ -178,6 +194,26 @@ extension RepositoryTests_Hooray {
         XCTAssertEqual(hoorays?.count, 1)
     }
     
+    func testRepository_whenAfterLoadRecentHoorays_saveAtCache() {
+        // given
+        let expect = expectation(description: "주변에 있는 최근 후레이 조회 이후에 로컬에 후레이 저장")
+        
+        self.mockRemote.register(key: "requestLoadNearbyRecentHoorays") {
+            return Maybe<[Hooray]>.just([self.dummyHooray()])
+        }
+        self.mockLocal.called(key: "saveHoorays") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestLoadNearbyRecentHoorays(at: .init(latt: 0, long: 0))
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testRepository_loadHooray() {
         // given
         let expect = expectation(description: "후레이 조회")
@@ -206,6 +242,25 @@ extension RepositoryTests_Hooray {
         
         // then
         XCTAssertNotNil(error)
+    }
+    
+    func testRepository_whenAfterLoadHooray_saveToCache() {
+        // given
+        let expect = expectation(description: "후레이 조회 이후에 로컬에 저장")
+        self.mockRemote.register(key: "requestLoadHooray") {
+            return Maybe<Hooray?>.just(self.dummyHooray())
+        }
+        self.mockLocal.called(key: "saveHoorays") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestLoadHooray("some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
     }
 }
 

@@ -25,4 +25,6 @@ public protocol HoorayRepository {
     func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void>
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray>
+    
+    func fetchHooray(_ id: String) -> Maybe<Hooray?>
 }

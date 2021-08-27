@@ -15,12 +15,8 @@ import Domain
 
 extension LocalStorageImple {
     
-    public func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?> {
-        return .just(nil)
-    }
-    
-    public func fetchHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]> {
-        return .empty()
+    public func fetchLatestHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]> {
+        return self.dataModelStorage.fetchLatestHoorays(for: memberID, limit: limit)
     }
     
     public func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void> {
