@@ -9,8 +9,8 @@
 import Foundation
 
 import RxSwift
-import Overture
-
+import Prelude
+import Optics
 
 // MARK: - PlaceUsecase
 
@@ -98,9 +98,9 @@ extension PlaceUsecaseImple {
     }
     
     private func updatePlaceOnStore(_ place: Place) {
-        let key = SharedDataKeys.placeMap.rawValue
-        self.sharedStoreService.update([String: Place].self, key: key) {
-            update($0 ?? [:]) { $0[place.uid] = place }
+        let storeKey = SharedDataKeys.placeMap.rawValue
+        self.sharedStoreService.update([String: Place].self, key: storeKey) {
+            return ($0 ?? [:]) |> key(place.uid) .~ place
         }
     }
 }

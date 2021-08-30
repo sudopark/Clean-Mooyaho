@@ -65,11 +65,11 @@
         }
       },
       {
-        "package": "swift-overture",
-        "repositoryURL": "https://github.com/sudopark/swift-overture.git",
+        "package": "swift-prelude",
+        "repositoryURL": "https://github.com/pointfreeco/swift-prelude",
         "state": {
           "branch": "main",
-          "revision": "fded02a5bffba30e32fa6cf032f30a1d5426af21",
+          "revision": "16550d9104f12e9033c0b0de5d6c6d9de3f04dfa",
           "version": null
         }
       },

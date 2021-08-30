@@ -13,7 +13,15 @@
 		2BA40744263160E1000CC122 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2BA40743263160E1000CC122 /* RxRelay */; };
 		F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F603CCA02667D3D500FE6A8A /* RxDataSources */; };
 		F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = F603CCA22667D3D500FE6A8A /* Differentiator */; };
-		F61B00CD26CEDF410084EE1B /* Overture in Frameworks */ = {isa = PBXBuildFile; productRef = F61B00CC26CEDF410084EE1B /* Overture */; };
+		F6C8060626DC8F3C00F1F96D /* Reader in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060526DC8F3C00F1F96D /* Reader */; };
+		F6C8060826DC8F3C00F1F96D /* Optics in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060726DC8F3C00F1F96D /* Optics */; };
+		F6C8060A26DC8F3C00F1F96D /* Either in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060926DC8F3C00F1F96D /* Either */; };
+		F6C8060C26DC8F3C00F1F96D /* State in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060B26DC8F3C00F1F96D /* State */; };
+		F6C8060E26DC8F3C00F1F96D /* ValidationSemigroup in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060D26DC8F3C00F1F96D /* ValidationSemigroup */; };
+		F6C8061026DC8F3C00F1F96D /* Writer in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060F26DC8F3C00F1F96D /* Writer */; };
+		F6C8061226DC8F3C00F1F96D /* Frp in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8061126DC8F3C00F1F96D /* Frp */; };
+		F6C8061426DC8F3C00F1F96D /* ValidationNearSemiring in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8061326DC8F3C00F1F96D /* ValidationNearSemiring */; };
+		F6C8061626DC8F3C00F1F96D /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8061526DC8F3C00F1F96D /* Prelude */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,12 +35,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6C8060826DC8F3C00F1F96D /* Optics in Frameworks */,
 				2BA40744263160E1000CC122 /* RxRelay in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
-				F61B00CD26CEDF410084EE1B /* Overture in Frameworks */,
+				F6C8061626DC8F3C00F1F96D /* Prelude in Frameworks */,
+				F6C8061026DC8F3C00F1F96D /* Writer in Frameworks */,
 				F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */,
+				F6C8060A26DC8F3C00F1F96D /* Either in Frameworks */,
+				F6C8060C26DC8F3C00F1F96D /* State in Frameworks */,
 				2BA40742263160E1000CC122 /* RxCocoa in Frameworks */,
+				F6C8060626DC8F3C00F1F96D /* Reader in Frameworks */,
 				2BA40740263160E1000CC122 /* RxSwift in Frameworks */,
+				F6C8061226DC8F3C00F1F96D /* Frp in Frameworks */,
+				F6C8060E26DC8F3C00F1F96D /* ValidationSemigroup in Frameworks */,
+				F6C8061426DC8F3C00F1F96D /* ValidationNearSemiring in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +114,15 @@
 				2BA40743263160E1000CC122 /* RxRelay */,
 				F603CCA02667D3D500FE6A8A /* RxDataSources */,
 				F603CCA22667D3D500FE6A8A /* Differentiator */,
-				F61B00CC26CEDF410084EE1B /* Overture */,
+				F6C8060526DC8F3C00F1F96D /* Reader */,
+				F6C8060726DC8F3C00F1F96D /* Optics */,
+				F6C8060926DC8F3C00F1F96D /* Either */,
+				F6C8060B26DC8F3C00F1F96D /* State */,
+				F6C8060D26DC8F3C00F1F96D /* ValidationSemigroup */,
+				F6C8060F26DC8F3C00F1F96D /* Writer */,
+				F6C8061126DC8F3C00F1F96D /* Frp */,
+				F6C8061326DC8F3C00F1F96D /* ValidationNearSemiring */,
+				F6C8061526DC8F3C00F1F96D /* Prelude */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -129,7 +153,7 @@
 			packageReferences = (
 				2BA4073E263160E1000CC122 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				F61B00CB26CEDF410084EE1B /* XCRemoteSwiftPackageReference "swift-overture" */,
+				F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -461,9 +485,9 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		F61B00CB26CEDF410084EE1B /* XCRemoteSwiftPackageReference "swift-overture" */ = {
+		F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sudopark/swift-overture.git";
+			repositoryURL = "https://github.com/pointfreeco/swift-prelude";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -497,10 +521,50 @@
 			package = F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = Differentiator;
 		};
-		F61B00CC26CEDF410084EE1B /* Overture */ = {
+		F6C8060526DC8F3C00F1F96D /* Reader */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F61B00CB26CEDF410084EE1B /* XCRemoteSwiftPackageReference "swift-overture" */;
-			productName = Overture;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Reader;
+		};
+		F6C8060726DC8F3C00F1F96D /* Optics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Optics;
+		};
+		F6C8060926DC8F3C00F1F96D /* Either */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Either;
+		};
+		F6C8060B26DC8F3C00F1F96D /* State */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = State;
+		};
+		F6C8060D26DC8F3C00F1F96D /* ValidationSemigroup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = ValidationSemigroup;
+		};
+		F6C8060F26DC8F3C00F1F96D /* Writer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Writer;
+		};
+		F6C8061126DC8F3C00F1F96D /* Frp */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Frp;
+		};
+		F6C8061326DC8F3C00F1F96D /* ValidationNearSemiring */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = ValidationNearSemiring;
+		};
+		F6C8061526DC8F3C00F1F96D /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Prelude;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
