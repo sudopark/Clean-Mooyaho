@@ -12,7 +12,8 @@ import RxSwift
 import SQLiteService
 
 import Domain
-import Overture
+import Prelude
+import Optics
 
 
 // MARK: - DataModelStorage
@@ -298,7 +299,7 @@ extension DataModelStorageImple {
             return entities.asEntityMapPerHooray().mapValues{ $0.map{ $0.asAckInfo()} }
         }
         let appendAckUserInfos: ([String: [HoorayAckInfo]]) -> [Hooray] = { dict in
-            return hoorays.map{ update($0) { $0.ackUserIDs = Set(dict[$0.uid] ?? [])  } }
+            return hoorays.map { $0 |> \.ackUserIDs .~ Set(dict[$0.uid] ?? []) }
         }
         return loadAcks
             .map(asAckInfosMapPerHooray)
@@ -333,7 +334,7 @@ extension DataModelStorageImple {
         }
 
         let thenAppendReactionInfo: ([String: [HoorayReaction.ReactionInfo]]) -> [Hooray] = { dict in
-            return hoorays.map{ update($0) { $0.reactions = Set(dict[$0.uid] ?? []) } }
+            return hoorays.map { $0 |> \.reactions .~ Set(dict[$0.uid] ?? [])}
         }
         
         return loadReactions

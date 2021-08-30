@@ -10,7 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
-import Overture
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -235,7 +236,7 @@ private extension Hooray {
                                   coordinate: self.location,
                                   spreadDistance: self.spreadDistance,
                                   aliveDuration: self.aliveDuration)
-        return update(marker) { $0.withFocusAnimation = withFocus }
+        return marker |> \.withFocusAnimation .~ withFocus
     }
     
     static var defaultMarkerIcon: ImageSource {

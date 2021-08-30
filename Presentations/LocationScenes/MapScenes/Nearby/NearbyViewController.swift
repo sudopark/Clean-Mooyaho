@@ -11,7 +11,8 @@ import MapKit
 
 import RxSwift
 import RxCocoa
-import Overture
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -281,11 +282,9 @@ extension NearbyViewController: MKMapViewDelegate {
             return MKCircleRenderer()
         }
 
-        let decorating = concat(
-            set(\MKCircleRenderer.fillColor, .red),
-            set(\MKCircleRenderer.alpha, spreadingOverlay.alpha)
-        )
-        return with(MKCircleRenderer(overlay: spreadingOverlay), decorating)
+        return MKCircleRenderer(overlay: spreadingOverlay)
+            |> \.fillColor .~ .red
+            |> \.alpha .~ spreadingOverlay.alpha
     }
     
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) { }
