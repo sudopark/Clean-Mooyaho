@@ -49,16 +49,20 @@ public class DataModelStorageImple: DataModelStorage {
     private let sqliteService: SQLiteService
     
     private let disposeBag = DisposeBag()
+    private let closeWhenDeinit: Bool
     
-    public init(dbPath: String, verstion: Int = 0) {
+    public init(dbPath: String, verstion: Int = 0, closeWhenDeinit: Bool = true) {
         
         self.sqliteService = SQLiteService()
+        self.closeWhenDeinit = closeWhenDeinit
         self.openAndStartMigrationIfNeed(dbPath, version: verstion)
     }
     
-//    deinit {
-//        self.sqliteService.close()
-//    }
+    deinit {
+        closeWhenDeinit.then {
+            self.sqliteService.close()
+        }
+    }
     
     private func openAndStartMigrationIfNeed(_ path: String, version: Int) {
         
