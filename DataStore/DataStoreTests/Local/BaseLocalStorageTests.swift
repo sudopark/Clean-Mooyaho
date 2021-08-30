@@ -39,7 +39,7 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         
         self.mockEncrytedStorage = MockEncryptedStorage()
         self.mockEnvironmentStorage = .init()
-        let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0)
+        let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0, closeWhenDeinit: false)
         self.local = LocalStorageImple(encryptedStorage: mockEncrytedStorage,
                                        environmentStorage: UserDefaults.standard,
                                        dataModelStorage: dataModelStorage)
