@@ -53,4 +53,8 @@ open class MockHoorayUsecase: HoorayUsecase, Mocking {
     public func loadHooray(_ id: String) -> Maybe<Hooray> {
         return self.resolve(key: "loadHooray") ?? .empty()
     }
+    
+    public func loadHoorayHoorayDetail(_ id: String) -> Observable<Hooray> {
+        return self.resolve(key: "loadHoorayHoorayDetail") ?? .empty()
+    }
 }

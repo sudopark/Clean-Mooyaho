@@ -90,6 +90,63 @@ extension HoorayReceiveUsecaseTests {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testUsecase_loadHooray() {
+        // given
+        let expect = expectation(description: "hooray 조회")
+        
+        self.mockHoorayRepository.register(key: "requestLoadHooray") {
+            return Maybe<Hooray>.just(Hooray.dummy(0))
+        }
+        
+        // when
+        let loading = self.usecase.loadHooray("some")
+        let hooray = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(hooray)
+    }
+    
+    func testUsecase_whenLoadHoorayDetailAndLocalExists_emitLocalAndRemoteHooray() {
+        // given
+        let expect = expectation(description: "hooray 상세내용 조회시에 local에 저장된값이 있으면 이를 먼저 방출하고 이후 remote에서 방출")
+        expect.expectedFulfillmentCount = 2
+        
+        self.mockHoorayRepository.register(key: "fetchHooray") {
+            return Maybe<Hooray?>.just(Hooray.dummy(0))
+        }
+        
+        self.mockHoorayRepository.register(key: "requestLoadHooray") {
+            return Maybe<Hooray>.just(Hooray.dummy(0))
+        }
+        
+        // when
+        let loading = self.usecase.loadHoorayHoorayDetail("some")
+        let hoorays = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(hoorays.count, 2)
+    }
+    
+    func testUsecase_whenLoadHoorayDetailWithoutLocalHooray_justEmitHoorayFromRemote() {
+        // given
+        let expect = expectation(description: "hooray 상세내용 조회시 로컬에 저장된 값이 없는경우 remote 조회결과만 반환")
+        
+        self.mockHoorayRepository.register(key: "fetchHooray") {
+            return Maybe<Hooray?>.just(nil)
+        }
+        
+        self.mockHoorayRepository.register(key: "requestLoadHooray") {
+            return Maybe<Hooray>.just(Hooray.dummy(0))
+        }
+        
+        // when
+        let loading = self.usecase.loadHoorayHoorayDetail("some")
+        let hoorays = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(hoorays.count, 1)
+    }
 }
 
 
