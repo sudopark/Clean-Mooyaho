@@ -9,7 +9,8 @@
 import Foundation
 
 import RxSwift
-import Overture
+import Prelude
+import Optics
 
 
 public enum UpdateMemberProfileStatus: Equatable {
@@ -230,10 +231,10 @@ extension MemberUsecaseImple {
     }
     
     private func appendMemberInfoOnSharedStore(_ members: [Member]) {
-        self.sharedDataStoreService
-            .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) {
-                update($0 ?? [:]) { map in members.forEach{ map[$0.uid] = $0 } }
-            }
+        let storeKey = SharedDataKeys.memberMap.rawValue
+        self.sharedDataStoreService.update([String: Member].self, key: storeKey) {
+            return members.reduce($0 ?? [:]) { $0 |> key($1.uid) .~ $1 }
+        }
     }
 }
 
@@ -248,17 +249,5 @@ private extension MemberProfileUploadStatus {
     var completedSource: ImageSource? {
         guard case let .completed(source) = self else { return nil }
         return source
-    }
-}
-
-
-private extension Dictionary where Key == String, Value == Member {
-    
-    func append(_ members: [Member]) -> Dictionary {
-        var newDict = self
-        members.forEach {
-            newDict[$0.uid] = $0
-        }
-        return newDict
     }
 }

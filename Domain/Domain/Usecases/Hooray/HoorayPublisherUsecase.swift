@@ -9,7 +9,8 @@
 import Foundation
 
 import RxSwift
-import Overture
+import Prelude
+import Optics
 
 
 // MARK: - HoorayPublisherUsecase
@@ -97,11 +98,10 @@ extension HoorayPublisherUsecase where Self: HoorayPubisherUsecaseDefaultImpleDe
         
         let checkAndLoadMemberShip = self.checkAndLoadMemberShipWhenAvailToPublish()
         let applyPolicy: (MemberShip) -> NewHoorayForm = { memberShip in
-            return update(hoorayForm) {
-                $0.spreadDistance = memberShip.hooraySpreadDistance()
-                $0.aliveTime = memberShip.hoorayAliveTime()
-                $0.timeStamp = .now()
-            }
+            return hoorayForm
+                |> \.spreadDistance %~ { _ -> Meters? in memberShip.hooraySpreadDistance() }
+                |> \.aliveTime %~ { _ -> TimeInterval? in memberShip.hoorayAliveTime() }
+                |> \.timeStamp %~ { _ -> TimeInterval? in .now() }
         }
         let thenPublish: (NewHoorayForm) -> Maybe<Hooray> = { [weak self] form in
             guard let self = self else { return .empty() }

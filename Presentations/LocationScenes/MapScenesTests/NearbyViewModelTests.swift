@@ -8,7 +8,8 @@
 import XCTest
 
 import RxSwift
-import Overture
+import Prelude
+import Optics
 
 import Domain
 import UnitTestHelpKit
@@ -312,9 +313,9 @@ extension HoorayNearbyViewModelTests {
     func testViewModel_provideHoorayMarkerImageInfo() {
         // given
         let expect = expectation(description: "후레이 마커이미지 정보 제공")
-        let hoorayWithImage = update(Hooray.dummy(0)) { $0.image = .path("some") }
-        let hoorayWithOutImage = update(Hooray.dummy(1)) { $0.image = nil }
-        let hoorayWithoutImageAndProfileIcon = update(Hooray.dummy(2)) { $0.image = nil }
+        let hoorayWithImage = Hooray.dummy(0) |> \.image .~ .path("some")
+        let hoorayWithOutImage = Hooray.dummy(1) |> \.image .~ nil
+        let hoorayWithoutImageAndProfileIcon = Hooray.dummy(2) |> \.image .~ nil
         self.viewModel = self.makeViewModel(recentNearbyHoorays: [
             hoorayWithImage, hoorayWithOutImage, hoorayWithoutImageAndProfileIcon
         ])
