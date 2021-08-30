@@ -19,6 +19,8 @@ public protocol HoorayReceiverUsecase: AnyObject {
     
     func loadHooray(_ id: String) -> Maybe<Hooray>
     
+    func loadHoorayHoorayDetail(_ id: String) -> Observable<Hooray>
+    
     var newReceivedHoorayMessage: Observable<NewHoorayMessage> { get }
 }
 
@@ -79,6 +81,14 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
     
     public func loadHooray(_ id: String) -> Maybe<Hooray> {
         return self.hoorayRepository.requestLoadHooray(id)
+    }
+    
+    public func loadHoorayHoorayDetail(_ id: String) -> Observable<Hooray> {
+        let hoorayInLocal = self.hoorayRepository.fetchHooray(id)
+        let hoorayInRemote = self.hoorayRepository.requestLoadHooray(id).mapAsOptional()
+        return hoorayInLocal.asObservable()
+            .concat(hoorayInRemote.asObservable())
+            .compactMap{ $0 }
     }
 }
 
