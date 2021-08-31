@@ -14,15 +14,18 @@ import SQLiteService
 import Domain
 
 
-extension SQLiteService {
+extension SQLiteService: ReactiveCompatible { }
+
+
+extension Reactive where Base == SQLiteService {
     
     public func run<T>(execute: @escaping (DataBase) throws -> T) -> Maybe<T> {
         
-        return Maybe.create { [weak self] callback in
+        return Maybe.create { [weak base] callback in
             
-            guard let self = self else { return Disposables.create() }
+            guard let base = base else { return Disposables.create() }
             
-            self.run(execute: execute) { result in
+            base.run(execute: execute) { result in
                 result.runMaybeCallback(callback)
             }
             
@@ -31,13 +34,14 @@ extension SQLiteService {
     }
     
     public func migrate(upto version: Int32,
-                        steps: @escaping (Int32, DataBase) throws -> Void) -> Maybe<Int32> {
+                        steps: @escaping (Int32, DataBase) throws -> Void,
+                        finalized: @escaping (Int32, DataBase) -> Void) -> Maybe<Int32> {
         
-        return Maybe.create { [weak self] callback in
+        return Maybe.create { [weak base] callback in
             
-            guard let self = self else { return Disposables.create() }
+            guard let base = base else { return Disposables.create() }
             
-            self.migrate(upto: version, steps: steps) { result in
+            base.migrate(upto: version, steps: steps, finalized: finalized) { result in
                 result.runMaybeCallback(callback)
             }
             

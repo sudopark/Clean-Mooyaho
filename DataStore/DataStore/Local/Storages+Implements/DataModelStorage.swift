@@ -105,7 +105,7 @@ extension DataModelStorageImple {
             return member
         }
         
-        return self.sqliteService.run{ try $0.load(joinQuery, mapping: mapping) }
+        return self.sqliteService.rx.run{ try $0.load(joinQuery, mapping: mapping) }
     }
     
     public func save(member: Member) -> Maybe<Void> {
@@ -119,11 +119,11 @@ extension DataModelStorageImple {
         let memberEntities = members.map{ $0.asEntity() }
         let iconEntities = members.compactMap{ $0.iconEntity() }
         
-        let insertMembers = self.sqliteService
+        let insertMembers = self.sqliteService.rx
             .run{ try $0.insert(memberTable, entities: memberEntities) }
         let thenInsertIcons: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.run { try $0.insert(imageTable, entities: iconEntities)}
+            return self.sqliteService.rx.run { try $0.insert(imageTable, entities: iconEntities)}
                 .catchAndReturn(())
         }
         
@@ -145,10 +145,10 @@ extension DataModelStorageImple {
         }
         .where{ $0.ownerID == member.uid }
         
-        let updateMember = self.sqliteService.run{ try $0.update(members, query: updateMemberQuery) }
+        let updateMember = self.sqliteService.rx.run{ try $0.update(members, query: updateMemberQuery) }
         let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.run { try $0.update(images, query: updateIconQuery) }
+            return self.sqliteService.rx.run { try $0.update(images, query: updateIconQuery) }
                 .catchAndReturn(())
         }
         return updateMember
@@ -166,16 +166,16 @@ extension DataModelStorageImple {
         let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
         
         let placeInfo = places.EntityType(place: place)
-        let savePlace = self.sqliteService.run{ try $0.insert(places, entities: [placeInfo]) }
+        let savePlace = self.sqliteService.rx.run{ try $0.insert(places, entities: [placeInfo]) }
         let thenSaveThumbnails: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
             let imageModel = ImageSourceTable.Entity(place.reporterID, source: place.thumbnail)
-            return self.sqliteService.run { try $0.insert(images, entities: [imageModel]) }
+            return self.sqliteService.rx.run { try $0.insert(images, entities: [imageModel]) }
                 .catchAndReturn(())
         }
         let thenSaveTags: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.run { try $0.insert(tags, entities: place.placeCategoryTags) }
+            return self.sqliteService.rx.run { try $0.insert(tags, entities: place.placeCategoryTags) }
                 .catchAndReturn(())
         }
         
@@ -194,14 +194,14 @@ extension DataModelStorageImple {
         let imageQuery = images.selectSome{ [$0.sourcetype, $0.path, $0.description, $0.emoji] }
         let joinQuery = placeQuery.outerJoin(with: imageQuery, on: { ($0.reporterID, $1.ownerID) })
        
-        let fetchPlaceInfo = self.sqliteService
+        let fetchPlaceInfo = self.sqliteService.rx
             .run{ try $0.loadOne(joinQuery, mapping: CursorIterator.makePlaceInfoAndThumbnail) }
         
         let appendCategoryTagsOrNot: ((PlaceInfo, ImageSource?)?) -> Maybe<Place?> = { [weak self] pair in
             guard let self = self else { return .empty() }
             guard let pair = pair else { return .just(nil) }
             let tagsQuery = tags.selectAll{ $0.keyword.in(pair.0.categoryIDs) }
-            let fetchTags = self.sqliteService.run { try $0.load(tags, query: tagsQuery) }.catchAndReturn([])
+            let fetchTags = self.sqliteService.rx.run { try $0.load(tags, query: tagsQuery) }.catchAndReturn([])
             return fetchTags
                 .map{ Place(info: pair.0, thumbnail: pair.1, tags: $0) }
         }
@@ -219,7 +219,7 @@ extension DataModelStorageImple {
     public func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void> {
         
         let hoorayEntities = hoorays.map{ HoorayTable.Entity($0) }
-        let saveHoorays = self.sqliteService.run { try $0.insert(HoorayTable.self, entities: hoorayEntities) }
+        let saveHoorays = self.sqliteService.rx.run { try $0.insert(HoorayTable.self, entities: hoorayEntities) }
         
         let thenSaveAdditionalInfos: () -> Void = { [weak self] in
             self?.saveHoorayImage(hoorays)
@@ -232,14 +232,14 @@ extension DataModelStorageImple {
     
     private func saveHoorayImage(_ hoorays: [Hooray]) {
         let entities = hoorays.map{ ImageSourceTable.Entity($0.uid, source: $0.image) }
-        self.sqliteService.run { try $0.insert(ImageSourceTable.self, entities: entities) }
+        self.sqliteService.rx.run { try $0.insert(ImageSourceTable.self, entities: entities) }
             .subscribe()
             .disposed(by: self.disposeBag)
     }
     
     private func saveHoorayAckUserInfos(_ hooray: [Hooray]) {
         let entities = hooray.map{ $0.ackEntities()}.flatMap{ $0 }
-        self.sqliteService.run{ try $0.insert(HoorayAckUserTable.self, entities: entities) }
+        self.sqliteService.rx.run{ try $0.insert(HoorayAckUserTable.self, entities: entities) }
             .subscribe()
             .disposed(by: self.disposeBag)
     }
@@ -250,9 +250,9 @@ extension DataModelStorageImple {
             .map{ ImageSourceTable.Entity($0.reactionID, source: $0.icon) }
         
         self.disposeBag.insert {
-            self.sqliteService.run{ try $0.insert(HoorayReactionTable.self, entities: reactionEntities) }
+            self.sqliteService.rx.run{ try $0.insert(HoorayReactionTable.self, entities: reactionEntities) }
                 .subscribe()
-            self.sqliteService.run{ try $0.insert(ImageSourceTable.self, entities: imageEntities) }
+            self.sqliteService.rx.run{ try $0.insert(ImageSourceTable.self, entities: imageEntities) }
                 .subscribe()
         }
     }
@@ -277,7 +277,7 @@ extension DataModelStorageImple {
     }
     
     private func fetchHoorays(with joinQuery: JoinQuery<HoorayTable>) -> Maybe<[Hooray]> {
-        let loadHoorays = self.sqliteService.run { try $0.load(joinQuery, mapping: Hooray.fromImageSource(_:)) }
+        let loadHoorays = self.sqliteService.rx.run { try $0.load(joinQuery, mapping: Hooray.fromImageSource(_:)) }
         
         let appendAckUserInfos: ([Hooray]) -> Maybe<[Hooray]> = { [weak self] hoorays in
             return self?.loadAndAppendHoorayAckUserInfos(hoorays).catchAndReturn(hoorays) ?? .empty()
@@ -298,7 +298,7 @@ extension DataModelStorageImple {
         
         let hoorayIDs = hoorays.map{ $0.uid }
         let query = HoorayAckUserTable.selectAll { $0.hoorayID.in(hoorayIDs) }
-        let loadAcks: Maybe<[Entity]> = self.sqliteService.run{ try $0.load(query) }
+        let loadAcks: Maybe<[Entity]> = self.sqliteService.rx.run{ try $0.load(query) }
         let asAckInfosMapPerHooray: ([Entity]) -> [String: [HoorayAckInfo]] = { entities in
             return entities.asEntityMapPerHooray().mapValues{ $0.map{ $0.asAckInfo()} }
         }
@@ -317,13 +317,13 @@ extension DataModelStorageImple {
         
         let hoorayIDs = hoorays.map { $0.uid }
         let reactionsQuery = HoorayReactionTable.selectAll { $0.hoorayID.in(hoorayIDs) }
-        let loadReactions: Maybe<[ReactionEntity]> = self.sqliteService.run { try $0.load(reactionsQuery) }
+        let loadReactions: Maybe<[ReactionEntity]> = self.sqliteService.rx.run { try $0.load(reactionsQuery) }
             
         let thenLoadReactionImages: ([ReactionEntity]) -> Maybe<([ReactionEntity], [ImageEntity])>
         thenLoadReactionImages = { [weak self] entities in
             guard let self = self else { return .empty() }
             let query = ImageSourceTable.selectAll { $0.ownerID.in(entities.map{ $0.reactionID } ) }
-            return self.sqliteService.run{ try $0.load(query) }
+            return self.sqliteService.rx.run{ try $0.load(query) }
                 .map{ (entities, $0) }
                 .catchAndReturn((entities, []))
         }
@@ -357,7 +357,27 @@ extension DataModelStorageImple {
         
         let requireVersion = Int32(version)
         let migrationSteps: (Int32, DataBase) throws -> Void = { _, _ in }
-        return self.sqliteService.migrate(upto: requireVersion, steps: migrationSteps)
+        
+        let createTablesAfterMigrationFinished: (Int32, DataBase) -> Void = { [weak self] _, database in
+            self?.createTables(database)
+        }
+        return self.sqliteService.rx
+            .migrate(upto: requireVersion,
+                     steps: migrationSteps,
+                     finalized: createTablesAfterMigrationFinished)
+    }
+    
+    private func createTables(_ database: DataBase) {
+        
+        try? database.createTableOrNot(MemberTable.self)
+        try? database.createTableOrNot(ImageSourceTable.self)
+        try? database.createTableOrNot(PlaceInfoTable.self)
+        try? database.createTableOrNot(TagTable.self)
+        try? database.createTableOrNot(HoorayTable.self)
+        try? database.createTableOrNot(HoorayAckUserTable.self)
+        try? database.createTableOrNot(HoorayReactionTable.self)
+        
+        logger.print(level: .debug, "sqlite tables are created..")
     }
 }
 
