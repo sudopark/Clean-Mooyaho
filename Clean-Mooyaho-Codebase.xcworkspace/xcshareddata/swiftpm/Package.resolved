@@ -57,11 +57,11 @@
       },
       {
         "package": "SQLiteService",
-        "repositoryURL": "https://github.com/sudopark/SQLiteStorage.git",
+        "repositoryURL": "https://github.com/sudopark/SQLiteService.git",
         "state": {
           "branch": null,
-          "revision": "88d9a6a76bc0c49d2d46bdef30a9f7cf7d82ee9d",
-          "version": "0.1.3"
+          "revision": "f54964136d1405c1d8b1a122b38b3d79a191309b",
+          "version": "0.1.4"
         }
       },
       {
