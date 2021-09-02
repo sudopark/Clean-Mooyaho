@@ -111,13 +111,8 @@ extension HoorayReceiveUsecaseTests {
         let expect = expectation(description: "hooray 상세내용 조회시에 local에 저장된값이 있으면 이를 먼저 방출하고 이후 remote에서 방출")
         expect.expectedFulfillmentCount = 2
         
-        self.mockHoorayRepository.register(key: "fetchHoorayDetail") {
-            return Maybe<HoorayDetail?>.just(HoorayDetail.dummy(0))
-        }
-        
-        self.mockHoorayRepository.register(key: "requestLoadHoorayDetail") {
-            return Maybe<HoorayDetail>.just(HoorayDetail.dummy(0))
-        }
+        self.mockHoorayRepository.register(key: "fetchHoorayDetail") {  Maybe<HoorayDetail?>.just(HoorayDetail.dummy(0)) }
+        self.mockHoorayRepository.register(key: "requestLoadHoorayDetail") {  Maybe<HoorayDetail>.just(HoorayDetail.dummy(0)) }
         
         // when
         let loading = self.usecase.loadHoorayHoorayDetail("some")
@@ -131,13 +126,8 @@ extension HoorayReceiveUsecaseTests {
         // given
         let expect = expectation(description: "hooray 상세내용 조회시 로컬에 저장된 값이 없는경우 remote 조회결과만 반환")
         
-        self.mockHoorayRepository.register(key: "fetchHoorayDetail") {
-            return Maybe<HoorayDetail?>.just(nil)
-        }
-        
-        self.mockHoorayRepository.register(key: "requestLoadHoorayDetail") {
-            return Maybe<HoorayDetail>.just(HoorayDetail.dummy(0))
-        }
+        self.mockHoorayRepository.register(key: "fetchHoorayDetail") {  Maybe<HoorayDetail?>.just(nil) }
+        self.mockHoorayRepository.register(key: "requestLoadHoorayDetail") { Maybe<HoorayDetail>.just(HoorayDetail.dummy(0)) }
         
         // when
         let loading = self.usecase.loadHoorayHoorayDetail("some")
@@ -145,6 +135,36 @@ extension HoorayReceiveUsecaseTests {
         
         // then
         XCTAssertEqual(hoorays.count, 1)
+    }
+    
+    func testUsecase_whenLoadHoorayDetailAndLoadCacneFails_ignore() {
+        // given
+        let expect = expectation(description: "hooray 상세내용 조회시 로컬조회시 발생한 에러는 무시하고 remote 조회결과만 반환")
+        
+        self.mockHoorayRepository.register(key: "fetchHoorayDetail") {  Maybe<HoorayDetail?>.error(ApplicationErrors.invalid) }
+        self.mockHoorayRepository.register(key: "requestLoadHoorayDetail") { Maybe<HoorayDetail>.just(HoorayDetail.dummy(0)) }
+        
+        // when
+        let loading = self.usecase.loadHoorayHoorayDetail("some")
+        let hoorays = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(hoorays.count, 1)
+    }
+    
+    func testUsecase_whenLoadHoorayDetailFromRemoteFail_emitError() {
+        // given
+        let expect = expectation(description: "hooray 상세내용 조회시 remote 조회 실패하면 실패처리")
+        
+        self.mockHoorayRepository.register(key: "fetchHoorayDetail") { Maybe<HoorayDetail?>.just(HoorayDetail.dummy(0)) }
+        self.mockHoorayRepository.register(key: "requestLoadHoorayDetail") { Maybe<HoorayDetail>.error(ApplicationErrors.invalid) }
+        
+        // when
+        let loading = self.usecase.loadHoorayHoorayDetail("some")
+        let error = self.waitError(expect, for: loading)
+        
+        // then
+        XCTAssertNotNil(error)
     }
 }
 
