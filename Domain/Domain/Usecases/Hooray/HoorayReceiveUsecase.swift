@@ -76,10 +76,10 @@ extension HoorayReceiverUsecase where Self: HoorayReceiveUsecaseDefaultImpleDepe
     }
     
     public func loadHoorayHoorayDetail(_ id: String) -> Observable<HoorayDetail> {
-        let hoorayInLocal = self.hoorayRepository.fetchHoorayDetail(id)
-        let hoorayInRemote = self.hoorayRepository.requestLoadHoorayDetail(id).mapAsOptional()
-        return hoorayInLocal.asObservable()
-            .concat(hoorayInRemote.asObservable())
+        let hoorayInLocal = self.hoorayRepository.fetchHoorayDetail(id).asObservable()
+        let hoorayInRemote = self.hoorayRepository.requestLoadHoorayDetail(id).asObservable()
+        return hoorayInLocal.catchAndReturn(nil)
+            .concat(hoorayInRemote.mapAsOptional())
             .compactMap{ $0 }
     }
 }
