@@ -74,6 +74,8 @@ extension Hooray {
                       publisherID: "pub:\(int)",
                       hoorayKeyword: .default,
                       message: "hi",
+                      tags: ["t1"],
+                      image: .init(path: "path", size: nil),
                       location: .init(latt: 0, long: 0),
                       timestamp: 0,
                       spreadDistance: 100, aliveDuration: 100)
@@ -82,8 +84,10 @@ extension Hooray {
 
 extension HoorayDetail {
     
-    public static func dummy(_ int: Int) -> HoorayDetail {
-        return HoorayDetail(info: .dummy(int), acks: [], reactions: [])
+    public static func dummy(_ int: Int,
+                             acks: [HoorayAckInfo] = [],
+                             reactions: [HoorayReaction] = []) -> HoorayDetail {
+        return HoorayDetail(info: .dummy(int), acks: acks, reactions: reactions)
     }
 }
 

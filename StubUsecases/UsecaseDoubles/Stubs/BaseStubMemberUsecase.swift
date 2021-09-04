@@ -14,6 +14,23 @@ import Domain
 
 open class BaseStubMemberUsecase: MemberUsecase {
     
+    public struct Scenario {
+        
+        public var members: Result<[Member], Error> = {
+            let members = (0..<10).map{ Member(uid: "u:\($0)", nickName: "n:\($0)", icon: .emoji("☹️"))}
+            return .success(members)
+        }()
+        
+        public var currentMember: Member?
+        
+        public init() { }
+    }
+    
+    private let scenario: Scenario
+    public init(scenario: Scenario = Scenario()) {
+        self.scenario = scenario
+    }
+    
     open func fetchCurrentMember() -> Member? {
         return nil
     }
@@ -43,13 +60,13 @@ open class BaseStubMemberUsecase: MemberUsecase {
     }
     
     public var currentMember: Observable<Member?> {
-        return .empty()
+        return .just(self.scenario.currentMember)
     }
     
     public func members(for ids: [String]) -> Observable<[String : Member]> {
-        return .empty()
+        return self.scenario.members
+            .map{ $0.reduce(into: [String: Member]()) { $0[$1.uid] = $1 } }
+            .asMaybe()
+            .asObservable()
     }
-    
-    
-    
 }

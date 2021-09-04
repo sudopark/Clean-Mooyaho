@@ -58,6 +58,8 @@
 		F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215882674A7C0000CAB4B /* InputTextView.swift */; };
 		F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AC26755626000CAB4B /* ApplicationStatus.swift */; };
 		F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */; };
+		F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F667E28A26E1254E0046B9FB /* ReactionView.swift */; };
+		F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F667E28E26E1367D0046B9FB /* MemberInfo.swift */; };
 		F66B7D7126C5DD8C00D31FAC /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */; };
 		F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9312671062A0031EEC5 /* SearchBar.swift */; };
 		F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */; };
@@ -147,6 +149,8 @@
 		F65215882674A7C0000CAB4B /* InputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		F65215AC26755626000CAB4B /* ApplicationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatus.swift; sourceTree = "<group>"; };
 		F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollViwe+Extension.swift"; sourceTree = "<group>"; };
+		F667E28A26E1254E0046B9FB /* ReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionView.swift; sourceTree = "<group>"; };
+		F667E28E26E1367D0046B9FB /* MemberInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfo.swift; sourceTree = "<group>"; };
 		F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
 		F66CD9312671062A0031EEC5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagRouter.swift; sourceTree = "<group>"; };
@@ -282,6 +286,7 @@
 				F610146A26570B6F00D32E38 /* LeakDetector */,
 				F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */,
 				F62202BD269972FE00B26B50 /* MapCameramovement.swift */,
+				F667E28E26E1367D0046B9FB /* MemberInfo.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 				F645A6572690B52200E04D29 /* InfoSectionView.swift */,
 				F645A65D26934F5700E04D29 /* WordTokensView.swift */,
 				F645A66126936AA600E04D29 /* ConfrimButton.swift */,
+				F667E28A26E1254E0046B9FB /* ReactionView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -573,6 +579,7 @@
 				F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
+				F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */,
 				F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */,
 				F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */,
 				F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */,
@@ -581,6 +588,7 @@
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
+				F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */,
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
 				F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */,
 				F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */,

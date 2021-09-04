@@ -20,5 +20,5 @@ import CommonPresenting
 
 public protocol HoorayDetailSceneBuilable {
     
-    func makeHoorayDetailScene() -> HoorayDetailScene
+    func makeHoorayDetailScene(_ hoorayID: String) -> HoorayDetailScene
 }
