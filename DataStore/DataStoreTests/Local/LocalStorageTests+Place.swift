@@ -23,7 +23,7 @@ extension LocalStorageTests_Place {
     private var dummyPlaceForm: NewPlaceForm {
         return NewPlaceFormBuilder(base: .init(reporterID: "myID", infoProvider: .userDefine))
             .title("title")
-            .thumbnail(.path("path"))
+            .thumbnail(.init(path: "path", size: .init(100, 100)))
             .searchID("sid")
             .detailLink("https://www.dummy_detail.com")
             .coordinate(.init(latt: 100, long: 200))
@@ -48,7 +48,7 @@ extension LocalStorageTests_Place {
         
         // then
         XCTAssertEqual(form?.title, "title")
-        XCTAssertEqual(form?.thumbnail, .path("path"))
+        XCTAssertEqual(form?.thumbnail, .init(path: "path", size: .init(100, 100)))
         XCTAssertEqual(form?.searchID, "sid")
         XCTAssertEqual(form?.detailLink, "https://www.dummy_detail.com")
         XCTAssertEqual(form?.coordinate.latt, 100)
@@ -87,7 +87,8 @@ extension LocalStorageTests_Place {
         ]
         
         return Place(uid: "pid", title: "title",
-                     thumbnail: .path("path value"), externalSearchID: "ext_id",
+                     thumbnail: .init(path: "path value", size: .init(100, 100)),
+                     externalSearchID: "ext_id",
                      detailLink: "detailLink", coordinate: .init(latt: 100, long: 100),
                      address: "address", contact: "contact",
                      categoryTags: tags,

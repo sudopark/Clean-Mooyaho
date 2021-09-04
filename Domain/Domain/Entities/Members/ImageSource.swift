@@ -9,20 +9,27 @@
 import Foundation
 
 
-public enum ImageSource {
+// MARK: - ImageSource
+
+public struct ImageSize {
     
-    case path(_ path: String)
-    case reference(_ path: String, description: String?)
-    case emoji(_ rawValue: String)
+    public let width: Double
+    public let height: Double
     
-    public var sourcePath: String? {
-        switch self {
-        case let .path(value),
-             let .reference(value, _):
-            return value
-        default:
-            return nil
-        }
+    public init(_ width: Double, _ height: Double) {
+        self.width = width
+        self.height = height
+    }
+}
+
+public struct ImageSource {
+    
+    public let path: String
+    public let size: ImageSize?
+    
+    public init(path: String, size: ImageSize?) {
+        self.path = path
+        self.size = size
     }
 }
 
@@ -30,12 +37,7 @@ public enum ImageSource {
 extension ImageSource: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case let (.path(p1), .path(p2)): return p1 == p2
-        case let (.reference(p1, d1), .reference(p2, d2)): return p1 == p2 && d1 == d2
-        case let (.emoji(v1), .emoji(v2)): return v1 == v2
-        default: return false
-        }
+        return lhs.path == rhs.path
     }
 }
 
@@ -43,7 +45,32 @@ extension ImageSource: Equatable {
 // MARK: - ImageSource upload req params
 
 public enum ImageUploadReqParams {
-    case data(_ value: Data, extension: String)
-    case file(_ path: String, needCopyTemp: Bool)
+    case data(_ value: Data, extension: String, size: ImageSize)
+    case file(_ path: String, needCopyTemp: Bool, size: ImageSize)
     case emoji(_ value: String)
 }
+
+
+// MARK: - Thumbnail
+
+public enum Thumbnail {
+    
+    case imageSource(ImageSource)
+    case emoji(_ value: String)
+}
+
+extension Thumbnail: Equatable {
+    
+    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case let (.imageSource(s1), .imageSource(s2)): return s1 == s2
+        case let (.emoji(v1), .emoji(v2)): return v1 == v2
+        default: return false
+        }
+    }
+}
+
+// MARK: - MemberThubnail and ReactionIcon
+
+public typealias MemberThumbnail = Thumbnail
+public typealias ReactionIcon = Thumbnail

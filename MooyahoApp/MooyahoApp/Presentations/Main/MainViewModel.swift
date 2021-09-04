@@ -26,7 +26,7 @@ public protocol MainViewModel: AnyObject {
     func makeNewHooray()
     
     // presenter
-    var currentMemberProfileImage: Observable<ImageSource> { get }
+    var currentMemberProfileImage: Observable<Thumbnail> { get }
 }
 
 
@@ -142,7 +142,7 @@ extension MainViewModelImple {
 
 extension MainViewModelImple {
  
-    public var currentMemberProfileImage: Observable<ImageSource> {
+    public var currentMemberProfileImage: Observable<Thumbnail> {
         return self.memberUsecase.currentMember
             .compactMap{ $0?.icon }
             .startWith(Member.memberDefaultEmoji)

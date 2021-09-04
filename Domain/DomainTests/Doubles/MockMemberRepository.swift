@@ -42,7 +42,7 @@ class MockMemberRepository: MemberRepository, Mocking {
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
-                                          imageSource: ImageSource?) -> Maybe<Member> {
+                                          thumbnail: MemberThumbnail?) -> Maybe<Member> {
         return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
     }
     

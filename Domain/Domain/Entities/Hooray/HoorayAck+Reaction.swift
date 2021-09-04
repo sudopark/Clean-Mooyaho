@@ -45,13 +45,13 @@ public struct HoorayReaction {
     public let hoorayID: String
     public let reactionID: String
     public let reactMemberID: String
-    public let icon: ImageSource
+    public let icon: ReactionIcon
     public let reactAt: TimeStamp
     
     public init(hoorayID: String,
                 reactionID: String,
                 reactMemberID: String,
-                icon: ImageSource,
+                icon: ReactionIcon,
                 reactAt: TimeStamp) {
         self.hoorayID = hoorayID
         self.reactionID = reactionID

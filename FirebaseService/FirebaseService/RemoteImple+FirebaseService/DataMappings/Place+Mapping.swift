@@ -81,7 +81,7 @@ extension SearchingPlace: Decodable {
             throw RemoteErrors.mappingFail("SearchingPlace - address")
         }
         let thumbnail = try? container.decode(String.self, forKey: .thumbnail)
-        let imageSource = thumbnail.map{ ImageSource.reference($0, description: "naver")}
+        let imageSource = thumbnail.map{ ImageSource(path: $0, size: nil) }
         let link = try? container.decode(String.self, forKey: .link)
         
         self = .init(uid: uid, title: title,

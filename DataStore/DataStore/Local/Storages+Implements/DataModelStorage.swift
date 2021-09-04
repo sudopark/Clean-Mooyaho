@@ -97,19 +97,21 @@ extension DataModelStorageImple {
     public func fetchMembers(_ memberIDs: [String]) -> Maybe<[Member]> {
         
         let memberQuery = MemberTable.selectAll{ $0.uid.in(memberIDs) }
-        let imageQuery = ImageSourceTable.selectAll()
-        
+        let imageQuery = ThumbnailTable.selectAll()
         let joinQuery = memberQuery.outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
+        
         let mapping: (CursorIterator) throws -> (Member) = { cursor in
             let memberEntity = try MemberTable.Entity(cursor)
-            let iconEntity = try? ImageSourceTable.Entity(cursor)
+            let iconEntity = try? ThumbnailTable.Entity(cursor)
             var member = Member(uid: memberEntity.uid, nickName: memberEntity.nickName)
             member.introduction = memberEntity.introduction
-            member.icon = iconEntity?.source
+            member.icon = iconEntity?.thumbnail
             return member
         }
         
-        return self.sqliteService.rx.run{ try $0.load(joinQuery, mapping: mapping) }
+        return self.sqliteService.rx.run {
+            try $0.load(joinQuery, mapping: mapping)
+        }
     }
     
     public func save(member: Member) -> Maybe<Void> {
@@ -119,7 +121,7 @@ extension DataModelStorageImple {
     
     public func insertOrUpdateMembers(_ members: [Member]) -> Maybe<Void> {
         
-        let (memberTable, imageTable) = (MemberTable.self, ImageSourceTable.self)
+        let (memberTable, imageTable) = (MemberTable.self, ThumbnailTable.self)
         let memberEntities = members.map{ $0.asEntity() }
         let iconEntities = members.compactMap{ $0.iconEntity() }
         
@@ -142,11 +144,14 @@ extension DataModelStorageImple {
         }
         .where{ $0.uid == member.uid }
         
-        let images = ImageSourceTable.self
-        let updateIconQuery = images.update {
-            [$0.sourcetype.equal(member.icon?.type), $0.path.equal(member.icon?.path),
-             $0.description.equal(member.icon?.description), $0.emoji.equal(member.icon?.emoji) ]
-        }
+        let images = ThumbnailTable.self
+        let updateIconQuery = images.update { [
+            $0.isEmoji.equal(member.icon?.isEmoji),
+            $0.path.equal(member.icon?.source?.path),
+            $0.width.equal(member.icon?.source?.size?.width),
+            $0.height.equal(member.icon?.source?.size?.height),
+            $0.emoji.equal(member.icon?.emoji)
+        ] }
         .where{ $0.ownerID == member.uid }
         
         let updateMember = self.sqliteService.rx.run{ try $0.update(members, query: updateMemberQuery) }
@@ -173,7 +178,7 @@ extension DataModelStorageImple {
         let savePlace = self.sqliteService.rx.run{ try $0.insert(places, entities: [placeInfo]) }
         let thenSaveThumbnails: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            let imageModel = ImageSourceTable.Entity(place.reporterID, source: place.thumbnail)
+            let imageModel = ImageSourceTable.Entity(place.uid, source: place.thumbnail)
             return self.sqliteService.rx.run { try $0.insert(images, entities: [imageModel]) }
                 .catchAndReturn(())
         }
@@ -195,8 +200,8 @@ extension DataModelStorageImple {
         let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
         
         let placeQuery = places.selectAll{ $0.uid == placeID }
-        let imageQuery = images.selectSome{ [$0.sourcetype, $0.path, $0.description, $0.emoji] }
-        let joinQuery = placeQuery.outerJoin(with: imageQuery, on: { ($0.reporterID, $1.ownerID) })
+        let imageQuery = images.selectAll()
+        let joinQuery = placeQuery.outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
        
         let fetchPlaceInfo = self.sqliteService.rx
             .run{ try $0.loadOne(joinQuery, mapping: CursorIterator.makePlaceInfoAndThumbnail) }
@@ -299,8 +304,8 @@ extension DataModelStorageImple {
         
         let thenSaveIcons: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            let iconEntities: [ImageSourceTable.Entity] = reactions.map{ .init( $0.reactionID, source: $0.icon )}
-            return self.sqliteService.rx.run{ try $0.insert(ImageSourceTable.self, entities: iconEntities) }
+            let iconEntities: [ThumbnailTable.Entity] = reactions.map{ .init($0.reactionID, thumbnail: $0.icon) }
+            return self.sqliteService.rx.run{ try $0.insert(ThumbnailTable.self, entities: iconEntities) }
         }
         return saveReactions
             .flatMap(thenSaveIcons)
@@ -332,7 +337,7 @@ extension DataModelStorageImple {
     }
     
     private func fetchHoorayReactions(_ id: String) -> Maybe<[HoorayReaction]> {
-        let (reactions, images) = (HoorayReactionTable.self, ImageSourceTable.self)
+        let (reactions, images) = (HoorayReactionTable.self, ThumbnailTable.self)
         let reactionQuery = reactions.selectAll { $0.hoorayID == id }
         let iconsQuery = images.selectAll()
         let joinQuery = reactionQuery.outerJoin(with: iconsQuery, on: { ($0.reactionID, $1.ownerID) })
@@ -366,6 +371,7 @@ extension DataModelStorageImple {
         
         try? database.createTableOrNot(MemberTable.self)
         try? database.createTableOrNot(ImageSourceTable.self)
+        try? database.createTableOrNot(ThumbnailTable.self)
         try? database.createTableOrNot(PlaceInfoTable.self)
         try? database.createTableOrNot(TagTable.self)
         try? database.createTableOrNot(HoorayTable.self)
@@ -381,7 +387,7 @@ private extension CursorIterator {
     
     static func makePlaceInfoAndThumbnail(_ cursor: CursorIterator) throws -> (PlaceInfoTable.Entity, ImageSource?) {
         let placeInfo = try PlaceInfoTable.Entity(cursor)
-        let thumbnail = try? ImageSource(cursor)
+        let thumbnail = try? ImageSourceTable.Entity(cursor).source
         return (placeInfo, thumbnail)
     }
 }
@@ -398,26 +404,16 @@ private extension Place {
     }
 }
 
-extension Member: RowValueType {
-    
-    public init(_ cursor: CursorIterator) throws {
-        let uid: String = try cursor.next().unwrap()
-        let nickName: String = try cursor.next().unwrap()
-        let intro: String? = cursor.next()
-        let image: ImageSource? = try? ImageSource(cursor)
-        var member = Member(uid: uid, nickName: nickName, icon: image)
-        member.introduction = intro
-        self = member
-    }
+extension Member {
     
     func asEntity() -> MemberTable.Entity {
         return .init(self.uid, nickName: self.nickName, intro: self.introduction)
     }
     
-    func iconEntity() -> ImageSourceTable.Entity? {
+    func iconEntity() -> ThumbnailTable.Entity? {
         
         let ownerID = self.uid
-        return self.icon.map{ ImageSourceTable.Entity(ownerID, source: $0) }
+        return self.icon.map{ ThumbnailTable.Entity(ownerID, thumbnail: $0) }
     }
 }
 
@@ -448,7 +444,7 @@ private extension HoorayReaction {
     static func mapWithIcon(_ cusrosr: CursorIterator) throws -> HoorayReaction {
         
         let entity = try HoorayReactionTable.Entity(cusrosr)
-        guard let icon = try ImageSourceTable.Entity(cusrosr).source else {
+        guard let icon = try ThumbnailTable.Entity(cusrosr).thumbnail else {
             throw LocalErrors.deserializeFail(nil)
         }
         

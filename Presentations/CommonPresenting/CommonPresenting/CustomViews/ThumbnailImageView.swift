@@ -25,18 +25,18 @@ public class IntegratedImageView: UIView {
     }
     
     public func setupImage(using source: ImageSource, resize: CGSize? = nil) {
+        self.setupImage(using: .imageSource(source))
+    }
+    
+    public func setupImage(using thumbnail: Thumbnail, resize: CGSize? = nil) {
         self.cancelSetupImage()
         
-        switch source {
+        switch thumbnail {
         case let .emoji(value):
             self.drawEmoji(value, resize: resize)
             
-        case let .path(path):
-            self.setupRemoteImage(path, resize: resize)
-            
-        case let .reference(path, _):
-            self.setupRemoteImage(path, resize: resize)
-            // TOOD: show reference or not
+        case let .imageSource(source):
+            self.setupRemoteImage(source, resize: resize)
         }
     }
     
@@ -52,8 +52,8 @@ public class IntegratedImageView: UIView {
         self.internalImageView.image = value.drawText(size: size, fontSize: fontSize, scale: scale)
     }
     
-    private func setupRemoteImage(_ path: String, resize: CGSize? = nil) {
-        self.internalImageView.setupThumbnail(path, resize: resize)
+    private func setupRemoteImage(_ source: ImageSource, resize: CGSize? = nil) {
+        self.internalImageView.setupThumbnail(source, resize: resize)
     }
 }
 

@@ -34,7 +34,7 @@ extension NewPlaceFormBuilderTests {
     private func fullFilledBuilder() -> NewPlaceFormBuilder {
         return self.builder
             .title("title")
-            .thumbnail(.path("path"))
+            .thumbnail(ImageSource(path: "path", size: .init(100, 100)))
             .searchID("searchID")
             .detailLink("detail")
             .coordinate(.init(latt: 10, long: 10))
@@ -52,7 +52,7 @@ extension NewPlaceFormBuilderTests {
         XCTAssertEqual(form?.reporterID, "reporterID")
         XCTAssertEqual(form?.infoProvider, .userDefine)
         XCTAssertEqual(form?.title, "title")
-        XCTAssertEqual(form?.thumbnail, .path("path"))
+        XCTAssertEqual(form?.thumbnail, ImageSource(path: "path", size: .init(100, 100)))
         XCTAssertEqual(form?.searchID, "searchID")
         XCTAssertEqual(form?.detailLink, "detail")
         XCTAssertEqual(form?.coordinate, .init(latt: 10, long: 10))

@@ -67,8 +67,8 @@ extension HoorayReaction: DocumentMappable {
     init?(docuID: String, json: JSON) {
         guard let hoorayID = json[Key.uid] as? String,
               let memberID = json[Key.reactMemberID] as? String,
-              let sourceJSON = json[Key.icon] as? JSON,
-              let icon = ImageSource(json: sourceJSON),
+              let iconJSON = json[Key.icon] as? JSON,
+              let icon = Thumbnail(json: iconJSON),
               let reactAt = json[Key.reactAt] as? Double else { return nil }
         
         self.init(hoorayID: hoorayID,
@@ -171,8 +171,9 @@ extension NewHoorayForm: JSONMappable {
         json[Key.aliveDuration] = self.aliveTime
         json[Key.placeID] = self.placeID
         json[Key.tags] = self.tags
-        let imageSource = self.imagePath.map{ ImageSource.path($0) }
-        json[Key.image] = imageSource?.asJSON
+        if let path = self.imagePath, let size = self.imageSize {
+            json[Key.image] = ImageSource(path: path, size: size)
+        }
         return json
     }
 }
