@@ -92,10 +92,10 @@ extension RepositoryTests_Member {
         
         // when
         let requestUpload = self.repository
-            .requestUploadMemberProfileImage("some", source: .data(Data(), extension: "jpg"))
+            .requestUploadMemberProfileImage("some", source: .data(Data(), extension: "jpg", size: .init(100, 100)))
         let status = self.waitElements(expect, for: requestUpload) {
             self.mockRemote.uploadMemberProfileImageStatus.onNext(.uploading(0.5))
-            self.mockRemote.uploadMemberProfileImageStatus.onNext(.completed(.path("some")))
+            self.mockRemote.uploadMemberProfileImageStatus.onNext(.completed(.imageSource(.init(path: "some", size: .init(100, 100)))))
         }
         
         // then
@@ -123,7 +123,7 @@ extension RepositoryTests_Member {
         
         // when
         let requestUpdate = self.repository
-            .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], imageSource: nil)
+            .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], thumbnail: nil)
         let member = self.waitFirstElement(expect, for: requestUpdate.asObservable())
         
         // then
@@ -144,7 +144,7 @@ extension RepositoryTests_Member {
         
         // when
         self.repository
-            .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], imageSource: .emoji("✊"))
+            .requestUpdateMemberProfileFields("some", fields: [.nickName("some")], thumbnail: .emoji("✊"))
             .subscribe()
             .disposed(by: self.disposeBag)
         

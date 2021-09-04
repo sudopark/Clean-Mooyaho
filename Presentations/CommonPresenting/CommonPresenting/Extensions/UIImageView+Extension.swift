@@ -9,6 +9,8 @@ import UIKit
 
 import Kingfisher
 
+import Domain
+
 
 extension UIImageView {
     
@@ -18,11 +20,22 @@ extension UIImageView {
         return CGSize(width: size.width * scale, height: size.height * scale)
     }
     
-    public func setupThumbnail(_ source: String,
+    public func setupThumbnail(_ path: String,
                                resize: CGSize? = nil,
                                progress: ((Int64, Int64) -> Void)? = nil,
                                completed: ((Result<UIImage, Error>) -> Void)? = nil) {
-        guard let url = URL(string: source) else {
+        
+        self.setupThumbnail(.init(path: path, size: nil),
+                            resize: resize,
+                            progress: progress,
+                            completed: completed)
+    }
+    
+    public func setupThumbnail(_ source: ImageSource,
+                               resize: CGSize? = nil,
+                               progress: ((Int64, Int64) -> Void)? = nil,
+                               completed: ((Result<UIImage, Error>) -> Void)? = nil) {
+        guard let url = URL(string: source.path) else {
             self.cancelSetupThumbnail()
             return
         }

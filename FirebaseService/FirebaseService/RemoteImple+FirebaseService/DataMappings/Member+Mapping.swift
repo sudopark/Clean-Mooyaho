@@ -16,9 +16,8 @@ import DataStore
 
 enum ImageSourceMappingKey: String, JSONMappingKeys {
     case path
-    case reference = "ref"
-    case descirption = "desc"
-    case emoji
+    case width = "w"
+    case height = "h"
 }
 
 extension ImageSource: JSONMappable {
@@ -26,36 +25,53 @@ extension ImageSource: JSONMappable {
     fileprivate typealias Key = ImageSourceMappingKey
     
     init?(json: JSON) {
-        if let pathValue = json[Key.path] as? String {
-            self = .path(pathValue)
-            
-        } else if let referenceJson = json[Key.reference] as? [String: Any],
-                  let pathValue = referenceJson[Key.path] as? String {
-            let description = referenceJson[Key.descirption] as? String
-            self = .reference(pathValue, description: description)
-            
-        } else if let emoji = json[Key.emoji] as? String {
-            self = .emoji(emoji)
-            
-        }  else {
-            return nil
+        guard let path = json[Key.path] as? String else { return nil }
+        if let width = json[Key.width] as? Double,
+           let height = json[Key.height] as? Double {
+            self.init(path: path, size: .init(width, height))
+        } else {
+            self.init(path: path, size: nil)
         }
     }
     
     func asJSON() -> JSON {
-        switch self {
-        case let .path(value):
-            return [Key.path.rawValue: value]
-            
-        case let .reference(value, description):
-            return [Key.reference.rawValue: [Key.path.rawValue: value, Key.descirption.rawValue: description]]
-            
-        case let .emoji(value):
-            return [Key.emoji.rawValue: value]
-        }
+        var json = JSON()
+        json[Key.path] = self.path
+        json[Key.width] = self.size?.width
+        json[Key.height] = self.size?.height
+        return json
     }
 }
 
+
+enum ThumbnailMappingKey: String, JSONMappingKeys {
+    case source
+    case emoji
+}
+
+extension Thumbnail: JSONMappable {
+    
+    private typealias Key = ThumbnailMappingKey
+    
+    init?(json: JSON) {
+        if let emoji = json[Key.emoji] as? String {
+            self = .emoji(emoji)
+        } else if let sourceJson = json[Key.source] as? JSON,
+                  let source = ImageSource(json: sourceJson) {
+            self = .imageSource(source)
+        }
+        return nil
+    }
+    
+    func asJSON() -> JSON {
+        switch self {
+        case let .emoji(value):
+            return [Key.emoji.rawValue: value]
+        case let .imageSource(source):
+            return [Key.source.rawValue: source.asJSON()]
+        }
+    }
+}
 
 // MARK: - map memebr
 
@@ -72,7 +88,7 @@ extension Member: DocumentMappable {
     init?(docuID: String, json: JSON) {
         self.init(uid: docuID)
         self.nickName = json[Key.nicknanme] as? String
-        self.icon = (json[Key.icon] as? JSON).flatMap(ImageSource.init(json:))
+        self.icon = (json[Key.icon] as? JSON).flatMap(Thumbnail.init(json:))
         self.introduction = json[Key.introduction] as? String
     }
     

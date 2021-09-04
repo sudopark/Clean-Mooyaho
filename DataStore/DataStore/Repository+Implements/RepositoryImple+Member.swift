@@ -46,16 +46,16 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
         case let .emoji(value):
             return .just(.completed(.emoji(value)))
             
-        case let .data(data, ext):
-            return self.memberRemote.requestUploadMemberProfileImage(memberID, data: data, ext: ext)
+        case let .data(data, ext, size):
+            return self.memberRemote.requestUploadMemberProfileImage(memberID, data: data, ext: ext, size: size)
             
-        case let .file(path, needCopyTemp): return .empty()
+        case let .file(path, needCopyTemp, _): return .empty()
         }
     }
     
     public func requestUpdateMemberProfileFields(_ memberID: String,
                                                  fields: [MemberUpdateField],
-                                                 imageSource: ImageSource?) -> Maybe<Member> {
+                                                 thumbnail: MemberThumbnail?) -> Maybe<Member> {
         
         let thenUpdateLocal: (Member) -> Void = { [weak self] member in
             guard let self = self else { return }
@@ -65,7 +65,7 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
         }
         
         return self.memberRemote
-            .requestUpdateMemberProfileFields(memberID, fields: fields, imageSource: imageSource)
+            .requestUpdateMemberProfileFields(memberID, fields: fields, thumbnail: thumbnail)
             .do(onNext: thenUpdateLocal)
     }
     

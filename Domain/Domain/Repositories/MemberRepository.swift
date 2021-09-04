@@ -13,7 +13,7 @@ import RxSwift
 
 public enum MemberProfileUploadStatus {
     case uploading(_ percent: Float)
-    case completed(_ source: ImageSource?)
+    case completed(_ source: MemberThumbnail?)
 }
 
 public protocol MemberRepository: AnyObject {
@@ -29,7 +29,7 @@ public protocol MemberRepository: AnyObject {
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
-                                          imageSource: ImageSource?) -> Maybe<Member>
+                                          thumbnail: MemberThumbnail?) -> Maybe<Member>
     
     func fetchMembers(_ ids: [String]) -> Maybe<[Member]>
     

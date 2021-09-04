@@ -29,7 +29,7 @@ public struct HoorayMarker {
     let timeLabel: String
     let removeAt: TimeInterval
     let message: String
-    let image: ImageSource?
+    let image: Thumbnail?
     let coordinate: Coordinate
     let spreadDistance: Meters
     let aliveDuration: TimeInterval
@@ -48,7 +48,7 @@ public protocol NearbyViewModel: AnyObject {
     var alertUnavailToUseService: Observable<Void> { get }
     var newHooray: Observable<HoorayMarker> { get }
     var recentNearbyHoorays: Observable<[HoorayMarker]> { get }
-    func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<ImageSource>
+    func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<Thumbnail>
     var toggleShowHoorayDetail: Observable<(Bool, String)> { get }
 }
 
@@ -200,17 +200,17 @@ extension NearbyViewModelImple {
             .map{ $0.map{ $0.asMarker(isNew: false, withFocus: false) } }
     }
     
-    public func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<ImageSource> {
+    public func hoorayMarkerImage(_ marker: HoorayMarker) -> Observable<Thumbnail> {
 
-        let hoorayImage: Observable<ImageSource?> = .just(marker.image)
+        let hoorayImage: Observable<Thumbnail?> = .just(marker.image)
         
-        let orUsePublisherIconIfExists: (ImageSource?) -> Observable<ImageSource?>
+        let orUsePublisherIconIfExists: (Thumbnail?) -> Observable<Thumbnail?>
         orUsePublisherIconIfExists = { [weak self] hoorayImage in
             guard let self = self else { return .empty() }
             return hoorayImage.map{ .just($0)} ?? self.memberUsecase.memberIcon(marker.publisherID)
         }
         
-        let orUseDefaultImageBothNotExist: (ImageSource?) -> ImageSource = { $0 ?? Hooray.defaultMarkerIcon }
+        let orUseDefaultImageBothNotExist: (Thumbnail?) -> Thumbnail = { $0 ?? Hooray.defaultMarkerIcon }
         
         return hoorayImage
             .flatMap(orUsePublisherIconIfExists)
@@ -232,14 +232,14 @@ private extension Hooray {
                                   timeLabel: timeAgo,
                                   removeAt: self.timeStamp + self.aliveDuration,
                                   message: self.message,
-                                  image: self.image,
+                                  image: self.image.map{ .imageSource($0) },
                                   coordinate: self.location,
                                   spreadDistance: self.spreadDistance,
                                   aliveDuration: self.aliveDuration)
         return marker |> \.withFocusAnimation .~ withFocus
     }
     
-    static var defaultMarkerIcon: ImageSource {
+    static var defaultMarkerIcon: Thumbnail {
         return .emoji("🤪")
     }
 }
@@ -262,7 +262,7 @@ private extension HoorayUsecase {
 
 private extension MemberUsecase {
     
-    func memberIcon(_ uid: String) -> Observable<ImageSource?> {
+    func memberIcon(_ uid: String) -> Observable<Thumbnail?> {
         return self.members(for: [uid])
             .map{ $0[uid] }
             .map{ $0?.icon }

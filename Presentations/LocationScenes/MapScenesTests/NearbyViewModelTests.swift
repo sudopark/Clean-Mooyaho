@@ -313,7 +313,7 @@ extension HoorayNearbyViewModelTests {
     func testViewModel_provideHoorayMarkerImageInfo() {
         // given
         let expect = expectation(description: "후레이 마커이미지 정보 제공")
-        let hoorayWithImage = Hooray.dummy(0) |> \.image .~ .path("some")
+        let hoorayWithImage = Hooray.dummy(0) |> \.image .~ .init(path: "some", size: .init(0, 0))
         let hoorayWithOutImage = Hooray.dummy(1) |> \.image .~ nil
         let hoorayWithoutImageAndProfileIcon = Hooray.dummy(2) |> \.image .~ nil
         self.viewModel = self.makeViewModel(recentNearbyHoorays: [
@@ -337,7 +337,7 @@ extension HoorayNearbyViewModelTests {
         }
         
         // then
-        XCTAssertEqual(images?.0, .path("some"))
+        XCTAssertEqual(images?.0, .imageSource(.init(path: "some", size: .init(0, 0))))
         XCTAssertEqual(images?.1, .emoji("🎒"))
         XCTAssertEqual(images?.2, .emoji("🤪"))
     }
@@ -374,7 +374,7 @@ private extension Hooray {
     func asMarker() -> HoorayMarker {
         return .init(isNew: false, hoorayID: self.uid, publisherID: self.publisherID,
                      hoorayKeyword: self.hoorayKeyword, timeLabel: "\(self.timeStamp)",
-                     removeAt: self.timeStamp + 10, message: self.message, image: self.image,
+                     removeAt: self.timeStamp + 10, message: self.message, image: self.image.map{ .imageSource($0) },
                      coordinate: self.location, spreadDistance: self.spreadDistance, aliveDuration: self.aliveDuration)
     }
 }

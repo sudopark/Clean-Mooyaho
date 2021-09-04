@@ -184,7 +184,7 @@ extension EditProfileViewModelTests {
         
         // when
         let isSavings = self.waitElements(expect, for: self.viewModel.isSaveChanges) {
-            self.viewModel.selectMemoji(Data())
+            self.viewModel.selectMemoji(Data(), size: .init(10, 10))
             self.viewModel.saveChanges()
             self.mockMemberUsecase.updateStatus.onNext(.pending)
             self.mockMemberUsecase.updateStatus.onNext(.updating(0.1))
@@ -231,7 +231,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel.selectMemoji(Data())
+        self.viewModel.selectMemoji(Data(), size: .init(10, 10))
         self.viewModel.saveChanges()
         self.mockMemberUsecase.updateStatus.onNext(.finishedWithImageUploadFail(ApplicationErrors.invalid))
         
@@ -250,7 +250,7 @@ extension EditProfileViewModelTests {
         }
         
         // when
-        self.viewModel.selectMemoji(Data())
+        self.viewModel.selectMemoji(Data(), size: .init(10, 10))
         self.viewModel.saveChanges()
         self.mockMemberUsecase.updateStatus.onError(ApplicationErrors.invalid)
         

@@ -58,7 +58,7 @@ final class HoorayMarkerAnnotationView: MKAnnotationView, AnnotationView, Presen
     
     func setup(for annotation: HoorayMarkerAnnotation) { }
 
-    func bindMarkerIcon(_ source: Observable<ImageSource>) {
+    func bindMarkerIcon(_ source: Observable<Thumbnail>) {
         
         source
             .distinctUntilChanged()
