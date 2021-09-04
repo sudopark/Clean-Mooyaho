@@ -24,14 +24,14 @@ public enum EditProfileCellType: String {
 public protocol EditProfileViewModel: AnyObject {
 
     // interactor
-    func selectMemoji(_ data: Data)
+    func selectMemoji(_ data: Data, size: ImageSize)
     func selectEmoji(_ emoji: String)
     func inputTextChanges(type: EditProfileCellType, to newValue: String?)
     func saveChanges()
     func requestCloseScene()
     
     // presenter
-    var profileImageSource: Observable<ImageSource?> { get }
+    var profileImageSource: Observable<Thumbnail?> { get }
     var cellTypes: Observable<[EditProfileCellType]> { get }
     func previousInputValue(for cellType: EditProfileCellType) -> String?
     var isSavable: Observable<Bool> { get }
@@ -45,7 +45,7 @@ public protocol EditProfileViewModel: AnyObject {
 public final class EditProfileViewModelImple: EditProfileViewModel {
     
     enum PendinImageSource {
-        case memoji(_ data: Data)
+        case memoji(_ data: Data, size: ImageSize)
         case emoji(_ text: String)
     }
     
@@ -81,8 +81,8 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
 
 extension EditProfileViewModelImple {
     
-    public func selectMemoji(_ data: Data) {
-        self.subjects.pendingImageSource.accept(.memoji(data))
+    public func selectMemoji(_ data: Data, size: ImageSize) {
+        self.subjects.pendingImageSource.accept(.memoji(data, size: size))
     }
     
     public func selectEmoji(_ emoji: String) {
@@ -158,7 +158,7 @@ extension EditProfileViewModelImple {
 
 extension EditProfileViewModelImple {
     
-    public var profileImageSource: Observable<ImageSource?> {
+    public var profileImageSource: Observable<Thumbnail?> {
         return self.subjects.currentMember
             .map{ $0?.icon ?? Member.memberDefaultEmoji }
             .distinctUntilChanged()
@@ -255,7 +255,7 @@ private extension EditProfileViewModelImple.PendinImageSource {
     func asImageUploadReqParams() -> ImageUploadReqParams {
         switch self {
         case let .emoji(text): return .emoji(text)
-        case let .memoji(data): return .data(data, extension: "png")
+        case let .memoji(data, size): return .data(data, extension: "png", size: size)
         }
     }
 }

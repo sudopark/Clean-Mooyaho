@@ -47,13 +47,14 @@ class MockRemote: Remote, Mocking {
     
     let uploadMemberProfileImageStatus = PublishSubject<MemberProfileUploadStatus>()
     func requestUploadMemberProfileImage(_ memberID: String,
-                                         data: Data, ext: String) -> Observable<MemberProfileUploadStatus> {
+                                         data: Data, ext: String,
+                                         size: ImageSize) -> Observable<MemberProfileUploadStatus> {
         return self.uploadMemberProfileImageStatus.asObservable()
     }
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
-                                          imageSource: ImageSource?) -> Maybe<Member> {
+                                          thumbnail: MemberThumbnail?) -> Maybe<Member> {
         return self.resolve(key: "requestUpdateMemberProfileFields") ?? .empty()
     }
     

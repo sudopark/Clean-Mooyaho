@@ -15,19 +15,19 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
+    func requestUploadMemberProfileImage(_ memberID: String, data: Data, ext: String, size: ImageSize) -> Observable<MemberProfileUploadStatus> {
+        return .empty()
+    }
+    
+    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], thumbnail: MemberThumbnail?) -> Maybe<Member> {
+        return .empty()
+    }
+    
     func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
         return .empty()
     }
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray?> {
-        return .empty()
-    }
-    
-    func requestUploadMemberProfileImage(_ memberID: String, data: Data, ext: String) -> Observable<MemberProfileUploadStatus> {
-        return .empty()
-    }
-    
-    func requestUpdateMemberProfileFields(_ memberID: String, fields: [MemberUpdateField], imageSource: ImageSource?) -> Maybe<Member> {
         return .empty()
     }
     

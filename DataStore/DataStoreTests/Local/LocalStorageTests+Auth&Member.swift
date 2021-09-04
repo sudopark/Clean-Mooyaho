@@ -25,7 +25,7 @@ class LocalStorageTests_AuthAndMember: BaseLocalStorageTests {
     private func dummyMember(for uid: String) -> Member {
         var member = Member(uid: uid,
                             nickName: "dummy_nickname",
-                            icon: .path("image_path"))
+                            icon: .imageSource(.init(path: "image_path", size: .init(0, 0))))
         member.introduction = "hello world"
         return member
     }
@@ -67,7 +67,7 @@ extension LocalStorageTests_AuthAndMember {
         
         // when
         let saveOldMember = self.local.saveMember(oldMember)
-        let updateMember = self.local.updateCurrentMember(newMember)
+        let updateMember = self.local.updateCurrentMember(newMember).delay(.milliseconds(100), scheduler: MainScheduler.instance)
         let updateAndLoad = saveOldMember.flatMap{ _ in updateMember }.flatMap{ _ in self.local.fetchMember(for: self.currentMemberID) }
         let loadedMember = self.waitFirstElement(expect, for: updateAndLoad.asObservable())
         
@@ -83,7 +83,7 @@ extension LocalStorageTests_AuthAndMember {
         let expect = expectation(description: "멤버정보 복수로 저장하고 로드")
         
         let members = (0..<10).map{ int -> Member in
-            let icon: ImageSource? = int % 2 == 0 ? .emoji("👻") : nil
+            let icon: MemberThumbnail? = int % 2 == 0 ? .emoji("👻") : nil
             return Member(uid: "uid:\(int)", nickName: "nick:\(int)", icon: icon)
         }
         

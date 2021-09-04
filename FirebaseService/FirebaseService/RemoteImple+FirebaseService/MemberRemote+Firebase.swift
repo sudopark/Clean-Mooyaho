@@ -41,17 +41,18 @@ extension FirebaseServiceImple {
     }
     
     public func requestUploadMemberProfileImage(_ memberID: String,
-                                                data: Data, ext: String) -> Observable<MemberProfileUploadStatus> {
+                                                data: Data, ext: String,
+                                                size: ImageSize) -> Observable<MemberProfileUploadStatus> {
         
         let fileName = "\(memberID).\(ext)"
         let fileRef = self.storage.ref(for: .images(.memberPfoile(fileName)))
         return fileRef.uploadData(data)
-            .map{ $0.asMemberProfileUploadStatus() }
+            .map{ $0.asMemberProfileUploadStatus(size) }
     }
     
     public func requestUpdateMemberProfileFields(_ memberID: String,
                                                  fields: [MemberUpdateField],
-                                                 imageSource: ImageSource?) -> Maybe<Member> {
+                                                 thumbnail: MemberThumbnail?) -> Maybe<Member> {
         typealias Key = MemberMappingKey
         var updating: JSON = fields.reduce(into: [:]) { dict, field in
             switch field {
@@ -64,7 +65,7 @@ extension FirebaseServiceImple {
             default: break
             }
         }
-        updating[Key.icon] = imageSource?.asJSON()
+        updating[Key.icon] = thumbnail?.asJSON()
         
         let thenLoadMember: () -> Maybe<Member> = { [weak self] in
             guard let self = self else { return .empty() }
@@ -93,11 +94,13 @@ extension FirebaseServiceImple {
 
 private extension FirebaseFileUploadEvents {
     
-    func asMemberProfileUploadStatus() -> MemberProfileUploadStatus {
+    func asMemberProfileUploadStatus(_ imageSize: ImageSize) -> MemberProfileUploadStatus {
         
         switch self {
         case let .uploading(percent): return .uploading(Float(percent))
-        case let .completed(url): return .completed(.path(url.path))
+        case let .completed(url):
+            let source = ImageSource(path: url.path, size: imageSize)
+            return .completed(.imageSource(source))
         }
     }
 }

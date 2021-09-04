@@ -94,7 +94,7 @@ extension MemberUsecaseImple {
     
     private func finishUpdateMember(_ memberID: String,
                                     fields: [MemberUpdateField],
-                                    imageSource: ImageSource? = nil,
+                                    thumbnail: MemberThumbnail? = nil,
                                     imageUploadFail: Error? = nil) -> Observable<UpdateMemberProfileStatus> {
         
         let shareUpdatedMember: (Member) -> Void = { [weak self] member in
@@ -107,7 +107,7 @@ extension MemberUsecaseImple {
         }
         
         return self.memberRepository
-            .requestUpdateMemberProfileFields(memberID, fields: fields, imageSource: imageSource)
+            .requestUpdateMemberProfileFields(memberID, fields: fields, thumbnail: thumbnail)
             .do(onNext: shareUpdatedMember)
             .asObservable()
             .map { _ in
@@ -141,8 +141,8 @@ extension MemberUsecaseImple {
             switch uploadStatus {
             case let .uploading(percent):
                 return .just(.updating(percent))
-            case let .completed(source):
-                return self.finishUpdateMember(memberID, fields: updateFields, imageSource: source)
+            case let .completed(thumbnail):
+                return self.finishUpdateMember(memberID, fields: updateFields, thumbnail: thumbnail)
             }
         }
         
@@ -244,10 +244,5 @@ private extension MemberProfileUploadStatus {
     var uploadingPercent: Float? {
         guard case let .uploading(percent) = self else { return nil }
         return percent
-    }
-    
-    var completedSource: ImageSource? {
-        guard case let .completed(source) = self else { return nil }
-        return source
     }
 }

@@ -16,9 +16,9 @@ public struct Member {
     public var nickName: String?
     public var introduction: String?
     
-    public var icon: ImageSource?
+    public var icon: MemberThumbnail?
     
-    public init(uid: String, nickName: String? = nil, icon: ImageSource? = nil) {
+    public init(uid: String, nickName: String? = nil, icon: MemberThumbnail? = nil) {
         self.uid = uid
         self.nickName = nickName
         self.icon = icon
@@ -32,7 +32,7 @@ extension Member {
         return self.nickName?.isNotEmpty == true
     }
     
-    public static var memberDefaultEmoji: ImageSource {
+    public static var memberDefaultEmoji: MemberThumbnail {
         return .emoji("👻")
     }
 }

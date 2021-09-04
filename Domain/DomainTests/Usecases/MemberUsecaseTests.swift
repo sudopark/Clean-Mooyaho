@@ -188,11 +188,12 @@ extension MemberUsecaseTests {
         
         // when
         let intro = MemberUpdateField.introduction("new")
-        let image = ImageUploadReqParams.data(Data(), extension: "jpg")
+        let image = ImageUploadReqParams.data(Data(), extension: "jpg", size: .init(100, 100))
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let status = self.waitElements(expect, for: requestUpload) {
             self.mockRepository.uploadStatus.onNext(.uploading(0.5))
-            self.mockRepository.uploadStatus.onNext(.completed(.path("some")))
+            let thumb = MemberThumbnail.imageSource(.init(path: "some", size: .init(100, 100)))
+            self.mockRepository.uploadStatus.onNext(.completed(thumb))
             self.mockRepository.uploadStatus.onCompleted()
         }
         
@@ -211,11 +212,12 @@ extension MemberUsecaseTests {
         
         // when
         let intro = MemberUpdateField.introduction("new")
-        let image = ImageUploadReqParams.data(Data(), extension: "jpg")
+        let image = ImageUploadReqParams.data(Data(), extension: "jpg", size: .init(100, 100))
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let error = self.waitError(expect, for: requestUpload) {
             self.mockRepository.uploadStatus.onNext(.uploading(0.5))
-            self.mockRepository.uploadStatus.onNext(.completed(.path("some")))
+            let thumb = MemberThumbnail.imageSource(.init(path: "some", size: .init(100, 100)))
+            self.mockRepository.uploadStatus.onNext(.completed(thumb))
             self.mockRepository.uploadStatus.onCompleted()
         }
         
@@ -235,7 +237,7 @@ extension MemberUsecaseTests {
         
         // when
         let intro = MemberUpdateField.introduction("new")
-        let image = ImageUploadReqParams.data(Data(), extension: "jpg")
+        let image = ImageUploadReqParams.data(Data(), extension: "jpg", size: .init(100, 100))
         let requestUpload = self.usecase.updateCurrent(memberID: "some", updateFields: [intro], with: image)
         let status = self.waitElements(expect, for: requestUpload) {
             self.mockRepository.uploadStatus.onNext(.uploading(0.5))

@@ -24,7 +24,7 @@ extension LocalStorageTests_Hooray {
     private func dummyHooray(_ int: Int) -> Hooray {
         
         return Hooray(uid: "hid:\(int)", placeID: "pid", publisherID: "pub_id", hoorayKeyword: .default,
-                      message: "msg", tags: ["t1", "t2"], image: .path("path"),
+                      message: "msg", tags: ["t1", "t2"], image: .init(path: "path", size: .init(0, 0)),
                       location: .init(latt: 100, long: 300.2), timestamp: TimeInterval(int) + 100,
                       spreadDistance: 100.2, aliveDuration: 200.3)
     }
@@ -65,7 +65,7 @@ extension LocalStorageTests_Hooray {
         XCTAssertEqual(loadedHoorays?.first?.hoorayKeyword.text, Hooray.Keyword.default.text)
         XCTAssertEqual(loadedHoorays?.first?.message, "msg")
         XCTAssertEqual(loadedHoorays?.first?.tags, ["t1", "t2"])
-        XCTAssertEqual(loadedHoorays?.first?.image, .path("path"))
+        XCTAssertEqual(loadedHoorays?.first?.image, .init(path: "path", size: .init(0, 0)))
         XCTAssertEqual(loadedHoorays?.first?.location, .init(latt: 100, long: 300.2))
         XCTAssertEqual(loadedHoorays?.first?.timeStamp, 100)
         XCTAssertEqual(loadedHoorays?.first?.spreadDistance, 100.2)
@@ -76,7 +76,7 @@ extension LocalStorageTests_Hooray {
         let hooray = self.dummyHooray(int)
         let acks = (0..<10).map{ HoorayAckInfo(hoorayID: hooray.uid, ackUserID: "u:\($0)", ackAt: 100) }
         let reactions = (0..<10).map{ HoorayReaction(hoorayID: hooray.uid, reactionID: "r:\(hooray.uid)-\($0))",
-                                                     reactMemberID: "r\($0)", icon: .path("some"),
+                                                     reactMemberID: "r\($0)", icon: .emoji("😨"),
                                                      reactAt: 100) }
         return HoorayDetail(info: hooray, acks: acks, reactions: reactions)
     }

@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+import Domain
 import CommonPresenting
 
 
@@ -170,8 +171,9 @@ private extension EditProfileViewController {
         self.editView.profileHeaderView.emojiInput.newInputMemoji
             .subscribe(onNext: { [weak self] image in
                 guard let data = image.pngData() else { return }
+                let size = ImageSize(Double(image.size.width), Double(image.size.height))
                 self?.editView.profileHeaderView.imageView.drawImage(image)
-                self?.viewModel.selectMemoji(data)
+                self?.viewModel.selectMemoji(data, size: size)
             })
             .disposed(by: self.disposeBag)
         

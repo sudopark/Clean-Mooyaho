@@ -65,11 +65,12 @@ public protocol MemberRemote {
     func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
     
     func requestUploadMemberProfileImage(_ memberID: String,
-                                         data: Data, ext: String) -> Observable<MemberProfileUploadStatus>
+                                         data: Data, ext: String,
+                                         size: ImageSize) -> Observable<MemberProfileUploadStatus>
     
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
-                                          imageSource: ImageSource?) -> Maybe<Member>
+                                          thumbnail: MemberThumbnail?) -> Maybe<Member>
     
     func requestLoadMember(_ ids: [String]) -> Maybe<[Member]>
 }
