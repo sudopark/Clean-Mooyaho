@@ -33,7 +33,7 @@
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
 		F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202BD269972FE00B26B50 /* MapCameramovement.swift */; };
 		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
-		F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* IntegratedImageView.swift */; };
+		F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* ThumbnailImageView.swift */; };
 		F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */; };
 		F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F637205A26650ECC0089D0B3 /* Kingfisher */; };
 		F637205D266511570089D0B3 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205C266511570089D0B3 /* String+Extension.swift */; };
@@ -123,7 +123,7 @@
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		F62202BD269972FE00B26B50 /* MapCameramovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCameramovement.swift; sourceTree = "<group>"; };
 		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
-		F637205526650B440089D0B3 /* IntegratedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedImageView.swift; sourceTree = "<group>"; };
+		F637205526650B440089D0B3 /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
 		F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		F637205C266511570089D0B3 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
@@ -359,7 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
-				F637205526650B440089D0B3 /* IntegratedImageView.swift */,
+				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
 				F6502DC7266A0CC40027800F /* TextTagInputField.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
 				F6502DEA266CB6F80027800F /* LoadingButton.swift */,
@@ -567,7 +567,7 @@
 				F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */,
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
-				F637205626650B440089D0B3 /* IntegratedImageView.swift in Sources */,
+				F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */,
 				F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */,
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
 				F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */,

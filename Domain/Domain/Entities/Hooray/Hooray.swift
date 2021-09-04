@@ -83,6 +83,7 @@ public final class NewHoorayForm {
     public var message: String!
     public var tags: [String] = []
     public var imagePath: String?
+    public var imageSize: ImageSize?
     
     public var location: Coordinate!
     public var timeStamp: TimeStamp!
@@ -105,7 +106,9 @@ extension NewHoorayFormBuilder {
                   form.message?.isNotEmpty == true,
                   form.location != nil,
                   form.timeStamp != nil else { return false }
-            return true
+            
+            let assertImage = form.imagePath != nil ? form.imageSize != nil : true
+            return assertImage
         }
         return self.build(with: asserting)
     }

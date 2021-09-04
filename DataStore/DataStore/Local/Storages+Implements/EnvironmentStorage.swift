@@ -156,45 +156,27 @@ extension PlaceCategoryTag: Codable {
 extension ImageSource: Codable {
     
     private enum CodingKeys: String, CodingKey {
-        case type
         case path
-        case description
-        case emoji
+        case width
+        case height
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(String.self, forKey: .type)
-        switch type {
-        case "path":
-            self = .path(try container.decode(String.self, forKey: .path))
-            
-        case "ref":
-            self = .reference(try container.decode(String.self, forKey: .path),
-                              description: try? container.decode(String.self, forKey: .description))
-        case "emoji":
-            self = .emoji(try container.decode(String.self, forKey: .emoji))
-            
-        default: throw LocalErrors.deserializeFail("ImageSource")
+        let path: String = try container.decode(String.self, forKey: .path)
+        if let width = try? container.decode(Double.self, forKey: .width),
+           let height = try? container.decode(Double.self, forKey: .height) {
+            self.init(path: path, size: .init(width, height))
+        } else {
+            self.init(path: path, size: nil)
         }
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case let .path(value):
-            try container.encode("path", forKey: .type)
-            try container.encode(value, forKey: .path)
-            
-        case let .reference(value, description):
-            try container.encode("ref", forKey: .type)
-            try container.encode(value, forKey: .path)
-            try container.encode(description, forKey: .description)
-            
-        case let .emoji(value):
-            try container.encode("emoji", forKey: .type)
-            try container.encode(value, forKey: .emoji)
-        }
+        try container.encode(self.path, forKey: .path)
+        try container.encode(self.size?.width, forKey: .width)
+        try container.encode(self.size?.height, forKey: .height)
     }
 }
 
