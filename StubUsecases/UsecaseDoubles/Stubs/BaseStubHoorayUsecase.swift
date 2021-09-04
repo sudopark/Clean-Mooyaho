@@ -18,7 +18,7 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
         public var isAvailToPublishHooray: Result<Void, Error> = .success(())
         public var publishNewHoorayResult: Result<Hooray, Error> = .success(Hooray.dummy(0))
         public var nearbyRecentHoorays: Result<[Hooray], Error> = .success([Hooray.dummy(0)])
-        public var loadHoorayResult: Result<Hooray, Error> = .success(Hooray.dummy(0))
+        public var loadHoorayResult: Result<HoorayDetail, Error> = .success(HoorayDetail.dummy(0))
         public init() { }
     }
     
@@ -63,11 +63,11 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
     }
     
     open func loadHooray(_ id: String) -> Maybe<Hooray> {
-        return self.scenario.loadHoorayResult.asMaybe()
+        return self.scenario.loadHoorayResult.map{ $0.hoorayInfo }.asMaybe()
     }
     
     open func loadHoorayHoorayDetail(_ id: String) -> Observable<HoorayDetail> {
         // TOOD: stubbing
-        return .empty()
+        return self.scenario.loadHoorayResult.asMaybe().asObservable()
     }
 }

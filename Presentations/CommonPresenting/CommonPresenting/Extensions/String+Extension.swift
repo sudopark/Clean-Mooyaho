@@ -63,6 +63,11 @@ extension String {
     public func substring(nsRange: NSRange) -> String {
         return (self as NSString).substring(with: nsRange)
     }
+    
+    public func encode() -> String {
+        return self.data(using: .nonLossyASCII, allowLossyConversion: true)
+            .flatMap{ String(data: $0, encoding: .utf8) } ?? self
+    }
 }
 
 
