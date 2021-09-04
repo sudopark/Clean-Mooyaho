@@ -78,11 +78,11 @@ public struct HoorayReactionMessage: HoorayMessage {
     
     public let hoorayID: String
     public let hoorayPublisherID: String
-    public let reactionInfo: HoorayReaction.ReactionInfo
+    public let reaction: HoorayReaction
     
-    public init(hoorayID: String, publisherID: String, reactionInfo: HoorayReaction.ReactionInfo) {
+    public init(hoorayID: String, publisherID: String, reaction: HoorayReaction) {
         self.hoorayID = hoorayID
         self.hoorayPublisherID = publisherID
-        self.reactionInfo = reactionInfo
+        self.reaction = reaction
     }
 }

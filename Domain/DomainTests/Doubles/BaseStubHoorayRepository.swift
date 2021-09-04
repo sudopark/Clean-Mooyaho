@@ -31,15 +31,19 @@ class BaseStubHoorayRepository: HoorayRepository {
         return .empty()
     }
     
-    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        return .empty()
+    func requestAckHooray(_ acks: [HoorayAckMessage]) {
+        
     }
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray> {
         return .empty()
     }
     
-    func fetchHooray(_ id: String) -> Maybe<Hooray?> {
+    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?> {
+        return .empty()
+    }
+    
+    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
         return .empty()
     }
 }

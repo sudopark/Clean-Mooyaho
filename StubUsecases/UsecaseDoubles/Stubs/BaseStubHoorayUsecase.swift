@@ -66,7 +66,7 @@ open class BaseStubHoorayUsecase: HoorayUsecase {
         return self.scenario.loadHoorayResult.asMaybe()
     }
     
-    open func loadHoorayHoorayDetail(_ id: String) -> Observable<Hooray> {
+    open func loadHoorayHoorayDetail(_ id: String) -> Observable<HoorayDetail> {
         // TOOD: stubbing
         return .empty()
     }

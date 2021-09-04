@@ -97,7 +97,7 @@ extension MakeHoorayViewController {
             self.viewModel.hoorayKeyword
                 .asDriver(onErrorDriveWith: .never())
                 .drive(onNext: { [weak self] keyword in
-                    self?.updateHoorayKeyword(keyword)
+                    self?.updateHoorayKeyword(keyword.text)
                 })
             
             self.viewModel.selectedImagePath
