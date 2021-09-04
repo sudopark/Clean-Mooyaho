@@ -72,13 +72,18 @@ extension Hooray {
         return Hooray(uid: "uid:\(int)",
                       placeID: "place:\(int)",
                       publisherID: "pub:\(int)",
-                      hoorayKeyword: "some",
+                      hoorayKeyword: .default,
                       message: "hi",
                       location: .init(latt: 0, long: 0),
                       timestamp: 0,
-                      ackUserIDs: [],
-                      reactions: [],
                       spreadDistance: 100, aliveDuration: 100)
+    }
+}
+
+extension HoorayDetail {
+    
+    public static func dummy(_ int: Int) -> HoorayDetail {
+        return HoorayDetail(info: .dummy(int), acks: [], reactions: [])
     }
 }
 

@@ -21,6 +21,8 @@ enum FireStoreCollectionType: String {
     case feelingTag = "feelings"
     case hooray = "hoorays"
     case hoorayIndex = "hoorayindexes"
+    case hoorayAcks = "hoorayacks"
+    case hoorayReactions = "hoorayreactions"
 }
 
 

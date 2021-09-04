@@ -27,8 +27,8 @@ struct HoorayAckUserTable: Table {
             self.ackAt = try cursor.next().unwrap()
         }
         
-        init(_ hoorayID: String, ack: HoorayAckInfo) {
-            self.hoorayID = hoorayID
+        init(_ ack: HoorayAckInfo) {
+            self.hoorayID = ack.hoorayID
             self.ackUserID = ack.ackUserID
             self.ackAt = ack.ackAt
         }

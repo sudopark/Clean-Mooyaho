@@ -108,4 +108,13 @@ class MockLocal: LocalStorage, Mocking {
     func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]> {
         return self.resolve(key: "fetchHoorays") ?? .empty()
     }
+    
+    func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void> {
+        self.verify(key: "saveHoorayDetail")
+        return self.resolve(key: "saveHoorayDetail") ?? .empty()
+    }
+    
+    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?> {
+        return self.resolve(key: "fetchHoorayDetail") ?? .empty()
+    }
 }

@@ -15,7 +15,6 @@ import Domain
 
 struct HoorayReactionTable: Table {
     
-    
     struct Entity: RowValueType {
         let reactionID: String
         let hoorayID: String
@@ -29,11 +28,11 @@ struct HoorayReactionTable: Table {
             self.reactAt = try cursor.next().unwrap()
         }
         
-        init(_ hoorayID: String, info: HoorayReaction.ReactionInfo) {
-            self.reactionID = info.reactionID
-            self.hoorayID = hoorayID
-            self.memberID = info.reactMemberID
-            self.reactAt = info.reactAt
+        init(_ reaction: HoorayReaction) {
+            self.reactionID = reaction.reactionID
+            self.hoorayID = reaction.hoorayID
+            self.memberID = reaction.reactMemberID
+            self.reactAt = reaction.reactAt
         }
     }
     
