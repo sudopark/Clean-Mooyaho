@@ -17,7 +17,7 @@ open class BaseStubPlaceUsecase: PlaceUsecase {
     
     public struct Scenario {
         
-        let placeResult: Result<Place, Error> = .success(Place.dummy(0))
+        public var placeResult: Result<Place, Error> = .success(Place.dummy(0))
         
         public init() { }
     }
@@ -45,7 +45,7 @@ open class BaseStubPlaceUsecase: PlaceUsecase {
             })
     }
     
-    public func place(_ placeID: String) -> Observable<Place> {
+    open func place(_ placeID: String) -> Observable<Place> {
         
         return self.placeMap
             .compactMap{ $0[placeID] }

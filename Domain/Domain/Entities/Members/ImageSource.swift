@@ -41,7 +41,6 @@ extension ImageSource: Equatable {
     }
 }
 
-
 // MARK: - ImageSource upload req params
 
 public enum ImageUploadReqParams {

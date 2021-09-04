@@ -162,4 +162,9 @@ extension DependencyInjector {
         return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry,
                                             categoryTags: tags)
     }
+    
+    var placeUsecase: PlaceUsecase {
+        return PlaceUsecaseImple(placeRepository: self.appReposiotry,
+                                 sharedStoreService: self.shared.dataStore)
+    }
 }
