@@ -41,8 +41,8 @@ struct HoorayAckUserTable: Table {
         
         var dataType: ColumnDataType {
             switch self {
-            case .hoorayID: return .text([.notNull])
-            case .ackUserID: return .text([.notNull])
+            case .hoorayID: return .text([.primaryKey(autoIncrement: false), .notNull])
+            case .ackUserID: return .text([.primaryKey(autoIncrement: false), .notNull])
             case .ackAt: return .real([.notNull])
             }
         }
