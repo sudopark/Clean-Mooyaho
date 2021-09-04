@@ -72,6 +72,10 @@ public protocol HoorayLocalStorage {
     func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void>
     
     func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]>
+    
+    func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void>
+    
+    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?>
 }
 
 extension HoorayLocalStorage {

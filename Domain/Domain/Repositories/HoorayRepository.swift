@@ -22,9 +22,11 @@ public protocol HoorayRepository {
     
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
     
-    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void>
+    func requestAckHooray(_ acks: [HoorayAckMessage])
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray>
     
-    func fetchHooray(_ id: String) -> Maybe<Hooray?>
+    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?>
+    
+    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail>
 }

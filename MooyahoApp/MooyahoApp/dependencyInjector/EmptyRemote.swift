@@ -15,6 +15,10 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
+    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
+        return .empty()
+    }
+    
     func requestLoadHooray(_ id: String) -> Maybe<Hooray?> {
         return .empty()
     }
@@ -99,9 +103,7 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        return .empty()
-    }
+    func requestAckHooray(_ acks: [HoorayAckMessage]) { }
     
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         return .empty()

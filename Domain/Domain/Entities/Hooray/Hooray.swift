@@ -11,48 +11,37 @@ import Foundation
 
 // MARK: - Hooray
 
-public struct HoorayAckInfo {
-    
-    public let ackUserID: String
-    public let ackAt: TimeStamp
-    
-    public init(ackUserID: String, ackAt: TimeStamp) {
-        self.ackUserID = ackUserID
-        self.ackAt = ackAt
-    }
-}
-
-extension HoorayAckInfo: Hashable {
-    
-    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
-        return lhs.ackUserID == rhs.ackUserID
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.ackUserID)
-    }
-}
-
-extension HoorayReaction.ReactionInfo: Hashable {
-    
-    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
-        return lhs.reactionID == rhs.reactionID
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.reactionID)
-    }
-}
-
-
-
 public struct Hooray {
+    
+    
+    // MARK: - Keyword
+    
+    public struct Keyword {
+        
+        public let uid: String
+        public let text: String
+        public let soundSource: String?
+        
+        public init(uid: String, text: String, soundSource: String?) {
+            self.uid = uid
+            self.text = text
+            self.soundSource = soundSource
+        }
+        
+        public static var `default`: Self {
+            return Keyword(uid: "default", text: "Hooray", soundSource: nil)
+        }
+        
+        public var isDefault: Bool {
+            return self.uid == "default"
+        }
+    }
     
     public let uid: String
     public let placeID: String?
     public let publisherID: String
     
-    public let hoorayKeyword: String
+    public let hoorayKeyword: Keyword
     public let message: String
     public let tags: [String]
     public var image: ImageSource?
@@ -60,16 +49,12 @@ public struct Hooray {
     public let location: Coordinate
     public let timeStamp: TimeStamp
     
-    public var ackUserIDs: Set<HoorayAckInfo>
-    public var reactions: Set<HoorayReaction.ReactionInfo>
-    
     public let spreadDistance: Meters
     public let aliveDuration: TimeInterval
     
     public init(uid: String, placeID: String?, publisherID: String,
-                hoorayKeyword: String, message: String, tags: [String] = [], image:ImageSource? = nil,
+                hoorayKeyword: Keyword, message: String, tags: [String] = [], image:ImageSource? = nil,
                 location: Coordinate, timestamp: TimeStamp,
-                ackUserIDs: [HoorayAckInfo] = [], reactions: [HoorayReaction.ReactionInfo],
                 spreadDistance: Meters, aliveDuration: TimeInterval) {
         self.uid = uid
         self.placeID = placeID
@@ -80,8 +65,6 @@ public struct Hooray {
         self.image = image
         self.location = location
         self.timeStamp = timestamp
-        self.ackUserIDs = Set(ackUserIDs)
-        self.reactions = Set(reactions)
         self.spreadDistance = spreadDistance
         self.aliveDuration = aliveDuration
     }
@@ -96,7 +79,7 @@ public final class NewHoorayForm {
     public var placeID: String?
     public var placeName: String?
     
-    public var hoorayKeyword: String!
+    public var hoorayKeyword: Hooray.Keyword!
     public var message: String!
     public var tags: [String] = []
     public var imagePath: String?
@@ -118,7 +101,7 @@ extension NewHoorayFormBuilder {
     
     public func build() -> Base? {
         let asserting: (NewHoorayForm) -> Bool = { form in
-            guard form.hoorayKeyword?.isNotEmpty == true,
+            guard form.hoorayKeyword != nil,
                   form.message?.isNotEmpty == true,
                   form.location != nil,
                   form.timeStamp != nil else { return false }
@@ -132,3 +115,21 @@ extension NewHoorayFormBuilder {
 // MARK: - lastest hooray
 
 public typealias LatestHooray = (id: String, time: TimeStamp)
+
+
+// MARK: - HoorayDetail
+
+public struct HoorayDetail {
+    
+    public let hoorayInfo: Hooray
+    public let acks: [HoorayAckInfo]
+    public let reactions: [HoorayReaction]
+    
+    public init(info: Hooray,
+                acks: [HoorayAckInfo],
+                reactions: [HoorayReaction]) {
+        self.hoorayInfo = info
+        self.acks = acks
+        self.reactions = reactions
+    }
+}

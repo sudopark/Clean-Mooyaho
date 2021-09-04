@@ -305,8 +305,9 @@ extension HoorayPublisherUsecaseTests {
         // when
         let reactions = self.waitElements(expect, for: self.usecase.receiveHoorayReaction) {
             (0..<3).forEach { int in
-                let info = HoorayReaction.ReactionInfo(reactionID: "some", reactMemberID: "res:\(int)", icon: .emoji("😾"), reactAt: 0)
-                let message = HoorayReactionMessage(hoorayID: "id", publisherID: "pub", reactionInfo: info)
+                let reaction = HoorayReaction(hoorayID: "id", reactionID: "some", reactMemberID: "res:\(int)",
+                                              icon: .emoji("😍"), reactAt: 0)
+                let message = HoorayReactionMessage(hoorayID: "id", publisherID: "pub", reaction: reaction)
                 self.mockMessagingService.newMessage.onNext(message)
             }
         }

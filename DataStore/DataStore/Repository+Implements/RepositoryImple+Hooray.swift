@@ -59,8 +59,8 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
             .do(onNext: saveHoorays)
     }
     
-    public func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        return self.hoorayRemote.requestAckHooray(ack)
+    public func requestAckHooray(_ acks: [HoorayAckMessage]) {
+        self.hoorayRemote.requestAckHooray(acks)
     }
     
     private func saveHoorays(_ hoorays: [Hooray]) {
@@ -86,9 +86,21 @@ extension HoorayRepository where Self: HoorayRepositoryDefImpleDependency {
             .do(onNext: saveHooray)
     }
     
-    public func fetchHooray(_ id: String) -> Maybe<Hooray?> {
-        
-        return self.hoorayLocal.fetchHooray(id)
+    public func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?> {
+        return self.hoorayLocal.fetchHoorayDetail(id)
+    }
+    
+    public func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
+
+        let loadDetailFromRemote = self.hoorayRemote.requestLoadHoorayDetail(id)
+        let thenUpdateLocal: (HoorayDetail) -> Void = { [weak self] detail in
+            guard let self = self else { return }
+            self.hoorayLocal.saveHoorayDetail(detail)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        return loadDetailFromRemote
+            .do(onNext: thenUpdateLocal)
     }
 }
 

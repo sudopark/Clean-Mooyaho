@@ -11,36 +11,63 @@ import Foundation
 
 // MARK: - HoorayAck
 
-public typealias HoorayAck = (hoorayID: String, ackUserID: String)
+public struct HoorayAckInfo {
+    
+    public let hoorayID: String
+    public let ackUserID: String
+    public let ackAt: TimeStamp
+    
+    public init(hoorayID: String, ackUserID: String, ackAt: TimeStamp) {
+        self.hoorayID = hoorayID
+        self.ackUserID = ackUserID
+        self.ackAt = ackAt
+    }
+}
+
+extension HoorayAckInfo: Hashable {
+    
+    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+        return lhs.hoorayID == rhs.hoorayID
+            && lhs.ackUserID == rhs.ackUserID
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.hoorayID)
+        hasher.combine(self.ackUserID)
+    }
+}
 
 
 // MARK: - Reaction & Hooray Reaction
 
 public struct HoorayReaction {
     
-    public struct ReactionInfo {
-        
-        public let reactionID: String
-        public let reactMemberID: String
-        public let icon: ImageSource
-        public let reactAt: TimeStamp
-        
-        public init(reactionID: String,
-                    reactMemberID: String,
-                    icon: ImageSource,
-                    reactAt: TimeStamp) {
-            self.reactionID = reactionID
-            self.reactMemberID = reactMemberID
-            self.icon = icon
-            self.reactAt = reactAt
-        }
+    public let hoorayID: String
+    public let reactionID: String
+    public let reactMemberID: String
+    public let icon: ImageSource
+    public let reactAt: TimeStamp
+    
+    public init(hoorayID: String,
+                reactionID: String,
+                reactMemberID: String,
+                icon: ImageSource,
+                reactAt: TimeStamp) {
+        self.hoorayID = hoorayID
+        self.reactionID = reactionID
+        self.reactMemberID = reactMemberID
+        self.icon = icon
+        self.reactAt = reactAt
+    }
+}
+
+extension HoorayReaction: Hashable {
+    
+    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+        return lhs.reactionID == rhs.reactionID
     }
     
-    public let hoorayID: String
-    public let reactionInfo: ReactionInfo
-    
-    public init(hoorayID: String, reactionInfo: ReactionInfo) {
-        self.hoorayID = hoorayID
-        self.reactionInfo = reactionInfo
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.reactionID)
     }
 }
