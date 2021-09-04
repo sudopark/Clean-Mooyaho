@@ -189,9 +189,13 @@ extension DependencyInjector: MakeHooraySceneBuilable, WaitNextHooraySceneBuilab
         return viewController
     }
     
-    public func makeHoorayDetailScene() -> HoorayDetailScene {
+    public func makeHoorayDetailScene(_ hoorayID: String) -> HoorayDetailScene {
         let router = HoorayDetailRouter(nextSceneBuilders: self)
-        let viewModel = HoorayDetailViewModelImple(router: router)
+        let viewModel = HoorayDetailViewModelImple(hoorayID: hoorayID,
+                                                   hoorayUsecase: self.hoorayUsecase,
+                                                   memberUsecase: self.memberUsecase,
+                                                   placeUsecase: self.placeUsecase,
+                                                   router: router)
         let viewController = HoorayDetailViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
