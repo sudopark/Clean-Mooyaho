@@ -15,12 +15,13 @@ import Domain
 
 struct HoorayTable: Table {
     
-     
     struct Entity: RowValueType {
         let uid: String
         let placeID: String?
         let publisherID: String
-        let keyword: String
+        let keywordID: String
+        let keywordText: String
+        let keywordSource: String?
         let message: String
         let tags: [String]
         let coordinate: Coordinate
@@ -33,7 +34,9 @@ struct HoorayTable: Table {
             self.uid = try cursor.next().unwrap()
             self.placeID = cursor.next()
             self.publisherID = try cursor.next().unwrap()
-            self.keyword = try cursor.next().unwrap()
+            self.keywordID = try cursor.next().unwrap()
+            self.keywordText = try cursor.next().unwrap()
+            self.keywordSource = cursor.next()
             self.message = try cursor.next().unwrap()
             if let tagTexts: String = cursor.next() {
                 self.tags = tagTexts.asStringArray()
@@ -50,7 +53,9 @@ struct HoorayTable: Table {
             self.uid = hooray.uid
             self.placeID = hooray.placeID
             self.publisherID = hooray.publisherID
-            self.keyword = hooray.hoorayKeyword
+            self.keywordID = hooray.hoorayKeyword.uid
+            self.keywordText = hooray.hoorayKeyword.text
+            self.keywordSource = hooray.hoorayKeyword.soundSource
             self.message = hooray.message
             self.tags = hooray.tags
             self.coordinate = hooray.location
@@ -64,7 +69,9 @@ struct HoorayTable: Table {
         case uid
         case placeID = "place_id"
         case publisherID = "pub_id"
-        case keyword = "kwd"
+        case keywordID = "kwd_id"
+        case keywordText = "kwd_txt"
+        case keywordSource = "kwd_source"
         case message
         case tags
         case latt
@@ -78,7 +85,9 @@ struct HoorayTable: Table {
             case .uid: return .text([.primaryKey(autoIncrement: false), .notNull])
             case .placeID: return .text([])
             case .publisherID: return .text([.notNull])
-            case .keyword: return .text([.notNull])
+            case .keywordID: return .text([.notNull])
+            case .keywordText: return .text([.notNull])
+            case .keywordSource: return .text([])
             case .message: return .text([.notNull])
             case .tags: return .text([])
             case .latt, .long: return .real([.notNull])
@@ -99,7 +108,9 @@ struct HoorayTable: Table {
         case .uid: return entity.uid
         case .placeID: return entity.placeID
         case .publisherID: return entity.publisherID
-        case .keyword: return entity.keyword
+        case .keywordID: return entity.keywordID
+        case .keywordText: return entity.keywordText
+        case .keywordSource: return entity.keywordSource
         case .message: return entity.message
         case .tags: return entity.tags.asDataText()
         case .latt: return entity.coordinate.latt

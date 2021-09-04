@@ -121,9 +121,11 @@ public protocol HoorayRemote {
     
     func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
     
-    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void>
+    func requestAckHooray(_ acks: [HoorayAckMessage])
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray?>
+    
+    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail>
 }
 
 

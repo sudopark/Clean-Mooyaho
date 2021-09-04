@@ -46,9 +46,9 @@ extension RepositoryTests_Hooray {
     private func dummyHooray(_ int: Int = 0) -> Hooray {
         return .init(uid: "id:\(int)", placeID: "place:\(int)",
                      publisherID: "pub:\(int)",
-                     hoorayKeyword: "some", message: "hi",
+                     hoorayKeyword: .default, message: "hi",
                      location: .init(latt: 0, long: 0), timestamp: 0,
-                     ackUserIDs: [], reactions: [], spreadDistance: 0, aliveDuration: 0)
+                     spreadDistance: 0, aliveDuration: 0)
     }
     
     func testRepository_fetchRecentMyHoorayAtLocal() {
@@ -65,22 +65,6 @@ extension RepositoryTests_Hooray {
         
         // then
         XCTAssertEqual(lastest?.id, self.dummyHooray().uid)
-    }
-    
-    func testRepository_fetchHooray() {
-        // given
-        let expect = expectation(description: "로컬에 저장된 후레이 조회")
-        
-        self.mockLocal.register(key: "fetchHoorays") {
-            return Maybe<[Hooray]>.just([self.dummyHooray()])
-        }
-        
-        // when
-        let requestFetch = self.repository.fetchHooray("some")
-        let hooray = self.waitFirstElement(expect, for: requestFetch.asObservable()) { } ?? nil
-        
-        // then
-        XCTAssertEqual(hooray?.uid, self.dummyHooray().uid)
     }
     
     func testRepository_loadLatestHoorayFromRemote() {
@@ -124,17 +108,16 @@ extension RepositoryTests_Hooray {
         // given
         let expect = expectation(description: "리모트에서 후레이 ack 처리")
         
-        self.mockRemote.register(key: "requestAckHooray") {
-            return Maybe<Void>.just()
+        self.mockRemote.called(key: "requestAckHooray") { _ in
+            expect.fulfill()
         }
         
         // when
         let ack = HoorayAckMessage(hoorayID: "some", publisherID: "p_id", ackUserID: "ack_id")
-        let requestAck = self.repository.requestAckHooray(ack)
-        let void: Void? = self.waitFirstElement(expect, for: requestAck.asObservable()) { }
+        self.repository.requestAckHooray([ack])
         
         // then
-        XCTAssertNotNil(void)
+        self.wait(for: [expect], timeout: self.timeout)
     }
 }
 
@@ -256,6 +239,59 @@ extension RepositoryTests_Hooray {
         
         // when
         self.repository.requestLoadHooray("some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepository_fetchHoorayDetail() {
+        // given
+        let expect = expectation(description: "hooray detail fetch")
+        
+        self.mockLocal.register(key: "fetchHoorayDetail") {
+            return Maybe<HoorayDetail?>.just(.init(info: self.dummyHooray(), acks: [], reactions: []))
+        }
+        
+        // when
+        let fetching = self.repository.fetchHoorayDetail("some").asObservable()
+        let detail = self.waitFirstElement(expect, for: fetching)
+        
+        // then
+        XCTAssertNotNil(detail)
+    }
+    
+    func testRepository_loadHoorayDetailFromRemote() {
+        // given
+        let expect = expectation(description: "load hooray detail from remote")
+        
+        self.mockRemote.register(key: "requestLoadHoorayDetail") {
+            return Maybe<HoorayDetail>.just(.init(info: self.dummyHooray(), acks: [], reactions: []))
+        }
+        
+        // when
+        let loading = self.repository.requestLoadHoorayDetail("some").asObservable()
+        let detail = self.waitFirstElement(expect, for: loading)
+        
+        // then
+        XCTAssertNotNil(detail)
+    }
+    
+    func testRepository_whenAfterLoadHoorayDetail_updateLocal() {
+        // given
+        let expect = expectation(description: "hooray detail 리모트에서 조회 이후에 로컬에 저장")
+        
+        self.mockRemote.register(key: "requestLoadHoorayDetail") {
+            return Maybe<HoorayDetail>.just(.init(info: self.dummyHooray(), acks: [], reactions: []))
+        }
+        
+        self.mockLocal.called(key: "saveHoorayDetail") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestLoadHoorayDetail("some")
             .subscribe()
             .disposed(by: self.disposeBag)
         

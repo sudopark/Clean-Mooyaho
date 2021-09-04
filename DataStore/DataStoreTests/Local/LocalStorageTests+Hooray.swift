@@ -23,10 +23,10 @@ extension LocalStorageTests_Hooray {
     
     private func dummyHooray(_ int: Int) -> Hooray {
         
-        return Hooray(uid: "hid:\(int)", placeID: "pid", publisherID: "pub_id", hoorayKeyword: "kwd",
+        return Hooray(uid: "hid:\(int)", placeID: "pid", publisherID: "pub_id", hoorayKeyword: .default,
                       message: "msg", tags: ["t1", "t2"], image: .path("path"),
                       location: .init(latt: 100, long: 300.2), timestamp: TimeInterval(int) + 100,
-                      reactions: [], spreadDistance: 100.2, aliveDuration: 200.3)
+                      spreadDistance: 100.2, aliveDuration: 200.3)
     }
     
     func testStorage_loadLatestHoorayForMember() {
@@ -62,77 +62,41 @@ extension LocalStorageTests_Hooray {
         XCTAssertEqual(loadedHoorays?.first?.uid, "hid:0")
         XCTAssertEqual(loadedHoorays?.first?.placeID, "pid")
         XCTAssertEqual(loadedHoorays?.first?.publisherID, "pub_id")
-        XCTAssertEqual(loadedHoorays?.first?.hoorayKeyword, "kwd")
+        XCTAssertEqual(loadedHoorays?.first?.hoorayKeyword.text, Hooray.Keyword.default.text)
         XCTAssertEqual(loadedHoorays?.first?.message, "msg")
         XCTAssertEqual(loadedHoorays?.first?.tags, ["t1", "t2"])
         XCTAssertEqual(loadedHoorays?.first?.image, .path("path"))
         XCTAssertEqual(loadedHoorays?.first?.location, .init(latt: 100, long: 300.2))
         XCTAssertEqual(loadedHoorays?.first?.timeStamp, 100)
-        XCTAssertEqual(loadedHoorays?.first?.reactions, [])
         XCTAssertEqual(loadedHoorays?.first?.spreadDistance, 100.2)
         XCTAssertEqual(loadedHoorays?.first?.aliveDuration, 200.3)
     }
-   
-    func testLocalStorage_saveAndLoadHooray_whichHasReactions() {
-        // given
-        let expect = expectation(description: "ack userInfo와 함께 hooray 저장")
-        
-        var hoorays = (0..<10).map{ self.dummyHooray($0) }
-        hoorays = hoorays.map {
-            var h = $0
-            let acks = (0..<10).map{ HoorayAckInfo(ackUserID: "uid:\($0)", ackAt: TimeInterval($0)) }
-            h.ackUserIDs = Set(acks)
-            return h
-        }
-        
-        // when
-        let save = self.local.saveHoorays(hoorays)
-        let load = self.local.fetchHoorays(hoorays.map{ $0.uid })
-        let saveAndLoad = save.flatMap{ _ in load }
-        let loadedHoorays = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
-        
-        // then
-        let ackCounts = loadedHoorays?.map{ $0.ackUserIDs.count }
-        XCTAssertEqual(ackCounts, Array(repeating: 10, count: 10))
-        
-        let lastAck = loadedHoorays?.first?.ackUserIDs.sorted(by:{ $0.ackAt < $1.ackAt }).last
-        XCTAssertEqual(lastAck?.ackUserID, "uid:9")
-        XCTAssertEqual(lastAck?.ackAt, 9)
+    
+    private func hoorayDetail(for int: Int) -> HoorayDetail {
+        let hooray = self.dummyHooray(int)
+        let acks = (0..<10).map{ HoorayAckInfo(hoorayID: hooray.uid, ackUserID: "u:\($0)", ackAt: 100) }
+        let reactions = (0..<10).map{ HoorayReaction(hoorayID: hooray.uid, reactionID: "r:\(hooray.uid)-\($0))",
+                                                     reactMemberID: "r\($0)", icon: .path("some"),
+                                                     reactAt: 100) }
+        return HoorayDetail(info: hooray, acks: acks, reactions: reactions)
     }
     
-    func testLocalStorage_saveAndLoadHooray_whichHasAckUsers() {
+    func testLocalStorage_saveAndLoadHoorayDetail() {
         // given
-        let expect = expectation(description: "ack userInfo + reactioninfo와 함께 hooray 저장")
-        
-        var hoorays = (0..<10).map{ self.dummyHooray($0) }
-        hoorays = hoorays.map {
-            var h = $0
-            let acks = (0..<10).map{ HoorayAckInfo(ackUserID: "uid:\($0)", ackAt: TimeInterval($0)) }
-            h.ackUserIDs = Set(acks)
-            let reactions = (0..<10).map{
-                HoorayReaction.ReactionInfo(reactionID: "r:\($0)-\(h.uid)",
-                                            reactMemberID: "uid:\($0)",
-                                            icon: .emoji("😲"), reactAt: TimeInterval($0))
-            }
-            h.reactions = Set(reactions)
-            return h
-        }
+        let expect = expectation(description: "hooray detail 저장하고난뒤 로드")
+        let (detail0, detail1) = (self.hoorayDetail(for: 0), self.hoorayDetail(for: 1))
         
         // when
-        let save = self.local.saveHoorays(hoorays)
-        let load = self.local.fetchHoorays(hoorays.map{ $0.uid })
-        let saveAndLoad = save.flatMap{ _ in load }
-        let loadedHoorays = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        let saveBoth = self.local.saveHoorayDetail(detail0)
+            .flatMap{ _ in self.local.saveHoorayDetail(detail1) }
+        let load0 = self.local.fetchHoorayDetail(detail0.hoorayInfo.uid)
+        let saveAndLoad = saveBoth.flatMap{ _ in load0 }
+        let loadedDetail0 = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
         
         // then
-        let reactionCounts = loadedHoorays?.map{ $0.reactions.count }
-        XCTAssertEqual(reactionCounts, Array(repeating: 10, count: 10))
-        
-        let lastReaction = loadedHoorays?.first?.reactions.sorted(by:{ $0.reactAt < $1.reactAt }).last
-        XCTAssertEqual(lastReaction?.reactionID, "r:9-hid:0")
-        XCTAssertEqual(lastReaction?.reactMemberID, "uid:9")
-        XCTAssertEqual(lastReaction?.icon, .emoji("😲"))
-        XCTAssertEqual(lastReaction?.reactAt, 9)
+        XCTAssertEqual(loadedDetail0?.hoorayInfo.uid, detail0.hoorayInfo.uid)
+        XCTAssertEqual(loadedDetail0?.acks.count, detail0.acks.count)
+        XCTAssertEqual(loadedDetail0?.reactions.map{ $0.reactionID }, detail0.reactions.map{ $0.reactionID })
     }
 }
 

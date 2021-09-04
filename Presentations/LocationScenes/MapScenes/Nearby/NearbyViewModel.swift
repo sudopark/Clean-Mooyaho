@@ -25,7 +25,7 @@ public struct HoorayMarker {
     var withFocusAnimation: Bool = false
     let hoorayID: String
     let publisherID: String
-    let hoorayKeyword: String
+    let hoorayKeyword: Hooray.Keyword
     let timeLabel: String
     let removeAt: TimeInterval
     let message: String

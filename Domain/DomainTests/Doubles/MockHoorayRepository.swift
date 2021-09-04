@@ -32,16 +32,19 @@ class MockHoorayRepository: HoorayRepository, Mocking {
         return self.resolve(key: "requestLoadNearbyRecentHoorays") ?? .empty()
     }
     
-    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        self.verify(key: "requestAckHooray")
-        return self.resolve(key: "requestAckHooray") ?? .empty()
+    func requestAckHooray(_ acks: [HoorayAckMessage]) {
+        self.verify(key: "requestAckHooray", with: acks)
     }
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray> {
         return self.resolve(key: "requestLoadHooray") ?? .empty()
     }
     
-    func fetchHooray(_ id: String) -> Maybe<Hooray?> {
-        return self.resolve(key: "fetchHooray") ?? .empty()
+    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?> {
+        return self.resolve(key: "fetchHoorayDetail") ?? .empty()
+    }
+    
+    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
+        return self.resolve(key: "requestLoadHoorayDetail") ?? .empty()
     }
 }

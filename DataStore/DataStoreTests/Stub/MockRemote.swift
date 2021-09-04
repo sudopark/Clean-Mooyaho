@@ -118,14 +118,17 @@ class MockRemote: Remote, Mocking {
         return self.resolve(key: "requestLoadNearbyRecentHoorays") ?? .empty()
     }
     
-    func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        return self.resolve(key: "requestAckHooray") ?? .empty()
+    func requestAckHooray(_ acks: [HoorayAckMessage]) {
+        self.verify(key: "requestAckHooray")
     }
     
     func requestLoadHooray(_ id: String) -> Maybe<Hooray?> {
         return self.resolve(key: "requestLoadHooray") ?? .empty()
     }
     
+    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
+        return self.resolve(key: "requestLoadHoorayDetail") ?? .empty()
+    }
     
     // messaging
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {

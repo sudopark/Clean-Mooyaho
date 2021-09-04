@@ -27,7 +27,7 @@ public protocol MakeHoorayViewModel: AnyObject {
     func requestPublishNewHooray()
     
     // presenter
-    var hoorayKeyword: Observable<String> { get }
+    var hoorayKeyword: Observable<Hooray.Keyword> { get }
     
     var selectedImagePath: Observable<String?> { get }
     var enteredMessage: Observable<String?> { get }
@@ -75,7 +75,7 @@ public final class MakeHoorayViewModelImple: MakeHoorayViewModel {
     
     fileprivate final class Subjects {
         let currentMember = BehaviorRelay<Member?>(value: nil)
-        let selectedHoorayKeyword = BehaviorRelay<String?>(value: nil)
+        let selectedHoorayKeyword = BehaviorRelay<Hooray.Keyword?>(value: nil)
         let pendingForm = BehaviorRelay<NewHoorayForm?>(value: nil)
         let isPublishing = BehaviorRelay<Bool>(value: false)
         let newHooray = PublishSubject<Hooray>()
@@ -90,7 +90,7 @@ public final class MakeHoorayViewModelImple: MakeHoorayViewModel {
         self.subjects.currentMember.accept(member)
         
         // TODO: 정책 정해야함
-        let defaultKeyword = "Hooray".localized
+        let defaultKeyword = Hooray.Keyword.default
         self.subjects.selectedHoorayKeyword.accept(defaultKeyword)
         
         self.userLocationUsecase.fetchUserLocation()
@@ -281,7 +281,7 @@ extension MakeHoorayViewModelImple {
 
 extension MakeHoorayViewModelImple {
     
-    public var hoorayKeyword: Observable<String> {
+    public var hoorayKeyword: Observable<Hooray.Keyword> {
         return self.subjects.selectedHoorayKeyword.compactMap{ $0 }
     }
     

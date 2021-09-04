@@ -69,34 +69,42 @@ extension FirebaseServiceImple {
         return self.loadAllAtOnce(queries: queries)
     }
     
-    public func requestAckHooray(_ myID: String, at hoorayID: String) -> Maybe<Void> {
+    public func requestAckHooray(_ acks: [HoorayAckMessage]) {
         
-        // TODO: -> ackInfo array atomic write 보장 안되면 수정 필요
-        let ackInfo = HoorayAckInfo(ackUserID: myID, ackAt: TimeStamp.now())
-        let newField: [String: Any] = [
-            HoorayMappingKey.ackUserIDs.rawValue: FieldValue.arrayUnion([ackInfo])
-        ]
+        typealias Key = HoorayMappingKey
         
-        return self.update(docuID: hoorayID, newFields: newField, at: .hooray)
+        guard let myID = acks.first?.ackUserID else { return }
+        let collectionRef = self.fireStoreDB.collection(.hoorayAcks)
+        let query = collectionRef
+            .whereField(Key.uid.rawValue, in: acks.map{ $0.hoorayID })
+            .whereField(Key.ackUserID.rawValue, isEqualTo: myID)
+
+        let newAcks = acks.map{ HoorayAckInfo(hoorayID: $0.hoorayID, ackUserID: $0.ackUserID, ackAt: .now()) }
+        let loadAlreadyAcks: Maybe<[HoorayAckInfo]> = self.load(query: query)
+        let filteringAcks: ([HoorayAckInfo]) -> [HoorayAckInfo] = { alreadyAcks in
+            let alreadyIDSet = Set(alreadyAcks.map{ $0.hoorayID} )
+            return newAcks.filter{ alreadyIDSet.contains($0.hoorayID) == false }
+        }
+        let thenSaveAcksAndSendMessages: ([HoorayAckInfo]) -> Void = { [weak self] newAcks in
+            guard let self = self else { return }
+            let savings = newAcks.map{ self.save($0, at: .hoorayAcks).subscribe() }
+            self.disposeBag.insert(savings)
+            
+            let messages = acks.filter{ m in newAcks.contains(where: { $0.hoorayID == m.hoorayID }) }
+            self.sendAckMessages(messages)
+        }
+        
+        loadAlreadyAcks
+            .map(filteringAcks)
+            .subscribe(onSuccess: thenSaveAcksAndSendMessages)
+            .disposed(by: self.disposeBag)
     }
     
-    public func requestAckHooray(_ ack: HoorayAckMessage) -> Maybe<Void> {
-        
-        let ackInfo = HoorayAckInfo(ackUserID: ack.ackUserID, ackAt: TimeStamp.now())
-        let newField: [String: Any] = [
-            HoorayMappingKey.ackUserIDs.rawValue: FieldValue.arrayUnion([ackInfo])
-        ]
-        
-        let updateHooray = self.update(docuID: ack.hoorayID, newFields: newField, at: .hooray)
-        
-        let sendAckMessage: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            self.requestSendForground(message: ack, to: ack.hoorayPublisherID)
-                .subscribe()
-                .disposed(by: self.disposeBag)
+    private func sendAckMessages(_ acks: [HoorayAckMessage]) {
+        let sendings = acks.map{
+            self.requestSendForground(message: $0, to: $0.hoorayPublisherID).subscribe()
         }
-        return updateHooray
-            .do(onNext: sendAckMessage)
+        self.disposeBag.insert(sendings)
     }
     
     public func requestLoadHooray(_ id: String) -> Maybe<Hooray?> {
@@ -105,6 +113,36 @@ extension FirebaseServiceImple {
         let query = collectionRef.whereField(FieldPath.documentID(), isEqualTo: id)
         
         return self.load(query: query).map{ $0.first }
+    }
+    
+    public func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
+        
+        typealias Key = HoorayMappingKey
+        
+        let loadHooray = self.requestLoadHooray(id)
+        
+        let thenAppendAcks: (Hooray?) -> Maybe<HoorayDetail> = { [weak self] hooray in
+            guard let self = self else { return .empty() }
+            guard let hooray = hooray else {
+                return .error(RemoteErrors.notFound("Hooray", reason: nil))
+            }
+            let acksCollectionRef = self.fireStoreDB.collection(.hoorayAcks)
+            let acksQuery = acksCollectionRef.whereField(Key.uid.rawValue, isEqualTo: id)
+            let acks: Maybe<[HoorayAckInfo]> = self.load(query: acksQuery).catchAndReturn([])
+            return acks.map{ HoorayDetail(info: hooray, acks: $0, reactions: []) }
+        }
+        
+        let thenAppendReactions: (HoorayDetail) -> Maybe<HoorayDetail> = { [weak self] detail in
+            guard let self = self else { return .empty() }
+            let reactionCollectionRef = self.fireStoreDB.collection(.hoorayReactions)
+            let reactionQuery = reactionCollectionRef.whereField(Key.uid.rawValue, isEqualTo: id)
+            let reactions: Maybe<[HoorayReaction]> = self.load(query: reactionQuery).catchAndReturn([])
+            return reactions.map{ HoorayDetail(info: detail.hoorayInfo, acks: detail.acks, reactions: $0) }
+        }
+        
+        return loadHooray
+            .flatMap(thenAppendAcks)
+            .flatMap(thenAppendReactions)
     }
 }
 
