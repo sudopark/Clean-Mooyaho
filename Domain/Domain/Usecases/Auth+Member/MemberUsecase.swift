@@ -220,12 +220,26 @@ extension MemberUsecaseImple {
     
     private func setupSharedMembersIfPossible(_ ids: [String]) {
         let memberMap = self.sharedDataStoreService.fetch([String: Member].self, key: .memberMap) ?? [:]
-        let notExistingMemberIDs = ids.filter{ memberMap[$0] == nil }
+        let notExistingMemberIDsInMemory = ids.filter{ memberMap[$0] == nil }
+        
+        let loadCachedMembers = self.memberRepository.fetchMembers(notExistingMemberIDsInMemory)
+        
+        let loadMembersFromRemoteOrNot: ([Member]) -> Maybe<[Member]>
+        loadMembersFromRemoteOrNot = { [weak self] cacheedMembers in
+            guard let self = self else { return .empty() }
+            let totalCachedIDSet = Set(memberMap.keys + cacheedMembers.map{ $0.uid })
+            let requireIDs = ids.filter{ totalCachedIDSet.contains($0) == false }
+            return requireIDs.isEmpty
+                ? .just(cacheedMembers)
+                : self.memberRepository.requestLoadMembers(requireIDs).map{ $0 + cacheedMembers }
+        }
         
         let updateOnStore: ([Member]) -> Void = { [weak self] members in
             self?.appendMemberInfoOnSharedStore(members)
         }
-        self.memberRepository.fetchMembers(notExistingMemberIDs)
+        
+        return loadCachedMembers
+            .flatMap(loadMembersFromRemoteOrNot)
             .subscribe(onSuccess: updateOnStore)
             .disposed(by: self.disposeBag)
     }
