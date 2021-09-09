@@ -337,10 +337,23 @@ extension MemberUsecaseTests {
         self.mockRepository.register(key: "fetchMembers") { Maybe<[Member]>.just([Member(uid: "uid:1")]) }
         
         // when
-        let members = self.waitElements(expect, for: self.usecase.members(for: ["uid:1"]))
+        let memberMap = self.waitFirstElement(expect, for: self.usecase.members(for: ["uid:1"]))
         
         // then
-        XCTAssertEqual(members.count, 1)
+        XCTAssertEqual(memberMap?.count, 1)
+    }
+    
+    func testUsecase_subscribeMembersInfo_withExistingCaches_withLoadMembersFromRemote() {
+        // given
+        let expect = expectation(description: "멤버 로드시에 캐시에도 없는 유저는 리모트에서 불러옴")
+        self.mockRepository.register(key: "fetchMembers") { Maybe<[Member]>.just([Member(uid: "uid:1")]) }
+        self.mockRepository.register(key: "requestLoadMembers") { Maybe<[Member]>.just([Member(uid: "uid:2")]) }
+        
+        // when
+        let memberMap = self.waitFirstElement(expect, for: self.usecase.members(for: ["uid:1", "uid:2"]))
+        
+        // then
+        XCTAssertEqual(memberMap?.count, 2)
     }
     
     func testUsecase_refreshMembers() {
