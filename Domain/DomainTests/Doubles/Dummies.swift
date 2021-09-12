@@ -8,6 +8,9 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 @testable import Domain
 
 
@@ -94,5 +97,28 @@ extension NewHoorayMessage {
     
     static func dummy(_ int: Int) -> NewHoorayMessage {
         return .init(hoorayID: "id:\(int)", publisherID: "pub:\(int)", publishedAt: 0, placeID: "place", location: .init(latt: 0, long: 0), spreadDistance: 10, aliveDuration: 10)
+    }
+}
+
+
+extension ReadLink {
+    
+    static func dummy(_ int: Int, parent: Int? = nil) -> ReadLink {
+        return ReadLink(uid: "uid:\(int)",
+                        parentID: parent.map{ "p:\($0)" },
+                        link: "link:\(int)",
+                        createAt: .now() + TimeStamp(int),
+                        lastUpdated: .now() + TimeStamp(int))
+    }
+}
+
+extension ReadCollection {
+    
+    static func dummy(_ int: Int, parent: Int? = nil) -> ReadCollection {
+        return ReadCollection(uid: "uid:\(int)",
+                              parentID: parent.map{ "p:\($0)" },
+                              name: "c:\(int)",
+                              createdAt: .now() + TimeStamp(int),
+                              lastUpdated: .now() + TimeStamp(int))
     }
 }
