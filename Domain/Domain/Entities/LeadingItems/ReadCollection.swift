@@ -1,0 +1,38 @@
+//
+//  ReadCollection.swift
+//  Domain
+//
+//  Created by sudo.park on 2021/09/11.
+//  Copyright © 2021 ParkHyunsoo. All rights reserved.
+//
+
+import Foundation
+
+
+public struct ReadCollection: ReadItem {
+    
+    private static let uidPrefix = "rc"
+    
+    public let uid: String
+    public let name: String
+    public let createdAt: TimeStamp
+    public var lastUpdatedAt: TimeStamp
+    public var linkItemIDs: [String] = []
+    public var subCollectionIDs: [String] = []
+    public var priority: ReadPriority?
+    public var categories: [Category] = []
+    
+    public init(name: String) {
+        self.uid = "\(Self.uidPrefix):\(UUID().uuidString)"
+        self.name = name
+        self.createdAt = .now()
+        self.lastUpdatedAt = .now()
+    }
+    
+    public init(uid: String, name: String, createdAt: TimeStamp, lastUpdated: TimeStamp) {
+        self.uid = uid
+        self.name = name
+        self.createdAt = createdAt
+        self.lastUpdatedAt = lastUpdated
+    }
+}
