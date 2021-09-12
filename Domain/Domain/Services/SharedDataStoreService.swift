@@ -114,6 +114,10 @@ extension SharedDataStoreServiceImple: AuthInfoManger {
         return self.get(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     
+    public func signedInMemberID() -> String? {
+        return self.get(Member.self, key: SharedDataKeys.currentMember.rawValue)?.uid
+    }
+    
     public func updateAuth(_ newValue: Auth) {
         self.update(Auth.self, key: SharedDataKeys.auth.rawValue, value: newValue)
     }

@@ -14,6 +14,15 @@ import RxSwift
 public protocol AuthInfoProvider {
     
     func currentAuth() -> Auth?
+    
+    func signedInMemberID() -> String?
+}
+
+extension AuthInfoProvider {
+    
+    public func isSignedIn() -> Bool {
+        return self.signedInMemberID() != nil
+    }
 }
 
 public protocol AuthInfoManger: AuthInfoProvider {
