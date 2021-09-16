@@ -23,7 +23,6 @@ class StubReadItemRepository: ReadItemRepository {
             [ReadCollection.dummy(0), ReadCollection.dummy(1)]
         )
         
-        var makeNewCollectionResult: Result<Void, Error> = .success(())
         var updateCollectionResult: Result<Void, Error> = .success(())
         var saveLinkResult: Result<Void, Error> = .success(())
     }
@@ -41,15 +40,11 @@ class StubReadItemRepository: ReadItemRepository {
         return self.scenario.collection.asMaybe().asObservable()
     }
     
-    func requestMakeCollection(for memberID: String?, collection: ReadCollection) -> Observable<Void> {
-        return self.scenario.makeNewCollectionResult.asMaybe().asObservable()
+    func requestUpdateCollection(for memberID: String?, collection: ReadCollection) -> Maybe<Void> {
+        return self.scenario.updateCollectionResult.asMaybe()
     }
     
-    func requestUpdateCollection(for memberID: String?, newCollection: ReadCollection) -> Observable<Void> {
-        return self.scenario.updateCollectionResult.asMaybe().asObservable()
-    }
-    
-    func requestSaveLink(for memberID: String?, link: ReadLink) -> Observable<Void> {
-        return self.scenario.saveLinkResult.asMaybe().asObservable()
+    func requestSaveLink(for memberID: String?, link: ReadLink) -> Maybe<Void> {
+        return self.scenario.saveLinkResult.asMaybe()
     }
 }

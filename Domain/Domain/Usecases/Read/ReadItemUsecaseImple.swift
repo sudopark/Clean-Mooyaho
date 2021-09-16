@@ -9,6 +9,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 
 public final class ReadItemUsecaseImple {
@@ -46,14 +48,13 @@ extension ReadItemUsecaseImple: ReadItemUpdateUsecase {
     }
     
     public func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    public func saveLink(_ link: String, at collectionID: String?) -> Maybe<Void> {
-        return .empty()
+        let memberID = self.authInfoProvider.signedInMemberID()
+        return self.readItemRepository.requestUpdateCollection(for: memberID, collection: newCollection)
     }
     
     public func saveLink(_ link: ReadLink, at collectionID: String?) -> Maybe<Void> {
-        return .empty()
+        let memberID = self.authInfoProvider.signedInMemberID()
+        let link = link |> \.parentID  .~ collectionID
+        return self.readItemRepository.requestSaveLink(for: memberID, link: link)
     }
 }

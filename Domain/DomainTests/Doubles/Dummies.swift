@@ -105,7 +105,6 @@ extension ReadLink {
     
     static func dummy(_ int: Int, parent: Int? = nil) -> ReadLink {
         return ReadLink(uid: "uid:\(int)",
-                        parentID: parent.map{ "p:\($0)" },
                         link: "link:\(int)",
                         createAt: .now() + TimeStamp(int),
                         lastUpdated: .now() + TimeStamp(int))
@@ -116,7 +115,6 @@ extension ReadCollection {
     
     static func dummy(_ int: Int, parent: Int? = nil) -> ReadCollection {
         return ReadCollection(uid: "uid:\(int)",
-                              parentID: parent.map{ "p:\($0)" },
                               name: "c:\(int)",
                               createdAt: .now() + TimeStamp(int),
                               lastUpdated: .now() + TimeStamp(int))

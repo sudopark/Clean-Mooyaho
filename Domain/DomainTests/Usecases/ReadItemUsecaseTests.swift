@@ -162,3 +162,61 @@ extension ReadItemUsecaseTests {
         XCTAssertNotNil(error)
     }
 }
+
+
+extension ReadItemUsecaseTests {
+    
+    // update cool
+    func testUsecase_updateCollection() {
+        // given
+        let expect = expectation(description: "콜렉션 업데이트")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let update = usecase.updateCollection(.dummy(0))
+        let result: Void? = self.waitFirstElement(expect, for: update.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    // 로그인 상태에서 콜렉션 생성
+    func testUsecase_makeNewCollection() {
+        // given
+        let expect = expectation(description: "콜렉션 생성")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let make = usecase.makeCollection(.dummy(0), at: "some")
+        let result: Void? = self.waitFirstElement(expect, for: make.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_saveLink() {
+        // given
+        let expect = expectation(description: "아이템 저장")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let save = usecase.saveLink(.dummy(0), at: "some")
+        let result: Void? = self.waitFirstElement(expect, for: save.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_saveLinkURL() {
+        // given
+        let expect = expectation(description: "링크 저장")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let save = usecase.saveLink("link_url", at: "some")
+        let result: Void? = self.waitFirstElement(expect, for: save.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+}

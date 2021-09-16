@@ -17,9 +17,7 @@ public protocol ReadItemRepository {
     
     func requestLoadCollectionItems(for memberID: String?, collectionID: String) -> Observable<[ReadItem]>
 
-    func requestMakeCollection(for memberID: String?, collection: ReadCollection) -> Observable<Void>
+    func requestUpdateCollection(for memberID: String?, collection: ReadCollection) -> Maybe<Void>
     
-    func requestUpdateCollection(for memberID: String?, newCollection: ReadCollection) -> Observable<Void>
-    
-    func requestSaveLink(for memberID: String?, link: ReadLink) -> Observable<Void>
+    func requestSaveLink(for memberID: String?, link: ReadLink) -> Maybe<Void>
 }
