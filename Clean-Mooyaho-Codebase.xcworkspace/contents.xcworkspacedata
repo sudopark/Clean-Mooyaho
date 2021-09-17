@@ -8,6 +8,9 @@
       location = "container:"
       name = "Presentations">
       <FileRef
+         location = "group:Presentations/ReadItemScene/ReadItemScene.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Presentations/CommonPresenting/CommonPresenting.xcodeproj">
       </FileRef>
       <FileRef
