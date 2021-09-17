@@ -21,6 +21,10 @@ extension Observable {
             return element
         }
     }
+    
+    public func ignoreError() -> Observable<Element> {
+        return self.mapAsOptional().catchAndReturn(nil).compactMap{ $0 }
+    }
 }
 
 extension Observable where Element == Void {
@@ -42,6 +46,10 @@ extension PrimitiveSequenceType where Trait == MaybeTrait {
     
     public func mapAsOptional() -> Maybe<Element?> {
         return self.map{ element -> Element? in element }
+    }
+    
+    public func ignoreError() -> Maybe<Element> {
+        return self.mapAsOptional().catchAndReturn(nil).compactMap{ $0 }
     }
 }
 

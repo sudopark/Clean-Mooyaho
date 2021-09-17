@@ -13,11 +13,19 @@ import RxSwift
 
 public protocol ReadItemRepository {
     
-    func requestLoadMyItems(for memberID: String?) -> Observable<[ReadItem]>
+    func fetchMyItems() -> Maybe<[ReadItem]>
     
-    func requestLoadCollectionItems(for memberID: String?, collectionID: String) -> Observable<[ReadItem]>
+    func requestLoadMyItems(for memberID: String) -> Observable<[ReadItem]>
+    
+    func fetchCollectionItems(collectionID: String) -> Maybe<[ReadItem]>
+    
+    func requestLoadCollectionItems(collectionID: String) -> Observable<[ReadItem]>
 
-    func requestUpdateCollection(for memberID: String?, collection: ReadCollection) -> Maybe<Void>
+    func updateCollection(_ collection: ReadCollection) -> Maybe<Void>
     
-    func requestSaveLink(for memberID: String?, link: ReadLink) -> Maybe<Void>
+    func requestUpdateCollection(_ collection: ReadCollection) -> Maybe<Void>
+    
+    func updateLink(_ link: ReadLink) -> Maybe<Void>
+    
+    func requestUpdateLink(_ link: ReadLink) -> Maybe<Void>
 }

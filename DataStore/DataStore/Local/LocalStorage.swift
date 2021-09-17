@@ -94,9 +94,19 @@ extension HoorayLocalStorage {
 }
 
 
+public protocol ReadItemLocalStorage {
+    
+    func fetchMyItems() -> Maybe<[ReadItem]>
+    
+    func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]>
+    
+    func updateReadItems(_ items: [ReadItem]) -> Maybe<Void>
+}
+
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage { }
 
 
 // MARK: - LocalStorageImple

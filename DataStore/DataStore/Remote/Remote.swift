@@ -35,7 +35,8 @@ public enum RemoteErrors: Error {
 // MARK: - Remote Protocol
 
 public protocol Remote: AuthRemote, MemberRemote,
-                        PlaceRemote, TagRemote, HoorayRemote, MessagingRemote { }
+                        PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
+                        ReadItemRemote { }
 
 // MARK: - Auth remote
 
@@ -135,4 +136,18 @@ public protocol HoorayRemote {
 public protocol MessagingRemote {
     
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void>
+}
+
+
+// MARK: - ReadItem
+
+public protocol ReadItemRemote {
+    
+    func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]>
+    
+    func requestLoadCollectionItems(collectionID: String) -> Maybe<[ReadItem]>
+    
+    func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void>
+    
+    func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void>
 }

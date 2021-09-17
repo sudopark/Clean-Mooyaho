@@ -46,7 +46,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             repositoryScenario.myItems = .failure(ApplicationErrors.invalid)
         }
         shouldFailLoadCollection.then {
-            repositoryScenario.collection = .failure(ApplicationErrors.invalid)
+            repositoryScenario.localCollection = .failure(ApplicationErrors.invalid)
         }
         
         let repositoryStub = StubReadItemRepository(scenario: repositoryScenario)
@@ -88,26 +88,14 @@ extension ReadItemUsecaseTests {
     func testUsecase_loadMyItemsWithSignedIn() {
         // given
         let expect = expectation(description: "로그인 상태에서 내 아이템 조회")
+        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(signedIn: true)
         
         // when
-        let items = self.waitFirstElement(expect, for: usecase.loadMyItems())
+        let itemLists = self.waitElements(expect, for: usecase.loadMyItems())
         
         // then
-        XCTAssertEqual(items?.count, 11)
-    }
-    
-    func testUsecase_loadMyItemsFailWithSignedIn() {
-        // given
-        let expect = expectation(description: "로그인 상태에서 내 아이템 조회 실패")
-        let usecase = self.makeUsecase(signedIn: true,
-                                       shouldfailLoadMyCollections: true)
-        
-        // when
-        let error = self.waitError(expect, for: usecase.loadMyItems())
-        
-        // then
-        XCTAssertNotNil(error)
+        XCTAssertEqual(itemLists.count, 2)
     }
     
     func testUsecase_loadCollectionWithoutSignedIn() {
@@ -139,13 +127,14 @@ extension ReadItemUsecaseTests {
     func testUsecase_loadCollectionWithSignedIn() {
         // given
         let expect = expectation(description: "로그인 상태에서 콜렉션 로드")
+        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(signedIn: true)
         
         // when
-        let items = self.waitFirstElement(expect, for: usecase.loadCollectionItems("some"))
+        let itemLists = self.waitElements(expect, for: usecase.loadCollectionItems("some"))
         
         // then
-        XCTAssertEqual(items?.count, 2)
+        XCTAssertEqual(itemLists.count, 2)
     }
     
     // load collection + 로그인 상태 -> 캐시와 리모트에 둘다 없으면 에러

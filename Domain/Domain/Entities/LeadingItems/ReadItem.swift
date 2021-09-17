@@ -12,6 +12,7 @@ import Foundation
 public protocol ReadItem {
     
     var uid: String { get }
+    var ownerID: String? { get set }
     var parentID: String? { get set }
     var createdAt: TimeStamp { get }
     var lastUpdatedAt: TimeStamp { get set }

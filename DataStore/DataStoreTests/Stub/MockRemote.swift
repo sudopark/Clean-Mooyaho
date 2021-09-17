@@ -135,4 +135,21 @@ class MockRemote: Remote, Mocking {
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         return self.resolve(key: "requestSendForground") ?? .empty()
     }
+    
+    // read item
+    func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]> {
+        return self.resolve(key: "requestLoadMyItems") ?? .empty()
+    }
+    
+    func requestLoadCollectionItems(collectionID: String) -> Maybe<[ReadItem]> {
+        return self.resolve(key: "requestLoadCollectionItems") ?? .empty()
+    }
+    
+    func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateReadCollection") ?? .empty()
+    }
+    
+    func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateReadLink") ?? .empty()
+    }
 }
