@@ -55,16 +55,18 @@ extension ReadItemUsecaseImple {
 extension ReadItemUsecaseImple {
     
     public func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
-        guard self.authInfoProvider.isSignedIn() else {
+        guard let memberID = self.authInfoProvider.signedInMemberID() else {
             return self.readItemRepository.updateCollection(newCollection)
         }
+        let newCollection = newCollection |> \.ownerID .~ memberID
         return self.readItemRepository.requestUpdateCollection(newCollection)
     }
     
     public func updateLink(_ link: ReadLink) -> Maybe<Void> {
-        guard self.authInfoProvider.isSignedIn() else {
+        guard let memberID = self.authInfoProvider.signedInMemberID() else {
             return self.readItemRepository.updateLink(link)
         }
+        let link = link |> \.ownerID .~ memberID
         return self.readItemRepository.requestUpdateLink(link)
     }
 }
