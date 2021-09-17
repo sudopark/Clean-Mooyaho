@@ -22,7 +22,7 @@ public struct ReadCollection: ReadItem {
     public let createdAt: TimeStamp
     public var lastUpdatedAt: TimeStamp
     public var priority: ReadPriority?
-    public var categories: [Category] = []
+    public var categories: [ItemCategory] = []
     
     public init(name: String) {
         self.uid = "\(Self.uidPrefix):\(UUID().uuidString)"
