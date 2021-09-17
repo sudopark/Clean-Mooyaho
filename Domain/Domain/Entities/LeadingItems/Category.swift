@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct Category {
+public struct ItemCategory {
     
     public let name: String
     public let colorCode: Int

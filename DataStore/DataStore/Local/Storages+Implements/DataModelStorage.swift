@@ -43,12 +43,20 @@ public protocol DataModelStorage {
     func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void>
     
     func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?>
+    
+    func fetchMyReadItems() -> Maybe<[ReadItem]>
+    
+    func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]>
+    
+    func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void>
+    
+    func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void>
 }
 
 
 // MARK: - DataModelStorageImple
 
-public class DataModelStorageImple: DataModelStorage {
+public final class DataModelStorageImple: DataModelStorage {
     
     private let sqliteService: SQLiteService
     
@@ -348,6 +356,97 @@ extension DataModelStorageImple {
     }
 }
 
+// MARK: - Read Item
+
+extension DataModelStorageImple {
+
+    public func fetchMyReadItems() -> Maybe<[ReadItem]> {
+        let linkQuery = ReadLinkTable.selectAll { $0.parentID.isNull() }
+        let collectionQuery = ReadCollectionTable.selectAll { $0.parentID.isNull() }
+        return self.fetchMatchingItems(linkQuery, collectionQuery)
+    }
+    
+    public func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]> {
+        let linkQuery = ReadLinkTable.selectAll { $0.parentID == collectionID }
+        let collectionQuery = ReadCollectionTable.selectAll { $0.parentID == collectionID }
+        return self.fetchMatchingItems(linkQuery, collectionQuery)
+    }
+    
+    private func fetchMatchingItems(_ linksQuery: SelectQuery<ReadLinkTable>,
+                                    _ collectionQuery: SelectQuery<ReadCollectionTable>) -> Maybe<[ReadItem]> {
+        
+        let collections = self.fetchReadCollections(collectionQuery).catchAndReturn([]).asObservable()
+        let links = self.fetchReadLinks(linksQuery).catchAndReturn([]).asObservable()
+        
+        let mergeItems: ([ReadCollection], [ReadLink]) -> [ReadItem] = { $0 + $1 }
+        let fetchBothWithoutError = Observable.combineLatest(collections, links,
+                                                             resultSelector: mergeItems)
+        return fetchBothWithoutError.asMaybe()
+        
+    }
+    
+    private func fetchReadLinks(_ query: SelectQuery<ReadLinkTable>) -> Maybe<[ReadLink]> {
+        let entitis = self.sqliteService.rx.run { try $0.load(ReadLinkTable.self, query: query) }
+        let loadLinks = entitis.map{ $0.map{ $0.asReadLink() } }
+        let andApplyCategory: ([ReadLink]) -> Maybe<[ReadLink]> = { [weak self] items in
+            return self?.applyCategoryInfo(at: items) ?? .empty()
+        }
+        return loadLinks
+            .flatMap(andApplyCategory)
+    }
+    
+    private func fetchReadCollections(_ query: SelectQuery<ReadCollectionTable>) -> Maybe<[ReadCollection]> {
+        let entitis = self.sqliteService.rx.run { try $0.load(ReadCollectionTable.self, query: query) }
+        let loadCollections = entitis.map{ $0.map{ $0.asCollection() } }
+        let andApplyCategory: ([ReadCollection]) -> Maybe<[ReadCollection]> = { [weak self] items in
+            return self?.applyCategoryInfo(at: items) ?? .empty()
+        }
+        return loadCollections
+            .flatMap(andApplyCategory)
+    }
+    
+    private func applyCategoryInfo<T: ReadItem>(at items: [T]) -> Maybe<[T]> {
+        let ids = items.map{ $0.uid }
+        let categories = ItemCategoriesTable.self
+        let query = categories.selectAll{ $0.itemID.in(ids) }
+        let entities = self.sqliteService.rx.run { try $0.load(categories, query: query) }
+        return entities.map{ items.applyCategoryInfo($0) }
+    }
+    
+    public func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void> {
+        
+        typealias Entity = ReadCollectionTable.Entity
+        let entities = collections.map{ Entity(collection: $0) }
+        let updateEntities = self.sqliteService.rx.run { try $0.insert(ReadCollectionTable.self, entities: entities) }
+            
+        let categories: [ItemCategoriesTable.Entity] = collections.flatMap { collection in
+            return collection.categories.map{ .init(collection.uid, category: $0) }
+        }
+        let thenUpdateCategories: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.sqliteService.rx.run { try $0.insert(ItemCategoriesTable.self, entities: categories) }
+                .catchAndReturn(())
+        }
+        return updateEntities.flatMap(thenUpdateCategories)
+    }
+    
+    public func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void> {
+        typealias Entity = ReadLinkTable.Entity
+        let entities = links.map{ Entity(link: $0) }
+        let updateEntities = self.sqliteService.rx.run { try $0.insert(ReadLinkTable.self, entities: entities) }
+        
+        let categories: [ItemCategoriesTable.Entity] = links.flatMap { link in
+            return link.categories.map{ .init(link.uid, category: $0) }
+        }
+        let thenUpdateCategories: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.sqliteService.rx.run { try $0.insert(ItemCategoriesTable.self, entities: categories) }
+                .catchAndReturn(())
+        }
+        return updateEntities.flatMap(thenUpdateCategories)
+    }
+}
+
 
 // MARK: - DataModelStorageImpl + Migration
 
@@ -451,5 +550,17 @@ private extension HoorayReaction {
         return .init(hoorayID: entity.hoorayID,
                      reactionID: entity.reactionID, reactMemberID: entity.memberID,
                      icon: icon, reactAt: entity.reactAt)
+    }
+}
+
+private extension Array where Element: ReadItem {
+    
+    func applyCategoryInfo(_ categories: [ItemCategoriesTable.Entity]) -> Array {
+        let categoryMap = categories.reduce(into: [String: [ItemCategory]]()) {
+            $0[$1.itemID] = ($0[$1.itemID] ?? []) + [$1.cate]
+        }
+        return self.map {
+            return $0 |> \.categories .~ (categoryMap[$0.uid] ?? [])
+        }
     }
 }

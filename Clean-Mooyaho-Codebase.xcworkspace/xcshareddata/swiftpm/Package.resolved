@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/sudopark/SQLiteService.git",
         "state": {
           "branch": null,
-          "revision": "1639a38d3911ec35870ca9f8a56043ea3c62480b",
-          "version": "0.1.5"
+          "revision": "9ed026bae76fdbdf9f9448e19b52948f274b01be",
+          "version": "0.1.7"
         }
       },
       {
