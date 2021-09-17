@@ -61,41 +61,18 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: Map Scenes Unit Tests
-        id: test_map_scenes
+      - name: ReadItem Scenes Unit Tests
+        id: test_reads_scenes
         run: |
           xcodebuild clean test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme MapScenes \
+          -scheme ReadItemScene \
           -destination "${destination}" \
           -configuration Debug \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: Place Scenes Unit Tests
-        id: test_place_scenes
-        run: |
-          xcodebuild clean test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme PlaceScenes \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
-
-      - name: Hooray Scenes Unit Tests
-        id: test_hooray_scenes
-        run: |
-          xcodebuild clean test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme HoorayScene \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-        env: 
-          destination: ${{ matrix.destination }}
 
       - name: Domain Unit Tests
         id: test_domain
@@ -144,18 +121,8 @@ jobs:
         run: |
           echo "Tests Failed"; exit 1
 
-      - name: Check Tests Map Scenes
-        if: steps.test_map_scenes.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
-
-      - name: Check Tests Place Scenes
-        if: steps.test_place_scenes.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
-
-      - name: Check Tests Hooray Scenes
-        if: steps.test_hooray_scenes.outputs.result != 0
+      - name: Check Tests ReadItem Scenes
+        if: steps.test_reads_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       
