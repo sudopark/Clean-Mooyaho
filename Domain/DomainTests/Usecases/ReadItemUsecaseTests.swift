@@ -17,6 +17,7 @@ import Domain
 class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    private var spyRepository: SpyRepository!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -26,9 +27,11 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
     }
     
+    private var myID: String { "me" }
+    
     private func authProvider(_ signedIn: Bool = true) -> AuthInfoProvider {
         let sharedStore = SharedDataStoreServiceImple()
-        let auth = Auth(userID: "uid")
+        let auth = Auth(userID: self.myID)
         sharedStore.updateAuth(auth)
         if signedIn {
             let member = Member(uid: auth.userID, nickName: "n", icon: nil)
@@ -49,7 +52,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             repositoryScenario.localCollection = .failure(ApplicationErrors.invalid)
         }
         
-        let repositoryStub = StubReadItemRepository(scenario: repositoryScenario)
+        let repositoryStub = SpyRepository(scenario: repositoryScenario)
+        self.spyRepository = repositoryStub
         
         return ReadItemUsecaseImple(readItemRepository: repositoryStub,
                                     authInfoProvider: self.authProvider(signedIn))
@@ -169,6 +173,21 @@ extension ReadItemUsecaseTests {
         XCTAssertNotNil(result)
     }
     
+    
+    func testUsecase_whenUpdateCollectionWithSignedIn_setOwnerID() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 콜렉션 저장시에 오너아이디 지정하고 저장")
+        let usecase = self.makeUsecase(signedIn: true)
+        
+        // when
+        let update = usecase.updateCollection(.dummy(0))
+        let _ = self.waitFirstElement(expect, for: update.asObservable())
+        
+        // then
+        let collection = self.spyRepository.updatedCollection
+        XCTAssertEqual(collection?.ownerID, self.myID)
+    }
+    
     // 로그인 상태에서 콜렉션 생성
     func testUsecase_makeNewCollection() {
         // given
@@ -207,5 +226,39 @@ extension ReadItemUsecaseTests {
         
         // then
         XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_whenUpdateLinkWithSignedIn_updateOwnerID() {
+        // given
+        let expect = expectation(description: "로그인상태에서 링크 업데이트시에 오너아이디 세팅")
+        let usecase = self.makeUsecase(signedIn: true)
+        
+        // when
+        let updating = usecase.updateLink(.init(link: "some"))
+        let _ = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        let link = self.spyRepository.updatedLink
+        XCTAssertEqual(link?.ownerID, self.myID)
+    }
+}
+
+
+private extension ReadItemUsecaseTests {
+    
+    final class SpyRepository: StubReadItemRepository {
+        
+        var updatedCollection: ReadCollection?
+        var updatedLink: ReadLink?
+        
+        override func requestUpdateCollection(_ collection: ReadCollection) -> Maybe<Void> {
+            self.updatedCollection = collection
+            return super.requestUpdateCollection(collection)
+        }
+        
+        override func requestUpdateLink(_ link: ReadLink) -> Maybe<Void> {
+            self.updatedLink = link
+            return super.requestUpdateLink(link)
+        }
     }
 }
