@@ -17,7 +17,7 @@ public protocol ReadItemUpdateUsecase {
     
     func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void>
     
-    func saveLink(_ link: ReadLink, at collectionID: String?) -> Maybe<Void>
+    func updateLink(_ link: ReadLink) -> Maybe<Void>
 }
 
 
@@ -30,7 +30,12 @@ extension ReadItemUpdateUsecase {
     }
     
     public func saveLink(_ link: String, at collectionID: String?) -> Maybe<Void> {
-        let readLink = ReadLink(link: link)
-        return self.saveLink(readLink, at: collectionID)
+        let readLink = ReadLink(link: link) |> \.parentID .~ collectionID
+        return self.updateLink(readLink)
+    }
+    
+    public func saveLink(_ link: ReadLink, at collectionID: String?) -> Maybe<Void> {
+        let readLink = link |> \.parentID .~ collectionID
+        return self.updateLink(readLink)
     }
 }

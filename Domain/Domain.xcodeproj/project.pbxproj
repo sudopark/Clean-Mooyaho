@@ -89,7 +89,7 @@
 		F6913EED26EC637000C6E105 /* ReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEC26EC637000C6E105 /* ReadCollection.swift */; };
 		F6913EEF26EC65BA00C6E105 /* ReadPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEE26EC65BA00C6E105 /* ReadPriority.swift */; };
 		F6913EF526EC686500C6E105 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EF426EC686500C6E105 /* Category.swift */; };
-		F6913EFB26EE4D6900C6E105 /* ReadItemUsecaseImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFA26EE4D6900C6E105 /* ReadItemUsecaseImple.swift */; };
+		F6913EFB26EE4D6900C6E105 /* ReadItemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */; };
 		F6913EFD26EE54D500C6E105 /* ReadLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFC26EE54D500C6E105 /* ReadLink.swift */; };
 		F6913EFF26EE55B400C6E105 /* ReadItemLoadUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFE26EE55B400C6E105 /* ReadItemLoadUsecase.swift */; };
 		F6913F0126EE5A7800C6E105 /* ReadItemUpdateUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0026EE5A7800C6E105 /* ReadItemUpdateUsecase.swift */; };
@@ -210,7 +210,7 @@
 		F6913EEC26EC637000C6E105 /* ReadCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollection.swift; sourceTree = "<group>"; };
 		F6913EEE26EC65BA00C6E105 /* ReadPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPriority.swift; sourceTree = "<group>"; };
 		F6913EF426EC686500C6E105 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		F6913EFA26EE4D6900C6E105 /* ReadItemUsecaseImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemUsecaseImple.swift; sourceTree = "<group>"; };
+		F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemUsecase.swift; sourceTree = "<group>"; };
 		F6913EFC26EE54D500C6E105 /* ReadLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLink.swift; sourceTree = "<group>"; };
 		F6913EFE26EE55B400C6E105 /* ReadItemLoadUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemLoadUsecase.swift; sourceTree = "<group>"; };
 		F6913F0026EE5A7800C6E105 /* ReadItemUpdateUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemUpdateUsecase.swift; sourceTree = "<group>"; };
@@ -332,11 +332,10 @@
 			isa = PBXGroup;
 			children = (
 				2B9F27862633E91100FEBCE3 /* AuthRepository.swift */,
-				2B40BF8E263F0FD70031C7A6 /* PlaceRepository.swift */,
 				F6A72A362648217A006BE4BD /* TagRepository.swift */,
 				F615293E264ED95A003BCB59 /* MemberRepository.swift */,
-				F6152944264EE1E7003BCB59 /* HoorayRepository.swift */,
 				F6913F0226EE5CA300C6E105 /* ReadItemRepository.swift */,
+				F6913F0926F38AB100C6E105 /* Deprecated */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -587,9 +586,18 @@
 			children = (
 				F6913EFE26EE55B400C6E105 /* ReadItemLoadUsecase.swift */,
 				F6913F0026EE5A7800C6E105 /* ReadItemUpdateUsecase.swift */,
-				F6913EFA26EE4D6900C6E105 /* ReadItemUsecaseImple.swift */,
+				F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */,
 			);
 			path = Read;
+			sourceTree = "<group>";
+		};
+		F6913F0926F38AB100C6E105 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				2B40BF8E263F0FD70031C7A6 /* PlaceRepository.swift */,
+				F6152944264EE1E7003BCB59 /* HoorayRepository.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -753,7 +761,7 @@
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,
 				F6152956264F08AD003BCB59 /* SharedDataKeys.swift in Sources */,
 				F6646F422690700D00E5A53B /* Policy.swift in Sources */,
-				F6913EFB26EE4D6900C6E105 /* ReadItemUsecaseImple.swift in Sources */,
+				F6913EFB26EE4D6900C6E105 /* ReadItemUsecase.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
 				F6152939264DA35A003BCB59 /* MessagingService.swift in Sources */,
 				F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */,

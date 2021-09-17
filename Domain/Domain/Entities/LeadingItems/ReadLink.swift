@@ -14,6 +14,7 @@ public struct ReadLink: ReadItem {
     private static let uidPrefix = "ri"
     
     public let uid: String
+    public var ownerID: String?
     public var parentID: String?
     public let link: String
     public let createdAt: TimeStamp
