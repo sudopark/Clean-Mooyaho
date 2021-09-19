@@ -15,19 +15,22 @@ import Optics
 
 // MARK: - ReadItemUsecase
 
-public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase { }
+public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, ReadItemOptionsUsecase { }
 
 
 // MARK: - ReadItemUsecaseImple
 
 public final class ReadItemUsecaseImple: ReadItemUsecase {
     
-    private var readItemRepository: ReadItemRepository
+    private let itemsRespoitory: ReadItemRepository
+    private let optionsRespository: ReadItemOptionsRepository
     private let authInfoProvider: AuthInfoProvider
     
-    public init(readItemRepository: ReadItemRepository,
+    public init(itemsRespoitory: ReadItemRepository,
+                optionsRespository: ReadItemOptionsRepository,
                 authInfoProvider: AuthInfoProvider) {
-        self.readItemRepository = readItemRepository
+        self.itemsRespoitory = itemsRespoitory
+        self.optionsRespository = optionsRespository
         self.authInfoProvider = authInfoProvider
     }
 }
@@ -37,17 +40,17 @@ extension ReadItemUsecaseImple {
     
     public func loadMyItems() -> Observable<[ReadItem]> {
         guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.readItemRepository.fetchMyItems().asObservable()
+            return self.itemsRespoitory.fetchMyItems().asObservable()
         }
-        return self.readItemRepository.requestLoadMyItems(for: memberID)
+        return self.itemsRespoitory.requestLoadMyItems(for: memberID)
     }
     
     public func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
         guard self.authInfoProvider.isSignedIn() else {
-            return self.readItemRepository
+            return self.itemsRespoitory
                 .fetchCollectionItems(collectionID: collectionID).asObservable()
         }
-        return self.readItemRepository.requestLoadCollectionItems(collectionID: collectionID)
+        return self.itemsRespoitory.requestLoadCollectionItems(collectionID: collectionID)
     }
 }
 
@@ -56,17 +59,31 @@ extension ReadItemUsecaseImple {
     
     public func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
         guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.readItemRepository.updateCollection(newCollection)
+            return self.itemsRespoitory.updateCollection(newCollection)
         }
         let newCollection = newCollection |> \.ownerID .~ memberID
-        return self.readItemRepository.requestUpdateCollection(newCollection)
+        return self.itemsRespoitory.requestUpdateCollection(newCollection)
     }
     
     public func updateLink(_ link: ReadLink) -> Maybe<Void> {
         guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.readItemRepository.updateLink(link)
+            return self.itemsRespoitory.updateLink(link)
         }
         let link = link |> \.ownerID .~ memberID
-        return self.readItemRepository.requestUpdateLink(link)
+        return self.itemsRespoitory.requestUpdateLink(link)
+    }
+}
+
+
+// MARKK: - ReadItemOptionsUsecase
+
+extension ReadItemUsecaseImple {
+    
+    public func loadShrinkModeIsOnOption() -> Maybe<Bool> {
+        return self.optionsRespository.fetchLastestsIsShrinkModeOn()
+    }
+    
+    public func updateIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
+        return self.optionsRespository.updateIsShrinkModeOn(newvalue)
     }
 }
