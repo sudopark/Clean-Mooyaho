@@ -40,3 +40,9 @@ extension Seconds {
         return TimeInterval(self)
     }
 }
+
+
+extension Int {
+    
+    public func asTimeStamp() -> TimeStamp { TimeStamp(self) }
+}

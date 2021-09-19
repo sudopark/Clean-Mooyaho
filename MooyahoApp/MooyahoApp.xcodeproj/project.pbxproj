@@ -58,6 +58,8 @@
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
 		F6C0784126A47D0D0070E75E /* MapScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C0784026A47D0D0070E75E /* MapScenes.framework */; };
 		F6C0784226A47D0D0070E75E /* MapScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6C0784026A47D0D0070E75E /* MapScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */; };
+		F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
 		F6E83122265C509800C91F3B /* MockApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* MockApplicationUsecase.swift */; };
 		F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */; };
@@ -92,6 +94,7 @@
 				2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */,
 				2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */,
 				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
+				F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */,
 				F6E8317026601BE300C91F3B /* PlaceScenes.framework in Embed Frameworks */,
 				F6502DB62669D6BB0027800F /* HoorayScene.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
@@ -153,6 +156,7 @@
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
 		F6C0784026A47D0D0070E75E /* MapScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MapScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
 		F6E83121265C509800C91F3B /* MockApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockApplicationUsecase.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
 				2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */,
 				F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */,
+				F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
@@ -358,6 +363,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */,
 				F6025FF826A9D201007A1AA8 /* UsecaseDoubles.framework */,
 				F6C0784026A47D0D0070E75E /* MapScenes.framework */,
 				F6502DB42669D6BB0027800F /* HoorayScene.framework */,
