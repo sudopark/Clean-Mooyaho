@@ -42,7 +42,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     private func makeUsecase(signedIn: Bool = true,
                              shouldfailLoadMyCollections: Bool = false,
-                             shouldFailLoadCollection: Bool = false) -> ReadItemLoadUsecase & ReadItemUpdateUsecase {
+                             shouldFailLoadCollection: Bool = false) -> ReadItemUsecase {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
         shouldfailLoadMyCollections.then {
@@ -55,7 +55,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
         self.spyRepository = repositoryStub
         
-        return ReadItemUsecaseImple(readItemRepository: repositoryStub,
+        return ReadItemUsecaseImple(itemsRespoitory: repositoryStub,
+                                    optionsRespository: StubReadItemOptionsRepository(),
                                     authInfoProvider: self.authProvider(signedIn))
     }
 }
@@ -240,6 +241,35 @@ extension ReadItemUsecaseTests {
         // then
         let link = self.spyRepository.updatedLink
         XCTAssertEqual(link?.ownerID, self.myID)
+    }
+}
+
+extension ReadItemUsecaseTests {
+    
+    func testUsecase_loadShrinkModeOn() {
+        // given
+        let expect = expectation(description: "shrink mode 패치")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let loading = usecase.loadShrinkModeIsOnOption()
+        let isOn = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(isOn, true)
+    }
+    
+    func testUsecase_updateShrinkModeIsOn() {
+        // given
+        let expect = expectation(description: "shrink mode 업데이트")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let updating = usecase.updateIsShrinkModeIsOn(false)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
     }
 }
 
