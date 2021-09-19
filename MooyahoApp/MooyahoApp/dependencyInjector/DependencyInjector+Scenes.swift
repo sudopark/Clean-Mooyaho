@@ -14,6 +14,7 @@ import MapScenes
 import MemberScenes
 import PlaceScenes
 import HoorayScene
+import ReadItemScene
 
 
 // MARK: - Main Sceens
@@ -233,6 +234,20 @@ extension DependencyInjector: TextInputSceneBuilable {
         let viewModel = TextInputViewModelImple(inputMode: inputMode,
                                                 router: router)
         let viewController = TextInputViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
+// MARK: - ReadItemScene
+
+extension DependencyInjector: ReadCollectionSceneBuilable {
+    
+    public func makeReadCollectionScene() -> ReadCollectionScene {
+        let router = ReadCollectionRouter(nextSceneBuilders: self)
+        let viewModel = ReadCollectionViewModelImple(router: router)
+        let viewController = ReadCollectionViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
