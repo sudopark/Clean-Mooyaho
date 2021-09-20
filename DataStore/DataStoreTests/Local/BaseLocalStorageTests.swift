@@ -19,8 +19,8 @@ import UnitTestHelpKit
 class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var mockEnvironmentStorage: MockEnvironmentStorage!
     var mockEncrytedStorage: MockEncryptedStorage!
+    var testEnvironmentStorage: EnvironmentStorage!
     var local: LocalStorageImple!
     
     private var testDBPath: String {
@@ -38,8 +38,12 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         
         self.mockEncrytedStorage = MockEncryptedStorage()
-        self.mockEnvironmentStorage = .init()
+        
+        environmentStorageKeyPrefix = "test"
+        self.testEnvironmentStorage = UserDefaults.standard
+        
         let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0, closeWhenDeinit: false)
+        
         self.local = LocalStorageImple(encryptedStorage: mockEncrytedStorage,
                                        environmentStorage: UserDefaults.standard,
                                        dataModelStorage: dataModelStorage)
@@ -48,7 +52,7 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockEncrytedStorage = nil
-        self.mockEnvironmentStorage = nil
+        self.testEnvironmentStorage.clearAll()
         self.local = nil
         try? FileManager.default.removeItem(atPath: self.testDBPath)
     }
@@ -70,25 +74,6 @@ extension BaseLocalStorageTests {
 
         func delete(_ key: String) -> Bool {
             return true
-        }
-    }
-}
-
-
-extension BaseLocalStorageTests {
-    
-    class MockEnvironmentStorage: EnvironmentStorage, Mocking {
-        
-        func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void> {
-            return self.resolve(key: "savePendingNewPlaceForm") ?? .empty()
-        }
-        
-        func fetchPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
-            return self.resolve(key: "fetchPendingNewPlaceForm") ?? .empty()
-        }
-        
-        func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void> {
-            return self.resolve(key: "removePendingNewPlaceForm") ?? .empty()
         }
     }
 }

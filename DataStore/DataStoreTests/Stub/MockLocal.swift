@@ -130,4 +130,28 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "updateReadItems")
         return self.resolve(key: "updateReadItems") ?? .empty()
     }
+    
+    func fetchReadItemIsShrinkMode() -> Maybe<Bool> {
+        return self.resolve(key: "fetchReadItemIsShrinkMode") ?? .empty()
+    }
+    
+    func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void> {
+        return self.resolve(key: "updateReadItemIsShrinkMode") ?? .empty()
+    }
+    
+    func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?> {
+        return self.resolve(key: "fetchReadItemSortOrder") ?? .empty()
+    }
+    
+    func updateReadItemSortOrder(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+        return self.resolve(key: "updateFetchReadItemSortOrder") ?? .empty()
+    }
+    
+    func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]> {
+        return self.resolve(key: "fetchReadItemCustomOrder") ?? .empty()
+    }
+    
+    func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
+        return self.resolve(key: "updateReadItemCustomOrder") ?? .empty()
+    }
 }

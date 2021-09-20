@@ -22,27 +22,66 @@ public protocol EnvironmentStorage {
     func fetchPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?>
 
     func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void>
+    
+    func fetchReadItemIsShrinkMode() -> Maybe<Bool>
+    
+    func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void>
+    
+    func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?>
+    
+    func updateReadItemSortOrder(for collectionID: String,
+                                 to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
+    
+    func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]>
+    
+    func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
+    
+    func clearAll()
 }
+
+var environmentStorageKeyPrefix: String?
 
 // MARK: - EnvironmentStorageKeys
 
 enum EnvironmentStorageKeys {
     
     case pendingPlaceInfo(_ memberID: String)
+    case readItemIsShrinkMode
+    case readItemSortOrder(_ collectionID: String)
+    case readitemCustomOrder(_ collectionID: String)
     
     var keyvalue: String {
+        let prefix = environmentStorageKeyPrefix
         switch self {
         case let .pendingPlaceInfo(memberID):
-            return "pendingPlaceInfo:\(memberID)"
+            return "pendingPlaceInfo:\(memberID)".insertPrefixOrNot(prefix)
+            
+        case .readItemIsShrinkMode:
+            return "readItemIsShrinkMode".insertPrefixOrNot(prefix)
+            
+        case let .readItemSortOrder(collectionID):
+            return "readItemSortOrder:\(collectionID)".insertPrefixOrNot(prefix)
+            
+        case let .readitemCustomOrder(collectionID):
+            return "readitemCustomOrder:\(collectionID)".insertPrefixOrNot(prefix)
         }
+    }
+    
+    fileprivate static func keyPrefixes() -> [String] {
+        let prefix = environmentStorageKeyPrefix
+        return [
+            "pendingPlaceInfo".insertPrefixOrNot(prefix),
+            "readItemIsShrinkMode".insertPrefixOrNot(prefix),
+            "readItemSortOrder".insertPrefixOrNot(prefix),
+            "readitemCustomOrder".insertPrefixOrNot(prefix)
+        ]
     }
 }
 
 
 extension UserDefaults: EnvironmentStorage {
     
-    
-    func load<T: Decodable>(_ key: String) -> Maybe<T?> {
+    private func load<T: Decodable>(_ key: String) -> Maybe<T?> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
             do {
@@ -59,7 +98,7 @@ extension UserDefaults: EnvironmentStorage {
         }
     }
     
-    func save<T: Encodable>(_ key: String, value: T) -> Maybe<Void> {
+    private func save<T: Encodable>(_ key: String, value: T) -> Maybe<Void> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
             do {
@@ -78,13 +117,17 @@ extension UserDefaults: EnvironmentStorage {
         }
     }
     
-    func remove(_ key: String) -> Maybe<Void> {
+    private func remove(_ key: String) -> Maybe<Void> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            self.removeObject(forKey: key)
+            self.runRemove(key)
             callback(.success(()))
             return Disposables.create()
         }
+    }
+    
+    private func runRemove(_ key: String) {
+        self.removeObject(forKey: key)
     }
 }
 
@@ -93,6 +136,16 @@ extension UserDefaults: EnvironmentStorage {
 
 extension UserDefaults {
     
+    public func clearAll() {
+        let storedDataKeys = UserDefaults.standard.dictionaryRepresentation().keys
+        let keyPrefixes = EnvironmentStorageKeys.keyPrefixes()
+        let shouldRemoveTargetKeys = storedDataKeys.filter { key in
+            return keyPrefixes.first(where: { key.starts(with: $0) }) != nil
+        }
+        shouldRemoveTargetKeys.forEach {
+            self.runRemove($0)
+        }
+    }
     
     public func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void> {
         
@@ -119,6 +172,36 @@ extension UserDefaults {
     public func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void> {
         let key = EnvironmentStorageKeys.pendingPlaceInfo(memberID)
         return self.remove(key.keyvalue)
+    }
+    
+    public func fetchReadItemIsShrinkMode() -> Maybe<Bool> {
+        let key = EnvironmentStorageKeys.readItemIsShrinkMode
+        return self.load(key.keyvalue).map{ $0 ?? false }
+    }
+    
+    public func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void> {
+        let key = EnvironmentStorageKeys.readItemIsShrinkMode
+        return self.save(key.keyvalue, value: newValue)
+    }
+    
+    public func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?> {
+        let key = EnvironmentStorageKeys.readItemSortOrder(collectionID)
+        return self.load(key.keyvalue)
+    }
+    
+    public func updateReadItemSortOrder(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+        let key = EnvironmentStorageKeys.readItemSortOrder(collectionID)
+        return  self.save(key.keyvalue, value: newValue)
+    }
+    
+    public func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]> {
+        let key = EnvironmentStorageKeys.readitemCustomOrder(collectionID)
+        return self.load(key.keyvalue).map{ $0 ?? [] }
+    }
+    
+    public func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
+        let key = EnvironmentStorageKeys.readitemCustomOrder(collectionID)
+        return self.save(key.keyvalue, value: itemIDs)
     }
 }
 
@@ -258,5 +341,59 @@ fileprivate struct PendingNewPlaceForm: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.time, forKey: .time)
         try container.encode(self.form, forKey: .form)
+    }
+}
+
+
+extension ReadCollectionItemSortOrder: Codable {
+    
+    private var isAscendingOrder: Bool? {
+        switch self {
+        case let .byCreatedAt(isAscending),
+             let .byLastUpdatedAt(isAscending),
+             let .byPriority(isAscending): return isAscending
+        default: return nil
+        }
+    }
+    
+    private var caseName: String {
+        switch self {
+        case .byCreatedAt: return "created"
+        case .byLastUpdatedAt: return "last updated"
+        case .byPriority: return "priority"
+        case .byCustomOrder: return "custom"
+        }
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case caseName
+        case isAscending
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let caseName: String = try container.decode(String.self, forKey: .caseName)
+        let isAscending: Bool? = try? container.decode(Bool.self, forKey: .isAscending)
+        switch (caseName, isAscending) {
+        case ("created", let .some(flag)): self = .byPriority(flag)
+        case ("last updated", let .some(flag)): self = .byLastUpdatedAt(flag)
+        case ("priority", let .some(flag)): self = .byPriority(flag)
+        case ("custom", _): self = .byCustomOrder
+        default: throw LocalErrors.deserializeFail("ReadCollectionItemSortOrder")
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.caseName, forKey: .caseName)
+        try? container.encode(self.isAscendingOrder, forKey: .isAscending)
+    }
+}
+
+
+private extension String {
+    
+    func insertPrefixOrNot(_ prefix: String?) -> String {
+        return prefix.map{ "\($0)_\(self)" } ?? self
     }
 }
