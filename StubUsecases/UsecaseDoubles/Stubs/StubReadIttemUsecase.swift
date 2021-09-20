@@ -1,0 +1,54 @@
+//
+//  StubReadIttemUsecase.swift
+//  UsecaseDoubles
+//
+//  Created by sudo.park on 2021/09/19.
+//
+
+import Foundation
+
+import RxSwift
+
+import Domain
+
+open class StubReadItemUsecase: ReadItemUsecase {
+    
+    public struct Scenario {
+        public var myItems: Result<[ReadItem], Error> = .success([])
+        public var collectionItems: Result<[ReadItem], Error> = .success([])
+        public var updateCollectionResult: Result<Void, Error> = .success(())
+        public var updateLinkResult: Result<Void, Error> = .success(())
+        public var shrinkModeIsOn: Bool = false
+        
+        public init() {}
+    }
+    private var scenario: Scenario
+    public init(scenario: Scenario = Scenario()) {
+        self.scenario = scenario
+    }
+    
+    open func loadMyItems() -> Observable<[ReadItem]> {
+        return self.scenario.myItems.asMaybe().asObservable()
+    }
+    
+    open func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
+        return self.scenario.collectionItems.asMaybe().asObservable()
+    }
+    
+    open func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
+        return self.scenario.updateLinkResult.asMaybe()
+    }
+    
+    open func updateLink(_ link: ReadLink) -> Maybe<Void> {
+        return self.scenario.updateLinkResult.asMaybe()
+    }
+    
+    open func loadShrinkModeIsOnOption() -> Maybe<Bool> {
+        return .just(self.scenario.shrinkModeIsOn)
+    }
+    
+    open func updateIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
+        self.scenario.shrinkModeIsOn = newvalue
+        return .just()
+    }
+}

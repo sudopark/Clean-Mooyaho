@@ -10,19 +10,14 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
 
 
 // MARK: - ReadCollectionViewModel
-
-public enum ReadCollectionItemSortOrder {
-    case byCreatedAt(_ isAscending: Bool = false)
-    case byLastUpdatedAt(_ isAscending: Bool = false)
-    case byPriority(_ isAscending: Bool = false)
-    case byCustomOrder
-}
 
 public protocol ReadCollectionViewModel: AnyObject {
 
@@ -67,16 +62,22 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
     }
     
     fileprivate final class Subjects {
-        let isLoading = PublishSubject<Bool>()
-        let isShowReloadFail = PublishSubject<Bool>()
-        let cellViewModels = BehaviorRelay<[ReadItemCellViewModel]?>(value: nil)
+        let isShrinkModeIsOn = BehaviorRelay<Bool?>(value: nil)
+        let items = BehaviorRelay<[ReadItem]?>(value: nil)
     }
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
     private func internalBinding() {
-        self.bindDataSource()
+        
+        let setupLatestsShrinkModeFlag: (Bool) -> Void = { [weak self] isOn in
+            self?.subjects.isShrinkModeIsOn.accept(isOn)
+        }
+        self.readItemUsecase
+            .loadShrinkModeIsOnOption()
+            .subscribe(onSuccess: setupLatestsShrinkModeFlag)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -88,8 +89,7 @@ extension ReadCollectionViewModelImple {
     public func reloadCollectionItems() {
         
         let updateList: ([ReadItem]) -> Void = { [weak self] itemes in
-            let cellViewModels = itemes.asCellViewModels()
-            self?.subjects.cellViewModels.accept(cellViewModels)
+            self?.subjects.items.accept(itemes)
         }
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
@@ -102,7 +102,9 @@ extension ReadCollectionViewModelImple {
     }
     
     public func toggleShrinkListStyle() {
-        
+        guard let oldValue = self.subjects.isShrinkModeIsOn.value else { return }
+        let newValue = oldValue.invert()
+        self.subjects.isShrinkModeIsOn.accept(newValue)
     }
 }
 
@@ -111,26 +113,33 @@ extension ReadCollectionViewModelImple {
 
 extension ReadCollectionViewModelImple {
     
-    private func bindDataSource() {
-        
-    }
-        
     public var cellViewModels: Observable<[ReadItemCellViewModel]> {
-        return self.subjects.cellViewModels
-            .compactMap { $0 }
+        
+        let asCellViewModels: ([ReadItem], Bool) ->  [ReadItemCellViewModel]
+        asCellViewModels = { items, isShrink in
+            return items.asCellViewModels(isShrink: isShrink)
+        }
+        
+        return Observable.combineLatest(
+            self.subjects.items.compactMap{ $0 },
+            self.subjects.isShrinkModeIsOn.compactMap { $0 },
+            resultSelector: asCellViewModels
+        )
     }
 }
 
 private extension Array where Element == ReadItem {
     
-    func asCellViewModels() -> [ReadItemCellViewModel] {
+    func asCellViewModels(isShrink: Bool) -> [ReadItemCellViewModel] {
         let transform: (ReadItem) -> ReadItemCellViewModel? = { item in
             switch item {
             case let collection as ReadCollection:
                 return ReadCollectionCellViewModel(collection: collection)
+                    |> \.isShrink .~ isShrink
                 
             case let link as ReadLink:
                 return ReadLinkCellViewModel(link: link)
+                    |> \.isShrink .~ isShrink
                 
             default: return nil
             }

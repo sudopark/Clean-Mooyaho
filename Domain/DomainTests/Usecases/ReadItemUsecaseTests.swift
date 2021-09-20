@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import UnitTestHelpKit
 
@@ -18,6 +20,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     private var spyRepository: SpyRepository!
+    private var spyStore: SharedDataStoreService!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -42,7 +45,10 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     private func makeUsecase(signedIn: Bool = true,
                              shouldfailLoadMyCollections: Bool = false,
-                             shouldFailLoadCollection: Bool = false) -> ReadItemUsecase {
+                             shouldFailLoadCollection: Bool = false,
+                             isShrinkModeOn: Bool = true,
+                             sortOrder: ReadCollectionItemSortOrder? = .default,
+                             customSortOrder: [String] = []) -> ReadItemUsecase {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
         shouldfailLoadMyCollections.then {
@@ -55,9 +61,19 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
         self.spyRepository = repositoryStub
         
+        let optionsScenario = StubReadItemOptionsRepository.Scenario()
+            |> \.isShrinkMode .~ .success(isShrinkModeOn)
+            |> \.sortOrder .~ .success(sortOrder)
+            |> \.customOrder .~ .success(customSortOrder)
+        let optionRepository = StubReadItemOptionsRepository(scenario: optionsScenario)
+        
+        let store = SharedDataStoreServiceImple()
+        self.spyStore = store
+        
         return ReadItemUsecaseImple(itemsRespoitory: repositoryStub,
-                                    optionsRespository: StubReadItemOptionsRepository(),
-                                    authInfoProvider: self.authProvider(signedIn))
+                                    optionsRespository: optionRepository,
+                                    authInfoProvider: self.authProvider(signedIn),
+                                    sharedStoreService: store)
     }
 }
 
@@ -259,6 +275,20 @@ extension ReadItemUsecaseTests {
         XCTAssertEqual(isOn, true)
     }
     
+    func testUsecase_whenShrinkModeLoadbefore_useThatValue() {
+        // given
+        let expect = expectation(description: "이전에 로드한 플래그값이 있으면 이용")
+        let usecase = self.makeUsecase(isShrinkModeOn: true)
+        
+        // when
+        let loadAndReload = usecase.loadShrinkModeIsOnOption()
+            .flatMap{ _ in usecase.loadShrinkModeIsOnOption() }
+        let isOn = self.waitFirstElement(expect, for: loadAndReload.asObservable())
+        
+        // then
+        XCTAssertEqual(isOn, true)
+    }
+    
     func testUsecase_updateShrinkModeIsOn() {
         // given
         let expect = expectation(description: "shrink mode 업데이트")
@@ -270,6 +300,132 @@ extension ReadItemUsecaseTests {
         
         // then
         XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_whenAfterUpdateIsShrink_updateOnStore() {
+        // given
+        let expect = expectation(description: "shrink mode 업데이트 이후에 데이터스토어에도 업데이트")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let updated = self.spyStore.observe(Bool.self, key: SharedDataKeys.readItemShrinkIsOn.rawValue)
+        let isOn = self.waitFirstElement(expect, for: updated) {
+            usecase.updateIsShrinkModeIsOn(true)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(isOn, true)
+    }
+}
+
+extension ReadItemUsecaseTests {
+    
+    func testUsecase_loadSortOrder() {
+        // given
+        let expect = expectation(description: "sort order 로드")
+        let usecase = self.makeUsecase(sortOrder: .byPriority(false))
+        
+        // when
+        let loading = usecase.loadLatestSortOption(for: "some")
+        let order = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(order, .byPriority(false))
+    }
+    
+    func testUsecase_whenPreloadedSortOrderExists_useIt() {
+        // given
+        let expect = expectation(description: "미리 로드된 정렬옵션 존재시에 해당값 사용")
+        let usecase = self.makeUsecase(sortOrder: .byCustomOrder)
+        
+        // when
+        let loadAndReload = usecase.loadLatestSortOption(for: "some")
+            .flatMap{ _ in usecase.loadLatestSortOption(for: "some") }
+        let order = self.waitFirstElement(expect, for: loadAndReload.asObservable())
+        
+        // then
+        XCTAssertEqual(order, .byCustomOrder)
+    }
+    
+    func testUsecase_whenLocalSortOrderNotExists_useDefaultValue() {
+        // given
+        let expect = expectation(description: "로컬에 저장된 정렬옵션 존재 안하는 경우 디폴트값 이용")
+        let usecase = self.makeUsecase(sortOrder: nil)
+        
+        // when
+        let loading = usecase.loadLatestSortOption(for: "some")
+        let order = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(order, .default)
+    }
+    
+    func testUsecase_updateSortOrder() {
+        // given
+        let expect = expectation(description: "sort order 업데이트시에 로컬이랑 store 둘다 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase()
+        
+        // when
+        let updatedOnStore = self.spyStore
+            .observe([String: ReadCollectionItemSortOrder].self, key: SharedDataKeys.readItemSortOptionMap.rawValue)
+            .map{ $0?["some"] }.filter{ $0 == .byCustomOrder }.map{ _ in }
+        let updateOnLocal = usecase.updateSortOption(for: "some", to: .byCustomOrder).asObservable()
+        let updatings = Observable.merge(updatedOnStore, updateOnLocal)
+        let isUpdatedBoth: [Void] = self.waitElements(expect, for: updatings)
+        
+        // then
+        XCTAssertEqual(isUpdatedBoth.count, 2)
+    }
+}
+
+extension ReadItemUsecaseTests {
+    
+    func testUsecase_loadCustomSortOrder() {
+        // given
+        let expect = expectation(description: "custom sort order 로드")
+        let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
+        
+        // when
+        let loading = usecase.loadCustomOrder(for: "some")
+        let orders = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(orders, ["c1", "c2"])
+    }
+    
+    func testUsecase_whenPreloadedCustomSortOrderExists_useIt() {
+        // given
+        let expect = expectation(description: "미리 로드된 custom 정렬 존재시에 해당값 사용")
+        let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
+        
+        // when
+        let loadAndReload = usecase.loadCustomOrder(for: "some")
+            .flatMap{ _ in usecase.loadCustomOrder(for: "some") }
+        let orders = self.waitFirstElement(expect, for: loadAndReload.asObservable())
+        
+        // then
+        XCTAssertEqual(orders, ["c1", "c2"])
+    }
+    
+    func testUsecase_updateCustomSortOrder() {
+        // given
+        let expect = expectation(description: "custom sort order 업데이트시에 로컬이랑 store 둘다 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase()
+        
+        // when
+        let updatedOnStore = self.spyStore
+            .observe([String: [String]].self, key: SharedDataKeys.readItemCustomOrderMap.rawValue)
+            .map{ $0?["some"] }.filter{ $0?.isNotEmpty == true }.map{ _ in }
+        let updateOnLocal = usecase.updateCustomOrder(for: "some", itemIDs: ["c"]).asObservable()
+        let updatings = Observable.merge(updatedOnStore, updateOnLocal)
+        let isUpdatedBoth: [Void] = self.waitElements(expect, for: updatings)
+        
+        // then
+        XCTAssertEqual(isUpdatedBoth.count, 2)
     }
 }
 
