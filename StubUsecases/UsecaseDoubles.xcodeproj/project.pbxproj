@@ -21,6 +21,7 @@
 		F66CD94F2673B1B10031EEC5 /* MockSearchNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD94E2673B1B10031EEC5 /* MockSearchNewPlaceUsecase.swift */; };
 		F66CD9612673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9602673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift */; };
 		F6AD56A226B2FBF600F93508 /* BaseStubHoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AD56A126B2FBF600F93508 /* BaseStubHoorayUsecase.swift */; };
+		F6E279CD26F711C200957AC4 /* StubReadIttemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279CC26F711C200957AC4 /* StubReadIttemUsecase.swift */; };
 		F6E83126265C55FA00C91F3B /* MockAuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83125265C55FA00C91F3B /* MockAuthUsecase.swift */; };
 		F6E83128265C57B100C91F3B /* MockMemberUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83127265C57B100C91F3B /* MockMemberUsecase.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		F66CD94E2673B1B10031EEC5 /* MockSearchNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchNewPlaceUsecase.swift; sourceTree = "<group>"; };
 		F66CD9602673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRegisterNewPlaceUsecase.swift; sourceTree = "<group>"; };
 		F6AD56A126B2FBF600F93508 /* BaseStubHoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseStubHoorayUsecase.swift; sourceTree = "<group>"; };
+		F6E279CC26F711C200957AC4 /* StubReadIttemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubReadIttemUsecase.swift; sourceTree = "<group>"; };
 		F6E83125265C55FA00C91F3B /* MockAuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthUsecase.swift; sourceTree = "<group>"; };
 		F6E83127265C57B100C91F3B /* MockMemberUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMemberUsecase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +137,7 @@
 				F6AD56A126B2FBF600F93508 /* BaseStubHoorayUsecase.swift */,
 				F66B7D7B26C7C2D300D31FAC /* BaseStubPlaceUsecase.swift */,
 				F63A08E626DC8DBE009E5961 /* BaseStubMemberUsecase.swift */,
+				F6E279CC26F711C200957AC4 /* StubReadIttemUsecase.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				F63A08E726DC8DBE009E5961 /* BaseStubMemberUsecase.swift in Sources */,
 				F6E83126265C55FA00C91F3B /* MockAuthUsecase.swift in Sources */,
 				F66CD92C266FCB800031EEC5 /* MockSuggestPlaceUsecase.swift in Sources */,
+				F6E279CD26F711C200957AC4 /* StubReadIttemUsecase.swift in Sources */,
 				F6AD56A226B2FBF600F93508 /* BaseStubHoorayUsecase.swift in Sources */,
 				F66CD9612673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift in Sources */,
 				F62DFFBC26621E4D00C4A080 /* MockHoorayUsecase.swift in Sources */,

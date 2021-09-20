@@ -98,3 +98,19 @@ extension NewHoorayMessage {
         return .init(hoorayID: "id:\(int)", publisherID: "pub:\(int)", publishedAt: 0, placeID: "place", location: .init(latt: 0, long: 0), spreadDistance: 10, aliveDuration: 10)
     }
 }
+
+
+extension ReadCollection {
+    
+    public static func dummy(_ int: Int) -> ReadCollection {
+        return .init(uid: "c:\(int)", name: "collection:\(int)",
+                     createdAt: int.asTimeStamp(), lastUpdated: int.asTimeStamp())
+    }
+}
+
+extension ReadLink {
+    
+    public static func dummy(_ int: Int) -> ReadLink {
+        return .init(uid: "l:\(int)", link: "link:\(int)", createAt: int.asTimeStamp(), lastUpdated: int.asTimeStamp())
+    }
+}
