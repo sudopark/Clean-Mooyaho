@@ -51,4 +51,20 @@ open class StubReadItemUsecase: ReadItemUsecase {
         self.scenario.shrinkModeIsOn = newvalue
         return .just()
     }
+    
+    open func loadLatestSortOption(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder> {
+        return .empty()
+    }
+    
+    open func loadCustomOrder(for collectionID: String) -> Maybe<[String]> {
+        return .empty()
+    }
+    
+    open func updateSortOption(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    open func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
+        return .empty()
+    }
 }

@@ -71,3 +71,21 @@ extension AppRepository: HoorayRepository, HoorayRepositoryDefImpleDependency {
         return self.local
     }
 }
+
+extension AppRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency {
+    
+    public var readItemRemote: ReadItemRemote {
+        return self.remote
+    }
+    
+    public var readItemLocal: ReadItemLocalStorage {
+        return self.local
+    }
+}
+
+extension AppRepository: ReadItemOptionsRepository, ReadItemOptionReposiotryDefImpleDependency {
+    
+    public var readItemOptionLocal: ReadItemOptionsLocalStorage {
+        return self.local
+    }
+}

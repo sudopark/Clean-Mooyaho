@@ -167,4 +167,11 @@ extension DependencyInjector {
         return PlaceUsecaseImple(placeRepository: self.appReposiotry,
                                  sharedStoreService: self.shared.dataStore)
     }
+    
+    var readItemUsecase: ReadItemUsecase {
+        return ReadItemUsecaseImple(itemsRespoitory: self.appReposiotry,
+                                    optionsRespository: self.appReposiotry,
+                                    authInfoProvider: self.shared.dataStore,
+                                    sharedStoreService: self.shared.dataStore)
+    }
 }

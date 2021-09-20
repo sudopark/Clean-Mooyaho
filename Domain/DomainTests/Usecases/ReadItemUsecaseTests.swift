@@ -349,9 +349,23 @@ extension ReadItemUsecaseTests {
         XCTAssertEqual(order, .byCustomOrder)
     }
     
-    func testUsecase_whenLocalSortOrderNotExists_useDefaultValue() {
+    func testUsecase_whenSortOrderNotExistsForCollection_useLatestUsedSortOrder() {
         // given
-        let expect = expectation(description: "로컬에 저장된 정렬옵션 존재 안하는 경우 디폴트값 이용")
+        let expect = expectation(description: "해당 콜렉션을 위한 정렬옵션 존재 안하는 경우 마지막으로 이용했던값 이용")
+        let usecase = self.makeUsecase(sortOrder: nil)
+        self.spyStore.save(ReadCollectionItemSortOrder.self, key: .latestReadItemSortOption, .byPriority(true))
+        
+        // when
+        let loading = usecase.loadLatestSortOption(for: "some")
+        let order = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(order, .byPriority(true))
+    }
+    
+    func testUsecase_whenSortOrderAndLatestSortOrderNotExistsForCollection_useDefaultValue() {
+        // given
+        let expect = expectation(description: "해당 콜렉션을 위한 정렬옵션과 마지막 사용 정렬값이 존재 안하는 경우 디폴튿값 이룔")
         let usecase = self.makeUsecase(sortOrder: nil)
         
         // when

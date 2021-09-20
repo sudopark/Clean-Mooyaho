@@ -129,13 +129,13 @@ extension ReadCollectionViewModelTests {
 
 extension ReadCollectionViewModelTests {
     
-    func testViewModel_showCurrentOrder() {
-        // given
-        let expect = expectation(description: "현재 정렬옵션 노출")
-        
-        // when
-        // then
-    }
+//    func testViewModel_showCurrentOrder() {
+//        // given
+//        let expect = expectation(description: "현재 정렬옵션 노출")
+//        
+//        // when
+//        // then
+//    }
 }
 
 // MAARK: - change order + update custom order
