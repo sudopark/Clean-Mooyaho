@@ -13,12 +13,26 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - Routing
 
-public protocol ReadCollectionRouting: Routing { }
+public protocol ReadCollectionRouting: Routing {
+    
+    func showItemSortOrderOptions(_ currentOrder: ReadCollectionItemSortOrder,
+                                  selectedHandler: @escaping (ReadCollectionItemSortOrder) -> Void)
+    
+    func moveToSubCollection(collectionID: String)
+    
+    func showLinkDetail(_ linkID: String)
+    
+    func routeToMakeNewCollectionScene(_ completedHandler: @escaping (ReadCollection) -> Void)
+    
+    func routeToAddNewLink(at collectionID: String,
+                           _ completionHandler: @escaping (ReadLink) -> Void)
+}
 
 // MARK: - Routers
 
@@ -30,5 +44,25 @@ public final class ReadCollectionRouter: Router<ReadCollectionRouterBuildables>,
 
 extension ReadCollectionRouter {
     
-    // ReadCollectionRouting implements
+    public func showItemSortOrderOptions(_ currentOrder: ReadCollectionItemSortOrder,
+                                         selectedHandler: @escaping (ReadCollectionItemSortOrder) -> Void) {
+        logger.todoImplement()
+    }
+    
+    public func moveToSubCollection(collectionID: String) {
+        logger.todoImplement()
+    }
+    
+    public func showLinkDetail(_ linkID: String) {
+        logger.todoImplement()
+    }
+    
+    public func routeToMakeNewCollectionScene(_ completedHandler: @escaping (ReadCollection) -> Void) {
+        logger.todoImplement()
+    }
+    
+    public func routeToAddNewLink(at collectionID: String,
+                                  _ completionHandler: @escaping (ReadLink) -> Void) {
+        logger.todoImplement()
+    }
 }

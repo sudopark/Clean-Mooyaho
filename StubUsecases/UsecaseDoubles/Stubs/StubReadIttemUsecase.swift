@@ -18,6 +18,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
         public var collectionItems: Result<[ReadItem], Error> = .success([])
         public var updateCollectionResult: Result<Void, Error> = .success(())
         public var updateLinkResult: Result<Void, Error> = .success(())
+        public var sortOrder: Result<ReadCollectionItemSortOrder, Error> = .success(.default)
         public var shrinkModeIsOn: Bool = false
         
         public init() {}
@@ -53,7 +54,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
     }
     
     open func loadLatestSortOption(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder> {
-        return .empty()
+        return self.scenario.sortOrder.asMaybe()
     }
     
     open func loadCustomOrder(for collectionID: String) -> Maybe<[String]> {

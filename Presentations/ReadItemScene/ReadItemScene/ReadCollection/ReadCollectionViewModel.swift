@@ -24,13 +24,15 @@ public protocol ReadCollectionViewModel: AnyObject {
     // interactor
     func reloadCollectionItems()
     func toggleShrinkListStyle()
-//    func requestChangeOrder()
+    func requestChangeOrder()
 //    func finishEditCustomOrder()
-//    func openItem(_ itemID: String)
+    func openItem(_ itemID: String)
+    func requestMakeNewCollection()
+    func requestAddNewLink()
     
     
     // presenter
-//    var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
+    var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var cellViewModels: Observable<[ReadItemCellViewModel]> { get }
 //    var updateCustomOrderEditing: Observable<Bool> { get }
 //    func collectionPreviewThumbnail(for collectionID: String) -> Observable<ImageSource?>
@@ -42,11 +44,11 @@ public protocol ReadCollectionViewModel: AnyObject {
 
 public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
     
-    private let collectionID: String?
+    private let collectionID: String
     private let readItemUsecase: ReadItemUsecase
     private let router: ReadCollectionRouting
     
-    public init(collectionID: String?,
+    public init(collectionID: String,
                 readItemUsecase: ReadItemUsecase,
                 router: ReadCollectionRouting) {
         self.collectionID = collectionID
@@ -63,6 +65,7 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
     
     fileprivate final class Subjects {
         let isShrinkModeIsOn = BehaviorRelay<Bool?>(value: nil)
+        let sortOrder = BehaviorRelay<ReadCollectionItemSortOrder?>(value: nil)
         let items = BehaviorRelay<[ReadItem]?>(value: nil)
     }
     
@@ -77,6 +80,14 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
         self.readItemUsecase
             .loadShrinkModeIsOnOption()
             .subscribe(onSuccess: setupLatestsShrinkModeFlag)
+            .disposed(by: self.disposeBag)
+        
+        let setupLatestSortOrder: (ReadCollectionItemSortOrder) -> Void = { [weak self] order in
+            self?.subjects.sortOrder.accept(order)
+        }
+        self.readItemUsecase
+            .loadLatestSortOption(for: self.collectionID)
+            .subscribe(onSuccess: setupLatestSortOrder)
             .disposed(by: self.disposeBag)
     }
 }
@@ -94,8 +105,10 @@ extension ReadCollectionViewModelImple {
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
-        let loadItems = self.collectionID
-            .map{ self.readItemUsecase.loadCollectionItems($0) } ?? self.readItemUsecase.loadMyItems()
+        let loadItems = self.collectionID == ReadCollection.rootID
+            ? self.readItemUsecase.loadMyItems()
+            : self.readItemUsecase.loadCollectionItems(self.collectionID)
+            
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
             .disposed(by: self.disposeBag)
@@ -106,6 +119,50 @@ extension ReadCollectionViewModelImple {
         let newValue = oldValue.invert()
         self.subjects.isShrinkModeIsOn.accept(newValue)
     }
+    
+    public func requestChangeOrder() {
+        guard let currentOrder = self.subjects.sortOrder.value else { return }
+        
+        let newSortSelected: (ReadCollectionItemSortOrder?) -> Void = { [weak self] newOrder in
+            self?.subjects.sortOrder.accept(newOrder)
+        }
+        
+        self.router.showItemSortOrderOptions(currentOrder, selectedHandler: newSortSelected)
+    }
+    
+    public func openItem(_ itemID: String) {
+        guard let items = self.subjects.items.value,
+              let item = items.first(where: { $0.uid == itemID }) else { return }
+        switch item {
+        case let collectionItem as ReadCollection:
+            self.router.moveToSubCollection(collectionID: collectionItem.uid)
+            
+        case let linkItem as ReadLink:
+            self.router.showLinkDetail(linkItem.uid)
+            
+        default: break
+        }
+    }
+    
+    public func requestMakeNewCollection() {
+        
+        let collectionCreated: (ReadCollection) -> Void = { [weak self] newCollection in
+            guard let self = self else { return }
+            let newItems = [newCollection] + (self.subjects.items.value ?? [])
+            self.subjects.items.accept(newItems)
+        }
+        self.router.routeToMakeNewCollectionScene(collectionCreated)
+    }
+    
+    public func requestAddNewLink() {
+        
+        let linkItemAdded: (ReadLink) -> Void = { [weak self] newLink in
+            guard let self = self else { return }
+            let newItems = [newLink] + (self.subjects.items.value ?? [])
+            self.subjects.items.accept(newItems)
+        }
+        self.router.routeToAddNewLink(at: self.collectionID, linkItemAdded)
+    }
 }
 
 
@@ -113,22 +170,55 @@ extension ReadCollectionViewModelImple {
 
 extension ReadCollectionViewModelImple {
     
+    public var currentSortOrder: Observable<ReadCollectionItemSortOrder> {
+        return self.subjects.sortOrder
+            .compactMap{ $0 }
+            .distinctUntilChanged()
+    }
+    
     public var cellViewModels: Observable<[ReadItemCellViewModel]> {
         
-        let asCellViewModels: ([ReadItem], Bool) ->  [ReadItemCellViewModel]
-        asCellViewModels = { items, isShrink in
-            return items.asCellViewModels(isShrink: isShrink)
+        let asCellViewModels: ([ReadItem], Bool, ReadCollectionItemSortOrder) ->  [ReadItemCellViewModel]
+        asCellViewModels = { items, isShrink, order in
+            let orderedItems = items.sort(by: order)
+            return orderedItems.asCellViewModels(isShrink: isShrink)
         }
         
         return Observable.combineLatest(
             self.subjects.items.compactMap{ $0 },
             self.subjects.isShrinkModeIsOn.compactMap { $0 },
+            self.subjects.sortOrder.compactMap{ $0 },
             resultSelector: asCellViewModels
         )
     }
 }
 
 private extension Array where Element == ReadItem {
+    
+    func sort(by order: ReadCollectionItemSortOrder) -> Array {
+        
+        let compare: (Element, Element) -> Bool = { lhs, rhs in
+            switch order {
+            case let .byCreatedAt(isAscending):
+                return isAscending
+                    ? lhs.createdAt < rhs.createdAt
+                    : lhs.createdAt > rhs.createdAt
+                
+            case let .byLastUpdatedAt(isAscending):
+                return isAscending
+                    ? lhs.lastUpdatedAt < rhs.lastUpdatedAt
+                    : lhs.lastUpdatedAt > rhs.lastUpdatedAt
+                
+            case let .byPriority(isAscending):
+                return isAscending
+                    ? ReadPriority.isAscendingOrder(lhs.priority, rhs: rhs.priority)
+                    : ReadPriority.isDescendingOrder(lhs.priority, rhs: rhs.priority)
+                
+            case .byCustomOrder: return true
+            }
+        }
+        return self.sorted(by: compare)
+    }
     
     func asCellViewModels(isShrink: Bool) -> [ReadItemCellViewModel] {
         let transform: (ReadItem) -> ReadItemCellViewModel? = { item in
@@ -147,3 +237,4 @@ private extension Array where Element == ReadItem {
         return self.compactMap(transform)
     }
 }
+

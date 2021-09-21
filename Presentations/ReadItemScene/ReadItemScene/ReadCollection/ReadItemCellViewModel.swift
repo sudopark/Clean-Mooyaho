@@ -13,6 +13,7 @@ import Domain
 // MARK: - ReadItemCellViewModel
 
 public protocol ReadItemCellViewModel {
+    var uid: String { get }
     var isShrink: Bool { get set }
 }
 
