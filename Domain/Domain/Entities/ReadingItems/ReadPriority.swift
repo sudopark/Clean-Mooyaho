@@ -18,3 +18,24 @@ public enum ReadPriority: Int {
     case beforeGoToBed
     case afterAWhile
 }
+
+extension ReadPriority {
+    
+    public static func isAscendingOrder(_ lhs: ReadPriority?, rhs: ReadPriority?) -> Bool {
+        switch (lhs, rhs) {
+        case (.some, .none): return true
+        case (.none, .some): return false
+        case let (.some(p1), .some(p2)): return p1.rawValue < p2.rawValue
+        default: return false
+        }
+    }
+    
+    public static func isDescendingOrder(_ lhs: ReadPriority?, rhs: ReadPriority?) -> Bool {
+        switch (lhs, rhs) {
+        case (.some, .none): return true
+        case (.none, .some): return false
+        case let (.some(p1), .some(p2)): return p1.rawValue > p2.rawValue
+        default: return false
+        }
+    }
+}

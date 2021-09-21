@@ -20,5 +20,5 @@ import CommonPresenting
 
 public protocol ReadCollectionSceneBuilable {
     
-    func makeReadCollectionScene(collectionID: String?) -> ReadCollectionScene
+    func makeReadCollectionScene(collectionID: String) -> ReadCollectionScene
 }

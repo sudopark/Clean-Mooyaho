@@ -244,7 +244,7 @@ extension DependencyInjector: TextInputSceneBuilable {
 
 extension DependencyInjector: ReadCollectionSceneBuilable {
     
-    public func makeReadCollectionScene(collectionID: String?) -> ReadCollectionScene {
+    public func makeReadCollectionScene(collectionID: String) -> ReadCollectionScene {
         let router = ReadCollectionRouter(nextSceneBuilders: self)
         let viewModel = ReadCollectionViewModelImple(collectionID: collectionID,
                                                      readItemUsecase: self.readItemUsecase,

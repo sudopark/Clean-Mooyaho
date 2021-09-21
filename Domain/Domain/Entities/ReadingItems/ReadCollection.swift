@@ -15,6 +15,8 @@ public struct ReadCollection: ReadItem {
     
     private static let uidPrefix = "rc"
     
+    public static let rootID = "root_collection"
+    
     public let uid: String
     public var ownerID: String?
     public var parentID: String?
