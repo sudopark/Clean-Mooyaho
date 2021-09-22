@@ -23,8 +23,7 @@ import CommonPresenting
 // MARK: - Routing
 
 public protocol MainRouting: Routing {
-    
-    func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?)
+
     
     func openSlideMenu()
     
@@ -32,16 +31,13 @@ public protocol MainRouting: Routing {
     
     func presentEditProfileScene() -> EditProfileScenePresenter?
     
-    func alertShouldWaitPublishNewHooray(_ until: TimeStamp)
-    
-    func presentMakeNewHoorayScene()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainRouterBuildables = MainSlideMenuSceneBuilable & NearbySceneBuilable
-    & SignInSceneBuilable & EditProfileSceneBuilable & MakeHooraySceneBuilable & WaitNextHooraySceneBuilable
+public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
+    & SignInSceneBuilable & EditProfileSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -52,18 +48,18 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 extension MainRouter {
     
-    public func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?) {
-        guard let mainScene = self.currentScene as? MainScene,
-              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene() else { return (nil, nil) }
-        
-        nearbyScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
-        nearbyScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mainScene.addChild(nearbyScene)
-        mainScene.childContainerView.addSubview(nearbyScene.view)
-        nearbyScene.didMove(toParent: mainScene)
-        
-        return (nearbyScene.interactor, nearbyScene.presenter)
-    }
+//    public func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?) {
+//        guard let mainScene = self.currentScene as? MainScene,
+//              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene() else { return (nil, nil) }
+//
+//        nearbyScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
+//        nearbyScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        mainScene.addChild(nearbyScene)
+//        mainScene.childContainerView.addSubview(nearbyScene.view)
+//        nearbyScene.didMove(toParent: mainScene)
+//
+//        return (nearbyScene.interactor, nearbyScene.presenter)
+//    }
     
     public func openSlideMenu() {
         
@@ -95,18 +91,18 @@ extension MainRouter {
         return scene.presenrer
     }
     
-    public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
-        
-        guard let next = self.nextScenesBuilder?.makeWaitNextHoorayScene(until) else { return }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
-    }
-    
-    public func presentMakeNewHoorayScene() {
-        
-        guard let next = self.nextScenesBuilder?.makeMakeHoorayScene() else { return }
-        self.currentScene?.present(next, animated: true, completion: nil)
-    }
+//    public func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
+//
+//        guard let next = self.nextScenesBuilder?.makeWaitNextHoorayScene(until) else { return }
+//        next.modalPresentationStyle = .custom
+//        next.transitioningDelegate = self.bottomSliderTransitionManager
+//        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+//        self.currentScene?.present(next, animated: true, completion: nil)
+//    }
+//
+//    public func presentMakeNewHoorayScene() {
+//
+//        guard let next = self.nextScenesBuilder?.makeMakeHoorayScene() else { return }
+//        self.currentScene?.present(next, animated: true, completion: nil)
+//    }
 }

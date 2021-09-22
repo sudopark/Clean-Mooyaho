@@ -12,7 +12,6 @@ import RxSwift
 
 import Domain
 import CommonPresenting
-import PlaceScenes
 import MemberScenes
 import UsecaseDoubles
 import UnitTestHelpKit
@@ -44,110 +43,6 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.mockHoorayUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
-    }
-}
-
-
-extension MainViewModelTests {
-    
-    private func linkMapScene() -> SpyNearbySceneInteractor {
-        let spyInteractor = SpyNearbySceneInteractor()
-        self.spyRouter.spyInteractor = spyInteractor
-        self.viewModel.setupSubScenes()
-        return spyInteractor
-    }
-    
-    func testViewModel_requestMoveMapCameraToCurrentUserLocation() {
-        // given
-        let expect = expectation(description: "유저 현재위치로 지도 카메라 이동 요청")
-        let interactor = self.linkMapScene()
-        interactor.called(key: "moveMapCameraToCurrentUserPosition") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.moveMapCameraToCurrentUserPosition()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-}
-
-
-// MARK: - test request make new hooray
-
-extension MainViewModelTests {
-    
-    // auth가 준비되어야지
-    
-    func testViewModel_requestMakeNewHooray_withoutSignIn_routeToSignIn() {
-        // given
-        let expect = expectation(description: "새로운 후레이 발급 요청시 로그인되어있지 않다면 로그인 라우팅")
-        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
-            return Maybe<Void>.error(ApplicationErrors.sigInNeed)
-        }
-        
-        self.spyRouter.called(key: "presentSignInScene") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.makeNewHooray()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testViewModel_requestMakeNewHooray_withoutProfileSetup_routeToAlertEditProfile() {
-        // given
-        let expect = expectation(description: "새로운 후레이 발급 요청시 프로필이 세팅되어있지 않다면 않다면 입력 화면으로 이동 알럿")
-        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
-            return Maybe<Void>.error(ApplicationErrors.profileNotSetup)
-        }
-        
-        self.spyRouter.called(key: "alertForConfirm") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.makeNewHooray()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testViewModel_whenTooSoonLatestHoorayExists_alertShouldWait() {
-        // given
-        let expect = expectation(description: "너무 이른 최근 후레이가 존재한다면 대기해야함을 알림")
-        self.mockHoorayUsecase.register(key: "isAvailToPublish") {
-            return Maybe<Void>.error(ApplicationErrors.shouldWaitPublishHooray(until: TimeStamp.now()))
-        }
-        
-        self.spyRouter.called(key: "alertShouldWaitPublishNewHooray") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.makeNewHooray()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testViewModel_routeToNewHoorayScene() {
-        // given
-        let expect = expectation(description: "후레이 발급화면으로 이동")
-        
-        self.mockHoorayUsecase.register(key: "isAvailToPublish") { Maybe<Void>.just() }
-        self.spyRouter.called(key: "presentMakeNewHoorayScene") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.viewModel.makeNewHooray()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
     }
 }
 

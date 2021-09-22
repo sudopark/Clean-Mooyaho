@@ -22,8 +22,6 @@ public protocol MainViewModel: AnyObject {
     // interactor
     func setupSubScenes()
     func openSlideMenu()
-    func moveMapCameraToCurrentUserPosition()
-    func makeNewHooray()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
@@ -66,74 +64,11 @@ public final class MainViewModelImple: MainViewModel {
 extension MainViewModelImple {
     
     public func setupSubScenes() {
-        
-        let scene = self.router.addNearbySceen()
-        // TOOD: bind presenter
-        self.nearbySceneInteractor = scene.ineteractor
+
     }
     
     public func openSlideMenu() {
         self.router.openSlideMenu()
-    }
-    
-    public func moveMapCameraToCurrentUserPosition() {
-        self.nearbySceneInteractor?.moveMapCameraToCurrentUserPosition()
-    }
-    
-    public func makeNewHooray() {
-        
-        let handleErrors: (Error) -> Void = { [weak self] error in
-            switch error as? ApplicationErrors {
-            case .sigInNeed: self?.requestSignInAndWaitResult()
-            case .profileNotSetup: self?.requestEnerMemberProfileAndWaitResult()
-            case let .shouldWaitPublishHooray(until): self?.router.alertShouldWaitPublishNewHooray(until)
-            default: self?.router.alertError(error)
-            }
-        }
-        
-        let handleCheckResult: () -> Void = { [weak self] in
-            logger.print(level: .debug, "start make new hooray")
-            self?.router.presentMakeNewHoorayScene()
-        }
-        
-        self.hoorayUsecase.isAvailToPublish()
-            .subscribe(onSuccess: handleCheckResult, onError: handleErrors)
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func requestSignInAndWaitResult() {
-        
-        guard let events = self.router.presentSignInScene() else { return }
-        events.signedIn
-            .subscribe(onNext: { [weak self] in
-                self?.router.presentMakeNewHoorayScene()
-            })
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func requestEnerMemberProfileAndWaitResult() {
-        
-        let routeToEditProfile: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            let presenter = self.router.presentEditProfileScene()
-            self.bindEditProfileEndEvent(presenter)
-        }
-        
-        guard let form = AlertBuilder(base: .init())
-                .message("[TBD] need profile")
-                .isSingleConfirmButton(true)
-                .confirmed(routeToEditProfile)
-                .build() else { return }
-        
-        self.router.alertForConfirm(form)
-    }
-    
-    private func bindEditProfileEndEvent(_ presenter: EditProfileScenePresenter?) {
-        presenter?.editCompleted
-            .subscribe(onNext: { [weak self] in
-                self?.router.presentMakeNewHoorayScene()
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 
