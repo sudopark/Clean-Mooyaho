@@ -49,6 +49,6 @@ public final class InfoSectionView<InnerView: UIView>: BaseUIView, Presenting {
         self.arrowImageView.contentMode = .scaleAspectFit
         self.arrowImageView.tintColor = .lightGray.withAlphaComponent(0.5)
         
-        self.underLineView.backgroundColor = .groupTableViewBackground
+        self.underLineView.backgroundColor = .systemGroupedBackground
     }
 }

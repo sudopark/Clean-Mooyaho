@@ -26,8 +26,6 @@
 		2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786B263961EC0000C0C6 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786E263961F10000C0C6 /* DataStore.framework */; };
 		2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE9786E263961F10000C0C6 /* DataStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97871263961F60000C0C6 /* FirebaseService.framework */; };
-		2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97871263961F60000C0C6 /* FirebaseService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97874263961FF0000C0C6 /* CommonPresenting.framework */; };
 		2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97874263961FF0000C0C6 /* CommonPresenting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BE97877263962080000C0C6 /* Common3rdParty.framework */; };
@@ -60,6 +58,8 @@
 		F6E83122265C509800C91F3B /* MockApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83121265C509800C91F3B /* MockApplicationUsecase.swift */; };
 		F6E83124265C55C000C91F3B /* ApplicationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83123265C55C000C91F3B /* ApplicationUsecaseTests.swift */; };
 		F6E8312D266009A000C91F3B /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8312C266009A000C91F3B /* MainViewModelTests.swift */; };
+		F6ECE4DA26FAF8B3008D7ECA /* FirebaseService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ECE4D926FAF8B3008D7ECA /* FirebaseService.framework */; };
+		F6ECE4DB26FAF8B3008D7ECA /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ECE4D926FAF8B3008D7ECA /* FirebaseService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24910265587E700AE7A8B /* MainRouter.swift */; };
 		F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24911265587E700AE7A8B /* MainViewController.swift */; };
 		F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F24912265587E700AE7A8B /* MainBuilder.swift */; };
@@ -85,8 +85,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */,
-				2BE97873263961F60000C0C6 /* FirebaseService.framework in Embed Frameworks */,
 				2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */,
+				F6ECE4DB26FAF8B3008D7ECA /* FirebaseService.framework in Embed Frameworks */,
 				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
 				F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
@@ -155,6 +155,7 @@
 		F6E8312C266009A000C91F3B /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
 		F6E8316C26601BD300C91F3B /* PlaceScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlaceScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8316E26601BE300C91F3B /* PlaceScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlaceScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6ECE4D926FAF8B3008D7ECA /* FirebaseService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F24910265587E700AE7A8B /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		F6F24911265587E700AE7A8B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6F24912265587E700AE7A8B /* MainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBuilder.swift; sourceTree = "<group>"; };
@@ -169,12 +170,12 @@
 			files = (
 				F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */,
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
-				2BE97872263961F60000C0C6 /* FirebaseService.framework in Frameworks */,
 				F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */,
 				F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
+				F6ECE4DA26FAF8B3008D7ECA /* FirebaseService.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
 				F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */,
 				F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */,
@@ -351,6 +352,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6ECE4D926FAF8B3008D7ECA /* FirebaseService.framework */,
 				F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */,
 				F6025FF826A9D201007A1AA8 /* UsecaseDoubles.framework */,
 				F6C0784026A47D0D0070E75E /* MapScenes.framework */,
@@ -654,7 +656,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -708,7 +710,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -785,7 +787,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = MooyahoAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -807,7 +809,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				INFOPLIST_FILE = MooyahoAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
