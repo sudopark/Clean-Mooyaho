@@ -471,11 +471,11 @@ extension DataModelStorageImple {
         try? database.createTableOrNot(MemberTable.self)
         try? database.createTableOrNot(ImageSourceTable.self)
         try? database.createTableOrNot(ThumbnailTable.self)
-        try? database.createTableOrNot(PlaceInfoTable.self)
-        try? database.createTableOrNot(TagTable.self)
-        try? database.createTableOrNot(HoorayTable.self)
-        try? database.createTableOrNot(HoorayAckUserTable.self)
-        try? database.createTableOrNot(HoorayReactionTable.self)
+//        try? database.createTableOrNot(PlaceInfoTable.self)
+//        try? database.createTableOrNot(TagTable.self)
+//        try? database.createTableOrNot(HoorayTable.self)
+//        try? database.createTableOrNot(HoorayAckUserTable.self)
+//        try? database.createTableOrNot(HoorayReactionTable.self)
         
         logger.print(level: .debug, "sqlite tables are created..")
     }
