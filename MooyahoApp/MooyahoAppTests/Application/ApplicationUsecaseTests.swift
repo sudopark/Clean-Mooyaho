@@ -48,107 +48,107 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
 
 extension ApplicationUsecaseTests {
     
-    func testUsecase_whenAfterLaunchAndAuthLoadedAndHasLocationPermission_startUploadUserLocation() {
-        // given
-        let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 있으면 업로드 시작")
-        
-        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.granted)
-        }
-        
-        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testUsecase_whenAfterLanchedAndHasNoLocationPermission_notStartUploadUserLocation() {
-        // given
-        let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 없으면 업로드 시작 안함")
-        expect.isInverted = true
-        
-        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
-        }
-        
-        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testUsecase_whenAfterLocationPermissionChangeToGrant_startUploadUserLocation() {
-        // given
-        let expect = expectation(description: "앱 실행중 위치권한이 실행중으로 바뀌면 업로드 시작")
-        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
-        }
-        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-        self.mockUserLocationUsecase.isAuthorizedSubject.onNext(true)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testUsecase_whenAfterEnterBackground_stopUploadUserLocation() {
-        // given
-        let expect = expectation(description: "앱 백그라운드 진입시 업로드 중지 요청")
-        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.granted)
-        }
-        self.mockUserLocationUsecase.called(key: "stopUplocationUserLocation") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-        self.usecase.updateApplicationActiveStatus(.background)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testUsecase_whenAfterEnterForgroundAgain_startUploadUserLocation() {
-        // given
-        let expect = expectation(description: "백그라운드 진입 이후에 업로드할 수 있으면 다시 업로드 시작")
-        expect.expectedFulfillmentCount = 2
-        
-        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-            return Maybe<LocationServiceAccessPermission>.just(.granted)
-        }
-        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-            expect.fulfill()
-        }
-        
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-        self.usecase.updateApplicationActiveStatus(.background)
-        self.usecase.updateApplicationActiveStatus(.forground)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
+//    func testUsecase_whenAfterLaunchAndAuthLoadedAndHasLocationPermission_startUploadUserLocation() {
+//        // given
+//        let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 있으면 업로드 시작")
+//        
+//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
+//            return Maybe<LocationServiceAccessPermission>.just(.granted)
+//        }
+//        
+//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
+//            expect.fulfill()
+//        }
+//        
+//        // when
+//        self.usecase.updateApplicationActiveStatus(.launched)
+//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+//        
+//        // then
+//        self.wait(for: [expect], timeout: self.timeout)
+//    }
+//    
+//    func testUsecase_whenAfterLanchedAndHasNoLocationPermission_notStartUploadUserLocation() {
+//        // given
+//        let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 없으면 업로드 시작 안함")
+//        expect.isInverted = true
+//        
+//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
+//            return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
+//        }
+//        
+//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
+//            expect.fulfill()
+//        }
+//        
+//        // when
+//        self.usecase.updateApplicationActiveStatus(.launched)
+//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+//        
+//        // then
+//        self.wait(for: [expect], timeout: self.timeout)
+//    }
+//    
+//    func testUsecase_whenAfterLocationPermissionChangeToGrant_startUploadUserLocation() {
+//        // given
+//        let expect = expectation(description: "앱 실행중 위치권한이 실행중으로 바뀌면 업로드 시작")
+//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
+//            return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
+//        }
+//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
+//            expect.fulfill()
+//        }
+//        
+//        // when
+//        self.usecase.updateApplicationActiveStatus(.launched)
+//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+//        self.mockUserLocationUsecase.isAuthorizedSubject.onNext(true)
+//        
+//        // then
+//        self.wait(for: [expect], timeout: self.timeout)
+//    }
+//    
+//    func testUsecase_whenAfterEnterBackground_stopUploadUserLocation() {
+//        // given
+//        let expect = expectation(description: "앱 백그라운드 진입시 업로드 중지 요청")
+//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
+//            return Maybe<LocationServiceAccessPermission>.just(.granted)
+//        }
+//        self.mockUserLocationUsecase.called(key: "stopUplocationUserLocation") { _ in
+//            expect.fulfill()
+//        }
+//        
+//        // when
+//        self.usecase.updateApplicationActiveStatus(.launched)
+//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+//        self.usecase.updateApplicationActiveStatus(.background)
+//        
+//        // then
+//        self.wait(for: [expect], timeout: self.timeout)
+//    }
+//    
+//    func testUsecase_whenAfterEnterForgroundAgain_startUploadUserLocation() {
+//        // given
+//        let expect = expectation(description: "백그라운드 진입 이후에 업로드할 수 있으면 다시 업로드 시작")
+//        expect.expectedFulfillmentCount = 2
+//        
+//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
+//            return Maybe<LocationServiceAccessPermission>.just(.granted)
+//        }
+//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
+//            expect.fulfill()
+//        }
+//        
+//        
+//        // when
+//        self.usecase.updateApplicationActiveStatus(.launched)
+//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+//        self.usecase.updateApplicationActiveStatus(.background)
+//        self.usecase.updateApplicationActiveStatus(.forground)
+//        
+//        // then
+//        self.wait(for: [expect], timeout: self.timeout)
+//    }
 }
 
 
@@ -156,29 +156,29 @@ extension ApplicationUsecaseTests {
 
 extension ApplicationUsecaseTests {
     
-    func testUsecase_udpateIsOnline_byApplicaitonStatus() {
-        // given
-        let expect = expectation(description: "어플리케이션 상태에 때라 isOnline 상태 업데이트")
-        expect.expectedFulfillmentCount = 3
-        var isOnlineFlags = [Bool]()
-        
-        self.mockMemberUsecase.called(key: "updateUserIsOnline") { args in
-            guard let flag = args as? Bool else { return }
-            isOnlineFlags.append(flag)
-            expect.fulfill()
-        }
-        
-        // when
-        self.usecase.updateApplicationActiveStatus(.launched)
-        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-        self.usecase.updateApplicationActiveStatus(.background)
-        self.usecase.updateApplicationActiveStatus(.forground)
-        self.wait(for: [expect], timeout: self.timeout)
-        
-        // then
-        XCTAssertEqual(isOnlineFlags, [true, false, true])
-    }
-    
+//    func testUsecase_udpateIsOnline_byApplicaitonStatus() {
+//        // given
+//        let expect = expectation(description: "어플리케이션 상태에 때라 isOnline 상태 업데이트")
+//        expect.expectedFulfillmentCount = 3
+//        var isOnlineFlags = [Bool]()
+//
+//        self.mockMemberUsecase.called(key: "updateUserIsOnline") { args in
+//            guard let flag = args as? Bool else { return }
+//            isOnlineFlags.append(flag)
+//            expect.fulfill()
+//        }
+//
+//        // when
+//        self.usecase.updateApplicationActiveStatus(.launched)
+//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
+//        self.usecase.updateApplicationActiveStatus(.background)
+//        self.usecase.updateApplicationActiveStatus(.forground)
+//        self.wait(for: [expect], timeout: self.timeout)
+//
+//        // then
+//        XCTAssertEqual(isOnlineFlags, [true, false, true])
+//    }
+//
     func testUsecase_whenFCMTokenIsUpdated_uploadToken() {
         // given
         let expect = expectation(description: "fcm 토큰 업데이트시에 업로드")

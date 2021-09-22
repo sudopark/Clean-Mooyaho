@@ -78,18 +78,6 @@ extension MainViewController {
             })
             .disposed(by: self.dispsoseBag)
         
-        self.mainView.currentPositionButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.moveMapCameraToCurrentUserPosition()
-            })
-            .disposed(by: self.dispsoseBag)
-        
-        self.mainView.newHoorayButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.makeNewHooray()
-            })
-            .disposed(by: self.dispsoseBag)
-        
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindBottomSlideScroll()

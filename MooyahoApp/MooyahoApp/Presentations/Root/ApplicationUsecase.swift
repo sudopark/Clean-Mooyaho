@@ -73,24 +73,24 @@ extension ApplicationUsecaseImple {
             .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
             .distinctUntilChanged()
         
-        isUserInUseApp
-            .flatMapLatest{ [weak self] inUse in self?.waitForLocationUploadableAuth(inUse) ?? .empty()  }
-            .subscribe(onNext: { [weak self] auth in
-                if let userID = auth?.userID {
-                    self?.locationUsecase.startUploadUserLocation(for: userID)
-                } else {
-                    self?.locationUsecase.stopUplocationUserLocation()
-                }
-            })
-            .disposed(by: self.disposeBag)
+//        isUserInUseApp
+//            .flatMapLatest{ [weak self] inUse in self?.waitForLocationUploadableAuth(inUse) ?? .empty()  }
+//            .subscribe(onNext: { [weak self] auth in
+//                if let userID = auth?.userID {
+//                    self?.locationUsecase.startUploadUserLocation(for: userID)
+//                } else {
+//                    self?.locationUsecase.stopUplocationUserLocation()
+//                }
+//            })
+//            .disposed(by: self.disposeBag)
         
-        let deviceID = AppEnvironment.deviceID
-        let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
-        Observable.combineLatest(preparedAuth, isUserInUseApp)
-            .subscribe(onNext: { [weak self] auth, isUse in
-                self?.memberUsecase.updateUserIsOnline(auth.userID, deviceID: deviceID, isOnline: isUse)
-            })
-            .disposed(by: self.disposeBag)
+//        let deviceID = AppEnvironment.deviceID
+//        let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
+//        Observable.combineLatest(preparedAuth, isUserInUseApp)
+//            .subscribe(onNext: { [weak self] auth, isUse in
+//                self?.memberUsecase.updateUserIsOnline(auth.userID, deviceID: deviceID, isOnline: isUse)
+//            })
+//            .disposed(by: self.disposeBag)
     }
     
     private func waitForLocationUploadableAuth(_ isUserInUseApp: Bool) -> Observable<Auth?> {
