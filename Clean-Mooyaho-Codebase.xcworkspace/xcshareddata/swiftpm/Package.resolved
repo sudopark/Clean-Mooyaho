@@ -72,15 +72,6 @@
           "revision": "16550d9104f12e9033c0b0de5d6c6d9de3f04dfa",
           "version": null
         }
-      },
-      {
-        "package": "WSTagsField",
-        "repositoryURL": "https://github.com/sudopark/WSTagsField.git",
-        "state": {
-          "branch": "master",
-          "revision": "9672b47440a003b841a1c9cb1662ccc7a917f9d6",
-          "version": null
-        }
       }
     ]
   },

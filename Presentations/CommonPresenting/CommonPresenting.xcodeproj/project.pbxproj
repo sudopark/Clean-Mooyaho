@@ -72,7 +72,6 @@
 		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
-		F6DA9274268A338800EA67EE /* WSTagsField in Frameworks */ = {isa = PBXBuildFile; productRef = F6DA9273268A338800EA67EE /* WSTagsField */; };
 		F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9275268B815A00EA67EE /* UIView+Extension.swift */; };
 		F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */; };
 		F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */; };
@@ -182,7 +181,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6DA9274268A338800EA67EE /* WSTagsField in Frameworks */,
 				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
@@ -454,7 +452,6 @@
 			name = CommonPresenting;
 			packageProductDependencies = (
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
-				F6DA9273268A338800EA67EE /* WSTagsField */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -507,7 +504,6 @@
 			mainGroup = 2B39E24526387B6A003EE954;
 			packageReferences = (
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				F6DA9272268A338800EA67EE /* XCRemoteSwiftPackageReference "WSTagsField" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -881,14 +877,6 @@
 				minimumVersion = 6.3.0;
 			};
 		};
-		F6DA9272268A338800EA67EE /* XCRemoteSwiftPackageReference "WSTagsField" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sudopark/WSTagsField.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -896,11 +884,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		F6DA9273268A338800EA67EE /* WSTagsField */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6DA9272268A338800EA67EE /* XCRemoteSwiftPackageReference "WSTagsField" */;
-			productName = WSTagsField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
