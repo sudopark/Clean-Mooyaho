@@ -23,6 +23,7 @@
 		F6E279C126F6E71700957AC4 /* ReadCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279BC26F6E71700957AC4 /* ReadCollectionViewModel.swift */; };
 		F6E279CB26F6EC7900957AC4 /* ReadItemCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279CA26F6EC7900957AC4 /* ReadItemCellViewModel.swift */; };
 		F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */; };
+		F6ECE4DD26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECE4DC26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		F6E279BC26F6E71700957AC4 /* ReadCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionViewModel.swift; sourceTree = "<group>"; };
 		F6E279CA26F6EC7900957AC4 /* ReadItemCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCellViewModel.swift; sourceTree = "<group>"; };
 		F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		F6ECE4DC26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadCollectionView+SwiftUI.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				F6E279BB26F6E71700957AC4 /* ReadCollectionScene.swift */,
 				F6E279BC26F6E71700957AC4 /* ReadCollectionViewModel.swift */,
 				F6E279CA26F6EC7900957AC4 /* ReadItemCellViewModel.swift */,
+				F6ECE4DC26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift */,
 			);
 			path = ReadCollection;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				F6E279BE26F6E71700957AC4 /* ReadCollectionViewController.swift in Sources */,
 				F6E279C026F6E71700957AC4 /* ReadCollectionScene.swift in Sources */,
 				F6E279BD26F6E71700957AC4 /* ReadCollectionRouter.swift in Sources */,
+				F6ECE4DD26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift in Sources */,
 				F6E279CB26F6EC7900957AC4 /* ReadItemCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

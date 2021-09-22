@@ -14,8 +14,8 @@ public enum ReadPriority: Int {
     case someDay
     case thisWeek
     case today
-    case onTheWaytoWork
     case beforeGoToBed
+    case onTheWaytoWork
     case afterAWhile
 }
 

@@ -19,6 +19,9 @@ public final class ReadCollectionViewController: BaseViewController, ReadCollect
     
     let viewModel: ReadCollectionViewModel
     
+    private let collectionView = UICollectionView()
+    
+    
     public init(viewModel: ReadCollectionViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -36,6 +39,8 @@ public final class ReadCollectionViewController: BaseViewController, ReadCollect
         super.loadView()
         self.setupLayout()
         self.setupStyling()
+        
+        
     }
     
     public override func viewDidLoad() {
