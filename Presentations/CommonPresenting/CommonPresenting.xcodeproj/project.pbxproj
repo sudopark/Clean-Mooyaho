@@ -58,6 +58,7 @@
 		F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215882674A7C0000CAB4B /* InputTextView.swift */; };
 		F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AC26755626000CAB4B /* ApplicationStatus.swift */; };
 		F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */; };
+		F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */; };
 		F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F667E28A26E1254E0046B9FB /* ReactionView.swift */; };
 		F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F667E28E26E1367D0046B9FB /* MemberInfo.swift */; };
 		F66B7D7126C5DD8C00D31FAC /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */; };
@@ -149,6 +150,7 @@
 		F65215882674A7C0000CAB4B /* InputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		F65215AC26755626000CAB4B /* ApplicationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatus.swift; sourceTree = "<group>"; };
 		F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollViwe+Extension.swift"; sourceTree = "<group>"; };
+		F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
 		F667E28A26E1254E0046B9FB /* ReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionView.swift; sourceTree = "<group>"; };
 		F667E28E26E1367D0046B9FB /* MemberInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfo.swift; sourceTree = "<group>"; };
 		F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */,
 				F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */,
 				F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */,
+				F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */,
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
+				F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
 				F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */,
 				F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */,

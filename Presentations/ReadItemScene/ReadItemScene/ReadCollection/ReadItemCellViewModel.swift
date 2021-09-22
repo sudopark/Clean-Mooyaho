@@ -15,6 +15,8 @@ import Domain
 public protocol ReadItemCellViewModel {
     var uid: String { get }
     var isShrink: Bool { get set }
+    
+    var presetingID: Int { get }
 }
 
 public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
@@ -35,6 +37,16 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         self.name = collection.name
         self.priority = collection.priority
         self.categories = collection.categories
+    }
+
+    public var presetingID: Int {
+        var hasher = Hasher()
+        hasher.combine(self.uid)
+        hasher.combine(self.name)
+        hasher.combine(self.priority?.rawValue)
+        hasher.combine(self.categories.map{ $0.presentingHashValud() })
+        hasher.combine(self.isShrink)
+        return hasher.finalize()
     }
 }
 
@@ -58,5 +70,26 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
         self.customName = link.customName
         self.priority = link.priority
         self.categories = link.categories
+    }
+    
+    public var presetingID: Int {
+        var hasher = Hasher()
+        hasher.combine(self.uid)
+        hasher.combine(self.linkUrl)
+        hasher.combine(self.customName)
+        hasher.combine(self.priority?.rawValue)
+        hasher.combine(self.categories.map{ $0.presentingHashValud() })
+        hasher.combine(self.isShrink)
+        return hasher.finalize()
+    }
+}
+
+private extension ItemCategory {
+    
+    func presentingHashValud() -> Int {
+        var hasher = Hasher()
+        hasher.combine(self.name)
+        hasher.combine(self.colorCode)
+        return hasher.finalize()
     }
 }
