@@ -10,7 +10,7 @@ jobs:
     # runs-on: macOS-latest
     strategy:
         matrix:
-          xcode: [12.5]
+          xcode: [13.0]
           destination: ['platform=iOS Simulator,name=iPhone 11']
     
     steps:
