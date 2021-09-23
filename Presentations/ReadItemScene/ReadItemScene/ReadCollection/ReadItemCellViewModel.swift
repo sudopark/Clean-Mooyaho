@@ -19,6 +19,20 @@ public protocol ReadItemCellViewModel {
     var presetingID: Int { get }
 }
 
+
+// MARK: - ReadCollectionSectionCellViewModel
+
+public struct ReadCollectionSectionCellViewModel: ReadItemCellViewModel {
+    
+    public let title: String
+    public var uid: String { self.title }
+    public var isShrink: Bool = false
+    public var presetingID: Int { self.uid.hashValue }
+}
+
+
+// MARK: - ReadCollectionCellViewModel
+
 public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
     
     public let uid: String
@@ -49,6 +63,9 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         return hasher.finalize()
     }
 }
+
+
+// MARK: - ReadLinkCellViewModel
 
 public struct ReadLinkCellViewModel: ReadItemCellViewModel {
     
