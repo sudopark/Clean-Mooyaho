@@ -87,7 +87,10 @@ extension ReadCollectionViewModelTests {
         }
         
         // then
-        XCTAssertEqual(cvms?.count, 10)
+        let collections = cvms?.compactMap { $0 as? ReadCollectionCellViewModel }
+        let links = cvms?.compactMap { $0 as? ReadLinkCellViewModel }
+        XCTAssertEqual(collections?.count, 5)
+        XCTAssertEqual(links?.count, 5)
     }
     
     func testViewModel_whenAfterLoadItemsFail_showRetryError() {
@@ -180,6 +183,11 @@ extension ReadCollectionViewModelTests {
         return self.dummyCollectionItems.map{ $0.uid }
     }
     
+    private var reversedDefaultItemIDs: [String] {
+        return self.dummySubCollections.reversed().map{ $0.uid }
+            + self.dummySubLinks.reversed().map{ $0.uid }
+    }
+    
     func testViewModel_orderByCreated() {
         // given
         let expect = expectation(description: "추가된 날짜로 정렬")
@@ -187,7 +195,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
         
         // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels) {
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.removeHeader()) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockSelectedNewOrder = .byCreatedAt(true)
@@ -196,7 +204,7 @@ extension ReadCollectionViewModelTests {
         
         // then
         let itemIDLists = cvmLists.map{ $0.map{ $0.uid }}
-        XCTAssertEqual(itemIDLists, [ self.defaultItemIDs.reversed(), self.defaultItemIDs ])
+        XCTAssertEqual(itemIDLists, [ self.reversedDefaultItemIDs, self.defaultItemIDs ])
     }
     
     func testViewModel_orderByLastUpdatedTime() {
@@ -206,7 +214,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byLastUpdatedAt(false))
         
         // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels) {
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.removeHeader()) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockSelectedNewOrder = .byLastUpdatedAt(true)
@@ -215,7 +223,7 @@ extension ReadCollectionViewModelTests {
         
         // then
         let itemIDLists = cvmLists.map{ $0.map{ $0.uid }}
-        XCTAssertEqual(itemIDLists, [ self.defaultItemIDs.reversed(), self.defaultItemIDs ])
+        XCTAssertEqual(itemIDLists, [ self.reversedDefaultItemIDs, self.defaultItemIDs ])
     }
     
     func testViewModel_orderByPriority() {
@@ -225,7 +233,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byPriority(false))
         
         // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels) {
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.removeHeader()) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockSelectedNewOrder = .byPriority(true)
@@ -235,8 +243,8 @@ extension ReadCollectionViewModelTests {
         // then
         let itemIDLists = cvmLists.map{ $0.map{ $0.uid }}
         XCTAssertEqual(itemIDLists, [
-            ["l:7", "l:6", "l:5", "c:4", "c:3", "c:2", "c:1", "c:0", "l:8", "l:9"],
-            ["c:1", "c:2", "c:3", "c:4", "l:5", "l:6", "l:7", "c:0", "l:8", "l:9"]
+            ["c:4", "c:3", "c:2", "c:1", "c:0", "l:7", "l:6", "l:5", "l:8", "l:9"],
+            ["c:1", "c:2", "c:3", "c:4", "c:0", "l:5", "l:6", "l:7", "l:8", "l:9"]
         ])
     }
 }
@@ -312,8 +320,9 @@ extension ReadCollectionViewModelTests {
         // given
         let expect = expectation(description: "콜렉션 생성이후 아이템 추가해서 리로드")
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
+        
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.removeHeader(), skip: 1) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockNewCollection = self.newCollection
@@ -329,8 +338,9 @@ extension ReadCollectionViewModelTests {
         // given
         let expect = expectation(description: "읽기링크 추가 이후 아이템 추가해서 리로드")
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
+        
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.removeHeader(), skip: 1) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockNewLink = self.newLinkItem
@@ -338,8 +348,9 @@ extension ReadCollectionViewModelTests {
         }
         
         // then
+        let linkCells = cvms?.compactMap{ $0 as? ReadLinkCellViewModel }
         XCTAssertEqual(cvms?.count, self.dummyCollectionItems.count + 1)
-        XCTAssertEqual(cvms?.first?.uid, self.newLinkItem.uid)
+        XCTAssertEqual(linkCells?.first?.uid, self.newLinkItem.uid)
     }
 }
 
@@ -378,6 +389,15 @@ extension ReadCollectionViewModelTests {
         func routeToAddNewLink(at collectionID: String, _ completionHandler: @escaping (ReadLink) -> Void) {
             guard let mock = self.mockNewLink else { return }
             completionHandler(mock)
+        }
+    }
+}
+
+private extension Observable where Element == [ReadItemCellViewModel] {
+    
+    func removeHeader() -> Observable {
+        return self.map {
+            return $0.filter{ ($0 is ReadCollectionSectionCellViewModel) == false }
         }
     }
 }
