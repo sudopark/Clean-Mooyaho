@@ -39,7 +39,7 @@ struct ItemCategoriesTable: Table {
             switch self {
             case .itemID: return .text([.notNull])
             case .name: return .text([.notNull])
-            case .colorCode: return .integer([.notNull])
+            case .colorCode: return .text([.notNull])
             }
         }
     }
