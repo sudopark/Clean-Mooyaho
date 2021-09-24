@@ -22,6 +22,10 @@ extension ColorSet {
     public var raw: UIColor.Type {
         return UIColor.self
     }
+    
+    public var lineColor: UIColor {
+        return UIColor.systemGroupedBackground
+    }
 }
 
 public protocol FontSet {

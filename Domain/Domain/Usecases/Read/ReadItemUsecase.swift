@@ -48,6 +48,11 @@ extension ReadItemUsecaseImple {
         return self.itemsRespoitory.requestLoadMyItems(for: memberID)
     }
     
+    public func loadCollectionInfo(_ collectionID: String) -> Observable<ReadCollection> {
+        // TODO: should imple
+        return .empty()
+    }
+    
     public func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
         guard self.authInfoProvider.isSignedIn() else {
             return self.itemsRespoitory

@@ -11,7 +11,7 @@ import Foundation
 
 extension Array {
     
-    public subscript(safe index: Int) -> Element? {
+    public subscript(`safe` index: Int) -> Element? {
         guard (0..<self.count) ~= index else { return nil }
         return self[index]
     }

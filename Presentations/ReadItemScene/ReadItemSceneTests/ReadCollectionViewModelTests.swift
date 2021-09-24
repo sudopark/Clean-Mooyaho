@@ -15,7 +15,7 @@ import Domain
 import UsecaseDoubles
 import UnitTestHelpKit
 
-import ReadItemScene
+@testable import ReadItemScene
 
 
 class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
@@ -91,6 +91,34 @@ extension ReadCollectionViewModelTests {
         let links = cvms?.compactMap { $0 as? ReadLinkCellViewModel }
         XCTAssertEqual(collections?.count, 5)
         XCTAssertEqual(links?.count, 5)
+    }
+    
+    func testViewModel_whenNotRootCollecitonAndLoadCollectionInfoEnd_showAttrCell() {
+        // given
+        let expect = expectation(description: "최상위 루트가 아니면 해당 콜렉션 정보 노출")
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        
+        // when
+        let attrs = self.waitFirstElement(expect, for: viewModel.attributeCell) {
+            viewModel.reloadCollectionItems()
+        }
+        
+        // then
+        XCTAssertEqual(attrs?.count, 1)
+    }
+    
+    func testViewModel_whenRootCollection_notShowAtrributeCell() {
+        // given
+        let expect = expectation(description: "최상위 루트가 아니면 해당 콜렉션 정보 노출")
+        let viewModel = self.makeViewModel(isRootCollection: true)
+        
+        // when
+        let attrs = self.waitFirstElement(expect, for: viewModel.attributeCell) {
+            viewModel.reloadCollectionItems()
+        }
+        
+        // then
+        XCTAssertEqual(attrs?.count, 0)
     }
     
     func testViewModel_whenAfterLoadItemsFail_showRetryError() {
@@ -195,7 +223,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
         
         // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.removeHeader()) {
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockSelectedNewOrder = .byCreatedAt(true)
@@ -214,7 +242,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byLastUpdatedAt(false))
         
         // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.removeHeader()) {
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockSelectedNewOrder = .byLastUpdatedAt(true)
@@ -233,7 +261,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byPriority(false))
         
         // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.removeHeader()) {
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockSelectedNewOrder = .byPriority(true)
@@ -322,7 +350,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.removeHeader(), skip: 1) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell(), skip: 1) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockNewCollection = self.newCollection
@@ -340,7 +368,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.removeHeader(), skip: 1) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell(), skip: 1) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockNewLink = self.newLinkItem
@@ -395,9 +423,33 @@ extension ReadCollectionViewModelTests {
 
 private extension Observable where Element == [ReadItemCellViewModel] {
     
-    func removeHeader() -> Observable {
+    func withoutAttrCell() -> Observable {
         return self.map {
-            return $0.filter{ ($0 is ReadCollectionSectionCellViewModel) == false }
+            return $0.filter{ $0 is ReadCollectionCellViewModel || $0 is ReadLinkCellViewModel }
         }
+    }
+}
+
+private extension ReadCollectionViewModel {
+    
+    var attributeCell: Observable<[ReadCollectionAttrCellViewModel]> {
+        
+        let filtering: ([ReadCollectionItemSection]) -> [ReadCollectionAttrCellViewModel]
+        filtering = { sections in
+            return sections
+                .flatMap{ $0.cellViewModels }
+                .compactMap { $0  as? ReadCollectionAttrCellViewModel }
+        }
+        return self.sections.map(filtering)
+    }
+    
+    var cellViewModels: Observable<[ReadItemCellViewModel]> {
+        let filtering: ([ReadCollectionItemSection]) -> [ReadItemCellViewModel]
+        filtering = { sections in
+            return sections
+                .flatMap{ $0.cellViewModels }
+                .filter{ $0 is ReadCollectionCellViewModel || $0 is ReadLinkCellViewModel }
+        }
+        return self.sections.map(filtering)
     }
 }

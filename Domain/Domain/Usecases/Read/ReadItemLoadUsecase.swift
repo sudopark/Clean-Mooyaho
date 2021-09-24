@@ -15,5 +15,7 @@ public protocol ReadItemLoadUsecase {
     
     func loadMyItems() -> Observable<[ReadItem]>
     
+    func loadCollectionInfo(_ collectionID: String) -> Observable<ReadCollection>
+    
     func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]>
 }

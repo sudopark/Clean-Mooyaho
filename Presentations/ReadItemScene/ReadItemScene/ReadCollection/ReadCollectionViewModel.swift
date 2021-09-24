@@ -17,6 +17,18 @@ import Domain
 import CommonPresenting
 
 
+public enum ReadCollectionItemSectionType: String {
+    case attribute
+    case collections
+    case links
+}
+
+public struct ReadCollectionItemSection {
+    let type: ReadCollectionItemSectionType
+    let cellViewModels: [ReadItemCellViewModel]
+}
+
+
 // MARK: - ReadCollectionViewModel
 
 public protocol ReadCollectionViewModel: AnyObject {
@@ -33,7 +45,7 @@ public protocol ReadCollectionViewModel: AnyObject {
     // presenter
     var isShrinkMode: Observable<Bool> { get }
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
-    var cellViewModels: Observable<[ReadItemCellViewModel]> { get }
+    var sections: Observable<[ReadCollectionItemSection]> { get }
 //    func linkPreviewThumbnail(for linkID: String) -> Observable<ImageSource?>
 }
 
@@ -63,6 +75,7 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
     
     fileprivate final class Subjects {
         let isShrinkModeIsOn = BehaviorRelay<Bool?>(value: nil)
+        let currentCollection = BehaviorSubject<ReadCollection?>(value: nil)
         let sortOrder = BehaviorRelay<ReadCollectionItemSortOrder?>(value: nil)
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
@@ -72,7 +85,12 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
     private let disposeBag = DisposeBag()
     
     private func internalBinding() {
-        
+        self.loadIsShrinkMode()
+        self.loadLatestSortOrder()
+        self.loadCurrentCollectionInfoIfNeed()
+    }
+    
+    private func loadIsShrinkMode() {
         let setupLatestsShrinkModeFlag: (Bool) -> Void = { [weak self] isOn in
             self?.subjects.isShrinkModeIsOn.accept(isOn)
         }
@@ -80,13 +98,27 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
             .loadShrinkModeIsOnOption()
             .subscribe(onSuccess: setupLatestsShrinkModeFlag)
             .disposed(by: self.disposeBag)
-        
+    }
+    
+    private func loadLatestSortOrder() {
         let setupLatestSortOrder: (ReadCollectionItemSortOrder) -> Void = { [weak self] order in
             self?.subjects.sortOrder.accept(order)
         }
         self.readItemUsecase
             .loadLatestSortOption(for: self.collectionID)
             .subscribe(onSuccess: setupLatestSortOrder)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func loadCurrentCollectionInfoIfNeed() {
+        guard self.collectionID != ReadCollection.rootID else { return }
+        
+        let updateCurrentCollection: (ReadCollection) -> Void = { [weak self] collection in
+            self?.subjects.currentCollection.onNext(collection)
+        }
+        self.readItemUsecase
+            .loadCollectionInfo(self.collectionID)
+            .subscribe(onNext: updateCurrentCollection)
             .disposed(by: self.disposeBag)
     }
 }
@@ -183,24 +215,31 @@ extension ReadCollectionViewModelImple {
             .compactMap{ $0 }
             .distinctUntilChanged()
     }
-    
-    public var cellViewModels: Observable<[ReadItemCellViewModel]> {
         
-        let asCellViewModels: ([ReadCollection], [ReadLink], Bool, ReadCollectionItemSortOrder) ->  [ReadItemCellViewModel]
-        asCellViewModels = { collections, links, isShrink, order in
-            let collectionSection = collections.sort(by: order).asCellViewModels(isShrink: isShrink)
-            let linkSection = links.sort(by: order).asCellViewModels(isShrink: isShrink)
+    public var sections: Observable<[ReadCollectionItemSection]> {
+        
+        let asSections: (ReadCollection?, [ReadCollection], [ReadLink], Bool, ReadCollectionItemSortOrder) ->  [ReadCollectionItemSection]
+        asSections = { currentCollection, collections, links, isShrink, order in
             
-            return collectionSection.appendSectionHeaderIfNotEmpty("Collections")
-                + linkSection.appendSectionHeaderIfNotEmpty("Links")
+            let attributeCell: [ReadItemCellViewModel] = currentCollection
+                .map{ [ReadCollectionAttrCellViewModel(collection: $0)] } ?? []
+            let collectionCells = collections.sort(by: order).asCellViewModels(isShrink: isShrink)
+            let linkCells = links.sort(by: order).asCellViewModels(isShrink: isShrink)
+            let sections: [ReadCollectionItemSection?] =  [
+                attributeCell.asSectionIfNotEmpty(for: .attribute),
+                collectionCells.asSectionIfNotEmpty(for: .collections),
+                linkCells.asSectionIfNotEmpty(for: .links)
+            ]
+            return sections.compactMap { $0 }
         }
         
         return Observable.combineLatest(
+            self.subjects.currentCollection,
             self.subjects.collections.compactMap { $0 },
             self.subjects.links.compactMap { $0 },
             self.subjects.isShrinkModeIsOn.compactMap { $0 },
             self.subjects.sortOrder.compactMap { $0 },
-            resultSelector: asCellViewModels
+            resultSelector: asSections
         )
     }
 }
@@ -250,11 +289,11 @@ private extension Array where Element: ReadItem {
     }
 }
 
+
 private extension Array where Element == ReadItemCellViewModel {
     
-    func appendSectionHeaderIfNotEmpty(_ title: String) -> Array {
-        guard self.isNotEmpty else { return [] }
-        let header = ReadCollectionSectionCellViewModel(title: title)
-        return [header] + self
+    func asSectionIfNotEmpty(for type: ReadCollectionItemSectionType) -> ReadCollectionItemSection? {
+        guard self.isNotEmpty else { return nil }
+        return .init(type: type, cellViewModels: self)
     }
 }
