@@ -7,12 +7,12 @@
 
 import Foundation
 
-import SwiftUI
+//import SwiftUI
 
 
-extension View {
-    
-    public func asAnyView() -> AnyView {
-        return AnyView(self)
-    }
-}
+//extension View {
+//
+//    public func asAnyView() -> AnyView {
+//        return AnyView(self)
+//    }
+//}
