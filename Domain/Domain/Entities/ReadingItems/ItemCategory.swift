@@ -1,5 +1,5 @@
 //
-//  Category.swift
+//  ItemCategory.swift
 //  Domain
 //
 //  Created by sudo.park on 2021/09/11.
@@ -12,9 +12,9 @@ import Foundation
 public struct ItemCategory {
     
     public let name: String
-    public let colorCode: Int
+    public let colorCode: String
     
-    public init(name: String, colorCode: Int) {
+    public init(name: String, colorCode: String) {
         self.name = name
         self.colorCode = colorCode
     }
