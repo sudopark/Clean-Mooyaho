@@ -15,6 +15,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
     
     public struct Scenario {
         public var myItems: Result<[ReadItem], Error> = .success([])
+        public var collectionInfo: Result<ReadCollection, Error> = .success(.dummy(0))
         public var collectionItems: Result<[ReadItem], Error> = .success([])
         public var updateCollectionResult: Result<Void, Error> = .success(())
         public var updateLinkResult: Result<Void, Error> = .success(())
@@ -30,6 +31,10 @@ open class StubReadItemUsecase: ReadItemUsecase {
     
     open func loadMyItems() -> Observable<[ReadItem]> {
         return self.scenario.myItems.asMaybe().asObservable()
+    }
+    
+    open func loadCollectionInfo(_ collectionID: String) -> Observable<ReadCollection> {
+        return self.scenario.collectionInfo.asMaybe().asObservable()
     }
     
     open func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {

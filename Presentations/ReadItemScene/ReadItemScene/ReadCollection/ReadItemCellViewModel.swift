@@ -22,12 +22,19 @@ public protocol ReadItemCellViewModel {
 
 // MARK: - ReadCollectionSectionCellViewModel
 
-public struct ReadCollectionSectionCellViewModel: ReadItemCellViewModel {
+public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     
-    public let title: String
-    public var uid: String { self.title }
+    public var uid: String { "collection_attr" }
     public var isShrink: Bool = false
     public var presetingID: Int { self.uid.hashValue }
+    
+    public var priority: ReadPriority?
+    public var categories: [ItemCategory] = []
+    
+    public init(collection: ReadCollection) {
+        self.priority = collection.priority
+        self.categories = collection.categories
+    }
 }
 
 

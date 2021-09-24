@@ -32,12 +32,12 @@ public final class ReadCollectionViewData: ObservableObject {
             })
             .disposed(by: self.disposeBag)
         
-        viewModel.cellViewModels
-            .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] cellViewModels in
-                self?.cellViewModels = cellViewModels
-            })
-            .disposed(by: self.disposeBag)
+//        viewModel.cellViewModels
+//            .asDriver(onErrorDriveWith: .never())
+//            .drive(onNext: { [weak self] cellViewModels in
+//                self?.cellViewModels = cellViewModels
+//            })
+//            .disposed(by: self.disposeBag)
     }
 }
 

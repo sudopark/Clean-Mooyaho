@@ -88,7 +88,7 @@
 		F6913EEB26EC636100C6E105 /* ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEA26EC636100C6E105 /* ReadItem.swift */; };
 		F6913EED26EC637000C6E105 /* ReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEC26EC637000C6E105 /* ReadCollection.swift */; };
 		F6913EEF26EC65BA00C6E105 /* ReadPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEE26EC65BA00C6E105 /* ReadPriority.swift */; };
-		F6913EF526EC686500C6E105 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EF426EC686500C6E105 /* Category.swift */; };
+		F6913EF526EC686500C6E105 /* ItemCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EF426EC686500C6E105 /* ItemCategory.swift */; };
 		F6913EFB26EE4D6900C6E105 /* ReadItemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */; };
 		F6913EFD26EE54D500C6E105 /* ReadLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFC26EE54D500C6E105 /* ReadLink.swift */; };
 		F6913EFF26EE55B400C6E105 /* ReadItemLoadUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EFE26EE55B400C6E105 /* ReadItemLoadUsecase.swift */; };
@@ -213,7 +213,7 @@
 		F6913EEA26EC636100C6E105 /* ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItem.swift; sourceTree = "<group>"; };
 		F6913EEC26EC637000C6E105 /* ReadCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollection.swift; sourceTree = "<group>"; };
 		F6913EEE26EC65BA00C6E105 /* ReadPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPriority.swift; sourceTree = "<group>"; };
-		F6913EF426EC686500C6E105 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		F6913EF426EC686500C6E105 /* ItemCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCategory.swift; sourceTree = "<group>"; };
 		F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemUsecase.swift; sourceTree = "<group>"; };
 		F6913EFC26EE54D500C6E105 /* ReadLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLink.swift; sourceTree = "<group>"; };
 		F6913EFE26EE55B400C6E105 /* ReadItemLoadUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemLoadUsecase.swift; sourceTree = "<group>"; };
@@ -574,7 +574,7 @@
 		F6913EE926EC635400C6E105 /* ReadingItems */ = {
 			isa = PBXGroup;
 			children = (
-				F6913EF426EC686500C6E105 /* Category.swift */,
+				F6913EF426EC686500C6E105 /* ItemCategory.swift */,
 				F6913EEE26EC65BA00C6E105 /* ReadPriority.swift */,
 				F6913EEA26EC636100C6E105 /* ReadItem.swift */,
 				F6913EFC26EE54D500C6E105 /* ReadLink.swift */,
@@ -738,7 +738,7 @@
 				2B40BF8F263F0FD70031C7A6 /* PlaceRepository.swift in Sources */,
 				F6152961264F1A8B003BCB59 /* HoorayMessages.swift in Sources */,
 				2B40BF87263F09AF0031C7A6 /* LocationServiceAccessPermission.swift in Sources */,
-				F6913EF526EC686500C6E105 /* Category.swift in Sources */,
+				F6913EF526EC686500C6E105 /* ItemCategory.swift in Sources */,
 				2BABA288264279D2007E2D1E /* SuggestUsecase.swift in Sources */,
 				2B9F278B2633E91D00FEBCE3 /* OAuthService.swift in Sources */,
 				2B9F279B2633F10200FEBCE3 /* Customer.swift in Sources */,
