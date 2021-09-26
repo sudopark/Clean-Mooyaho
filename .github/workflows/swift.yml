@@ -52,7 +52,7 @@ jobs:
       - name: Member Scenes Unit Tests
         id: test_member_scenes
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme MemberScenes \
           -destination "${destination}" \
@@ -64,7 +64,7 @@ jobs:
       - name: ReadItem Scenes Unit Tests
         id: test_reads_scenes
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme ReadItemScene \
           -destination "${destination}" \
@@ -77,7 +77,7 @@ jobs:
       - name: Domain Unit Tests
         id: test_domain
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme Domain \
           -destination "${destination}" \
@@ -90,7 +90,7 @@ jobs:
       - name: DataStore Unit Tests
         id: test_data_store
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme DataStore \
           -destination "${destination}" \
@@ -102,7 +102,7 @@ jobs:
       - name: FirebaseService Unit Tests
         id: test_fb
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme FirebaseService \
           -destination "${destination}" \

@@ -52,7 +52,7 @@ extension RepositoryTests_Places {
         
         // when
         let location = UserLocation.dummy(0)
-        let void = self.waitFirstElement(expect, for: self.repository.uploadLocation(location).asObservable()) { }
+        let void: Void? = self.waitFirstElement(expect, for: self.repository.uploadLocation(location).asObservable()) { }
         
         // then
         XCTAssertNotNil(void)

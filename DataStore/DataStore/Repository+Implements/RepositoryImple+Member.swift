@@ -49,7 +49,7 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
         case let .data(data, ext, size):
             return self.memberRemote.requestUploadMemberProfileImage(memberID, data: data, ext: ext, size: size)
             
-        case let .file(path, needCopyTemp, _): return .empty()
+        case .file: return .empty()
         }
     }
     
