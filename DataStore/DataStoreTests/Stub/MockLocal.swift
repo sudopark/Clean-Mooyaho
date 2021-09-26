@@ -154,4 +154,13 @@ class MockLocal: LocalStorage, Mocking {
     func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
         return self.resolve(key: "updateReadItemCustomOrder") ?? .empty()
     }
+    
+    func fetchPreview(_ url: String) -> Maybe<LinkPreview?> {
+        return self.resolve(key: "fetchPreview") ?? .empty()
+    }
+    
+    func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void> {
+        self.verify(key: "saveLinkPreview", with: preview)
+        return self.resolve(key: "saveLinkPreview") ?? .empty()
+    }
 }

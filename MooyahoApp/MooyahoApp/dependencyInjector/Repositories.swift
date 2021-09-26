@@ -18,11 +18,15 @@ import FirebaseService
 public class AppRepository {
     
     private let remote: Remote
+    private let linkPreviewRemote: LinkPreviewRemote
     private let local: LocalStorage
     public let disposeBag: DisposeBag = DisposeBag()
     
-    public init(remote: Remote, local: LocalStorage) {
+    public init(remote: Remote,
+                linkPreviewRemote: LinkPreviewRemote,
+                local: LocalStorage) {
         self.remote = remote
+        self.linkPreviewRemote = linkPreviewRemote
         self.local = local
     }
 }
@@ -86,6 +90,17 @@ extension AppRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency
 extension AppRepository: ReadItemOptionsRepository, ReadItemOptionReposiotryDefImpleDependency {
     
     public var readItemOptionLocal: ReadItemOptionsLocalStorage {
+        return self.local
+    }
+}
+
+extension AppRepository: LinkPreviewRepository, LinkPreviewrepositoryDefImpleDependency {
+    
+    public var previewRemote: LinkPreviewRemote {
+        return self.linkPreviewRemote
+    }
+    
+    public var previewCache: LinkPreviewCacheStorage {
         return self.local
     }
 }

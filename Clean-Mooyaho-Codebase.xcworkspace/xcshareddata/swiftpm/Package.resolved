@@ -72,6 +72,15 @@
           "revision": "16550d9104f12e9033c0b0de5d6c6d9de3f04dfa",
           "version": null
         }
+      },
+      {
+        "package": "SwiftLinkPreview",
+        "repositoryURL": "https://github.com/sudopark/SwiftLinkPreview",
+        "state": {
+          "branch": "main",
+          "revision": "34b66f76de89965cea9c7bfb3c0d7ddd3abfe649",
+          "version": null
+        }
       }
     ]
   },
