@@ -82,7 +82,8 @@ extension ReadCollectionViewController: UITableViewDelegate {
     }
     
     private func makeCollectionViewDataSource() -> DataSource {
-        let configureCell: DataSource.ConfigureCell = { _, tableView, indexPath, item in
+        let configureCell: DataSource.ConfigureCell = { [weak self] _, tableView, indexPath, item in
+            guard let self = self else { return UITableViewCell() }
             switch item {
             case let attribute as ReadCollectionAttrCellViewModel:
                 let cell: ReadCollcetionAttrCell = tableView.dequeueCell()
@@ -107,6 +108,7 @@ extension ReadCollectionViewController: UITableViewDelegate {
             case let link as ReadLinkCellViewModel where link.isShrink == true:
                 let cell: ReadLinkExpandCell = tableView.dequeueCell()
                 cell.setupCell(link)
+                cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid))
                 return cell
 
             default: return UITableViewCell()

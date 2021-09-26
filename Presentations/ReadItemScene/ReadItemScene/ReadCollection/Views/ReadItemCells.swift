@@ -7,6 +7,10 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
+import Domain
 import CommonPresenting
 
 
@@ -220,7 +224,7 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     let contentStackView = UIStackView()
     
-    let thumbNailView = IntegratedImageView()
+    let thumbNailView = UIImageView()
     
     let titleAreaView = UIView()
     let iconImageVIew = UIImageView()
@@ -240,8 +244,64 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         self.setupStyling()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.thumbNailView.cancelSetupThumbnail()
+        self.iconImageVIew.cancelSetupThumbnail()
+    }
+    
     func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
         
+        self.linkAddressLabel.text = cellViewModel.linkUrl
+        if cellViewModel.categories.isNotEmpty {
+            self.categoriesTextView.isHidden = false
+            self.categoriesTextView.updateCategories(cellViewModel.categories)
+        } else {
+            self.categoriesTextView.isHidden = true
+        }
+        
+        // TODO: update priority
+    }
+    
+    func bindPreview(_ source: Observable<LinkPreview>) {
+        
+        source.asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] preview in
+                guard let self = self else { return }
+                self.updateImageIfPossible(self.thumbNailView, url: preview.mainImageURL)
+                self.updateImageIfPossible(self.iconImageVIew, url: preview.iconURL)
+                self.updateTitle(preview.title)
+                self.updateDescripyion(preview.description)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateImageIfPossible(_ imageView: UIImageView, url: String?) {
+        imageView.cancelSetupThumbnail()
+        guard let url = url else {
+            imageView.isHidden = true
+            return
+        }
+        imageView.isHidden = false
+        imageView.setupThumbnail(url)
+    }
+    
+    private func updateTitle(_ title: String?) {
+        guard let title = title else {
+            self.titleAreaView.isHidden = true
+            return
+        }
+        self.titleAreaView.isHidden = false
+        self.titleLabel.text = title
+    }
+    
+    private func updateDescripyion(_ description: String?) {
+        guard let description = description else {
+            self.descriptionView.isHidden = true
+            return
+        }
+        self.descriptionView.isHidden = false
+        self.descriptionView.text = description
     }
     
     func setupLayout() {
@@ -255,7 +315,6 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         thumbNailView.autoLayout.active(with: contentStackView) {
             $0.heightAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.64)
         }
-        thumbNailView.setupLayout()
         thumbNailView.isHidden = true
         
         titleAreaView.addSubview(iconImageVIew)
@@ -289,11 +348,10 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         contentStackView.addArrangedSubview(priorityLabel)
         contentStackView.addArrangedSubview(categoriesTextView)
         categoriesTextView.setupLayout()
+        categoriesTextView.isHidden = true
     }
     
     func setupStyling() {
-        thumbNailView.setupStyling()
-        
         iconImageVIew.image = UIImage(named: "link")
         titleLabel.font = UIFont.systemFont(ofSize: 13)
         titleLabel.textColor = self.uiContext.colors.text

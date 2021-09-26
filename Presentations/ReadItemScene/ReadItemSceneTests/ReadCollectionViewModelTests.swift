@@ -288,6 +288,20 @@ extension ReadCollectionViewModelTests {
 
 extension ReadCollectionViewModelTests {
     
+    
+    func testViewMoel_provideLinkPreview() {
+        // given
+        let expect = expectation(description: "link preview 제공")
+        let viewModel = self.makeViewModel()
+        viewModel.reloadCollectionItems()
+        
+        // when
+        let load = viewModel.readLinkPreview(for: "l:8")
+        let preview = self.waitFirstElement(expect, for: load)
+        
+        // then
+        XCTAssertNotNil(preview)
+    }
 }
 
 // MAARK: - show detail
