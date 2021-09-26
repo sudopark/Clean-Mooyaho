@@ -114,3 +114,12 @@ extension ReadLink {
         return .init(uid: "l:\(int)", link: "link:\(int)", createAt: int.asTimeStamp(), lastUpdated: int.asTimeStamp())
     }
 }
+
+
+extension LinkPreview {
+    
+    public static func dummy(_ int: Int) -> LinkPreview {
+        return LinkPreview(title: "t:\(int)", description: "des:\(int)",
+                           mainImageURL: "url", iconURL: nil)
+    }
+}

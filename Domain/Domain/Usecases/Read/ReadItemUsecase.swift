@@ -23,15 +23,20 @@ public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, Rea
 public final class ReadItemUsecaseImple: ReadItemUsecase {
     
     private let itemsRespoitory: ReadItemRepository
+    private let previewRepository: LinkPreviewRepository
     private let optionsRespository: ReadItemOptionsRepository
     private let authInfoProvider: AuthInfoProvider
     private let sharedStoreService: SharedDataStoreService
     
+    private let disposeBag = DisposeBag()
+    
     public init(itemsRespoitory: ReadItemRepository,
+                previewRepository: LinkPreviewRepository,
                 optionsRespository: ReadItemOptionsRepository,
                 authInfoProvider: AuthInfoProvider,
                 sharedStoreService: SharedDataStoreService) {
         self.itemsRespoitory = itemsRespoitory
+        self.previewRepository = previewRepository
         self.optionsRespository = optionsRespository
         self.authInfoProvider = authInfoProvider
         self.sharedStoreService = sharedStoreService
@@ -59,6 +64,39 @@ extension ReadItemUsecaseImple {
                 .fetchCollectionItems(collectionID: collectionID).asObservable()
         }
         return self.itemsRespoitory.requestLoadCollectionItems(collectionID: collectionID)
+    }
+    
+    public func loadLinkPreview(_ url: String) -> Observable<LinkPreview> {
+        
+        let key = SharedDataKeys.readLinkPreviewMap
+        
+        let isPreviewExistInMemory = self.sharedStoreService
+            .isExists([String: LinkPreview].self, key: key) { $0?[url] != nil }
+        
+        let preparePreviewIfNeed: () -> Void = { [weak self] in
+            guard isPreviewExistInMemory == false else { return }
+            self?.prepreLinkPreview(url)
+        }
+        
+        return self.sharedStoreService
+            .observeWithCache([String: LinkPreview].self, key: key.rawValue)
+            .compactMap { $0?[url] }
+            .do(onSubscribed: preparePreviewIfNeed)
+    }
+    
+    private func prepreLinkPreview(_ url: String) {
+        
+        let updateStore: (LinkPreview) -> Void = { [weak self] preview in
+            guard let self = self else { return }
+            let datKey = SharedDataKeys.readLinkPreviewMap
+            self.sharedStoreService.update([String: LinkPreview].self, key: datKey.rawValue) {
+                ($0 ?? [:]) |> key(url) .~ preview
+            }
+        }
+        
+        self.previewRepository.loadLinkPreview(url)
+            .subscribe(onSuccess: updateStore)
+            .disposed(by: self.disposeBag)
     }
 }
 

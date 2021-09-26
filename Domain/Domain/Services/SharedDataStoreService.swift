@@ -91,8 +91,9 @@ extension SharedDataStoreServiceImple {
     
     public func observeWithCache<V>(_ type: V.Type, key: String) -> Observable<V?> {
         let cached: V? = self.get(type, key: key)
+        let isLastUpdated = try? self.updatedKey.value() == key
         let updates: Observable<V?> = self.observe(type, key: key).map{ v -> V? in v }
-        guard let cache = cached else {
+        guard let cache = cached, isLastUpdated == false else {
             return updates
         }
         return updates.startWith(cache)
