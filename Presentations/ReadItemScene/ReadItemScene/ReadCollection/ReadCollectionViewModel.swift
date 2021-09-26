@@ -46,7 +46,7 @@ public protocol ReadCollectionViewModel: AnyObject {
     var isShrinkMode: Observable<Bool> { get }
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
-//    func linkPreviewThumbnail(for linkID: String) -> Observable<ImageSource?>
+    func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
 }
 
 
@@ -241,6 +241,14 @@ extension ReadCollectionViewModelImple {
             self.subjects.sortOrder.compactMap { $0 },
             resultSelector: asSections
         )
+    }
+    
+    public func readLinkPreview(for linkID: String) -> Observable<LinkPreview> {
+        let links = self.subjects.links.value
+        guard let linkItem = links?.first(where: { $0.uid == linkID }) else {
+            return .empty()
+        }
+        return self.readItemUsecase.loadLinkPreview(linkItem.link)
     }
 }
 

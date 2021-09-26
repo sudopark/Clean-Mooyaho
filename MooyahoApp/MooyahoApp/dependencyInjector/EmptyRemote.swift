@@ -122,4 +122,6 @@ final class EmptyRemote: Remote {
     func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void>  { .empty() }
     
     func requestLoadPreview(_ url: String) -> Maybe<LinkPreview> { .empty() }
+    
+    func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection> { .empty() }
 }
