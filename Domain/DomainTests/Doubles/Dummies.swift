@@ -120,3 +120,12 @@ extension ReadCollection {
                               lastUpdated: .now() + TimeStamp(int))
     }
 }
+
+
+extension LinkPreview {
+    
+    static func dummy(_ int: Int) -> LinkPreview {
+        return LinkPreview(title: "t:\(int)", description: "des:\(int)",
+                           mainImageURL: "url", iconURL: nil)
+    }
+}

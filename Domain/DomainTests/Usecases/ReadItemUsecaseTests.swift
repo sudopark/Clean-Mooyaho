@@ -61,6 +61,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
         self.spyRepository = repositoryStub
         
+        let previewRepositoryStub = StubLinkPreviewRepository()
+        
         let optionsScenario = StubReadItemOptionsRepository.Scenario()
             |> \.isShrinkMode .~ .success(isShrinkModeOn)
             |> \.sortOrder .~ .success(sortOrder)
@@ -71,6 +73,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.spyStore = store
         
         return ReadItemUsecaseImple(itemsRespoitory: repositoryStub,
+                                    previewRepository: previewRepositoryStub,
                                     optionsRespository: optionRepository,
                                     authInfoProvider: self.authProvider(signedIn),
                                     sharedStoreService: store)
@@ -257,6 +260,34 @@ extension ReadItemUsecaseTests {
         // then
         let link = self.spyRepository.updatedLink
         XCTAssertEqual(link?.ownerID, self.myID)
+    }
+    
+    func testUsecase_loadLinkPreview() {
+        // given
+        let expect = expectation(description: "link preview 로드")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let loading = usecase.loadLinkPreview("some")
+        let preview = self.waitFirstElement(expect, for: loading)
+        
+        // then
+        XCTAssertNotNil(preview)
+    }
+    
+    func testUsecase_whenPreviewExistsInMemory_loadLinkPreview() {
+        // given
+        let expect = expectation(description: "link preview shared store에 존재하는경우 로드")
+        let previewMap: [String: LinkPreview] = ["some": LinkPreview.dummy(0)]
+        let usecase = self.makeUsecase()
+        self.spyStore.save([String: LinkPreview].self, key: .readLinkPreviewMap, previewMap)
+        
+        // when
+        let loading = usecase.loadLinkPreview("some")
+        let preview = self.waitFirstElement(expect, for: loading)
+        
+        // then
+        XCTAssertNotNil(preview)
     }
 }
 
