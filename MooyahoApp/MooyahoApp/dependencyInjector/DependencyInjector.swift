@@ -82,18 +82,15 @@ extension DependencyInjector {
         if AppEnvironment.isTestBuild {
             return EmptyRemote()
         } else {
-            return self.shared.firebaseServiceImple
+            return  RemoteImple(firebaseRemote: self.shared.firebaseServiceImple,
+                                linkPreviewRemote: LinkPreviewRemoteImple())
+            
         }
-    }
-    
-    var linkPreivewRemote: LinkPreviewRemote {
-        return LinkPreviewRemoteImple()
     }
     
     var appReposiotry: AppRepository {
         
         return AppRepository(remote: self.remote,
-                             linkPreviewRemote: self.linkPreivewRemote,
                              local: self.shared.localStorage)
     }
     

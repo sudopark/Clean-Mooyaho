@@ -36,7 +36,7 @@ public enum RemoteErrors: Error {
 
 public protocol Remote: AuthRemote, MemberRemote,
                         PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
-                        ReadItemRemote { }
+                        ReadItemRemote, LinkPreviewRemote { }
 
 // MARK: - Auth remote
 
