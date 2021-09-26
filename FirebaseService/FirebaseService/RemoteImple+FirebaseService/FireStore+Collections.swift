@@ -34,7 +34,9 @@ extension Firestore {
 }
 
 
-extension FirebaseServiceImple: Remote { }
+public typealias FirebaseRemote = AuthRemote & MemberRemote & PlaceRemote & TagRemote & HoorayRemote & MessagingRemote & ReadItemRemote
+
+extension FirebaseServiceImple: FirebaseRemote{ }
 
 
 extension FirebaseServiceImple {
