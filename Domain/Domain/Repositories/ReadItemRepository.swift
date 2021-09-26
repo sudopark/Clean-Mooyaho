@@ -28,4 +28,8 @@ public protocol ReadItemRepository {
     func updateLink(_ link: ReadLink) -> Maybe<Void>
     
     func requestUpdateLink(_ link: ReadLink) -> Maybe<Void>
+    
+    func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection>
+    
+    func requestLoadCollection(for memberID: String, collectionID: String) -> Observable<ReadCollection>
 }

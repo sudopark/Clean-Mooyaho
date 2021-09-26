@@ -36,4 +36,8 @@ extension LocalStorageImple {
         return updateCollectionsWithoutError
             .flatMap(thenUpdateLinksWithoutError)
     }
+    
+    public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
+        return self.dataModelStorage.fetchCollection(collectionID)
+    }
 }

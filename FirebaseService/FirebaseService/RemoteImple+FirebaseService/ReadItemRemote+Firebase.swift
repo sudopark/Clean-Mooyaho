@@ -22,4 +22,8 @@ extension FirebaseServiceImple {
     public func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> { .empty() }
     
     public func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> { .empty() }
+    
+    public func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection> {
+        return .empty()
+    }
 }

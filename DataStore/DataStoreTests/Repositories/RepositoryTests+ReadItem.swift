@@ -158,6 +158,19 @@ extension RepositoryTests_ReadItem {
         // then
         XCTAssertNotNil(error)
     }
+    
+    func testRepository_fetchCollection() {
+        // given
+        let expect = expectation(description: "collection 패칭")
+        self.mockLocal.register(key: "fetchCollection") { Maybe<ReadCollection?>.just(.init(name: "some")) }
+        
+        // when
+        let loading = self.dummyRepository.fetchCollection("some")
+        let collection = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(collection)
+    }
 }
 
 
@@ -281,6 +294,54 @@ extension RepositoryTests_ReadItem {
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepository_loadCollectionWithSignedIn() {
+        // given
+        let expect = expectation(description: "로그인상태에서 콜렉션 로드")
+        expect.expectedFulfillmentCount = 2
+        self.mockLocal.register(key: "fetchCollection") { Maybe<ReadCollection?>.just(.init(name: "some")) }
+        self.mockRemote.register(key: "requestLoadCollection") { Maybe<ReadCollection>.just(.init(name: "some")) }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadCollection(for: "some", collectionID: "c")
+        let colletions = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(colletions.count, 2)
+    }
+    
+    func testRepository_loadCollectionWithSignedIn_ignoreLocalError() {
+        // given
+        let expect = expectation(description: "로그인상태에서 콜렉션 로드시에 로컬에러는 무시")
+        self.mockLocal.register(key: "fetchCollection") { Maybe<ReadCollection?>.error(ApplicationErrors.invalid) }
+        self.mockRemote.register(key: "requestLoadCollection") { Maybe<ReadCollection>.just(.init(name: "some")) }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadCollection(for: "some", collectionID: "c")
+        let colletions = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(colletions.count, 1)
+    }
+    
+    func testRepository_whenAfterLoadCollectionFromRemote_updateLocal() {
+        // given
+        let expect = expectation(description: "remote에서 콜렉션 로드시에 로컬 업데이트")
+        expect.expectedFulfillmentCount = 2
+        self.mockLocal.register(key: "fetchCollection") { Maybe<ReadCollection?>.just(nil) }
+        self.mockRemote.register(key: "requestLoadCollection") { Maybe<ReadCollection>.just(.init(name: "some")) }
+        
+        self.mockLocal.called(key: "updateReadItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadCollection(for: "some", collectionID: "c")
+        let colletions = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(colletions.count, 1)
     }
 }
 
