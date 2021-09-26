@@ -15,6 +15,7 @@ import Domain
 public enum LocalErrors: Error {
     case invalidData(_ reason: String?)
     case deserializeFail(_ for: String?)
+    case notExists
 }
 
 
@@ -101,6 +102,8 @@ public protocol ReadItemLocalStorage {
     func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]>
     
     func updateReadItems(_ items: [ReadItem]) -> Maybe<Void>
+    
+    func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
 }
 
 

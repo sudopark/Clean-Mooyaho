@@ -135,4 +135,20 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual(savedLink?.priority, link.priority)
         XCTAssertEqual(savedLink?.categories.count, link.categories.count)
     }
+    
+    func testStorage_loadCollection() {
+        // given
+        let expect = expectation(description: "저장된 특정 콜렉션 로드")
+        
+        let dummyCollection = ReadCollection(name: "some")
+        
+        // when
+        let save = self.local.updateReadItems([dummyCollection])
+        let load = self.local.fetchCollection(dummyCollection.uid)
+        let saveAndLoad = save.flatMap{ _ in load }
+        let collection = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        
+        // then
+        XCTAssertNotNil(collection)
+    }
 }

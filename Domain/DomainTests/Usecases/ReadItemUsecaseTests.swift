@@ -55,7 +55,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             repositoryScenario.myItems = .failure(ApplicationErrors.invalid)
         }
         shouldFailLoadCollection.then {
-            repositoryScenario.localCollection = .failure(ApplicationErrors.invalid)
+            repositoryScenario.localCollectionItems = .failure(ApplicationErrors.invalid)
         }
         
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
@@ -122,9 +122,9 @@ extension ReadItemUsecaseTests {
         XCTAssertEqual(itemLists.count, 2)
     }
     
-    func testUsecase_loadCollectionWithoutSignedIn() {
+    func testUsecase_loadCollectionItemWithoutSignedIn() {
         // given
-        let expect = expectation(description: "로그아웃상태에서 콜렉션 로드")
+        let expect = expectation(description: "로그아웃상태에서 콜렉션 item 로드")
         let usecase = self.makeUsecase(signedIn: false)
         
         // when
@@ -148,9 +148,9 @@ extension ReadItemUsecaseTests {
     }
     
     // load collection + 로그인 상태 -> 캐시에 저장된거 + 리모트에서 불러옴
-    func testUsecase_loadCollectionWithSignedIn() {
+    func testUsecase_loadCollectionItemsWithSignedIn() {
         // given
-        let expect = expectation(description: "로그인 상태에서 콜렉션 로드")
+        let expect = expectation(description: "로그인 상태에서 콜렉션 items 로드")
         expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(signedIn: true)
         
@@ -173,6 +173,32 @@ extension ReadItemUsecaseTests {
         
         // then
         XCTAssertNotNil(error)
+    }
+    
+    func testUsecase_loadCollectionWithoutSignedIn() {
+        // given
+        let expect = expectation(description: "로그인 안한상태로 콜렉션 로드")
+        let usecase = self.makeUsecase(signedIn: false)
+        
+        // when
+        let loading = usecase.loadCollectionInfo("some")
+        let collection = self.waitFirstElement(expect, for: loading)
+        
+        // then
+        XCTAssertNotNil(collection)
+    }
+    
+    func testUsecase_loadCollectionWithSignedIn() {
+        // given
+        let expect = expectation(description: "로그인한 상태에서 콜렉션 로드")
+        let usecase = self.makeUsecase(signedIn: true)
+        
+        // when
+        let loading = usecase.loadCollectionInfo("some")
+        let collection = self.waitFirstElement(expect, for: loading)
+        
+        // then
+        XCTAssertNotNil(collection)
     }
 }
 

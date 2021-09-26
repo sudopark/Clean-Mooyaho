@@ -48,6 +48,8 @@ public protocol DataModelStorage {
     
     func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]>
     
+    func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
+    
     func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void>
     
     func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void>
@@ -376,6 +378,12 @@ extension DataModelStorageImple {
         return self.fetchMatchingItems(linkQuery, collectionQuery)
     }
     
+    public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
+        let query = ReadCollectionTable.selectAll { $0.uid == collectionID }
+        return self.fetchReadCollections(query)
+            .map { $0.first }
+    }
+    
     private func fetchMatchingItems(_ linksQuery: SelectQuery<ReadLinkTable>,
                                     _ collectionQuery: SelectQuery<ReadCollectionTable>) -> Maybe<[ReadItem]> {
         
@@ -414,7 +422,9 @@ extension DataModelStorageImple {
         let categories = ItemCategoriesTable.self
         let query = categories.selectAll{ $0.itemID.in(ids) }
         let entities = self.sqliteService.rx.run { try $0.load(categories, query: query) }
-        return entities.map{ items.applyCategoryInfo($0) }
+        return entities
+            .map{ items.applyCategoryInfo($0) }
+            .catchAndReturn(items)
     }
     
     public func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void> {
@@ -493,6 +503,7 @@ extension DataModelStorageImple {
         try? database.createTableOrNot(MemberTable.self)
         try? database.createTableOrNot(ImageSourceTable.self)
         try? database.createTableOrNot(ThumbnailTable.self)
+        try? database.createTableOrNot(ItemCategoriesTable.self)
         
         logger.print(level: .debug, "sqlite tables are created..")
     }

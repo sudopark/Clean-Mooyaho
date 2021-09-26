@@ -84,4 +84,34 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
         return self.readItemRemote.requestUpdateReadLink(link)
             .do(onNext: updateLocal)
     }
+    
+    
+    public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection> {
+        let notExistsThenError: (ReadCollection?) throws -> ReadCollection
+        notExistsThenError = { collection in
+            guard let collection = collection else {
+                throw LocalErrors.notExists
+            }
+            return collection
+        }
+        return self.readItemLocal.fetchCollection(collectionID)
+            .map(notExistsThenError)
+    }
+    
+    public func requestLoadCollection(for memberID: String, collectionID: String) -> Observable<ReadCollection> {
+        
+        let updateLocal: (ReadCollection) -> Void = { [weak self] collection in
+            guard let self = self else { return }
+            self.readItemLocal.updateReadItems([collection])
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        let remoteLoadAndUpdateLocal = self.readItemRemote
+            .requestLoadCollection(for: memberID, collectionID: collectionID)
+            .do(onNext: updateLocal)
+                
+        return self.fetchCollection(collectionID).ignoreError().asObservable()
+                .concat(remoteLoadAndUpdateLocal)
+    }
 }

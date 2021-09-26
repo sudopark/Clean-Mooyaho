@@ -163,4 +163,8 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "saveLinkPreview", with: preview)
         return self.resolve(key: "saveLinkPreview") ?? .empty()
     }
+    
+    func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
+        return self.resolve(key: "fetchCollection") ?? .empty()
+    }
 }

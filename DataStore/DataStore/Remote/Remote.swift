@@ -150,6 +150,8 @@ public protocol ReadItemRemote {
     func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void>
     
     func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void>
+    
+    func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection>
 }
 
 
