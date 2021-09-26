@@ -17,6 +17,12 @@
 		F64EE42826F521FA00CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE42726F521FA00CFA357 /* Common3rdParty.framework */; };
 		F64EE42A26F5220200CFA357 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */; };
 		F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64B26FB667400E866B7 /* ReadItemCells.swift */; };
+		F6AED2692700B13500A1DCCC /* AddReadLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2642700B13500A1DCCC /* AddReadLinkRouter.swift */; };
+		F6AED26A2700B13500A1DCCC /* AddReadLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2652700B13500A1DCCC /* AddReadLinkViewController.swift */; };
+		F6AED26B2700B13500A1DCCC /* AddReadLinkBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2662700B13500A1DCCC /* AddReadLinkBuilder.swift */; };
+		F6AED26C2700B13500A1DCCC /* AddReadLinkScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2672700B13500A1DCCC /* AddReadLinkScene.swift */; };
+		F6AED26D2700B13500A1DCCC /* AddReadLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2682700B13500A1DCCC /* AddReadLinkViewModel.swift */; };
+		F6AED26F2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED26E2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift */; };
 		F6E279BD26F6E71700957AC4 /* ReadCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279B826F6E71700957AC4 /* ReadCollectionRouter.swift */; };
 		F6E279BE26F6E71700957AC4 /* ReadCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279B926F6E71700957AC4 /* ReadCollectionViewController.swift */; };
 		F6E279BF26F6E71700957AC4 /* ReadCollectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279BA26F6E71700957AC4 /* ReadCollectionBuilder.swift */; };
@@ -51,6 +57,12 @@
 		F64EE42726F521FA00CFA357 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F665A64B26FB667400E866B7 /* ReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCells.swift; sourceTree = "<group>"; };
+		F6AED2642700B13500A1DCCC /* AddReadLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkRouter.swift; sourceTree = "<group>"; };
+		F6AED2652700B13500A1DCCC /* AddReadLinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkViewController.swift; sourceTree = "<group>"; };
+		F6AED2662700B13500A1DCCC /* AddReadLinkBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkBuilder.swift; sourceTree = "<group>"; };
+		F6AED2672700B13500A1DCCC /* AddReadLinkScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkScene.swift; sourceTree = "<group>"; };
+		F6AED2682700B13500A1DCCC /* AddReadLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkViewModel.swift; sourceTree = "<group>"; };
+		F6AED26E2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkViewModelTests.swift; sourceTree = "<group>"; };
 		F6E279B826F6E71700957AC4 /* ReadCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionRouter.swift; sourceTree = "<group>"; };
 		F6E279B926F6E71700957AC4 /* ReadCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionViewController.swift; sourceTree = "<group>"; };
 		F6E279BA26F6E71700957AC4 /* ReadCollectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionBuilder.swift; sourceTree = "<group>"; };
@@ -108,6 +120,7 @@
 		F64EE40226F5219200CFA357 /* ReadItemScene */ = {
 			isa = PBXGroup;
 			children = (
+				F6AED2632700B11400A1DCCC /* AddReadLink */,
 				F6E279B726F6E6B800957AC4 /* ReadCollection */,
 				F64EE40326F5219200CFA357 /* ReadItemScene.h */,
 				F64EE40426F5219200CFA357 /* Info.plist */,
@@ -121,6 +134,7 @@
 				F64EE40E26F5219200CFA357 /* ReadItemSceneTests.swift */,
 				F64EE41026F5219200CFA357 /* Info.plist */,
 				F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */,
+				F6AED26E2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift */,
 			);
 			path = ReadItemSceneTests;
 			sourceTree = "<group>";
@@ -145,6 +159,18 @@
 				F665A64B26FB667400E866B7 /* ReadItemCells.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F6AED2632700B11400A1DCCC /* AddReadLink */ = {
+			isa = PBXGroup;
+			children = (
+				F6AED2642700B13500A1DCCC /* AddReadLinkRouter.swift */,
+				F6AED2652700B13500A1DCCC /* AddReadLinkViewController.swift */,
+				F6AED2662700B13500A1DCCC /* AddReadLinkBuilder.swift */,
+				F6AED2672700B13500A1DCCC /* AddReadLinkScene.swift */,
+				F6AED2682700B13500A1DCCC /* AddReadLinkViewModel.swift */,
+			);
+			path = AddReadLink;
 			sourceTree = "<group>";
 		};
 		F6E279B726F6E6B800957AC4 /* ReadCollection */ = {
@@ -269,11 +295,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6AED2692700B13500A1DCCC /* AddReadLinkRouter.swift in Sources */,
 				F6E279BF26F6E71700957AC4 /* ReadCollectionBuilder.swift in Sources */,
+				F6AED26D2700B13500A1DCCC /* AddReadLinkViewModel.swift in Sources */,
 				F6E279C126F6E71700957AC4 /* ReadCollectionViewModel.swift in Sources */,
 				F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */,
+				F6AED26B2700B13500A1DCCC /* AddReadLinkBuilder.swift in Sources */,
 				F6E279BE26F6E71700957AC4 /* ReadCollectionViewController.swift in Sources */,
+				F6AED26C2700B13500A1DCCC /* AddReadLinkScene.swift in Sources */,
 				F6E279C026F6E71700957AC4 /* ReadCollectionScene.swift in Sources */,
+				F6AED26A2700B13500A1DCCC /* AddReadLinkViewController.swift in Sources */,
 				F6E279BD26F6E71700957AC4 /* ReadCollectionRouter.swift in Sources */,
 				F6ECE4DD26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift in Sources */,
 				F6E279CB26F6EC7900957AC4 /* ReadItemCellViewModel.swift in Sources */,
@@ -285,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */,
+				F6AED26F2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift in Sources */,
 				F64EE40F26F5219200CFA357 /* ReadItemSceneTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

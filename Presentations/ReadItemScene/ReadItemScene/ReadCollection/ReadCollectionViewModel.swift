@@ -54,18 +54,22 @@ public protocol ReadCollectionViewModel: AnyObject {
 
 public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
     
-    private let collectionID: String
+    private let selectedCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
     private let router: ReadCollectionRouting
     
-    public init(collectionID: String,
+    public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 router: ReadCollectionRouting) {
-        self.collectionID = collectionID
+        self.selectedCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
         self.router = router
         
         self.internalBinding()
+    }
+    
+    private var collectionID: String {
+        return self.selectedCollectionID ?? ReadCollection.rootID
     }
     
     deinit {
