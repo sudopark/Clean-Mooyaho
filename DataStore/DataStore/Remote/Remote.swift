@@ -151,3 +151,11 @@ public protocol ReadItemRemote {
     
     func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void>
 }
+
+
+// MARK: - link preview
+
+public protocol LinkPreviewRemote {
+    
+    func requestLoadPreview(_ url: String) -> Maybe<LinkPreview>
+}

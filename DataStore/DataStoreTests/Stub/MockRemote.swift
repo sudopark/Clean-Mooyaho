@@ -16,7 +16,7 @@ import UnitTestHelpKit
 @testable import DataStore
 
 
-class MockRemote: Remote, Mocking {
+class MockRemote: Remote, LinkPreviewRemote, Mocking {
     
     // auth
     func requestSignInAnonymously() -> Maybe<Auth> {
@@ -151,5 +151,10 @@ class MockRemote: Remote, Mocking {
     
     func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> {
         return self.resolve(key: "requestUpdateReadLink") ?? .empty()
+    }
+    
+    // preview
+    func requestLoadPreview(_ url: String) -> Maybe<LinkPreview> {
+        return self.resolve(key: "requestLoadPreview") ?? .empty()
     }
 }

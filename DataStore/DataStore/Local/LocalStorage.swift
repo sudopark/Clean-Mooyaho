@@ -120,9 +120,17 @@ public protocol ReadItemOptionsLocalStorage {
     func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
 }
 
+
+public protocol LinkPreviewCacheStorage {
+    
+    func fetchPreview(_ url: String) -> Maybe<LinkPreview?>
+    
+    func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage { }
 
 
 // MARK: - LocalStorageImple

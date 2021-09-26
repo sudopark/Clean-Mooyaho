@@ -86,9 +86,14 @@ extension DependencyInjector {
         }
     }
     
+    var linkPreivewRemote: LinkPreviewRemote {
+        return LinkPreviewRemoteImple()
+    }
+    
     var appReposiotry: AppRepository {
         
         return AppRepository(remote: self.remote,
+                             linkPreviewRemote: self.linkPreivewRemote,
                              local: self.shared.localStorage)
     }
     

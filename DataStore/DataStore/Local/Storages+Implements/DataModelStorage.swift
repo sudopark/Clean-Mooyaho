@@ -51,6 +51,10 @@ public protocol DataModelStorage {
     func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void>
     
     func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void>
+    
+    func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
+    
+    func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
 }
 
 
@@ -448,6 +452,24 @@ extension DataModelStorageImple {
 }
 
 
+// MARK: - LinkPreview
+
+extension DataModelStorageImple {
+    
+    public func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?> {
+        let previews = LinkPreviewTable.self
+        let query = previews.selectAll { $0.url == url }
+        return self.sqliteService.rx.run { try $0.loadOne(query) }
+    }
+    
+    public func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void> {
+        let entity = LinkPreviewTable.Entity(url: url , preview: preview)
+        return self.sqliteService.rx
+            .run { try $0.insertOne(LinkPreviewTable.self, entity: entity, shouldReplace: true) }
+    }
+}
+
+
 // MARK: - DataModelStorageImpl + Migration
 
 extension DataModelStorageImple {
@@ -471,11 +493,6 @@ extension DataModelStorageImple {
         try? database.createTableOrNot(MemberTable.self)
         try? database.createTableOrNot(ImageSourceTable.self)
         try? database.createTableOrNot(ThumbnailTable.self)
-//        try? database.createTableOrNot(PlaceInfoTable.self)
-//        try? database.createTableOrNot(TagTable.self)
-//        try? database.createTableOrNot(HoorayTable.self)
-//        try? database.createTableOrNot(HoorayAckUserTable.self)
-//        try? database.createTableOrNot(HoorayReactionTable.self)
         
         logger.print(level: .debug, "sqlite tables are created..")
     }

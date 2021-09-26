@@ -27,6 +27,13 @@
 		2BF00BE9262B7E1300E235C0 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */; };
 		2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */; };
 		2BF00BF0262B7E1300E235C0 /* DataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BF00BE2262B7E1300E235C0 /* DataStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F601724926FEF49C00E47B75 /* LinkPreviewRemoteImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601724826FEF49C00E47B75 /* LinkPreviewRemoteImple.swift */; };
+		F601724C26FEF85000E47B75 /* SwiftLinkPreview in Frameworks */ = {isa = PBXBuildFile; productRef = F601724B26FEF85000E47B75 /* SwiftLinkPreview */; };
+		F601725026FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601724F26FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift */; };
+		F601725226FEFABA00E47B75 /* RepositoryTests+LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601725126FEFABA00E47B75 /* RepositoryTests+LinkPreview.swift */; };
+		F601725426FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601725326FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift */; };
+		F601725627000F9800E47B75 /* LinkPreviewTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601725527000F9800E47B75 /* LinkPreviewTable.swift */; };
+		F60172582700145500E47B75 /* LocalStorageTests+LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60172572700145500E47B75 /* LocalStorageTests+LinkPreview.swift */; };
 		F62202BA2698918700B26B50 /* LocalStorageTests+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202B92698918700B26B50 /* LocalStorageTests+Place.swift */; };
 		F625EDC526821DB4000C87F0 /* LocalStorageImple+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDC426821DB4000C87F0 /* LocalStorageImple+Auth.swift */; };
 		F625EDC726821E3B000C87F0 /* LocalStorageImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDC626821E3B000C87F0 /* LocalStorageImple+Member.swift */; };
@@ -103,6 +110,12 @@
 		2BF00BE8262B7E1300E235C0 /* DataStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		2BF00BEF262B7E1300E235C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F601724826FEF49C00E47B75 /* LinkPreviewRemoteImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewRemoteImple.swift; sourceTree = "<group>"; };
+		F601724F26FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+LinkPreview.swift"; sourceTree = "<group>"; };
+		F601725126FEFABA00E47B75 /* RepositoryTests+LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+LinkPreview.swift"; sourceTree = "<group>"; };
+		F601725326FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+LinkPreview.swift"; sourceTree = "<group>"; };
+		F601725527000F9800E47B75 /* LinkPreviewTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewTable.swift; sourceTree = "<group>"; };
+		F60172572700145500E47B75 /* LocalStorageTests+LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+LinkPreview.swift"; sourceTree = "<group>"; };
 		F62202B92698918700B26B50 /* LocalStorageTests+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Place.swift"; sourceTree = "<group>"; };
 		F625EDC426821DB4000C87F0 /* LocalStorageImple+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Auth.swift"; sourceTree = "<group>"; };
 		F625EDC626821E3B000C87F0 /* LocalStorageImple+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Member.swift"; sourceTree = "<group>"; };
@@ -146,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F660B8EF26747B1E004FB42E /* Alamofire in Frameworks */,
+				F601724C26FEF85000E47B75 /* SwiftLinkPreview in Frameworks */,
 				F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */,
 				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
@@ -180,6 +194,7 @@
 			children = (
 				2B9F276B2633E69200FEBCE3 /* Remote.swift */,
 				2B7157012642A5E900D0C186 /* HttpAPI */,
+				F601724726FEF48000E47B75 /* RemoteImple+LinkPreview */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -195,6 +210,7 @@
 				F625EDCC26821E75000C87F0 /* LocalStorageImple+Hooray.swift */,
 				F6913F0E26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift */,
 				F6E279DA26F856BA00957AC4 /* LocalStorageImple+ReadItemOptions.swift */,
+				F601725326FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift */,
 				2B9F27772633E79800FEBCE3 /* Storages+Implements */,
 			);
 			path = Local;
@@ -232,6 +248,7 @@
 				F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */,
 				F6913F0A26F38AE400C6E105 /* RepositoryImple+ReadItem.swift */,
 				F6E279D826F84F6F00957AC4 /* RepositoryImple+ReadItemOptions.swift */,
+				F601724F26FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift */,
 				F6913F0826F38AA400C6E105 /* Deprecated */,
 			);
 			path = "Repository+Implements";
@@ -256,6 +273,7 @@
 				F6A72A3E26485FAD006BE4BD /* RepositoryTests+Tag.swift */,
 				F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */,
 				F6913F0C26F38C1600C6E105 /* RepositoryTests+ReadItem.swift */,
+				F601725126FEFABA00E47B75 /* RepositoryTests+LinkPreview.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -303,6 +321,14 @@
 			path = DataStoreTests;
 			sourceTree = "<group>";
 		};
+		F601724726FEF48000E47B75 /* RemoteImple+LinkPreview */ = {
+			isa = PBXGroup;
+			children = (
+				F601724826FEF49C00E47B75 /* LinkPreviewRemoteImple.swift */,
+			);
+			path = "RemoteImple+LinkPreview";
+			sourceTree = "<group>";
+		};
 		F6419BF426822F9B00C7919B /* Local */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +338,7 @@
 				F6CF34AF26D7DC6B003B52CD /* LocalStorageTests+Hooray.swift */,
 				F6CEF8BE26F508FD00061097 /* LocalStorageTests+ReadItem.swift */,
 				F6E279DC26F857E200957AC4 /* LocalStorageTests+ReadItemOptions.swift */,
+				F60172572700145500E47B75 /* LocalStorageTests+LinkPreview.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -348,6 +375,7 @@
 				F6CEF8BA26F4F0ED00061097 /* ItemCategoriesTable.swift */,
 				F6CEF8B826F4F0A800061097 /* ReadLinkTable.swift */,
 				F6CEF8BC26F4F89600061097 /* ReadCollectionTable.swift */,
+				F601725527000F9800E47B75 /* LinkPreviewTable.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -384,6 +412,7 @@
 				F660B8EE26747B1E004FB42E /* Alamofire */,
 				F66BB88E2684F64F00B46A99 /* KeychainSwift */,
 				F6CEF8C126F51C5700061097 /* SQLiteService */,
+				F601724B26FEF85000E47B75 /* SwiftLinkPreview */,
 			);
 			productName = DataStore;
 			productReference = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */;
@@ -439,6 +468,7 @@
 				F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				F66BB88D2684F64F00B46A99 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				F6CEF8C026F51C5700061097 /* XCRemoteSwiftPackageReference "SQLiteService" */,
+				F601724A26FEF85000E47B75 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
 			);
 			productRefGroup = 2BF00BE0262B7E1300E235C0 /* Products */;
 			projectDirPath = "";
@@ -472,6 +502,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F601725426FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift in Sources */,
 				F6913F0F26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift in Sources */,
 				F6CEF8BB26F4F0ED00061097 /* ItemCategoriesTable.swift in Sources */,
 				F6D401B1268223C6003647C3 /* MemberTable.swift in Sources */,
@@ -486,8 +517,11 @@
 				F6CEF8B926F4F0A800061097 /* ReadLinkTable.swift in Sources */,
 				F63D29F8269AE7DD007580E2 /* PlaceInfoTable.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
+				F601725627000F9800E47B75 /* LinkPreviewTable.swift in Sources */,
 				F625EDC926821E4E000C87F0 /* LocalStorageImple+Tag.swift in Sources */,
+				F601725026FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift in Sources */,
 				F6E279DB26F856BA00957AC4 /* LocalStorageImple+ReadItemOptions.swift in Sources */,
+				F601724926FEF49C00E47B75 /* LinkPreviewRemoteImple.swift in Sources */,
 				F6CF34B426D7E56E003B52CD /* HoorayAckUserTable.swift in Sources */,
 				2B7157032642A60500D0C186 /* HttpAPIEndPoints.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
@@ -516,9 +550,11 @@
 				F6CEF8BF26F508FD00061097 /* LocalStorageTests+ReadItem.swift in Sources */,
 				F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */,
 				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
+				F60172582700145500E47B75 /* LocalStorageTests+LinkPreview.swift in Sources */,
 				F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */,
 				2BD54F77263DB58F004B3EB0 /* MockRemote.swift in Sources */,
 				F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */,
+				F601725226FEFABA00E47B75 /* RepositoryTests+LinkPreview.swift in Sources */,
 				F6E279DD26F857E200957AC4 /* LocalStorageTests+ReadItemOptions.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
 				2BF00BEE262B7E1300E235C0 /* DataStoreTests.swift in Sources */,
@@ -784,6 +820,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F601724A26FEF85000E47B75 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/SwiftLinkPreview";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -811,6 +855,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F601724B26FEF85000E47B75 /* SwiftLinkPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F601724A26FEF85000E47B75 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */;
+			productName = SwiftLinkPreview;
+		};
 		F660B8EE26747B1E004FB42E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F660B8ED26747B1E004FB42E /* XCRemoteSwiftPackageReference "Alamofire" */;
