@@ -29,3 +29,20 @@ public protocol ReadCollectionScene: Scenable {
 
     var output: ReadCollectionSceneOutput? { get }
 }
+
+
+// MARK: - AddReadLinkScene Input & Output
+
+public protocol AddReadLinkSceneInput { }
+
+public protocol AddReadLinkSceneOutput { }
+
+
+// MARK: - AddReadLinkScene
+
+public protocol AddReadLinkScene: Scenable {
+    
+    var input: AddReadLinkSceneInput? { get }
+
+    var output: AddReadLinkSceneOutput? { get }
+}
