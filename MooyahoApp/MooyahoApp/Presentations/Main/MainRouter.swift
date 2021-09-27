@@ -18,26 +18,27 @@ import RxSwift
 
 import Domain
 import CommonPresenting
+import ReadItemScene
 
 
 // MARK: - Routing
 
 public protocol MainRouting: Routing {
 
+    func addReadCollectionScene()
     
     func openSlideMenu()
     
     func presentSignInScene() -> SignInScenePresenter?
     
     func presentEditProfileScene() -> EditProfileScenePresenter?
-    
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
 public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
-    & SignInSceneBuilable & EditProfileSceneBuilable
+    & SignInSceneBuilable & EditProfileSceneBuilable & ReadCollectionSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -48,18 +49,22 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 extension MainRouter {
     
-//    public func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?) {
-//        guard let mainScene = self.currentScene as? MainScene,
-//              let nearbyScene = self.nextScenesBuilder?.makeNearbyScene() else { return (nil, nil) }
-//
-//        nearbyScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
-//        nearbyScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        mainScene.addChild(nearbyScene)
-//        mainScene.childContainerView.addSubview(nearbyScene.view)
-//        nearbyScene.didMove(toParent: mainScene)
-//
-//        return (nearbyScene.interactor, nearbyScene.presenter)
-//    }
+    public func addReadCollectionScene() {
+        
+        guard let mainScene = self.currentScene as? MainScene,
+              let collectionScene = self.nextScenesBuilder?.makeReadCollectionScene(collectionID: nil) else {
+            return
+        }
+        
+        let navigationController = UINavigationController(rootViewController: collectionScene)
+        navigationController.isNavigationBarHidden = true
+        
+        navigationController.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
+        navigationController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mainScene.addChild(navigationController)
+        mainScene.childContainerView.addSubview(navigationController.view)
+        navigationController.didMove(toParent: mainScene)
+    }
     
     public func openSlideMenu() {
         

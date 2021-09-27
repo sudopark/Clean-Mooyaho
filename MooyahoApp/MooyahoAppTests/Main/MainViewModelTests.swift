@@ -66,6 +66,24 @@ extension MainViewModelTests {
     }
 }
 
+extension MainViewModelTests {
+    
+    func testViewModel_addCollectionSceneAsSubScene() {
+        // given
+        let expect = expectation(description: "collection 화면 서브신으로 추가")
+        
+        self.spyRouter.called(key: "addReadCollectionScene") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.setupSubScenes()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
 
 extension MainViewModelTests {
     
@@ -76,9 +94,8 @@ extension MainViewModelTests {
             return nil
         }
         
-        var spyInteractor: SpyNearbySceneInteractor?
-        func addNearbySceen() -> (ineteractor: NearbySceneInteractor?, presenter: NearbyScenePresenter?) {
-            return (self.spyInteractor, nil)
+        func addReadCollectionScene() {
+            self.verify(key: "addReadCollectionScene")
         }
         
         func addSuggestPlaceScene() {

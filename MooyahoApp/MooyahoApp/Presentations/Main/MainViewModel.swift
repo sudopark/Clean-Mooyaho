@@ -64,7 +64,7 @@ public final class MainViewModelImple: MainViewModel {
 extension MainViewModelImple {
     
     public func setupSubScenes() {
-
+        self.router.addReadCollectionScene()
     }
     
     public func openSlideMenu() {

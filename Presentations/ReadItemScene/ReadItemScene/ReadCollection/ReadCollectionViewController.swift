@@ -60,6 +60,13 @@ extension ReadCollectionViewController {
     
     private func bind() {
         
+        self.viewModel.collectionTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.titleHeaderView.setupTitle(title)
+            })
+            .disposed(by: self.disposeBag)
+        
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindTableView()
@@ -146,7 +153,7 @@ extension ReadCollectionViewController: Presenting {
             $0.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
             $0.widthAnchor.constraint(equalTo: tableView.widthAnchor)
             $0.topAnchor.constraint(equalTo: tableView.topAnchor)
-            $0.heightAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 0.6)
+            $0.heightAnchor.constraint(equalToConstant: 80)
         }
         titleHeaderView.setupLayout()
     }
@@ -156,6 +163,8 @@ extension ReadCollectionViewController: Presenting {
         self.tableView.estimatedRowHeight = 100
         self.tableView.separatorStyle = .none
         self.tableView.delegate = self
+        
+        self.titleHeaderView.setupStyling()
         
         self.tableView.registerCell(ReadCollcetionAttrCell.self)
         self.tableView.registerCell(ReadCollectionExpandCell.self)

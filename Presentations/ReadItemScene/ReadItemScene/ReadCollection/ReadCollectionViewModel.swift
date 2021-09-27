@@ -43,6 +43,7 @@ public protocol ReadCollectionViewModel: AnyObject {
     
     
     // presenter
+    var collectionTitle: Observable<String> { get }
     var isShrinkMode: Observable<Bool> { get }
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
@@ -207,6 +208,13 @@ extension ReadCollectionViewModelImple {
 // MARK: - ReadCollectionViewModelImple Presenter
 
 extension ReadCollectionViewModelImple {
+    
+    public var collectionTitle: Observable<String> {
+        let isRootCollection = self.selectedCollectionID == nil
+        return isRootCollection
+            ? .just("My Read Collections".localized)
+            : self.subjects.currentCollection.compactMap { $0?.name }
+    }
     
     public var isShrinkMode: Observable<Bool> {
         return self.subjects.isShrinkModeIsOn

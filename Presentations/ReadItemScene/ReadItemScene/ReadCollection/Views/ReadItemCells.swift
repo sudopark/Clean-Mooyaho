@@ -35,7 +35,7 @@ final class ReadCollectionTtileHeaderView: BaseUIView, Presenting {
     
     func setupStyling() {
         self.titleLabel.numberOfLines = 1
-        self.titleLabel.font = self.uiContext.fonts.get(22, weight: .black)
+        self.titleLabel.font = self.uiContext.fonts.get(22, weight: .bold)
         self.titleLabel.textColor = self.uiContext.colors.text
     }
 }
