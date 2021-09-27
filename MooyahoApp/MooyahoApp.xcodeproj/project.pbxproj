@@ -43,6 +43,7 @@
 		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
 		F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
+		F631DE7E27022DD1003948C2 /* Scenes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F631DE7D27022DD1003948C2 /* Scenes.storyboard */; };
 		F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E726747AF3004FB42E /* KakaoSDKUser */; };
 		F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E926747AF3004FB42E /* KakaoSDKAuth */; };
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
@@ -139,6 +140,7 @@
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
+		F631DE7D27022DD1003948C2 /* Scenes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scenes.storyboard; sourceTree = "<group>"; };
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 			children = (
 				F66E813E26552ADA00682625 /* secrets.json */,
 				F66E813C2655282500682625 /* dummy */,
+				F631DE7D27022DD1003948C2 /* Scenes.storyboard */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */,
 				F66E813D2655282500682625 /* dummy in Resources */,
 				2B79FC55262B640F0006291F /* Assets.xcassets in Resources */,
+				F631DE7E27022DD1003948C2 /* Scenes.storyboard in Resources */,
 				F66E813F26552ADA00682625 /* secrets.json in Resources */,
 				2BA276EC263CFA2100C0393E /* GoogleService-Info.plist in Resources */,
 			);
