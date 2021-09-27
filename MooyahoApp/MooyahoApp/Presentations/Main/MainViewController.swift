@@ -31,7 +31,7 @@ public final class MainViewController: BaseNavigationController, MainScene {
     private let viewModel: MainViewModel
     
     public var childContainerView: UIView {
-        return self.mainView.mapContainerView
+        return self.mainView.mainContainerView
     }
     
     public var childBottomSlideContainerView: UIView {
@@ -71,7 +71,7 @@ extension MainViewController {
     
     private func bind() {
         
-        self.mainView.profileView.rx
+        self.mainView.customNavigationBar.profileView.rx
             .addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.openSlideMenu()
@@ -95,7 +95,7 @@ extension MainViewController {
         self.viewModel.currentMemberProfileImage
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] source in
-                self?.mainView.profileView.setupImage(using: source)
+                self?.mainView.customNavigationBar.profileView.setupImage(using: source)
             })
             .disposed(by: self.dispsoseBag)
     }
@@ -153,19 +153,6 @@ extension MainViewController {
                 self.updateBottomSlideOffset(params.offset, withAnimation: params.animationDuration)
             })
             .disposed(by: self.dispsoseBag)
-        
-        let shouldHideFloatings = newBottonConstraint.compactMap{ $0?.offset }
-            .compactMap { [weak self] offset -> Bool? in
-                guard let self = self else { return nil }
-                let threshold = self.view.frame.height - 150
-                return offset >= threshold
-            }
-        shouldHideFloatings
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] hide in
-                self?.updateFloatingButtonVisibilities(hide)
-            })
-            .disposed(by: self.dispsoseBag)
     }
     
     private func updateBottomSlideOffset(_ invertedNewOffset: CGFloat, withAnimation duration: TimeInterval? = nil) {
@@ -210,16 +197,6 @@ extension MainViewController {
         default: return nil
         }
     }
-    
-    private func updateFloatingButtonVisibilities(_ shouldHide: Bool) {
-        
-        let changeAlphaTo: CGFloat = shouldHide ? 0.0 : 1.0
-        
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.mainView.newHoorayButton.alpha = changeAlphaTo
-            self?.mainView.topFloatingButtonContainerView.alpha = changeAlphaTo
-        })
-    }
 }
 
 // MARK: - setup presenting
@@ -232,7 +209,7 @@ extension MainViewController: Presenting {
         self.view.addSubview(self.mainView)
         mainView.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }
