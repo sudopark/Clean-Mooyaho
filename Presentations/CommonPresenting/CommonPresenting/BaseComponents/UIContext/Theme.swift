@@ -14,10 +14,15 @@ public protocol ColorSet {
     
     var appSecondBackground: UIColor { get }
     
-    var text: UIColor { get }
+    var title: UIColor { get }
+    var secondaryTitle: UIColor { get }
+    var descriptionText: UIColor { get }
+    var hintText: UIColor { get }
 }
 
 extension ColorSet {
+    
+    public var text: UIColor { self.title }
     
     public var raw: UIColor.Type {
         return UIColor.self
@@ -49,10 +54,16 @@ public struct DefaultColorSet: ColorSet {
     
     public var appSecondBackground: UIColor { .systemGroupedBackground }
     
-    public var text: UIColor { .black }
+    public var title: UIColor { .black }
+    
+    public var secondaryTitle: UIColor { UIColor.darkGray }
+    
+    public var descriptionText: UIColor { UIColor.systemGray }
+    
+    public var hintText: UIColor { UIColor.lightGray }
 }
 
-public struct DefaultFontSet: FontSet {
+public struct SystemFontSet: FontSet {
     
     public func get(_ size: CGFloat, weight: UIFont.Weight?) -> UIFont {
         return weight.flatMap { UIFont.systemFont(ofSize: size, weight: $0) }
@@ -63,7 +74,7 @@ public struct DefaultFontSet: FontSet {
 public struct DefaultTheme: Theme {
     
     public let colors: ColorSet = DefaultColorSet()
-    public let fonts: FontSet = DefaultFontSet()
+    public let fonts: FontSet = SystemFontSet()
     
     public init() {}
 }

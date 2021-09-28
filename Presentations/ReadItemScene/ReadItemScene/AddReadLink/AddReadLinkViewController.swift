@@ -203,7 +203,7 @@ extension AddReadLinkViewController: Presenting {
         
         bottomSlideMenuView.setupStyling()
         
-        self.titleLabel.decorate(self.uiContext.deco.title)
+        self.titleLabel.decorate(self.uiContext.decorating.title)
         self.titleLabel.text = "Add Read Link"
         
         self.urlInputView.setupStyling()
@@ -213,7 +213,7 @@ extension AddReadLinkViewController: Presenting {
         self.previewTitleLabel.textColor = self.uiContext.colors.text
         self.previewTitleLabel.numberOfLines = 1
         
-        self.previewDescriptionLabel.decorate(self.uiContext.deco.placeHolder)
+        self.previewDescriptionLabel.decorate(self.uiContext.decorating.placeHolder)
         self.previewDescriptionLabel.numberOfLines = 3
         self.previewSectionView.isHidden = true
         

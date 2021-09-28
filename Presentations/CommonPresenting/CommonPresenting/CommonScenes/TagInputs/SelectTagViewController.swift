@@ -133,7 +133,7 @@ extension SelectTagViewController: Presenting {
         
         self.bottomSlideMenuView.setupStyling()
         
-        self.uiContext.deco.title(self.titleLabel)
+        self.uiContext.decorating.title(self.titleLabel)
         self.titleLabel.text = "Select tags"
         
         self.wordTokensView.setupStyling()
