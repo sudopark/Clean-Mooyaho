@@ -104,6 +104,6 @@ extension SingleLineInputView: Presenting {
         self.indicator.hidesWhenStopped = true
         
         self.placeHolderLabel.numberOfLines = 1
-        self.placeHolderLabel.decorate(self.uiContext.deco.placeHolder)
+        self.placeHolderLabel.decorate(self.uiContext.decorating.placeHolder)
     }
 }
