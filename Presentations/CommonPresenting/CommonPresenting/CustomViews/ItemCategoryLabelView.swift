@@ -12,7 +12,7 @@ import Domain
 
 // MARK: - CategoryTextView
 
-public final class CategoryTextView: BaseUIView, Presenting {
+public final class ItemCategoryLabelView: BaseUIView, Presenting {
     
     private let underlyingTextView: UITextView = {
         let container = NSTextContainer()
@@ -43,7 +43,7 @@ public final class CategoryTextView: BaseUIView, Presenting {
     }
 }
 
-extension CategoryTextView {
+extension ItemCategoryLabelView {
     
     public func updateCategories(_ categories: [ItemCategory]) {
         let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)

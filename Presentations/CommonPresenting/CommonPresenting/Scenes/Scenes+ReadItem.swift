@@ -16,18 +16,18 @@ import Domain
 
 // MARK: - ReadCollectionScene Input & Output
 
-public protocol ReadCollectionSceneInput { }
+public protocol ReadCollectionItemsSceneInput { }
 
-public protocol ReadCollectionSceneOutput { }
+public protocol ReadCollectionItemsSceneOutput { }
 
 
 // MARK: - ReadCollectionScene
 
 public protocol ReadCollectionScene: Scenable {
     
-    var input: ReadCollectionSceneInput? { get }
+    var input: ReadCollectionItemsSceneInput? { get }
 
-    var output: ReadCollectionSceneOutput? { get }
+    var output: ReadCollectionItemsSceneOutput? { get }
 }
 
 

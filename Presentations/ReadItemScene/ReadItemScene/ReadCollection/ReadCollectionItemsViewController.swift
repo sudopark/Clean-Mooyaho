@@ -16,19 +16,19 @@ import CommonPresenting
 
 // MARK: - ReadCollectionViewController
 
-public final class ReadCollectionViewController: BaseViewController, ReadCollectionScene {
+public final class ReadCollectionItemsViewController: BaseViewController, ReadCollectionScene {
     
     typealias CVM = ReadItemCellViewModel
     typealias Section = SectionModel<String, CVM>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
     private var dataSource: DataSource!
-    let viewModel: ReadCollectionViewModel
+    let viewModel: ReadCollectionItemsViewModel
     
     let titleHeaderView = ReadCollectionTtileHeaderView()
     let tableView = UITableView()
     
-    public init(viewModel: ReadCollectionViewModel) {
+    public init(viewModel: ReadCollectionItemsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,7 +56,7 @@ public final class ReadCollectionViewController: BaseViewController, ReadCollect
 
 // MARK: - bind
 
-extension ReadCollectionViewController {
+extension ReadCollectionItemsViewController {
     
     private func bind() {
         
@@ -75,7 +75,7 @@ extension ReadCollectionViewController {
     }
 }
 
-extension ReadCollectionViewController: UITableViewDelegate {
+extension ReadCollectionItemsViewController: UITableViewDelegate {
     
     private func bindTableView() {
         
@@ -141,7 +141,7 @@ extension ReadCollectionViewController: UITableViewDelegate {
 
 // MARK: - setup presenting
 
-extension ReadCollectionViewController: Presenting {
+extension ReadCollectionItemsViewController: Presenting {
     
     public func setupLayout() {
         

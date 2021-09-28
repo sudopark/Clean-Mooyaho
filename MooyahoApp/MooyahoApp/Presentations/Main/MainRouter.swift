@@ -38,7 +38,7 @@ public protocol MainRouting: Routing {
 
 // TODO: compose next Scene Builders protocol
 public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
-    & SignInSceneBuilable & EditProfileSceneBuilable & ReadCollectionSceneBuilable
+    & SignInSceneBuilable & EditProfileSceneBuilable & ReadCollectionItemSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -52,7 +52,7 @@ extension MainRouter {
     public func addReadCollectionScene() {
         
         guard let mainScene = self.currentScene as? MainScene,
-              let collectionScene = self.nextScenesBuilder?.makeReadCollectionScene(collectionID: nil) else {
+              let collectionScene = self.nextScenesBuilder?.makeReadCollectionItemScene(collectionID: nil) else {
             return
         }
         

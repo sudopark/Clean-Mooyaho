@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Builder + DependencyInjector Extension
 
-public protocol ReadCollectionSceneBuilable {
+public protocol ReadCollectionItemSceneBuilable {
     
-    func makeReadCollectionScene(collectionID: String?) -> ReadCollectionScene
+    func makeReadCollectionItemScene(collectionID: String?) -> ReadCollectionScene
 }
