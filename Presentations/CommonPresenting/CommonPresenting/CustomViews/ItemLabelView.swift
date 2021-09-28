@@ -12,7 +12,7 @@ import Domain
 
 // MARK: - CategoryTextView
 
-public final class ItemCategoryLabelView: BaseUIView, Presenting {
+public final class ItemLabelView: BaseUIView, Presenting {
     
     private let underlyingTextView: UITextView = {
         let container = NSTextContainer()
@@ -31,7 +31,7 @@ public final class ItemCategoryLabelView: BaseUIView, Presenting {
             self.underlyingTextView.font = newValue
         }
     }
-    
+
     public func setupLayout() {
         self.addSubview(self.underlyingTextView)
         underlyingTextView.autoLayout.fill(self)
@@ -43,18 +43,27 @@ public final class ItemCategoryLabelView: BaseUIView, Presenting {
     }
 }
 
-extension ItemCategoryLabelView {
+extension ItemLabelView {
     
     public func updateCategories(_ categories: [ItemCategory]) {
         let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
         let attributedNames = categories.map{ $0.asAttributeString(with: font)}
-        
+        self.setupAttributeItemTexts(attributedNames)
+    }
+    
+    public func setupPriority(_ priority: ReadPriority) {
+        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
+        let attributeText = priority.asAttributeString(with: font)
+        self.setupAttributeItemTexts([attributeText])
+    }
+    
+    private func setupAttributeItemTexts(_ texts: [NSAttributedString]) {
         let seperator: String = "    "
-        let totalAttributeText = attributedNames.join(seperator: seperator).asMutable()
+        let totalAttributeText = texts.join(seperator: seperator).asMutable()
         
         let fullRange = NSRange(location: 0, length: totalAttributeText.length)
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineSpacing = 10
+        paragraph.lineSpacing = 8
         totalAttributeText.addAttribute(.paragraphStyle, value: paragraph, range: fullRange)
         
         self.underlyingTextView.textContainerInset.top = 2
@@ -70,12 +79,11 @@ extension ItemCategoryLabelView {
 
 final class CategoryTextLayoutManager: NSLayoutManager {
     
-    
     override func drawGlyphs(forGlyphRange glyphsToShow: NSRange, at origin: CGPoint) {
         let range = self.characterRange(forGlyphRange: glyphsToShow, actualGlyphRange: nil)
         guard let textStorage = self.textStorage else { return }
         
-        let backgroundDrawing: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void = { value, ranhe, _ in
+        let backgroundDrawing: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void = { value, range, _ in
             guard let value = value else {
                 super.drawGlyphs(forGlyphRange: range, at: origin)
                 return
@@ -101,12 +109,14 @@ final class CategoryTextLayoutManager: NSLayoutManager {
                 rect.origin.y = rect.origin.y - 2
             }
             rect.size.width = rect.size.width + 10
-            rect.size.height = font.lineHeight + 4
+            rect.size.height = font.lineHeight + 6
 
             let path = UIBezierPath(roundedRect: rect, cornerRadius: 5)
             path.fill()
             context.restoreGState()
             super.drawGlyphs(forGlyphRange: range, at: origin)
+            
+            print("rect: \(rect)")
         }
         
         textStorage.enumerateAttribute(.roundBackgroundColor,
@@ -128,7 +138,7 @@ private extension ItemCategory {
     
     func asAttributeString(with font: UIFont) -> NSAttributedString {
         let attrString = NSMutableAttributedString(string: self.name)
-        let range = NSRange(location: 0, length: self.name.count)
+        let range = NSRange(location: 0, length: self.name.utf16.count)
         attrString.addAttributes([
             .font: font,
             .foregroundColor: UIColor.white,
@@ -137,6 +147,51 @@ private extension ItemCategory {
         return attrString
     }
 }
+
+private extension ReadPriority {
+    
+    private var emoji: String {
+        switch self {
+        case .beforeDying: return "🧟‍♂️"
+        case .someDay: return "👩‍🚀"
+        case .thisWeek: return "📆"
+        case .today: return "🎒"
+        case .beforeGoToBed: return "🛌"
+        case .onTheWaytoWork: return "🚌"
+        case .afterAWhile: return "🎯"
+        }
+    }
+    
+    private var description: String {
+        switch self {
+        case .beforeDying: return "before dying"
+        case .someDay: return "someday"
+        case .thisWeek: return "this week"
+        case .today: return "today"
+        case .beforeGoToBed: return "before go to bed"
+        case .onTheWaytoWork: return "on the way to work"
+        case .afterAWhile: return "after a while"
+        }
+    }
+    
+    private var color: UIColor? {
+        return .systemIndigo
+    }
+    
+    func asAttributeString(with font: UIFont) -> NSAttributedString {
+        let text = "\(self.emoji) \(self.description)"
+        let attrString = NSMutableAttributedString(string: text)
+        let range = NSRange(location: 0, length: text.utf16.count)
+        attrString.addAttributes([
+            .font: font,
+            .foregroundColor: UIColor.white,
+            .roundBackgroundColor: self.color ?? .systemBlue,
+        ], range: range)
+        return attrString
+    }
+}
+
+
 
 private extension Array where Element == NSAttributedString {
     
