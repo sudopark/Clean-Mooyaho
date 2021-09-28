@@ -18,7 +18,7 @@ public struct UIContext {
         self.theme = theme
     }
     
-    fileprivate static var currentContext: UIContext = UIContext(theme: DefaultTheme())
+    static var currentContext: UIContext = UIContext(theme: DefaultTheme())
     
     public static func register(_ context: UIContext) {
         self.currentContext = context
@@ -30,27 +30,6 @@ public struct UIContext {
     
     public static var currentAppStatus: Observable<ApplicationStatus> {
         return self.appStatus.distinctUntilChanged()
-    }
-}
-
-
-extension UIContext {
-    
-    public enum Decorating {
-        
-        public static let title: (UILabel) -> Void = {
-            $0.font = .systemFont(ofSize: 18, weight: .semibold)
-            $0.textColor = UIContext.currentContext.colors.text
-        }
-        
-        public static let placeHolder: (UILabel) -> Void = {
-            $0.font = .systemFont(ofSize: 14)
-            $0.textColor = UIContext.currentContext.colors.text.withAlphaComponent(0.4)
-        }
-    }
-
-    public var deco: Decorating.Type {
-        return Decorating.self
     }
 }
 
