@@ -31,7 +31,7 @@ public struct ReadCollectionItemSection {
 
 // MARK: - ReadCollectionViewModel
 
-public protocol ReadCollectionViewModel: AnyObject {
+public protocol ReadCollectionItemsViewModel: AnyObject {
 
     // interactor
     func reloadCollectionItems()
@@ -53,7 +53,7 @@ public protocol ReadCollectionViewModel: AnyObject {
 
 // MARK: - ReadCollectionViewModelImple
 
-public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
+public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewModel {
     
     private let selectedCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
@@ -131,7 +131,7 @@ public final class ReadCollectionViewModelImple: ReadCollectionViewModel {
 
 // MARK: - ReadCollectionViewModelImple Interactor
 
-extension ReadCollectionViewModelImple {
+extension ReadCollectionViewItemsModelImple {
     
     public func reloadCollectionItems() {
         
@@ -207,7 +207,7 @@ extension ReadCollectionViewModelImple {
 
 // MARK: - ReadCollectionViewModelImple Presenter
 
-extension ReadCollectionViewModelImple {
+extension ReadCollectionViewItemsModelImple {
     
     public var collectionTitle: Observable<String> {
         let isRootCollection = self.selectedCollectionID == nil

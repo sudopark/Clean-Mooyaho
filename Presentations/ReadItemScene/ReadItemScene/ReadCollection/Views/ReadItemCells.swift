@@ -179,7 +179,7 @@ final class ReadCollectionExpandCell: ReadCollectionShrinkCell {
     private let nameAreaStackView = UIStackView()
     private let nameLabel = UILabel()
     private let priorityLabel = UILabel()
-    private let categoriesTextView = CategoryTextView()
+    private let categoriesTextView = ItemCategoryLabelView()
     private let arrowImageView = UIImageView()
     private let underLineView = UIView()
     
@@ -236,7 +236,7 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     let linkIconImageView = UIImageView()
     let linkAddressLabel = UILabel()
     let priorityLabel = UILabel()
-    let categoriesTextView = CategoryTextView()
+    let categoriesTextView = ItemCategoryLabelView()
     
     override func afterViewInit() {
         super.afterViewInit()

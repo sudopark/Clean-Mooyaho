@@ -51,7 +51,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     
     func makeViewModel(isRootCollection: Bool = false,
                        shouldFailReload: Bool = false,
-                       sortOrder: ReadCollectionItemSortOrder = .default) -> ReadCollectionViewModelImple {
+                       sortOrder: ReadCollectionItemSortOrder = .default) -> ReadCollectionViewItemsModelImple {
         let reloadResult: Result<[ReadItem], Error> = shouldFailReload
             ? .failure(ApplicationErrors.invalid)
             : .success(self.dummyCollectionItems)
@@ -444,7 +444,7 @@ private extension Observable where Element == [ReadItemCellViewModel] {
     }
 }
 
-private extension ReadCollectionViewModel {
+private extension ReadCollectionItemsViewModel {
     
     var attributeCell: Observable<[ReadCollectionAttrCellViewModel]> {
         

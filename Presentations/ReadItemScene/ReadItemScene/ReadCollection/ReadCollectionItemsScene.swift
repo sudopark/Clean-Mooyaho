@@ -16,23 +16,23 @@ import CommonPresenting
 
 // MARK: - ReadCollectionViewModelImple conform ReadCollectionSceneInput and ReadCollectionSceneOutput
 
-extension ReadCollectionViewModelImple: ReadCollectionSceneInput {
+extension ReadCollectionViewItemsModelImple: ReadCollectionItemsSceneInput {
 
 }
 
-extension ReadCollectionViewModelImple: ReadCollectionSceneOutput {
+extension ReadCollectionViewItemsModelImple: ReadCollectionItemsSceneOutput {
 
 }
 
 // MARK: - ReadCollectionViewController provide ReadCollectionSceneInput and ReadCollectionSceneOutput
 
-extension ReadCollectionViewController {
+extension ReadCollectionItemsViewController {
 
-    public var input: ReadCollectionSceneInput? {
-        return self.viewModel as? ReadCollectionSceneInput
+    public var input: ReadCollectionItemsSceneInput? {
+        return self.viewModel as? ReadCollectionItemsSceneInput
     }
 
-    public var output: ReadCollectionSceneOutput? {
-        return self.viewModel as? ReadCollectionSceneOutput
+    public var output: ReadCollectionItemsSceneOutput? {
+        return self.viewModel as? ReadCollectionItemsSceneOutput
     }
 }

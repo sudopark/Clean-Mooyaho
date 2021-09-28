@@ -39,10 +39,10 @@ public protocol ReadCollectionRouting: Routing {
 // TODO: compose next Scene Builders protocol
 public typealias ReadCollectionRouterBuildables = EmptyBuilder
 
-public final class ReadCollectionRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting { }
+public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting { }
 
 
-extension ReadCollectionRouter {
+extension ReadCollectionItemsRouter {
     
     public func showItemSortOrderOptions(_ currentOrder: ReadCollectionItemSortOrder,
                                          selectedHandler: @escaping (ReadCollectionItemSortOrder) -> Void) {
