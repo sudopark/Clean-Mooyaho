@@ -27,6 +27,7 @@ struct ReadCollectionTable: Table {
         case .ownerID: return entity.parentID
         case .parentID: return entity.parentID
         case .name: return entity.name
+        case .description: return entity.collectionDescription
         case .createdAt: return entity.createdAt
         case .lastUpdatedAt: return entity.lastUpdatedAt
         case .pritority: return entity.priority?.rawValue
@@ -42,6 +43,7 @@ extension ReadCollectionTable {
         let ownerID: String?
         let parentID: String?
         let name: String
+        let collectionDescription: String?
         let createdAt: TimeStamp
         let lastUpdatedAt: TimeStamp
         let priority: ReadPriority?
@@ -51,6 +53,7 @@ extension ReadCollectionTable {
             self.ownerID = cursor.next()
             self.parentID = cursor.next()
             self.name = try cursor.next().unwrap()
+            self.collectionDescription = cursor.next()
             self.createdAt = try cursor.next().unwrap()
             self.lastUpdatedAt = try cursor.next().unwrap()
             self.priority = cursor.next().flatMap{ ReadPriority.init(rawValue: $0) }
@@ -61,6 +64,7 @@ extension ReadCollectionTable {
             self.ownerID = collection.ownerID
             self.parentID = collection.parentID
             self.name = collection.name
+            self.collectionDescription = collection.collectionDescription
             self.createdAt = collection.createdAt
             self.lastUpdatedAt = collection.lastUpdatedAt
             self.priority = collection.priority
@@ -75,6 +79,7 @@ extension ReadCollectionTable {
         case ownerID = "owner_id"
         case parentID = "parent_id"
         case name
+        case description = "clc_desc"
         case createdAt = "create_at"
         case lastUpdatedAt = "last_updated_at"
         case pritority = "read_priority"
@@ -85,6 +90,7 @@ extension ReadCollectionTable {
             case .ownerID: return .text([])
             case .parentID: return .text([])
             case .name: return .text([.notNull])
+            case .description: return .text([])
             case .createdAt: return .real([.notNull])
             case .lastUpdatedAt: return .real([.notNull])
             case .pritority: return .integer([])
@@ -103,5 +109,6 @@ extension ReadCollectionTable.Entity {
             |> \.ownerID .~ self.ownerID
             |> \.parentID .~ self.parentID
             |> \.priority .~ self.priority
+            |> \.collectionDescription .~ self.collectionDescription
     }
 }
