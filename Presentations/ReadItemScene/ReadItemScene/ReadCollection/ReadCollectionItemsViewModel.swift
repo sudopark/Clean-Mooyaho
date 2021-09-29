@@ -35,7 +35,6 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
 
     // interactor
     func reloadCollectionItems()
-    func toggleShrinkListStyle()
     func requestChangeOrder()
     func openItem(_ itemID: String)
     func requestMakeNewCollection()
@@ -44,7 +43,6 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     
     // presenter
     var collectionTitle: Observable<String> { get }
-    var isShrinkMode: Observable<Bool> { get }
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
@@ -79,7 +77,6 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     }
     
     fileprivate final class Subjects {
-        let isShrinkModeIsOn = BehaviorRelay<Bool?>(value: nil)
         let currentCollection = BehaviorSubject<ReadCollection?>(value: nil)
         let sortOrder = BehaviorRelay<ReadCollectionItemSortOrder?>(value: nil)
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
@@ -90,19 +87,8 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     private let disposeBag = DisposeBag()
     
     private func internalBinding() {
-        self.loadIsShrinkMode()
         self.loadLatestSortOrder()
         self.loadCurrentCollectionInfoIfNeed()
-    }
-    
-    private func loadIsShrinkMode() {
-        let setupLatestsShrinkModeFlag: (Bool) -> Void = { [weak self] isOn in
-            self?.subjects.isShrinkModeIsOn.accept(isOn)
-        }
-        self.readItemUsecase
-            .loadShrinkModeIsOnOption()
-            .subscribe(onSuccess: setupLatestsShrinkModeFlag)
-            .disposed(by: self.disposeBag)
     }
     
     private func loadLatestSortOrder() {
@@ -151,12 +137,6 @@ extension ReadCollectionViewItemsModelImple {
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
             .disposed(by: self.disposeBag)
-    }
-    
-    public func toggleShrinkListStyle() {
-        guard let oldValue = self.subjects.isShrinkModeIsOn.value else { return }
-        let newValue = oldValue.invert()
-        self.subjects.isShrinkModeIsOn.accept(newValue)
     }
     
     public func requestChangeOrder() {
@@ -216,12 +196,6 @@ extension ReadCollectionViewItemsModelImple {
             : self.subjects.currentCollection.compactMap { $0?.name }
     }
     
-    public var isShrinkMode: Observable<Bool> {
-        return self.subjects.isShrinkModeIsOn
-            .compactMap{ $0 }
-            .distinctUntilChanged()
-    }
-    
     public var currentSortOrder: Observable<ReadCollectionItemSortOrder> {
         return self.subjects.sortOrder
             .compactMap{ $0 }
@@ -230,13 +204,13 @@ extension ReadCollectionViewItemsModelImple {
         
     public var sections: Observable<[ReadCollectionItemSection]> {
         
-        let asSections: (ReadCollection?, [ReadCollection], [ReadLink], Bool, ReadCollectionItemSortOrder) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, isShrink, order in
+        let asSections: (ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder) ->  [ReadCollectionItemSection]
+        asSections = { currentCollection, collections, links, order in
             
             let attributeCell: [ReadItemCellViewModel] = currentCollection
                 .map{ [ReadCollectionAttrCellViewModel(collection: $0)] } ?? []
-            let collectionCells = collections.sort(by: order).asCellViewModels(isShrink: isShrink)
-            let linkCells = links.sort(by: order).asCellViewModels(isShrink: isShrink)
+            let collectionCells = collections.sort(by: order).asCellViewModels()
+            let linkCells = links.sort(by: order).asCellViewModels()
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
                 collectionCells.asSectionIfNotEmpty(for: .collections),
@@ -249,7 +223,6 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.currentCollection,
             self.subjects.collections.compactMap { $0 },
             self.subjects.links.compactMap { $0 },
-            self.subjects.isShrinkModeIsOn.compactMap { $0 },
             self.subjects.sortOrder.compactMap { $0 },
             resultSelector: asSections
         )
@@ -291,16 +264,14 @@ private extension Array where Element: ReadItem {
         return self.sorted(by: compare)
     }
     
-    func asCellViewModels(isShrink: Bool) -> [ReadItemCellViewModel] {
+    func asCellViewModels() -> [ReadItemCellViewModel] {
         let transform: (ReadItem) -> ReadItemCellViewModel? = { item in
             switch item {
             case let collection as ReadCollection:
                 return ReadCollectionCellViewModel(collection: collection)
-                    |> \.isShrink .~ isShrink
                 
             case let link as ReadLink:
                 return ReadLinkCellViewModel(link: link)
-                    |> \.isShrink .~ isShrink
                 
             default: return nil
             }
@@ -327,8 +298,6 @@ class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
     
     func reloadCollectionItems() { }
     
-    func toggleShrinkListStyle() { }
-    
     func requestChangeOrder() { }
     
     func openItem(_ itemID: String) { }
@@ -340,13 +309,7 @@ class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
     var collectionTitle: Observable<String> {
         return "Some collection" |> Observable.just
     }
-    
-    private var _isShrinkMode = false
-    
-    var isShrinkMode: Observable<Bool> {
-        return self._isShrinkMode |> Observable.just
-    }
-    
+
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { .just(.byCustomOrder) }
     
     var sections: Observable<[ReadCollectionItemSection]> {
@@ -374,7 +337,6 @@ class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
             }
             .map {
                 return ReadCollectionCellViewModel(collection: $0)
-                    |> \.isShrink .~ self._isShrinkMode
                     |> \.collectionDescription .~ "This is a colleciton for design sample"
             }
         let collectionSection = ReadCollectionItemSection(type: .collections, cellViewModels: collectionCells)
@@ -388,7 +350,6 @@ class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
             }
             .map {
                 return ReadLinkCellViewModel(link: $0)
-                    |> \.isShrink .~ self._isShrinkMode
             }
         let linkSection = ReadCollectionItemSection(type: .links, cellViewModels: links)
         

@@ -135,27 +135,6 @@ extension ReadCollectionViewModelTests {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
-    
-    // toggle mode
-    func testViewModel_toggleItemShrinkStyle() {
-        // given
-        let expect = expectation(description: "아이템 간략히보기 여부 업데이트")
-        expect.expectedFulfillmentCount = 3
-        let viewModel = self.makeViewModel()
-        
-        // when
-        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
-            viewModel.toggleShrinkListStyle()
-            viewModel.toggleShrinkListStyle()
-        }
-        
-        // then
-        let shrinkItemCounts = cvmLists.map {
-            return $0.filter { $0.isShrink }.count
-        }
-        XCTAssertEqual(shrinkItemCounts, [0, 10, 0])
-    }
 }
 
 // MAARK: - change order

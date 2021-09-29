@@ -501,98 +501,98 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     }
 }
 
-// MARK: - ReadCollectionShrinkCell
-
-class ReadCollectionShrinkCell: BaseTableViewCell, ReadItemCells, Presenting {
-    
-    typealias CellViewModel = ReadCollectionCellViewModel
-    
-    private let iconImageView = UIImageView()
-    private let contentStackView = UIStackView()
-    private let nameAreaStackView = UIStackView()
-    private let nameLabel = UILabel()
-    private let priorityLabel = UILabel()
-    private let arrowImageView = UIImageView()
-    
-    override func afterViewInit() {
-        super.afterViewInit()
-        self.setupLayout()
-        self.setupStyling()
-    }
-    
-    func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
-        
-    }
-    
-    func setupLayout() {
-        self.contentView.addSubview(iconImageView)
-        iconImageView.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.widthAnchor.constraint(equalToConstant: 15)
-            $0.heightAnchor.constraint(equalTo: $0.widthAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 4)
-        }
-        
-        self.contentView.addSubview(arrowImageView)
-        arrowImageView.autoLayout.active(with: self.contentView) {
-            $0.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
-            $0.widthAnchor.constraint(equalToConstant: 12)
-            $0.heightAnchor.constraint(equalToConstant: 8)
-        }
-        
-        self.contentView.addSubview(self.contentStackView)
-        contentStackView.autoLayout.active(with: self.contentView) {
-            $0.topAnchor.constraint(equalTo: iconImageView.topAnchor)
-            $0.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 4)
-            $0.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -4)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: 4)
-        }
-        contentStackView.addArrangedSubview(nameAreaStackView)
-        nameAreaStackView.addArrangedSubview(nameLabel)
-        contentStackView.addArrangedSubview(priorityLabel)
-    }
-    
-    func setupStyling() {
-        self.iconImageView.image = UIImage(named: "folder")
-        
-        self.contentStackView.axis = .vertical
-        self.contentStackView.distribution = .fill
-        
-        self.nameLabel.font = self.uiContext.fonts.get(14, weight: .regular)
-        self.nameLabel.textColor = self.uiContext.colors.text
-        self.nameLabel.numberOfLines = 2
-        
-        self.priorityLabel.font = self.uiContext.fonts.get(13, weight: .medium)
-        self.priorityLabel.textColor = .systemBlue
-        self.priorityLabel.numberOfLines = 1
-        
-        self.arrowImageView.image = UIImage(named: "chevron.right")
-    }
-}
-
-// MARK: - ReadLinkShrinkCell
-
-final class ReadLinkShrinkCell: BaseTableViewCell, ReadItemCells, Presenting {
-    
-    typealias CellViewModel = ReadLinkCellViewModel
-    
-    override func afterViewInit() {
-        super.afterViewInit()
-        self.setupLayout()
-        self.setupStyling()
-    }
-    
-    func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
-        
-    }
-    
-    func setupLayout() {
-        
-    }
-    
-    func setupStyling() {
-        
-    }
-}
-
+//// MARK: - ReadCollectionShrinkCell
+//
+//class ReadCollectionShrinkCell: BaseTableViewCell, ReadItemCells, Presenting {
+//    
+//    typealias CellViewModel = ReadCollectionCellViewModel
+//    
+//    private let iconImageView = UIImageView()
+//    private let contentStackView = UIStackView()
+//    private let nameAreaStackView = UIStackView()
+//    private let nameLabel = UILabel()
+//    private let priorityLabel = UILabel()
+//    private let arrowImageView = UIImageView()
+//    
+//    override func afterViewInit() {
+//        super.afterViewInit()
+//        self.setupLayout()
+//        self.setupStyling()
+//    }
+//    
+//    func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
+//        
+//    }
+//    
+//    func setupLayout() {
+//        self.contentView.addSubview(iconImageView)
+//        iconImageView.autoLayout.active(with: self.contentView) {
+//            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+//            $0.widthAnchor.constraint(equalToConstant: 15)
+//            $0.heightAnchor.constraint(equalTo: $0.widthAnchor)
+//            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 4)
+//        }
+//        
+//        self.contentView.addSubview(arrowImageView)
+//        arrowImageView.autoLayout.active(with: self.contentView) {
+//            $0.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor)
+//            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+//            $0.widthAnchor.constraint(equalToConstant: 12)
+//            $0.heightAnchor.constraint(equalToConstant: 8)
+//        }
+//        
+//        self.contentView.addSubview(self.contentStackView)
+//        contentStackView.autoLayout.active(with: self.contentView) {
+//            $0.topAnchor.constraint(equalTo: iconImageView.topAnchor)
+//            $0.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 4)
+//            $0.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -4)
+//            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: 4)
+//        }
+//        contentStackView.addArrangedSubview(nameAreaStackView)
+//        nameAreaStackView.addArrangedSubview(nameLabel)
+//        contentStackView.addArrangedSubview(priorityLabel)
+//    }
+//    
+//    func setupStyling() {
+//        self.iconImageView.image = UIImage(named: "folder")
+//        
+//        self.contentStackView.axis = .vertical
+//        self.contentStackView.distribution = .fill
+//        
+//        self.nameLabel.font = self.uiContext.fonts.get(14, weight: .regular)
+//        self.nameLabel.textColor = self.uiContext.colors.text
+//        self.nameLabel.numberOfLines = 2
+//        
+//        self.priorityLabel.font = self.uiContext.fonts.get(13, weight: .medium)
+//        self.priorityLabel.textColor = .systemBlue
+//        self.priorityLabel.numberOfLines = 1
+//        
+//        self.arrowImageView.image = UIImage(named: "chevron.right")
+//    }
+//}
+//
+//// MARK: - ReadLinkShrinkCell
+//
+//final class ReadLinkShrinkCell: BaseTableViewCell, ReadItemCells, Presenting {
+//    
+//    typealias CellViewModel = ReadLinkCellViewModel
+//    
+//    override func afterViewInit() {
+//        super.afterViewInit()
+//        self.setupLayout()
+//        self.setupStyling()
+//    }
+//    
+//    func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
+//        
+//    }
+//    
+//    func setupLayout() {
+//        
+//    }
+//    
+//    func setupStyling() {
+//        
+//    }
+//}
+//

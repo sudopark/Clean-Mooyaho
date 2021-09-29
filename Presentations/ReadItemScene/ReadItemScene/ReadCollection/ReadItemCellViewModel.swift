@@ -14,7 +14,6 @@ import Domain
 
 public protocol ReadItemCellViewModel {
     var uid: String { get }
-    var isShrink: Bool { get set }
     
     var presetingID: Int { get }
 }
@@ -26,7 +25,6 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     
     public var uid: String { "collection_attr" }
     public var collectionDescription: String?
-    public var isShrink: Bool = false
     public var presetingID: Int { self.uid.hashValue }
     
     public var priority: ReadPriority?
@@ -48,7 +46,6 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
     public var collectionDescription: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
-    public var isShrink: Bool = false
     
     public init(uid: String, name: String) {
         self.uid = uid
@@ -68,7 +65,6 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         hasher.combine(self.name)
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map{ $0.presentingHashValud() })
-        hasher.combine(self.isShrink)
         return hasher.finalize()
     }
 }
@@ -83,7 +79,6 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
     public var customName: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
-    public var isShrink: Bool = false
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -105,7 +100,6 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
         hasher.combine(self.customName)
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map{ $0.presentingHashValud() })
-        hasher.combine(self.isShrink)
         return hasher.finalize()
     }
 }
