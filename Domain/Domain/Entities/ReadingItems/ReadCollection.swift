@@ -25,6 +25,7 @@ public struct ReadCollection: ReadItem {
     public var lastUpdatedAt: TimeStamp
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
+    public var collectionDescription: String?
     
     public init(name: String) {
         self.uid = "\(Self.uidPrefix):\(UUID().uuidString)"

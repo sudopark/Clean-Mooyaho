@@ -30,6 +30,7 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
     
     public init(viewModel: ReadCollectionItemsViewModel) {
         self.viewModel = viewModel
+//        self.viewModel = FakeReadCollectionViewItemsModel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -97,22 +98,22 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
                 cell.setupCell(attribute)
                 return cell
                 
-            case let collection as ReadCollectionCellViewModel where collection.isShrink == false:
+            case let collection as ReadCollectionCellViewModel where collection.isShrink == true:
                 let cell: ReadCollectionShrinkCell = tableView.dequeueCell()
                 cell.setupCell(collection)
                 return cell
 
-            case let collection as ReadCollectionCellViewModel where collection.isShrink == true:
+            case let collection as ReadCollectionCellViewModel where collection.isShrink == false:
                 let cell: ReadCollectionExpandCell = tableView.dequeueCell()
                 cell.setupCell(collection)
                 return cell
 
-            case let link as ReadLinkCellViewModel where link.isShrink == false:
+            case let link as ReadLinkCellViewModel where link.isShrink == true:
                 let cell: ReadLinkShrinkCell = tableView.dequeueCell()
                 cell.setupCell(link)
                 return cell
 
-            case let link as ReadLinkCellViewModel where link.isShrink == true:
+            case let link as ReadLinkCellViewModel where link.isShrink == false:
                 let cell: ReadLinkExpandCell = tableView.dequeueCell()
                 cell.setupCell(link)
                 cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid))
@@ -131,6 +132,20 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
             return nil
         }
         return sectionType.makeSectionHeaderIfPossible()
+    }
+    
+    public func tableView(_ tableView: UITableView,
+                          heightForHeaderInSection section: Int) -> CGFloat {
+        guard let section = self.dataSource?.sectionModels[safe: section],
+              let sectionType = ReadCollectionItemSectionType(rawValue: section.model),
+              sectionType != .attribute else {
+            return 0
+        }
+        return 40
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
     
     public func tableView(_ tableView: UITableView,
@@ -153,13 +168,18 @@ extension ReadCollectionItemsViewController: Presenting {
             $0.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
             $0.widthAnchor.constraint(equalTo: tableView.widthAnchor)
             $0.topAnchor.constraint(equalTo: tableView.topAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 80)
+            $0.heightAnchor.constraint(equalToConstant: 60)
         }
         titleHeaderView.setupLayout()
     }
     
     public func setupStyling() {
         
+        if #available(iOS 15.0, *) {
+            self.tableView.sectionHeaderTopPadding = 0
+        } else {
+            // Fallback on earlier versions
+        }
         self.tableView.estimatedRowHeight = 100
         self.tableView.separatorStyle = .none
         self.tableView.delegate = self

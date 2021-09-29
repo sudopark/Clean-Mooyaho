@@ -9,6 +9,9 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Prelude
+import Optics
+import ValidationSemigroup
 
 import Domain
 import CommonPresenting
@@ -28,15 +31,13 @@ final class ReadCollectionTtileHeaderView: BaseUIView, Presenting {
         self.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 4)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 13)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
         }
     }
     
     func setupStyling() {
-        self.titleLabel.numberOfLines = 1
-        self.titleLabel.font = self.uiContext.fonts.get(22, weight: .bold)
-        self.titleLabel.textColor = self.uiContext.colors.text
+        _ = self.titleLabel |> self.uiContext.decorating.header
     }
 }
 
@@ -66,9 +67,7 @@ final class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFooterVie
     }
     
     func setupStyling() {
-        self.titleLabel.numberOfLines = 1
-        self.titleLabel.font = UIFont.systemFont(ofSize: 13)
-        self.titleLabel.textColor = self.uiContext.colors.text.withAlphaComponent(0.4)
+        _ = self.titleLabel |> self.uiContext.decorating.listSectionTitle(_:)
     }
 }
 
@@ -88,7 +87,7 @@ public protocol ReadItemCells: BaseTableViewCell {
 final class KeyAndLabeledValueView: BaseUIView, Presenting {
     let iconView = UIImageView()
     let keyLabel = UILabel()
-    let labelView = UILabel()
+    let labelView = ItemLabelView()
     
     func setupLayout() {
         
@@ -97,26 +96,37 @@ final class KeyAndLabeledValueView: BaseUIView, Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.widthAnchor.constraint(equalToConstant: 15)
             $0.heightAnchor.constraint(equalToConstant: 15)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
         }
         
         self.addSubview(keyLabel)
         keyLabel.autoLayout.active(with: self) {
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8)
-            iconView.centerYAnchor.constraint(equalTo: $0.centerYAnchor)
+            $0.centerYAnchor.constraint(equalTo: iconView.centerYAnchor)
         }
-        keyLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         self.addSubview(labelView)
         labelView.autoLayout.active(with: self) {
-            $0.firstBaselineAnchor.constraint(equalTo: keyLabel.firstBaselineAnchor)
+            $0.topAnchor.constraint(equalTo: self.keyLabel.topAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 100)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
+        self.labelView.setContentCompressionResistancePriority(.required, for: .vertical)
+        labelView.setupLayout()
     }
     
     func setupStyling() {
-        self.keyLabel.decorate(self.uiContext.deco.placeHolder)
+        
+        self.iconView.tintColor = self.uiContext.colors.descriptionText
+        
+        _ = self.keyLabel
+            |> self.uiContext.decorating.listItemDescription(_:)
+            |> \.numberOfLines .~ 1
+        
+        self.labelView.font = self.uiContext.fonts.get(13, weight: .regular)
+        self.labelView.setupStyling()
     }
 }
 
@@ -125,13 +135,24 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
     typealias CellViewModel = ReadCollectionAttrCellViewModel
     
     private let stackView = UIStackView()
+    private let descriptionLabel = UILabel()
     private let priorityView = KeyAndLabeledValueView()
     private let categoryView = KeyAndLabeledValueView()
     private let underLineView = UIView()
     
     func setupCell(_ cellViewModel: ReadCollectionAttrCellViewModel) {
-        // TODO: setup priority
-        // TODO: setup categories
+        
+        let validDesription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
+        self.descriptionLabel.isHidden = validDesription == nil
+        self.descriptionLabel.text = validDesription
+        
+        let priotiry = cellViewModel.priority
+        self.priorityView.isHidden = priotiry == nil
+        priotiry.do <| priorityView.labelView.setupPriority
+        
+        let validCategories = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
+        self.categoryView.isHidden = validCategories == nil
+        validCategories.do <| categoryView.labelView.updateCategories
     }
     
     override func afterViewInit() {
@@ -142,24 +163,50 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
     
     func setupLayout() {
         self.contentView.addSubview(stackView)
-        self.stackView.autoLayout.fill(self.contentView, edges: .init(top: 9, left: 12, bottom: 9, right: 12))
+        self.stackView.autoLayout.fill(self.contentView, edges: .init(top: 0, left: 14, bottom: 9, right: 14))
+        self.stackView.addArrangedSubview(self.descriptionLabel)
         self.stackView.addArrangedSubview(self.priorityView)
         self.stackView.addArrangedSubview(self.categoryView)
+        self.descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.priorityView.autoLayout.active(with: self.stackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
+        self.priorityView.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.categoryView.autoLayout.active(with: self.stackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
+        self.categoryView.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.priorityView.setupLayout()
+        self.categoryView.setupLayout()
         
         self.contentView.addSubview(underLineView)
         underLineView.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 14)
             $0.heightAnchor.constraint(equalToConstant: 1)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -14)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
     }
     
     func setupStyling() {
+        
         self.stackView.axis = .vertical
         self.stackView.distribution = .fill
         self.stackView.spacing = 6
         
+        self.descriptionLabel.font = self.uiContext.fonts.get(13, weight: .regular)
+        self.descriptionLabel.textColor = self.uiContext.colors.descriptionText
+        self.descriptionLabel.numberOfLines = 1
+        
+        self.priorityView.setupStyling()
+        self.priorityView.iconView.image = UIImage(named: "arrow.up.arrow.down.square")
+        self.priorityView.keyLabel.text = "Priority"
+        
+        self.categoryView.setupStyling()
+        self.categoryView.iconView.image = UIImage(named: "list.dash")
+        self.categoryView.keyLabel.text = "Categories"
+        
+        self.descriptionLabel.isHidden = true
         self.priorityView.isHidden = true
         self.categoryView.isHidden = true
         
@@ -168,18 +215,105 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
 }
 
 
+// MARK: - item expand content view
+
+final class ReadItemExppandContentView: BaseUIView, Presenting {
+    
+    let contentStackView = UIStackView()
+    let titleAreaStackView = UIStackView()
+    let iconImageView = UIImageView()
+    let nameLabel = UILabel()
+    let addressLabel = UILabel()
+    let descriptionLabel = UILabel()
+    let priorityStackView = UIStackView()
+    let alarmLabel = UILabel()
+    let priorityLabel = ItemLabelView()
+    let categoriesView = ItemLabelView()
+    
+    func setupLayout() {
+        
+        self.addSubview(contentStackView)
+        contentStackView.autoLayout.fill(self)
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 4
+        
+        contentStackView.addArrangedSubview(titleAreaStackView)
+        titleAreaStackView.axis = .horizontal
+        titleAreaStackView.spacing = 6
+        
+        titleAreaStackView.addArrangedSubview(iconImageView)
+        iconImageView.autoLayout.active {
+            $0.widthAnchor.constraint(equalToConstant: 15)
+            $0.heightAnchor.constraint(equalToConstant: 15)
+        }
+        
+        titleAreaStackView.addArrangedSubview(nameLabel)
+        nameLabel.autoLayout.active {
+            $0.heightAnchor.constraint(equalToConstant: 22)
+        }
+        
+        contentStackView.addArrangedSubview(addressLabel)
+        addressLabel.autoLayout.active(with: contentStackView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 18)
+        }
+        
+        contentStackView.addArrangedSubview(descriptionLabel)
+        descriptionLabel.autoLayout.active(with: contentStackView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
+//            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 18)
+        }
+        
+        contentStackView.addArrangedSubview(priorityStackView)
+        priorityStackView.axis = .horizontal
+        priorityStackView.spacing = 4
+        
+        priorityStackView.addArrangedSubview(priorityLabel)
+        priorityLabel.setupLayout()
+        priorityLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        priorityStackView.addArrangedSubview(alarmLabel)
+        
+        contentStackView.addArrangedSubview(categoriesView)
+        categoriesView.setupLayout()
+    }
+    
+    func setupStyling() {
+        
+        _ = nameLabel
+            |> self.uiContext.decorating.listItemTitle(_:)
+            |> \.numberOfLines .~ 1
+        
+        _ = addressLabel
+            |> self.uiContext.decorating.listItemSubDescription(_:)
+            |> \.numberOfLines .~ 1
+            |> \.isHidden .~ true
+        
+        _ = descriptionLabel
+            |> self.uiContext.decorating.listItemDescription(_:)
+            |> \.numberOfLines .~ 2
+            |> \.isHidden .~ true
+        
+        self.priorityLabel.setupStyling()
+        self.priorityLabel.isHidden = true
+        
+        _ = alarmLabel
+            |> self.uiContext.decorating.listItemAccentText(_:)
+            |> \.numberOfLines .~ 1
+            |> \.isHidden .~ true
+        
+        self.categoriesView.setupStyling()
+        self.categoriesView.isHidden = true
+    }
+}
+
 // MARK: - section1: ReadCollectionExpandCell
 
-final class ReadCollectionExpandCell: ReadCollectionShrinkCell {
+final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadCollectionCellViewModel
     
-    private let iconImageView = UIImageView()
-    private let contentStackView = UIStackView()
-    private let nameAreaStackView = UIStackView()
-    private let nameLabel = UILabel()
-    private let priorityLabel = UILabel()
-    private let categoriesTextView = ItemCategoryLabelView()
+    private let expandView = ReadItemExppandContentView()
     private let arrowImageView = UIImageView()
     private let underLineView = UIView()
     
@@ -189,30 +323,62 @@ final class ReadCollectionExpandCell: ReadCollectionShrinkCell {
         self.setupStyling()
     }
     
-    override func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
-        // TODO: setup cell
+    func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
+        
+        self.expandView.nameLabel.text = cellViewModel.name
+        
+        let validDescription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
+        self.expandView.descriptionLabel.isHidden = validDescription == nil
+        self.expandView.descriptionLabel.text = validDescription
+        
+        let priority = cellViewModel.priority
+        self.expandView.priorityLabel.isHidden = priority == nil
+        priority.do <| self.expandView.priorityLabel.setupPriority
+        
+        let validCategory = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
+        self.expandView.categoriesView.isHidden = validCategory == nil
+        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
     }
     
-    override func setupLayout() {
+    func setupLayout() {
         
-        super.setupLayout()
-        contentStackView.addArrangedSubview(categoriesTextView)
-        categoriesTextView.setupLayout()
+        self.contentView.addSubview(arrowImageView)
+        arrowImageView.autoLayout.active(with: self.contentView) {
+            $0.widthAnchor.constraint(equalToConstant: 8)
+            $0.heightAnchor.constraint(equalToConstant: 22)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+        }
+        
+        self.contentView.addSubview(expandView)
+        expandView.autoLayout.active(with: self.contentView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -4)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
+        }
+        expandView.setupLayout()
         
         self.contentView.addSubview(underLineView)
         underLineView.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: iconImageView.leadingAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: 0)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
             $0.heightAnchor.constraint(equalToConstant: 1)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
         }
     }
     
-    override func setupStyling() {
+    func setupStyling() {
         
-        super.setupStyling()
+        self.arrowImageView.image = UIImage(named: "chevron.right")
+        self.arrowImageView.contentMode = .scaleAspectFit
+        self.arrowImageView.tintColor = self.uiContext.colors.hintText
         
-        self.categoriesTextView.setupStyling()
+        self.expandView.setupStyling()
+        self.expandView.iconImageView.image = UIImage(named: "folder")
+        self.expandView.tintColor = self.uiContext.colors.secondaryTitle
+        
+        self.underLineView.backgroundColor = self.uiContext.colors.lineColor
     }
 }
 
@@ -222,21 +388,10 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadLinkCellViewModel
     
-    let contentStackView = UIStackView()
-    
-    let thumbNailView = UIImageView()
-    
-    let titleAreaView = UIView()
-    let iconImageVIew = UIImageView()
-    let titleLabel = UILabel()
-    
-    let descriptionView = UILabel()
-    
-    let linkAreaStackView = UIStackView()
-    let linkIconImageView = UIImageView()
-    let linkAddressLabel = UILabel()
-    let priorityLabel = UILabel()
-    let categoriesTextView = ItemCategoryLabelView()
+    private let expandView = ReadItemExppandContentView()
+    private let thumbNailView = UIImageView()
+    private let underLineView = UIView()
+    private var expandViewTrailing: NSLayoutConstraint!
     
     override func afterViewInit() {
         super.afterViewInit()
@@ -246,21 +401,21 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        expandViewTrailing.constant = -12
         self.thumbNailView.cancelSetupThumbnail()
-        self.iconImageVIew.cancelSetupThumbnail()
     }
     
     func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
         
-        self.linkAddressLabel.text = cellViewModel.linkUrl
-        if cellViewModel.categories.isNotEmpty {
-            self.categoriesTextView.isHidden = false
-            self.categoriesTextView.updateCategories(cellViewModel.categories)
-        } else {
-            self.categoriesTextView.isHidden = true
-        }
+        self.expandView.addressLabel.text = cellViewModel.linkUrl
         
-        // TODO: update priority
+        let priority = cellViewModel.priority
+        self.expandView.priorityLabel.isHidden = priority == nil
+        priority.do <| self.expandView.priorityLabel.setupPriority
+        
+        let validCategory = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
+        self.expandView.categoriesView.isHidden = validCategory == nil
+        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
     }
     
     func bindPreview(_ source: Observable<LinkPreview>) {
@@ -268,103 +423,81 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         source.asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] preview in
                 guard let self = self else { return }
-                self.updateImageIfPossible(self.thumbNailView, url: preview.mainImageURL)
-                self.updateImageIfPossible(self.iconImageVIew, url: preview.iconURL)
+                self.updateThumbnailIfPossible(with: preview.mainImageURL)
                 self.updateTitle(preview.title)
-                self.updateDescripyion(preview.description)
+                self.updateDescription(preview.description)
             })
             .disposed(by: self.disposeBag)
     }
     
-    private func updateImageIfPossible(_ imageView: UIImageView, url: String?) {
-        imageView.cancelSetupThumbnail()
-        guard let url = url else {
-            imageView.isHidden = true
-            return
-        }
-        imageView.isHidden = false
-        imageView.setupThumbnail(url)
+    private func updateThumbnailIfPossible(with url: String?) {
+        thumbNailView.cancelSetupThumbnail()
+        thumbNailView.isHidden = url == nil
+        expandViewTrailing.constant = -12
+        guard let url = url else { return }
+        self.thumbNailView.setupThumbnail(url, resize: .init(width: 65, height: 65), completed:  { [weak self] result in
+            guard case .success = result else { return }
+            self?.expandViewTrailing.constant = -12 - 4 - 65
+        })
     }
     
     private func updateTitle(_ title: String?) {
-        guard let title = title else {
-            self.titleAreaView.isHidden = true
-            return
-        }
-        self.titleAreaView.isHidden = false
-        self.titleLabel.text = title
+        let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "Fail to load preview".localized
+        self.expandView.nameLabel.text = title
     }
     
-    private func updateDescripyion(_ description: String?) {
-        guard let description = description else {
-            self.descriptionView.isHidden = true
-            return
-        }
-        self.descriptionView.isHidden = false
-        self.descriptionView.text = description
+    private func updateDescription(_ description: String?) {
+        let description = description.flatMap { $0.isNotEmpty ? $0 : nil }
+        self.expandView.descriptionLabel.isHidden = description == nil
+        self.expandView.descriptionLabel.text = description
     }
     
     func setupLayout() {
         
-        self.contentView.addSubview(contentStackView)
-        contentStackView.autoLayout.fill(self.contentView)
-        contentStackView.axis = .vertical
-        contentStackView.distribution = .fill
-        
-        contentStackView.addArrangedSubview(thumbNailView)
-        thumbNailView.autoLayout.active(with: contentStackView) {
-            $0.heightAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.64)
-        }
-        thumbNailView.isHidden = true
-        
-        titleAreaView.addSubview(iconImageVIew)
-        iconImageVIew.autoLayout.active(with: titleAreaView) {
+        self.contentView.addSubview(expandView)
+        expandView.autoLayout.active(with: self.contentView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
-            $0.widthAnchor.constraint(equalToConstant: 15)
-            $0.heightAnchor.constraint(equalTo: $0.widthAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
         }
-        titleAreaView.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: titleAreaView) {
+        self.expandViewTrailing = expandView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
+        self.expandViewTrailing.isActive = true
+        expandView.setupLayout()
+        
+        self.contentView.addSubview(thumbNailView)
+        thumbNailView.autoLayout.active(with: self.contentView) {
+            $0.widthAnchor.constraint(equalToConstant: 65)
+            $0.heightAnchor.constraint(equalToConstant: 65)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
-            $0.leadingAnchor.constraint(equalTo: iconImageVIew.trailingAnchor, constant: 4)
-            $0.topAnchor.constraint(equalTo: iconImageVIew.topAnchor)
+            $0.topAnchor.constraint(greaterThanOrEqualTo: $1.topAnchor, constant: 8)
+            $0.bottomAnchor.constraint(lessThanOrEqualTo: $1.bottomAnchor, constant: -8)
         }
-        contentStackView.addArrangedSubview(titleAreaView)
-        titleAreaView.isHidden = true
         
-        contentStackView.addArrangedSubview(descriptionView)
-        descriptionView.isHidden = true
-        
-        linkAreaStackView.axis = .horizontal
-        linkAreaStackView.distribution = .fill
-        linkAreaStackView.addArrangedSubview(linkIconImageView)
-        linkIconImageView.autoLayout.active {
-            $0.widthAnchor.constraint(equalToConstant: 13)
-            $0.heightAnchor.constraint(equalToConstant: 13)
+        self.contentView.addSubview(underLineView)
+        underLineView.autoLayout.active(with: self.contentView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: 0)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 1)
         }
-        linkAreaStackView.addArrangedSubview(linkAddressLabel)
-        
-        contentStackView.addArrangedSubview(priorityLabel)
-        contentStackView.addArrangedSubview(categoriesTextView)
-        categoriesTextView.setupLayout()
-        categoriesTextView.isHidden = true
     }
     
     func setupStyling() {
-        iconImageVIew.image = UIImage(named: "link")
-        titleLabel.font = UIFont.systemFont(ofSize: 13)
-        titleLabel.textColor = self.uiContext.colors.text
-        titleLabel.numberOfLines = 1
+    
+        self.thumbNailView.isHidden = true
+        self.thumbNailView.contentMode = .scaleAspectFit
+        self.thumbNailView.backgroundColor = self.uiContext.colors.lineColor
+        self.thumbNailView.layer.cornerRadius = 5
+        self.thumbNailView.clipsToBounds = true
         
-        descriptionView.decorate(self.uiContext.deco.placeHolder)
-        descriptionView.numberOfLines = 2
+        self.expandView.setupStyling()
+        self.expandView.iconImageView.image = UIImage(named: "doc.text")
+        self.expandView.tintColor = self.uiContext.colors.secondaryTitle
         
-        priorityLabel.font = UIFont.systemFont(ofSize: 12)
-        priorityLabel.textColor = .systemBlue
-        priorityLabel.numberOfLines = 1
+        self.expandView.addressLabel.isHidden = false
         
-        categoriesTextView.setupStyling()
+        self.underLineView.backgroundColor = self.uiContext.colors.lineColor
     }
 }
 

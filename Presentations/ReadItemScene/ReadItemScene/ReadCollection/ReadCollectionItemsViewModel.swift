@@ -317,3 +317,90 @@ private extension Array where Element == ReadItemCellViewModel {
         return .init(type: type, cellViewModels: self)
     }
 }
+
+
+
+
+// MARK: - fake viewModel
+
+class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
+    
+    func reloadCollectionItems() { }
+    
+    func toggleShrinkListStyle() { }
+    
+    func requestChangeOrder() { }
+    
+    func openItem(_ itemID: String) { }
+    
+    func requestMakeNewCollection() { }
+    
+    func requestAddNewLink() { }
+    
+    var collectionTitle: Observable<String> {
+        return "Some collection" |> Observable.just
+    }
+    
+    private var _isShrinkMode = false
+    
+    var isShrinkMode: Observable<Bool> {
+        return self._isShrinkMode |> Observable.just
+    }
+    
+    var currentSortOrder: Observable<ReadCollectionItemSortOrder> { .just(.byCustomOrder) }
+    
+    var sections: Observable<[ReadCollectionItemSection]> {
+        
+        let colors: [String] = ["#6200EE", "#018786", "#FF0266"]
+        let dummyCategories: () -> [ItemCategory] = {
+            return (0..<Int.random(in: 0...3)).map { int in
+                return ItemCategory(name: "cate:\(int)", colorCode: colors[int % 3])
+            }
+        }
+        
+        let collection = ReadCollection(name: "Some collection")
+            |> \.priority .~ .afterAWhile
+            |> \.categories .~ dummyCategories()
+        
+        let attrCell = ReadCollectionAttrCellViewModel(collection: collection)
+            |> \.collectionDescription .~ "This is a colleciton for design sample"
+        let attrSection = ReadCollectionItemSection(type: .attribute, cellViewModels: [attrCell])
+        
+        let collectionCells = (0..<2)
+            .map { int in
+                return ReadCollection(name: "Collection:\(int)")
+                    |> \.priority .~ .afterAWhile
+                    |> \.categories .~ dummyCategories()
+            }
+            .map {
+                return ReadCollectionCellViewModel(collection: $0)
+                    |> \.isShrink .~ self._isShrinkMode
+                    |> \.collectionDescription .~ "This is a colleciton for design sample"
+            }
+        let collectionSection = ReadCollectionItemSection(type: .collections, cellViewModels: collectionCells)
+        
+        let links = (0..<10)
+            .map { int in
+                return ReadLink(link: "https://material.io/design/color/the-color-system.html#color-theme-creation")
+                    |> \.customName .~ (Int.random(in: 0...1) % 2 == 0 ? "Custom name" : nil)
+                    |> \.priority .~ .afterAWhile
+                    |> \.categories .~ dummyCategories()
+            }
+            .map {
+                return ReadLinkCellViewModel(link: $0)
+                    |> \.isShrink .~ self._isShrinkMode
+            }
+        let linkSection = ReadCollectionItemSection(type: .links, cellViewModels: links)
+        
+        return [attrSection, collectionSection, linkSection]
+            |> Observable.just
+    }
+    
+    func readLinkPreview(for linkID: String) -> Observable<LinkPreview> {
+        return LinkPreview(title: "The color system",
+                           description: "The Material Design color system can help you create a color theme that reflects your brand or style.",
+                           mainImageURL: "https://lh3.googleusercontent.com/B7cWRIVroduc9tSxqWaCyCGQ_M9bfsmFQKMlVfnuR2BIh_eR35gz3hO_45QKnItqA_wuXqAcmBNFVRam4Upw5Nwqhsmo6FJgMWoW=w1064-v0",
+                           iconURL: "https://lh3.googleusercontent.com/WBxd726_JGDPp8TEESRuo0GSWBbLiDYebUn9ZHBMwpjIWQ1QMjZk60LKIxc9ad_P0Gdq4lgQDByiOGU8VHlUHPihLS594Yiwt293TX0=w1064-v0")
+        |> Observable.just
+    }
+}

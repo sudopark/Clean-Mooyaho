@@ -25,6 +25,7 @@ public protocol ReadItemCellViewModel {
 public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     
     public var uid: String { "collection_attr" }
+    public var collectionDescription: String?
     public var isShrink: Bool = false
     public var presetingID: Int { self.uid.hashValue }
     
@@ -44,6 +45,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
     
     public let uid: String
     public let name: String
+    public var collectionDescription: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     public var isShrink: Bool = false
