@@ -57,6 +57,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         self.name = collection.name
         self.priority = collection.priority
         self.categories = collection.categories
+        self.collectionDescription = collection.collectionDescription
     }
 
     public var presetingID: Int {
@@ -65,6 +66,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         hasher.combine(self.name)
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map{ $0.presentingHashValud() })
+        hasher.combine(self.collectionDescription)
         return hasher.finalize()
     }
 }
