@@ -115,8 +115,6 @@ final class CategoryTextLayoutManager: NSLayoutManager {
             path.fill()
             context.restoreGState()
             super.drawGlyphs(forGlyphRange: range, at: origin)
-            
-            print("rect: \(rect)")
         }
         
         textStorage.enumerateAttribute(.roundBackgroundColor,

@@ -34,14 +34,14 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     private var dummySubCollections: [ReadCollection] {
         return (0..<5).map { int -> ReadCollection in
             return ReadCollection.dummy(int)
-                |> \.priority .~ ReadPriority(rawValue: int)
+                |> \.priority .~ ReadPriority.makeDummy(int)
         }
     }
     
     private var dummySubLinks: [ReadLink] {
         return (5..<10).map { int -> ReadLink in
             return ReadLink.dummy(int)
-                |> \.priority .~ ReadPriority(rawValue: int)
+                |> \.priority .~ ReadPriority.makeDummy(int)
         }
     }
     
@@ -465,5 +465,22 @@ private extension ReadCollectionItemsViewModel {
                 .filter{ $0 is ReadCollectionCellViewModel || $0 is ReadLinkCellViewModel }
         }
         return self.sections.map(filtering)
+    }
+}
+
+
+private extension ReadPriority {
+    
+    static func makeDummy(_ seqIndex: Int) -> ReadPriority? {
+        switch seqIndex {
+        case 1: return .beforeDying
+        case 2: return .someDay
+        case 3: return .thisWeek
+        case 4: return .today
+        case 5: return .beforeGoToBed
+        case 6: return .onTheWaytoWork
+        case 7: return .afterAWhile
+        default: return nil
+        }
     }
 }

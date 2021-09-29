@@ -38,8 +38,8 @@ extension UIContext.Decorating {
     @discardableResult
     public static func listSectionTitle(_ label: UILabel) -> UILabel {
         return label
-            |> \.font .~ self.uiContext.fonts.get(13, weight: .regular)
-            |> \.textColor .~ self.uiContext.colors.descriptionText
+            |> \.font .~ self.uiContext.fonts.get(13, weight: .bold)
+            |> \.textColor .~ self.uiContext.colors.secondaryTitle
             |> \.numberOfLines .~ 1
     }
     
@@ -62,6 +62,13 @@ extension UIContext.Decorating {
         return label
             |> \.font .~ self.uiContext.fonts.get(11, weight: .medium)
             |> \.textColor .~ self.uiContext.colors.descriptionText
+    }
+    
+    @discardableResult
+    public static func listItemAccentText(_ label: UILabel) -> UILabel {
+        return label
+            |> \.font .~ self.uiContext.fonts.get(12, weight: .medium)
+            |> \.textColor .~ UIColor.systemBlue
     }
     
     @discardableResult

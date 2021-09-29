@@ -10,13 +10,13 @@ import Foundation
 
 
 public enum ReadPriority: Int {
-    case beforeDying = 1
-    case someDay
-    case thisWeek
-    case today
-    case beforeGoToBed
-    case onTheWaytoWork
-    case afterAWhile
+    case beforeDying = 0
+    case someDay = 10
+    case thisWeek = 20
+    case today = 30
+    case beforeGoToBed = 40
+    case onTheWaytoWork = 50
+    case afterAWhile = 60
 }
 
 extension ReadPriority {
