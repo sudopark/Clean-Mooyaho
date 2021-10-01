@@ -96,6 +96,8 @@ extension SingleLineInputView: Presenting {
     
     public func setupStyling() {
         
+        self.backgroundColor = self.uiContext.colors.lineColor
+        
         self.iconImageView.image = UIImage(named: "magnifyingglass")
         self.cleaerButton.setImage(UIImage(named: "xmark.circle.fill"), for: .normal)
         self.cleaerButton.isHidden = true

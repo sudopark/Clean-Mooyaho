@@ -71,7 +71,7 @@ extension MainViewController {
     
     private func bind() {
         
-        self.mainView.customNavigationBar.profileView.rx
+        self.mainView.profileImageView.rx
             .addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.openSlideMenu()
@@ -95,7 +95,7 @@ extension MainViewController {
         self.viewModel.currentMemberProfileImage
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] source in
-                self?.mainView.customNavigationBar.profileView.setupImage(using: source)
+                self?.mainView.profileImageView.setupImage(using: source)
             })
             .disposed(by: self.dispsoseBag)
     }

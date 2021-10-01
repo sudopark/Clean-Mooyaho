@@ -17,7 +17,7 @@ final class CustomNavigationBar: BaseUIView, Presenting {
     
     let backButton = UIButton()
     let titleLabel = UILabel()
-    let profileView = IntegratedImageView()
+    let editButton = UIButton()
     
     func setupLayout() {
         
@@ -29,19 +29,16 @@ final class CustomNavigationBar: BaseUIView, Presenting {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
         
-        self.addSubview(profileView)
-        profileView.autoLayout.active(with: self) {
+        self.addSubview(editButton)
+        editButton.autoLayout.active(with: self) {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.widthAnchor.constraint(equalToConstant: 36)
-            $0.heightAnchor.constraint(equalToConstant: 36)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
         }
-        profileView.setupLayout()
         
         self.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: self.backButton.trailingAnchor, constant: 16)
-            $0.trailingAnchor.constraint(equalTo: self.profileView.leadingAnchor, constant: -16)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: self.editButton.leadingAnchor, constant: -16)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
     }
@@ -57,10 +54,9 @@ final class CustomNavigationBar: BaseUIView, Presenting {
         self.titleLabel.textColor = self.uiContext.colors.text
         self.titleLabel.isHidden = true
         
-        self.profileView.setupStyling()
-        self.profileView.layer.cornerRadius = 18
-        self.profileView.clipsToBounds = true
-        self.profileView.backgroundColor = .white
+        self.editButton.setTitle("Edit".localized, for: .normal)
+        self.editButton.setTitleColor(UIColor.systemBlue, for: .normal)
+        self.editButton.titleLabel?.font = self.uiContext.fonts.get(14, weight: .regular)
     }
 }
 
@@ -70,7 +66,11 @@ final class MainView: BaseUIView {
     
     let mainContainerView = UIView()
     let bottomSlideContainerView = UIView()
+    let bottomSearchBarView = SingleLineInputView()
+    let profileImageView = IntegratedImageView()
+    let bottomContentContainerView = UIView()
     var bottomSlideBottomOffsetConstraint: NSLayoutConstraint!
+    var bottomSliderSearbarTrailingConstraint: NSLayoutConstraint!
 }
 
 
@@ -104,18 +104,58 @@ extension MainView: Presenting {
         self.bottomSlideBottomOffsetConstraint = self.bottomSlideContainerView
             .topAnchor.constraint(equalTo: self.bottomAnchor, constant: -80)
         NSLayoutConstraint.activate([self.bottomSlideBottomOffsetConstraint])
+        
+        self.bottomSlideContainerView.addSubview(bottomSearchBarView)
+        bottomSearchBarView.autoLayout.active(with: bottomSlideContainerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+        }
+        bottomSearchBarView.setupLayout()
+        
+        self.bottomSlideContainerView.addSubview(profileImageView)
+        profileImageView.autoLayout.active(with: bottomSlideContainerView) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
+            $0.widthAnchor.constraint(equalToConstant: 36)
+            $0.heightAnchor.constraint(equalToConstant: 36)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+            bottomSearchBarView.centerYAnchor.constraint(equalTo: $0.centerYAnchor)
+        }
+        profileImageView.setupLayout()
+        
+        bottomSliderSearbarTrailingConstraint = bottomSearchBarView.trailingAnchor
+            .constraint(equalTo: bottomSlideContainerView.trailingAnchor, constant: -16 - 36 - 12)
+        bottomSliderSearbarTrailingConstraint.isActive = true
+        
+        bottomSlideContainerView.addSubview(bottomContentContainerView)
+        bottomContentContainerView.autoLayout.active(with: bottomSlideContainerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+            $0.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+        }
     }
     
     
     func setupStyling() {
         
         self.customNavigationBar.setupStyling()
+        self.customNavigationBar.editButton.isHidden = true
         
         self.mainContainerView.backgroundColor = self.uiContext.colors.raw.clear
         
-        self.bottomSlideContainerView.backgroundColor = self.uiContext.colors.appBackground
-        self.bottomSlideContainerView.layer.cornerRadius = 10
+        self.bottomSlideContainerView.backgroundColor = self.uiContext.colors.appSecondBackground
+        self.bottomSlideContainerView.layer.cornerRadius = 15
         self.bottomSlideContainerView.clipsToBounds = true
         
+        self.bottomSearchBarView.layer.cornerRadius = 10
+        self.bottomSearchBarView.clipsToBounds = true
+        self.bottomSearchBarView.setupStyling()
+        self.bottomSearchBarView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        self.bottomSearchBarView.iconImageView.tintColor = UIColor.black.withAlphaComponent(0.1)
+        self.bottomSearchBarView.placeHolderLabel.text = "Search collection or link"
+        
+        self.profileImageView.setupStyling()
+        self.profileImageView.backgroundColor = self.uiContext.colors.hintText
+        self.profileImageView.layer.cornerRadius = 18
+        self.profileImageView.clipsToBounds = true
     }
 }
