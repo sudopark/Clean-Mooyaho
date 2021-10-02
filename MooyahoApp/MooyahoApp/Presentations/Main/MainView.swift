@@ -8,6 +8,9 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 import CommonPresenting
 
 
@@ -60,6 +63,71 @@ final class CustomNavigationBar: BaseUIView, Presenting {
     }
 }
 
+
+// MARK: - FloatingButtonButtonView
+
+final class FloatingButtonButtonView: BaseUIView, Presenting {
+    
+    private let iconImageView = UIImageView()
+    private let roundView = UIView()
+    private let titleLabel = UILabel()
+    fileprivate let backgroundButton = UIButton()
+    
+    func setupLayout() {
+        
+        self.addSubview(roundView)
+        roundView.autoLayout.fill(self)
+        
+        self.addSubview(iconImageView)
+        iconImageView.autoLayout.active(with: self) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.widthAnchor.constraint(equalToConstant: 15)
+            $0.heightAnchor.constraint(equalToConstant: 15)
+        }
+        
+        self.addSubview(titleLabel)
+        titleLabel.autoLayout.active(with: self) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
+            $0.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 5)
+        }
+        
+        self.addSubview(backgroundButton)
+        backgroundButton.autoLayout.fill(self)
+    }
+    
+    func setupStyling() {
+        
+        self.layer.shadowColor = UIColor.black.withAlphaComponent(0.4).cgColor
+        self.layer.shadowRadius = 15
+        self.layer.shadowOpacity = 0.9
+        self.layer.shadowOffset = .init(width: 0, height: 1)
+        
+        self.roundView.layer.cornerRadius = 15
+        self.roundView.clipsToBounds = true
+        self.roundView.backgroundColor = UIColor.systemIndigo
+        
+        self.iconImageView.image = UIImage(named: "plus")
+        self.iconImageView.tintColor = .white
+        
+        self.titleLabel.font = self.uiContext.fonts.get(16, weight: .bold)
+        self.titleLabel.textColor = UIColor.white
+        self.titleLabel.text = "Add a item".localized
+    }
+}
+
+extension Reactive where Base == FloatingButtonButtonView {
+    
+    func throttleTap() -> Observable<Void> {
+        return base.backgroundButton.rx.tap.throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+    }
+}
+
+
+// MARK: - MainView
+
 final class MainView: BaseUIView {
     
     let customNavigationBar = CustomNavigationBar()
@@ -69,13 +137,13 @@ final class MainView: BaseUIView {
     let bottomSearchBarView = SingleLineInputView()
     let profileImageView = IntegratedImageView()
     let bottomContentContainerView = UIView()
+    let floatingBottomButtonContainerView = FloatingButtonButtonView()
     var bottomSlideBottomOffsetConstraint: NSLayoutConstraint!
     var bottomSliderSearbarTrailingConstraint: NSLayoutConstraint!
 }
 
 
 extension MainView: Presenting {
-    
     
     func setupLayout() {
         
@@ -132,6 +200,13 @@ extension MainView: Presenting {
             $0.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
+        
+        self.addSubview(floatingBottomButtonContainerView)
+        floatingBottomButtonContainerView.autoLayout.active(with: bottomSlideContainerView) {
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.topAnchor, constant: -8)
+        }
+        floatingBottomButtonContainerView.setupLayout()
     }
     
     
@@ -157,5 +232,7 @@ extension MainView: Presenting {
         self.profileImageView.backgroundColor = self.uiContext.colors.hintText
         self.profileImageView.layer.cornerRadius = 18
         self.profileImageView.clipsToBounds = true
+        
+        self.floatingBottomButtonContainerView.setupStyling()
     }
 }
