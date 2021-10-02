@@ -7,7 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F6D8DDEC27083DA200B4D817 /* AddItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDE327083DA200B4D817 /* AddItemScene.framework */; };
+		F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */; };
+		F6BBF15327083F5A00420A49 /* SelectAddItemTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */; };
+		F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */; };
+		F6BBF15527083F5A00420A49 /* SelectAddItemTypeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15027083F5A00420A49 /* SelectAddItemTypeRouter.swift */; };
+		F6BBF15627083F5A00420A49 /* SelectAddItemTypeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15127083F5A00420A49 /* SelectAddItemTypeBuilder.swift */; };
+		F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */; };
+		F6BBF15F27083FF900420A49 /* AddItemNavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15A27083FF900420A49 /* AddItemNavigationRouter.swift */; };
+		F6BBF16027083FF900420A49 /* AddItemNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15B27083FF900420A49 /* AddItemNavigationViewController.swift */; };
+		F6BBF16127083FF900420A49 /* AddItemNavigationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15C27083FF900420A49 /* AddItemNavigationBuilder.swift */; };
+		F6BBF16227083FF900420A49 /* AddItemNavigationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15D27083FF900420A49 /* AddItemNavigationScene.swift */; };
+		F6BBF16327083FF900420A49 /* AddItemNavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15E27083FF900420A49 /* AddItemNavigationViewModel.swift */; };
+		F6D8DDEC27083DA200B4D817 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */; };
 		F6D8DDF127083DA200B4D817 /* AddItemSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8DDF027083DA200B4D817 /* AddItemSceneTests.swift */; };
 		F6D8DDF227083DA200B4D817 /* AddItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D8DDE627083DA200B4D817 /* AddItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6D8DDFD27083DCD00B4D817 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDFC27083DCD00B4D817 /* Domain.framework */; };
@@ -29,9 +40,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F6D8DDE327083DA200B4D817 /* AddItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AddItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeScene.swift; sourceTree = "<group>"; };
+		F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewController.swift; sourceTree = "<group>"; };
+		F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModel.swift; sourceTree = "<group>"; };
+		F6BBF15027083F5A00420A49 /* SelectAddItemTypeRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeRouter.swift; sourceTree = "<group>"; };
+		F6BBF15127083F5A00420A49 /* SelectAddItemTypeBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeBuilder.swift; sourceTree = "<group>"; };
+		F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModelTests.swift; sourceTree = "<group>"; };
+		F6BBF15A27083FF900420A49 /* AddItemNavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationRouter.swift; sourceTree = "<group>"; };
+		F6BBF15B27083FF900420A49 /* AddItemNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationViewController.swift; sourceTree = "<group>"; };
+		F6BBF15C27083FF900420A49 /* AddItemNavigationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationBuilder.swift; sourceTree = "<group>"; };
+		F6BBF15D27083FF900420A49 /* AddItemNavigationScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationScene.swift; sourceTree = "<group>"; };
+		F6BBF15E27083FF900420A49 /* AddItemNavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationViewModel.swift; sourceTree = "<group>"; };
+		F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EditReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DDE627083DA200B4D817 /* AddItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddItemScene.h; sourceTree = "<group>"; };
-		F6D8DDEB27083DA200B4D817 /* AddItemSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AddItemSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6D8DDEB27083DA200B4D817 /* EditReadItemSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EditReadItemSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DDF027083DA200B4D817 /* AddItemSceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemSceneTests.swift; sourceTree = "<group>"; };
 		F6D8DDFC27083DCD00B4D817 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DE0027083DE200B4D817 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,18 +81,63 @@
 				F6D8DE0D27083E2B00B4D817 /* Common3rdParty.framework in Frameworks */,
 				F6D8DE0B27083E2000B4D817 /* UsecaseDoubles.framework in Frameworks */,
 				F6D8DE0927083E1900B4D817 /* UnitTestHelpKit.framework in Frameworks */,
-				F6D8DDEC27083DA200B4D817 /* AddItemScene.framework in Frameworks */,
+				F6D8DDEC27083DA200B4D817 /* EditReadItemScene.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F6BBF14C27083F2B00420A49 /* SelecAddItemType */ = {
+			isa = PBXGroup;
+			children = (
+				F6BBF15127083F5A00420A49 /* SelectAddItemTypeBuilder.swift */,
+				F6BBF15027083F5A00420A49 /* SelectAddItemTypeRouter.swift */,
+				F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */,
+				F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */,
+				F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */,
+			);
+			path = SelecAddItemType;
+			sourceTree = "<group>";
+		};
+		F6BBF15927083FD500420A49 /* AddItemNavigation */ = {
+			isa = PBXGroup;
+			children = (
+				F6BBF15A27083FF900420A49 /* AddItemNavigationRouter.swift */,
+				F6BBF15B27083FF900420A49 /* AddItemNavigationViewController.swift */,
+				F6BBF15C27083FF900420A49 /* AddItemNavigationBuilder.swift */,
+				F6BBF15D27083FF900420A49 /* AddItemNavigationScene.swift */,
+				F6BBF15E27083FF900420A49 /* AddItemNavigationViewModel.swift */,
+			);
+			path = AddItemNavigation;
+			sourceTree = "<group>";
+		};
+		F6BBF16427083FFD00420A49 /* EnterLinkURL */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EnterLinkURL;
+			sourceTree = "<group>";
+		};
+		F6BBF1652708401D00420A49 /* EditCollection */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EditCollection;
+			sourceTree = "<group>";
+		};
+		F6BBF1662708403C00420A49 /* EditLinkItem */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EditLinkItem;
+			sourceTree = "<group>";
+		};
 		F6D8DDD927083DA200B4D817 = {
 			isa = PBXGroup;
 			children = (
-				F6D8DDE527083DA200B4D817 /* AddItemScene */,
-				F6D8DDEF27083DA200B4D817 /* AddItemSceneTests */,
+				F6D8DDE527083DA200B4D817 /* EditReadItemScene */,
+				F6D8DDEF27083DA200B4D817 /* EditReadItemSceneTests */,
 				F6D8DDE427083DA200B4D817 /* Products */,
 				F6D8DDFB27083DCD00B4D817 /* Frameworks */,
 			);
@@ -79,26 +146,32 @@
 		F6D8DDE427083DA200B4D817 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F6D8DDE327083DA200B4D817 /* AddItemScene.framework */,
-				F6D8DDEB27083DA200B4D817 /* AddItemSceneTests.xctest */,
+				F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */,
+				F6D8DDEB27083DA200B4D817 /* EditReadItemSceneTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F6D8DDE527083DA200B4D817 /* AddItemScene */ = {
+		F6D8DDE527083DA200B4D817 /* EditReadItemScene */ = {
 			isa = PBXGroup;
 			children = (
+				F6BBF14C27083F2B00420A49 /* SelecAddItemType */,
+				F6BBF15927083FD500420A49 /* AddItemNavigation */,
+				F6BBF16427083FFD00420A49 /* EnterLinkURL */,
+				F6BBF1652708401D00420A49 /* EditCollection */,
+				F6BBF1662708403C00420A49 /* EditLinkItem */,
 				F6D8DDE627083DA200B4D817 /* AddItemScene.h */,
 			);
-			path = AddItemScene;
+			path = EditReadItemScene;
 			sourceTree = "<group>";
 		};
-		F6D8DDEF27083DA200B4D817 /* AddItemSceneTests */ = {
+		F6D8DDEF27083DA200B4D817 /* EditReadItemSceneTests */ = {
 			isa = PBXGroup;
 			children = (
+				F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */,
 				F6D8DDF027083DA200B4D817 /* AddItemSceneTests.swift */,
 			);
-			path = AddItemSceneTests;
+			path = EditReadItemSceneTests;
 			sourceTree = "<group>";
 		};
 		F6D8DDFB27083DCD00B4D817 /* Frameworks */ = {
@@ -128,9 +201,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F6D8DDE227083DA200B4D817 /* AddItemScene */ = {
+		F6D8DDE227083DA200B4D817 /* EditReadItemScene */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F6D8DDF527083DA200B4D817 /* Build configuration list for PBXNativeTarget "AddItemScene" */;
+			buildConfigurationList = F6D8DDF527083DA200B4D817 /* Build configuration list for PBXNativeTarget "EditReadItemScene" */;
 			buildPhases = (
 				F6D8DDDE27083DA200B4D817 /* Headers */,
 				F6D8DDDF27083DA200B4D817 /* Sources */,
@@ -141,14 +214,14 @@
 			);
 			dependencies = (
 			);
-			name = AddItemScene;
+			name = EditReadItemScene;
 			productName = AddItemScene;
-			productReference = F6D8DDE327083DA200B4D817 /* AddItemScene.framework */;
+			productReference = F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F6D8DDEA27083DA200B4D817 /* AddItemSceneTests */ = {
+		F6D8DDEA27083DA200B4D817 /* EditReadItemSceneTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F6D8DDF827083DA200B4D817 /* Build configuration list for PBXNativeTarget "AddItemSceneTests" */;
+			buildConfigurationList = F6D8DDF827083DA200B4D817 /* Build configuration list for PBXNativeTarget "EditReadItemSceneTests" */;
 			buildPhases = (
 				F6D8DDE727083DA200B4D817 /* Sources */,
 				F6D8DDE827083DA200B4D817 /* Frameworks */,
@@ -159,9 +232,9 @@
 			dependencies = (
 				F6D8DDEE27083DA200B4D817 /* PBXTargetDependency */,
 			);
-			name = AddItemSceneTests;
+			name = EditReadItemSceneTests;
 			productName = AddItemSceneTests;
-			productReference = F6D8DDEB27083DA200B4D817 /* AddItemSceneTests.xctest */;
+			productReference = F6D8DDEB27083DA200B4D817 /* EditReadItemSceneTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -176,13 +249,14 @@
 				TargetAttributes = {
 					F6D8DDE227083DA200B4D817 = {
 						CreatedOnToolsVersion = 13.0;
+						LastSwiftMigration = 1300;
 					};
 					F6D8DDEA27083DA200B4D817 = {
 						CreatedOnToolsVersion = 13.0;
 					};
 				};
 			};
-			buildConfigurationList = F6D8DDDD27083DA200B4D817 /* Build configuration list for PBXProject "AddItemScene" */;
+			buildConfigurationList = F6D8DDDD27083DA200B4D817 /* Build configuration list for PBXProject "EditReadItemScene" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -195,8 +269,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F6D8DDE227083DA200B4D817 /* AddItemScene */,
-				F6D8DDEA27083DA200B4D817 /* AddItemSceneTests */,
+				F6D8DDE227083DA200B4D817 /* EditReadItemScene */,
+				F6D8DDEA27083DA200B4D817 /* EditReadItemSceneTests */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +297,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6BBF16127083FF900420A49 /* AddItemNavigationBuilder.swift in Sources */,
+				F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */,
+				F6BBF16327083FF900420A49 /* AddItemNavigationViewModel.swift in Sources */,
+				F6BBF15F27083FF900420A49 /* AddItemNavigationRouter.swift in Sources */,
+				F6BBF16227083FF900420A49 /* AddItemNavigationScene.swift in Sources */,
+				F6BBF15327083F5A00420A49 /* SelectAddItemTypeViewController.swift in Sources */,
+				F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */,
+				F6BBF15527083F5A00420A49 /* SelectAddItemTypeRouter.swift in Sources */,
+				F6BBF16027083FF900420A49 /* AddItemNavigationViewController.swift in Sources */,
+				F6BBF15627083F5A00420A49 /* SelectAddItemTypeBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6D8DDF127083DA200B4D817 /* AddItemSceneTests.swift in Sources */,
+				F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +324,7 @@
 /* Begin PBXTargetDependency section */
 		F6D8DDEE27083DA200B4D817 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F6D8DDE227083DA200B4D817 /* AddItemScene */;
+			target = F6D8DDE227083DA200B4D817 /* EditReadItemScene */;
 			targetProxy = F6D8DDED27083DA200B4D817 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -370,6 +455,7 @@
 		F6D8DDF627083DA200B4D817 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -390,6 +476,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -398,6 +485,7 @@
 		F6D8DDF727083DA200B4D817 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -426,6 +514,7 @@
 		F6D8DDF927083DA200B4D817 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -447,6 +536,7 @@
 		F6D8DDFA27083DA200B4D817 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -468,7 +558,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F6D8DDDD27083DA200B4D817 /* Build configuration list for PBXProject "AddItemScene" */ = {
+		F6D8DDDD27083DA200B4D817 /* Build configuration list for PBXProject "EditReadItemScene" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F6D8DDF327083DA200B4D817 /* Debug */,
@@ -477,7 +567,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F6D8DDF527083DA200B4D817 /* Build configuration list for PBXNativeTarget "AddItemScene" */ = {
+		F6D8DDF527083DA200B4D817 /* Build configuration list for PBXNativeTarget "EditReadItemScene" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F6D8DDF627083DA200B4D817 /* Debug */,
@@ -486,7 +576,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F6D8DDF827083DA200B4D817 /* Build configuration list for PBXNativeTarget "AddItemSceneTests" */ = {
+		F6D8DDF827083DA200B4D817 /* Build configuration list for PBXNativeTarget "EditReadItemSceneTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F6D8DDF927083DA200B4D817 /* Debug */,
