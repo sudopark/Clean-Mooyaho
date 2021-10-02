@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -20,5 +21,6 @@ import CommonPresenting
 
 public protocol AddItemNavigationSceneBuilable {
     
-    func makeAddItemNavigationScene() -> AddItemNavigationScene
+    func makeAddItemNavigationScene(at collectionID: String?,
+                                    _ completed: @escaping (ReadLink) -> Void) -> AddItemNavigationScene
 }
