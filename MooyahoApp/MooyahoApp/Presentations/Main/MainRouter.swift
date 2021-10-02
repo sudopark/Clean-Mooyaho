@@ -32,6 +32,8 @@ public protocol MainRouting: Routing {
     func presentSignInScene() -> SignInScenePresenter?
     
     func presentEditProfileScene() -> EditProfileScenePresenter?
+    
+    func askAddNewitemType(_ completed: @escaping (Bool) -> Void)
 }
 
 // MARK: - Routers
@@ -39,7 +41,7 @@ public protocol MainRouting: Routing {
 // TODO: compose next Scene Builders protocol
 public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & SignInSceneBuilable & EditProfileSceneBuilable
-    & ReadCollectionMainSceneBuilable
+    & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -94,5 +96,13 @@ extension MainRouter {
         guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return nil }
         self.currentScene?.present(scene, animated: true, completion: nil)
         return scene.presenrer
+    }
+    
+    public func askAddNewitemType(_ completed: @escaping (Bool) -> Void) {
+        guard let next = self.nextScenesBuilder?.makeSelectAddItemTypeScene(completed) else { return }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

@@ -85,18 +85,13 @@ extension MainViewModelTests {
     
     func testViewModel_whenAddNewItemCalled_sendMessageToReadCollectionMainSceneInput() {
         // given
-        let expect = expectation(description: "아이템 추가 요청시에 read collection main input으로 요청")
-        self.spyRouter.spyCollectionMainSceneInput = .init()
-        self.spyRouter.spyCollectionMainSceneInput?.didSelectAddItemType = {
-            expect.fulfill()
-        }
         
         // when
         self.viewModel.setupSubScenes()
         self.viewModel.requestAddNewItem()
         
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertEqual(self.spyRouter.didAskNewItemType, true)
     }
 }
 
@@ -141,6 +136,11 @@ extension MainViewModelTests {
         func presentMakeNewHoorayScene() {
             self.verify(key: "presentMakeNewHoorayScene")
         }
+        
+        var didAskNewItemType = false
+        func askAddNewitemType(_ completed: @escaping (Bool) -> Void) {
+            self.didAskNewItemType = true
+        }
     }
     
     class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {
@@ -152,10 +152,12 @@ extension MainViewModelTests {
     
     class SpyReadCollectionMainInput: ReadCollectionMainSceneInput  {
         
-        var didSelectAddItemType: (() -> Void)?
+        func addNewCollectionItem() {
+            
+        }
         
-        func showSelectAddItemTypeScene() {
-            self.didSelectAddItemType?()
+        func addNewReadLinkItem() {
+            
         }
     }
 }

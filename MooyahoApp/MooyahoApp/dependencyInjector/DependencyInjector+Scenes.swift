@@ -144,9 +144,9 @@ extension DependencyInjector: AddReadLinkSceneBuilable {
 
 extension DependencyInjector: SelectAddItemTypeSceneBuilable {
     
-    public func makeSelectAddItemTypeScene() -> SelectAddItemTypeScene {
+    public func makeSelectAddItemTypeScene(_ completed: @escaping (Bool) -> Void) -> SelectAddItemTypeScene {
         let router = SelectAddItemTypeRouter(nextSceneBuilders: self)
-        let viewModel = SelectAddItemTypeViewModelImple(router: router)
+        let viewModel = SelectAddItemTypeViewModelImple(router: router, completed: completed)
         let viewController = SelectAddItemTypeViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

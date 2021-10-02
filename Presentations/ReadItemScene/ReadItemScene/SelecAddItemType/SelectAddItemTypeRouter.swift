@@ -18,28 +18,15 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SelectAddItemTypeRouting: Routing {
-    
-    func showAddNewCollectionScene()
-    
-    func showAddNewReadLinkScene()
-}
+public protocol SelectAddItemTypeRouting: Routing { }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SelectAddItemTypeRouterBuildables = AddReadLinkSceneBuilable
+public typealias SelectAddItemTypeRouterBuildables = EmptyBuilder
 
 public final class SelectAddItemTypeRouter: Router<SelectAddItemTypeRouterBuildables>, SelectAddItemTypeRouting { }
 
 
 extension SelectAddItemTypeRouter {
-    
-    public func showAddNewCollectionScene() {
-        
-    }
-    
-    public func showAddNewReadLinkScene() {
-        
-    }
 }

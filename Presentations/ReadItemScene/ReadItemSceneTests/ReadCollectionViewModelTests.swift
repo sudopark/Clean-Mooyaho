@@ -330,24 +330,29 @@ extension ReadCollectionViewModelTests {
 extension ReadCollectionViewModelTests {
     
     private var newCollection: ReadCollection {
-        return ReadCollection(uid: "new-collection", name: "new collection", createdAt: .now(), lastUpdated: .now())
+        return ReadCollection(uid: "new-collection",
+                              name: "new collection", createdAt: .now(),
+                              lastUpdated: .now())
+            |> \.parentID .~ "some"
     }
     
     private var newLinkItem: ReadLink {
-        return ReadLink(uid: "new-link", link: "new link", createAt: .now(), lastUpdated: .now())
+        return ReadLink(uid: "new-link", link: "new link",
+                        createAt: .now(), lastUpdated: .now())
+            |> \.parentID .~ "some"
     }
     
     func testViewModel_whenAfterMakeNewCollection_appendItemAndReload() {
         // given
         let expect = expectation(description: "콜렉션 생성이후 아이템 추가해서 리로드")
-        let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
+        let viewModel = self.makeViewModel(isRootCollection: false)
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell(), skip: 1) {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockNewCollection = self.newCollection
-            viewModel.requestMakeNewCollection()
+            viewModel.addNewCollectionItem()
         }
         
         // then
@@ -365,7 +370,7 @@ extension ReadCollectionViewModelTests {
             viewModel.reloadCollectionItems()
             
             self.spyRouter.mockNewLink = self.newLinkItem
-            viewModel.requestAddNewLink()
+            viewModel.addNewReadLinkItem()
         }
         
         // then
@@ -401,13 +406,15 @@ extension ReadCollectionViewModelTests {
         }
         
         var mockNewCollection: ReadCollection?
-        func routeToMakeNewCollectionScene(_ completedHandler: @escaping (ReadCollection) -> Void) {
+        func routeToMakeNewCollectionScene(at collectionID: String?,
+                                           _ completedHandler: @escaping (ReadCollection) -> Void) {
             guard let mock = self.mockNewCollection else { return }
             completedHandler(mock)
         }
         
         var mockNewLink: ReadLink?
-        func routeToAddNewLink(at collectionID: String, _ completionHandler: @escaping (ReadLink) -> Void) {
+        func routeToAddNewLink(at collectionID: String?,
+                               _ completionHandler: @escaping (ReadLink) -> Void) {
             guard let mock = self.mockNewLink else { return }
             completionHandler(mock)
         }

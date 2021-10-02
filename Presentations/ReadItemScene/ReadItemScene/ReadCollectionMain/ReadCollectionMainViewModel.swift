@@ -21,7 +21,8 @@ public protocol ReadCollectionMainViewModel: AnyObject {
 
     // interactor
     func setupSubCollections()
-    func showSelectAddItemTypeScene()
+    func addNewCollectionItem()
+    func addNewReadLinkItem()
     
     // presenter
 }
@@ -59,8 +60,12 @@ extension ReadCollectionMainViewModelImple {
         self.router.setupSubCollections()
     }
     
-    public func showSelectAddItemTypeScene() {
-        self.router.showSelectAddItemTypeScene()
+    public func addNewCollectionItem() {
+        self.router.addNewColelctionAtCurrentCollection()
+    }
+    
+    public func addNewReadLinkItem() {
+        self.router.addNewReadLinkItemAtCurrentCollection()
     }
 }
 

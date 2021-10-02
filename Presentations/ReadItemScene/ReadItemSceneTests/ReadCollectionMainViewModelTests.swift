@@ -15,17 +15,18 @@ import ReadItemScene
 
 class ReadCollectionMainViewModelTests: BaseTestCase {
     
-    private var spyRouter: SpyRouter!
+    var didSubCollectionSetuped: Bool = false
+    var didMoveToAddnewCollection: Bool = false
+    var didMoveToAddNewLink: Bool = false
     
     override func tearDownWithError() throws {
-        self.spyRouter = nil
+        self.didSubCollectionSetuped = false
+        self.didMoveToAddnewCollection = false
+        self.didMoveToAddNewLink = false
     }
     
     private func makeViewModel() -> ReadCollectionMainViewModel {
-        
-        let router = SpyRouter()
-        self.spyRouter = router
-        return ReadCollectionMainViewModelImple(router: router)
+        return ReadCollectionMainViewModelImple(router: self)
     }
 }
 
@@ -40,37 +41,46 @@ extension ReadCollectionMainViewModelTests {
         viewModel.setupSubCollections()
         
         // then
-        XCTAssertEqual(self.spyRouter.isSubCollectionSetuped, true)
+        XCTAssertEqual(self.didSubCollectionSetuped, true)
     }
     
-    func testViewModel_requestShowSelectAddItemType() {
+    func testViewModel_requestAddNewCollection() {
         // given
         let viewModel = self.makeViewModel()
         
         // when
-        viewModel.showSelectAddItemTypeScene()
+        viewModel.addNewCollectionItem()
         
         // then
-        XCTAssertEqual(self.spyRouter.isShowSelectAddItemRequested, true)
+        XCTAssertEqual(self.didMoveToAddnewCollection, true)
+    }
+    
+    func testViewModel_requestAddNewReadLinkItem() {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        viewModel.addNewReadLinkItem()
+        
+        // then
+        XCTAssertEqual(self.didMoveToAddNewLink, true)
     }
 }
 
 
-extension ReadCollectionMainViewModelTests {
+extension ReadCollectionMainViewModelTests: ReadCollectionMainRouting {
     
     
-    class SpyRouter: ReadCollectionMainRouting {
-        
-        var isSubCollectionSetuped: Bool = false
-        
-        func setupSubCollections() {
-            self.isSubCollectionSetuped = true
-        }
-        
-        var isShowSelectAddItemRequested = false
-        
-        func showSelectAddItemTypeScene() {
-            self.isShowSelectAddItemRequested = true
-        }
+    
+    func setupSubCollections() {
+        self.didSubCollectionSetuped = true
+    }
+    
+    func addNewColelctionAtCurrentCollection() {
+        self.didMoveToAddnewCollection = true
+    }
+    
+    func addNewReadLinkItemAtCurrentCollection() {
+        self.didMoveToAddNewLink = true
     }
 }

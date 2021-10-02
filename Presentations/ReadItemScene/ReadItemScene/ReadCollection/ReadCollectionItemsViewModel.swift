@@ -39,8 +39,8 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     func reloadCollectionItems()
     func requestChangeOrder()
     func openItem(_ itemID: String)
-    func requestMakeNewCollection()
-    func requestAddNewLink()
+    func addNewCollectionItem()
+    func addNewReadLinkItem()
     
     
     // presenter
@@ -165,24 +165,29 @@ extension ReadCollectionViewItemsModelImple {
         }
     }
     
-    public func requestMakeNewCollection() {
+    public func addNewCollectionItem() {
         
-        let collectionCreated: (ReadCollection) -> Void = { [weak self] newCollection in
-            guard let self = self else { return }
+        let collectionID = self.currentCollectionID
+        
+        let handleNewCollection: (ReadCollection) -> Void = { [weak self] newCollection in
+            guard let self = self, newCollection.parentID == collectionID else { return }
             let newCollections = [newCollection] + (self.subjects.collections.value ?? [])
             self.subjects.collections.accept(newCollections)
         }
-        self.router.routeToMakeNewCollectionScene(collectionCreated)
+        self.router.routeToMakeNewCollectionScene(at: collectionID,
+                                                  handleNewCollection)
     }
     
-    public func requestAddNewLink() {
+    public func addNewReadLinkItem() {
         
-        let linkItemAdded: (ReadLink) -> Void = { [weak self] newLink in
-            guard let self = self else { return }
+        let collectionID = self.currentCollectionID
+        
+        let handleNewLinkItem: (ReadLink) -> Void = { [weak self] newLink in
+            guard let self = self, newLink.parentID == collectionID else { return }
             let newLinks = [newLink] + (self.subjects.links.value ?? [])
             self.subjects.links.accept(newLinks)
         }
-        self.router.routeToAddNewLink(at: self.collectionID, linkItemAdded)
+        self.router.routeToAddNewLink(at: collectionID, handleNewLinkItem)
     }
 }
 
@@ -297,6 +302,14 @@ private extension Array where Element == ReadItemCellViewModel {
 // MARK: - fake viewModel
 
 class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
+    
+    func addNewReadLinkItem() {
+        
+    }
+    
+    func addNewCollectionItem() {
+        
+    }
     
     var currentCollectionID: String? { nil }
     

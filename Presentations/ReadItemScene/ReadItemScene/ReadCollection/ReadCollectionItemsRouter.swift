@@ -28,9 +28,10 @@ public protocol ReadCollectionRouting: Routing {
     
     func showLinkDetail(_ linkID: String)
     
-    func routeToMakeNewCollectionScene(_ completedHandler: @escaping (ReadCollection) -> Void)
+    func routeToMakeNewCollectionScene(at collectionID: String?,
+                                       _ completedHandler: @escaping (ReadCollection) -> Void)
     
-    func routeToAddNewLink(at collectionID: String,
+    func routeToAddNewLink(at collectionID: String?,
                            _ completionHandler: @escaping (ReadLink) -> Void)
 }
 
@@ -57,11 +58,12 @@ extension ReadCollectionItemsRouter {
         logger.todoImplement()
     }
     
-    public func routeToMakeNewCollectionScene(_ completedHandler: @escaping (ReadCollection) -> Void) {
+    public func routeToMakeNewCollectionScene(at collectionID: String?,
+                                              _ completedHandler: @escaping (ReadCollection) -> Void) {
         logger.todoImplement()
     }
     
-    public func routeToAddNewLink(at collectionID: String,
+    public func routeToAddNewLink(at collectionID: String?,
                                   _ completionHandler: @escaping (ReadLink) -> Void) {
         logger.todoImplement()
     }

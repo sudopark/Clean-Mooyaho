@@ -33,9 +33,12 @@ public protocol SelectAddItemTypeViewModel: AnyObject {
 public final class SelectAddItemTypeViewModelImple: SelectAddItemTypeViewModel {
     
     private let router: SelectAddItemTypeRouting
+    private var completed: ((Bool) -> Void)?
     
-    public init(router: SelectAddItemTypeRouting) {
+    public init(router: SelectAddItemTypeRouting,
+                completed: @escaping (Bool) -> Void) {
         self.router = router
+        self.completed = completed
     }
     
     deinit {
@@ -58,13 +61,13 @@ extension SelectAddItemTypeViewModelImple {
     
     public func requestAddNewCollection() {
         self.close { [weak self] in
-            self?.router.showAddNewCollectionScene()
+            self?.completed?(true)
         }
     }
     
     public func requestAddNewReadLink() {
         self.close { [weak self] in
-            self?.router.showAddNewReadLinkScene()
+            self?.completed?(false)
         }
     }
     

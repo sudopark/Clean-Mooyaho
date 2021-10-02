@@ -15,7 +15,9 @@ import Domain
 
 public protocol ReadCollectionMainSceneInput: AnyObject {
     
-    func showSelectAddItemTypeScene()
+    func addNewCollectionItem()
+    
+    func addNewReadLinkItem()
 }
 
 public protocol ReadCollectionMainSceneOutput { }
@@ -35,7 +37,12 @@ public protocol ReadCollectionMainScene: Scenable {
 
 // MARK: - ReadCollectionScene Input & Output
 
-public protocol ReadCollectionItemsSceneInput { }
+public protocol ReadCollectionItemsSceneInput {
+    
+    func addNewCollectionItem()
+    
+    func addNewReadLinkItem()
+}
 
 public protocol ReadCollectionItemsSceneOutput { }
 
@@ -43,8 +50,6 @@ public protocol ReadCollectionItemsSceneOutput { }
 // MARK: - ReadCollectionScene
 
 public protocol ReadCollectionScene: Scenable {
-    
-    var currentCollectionID: String? { get }
     
     var input: ReadCollectionItemsSceneInput? { get }
 
