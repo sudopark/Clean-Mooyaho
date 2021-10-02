@@ -45,7 +45,7 @@ jobs:
           -scheme Mooyaho\ iOS \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -73,12 +73,12 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: AddItem Scenes Unit Tests
-        id: test_additem_scenes
+      - name: EditReadItem Scenes Unit Tests
+        id: test_edit_read_item_scenes
         run: |
           xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme AddItemScene \
+          -scheme EditReadItemScene \
           -destination "${destination}" \
           -configuration Debug \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
@@ -138,8 +138,8 @@ jobs:
         run: |
           echo "Tests Failed"; exit 1
 
-      - name: Check Tests AddItem Scenes
-        if: steps.test_additem_scenes.outputs.result != 0
+      - name: Check Tests EditReadItem Scenes
+        if: steps.test_edit_read_item_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       

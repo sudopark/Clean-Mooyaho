@@ -11,11 +11,9 @@
 		F6BBF15327083F5A00420A49 /* SelectAddItemTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */; };
 		F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */; };
 		F6BBF15527083F5A00420A49 /* SelectAddItemTypeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15027083F5A00420A49 /* SelectAddItemTypeRouter.swift */; };
-		F6BBF15627083F5A00420A49 /* SelectAddItemTypeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15127083F5A00420A49 /* SelectAddItemTypeBuilder.swift */; };
 		F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */; };
 		F6BBF15F27083FF900420A49 /* AddItemNavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15A27083FF900420A49 /* AddItemNavigationRouter.swift */; };
 		F6BBF16027083FF900420A49 /* AddItemNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15B27083FF900420A49 /* AddItemNavigationViewController.swift */; };
-		F6BBF16127083FF900420A49 /* AddItemNavigationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15C27083FF900420A49 /* AddItemNavigationBuilder.swift */; };
 		F6BBF16227083FF900420A49 /* AddItemNavigationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15D27083FF900420A49 /* AddItemNavigationScene.swift */; };
 		F6BBF16327083FF900420A49 /* AddItemNavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF15E27083FF900420A49 /* AddItemNavigationViewModel.swift */; };
 		F6BBF16E2708422F00420A49 /* EnterLinkURLRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1692708422F00420A49 /* EnterLinkURLRouter.swift */; };
@@ -25,8 +23,7 @@
 		F6BBF1722708422F00420A49 /* EnterLinkURLViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF16D2708422F00420A49 /* EnterLinkURLViewModel.swift */; };
 		F6BBF17427084A0C00420A49 /* AddItemNavigationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17327084A0C00420A49 /* AddItemNavigationViewModelTests.swift */; };
 		F6D8DDEC27083DA200B4D817 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */; };
-		F6D8DDF127083DA200B4D817 /* AddItemSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8DDF027083DA200B4D817 /* AddItemSceneTests.swift */; };
-		F6D8DDF227083DA200B4D817 /* AddItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D8DDE627083DA200B4D817 /* AddItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6D8DDF227083DA200B4D817 /* EditReadItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6D8DDFD27083DCD00B4D817 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDFC27083DCD00B4D817 /* Domain.framework */; };
 		F6D8DE0127083DE200B4D817 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DE0027083DE200B4D817 /* CommonPresenting.framework */; };
 		F6D8DE0527083E0300B4D817 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DE0427083E0300B4D817 /* Common3rdParty.framework */; };
@@ -50,11 +47,9 @@
 		F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewController.swift; sourceTree = "<group>"; };
 		F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModel.swift; sourceTree = "<group>"; };
 		F6BBF15027083F5A00420A49 /* SelectAddItemTypeRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeRouter.swift; sourceTree = "<group>"; };
-		F6BBF15127083F5A00420A49 /* SelectAddItemTypeBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeBuilder.swift; sourceTree = "<group>"; };
 		F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModelTests.swift; sourceTree = "<group>"; };
 		F6BBF15A27083FF900420A49 /* AddItemNavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationRouter.swift; sourceTree = "<group>"; };
 		F6BBF15B27083FF900420A49 /* AddItemNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationViewController.swift; sourceTree = "<group>"; };
-		F6BBF15C27083FF900420A49 /* AddItemNavigationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationBuilder.swift; sourceTree = "<group>"; };
 		F6BBF15D27083FF900420A49 /* AddItemNavigationScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationScene.swift; sourceTree = "<group>"; };
 		F6BBF15E27083FF900420A49 /* AddItemNavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationViewModel.swift; sourceTree = "<group>"; };
 		F6BBF1692708422F00420A49 /* EnterLinkURLRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLRouter.swift; sourceTree = "<group>"; };
@@ -64,9 +59,8 @@
 		F6BBF16D2708422F00420A49 /* EnterLinkURLViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLViewModel.swift; sourceTree = "<group>"; };
 		F6BBF17327084A0C00420A49 /* AddItemNavigationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationViewModelTests.swift; sourceTree = "<group>"; };
 		F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EditReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6D8DDE627083DA200B4D817 /* AddItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddItemScene.h; sourceTree = "<group>"; };
+		F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditReadItemScene.h; sourceTree = "<group>"; };
 		F6D8DDEB27083DA200B4D817 /* EditReadItemSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EditReadItemSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6D8DDF027083DA200B4D817 /* AddItemSceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemSceneTests.swift; sourceTree = "<group>"; };
 		F6D8DDFC27083DCD00B4D817 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DE0027083DE200B4D817 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DE0427083E0300B4D817 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,7 +97,6 @@
 		F6BBF14C27083F2B00420A49 /* SelecAddItemType */ = {
 			isa = PBXGroup;
 			children = (
-				F6BBF15127083F5A00420A49 /* SelectAddItemTypeBuilder.swift */,
 				F6BBF15027083F5A00420A49 /* SelectAddItemTypeRouter.swift */,
 				F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */,
 				F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */,
@@ -117,7 +110,6 @@
 			children = (
 				F6BBF15A27083FF900420A49 /* AddItemNavigationRouter.swift */,
 				F6BBF15B27083FF900420A49 /* AddItemNavigationViewController.swift */,
-				F6BBF15C27083FF900420A49 /* AddItemNavigationBuilder.swift */,
 				F6BBF15D27083FF900420A49 /* AddItemNavigationScene.swift */,
 				F6BBF15E27083FF900420A49 /* AddItemNavigationViewModel.swift */,
 			);
@@ -177,7 +169,7 @@
 				F6BBF16427083FFD00420A49 /* EnterLinkURL */,
 				F6BBF1652708401D00420A49 /* EditCollection */,
 				F6BBF1662708403C00420A49 /* EditLinkItem */,
-				F6D8DDE627083DA200B4D817 /* AddItemScene.h */,
+				F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */,
 			);
 			path = EditReadItemScene;
 			sourceTree = "<group>";
@@ -186,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */,
-				F6D8DDF027083DA200B4D817 /* AddItemSceneTests.swift */,
 				F6BBF17327084A0C00420A49 /* AddItemNavigationViewModelTests.swift */,
 			);
 			path = EditReadItemSceneTests;
@@ -212,7 +203,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6D8DDF227083DA200B4D817 /* AddItemScene.h in Headers */,
+				F6D8DDF227083DA200B4D817 /* EditReadItemScene.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,7 +306,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6BBF16127083FF900420A49 /* AddItemNavigationBuilder.swift in Sources */,
 				F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */,
 				F6BBF16327083FF900420A49 /* AddItemNavigationViewModel.swift in Sources */,
 				F6BBF15F27083FF900420A49 /* AddItemNavigationRouter.swift in Sources */,
@@ -327,7 +317,6 @@
 				F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */,
 				F6BBF15527083F5A00420A49 /* SelectAddItemTypeRouter.swift in Sources */,
 				F6BBF16027083FF900420A49 /* AddItemNavigationViewController.swift in Sources */,
-				F6BBF15627083F5A00420A49 /* SelectAddItemTypeBuilder.swift in Sources */,
 				F6BBF16F2708422F00420A49 /* EnterLinkURLViewController.swift in Sources */,
 				F6BBF16E2708422F00420A49 /* EnterLinkURLRouter.swift in Sources */,
 			);
@@ -338,7 +327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6BBF17427084A0C00420A49 /* AddItemNavigationViewModelTests.swift in Sources */,
-				F6D8DDF127083DA200B4D817 /* AddItemSceneTests.swift in Sources */,
 				F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,7 +484,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.AddItemScene;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.EditReadItemScene;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -526,7 +514,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.AddItemScene;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.EditReadItemScene;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -549,7 +537,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.AddItemSceneTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.EditReadItemSceneTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -571,7 +559,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.AddItemSceneTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.EditReadItemSceneTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;

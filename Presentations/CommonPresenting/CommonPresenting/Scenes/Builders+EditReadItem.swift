@@ -1,23 +1,24 @@
 //
-//  
-//  AddItemNavigationBuilder.swift
-//  AddItemScene
+//  Builders+EditReadItem.swift
+//  CommonPresenting
 //
 //  Created by sudo.park on 2021/10/02.
 //
-//  AddItemScene
-//
-//  Created sudo.park on 2021/10/02.
-//  Copyright © 2021 ___ORGANIZATIONNAME___. All rights reserved.
-//
 
-import UIKit
+import Foundation
 
 import Domain
-import CommonPresenting
 
 
 // MARK: - Builder + DependencyInjector Extension
+
+public protocol SelectAddItemTypeSceneBuilable {
+    
+    func makeSelectAddItemTypeScene(_ completed: @escaping (Bool) -> Void) -> SelectAddItemTypeScene
+}
+
+
+// MARK: - AddItemNavigationSceneBuilable
 
 public protocol AddItemNavigationSceneBuilable {
     

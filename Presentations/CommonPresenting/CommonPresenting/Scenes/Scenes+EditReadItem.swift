@@ -19,7 +19,7 @@ public protocol AddItemNavigationSceneOutput { }
 
 // MARK: - AddItemNavigationScene
 
-public protocol AddItemNavigationScene: Scenable {
+public protocol AddItemNavigationScene: Scenable, PangestureDismissableScene {
     
     var input: AddItemNavigationSceneInput? { get }
 

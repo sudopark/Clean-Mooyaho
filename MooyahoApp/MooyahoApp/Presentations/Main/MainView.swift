@@ -103,7 +103,6 @@ final class FloatingButtonButtonView: BaseUIView, Presenting {
         self.layer.shadowColor = UIColor.black.withAlphaComponent(0.4).cgColor
         self.layer.shadowRadius = 15
         self.layer.shadowOpacity = 0.9
-        self.layer.shadowOffset = .init(width: 0, height: 1)
         
         self.roundView.layer.cornerRadius = 15
         self.roundView.clipsToBounds = true
