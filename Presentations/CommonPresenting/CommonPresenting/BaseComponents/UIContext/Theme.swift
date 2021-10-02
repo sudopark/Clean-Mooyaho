@@ -10,8 +10,9 @@ import UIKit
 
 public protocol ColorSet {
     
-    var appBackground: UIColor { get }
+    var accentColor: UIColor { get }
     
+    var appBackground: UIColor { get }
     var appSecondBackground: UIColor { get }
     
     var title: UIColor { get }
@@ -53,6 +54,8 @@ public protocol Theme {
 // default set
 
 public struct DefaultColorSet: ColorSet {
+    
+    public var accentColor: UIColor { .systemIndigo }
     
     public var appBackground: UIColor { .white }
     

@@ -44,3 +44,19 @@ public protocol EnterLinkURLScene: Scenable {
 
     var output: EnterLinkURLSceneOutput? { get }
 }
+
+// MARK: - EditLinkItemScene Input & Output
+
+public protocol EditLinkItemSceneInput { }
+
+public protocol EditLinkItemSceneOutput { }
+
+
+// MARK: - EditLinkItemScene
+
+public protocol EditLinkItemScene: Scenable {
+    
+    var input: EditLinkItemSceneInput? { get }
+
+    var output: EditLinkItemSceneOutput? { get }
+}
