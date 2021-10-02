@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2B39E25926387B6A003EE954 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */; };
-		2B39E25E26387B6A003EE954 /* CommonPresentingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */; };
 		2B39E26026387B6A003EE954 /* CommonPresenting.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B39E25226387B6A003EE954 /* CommonPresenting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2B39E27A26387BCB003EE954 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27526387BCB003EE954 /* Routable.swift */; };
 		2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39E27626387BCB003EE954 /* Sceneable.swift */; };
@@ -109,7 +108,6 @@
 		2B39E25226387B6A003EE954 /* CommonPresenting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonPresenting.h; sourceTree = "<group>"; };
 		2B39E25326387B6A003EE954 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B39E25826387B6A003EE954 /* CommonPresentingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommonPresentingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonPresentingTests.swift; sourceTree = "<group>"; };
 		2B39E25F26387B6A003EE954 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B39E27526387BCB003EE954 /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		2B39E27626387BCB003EE954 /* Sceneable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sceneable.swift; sourceTree = "<group>"; };
@@ -258,7 +256,6 @@
 		2B39E25C26387B6A003EE954 /* CommonPresentingTests */ = {
 			isa = PBXGroup;
 			children = (
-				2B39E25D26387B6A003EE954 /* CommonPresentingTests.swift */,
 				2B39E25F26387B6A003EE954 /* Info.plist */,
 				F610146E2657122300D32E38 /* AutoLayoutTests.swift */,
 				F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */,
@@ -649,7 +646,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */,
-				2B39E25E26387B6A003EE954 /* CommonPresentingTests.swift in Sources */,
 				F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

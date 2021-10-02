@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F64EE40A26F5219200CFA357 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE40026F5219200CFA357 /* ReadItemScene.framework */; };
-		F64EE40F26F5219200CFA357 /* ReadItemSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64EE40E26F5219200CFA357 /* ReadItemSceneTests.swift */; };
 		F64EE41126F5219200CFA357 /* ReadItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F64EE40326F5219200CFA357 /* ReadItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F64EE41C26F521D700CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE41B26F521D700CFA357 /* Common3rdParty.framework */; };
 		F64EE42026F521DB00CFA357 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE41F26F521DB00CFA357 /* CommonPresenting.framework */; };
@@ -54,7 +53,6 @@
 		F64EE40326F5219200CFA357 /* ReadItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadItemScene.h; sourceTree = "<group>"; };
 		F64EE40426F5219200CFA357 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F64EE40926F5219200CFA357 /* ReadItemSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadItemSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F64EE40E26F5219200CFA357 /* ReadItemSceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemSceneTests.swift; sourceTree = "<group>"; };
 		F64EE41026F5219200CFA357 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F64EE41B26F521D700CFA357 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE41F26F521DB00CFA357 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,7 +142,6 @@
 		F64EE40D26F5219200CFA357 /* ReadItemSceneTests */ = {
 			isa = PBXGroup;
 			children = (
-				F64EE40E26F5219200CFA357 /* ReadItemSceneTests.swift */,
 				F64EE41026F5219200CFA357 /* Info.plist */,
 				F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */,
 				F6AED26E2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift */,
@@ -349,7 +346,6 @@
 				F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */,
 				F68B671A2707F877004A255A /* ReadCollectionMainViewModelTests.swift in Sources */,
 				F6AED26F2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift in Sources */,
-				F64EE40F26F5219200CFA357 /* ReadItemSceneTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
