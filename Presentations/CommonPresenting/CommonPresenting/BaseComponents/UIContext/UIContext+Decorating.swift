@@ -36,6 +36,15 @@ extension UIContext.Decorating {
     }
     
     @discardableResult
+    public static func smallHeader(_ label: UILabel) -> UILabel {
+        return label
+            |> \.font .~ self.uiContext.fonts.get(18, weight: .bold)
+            |> \.textColor .~ self.uiContext.colors.title
+            |> \.numberOfLines .~ 1
+    }
+    
+    
+    @discardableResult
     public static func listSectionTitle(_ label: UILabel) -> UILabel {
         return label
             |> \.font .~ self.uiContext.fonts.get(13, weight: .bold)

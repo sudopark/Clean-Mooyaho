@@ -68,9 +68,9 @@ extension MainViewModelTests {
 
 extension MainViewModelTests {
     
-    func testViewModel_addCollectionSceneAsSubScene() {
+    func testViewModel_addCollectionMainSceneAsSubScene() {
         // given
-        let expect = expectation(description: "collection 화면 서브신으로 추가")
+        let expect = expectation(description: "collection main 화면 서브신으로 추가")
         
         self.spyRouter.called(key: "addReadCollectionScene") { _ in
             expect.fulfill()
@@ -82,6 +82,22 @@ extension MainViewModelTests {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testViewModel_whenAddNewItemCalled_sendMessageToReadCollectionMainSceneInput() {
+        // given
+        let expect = expectation(description: "아이템 추가 요청시에 read collection main input으로 요청")
+        self.spyRouter.spyCollectionMainSceneInput = .init()
+        self.spyRouter.spyCollectionMainSceneInput?.didSelectAddItemType = {
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.setupSubScenes()
+        self.viewModel.requestAddNewItem()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 
@@ -89,13 +105,16 @@ extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Mocking {
         
+        var spyCollectionMainSceneInput: SpyReadCollectionMainInput?
+        
         func presentSignInScene() -> SignInScenePresenter? {
             self.verify(key: "presentSignInScene")
             return nil
         }
         
-        func addReadCollectionScene() {
+        func addReadCollectionScene() -> ReadCollectionMainSceneInput? {
             self.verify(key: "addReadCollectionScene")
+            return spyCollectionMainSceneInput
         }
         
         func addSuggestPlaceScene() {
@@ -128,6 +147,15 @@ extension MainViewModelTests {
         
         func moveMapCameraToCurrentUserPosition() {
             self.verify(key: "moveMapCameraToCurrentUserPosition")
+        }
+    }
+    
+    class SpyReadCollectionMainInput: ReadCollectionMainSceneInput  {
+        
+        var didSelectAddItemType: (() -> Void)?
+        
+        func showSelectAddItemTypeScene() {
+            self.didSelectAddItemType?()
         }
     }
 }

@@ -22,6 +22,8 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
     typealias Section = SectionModel<String, CVM>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
+    public var currentCollectionID: String? { self.viewModel.currentCollectionID }
+    
     private var dataSource: DataSource!
     let viewModel: ReadCollectionItemsViewModel
     

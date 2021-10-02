@@ -32,6 +32,8 @@ public struct ReadCollectionItemSection {
 // MARK: - ReadCollectionViewModel
 
 public protocol ReadCollectionItemsViewModel: AnyObject {
+    
+    var currentCollectionID: String? { get }
 
     // interactor
     func reloadCollectionItems()
@@ -53,14 +55,14 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
 
 public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewModel {
     
-    private let selectedCollectionID: String?
+    public let currentCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
     private let router: ReadCollectionRouting
     
     public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 router: ReadCollectionRouting) {
-        self.selectedCollectionID = collectionID
+        self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
         self.router = router
         
@@ -68,7 +70,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     }
     
     private var collectionID: String {
-        return self.selectedCollectionID ?? ReadCollection.rootID
+        return self.currentCollectionID ?? ReadCollection.rootID
     }
     
     deinit {
@@ -190,7 +192,7 @@ extension ReadCollectionViewItemsModelImple {
 extension ReadCollectionViewItemsModelImple {
     
     public var collectionTitle: Observable<String> {
-        let isRootCollection = self.selectedCollectionID == nil
+        let isRootCollection = self.currentCollectionID == nil
         return isRootCollection
             ? .just("My Read Collections".localized)
             : self.subjects.currentCollection.compactMap { $0?.name }
@@ -295,6 +297,8 @@ private extension Array where Element == ReadItemCellViewModel {
 // MARK: - fake viewModel
 
 class FakeReadCollectionViewItemsModel: ReadCollectionItemsViewModel {
+    
+    var currentCollectionID: String? { nil }
     
     func reloadCollectionItems() { }
     

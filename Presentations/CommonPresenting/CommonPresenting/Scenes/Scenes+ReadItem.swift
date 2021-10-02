@@ -11,6 +11,25 @@ import RxSwift
 
 import Domain
 
+// MARK: - ReadCollectionMainScene Input & Output
+
+public protocol ReadCollectionMainSceneInput: AnyObject {
+    
+    func showSelectAddItemTypeScene()
+}
+
+public protocol ReadCollectionMainSceneOutput { }
+
+
+// MARK: - ReadCollectionMainScene
+
+public protocol ReadCollectionMainScene: Scenable {
+    
+    var input: ReadCollectionMainSceneInput? { get }
+
+    var output: ReadCollectionMainSceneOutput? { get }
+}
+
 
 // MARK: - ReadCollectionScene
 
@@ -24,6 +43,8 @@ public protocol ReadCollectionItemsSceneOutput { }
 // MARK: - ReadCollectionScene
 
 public protocol ReadCollectionScene: Scenable {
+    
+    var currentCollectionID: String? { get }
     
     var input: ReadCollectionItemsSceneInput? { get }
 
@@ -45,4 +66,21 @@ public protocol AddReadLinkScene: Scenable {
     var input: AddReadLinkSceneInput? { get }
 
     var output: AddReadLinkSceneOutput? { get }
+}
+
+
+// MARK: - SelectAddItemTypeScene Input & Output
+
+public protocol SelectAddItemTypeSceneInput { }
+
+public protocol SelectAddItemTypeSceneOutput { }
+
+
+// MARK: - SelectAddItemTypeScene
+
+public protocol SelectAddItemTypeScene: Scenable, PangestureDismissableScene {
+    
+    var input: SelectAddItemTypeSceneInput? { get }
+
+    var output: SelectAddItemTypeSceneOutput? { get }
 }

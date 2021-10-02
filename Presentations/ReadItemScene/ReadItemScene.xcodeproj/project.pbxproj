@@ -17,6 +17,18 @@
 		F64EE42826F521FA00CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE42726F521FA00CFA357 /* Common3rdParty.framework */; };
 		F64EE42A26F5220200CFA357 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */; };
 		F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64B26FB667400E866B7 /* ReadItemCells.swift */; };
+		F68B67032707DEF7004A255A /* SelectAddItemTypeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B66FE2707DEF7004A255A /* SelectAddItemTypeRouter.swift */; };
+		F68B67042707DEF7004A255A /* SelectAddItemTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B66FF2707DEF7004A255A /* SelectAddItemTypeViewController.swift */; };
+		F68B67052707DEF7004A255A /* SelectAddItemTypeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67002707DEF7004A255A /* SelectAddItemTypeBuilder.swift */; };
+		F68B67062707DEF7004A255A /* SelectAddItemTypeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67012707DEF7004A255A /* SelectAddItemTypeScene.swift */; };
+		F68B67072707DEF7004A255A /* SelectAddItemTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67022707DEF7004A255A /* SelectAddItemTypeViewModel.swift */; };
+		F68B67142707F0EE004A255A /* ReadCollectionMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B670F2707F0EE004A255A /* ReadCollectionMainRouter.swift */; };
+		F68B67152707F0EE004A255A /* ReadCollectionMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67102707F0EE004A255A /* ReadCollectionMainViewController.swift */; };
+		F68B67162707F0EE004A255A /* ReadCollectionMainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67112707F0EE004A255A /* ReadCollectionMainBuilder.swift */; };
+		F68B67172707F0EE004A255A /* ReadCollectionMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67122707F0EE004A255A /* ReadCollectionMainScene.swift */; };
+		F68B67182707F0EE004A255A /* ReadCollectionMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67132707F0EE004A255A /* ReadCollectionMainViewModel.swift */; };
+		F68B671A2707F877004A255A /* ReadCollectionMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67192707F877004A255A /* ReadCollectionMainViewModelTests.swift */; };
+		F68B671C2707F9AD004A255A /* SelectAddItemTypeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B671B2707F9AD004A255A /* SelectAddItemTypeViewModelTests.swift */; };
 		F6AED2692700B13500A1DCCC /* AddReadLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2642700B13500A1DCCC /* AddReadLinkRouter.swift */; };
 		F6AED26A2700B13500A1DCCC /* AddReadLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2652700B13500A1DCCC /* AddReadLinkViewController.swift */; };
 		F6AED26B2700B13500A1DCCC /* AddReadLinkBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2662700B13500A1DCCC /* AddReadLinkBuilder.swift */; };
@@ -57,6 +69,18 @@
 		F64EE42726F521FA00CFA357 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F665A64B26FB667400E866B7 /* ReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCells.swift; sourceTree = "<group>"; };
+		F68B66FE2707DEF7004A255A /* SelectAddItemTypeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeRouter.swift; sourceTree = "<group>"; };
+		F68B66FF2707DEF7004A255A /* SelectAddItemTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewController.swift; sourceTree = "<group>"; };
+		F68B67002707DEF7004A255A /* SelectAddItemTypeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeBuilder.swift; sourceTree = "<group>"; };
+		F68B67012707DEF7004A255A /* SelectAddItemTypeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeScene.swift; sourceTree = "<group>"; };
+		F68B67022707DEF7004A255A /* SelectAddItemTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModel.swift; sourceTree = "<group>"; };
+		F68B670F2707F0EE004A255A /* ReadCollectionMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainRouter.swift; sourceTree = "<group>"; };
+		F68B67102707F0EE004A255A /* ReadCollectionMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainViewController.swift; sourceTree = "<group>"; };
+		F68B67112707F0EE004A255A /* ReadCollectionMainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainBuilder.swift; sourceTree = "<group>"; };
+		F68B67122707F0EE004A255A /* ReadCollectionMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainScene.swift; sourceTree = "<group>"; };
+		F68B67132707F0EE004A255A /* ReadCollectionMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainViewModel.swift; sourceTree = "<group>"; };
+		F68B67192707F877004A255A /* ReadCollectionMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainViewModelTests.swift; sourceTree = "<group>"; };
+		F68B671B2707F9AD004A255A /* SelectAddItemTypeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModelTests.swift; sourceTree = "<group>"; };
 		F6AED2642700B13500A1DCCC /* AddReadLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkRouter.swift; sourceTree = "<group>"; };
 		F6AED2652700B13500A1DCCC /* AddReadLinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkViewController.swift; sourceTree = "<group>"; };
 		F6AED2662700B13500A1DCCC /* AddReadLinkBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReadLinkBuilder.swift; sourceTree = "<group>"; };
@@ -120,8 +144,10 @@
 		F64EE40226F5219200CFA357 /* ReadItemScene */ = {
 			isa = PBXGroup;
 			children = (
-				F6AED2632700B11400A1DCCC /* AddReadLink */,
+				F68B670E2707F0A9004A255A /* ReadCollectionMain */,
 				F6E279B726F6E6B800957AC4 /* ReadCollection */,
+				F68B66FD2707DEDF004A255A /* SelecAddItemType */,
+				F6AED2632700B11400A1DCCC /* AddReadLink */,
 				F64EE40326F5219200CFA357 /* ReadItemScene.h */,
 				F64EE40426F5219200CFA357 /* Info.plist */,
 			);
@@ -135,6 +161,8 @@
 				F64EE41026F5219200CFA357 /* Info.plist */,
 				F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */,
 				F6AED26E2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift */,
+				F68B67192707F877004A255A /* ReadCollectionMainViewModelTests.swift */,
+				F68B671B2707F9AD004A255A /* SelectAddItemTypeViewModelTests.swift */,
 			);
 			path = ReadItemSceneTests;
 			sourceTree = "<group>";
@@ -159,6 +187,30 @@
 				F665A64B26FB667400E866B7 /* ReadItemCells.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F68B66FD2707DEDF004A255A /* SelecAddItemType */ = {
+			isa = PBXGroup;
+			children = (
+				F68B66FE2707DEF7004A255A /* SelectAddItemTypeRouter.swift */,
+				F68B66FF2707DEF7004A255A /* SelectAddItemTypeViewController.swift */,
+				F68B67002707DEF7004A255A /* SelectAddItemTypeBuilder.swift */,
+				F68B67012707DEF7004A255A /* SelectAddItemTypeScene.swift */,
+				F68B67022707DEF7004A255A /* SelectAddItemTypeViewModel.swift */,
+			);
+			path = SelecAddItemType;
+			sourceTree = "<group>";
+		};
+		F68B670E2707F0A9004A255A /* ReadCollectionMain */ = {
+			isa = PBXGroup;
+			children = (
+				F68B670F2707F0EE004A255A /* ReadCollectionMainRouter.swift */,
+				F68B67102707F0EE004A255A /* ReadCollectionMainViewController.swift */,
+				F68B67112707F0EE004A255A /* ReadCollectionMainBuilder.swift */,
+				F68B67122707F0EE004A255A /* ReadCollectionMainScene.swift */,
+				F68B67132707F0EE004A255A /* ReadCollectionMainViewModel.swift */,
+			);
+			path = ReadCollectionMain;
 			sourceTree = "<group>";
 		};
 		F6AED2632700B11400A1DCCC /* AddReadLink */ = {
@@ -296,13 +348,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6AED2692700B13500A1DCCC /* AddReadLinkRouter.swift in Sources */,
+				F68B67152707F0EE004A255A /* ReadCollectionMainViewController.swift in Sources */,
+				F68B67182707F0EE004A255A /* ReadCollectionMainViewModel.swift in Sources */,
+				F68B67062707DEF7004A255A /* SelectAddItemTypeScene.swift in Sources */,
+				F68B67172707F0EE004A255A /* ReadCollectionMainScene.swift in Sources */,
 				F6E279BF26F6E71700957AC4 /* ReadCollectionItemsBuilder.swift in Sources */,
 				F6AED26D2700B13500A1DCCC /* AddReadLinkViewModel.swift in Sources */,
 				F6E279C126F6E71700957AC4 /* ReadCollectionItemsViewModel.swift in Sources */,
+				F68B67042707DEF7004A255A /* SelectAddItemTypeViewController.swift in Sources */,
 				F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */,
 				F6AED26B2700B13500A1DCCC /* AddReadLinkBuilder.swift in Sources */,
+				F68B67072707DEF7004A255A /* SelectAddItemTypeViewModel.swift in Sources */,
 				F6E279BE26F6E71700957AC4 /* ReadCollectionItemsViewController.swift in Sources */,
+				F68B67142707F0EE004A255A /* ReadCollectionMainRouter.swift in Sources */,
+				F68B67032707DEF7004A255A /* SelectAddItemTypeRouter.swift in Sources */,
+				F68B67162707F0EE004A255A /* ReadCollectionMainBuilder.swift in Sources */,
 				F6AED26C2700B13500A1DCCC /* AddReadLinkScene.swift in Sources */,
+				F68B67052707DEF7004A255A /* SelectAddItemTypeBuilder.swift in Sources */,
 				F6E279C026F6E71700957AC4 /* ReadCollectionItemsScene.swift in Sources */,
 				F6AED26A2700B13500A1DCCC /* AddReadLinkViewController.swift in Sources */,
 				F6E279BD26F6E71700957AC4 /* ReadCollectionItemsRouter.swift in Sources */,
@@ -316,6 +378,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */,
+				F68B671C2707F9AD004A255A /* SelectAddItemTypeViewModelTests.swift in Sources */,
+				F68B671A2707F877004A255A /* ReadCollectionMainViewModelTests.swift in Sources */,
 				F6AED26F2700B1E900A1DCCC /* AddReadLinkViewModelTests.swift in Sources */,
 				F64EE40F26F5219200CFA357 /* ReadItemSceneTests.swift in Sources */,
 			);
