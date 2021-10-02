@@ -73,6 +73,18 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
+      - name: AddItem Scenes Unit Tests
+        id: test_additem_scenes
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme AddItemScene \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        env: 
+          destination: ${{ matrix.destination }}
+
 
       - name: Domain Unit Tests
         id: test_domain
@@ -123,6 +135,11 @@ jobs:
 
       - name: Check Tests ReadItem Scenes
         if: steps.test_reads_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests AddItem Scenes
+        if: steps.test_additem_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       
