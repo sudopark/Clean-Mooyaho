@@ -152,3 +152,18 @@ extension DependencyInjector: SelectAddItemTypeSceneBuilable {
         return viewController
     }
 }
+
+
+// MARK: - AddItemScene
+
+extension DependencyInjector: AddItemNavigationSceneBuilable {
+    
+    public func makeAddItemNavigationScene() -> AddItemNavigationScene {
+        let router = AddItemNavigationRouter(nextSceneBuilders: self)
+        let viewModel = AddItemNavigationViewModelImple(router: router)
+        let viewController = AddItemNavigationViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+

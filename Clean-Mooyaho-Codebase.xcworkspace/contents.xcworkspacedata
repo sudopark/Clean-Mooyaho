@@ -17,7 +17,7 @@
          location = "group:Presentations/ReadItemScene/ReadItemScene.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Presentations/AddItemScene/AddItemScene.xcodeproj">
+         location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/Presentations/AddItemScene/EditReadItemScene.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/Presentations/LocationScenes/MapScenes.xcodeproj">
