@@ -15,17 +15,20 @@ import ReadItemScene
 
 class SelectAddItemTypeViewModelTests: BaseTestCase {
     
-    var didMoveAddNewCollection: (() -> Void)?
-    var didMoveAddNewReadLinkItem: (() -> Void)?
+    var didSelectCollectionOrLink: ((Bool) -> Void)?
     
     override func tearDownWithError() throws {
-        self.didMoveAddNewCollection = nil
-        self.didMoveAddNewReadLinkItem = nil
+        self.didSelectCollectionOrLink = nil
     }
     
     private func makeViewModel() -> SelectAddItemTypeViewModel {
         
-        return SelectAddItemTypeViewModelImple(router: self)
+        let selected: (Bool) -> Void = {
+            self.didSelectCollectionOrLink?($0)
+        }
+        
+        return SelectAddItemTypeViewModelImple(router: self,
+                                               completed: selected)
     }
 }
 
@@ -35,28 +38,38 @@ extension SelectAddItemTypeViewModelTests {
         // given
         let expect = expectation(description: "새 콜렉션 추가 화면으로 이동")
         let viewModel = self.makeViewModel()
+        var isCollectionSelected: Bool?
         
-        self.didMoveAddNewCollection = { expect.fulfill() }
+        self.didSelectCollectionOrLink = {
+            isCollectionSelected = $0
+            expect.fulfill()
+        }
         
         // when
         viewModel.requestAddNewCollection()
+        self.wait(for: [expect], timeout: self.timeout)
         
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertEqual(isCollectionSelected, true)
     }
     
     func testViewModel_selectAddnewReadLinkItem() {
         // given
         let expect = expectation(description: "새 리드 아이템 추가 화면으로 이동")
         let viewModel = self.makeViewModel()
+        var isCollectionSelected: Bool?
         
-        self.didMoveAddNewReadLinkItem = { expect.fulfill() }
+        self.didSelectCollectionOrLink = {
+            isCollectionSelected = $0
+            expect.fulfill()
+        }
         
         // when
         viewModel.requestAddNewReadLink()
+        self.wait(for: [expect], timeout: self.timeout)
         
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertEqual(isCollectionSelected, false)
     }
 }
 
@@ -65,13 +78,5 @@ extension SelectAddItemTypeViewModelTests: SelectAddItemTypeRouting {
     
     func closeScene(animated: Bool, completed: (() -> Void)?) {
         completed?()
-    }
-    
-    func showAddNewCollectionScene() {
-        self.didMoveAddNewCollection?()
-    }
-    
-    func showAddNewReadLinkScene() {
-        self.didMoveAddNewReadLinkItem?()
     }
 }

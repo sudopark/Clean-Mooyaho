@@ -22,19 +22,17 @@ public protocol ReadCollectionMainRouting: Routing {
     
     func setupSubCollections()
     
-    func showSelectAddItemTypeScene()
+    func addNewColelctionAtCurrentCollection()
+    
+    func addNewReadLinkItemAtCurrentCollection()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
 public typealias ReadCollectionMainRouterBuildables = ReadCollectionItemSceneBuilable
-    & SelectAddItemTypeSceneBuilable
 
-public final class ReadCollectionMainRouter: Router<ReadCollectionMainRouterBuildables>, ReadCollectionMainRouting {
-    
-    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
-}
+public final class ReadCollectionMainRouter: Router<ReadCollectionMainRouterBuildables>, ReadCollectionMainRouting  { }
 
 
 extension ReadCollectionMainRouter {
@@ -49,16 +47,21 @@ extension ReadCollectionMainRouter {
         current.pushViewController(nextScene, animated: false)
     }
     
-    public func showSelectAddItemTypeScene() {
-        
-        guard let next = self.nextScenesBuilder?.makeSelectAddItemTypeScene() else { return }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+    public func addNewColelctionAtCurrentCollection() {
+        guard let currentCollection = self.findCurrentCollectionScene() else { return }
+        currentCollection.input?.addNewCollectionItem()
     }
     
-    private func getCurrentPresentingCollectionID() -> String? {
-        return nil
+    public func addNewReadLinkItemAtCurrentCollection() {
+        guard let currentCollection = self.findCurrentCollectionScene() else { return }
+        currentCollection.input?.addNewReadLinkItem()
+    }
+    
+    private func findCurrentCollectionScene() -> ReadCollectionScene? {
+        guard let childViewControllers = (self.currentScene as? BaseNavigationController)?.viewControllers else {
+            return nil
+        }
+        let collectionScenes = childViewControllers.compactMap { $0 as? ReadCollectionScene }
+        return collectionScenes.last
     }
 }

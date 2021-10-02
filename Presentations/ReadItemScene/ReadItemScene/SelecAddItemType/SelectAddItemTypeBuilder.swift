@@ -20,5 +20,5 @@ import CommonPresenting
 
 public protocol SelectAddItemTypeSceneBuilable {
     
-    func makeSelectAddItemTypeScene() -> SelectAddItemTypeScene
+    func makeSelectAddItemTypeScene(_ completed: @escaping (Bool) -> Void) -> SelectAddItemTypeScene
 }

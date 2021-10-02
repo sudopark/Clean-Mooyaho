@@ -17,7 +17,7 @@ import CommonPresenting
 // MARK: - ReadCollectionViewModelImple conform ReadCollectionSceneInput and ReadCollectionSceneOutput
 
 extension ReadCollectionViewItemsModelImple: ReadCollectionItemsSceneInput {
-
+    
 }
 
 extension ReadCollectionViewItemsModelImple: ReadCollectionItemsSceneOutput {

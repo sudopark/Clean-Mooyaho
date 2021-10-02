@@ -74,7 +74,12 @@ extension MainViewModelImple {
     
     public func requestAddNewItem() {
         
-        self.readCollectionMainSceneInput?.showSelectAddItemTypeScene()
+        self.router.askAddNewitemType { [weak self] isCollectionSelected in
+            guard let input = self?.readCollectionMainSceneInput else { return }
+            return isCollectionSelected
+                ? input.addNewCollectionItem()
+                : input.addNewReadLinkItem()
+        }
     }
 }
 
