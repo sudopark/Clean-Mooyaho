@@ -74,6 +74,7 @@
 		F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */; };
 		F67DDE9D26FE1E63004BC542 /* ItemLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */; };
 		F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */; };
+		F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */; };
 		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
@@ -171,6 +172,7 @@
 		F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelView.swift; sourceTree = "<group>"; };
 		F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompletable.swift; sourceTree = "<group>"; };
+		F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideViewSupporatble.swift; sourceTree = "<group>"; };
 		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContext+Decorating.swift"; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				F6F249182655887C00AE7A8B /* BaseNavigationController.swift */,
 				F610146826570A1400D32E38 /* BaseUIView.swift */,
 				F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */,
+				F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */,
 				F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */,
 				2B39E27926387BCB003EE954 /* EmptyBuilder.swift */,
 				2B39E27726387BCB003EE954 /* Presenting.swift */,
@@ -594,6 +597,7 @@
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
 				F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */,
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
+				F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */,
 				F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */,
 				F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */,
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,

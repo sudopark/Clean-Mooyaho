@@ -78,6 +78,12 @@ extension MainViewController {
             })
             .disposed(by: self.dispsoseBag)
         
+        self.mainView.floatingBottomButtonContainerView.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.requestAddNewItem()
+            })
+            .disposed(by: self.dispsoseBag)
+        
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindBottomSlideScroll()

@@ -22,6 +22,7 @@ public protocol MainViewModel: AnyObject {
     // interactor
     func setupSubScenes()
     func openSlideMenu()
+    func requestAddNewItem()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
@@ -42,7 +43,7 @@ public final class MainViewModelImple: MainViewModel {
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    private weak var nearbySceneInteractor: NearbySceneInteractor?
+    private weak var readCollectionMainSceneInput: ReadCollectionMainSceneInput?
     
     public init(memberUsecase: MemberUsecase,
                 hoorayUsecase: HoorayUsecase,
@@ -64,11 +65,16 @@ public final class MainViewModelImple: MainViewModel {
 extension MainViewModelImple {
     
     public func setupSubScenes() {
-        self.router.addReadCollectionScene()
+        self.readCollectionMainSceneInput = self.router.addReadCollectionScene()
     }
     
     public func openSlideMenu() {
         self.router.openSlideMenu()
+    }
+    
+    public func requestAddNewItem() {
+        
+        self.readCollectionMainSceneInput?.showSelectAddItemTypeScene()
     }
 }
 

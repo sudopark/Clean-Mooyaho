@@ -103,6 +103,17 @@ extension DependencyInjector: TextInputSceneBuilable {
 
 // MARK: - ReadItemScene
 
+extension DependencyInjector: ReadCollectionMainSceneBuilable {
+    
+    public func makeReadCollectionMainScene() -> ReadCollectionMainScene {
+        let router = ReadCollectionMainRouter(nextSceneBuilders: self)
+        let viewModel = ReadCollectionMainViewModelImple(router: router)
+        let viewController = ReadCollectionMainViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
 extension DependencyInjector: ReadCollectionItemSceneBuilable {
     
     public func makeReadCollectionItemScene(collectionID: String?) -> ReadCollectionScene {
@@ -126,6 +137,17 @@ extension DependencyInjector: AddReadLinkSceneBuilable {
                                                   router: router,
                                                   itemAddded: itemAddded)
         let viewController = AddReadLinkViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+extension DependencyInjector: SelectAddItemTypeSceneBuilable {
+    
+    public func makeSelectAddItemTypeScene() -> SelectAddItemTypeScene {
+        let router = SelectAddItemTypeRouter(nextSceneBuilders: self)
+        let viewModel = SelectAddItemTypeViewModelImple(router: router)
+        let viewController = SelectAddItemTypeViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }

@@ -31,6 +31,10 @@ extension ColorSet {
     public var lineColor: UIColor {
         return UIColor.systemGroupedBackground
     }
+    
+    public var buttonBlue: UIColor {
+        return UIColor.systemBlue.withAlphaComponent(0.8)
+    }
 }
 
 public protocol FontSet {
