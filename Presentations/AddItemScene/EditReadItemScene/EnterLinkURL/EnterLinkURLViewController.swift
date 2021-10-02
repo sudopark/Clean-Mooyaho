@@ -1,6 +1,6 @@
 //
-//  AddItemNavigationViewController.swift
-//  AddItemScene
+//  EnterLinkURLViewController.swift
+//  EditReadItemScene
 //
 //  Created sudo.park on 2021/10/02.
 //  Copyright © 2021 ___ORGANIZATIONNAME___. All rights reserved.
@@ -13,17 +13,13 @@ import RxCocoa
 
 import CommonPresenting
 
-// MARK: - AddItemNavigationViewController
+// MARK: - EnterLinkURLViewController
 
-public final class AddItemNavigationViewController: BaseViewController, AddItemNavigationScene, BottomSlideViewSupporatble {
+public final class EnterLinkURLViewController: BaseViewController, EnterLinkURLScene {
     
-    public let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
-    let viewModel: AddItemNavigationViewModel
-    public var navigationdContainerView: UIView {
-        return self.bottomSlideMenuView.containerView
-    }
+    let viewModel: EnterLinkURLViewModel
     
-    public init(viewModel: AddItemNavigationViewModel) {
+    public init(viewModel: EnterLinkURLViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -47,34 +43,27 @@ public final class AddItemNavigationViewController: BaseViewController, AddItemN
         self.bind()
     }
     
-    public func requestCloseScene() {
-        // TODO: close scene
-    }
-    
 }
 
 // MARK: - bind
 
-extension AddItemNavigationViewController {
+extension EnterLinkURLViewController {
     
     private func bind() {
         
-        self.bindBottomSlideMenuView()
     }
 }
 
 // MARK: - setup presenting
 
-extension AddItemNavigationViewController: Presenting {
+extension EnterLinkURLViewController: Presenting {
     
     
     public func setupLayout() {
         
-        self.setupBottomSlideLayout()
     }
     
     public func setupStyling() {
         
-        self.bottomSlideMenuView.setupStyling()
     }
 }

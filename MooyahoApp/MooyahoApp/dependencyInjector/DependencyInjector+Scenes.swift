@@ -154,14 +154,28 @@ extension DependencyInjector: SelectAddItemTypeSceneBuilable {
 }
 
 
-// MARK: - AddItemScene
+// MARK: - EditReadItemScene
 
 extension DependencyInjector: AddItemNavigationSceneBuilable {
     
-    public func makeAddItemNavigationScene() -> AddItemNavigationScene {
+    public func makeAddItemNavigationScene(at collectionID: String?,
+                                           _ completed: @escaping (ReadLink) -> Void) -> AddItemNavigationScene {
         let router = AddItemNavigationRouter(nextSceneBuilders: self)
-        let viewModel = AddItemNavigationViewModelImple(router: router)
+        let viewModel = AddItemNavigationViewModelImple(targetCollectionID: collectionID,
+                                                        router: router)
         let viewController = AddItemNavigationViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
+extension DependencyInjector: EnterLinkURLSceneBuilable {
+    
+    public func makeEnterLinkURLScene(_ entered: @escaping (String) -> Void) -> EnterLinkURLScene {
+        let router = EnterLinkURLRouter(nextSceneBuilders: self)
+        let viewModel = EnterLinkURLViewModelImple(router: router)
+        let viewController = EnterLinkURLViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
