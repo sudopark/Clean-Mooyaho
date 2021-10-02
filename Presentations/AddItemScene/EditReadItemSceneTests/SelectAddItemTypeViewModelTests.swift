@@ -10,7 +10,7 @@ import XCTest
 import Domain
 import UnitTestHelpKit
 
-import AddItemScene
+import EditReadItemScene
 
 
 class SelectAddItemTypeViewModelTests: BaseTestCase {

@@ -76,6 +76,8 @@
 		F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */; };
 		F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */; };
 		F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */; };
+		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
+		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
 		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
@@ -175,6 +177,8 @@
 		F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompletable.swift; sourceTree = "<group>"; };
 		F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideViewSupporatble.swift; sourceTree = "<group>"; };
 		F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+EditReadItem.swift"; sourceTree = "<group>"; };
+		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
+		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
 		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContext+Decorating.swift"; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
@@ -379,6 +383,8 @@
 				F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */,
 				F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */,
 				F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */,
+				F6BBF177270851A100420A49 /* Builders+ReadItem.swift */,
+				F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -561,6 +567,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */,
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
 				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
@@ -604,6 +611,7 @@
 				F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */,
 				F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */,
 				F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */,
+				F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */,
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
 				F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,

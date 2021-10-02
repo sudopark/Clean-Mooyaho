@@ -12,6 +12,7 @@ import Domain
 import CommonPresenting
 import MemberScenes
 import ReadItemScene
+import EditReadItemScene
 
 
 // MARK: - Main Sceens
@@ -162,7 +163,8 @@ extension DependencyInjector: AddItemNavigationSceneBuilable {
                                            _ completed: @escaping (ReadLink) -> Void) -> AddItemNavigationScene {
         let router = AddItemNavigationRouter(nextSceneBuilders: self)
         let viewModel = AddItemNavigationViewModelImple(targetCollectionID: collectionID,
-                                                        router: router)
+                                                        router: router,
+                                                        completed)
         let viewController = AddItemNavigationViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

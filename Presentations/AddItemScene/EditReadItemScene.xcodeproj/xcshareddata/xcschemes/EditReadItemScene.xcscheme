@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6D8DDE227083DA200B4D817"
-               BuildableName = "AddItemScene.framework"
+               BuildableName = "EditReadItemScene.framework"
                BlueprintName = "EditReadItemScene"
                ReferencedContainer = "container:EditReadItemScene.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6D8DDEA27083DA200B4D817"
-               BuildableName = "AddItemSceneTests.xctest"
+               BuildableName = "EditReadItemSceneTests.xctest"
                BlueprintName = "EditReadItemSceneTests"
                ReferencedContainer = "container:EditReadItemScene.xcodeproj">
             </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F6D8DDE227083DA200B4D817"
-            BuildableName = "AddItemScene.framework"
+            BuildableName = "EditReadItemScene.framework"
             BlueprintName = "EditReadItemScene"
             ReferencedContainer = "container:EditReadItemScene.xcodeproj">
          </BuildableReference>
