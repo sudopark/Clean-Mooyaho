@@ -53,6 +53,8 @@
 		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
 		F6B21C6327004389006243FD /* RemoteImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B21C6227004389006243FD /* RemoteImple.swift */; };
+		F6BBF14A27083EDB00420A49 /* AddItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF14927083EDB00420A49 /* AddItemScene.framework */; };
+		F6BBF14B27083EDB00420A49 /* AddItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF14927083EDB00420A49 /* AddItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */; };
 		F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
@@ -85,6 +87,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F6BBF14B27083EDB00420A49 /* AddItemScene.framework in Embed Frameworks */,
 				2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */,
 				2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */,
 				F6ECE4DB26FAF8B3008D7ECA /* FirebaseService.framework in Embed Frameworks */,
@@ -148,6 +151,7 @@
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
 		F6B21C6227004389006243FD /* RemoteImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteImple.swift; path = MooyahoApp/dependencyInjector/RemoteImple.swift; sourceTree = SOURCE_ROOT; };
+		F6BBF14927083EDB00420A49 /* AddItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AddItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6C0784026A47D0D0070E75E /* MapScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MapScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +176,7 @@
 			files = (
 				F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */,
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
+				F6BBF14A27083EDB00420A49 /* AddItemScene.framework in Frameworks */,
 				F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */,
 				F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
@@ -346,6 +351,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6BBF14927083EDB00420A49 /* AddItemScene.framework */,
 				F6ECE4D926FAF8B3008D7ECA /* FirebaseService.framework */,
 				F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */,
 				F6025FF826A9D201007A1AA8 /* UsecaseDoubles.framework */,
