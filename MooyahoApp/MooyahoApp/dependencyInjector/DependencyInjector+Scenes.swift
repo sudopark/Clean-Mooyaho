@@ -176,10 +176,22 @@ extension DependencyInjector: EnterLinkURLSceneBuilable {
     
     public func makeEnterLinkURLScene(_ entered: @escaping (String) -> Void) -> EnterLinkURLScene {
         let router = EnterLinkURLRouter(nextSceneBuilders: self)
-        let viewModel = EnterLinkURLViewModelImple(router: router)
+        let viewModel = EnterLinkURLViewModelImple(router: router, callback: entered)
         let viewController = EnterLinkURLViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
 }
 
+
+extension DependencyInjector: EditLinkItemSceneBuilable {
+    
+    public func makeEditLinkItemScene(_ editCase: EditLinkItemCase,
+                                      completed: @escaping (ReadLink) -> Void) -> EditLinkItemScene {
+        let router = EditLinkItemRouter(nextSceneBuilders: self)
+        let viewModel = EditLinkItemViewModelImple(case: editCase, router: router, completed: completed)
+        let viewController = EditLinkItemViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

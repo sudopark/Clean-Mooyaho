@@ -45,6 +45,8 @@ public final class AddItemNavigationViewController: BaseViewController, AddItemN
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        
+        self.viewModel.prepareNavigation()
     }
     
     public func requestCloseScene() {

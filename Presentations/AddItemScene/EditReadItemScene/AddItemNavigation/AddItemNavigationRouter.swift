@@ -33,11 +33,12 @@ public protocol AddItemNavigationRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias AddItemNavigationRouterBuildables = EnterLinkURLSceneBuilable
+public typealias AddItemNavigationRouterBuildables = EnterLinkURLSceneBuilable & EditLinkItemSceneBuilable
 
 public final class AddItemNavigationRouter: Router<AddItemNavigationRouterBuildables>, AddItemNavigationRouting {
     
     private weak var embedNavigationController: BaseNavigationController?
+    private var embedNavigationHeightConstranit: NSLayoutConstraint?
 }
 
 
@@ -48,9 +49,14 @@ extension AddItemNavigationRouter {
         let containerView = scene.navigationdContainerView
         
         let navigationController = BaseNavigationController()
+        navigationController.shouldHideNavigation = false
+        
         scene.addChild(navigationController)
         containerView.addSubview(navigationController.view)
         navigationController.view.autoLayout.fill(containerView)
+        self.embedNavigationHeightConstranit = navigationController.view.heightAnchor
+            .constraint(equalToConstant: 180)
+        self.embedNavigationHeightConstranit?.isActive = true
         navigationController.didMove(toParent: scene)
         self.embedNavigationController = navigationController
     }
@@ -68,6 +74,11 @@ extension AddItemNavigationRouter {
     public func pushConfirmAddLinkItemScene(at collectionID: String?,
                                             url: String,
                                             _ completed: @escaping (ReadLink) -> Void) {
-        logger.todoImplement(message: "confirm add item")
+        guard let navigationController = self.embedNavigationController,
+              let next = self.nextScenesBuilder?.makeEditLinkItemScene(.makeNew(url: url),
+                                                                       completed: completed) else {
+                  return
+              }
+        navigationController.pushViewController(next, animated: true)
     }
 }

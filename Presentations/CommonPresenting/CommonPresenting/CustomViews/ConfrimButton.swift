@@ -8,7 +8,18 @@
 import UIKit
 
 
-public class ConfirmButton: UIButton { }
+public class ConfirmButton: UIButton, UIContextAccessable {
+    
+    public override var isEnabled: Bool {
+        get {
+            super.isEnabled
+        }
+        set {
+            super.isEnabled = newValue
+            self.alpha = newValue ? 1.0 : 0.5
+        }
+    }
+}
 
 
 extension ConfirmButton: Presenting {
@@ -18,9 +29,10 @@ extension ConfirmButton: Presenting {
     public func setupStyling() {
         self.layer.cornerRadius = 5
         self.clipsToBounds = true
-        self.backgroundColor = UIColor.systemBlue
+        self.backgroundColor = self.uiContext.colors.accentColor
         self.setTitle("Confirm", for: .normal)
         self.setTitleColor(.white, for: .normal)
+        self.titleLabel?.font = self.uiContext.fonts.get(16, weight: .medium)
     }
     
     public func setupLayout(_ parentView: UIView) {

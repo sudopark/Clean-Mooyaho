@@ -85,6 +85,7 @@
 		F66B7D7626C787CE00D31FAC /* PlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7526C787CE00D31FAC /* PlaceUsecase.swift */; };
 		F66B7D7826C789BD00D31FAC /* PlaceUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7726C789BD00D31FAC /* PlaceUsecaseTests.swift */; };
 		F66B7D7A26C78AF400D31FAC /* StubPlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7926C78AF400D31FAC /* StubPlaceRepository.swift */; };
+		F66C2C23270908CF003D56B1 /* RxCocoa+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */; };
 		F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */; };
 		F6913EEB26EC636100C6E105 /* ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEA26EC636100C6E105 /* ReadItem.swift */; };
 		F6913EED26EC637000C6E105 /* ReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913EEC26EC637000C6E105 /* ReadCollection.swift */; };
@@ -213,6 +214,7 @@
 		F66B7D7526C787CE00D31FAC /* PlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUsecase.swift; sourceTree = "<group>"; };
 		F66B7D7726C789BD00D31FAC /* PlaceUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUsecaseTests.swift; sourceTree = "<group>"; };
 		F66B7D7926C78AF400D31FAC /* StubPlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlaceRepository.swift; sourceTree = "<group>"; };
+		F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxCocoa+Extensions.swift"; sourceTree = "<group>"; };
 		F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProvider.swift; sourceTree = "<group>"; };
 		F6913EEA26EC636100C6E105 /* ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItem.swift; sourceTree = "<group>"; };
 		F6913EEC26EC637000C6E105 /* ReadCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollection.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				2B4FD2372632946000A99624 /* Expression+Extensions.swift */,
 				2BFF241A2641BB04008C52EB /* Array+Extensions.swift */,
 				2BFF241C2641E009008C52EB /* Rx+Extensions.swift */,
+				F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */,
 				2B40BF92263F15060031C7A6 /* Units.swift */,
 				2BFF240E2640736F008C52EB /* Builder.swift */,
 				F6E3F60A264983E900DD4986 /* Location+Extension.swift */,
@@ -789,6 +792,7 @@
 				F6913EEB26EC636100C6E105 /* ReadItem.swift in Sources */,
 				F6CFA5752646340300F9A049 /* SearchNewPlaceUsecase.swift in Sources */,
 				F6E279C926F6EA3D00957AC4 /* LinkPreview.swift in Sources */,
+				F66C2C23270908CF003D56B1 /* RxCocoa+Extensions.swift in Sources */,
 				F6E279D526F71CD800957AC4 /* ReadItemOptionsRepository.swift in Sources */,
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,
 				F6E279D326F71BF500957AC4 /* ReadItemOptionsUsecase.swift in Sources */,
