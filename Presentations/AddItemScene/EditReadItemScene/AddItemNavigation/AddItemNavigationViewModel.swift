@@ -21,6 +21,7 @@ public protocol AddItemNavigationViewModel: AnyObject {
 
     // interactor
     func prepareNavigation()
+    func requestpopToEnrerURLScene()
     
     // presenter
 }
@@ -90,6 +91,10 @@ extension AddItemNavigationViewModelImple {
         self.router.closeScene(animated: true) { [weak self] in
             self?.newLinkItemAddedCallback(newLink)
         }
+    }
+    
+    public func requestpopToEnrerURLScene() {
+        self.router.popToEnrerURLScene()
     }
 }
 

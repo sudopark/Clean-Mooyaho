@@ -28,6 +28,7 @@ public protocol AddItemNavigationRouting: Routing {
     func pushConfirmAddLinkItemScene(at collectionID: String?,
                                      url: String,
                                      _ completed: @escaping (ReadLink) -> Void)
+    func popToEnrerURLScene()
 }
 
 // MARK: - Routers
@@ -83,5 +84,11 @@ extension AddItemNavigationRouter {
               }
         self.embedNavigationHeightConstranit?.constant = 330
         navigationController.pushViewController(next, animated: true)
+    }
+    
+    public func popToEnrerURLScene() {
+        
+        self.embedNavigationController?.popViewController(animated: true)
+        self.embedNavigationHeightConstranit?.constant = 180
     }
 }

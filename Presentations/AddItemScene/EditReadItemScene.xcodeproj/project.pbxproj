@@ -144,13 +144,6 @@
 			path = EnterLinkURL;
 			sourceTree = "<group>";
 		};
-		F6BBF1652708401D00420A49 /* EditCollection */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = EditCollection;
-			sourceTree = "<group>";
-		};
 		F6BBF1662708403C00420A49 /* EditLinkItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,7 +182,6 @@
 				F6BBF14C27083F2B00420A49 /* SelecAddItemType */,
 				F6BBF15927083FD500420A49 /* AddItemNavigation */,
 				F6BBF16427083FFD00420A49 /* EnterLinkURL */,
-				F6BBF1652708401D00420A49 /* EditCollection */,
 				F6BBF1662708403C00420A49 /* EditLinkItem */,
 				F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */,
 			);

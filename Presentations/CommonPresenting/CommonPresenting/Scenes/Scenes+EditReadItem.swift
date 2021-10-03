@@ -12,7 +12,10 @@ import Domain
 
 // MARK: - AddItemNavigationScene Input & Output
 
-public protocol AddItemNavigationSceneInput { }
+public protocol AddItemNavigationSceneInput {
+    
+    func requestpopToEnrerURLScene()
+}
 
 public protocol AddItemNavigationSceneOutput { }
 

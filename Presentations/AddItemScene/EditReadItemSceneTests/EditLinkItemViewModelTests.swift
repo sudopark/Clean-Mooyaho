@@ -26,6 +26,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
     var editCompleted: ((ReadLink) -> Void)?
     var didClose: Bool?
     var didErrorAlerted: Bool?
+    var didRewind: Bool?
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -34,6 +35,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.didClose = nil
+        self.didRewind = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -84,6 +86,10 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
             return previewMocking ?? super.loadLinkPreview(url)
         }
     }
+    
+    func requestRewind() {
+        self.didRewind = true
+    }
 }
 
 
@@ -101,6 +107,17 @@ class EditLinkItemViewModelTests_makeNew: BaseEditLinkItemViewModelTests {
 }
 
 extension EditLinkItemViewModelTests_makeNew {
+    
+    func testViewModel_rewind() {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        viewModel.rewind()
+        
+        // then
+        XCTAssertEqual(self.didRewind, true)
+    }
     
     func testViewModel_prepareLinkPreview() {
         // given
