@@ -38,6 +38,11 @@
 		F6D8DE0927083E1900B4D817 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DE0827083E1900B4D817 /* UnitTestHelpKit.framework */; };
 		F6D8DE0B27083E2000B4D817 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DE0A27083E2000B4D817 /* UsecaseDoubles.framework */; };
 		F6D8DE0D27083E2B00B4D817 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DE0C27083E2B00B4D817 /* Common3rdParty.framework */; };
+		F6E592CB27098B940087A623 /* EditReadCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E592C627098B940087A623 /* EditReadCollectionViewController.swift */; };
+		F6E592CC27098B940087A623 /* EditReadCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E592C727098B940087A623 /* EditReadCollectionRouter.swift */; };
+		F6E592CD27098B940087A623 /* EditReadCollectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E592C827098B940087A623 /* EditReadCollectionScene.swift */; };
+		F6E592CE27098B940087A623 /* EditReadCollectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E592C927098B940087A623 /* EditReadCollectionBuilder.swift */; };
+		F6E592CF27098B940087A623 /* EditReadCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E592CA27098B940087A623 /* EditReadCollectionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +57,11 @@
 
 /* Begin PBXFileReference section */
 		F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewModelTests.swift; sourceTree = "<group>"; };
+		F665B2612709882D00A6361F /* EditReadCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionRouter.swift; sourceTree = "<group>"; };
+		F665B2622709882D00A6361F /* EditReadCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewController.swift; sourceTree = "<group>"; };
+		F665B2632709882D00A6361F /* EditReadCollectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionBuilder.swift; sourceTree = "<group>"; };
+		F665B2642709882D00A6361F /* EditReadCollectionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionScene.swift; sourceTree = "<group>"; };
+		F665B2652709882D00A6361F /* EditReadCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewModel.swift; sourceTree = "<group>"; };
 		F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLViewModelTests.swift; sourceTree = "<group>"; };
 		F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemRouter.swift; sourceTree = "<group>"; };
 		F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +93,11 @@
 		F6D8DE0827083E1900B4D817 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DE0A27083E2000B4D817 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DE0C27083E2B00B4D817 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E592C627098B940087A623 /* EditReadCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewController.swift; sourceTree = "<group>"; };
+		F6E592C727098B940087A623 /* EditReadCollectionRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReadCollectionRouter.swift; sourceTree = "<group>"; };
+		F6E592C827098B940087A623 /* EditReadCollectionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReadCollectionScene.swift; sourceTree = "<group>"; };
+		F6E592C927098B940087A623 /* EditReadCollectionBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReadCollectionBuilder.swift; sourceTree = "<group>"; };
+		F6E592CA27098B940087A623 /* EditReadCollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,13 +159,6 @@
 			path = EnterLinkURL;
 			sourceTree = "<group>";
 		};
-		F6BBF1652708401D00420A49 /* EditCollection */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = EditCollection;
-			sourceTree = "<group>";
-		};
 		F6BBF1662708403C00420A49 /* EditLinkItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +179,7 @@
 				F6D8DDEF27083DA200B4D817 /* EditReadItemSceneTests */,
 				F6D8DDE427083DA200B4D817 /* Products */,
 				F6D8DDFB27083DCD00B4D817 /* Frameworks */,
+				F6E592C427098B2C0087A623 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -188,8 +197,8 @@
 			children = (
 				F6BBF14C27083F2B00420A49 /* SelecAddItemType */,
 				F6BBF15927083FD500420A49 /* AddItemNavigation */,
+				F6E592C527098B5C0087A623 /* EditReadCollection */,
 				F6BBF16427083FFD00420A49 /* EnterLinkURL */,
-				F6BBF1652708401D00420A49 /* EditCollection */,
 				F6BBF1662708403C00420A49 /* EditLinkItem */,
 				F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */,
 			);
@@ -218,6 +227,30 @@
 				F6D8DDFC27083DCD00B4D817 /* Domain.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6E592C427098B2C0087A623 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				F665B2612709882D00A6361F /* EditReadCollectionRouter.swift */,
+				F665B2632709882D00A6361F /* EditReadCollectionBuilder.swift */,
+				F665B2642709882D00A6361F /* EditReadCollectionScene.swift */,
+				F665B2622709882D00A6361F /* EditReadCollectionViewController.swift */,
+				F665B2652709882D00A6361F /* EditReadCollectionViewModel.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		F6E592C527098B5C0087A623 /* EditReadCollection */ = {
+			isa = PBXGroup;
+			children = (
+				F6E592C927098B940087A623 /* EditReadCollectionBuilder.swift */,
+				F6E592C727098B940087A623 /* EditReadCollectionRouter.swift */,
+				F6E592C827098B940087A623 /* EditReadCollectionScene.swift */,
+				F6E592C627098B940087A623 /* EditReadCollectionViewController.swift */,
+				F6E592CA27098B940087A623 /* EditReadCollectionViewModel.swift */,
+			);
+			path = EditReadCollection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,6 +363,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E592CB27098B940087A623 /* EditReadCollectionViewController.swift in Sources */,
+				F6E592CD27098B940087A623 /* EditReadCollectionScene.swift in Sources */,
 				F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */,
 				F6BBF16327083FF900420A49 /* AddItemNavigationViewModel.swift in Sources */,
 				F6BBF15F27083FF900420A49 /* AddItemNavigationRouter.swift in Sources */,
@@ -343,11 +378,14 @@
 				F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */,
 				F6BBF15527083F5A00420A49 /* SelectAddItemTypeRouter.swift in Sources */,
 				F6BBF16027083FF900420A49 /* AddItemNavigationViewController.swift in Sources */,
+				F6E592CE27098B940087A623 /* EditReadCollectionBuilder.swift in Sources */,
 				F66C2C2A270909B5003D56B1 /* EditLinkItemViewController.swift in Sources */,
 				F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */,
 				F6BBF16F2708422F00420A49 /* EnterLinkURLViewController.swift in Sources */,
 				F66C2C2B270909B5003D56B1 /* EditLinkItemBuilder.swift in Sources */,
 				F6C97B1B27095A4100990019 /* EditLinkItemView.swift in Sources */,
+				F6E592CC27098B940087A623 /* EditReadCollectionRouter.swift in Sources */,
+				F6E592CF27098B940087A623 /* EditReadCollectionViewModel.swift in Sources */,
 				F6BBF16E2708422F00420A49 /* EnterLinkURLRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -24,6 +24,7 @@ class AddItemNavigationViewModelTests: BaseTestCase {
     private var didClosed: Bool?
     private var enterURLMocking: ((String) -> Void)?
     private var confirmAddNewMockding: ((ReadLink) -> Void)?
+    private var didPop: Bool?
     
     override func tearDownWithError() throws {
         self.didNavigationSetup = nil
@@ -31,6 +32,7 @@ class AddItemNavigationViewModelTests: BaseTestCase {
         self.didMoveToConfirmAdd = nil
         self.didClosed = nil
         self.enterURLMocking = nil
+        self.didPop = nil
     }
     
     private func makeViewModel(_ completed: ((ReadLink) -> Void)? = nil) -> AddItemNavigationViewModel {
@@ -93,6 +95,17 @@ extension AddItemNavigationViewModelTests {
         // then
         XCTAssertEqual(self.didClosed, true)
     }
+    
+    func testViewModel_popToEnterURLScene() {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        viewModel.requestpopToEnrerURLScene()
+        
+        // then
+        XCTAssertEqual(self.didPop, true)
+    }
 }
 
 
@@ -117,5 +130,9 @@ extension AddItemNavigationViewModelTests: AddItemNavigationRouting {
     func closeScene(animated: Bool, completed: (() -> Void)?) {
         self.didClosed = true
         completed?()
+    }
+    
+    func popToEnrerURLScene() {
+        self.didPop = true
     }
 }

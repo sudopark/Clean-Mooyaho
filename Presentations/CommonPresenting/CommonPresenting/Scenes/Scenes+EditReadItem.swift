@@ -12,7 +12,10 @@ import Domain
 
 // MARK: - AddItemNavigationScene Input & Output
 
-public protocol AddItemNavigationSceneInput { }
+public protocol AddItemNavigationSceneInput {
+    
+    func requestpopToEnrerURLScene()
+}
 
 public protocol AddItemNavigationSceneOutput { }
 
@@ -59,4 +62,20 @@ public protocol EditLinkItemScene: Scenable {
     var input: EditLinkItemSceneInput? { get }
 
     var output: EditLinkItemSceneOutput? { get }
+}
+
+// MARK: - EditReadCollectionScene Input & Output
+
+public protocol EditReadCollectionSceneInput { }
+
+public protocol EditReadCollectionSceneOutput { }
+
+
+// MARK: - EditReadCollectionScene
+
+public protocol EditReadCollectionScene: Scenable {
+    
+    var input: EditReadCollectionSceneInput? { get }
+
+    var output: EditReadCollectionSceneOutput? { get }
 }

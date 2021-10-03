@@ -18,7 +18,10 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditLinkItemRouting: Routing { }
+public protocol EditLinkItemRouting: Routing {
+    
+    func requestRewind()
+}
 
 // MARK: - Routers
 
@@ -31,4 +34,11 @@ public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, Edi
 extension EditLinkItemRouter {
     
     // EditLinkItemRouting implements
+    public func requestRewind() {
+        
+        guard let navigation = self.currentScene?.navigationController as? AddItemNavigationScene else {
+            return
+        }
+        navigation.input?.requestpopToEnrerURLScene()
+    }
 }
