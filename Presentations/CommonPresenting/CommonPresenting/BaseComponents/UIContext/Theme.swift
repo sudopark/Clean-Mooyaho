@@ -34,7 +34,7 @@ extension ColorSet {
     }
     
     public var buttonBlue: UIColor {
-        return UIColor.systemBlue.withAlphaComponent(0.8)
+        return UIColor.systemBlue.withAlphaComponent(0.9)
     }
 }
 

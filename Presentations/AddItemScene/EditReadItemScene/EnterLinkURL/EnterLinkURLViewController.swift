@@ -13,6 +13,8 @@ import RxCocoa
 import Prelude
 import Optics
 
+import Domain
+
 import CommonPresenting
 
 // MARK: - EnterLinkURLViewController
@@ -69,6 +71,8 @@ extension EnterLinkURLViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.bindConfirmButton()
+        
         self.rx.viewWillAppear
             .subscribe(onNext: { [weak self] _ in
                 self?.bindConfirmButton()
@@ -78,8 +82,12 @@ extension EnterLinkURLViewController {
     
     private func bindConfirmButton() {
         
+        logger.print(level: .debug, "bind confirm button")
+        
+        self.buttonConfirmBinding?.dispose()
         self.buttonConfirmBinding = self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
+                logger.print(level: .debug, "move confirm called")
                 self?.viewModel.confirmEnter()
             })
     }
@@ -111,7 +119,7 @@ extension EnterLinkURLViewController: Presenting {
         underLineView.autoLayout.active(with: self.textField) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 2)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 8)
             $0.heightAnchor.constraint(equalToConstant: 1)
         }
         
@@ -130,7 +138,7 @@ extension EnterLinkURLViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Select new item type"
+            |> \.text .~ "Add read link item"
         
         _ = self.textField
             |> \.font .~ self.uiContext.fonts.get(14, weight: .regular)

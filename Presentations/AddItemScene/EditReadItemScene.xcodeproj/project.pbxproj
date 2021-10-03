@@ -28,6 +28,7 @@
 		F6BBF1712708422F00420A49 /* EnterLinkURLScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF16C2708422F00420A49 /* EnterLinkURLScene.swift */; };
 		F6BBF1722708422F00420A49 /* EnterLinkURLViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF16D2708422F00420A49 /* EnterLinkURLViewModel.swift */; };
 		F6BBF17427084A0C00420A49 /* AddItemNavigationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17327084A0C00420A49 /* AddItemNavigationViewModelTests.swift */; };
+		F6C97B1B27095A4100990019 /* EditLinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1A27095A4100990019 /* EditLinkItemView.swift */; };
 		F6D8DDEC27083DA200B4D817 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */; };
 		F6D8DDF227083DA200B4D817 /* EditReadItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6D8DDFD27083DCD00B4D817 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D8DDFC27083DCD00B4D817 /* Domain.framework */; };
@@ -70,6 +71,7 @@
 		F6BBF16C2708422F00420A49 /* EnterLinkURLScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLScene.swift; sourceTree = "<group>"; };
 		F6BBF16D2708422F00420A49 /* EnterLinkURLViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLViewModel.swift; sourceTree = "<group>"; };
 		F6BBF17327084A0C00420A49 /* AddItemNavigationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemNavigationViewModelTests.swift; sourceTree = "<group>"; };
+		F6C97B1A27095A4100990019 /* EditLinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemView.swift; sourceTree = "<group>"; };
 		F6D8DDE327083DA200B4D817 /* EditReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EditReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditReadItemScene.h; sourceTree = "<group>"; };
 		F6D8DDEB27083DA200B4D817 /* EditReadItemSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EditReadItemSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,7 @@
 				F66C2C26270909B5003D56B1 /* EditLinkItemBuilder.swift */,
 				F66C2C27270909B5003D56B1 /* EditLinkItemScene.swift */,
 				F66C2C28270909B5003D56B1 /* EditLinkItemViewModel.swift */,
+				F6C97B1A27095A4100990019 /* EditLinkItemView.swift */,
 			);
 			path = EditLinkItem;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */,
 				F6BBF16F2708422F00420A49 /* EnterLinkURLViewController.swift in Sources */,
 				F66C2C2B270909B5003D56B1 /* EditLinkItemBuilder.swift in Sources */,
+				F6C97B1B27095A4100990019 /* EditLinkItemView.swift in Sources */,
 				F6BBF16E2708422F00420A49 /* EnterLinkURLRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
