@@ -469,7 +469,11 @@ extension DataModelStorageImple {
     public func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?> {
         let previews = LinkPreviewTable.self
         let query = previews.selectAll { $0.url == url }
-        return self.sqliteService.rx.run { try $0.loadOne(query) }
+        let mapping: (CursorIterator) throws -> LinkPreview = {
+            let entitry = try LinkPreviewTable.Entity($0)
+            return entitry.preview
+        }
+        return self.sqliteService.rx.run { try $0.loadOne(query, mapping: mapping) }
     }
     
     public func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void> {

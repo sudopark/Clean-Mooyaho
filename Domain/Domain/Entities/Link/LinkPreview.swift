@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct LinkPreview {
+public struct LinkPreview: Equatable {
     
     public let title: String?
     public let description: String?

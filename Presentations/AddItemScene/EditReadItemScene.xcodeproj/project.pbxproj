@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F665B2562709692000A6361F /* EditLinkItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */; };
 		F66C2C212709054E003D56B1 /* EnterLinkURLViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */; };
 		F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */; };
 		F66C2C2A270909B5003D56B1 /* EditLinkItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewModelTests.swift; sourceTree = "<group>"; };
 		F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLViewModelTests.swift; sourceTree = "<group>"; };
 		F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemRouter.swift; sourceTree = "<group>"; };
 		F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				F6BBF15727083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift */,
 				F6BBF17327084A0C00420A49 /* AddItemNavigationViewModelTests.swift */,
 				F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */,
+				F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */,
 			);
 			path = EditReadItemSceneTests;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 			files = (
 				F66C2C212709054E003D56B1 /* EnterLinkURLViewModelTests.swift in Sources */,
 				F6BBF17427084A0C00420A49 /* AddItemNavigationViewModelTests.swift in Sources */,
+				F665B2562709692000A6361F /* EditLinkItemViewModelTests.swift in Sources */,
 				F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,6 +12,7 @@ import RxCocoa
 import Prelude
 import Optics
 
+import Domain
 import CommonPresenting
 
 
@@ -25,11 +26,37 @@ final class LinkPreviewView: BaseUIView, Presenting {
     private let descriptionLabel = UILabel()
     private let addressLabel = UILabel()
     
+    func updatePreview(url: String, preview: LinkPreview) {
+        
+        let title = (preview.title ?? "").map { $0.isEmpty ? "Unknown".localized : $0 }
+        self.titleLabel.text = title
+        
+        let descriptionText = (preview.description ?? "").map { $0.isEmpty ? "Fail to load preview".localized : $0 }
+        self.descriptionLabel.text = descriptionText
+        
+        self.thumbnailImageView.isHidden = (preview.mainImageURL?.isNotEmpty == true) == false
+        self.thumbnailImageView.cancelSetupThumbnail()
+        preview.mainImageURL.do {
+            self.thumbnailImageView.setupThumbnail($0, resize: .init(width: 70, height: 70))
+        }
+        
+        self.addressLabel.text = url
+    }
+    
+    func setLoadpreviewFail(for url: String) {
+        
+        self.titleLabel.text = "Unknown".localized
+        self.descriptionLabel.text = "Fail to load preview".localized
+        self.thumbnailImageView.cancelSetupThumbnail()
+        self.thumbnailImageView.isHidden = true
+        self.addressLabel.text = url
+    }
+    
     func setupLayout() {
         
         self.addSubview(vlineView)
         vlineView.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 4)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
             $0.widthAnchor.constraint(equalToConstant: 2)
@@ -38,7 +65,7 @@ final class LinkPreviewView: BaseUIView, Presenting {
         self.addSubview(stackView)
         stackView.autoLayout.active(with: self) {
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.leadingAnchor.constraint(equalTo: vlineView.trailingAnchor, constant: 4)
+            $0.leadingAnchor.constraint(equalTo: vlineView.trailingAnchor, constant: 8)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
@@ -47,8 +74,8 @@ final class LinkPreviewView: BaseUIView, Presenting {
         stackView.addArrangedSubview(contentStackView)
         stackView.addArrangedSubview(thumbnailImageView)
         thumbnailImageView.autoLayout.active {
-            $0.widthAnchor.constraint(equalToConstant: 50)
-            $0.heightAnchor.constraint(equalToConstant: 50)
+            $0.widthAnchor.constraint(equalToConstant: 70)
+            $0.heightAnchor.constraint(equalToConstant: 70)
         }
         
         contentStackView.axis = .vertical
@@ -60,14 +87,20 @@ final class LinkPreviewView: BaseUIView, Presenting {
     func setupStyling() {
         vlineView.layer.cornerRadius = 1
         vlineView.clipsToBounds = true
-        vlineView.backgroundColor = self.uiContext.colors.accentColor
+        vlineView.backgroundColor = self.uiContext.colors.accentColor.withAlphaComponent(0.75)
+        
+        self.stackView.spacing = 8
+        self.stackView.distribution = .fill
         
         self.thumbnailImageView.backgroundColor = self.uiContext.colors.lineColor
-        self.thumbnailImageView.contentMode = .scaleToFill
+        self.thumbnailImageView.contentMode = .scaleAspectFill
+        self.thumbnailImageView.layer.cornerRadius = 3
+        self.thumbnailImageView.clipsToBounds = true
         
         _ = self.titleLabel
             |> self.uiContext.decorating.listSectionTitle
             |> \.numberOfLines .~ 1
+            |> \.alpha .~ 0.8
         
         _ = self.descriptionLabel
             |> self.uiContext.decorating.listItemDescription
