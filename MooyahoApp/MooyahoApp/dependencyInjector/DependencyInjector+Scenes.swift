@@ -201,3 +201,14 @@ extension DependencyInjector: EditLinkItemSceneBuilable {
         return viewController
     }
 }
+
+extension DependencyInjector: EditReadCollectionSceneBuilable {
+    
+    public func makeEditReadCollectionScene() -> EditReadCollectionScene {
+        let router = EditReadCollectionRouter(nextSceneBuilders: self)
+        let viewModel = EditReadCollectionViewModelImple(router: router)
+        let viewController = EditReadCollectionViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

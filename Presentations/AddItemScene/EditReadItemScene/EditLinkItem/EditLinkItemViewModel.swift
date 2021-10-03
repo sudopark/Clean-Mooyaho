@@ -151,7 +151,7 @@ extension EditLinkItemViewModelImple {
     }
     
     public func rewind() {
-        logger.todoImplement()
+        self.router.requestRewind()
     }
 }
 
