@@ -79,6 +79,7 @@ extension AddItemNavigationRouter {
                                                                        completed: completed) else {
                   return
               }
+        self.embedNavigationHeightConstranit?.constant = 330
         navigationController.pushViewController(next, animated: true)
     }
 }

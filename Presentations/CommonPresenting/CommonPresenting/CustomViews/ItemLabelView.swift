@@ -31,6 +31,10 @@ public final class ItemLabelView: BaseUIView, Presenting {
             self.underlyingTextView.font = newValue
         }
     }
+    
+    public func limitHeight(max: CGFloat) {
+        self.underlyingTextView.heightAnchor.constraint(lessThanOrEqualToConstant: max).isActive = true
+    }
 
     public func setupLayout() {
         self.addSubview(self.underlyingTextView)

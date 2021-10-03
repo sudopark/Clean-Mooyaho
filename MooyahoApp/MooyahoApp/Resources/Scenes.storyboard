@@ -507,6 +507,114 @@
             <point key="canvasLocation" x="8.6956521739130448" y="744.64285714285711"/>
         </scene>
         <!--View Controller-->
+        <scene sceneID="Lho-jv-gaO">
+            <objects>
+                <viewController id="9wN-g9-3cE" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hIr-Pa-jTL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="350"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E4d-ak-bqb">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem id="H2T-er-5wE">
+                                        <barButtonItem key="leftBarButtonItem" title="&lt; back" id="HnN-v9-SrU"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zy7-Ml-AKl">
+                                <rect key="frame" x="20" y="290" width="374" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="vde-0N-ada"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemIndigoColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgr-sJ-asX">
+                                <rect key="frame" x="20" y="200" width="118" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="+ set a priority"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYe-9c-Di9">
+                                <rect key="frame" x="25" y="230" width="118" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="+ set a priority"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="izb-4y-HmQ">
+                                <rect key="frame" x="20" y="391" width="161" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="+ add some category"/>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nSX-x6-TNK">
+                                <rect key="frame" x="311" y="117" width="76" height="72"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="http:www.assddasdasdasd" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y54-Dv-dQk">
+                                <rect key="frame" x="41" y="94" width="350" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="custom link name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FnW-sE-vec">
+                                <rect key="frame" x="41" y="52" width="340" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <view alpha="0.40000000596046448" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rtd-7f-Jp8">
+                                <rect key="frame" x="41" y="87" width="414" height="1"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="uJC-Np-GDf"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zmt-WL-PCn">
+                                <rect key="frame" x="41" y="148" width="262" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <mutableString key="text">이전 화면에서 네비게이션 스택 쌓고 들어옴
+상단 좌측 뒤로가기 / 우측 추가될 위치 표시 -&gt; 추후 위치변경 진입점
+상단 커스텀 타이틀 영역
+ㄴ 입력 안한 상태에서 프리뷰 로드 완료 + 타이틀 존재시 해당 타이틀 표시
+ㄴ 프리뷰 존재되어도 커스텀 입력값 있으면 자동으로 안바꿈 + 입력 툴바에 이름 서제스트는 해줌
+하단에 프리뷰 준비 완료시 프리뷰 표시(주소 + 설명 + 섬네일)
+하단에 우선순위 추가 영역
+하단에 카테고리 추가 영역
+최하단에 확인 버튼
+추가 완료시에 슬라이더 닫고 본 리스트 업데이트
+</mutableString>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="some link name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d5h-2c-vUJ">
+                                <rect key="frame" x="41" y="128" width="262" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="AqL-Di-twm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="AqL-Di-twm" firstAttribute="trailing" secondItem="zy7-Ml-AKl" secondAttribute="trailing" constant="20" id="tst-eO-W5S"/>
+                            <constraint firstItem="zy7-Ml-AKl" firstAttribute="leading" secondItem="AqL-Di-twm" secondAttribute="leading" constant="20" id="xwY-0g-Nbe"/>
+                            <constraint firstItem="AqL-Di-twm" firstAttribute="bottom" secondItem="zy7-Ml-AKl" secondAttribute="bottom" constant="20" id="yGc-S8-tVE"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="414" height="350"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GDb-dO-4JW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="669.56521739130437" y="767.41071428571422"/>
+        </scene>
+        <!--View Controller-->
         <scene sceneID="ATX-bk-GpS">
             <objects>
                 <viewController id="5me-1o-iwN" sceneMemberID="viewController">

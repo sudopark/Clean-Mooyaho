@@ -87,7 +87,17 @@ extension UIContext.Decorating {
             |> \.textColor .~ self.uiContext.colors.hintText
     }
     
-    @available(*, deprecated, message: "use other decorating")
+    @discardableResult
+    public static func underLineText(_ label: UILabel) -> UILabel {
+        guard let text = label.text else { return label }
+        let attr: [NSAttributedString.Key: Any] = [
+            .underlineStyle : NSUnderlineStyle.single
+        ]
+        let attributed = NSAttributedString(string: text, attributes: attr)
+        return label
+            |> \.attributedText .~ attributed
+    }
+    
     @discardableResult
     public static func title(_ label: UILabel) -> UILabel {
         return label

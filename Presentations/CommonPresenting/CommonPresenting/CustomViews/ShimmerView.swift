@@ -112,20 +112,24 @@ public class MultilineShimmerView: BaseShimmerView, Presenting {
     private func addLineView(newLine: SingleLineShimmerView,
                              under topView: UIView?,
                              widthRatio: CGFloat = 1.0) {
-        let topView = topView ?? self
+        
+        let topAnchor = topView?.bottomAnchor ?? self.topAnchor
         
         self.addSubview(newLine)
         newLine.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor, multiplier: widthRatio)
             $0.heightAnchor.constraint(equalToConstant: self.lineHeight)
-            $0.topAnchor.constraint(equalTo: topView.topAnchor, constant: self.lineSpaing)
+            $0.topAnchor.constraint(equalTo: topAnchor, constant: self.lineSpaing)
         }
         newLine.setupLayout()
     }
     
     public func setupStyling() {
         
+        self.lineViews.forEach {
+            $0.setupStyling()
+        }
     }
 }
 
