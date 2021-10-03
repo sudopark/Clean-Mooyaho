@@ -69,12 +69,64 @@ extension EditLinkItemViewController {
     
     private func bind() {
         
-        
         self.navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [weak self] in
-                
+                self?.viewModel.rewind()
             })
             .disposed(by: self.disposeBag)
+        
+        self.rx.viewDidAppear.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindPreview()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.itemSuggestedTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.titleInputField.text = title
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindPreview() {
+        
+        self.viewModel.linkPreviewStatus
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] status in
+                self?.updatePreviewView(by: status)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.preparePreview()
+    }
+    
+    private func updatePreviewView(by status: LoadPreviewStatus) {
+        
+        func startShimmerAnimation() {
+            self.previewView.isHidden = true
+            self.previewShimmerView.isHidden = false
+            self.previewShimmerView.startAnimation()
+        }
+        
+        func stopShimmerAnimation() {
+            self.previewShimmerView.stopAnimation()
+            self.previewShimmerView.isHidden = true
+            self.previewView.isHidden = false
+        }
+        
+        switch status {
+        case .loading:
+            startShimmerAnimation()
+            
+        case .loaded(let url, let preview):
+            stopShimmerAnimation()
+            self.previewView.updatePreview(url: url, preview: preview)
+            
+        case .loadFail(let url):
+            stopShimmerAnimation()
+            self.previewView.setLoadpreviewFail(for: url)
+        }
     }
 }
 
@@ -182,7 +234,7 @@ extension EditLinkItemViewController: Presenting {
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
         
         _ = self.titleInputField
-            |> \.font .~ self.uiContext.fonts.get(16, weight: .regular)
+            |> \.font .~ self.uiContext.fonts.get(16, weight: .medium)
             |> \.placeholder .~ "Enter a Custom name"
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none

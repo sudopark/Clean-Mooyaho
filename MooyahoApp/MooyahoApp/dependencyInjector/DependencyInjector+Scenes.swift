@@ -187,9 +187,15 @@ extension DependencyInjector: EnterLinkURLSceneBuilable {
 extension DependencyInjector: EditLinkItemSceneBuilable {
     
     public func makeEditLinkItemScene(_ editCase: EditLinkItemCase,
+                                      collectionID: String?,
                                       completed: @escaping (ReadLink) -> Void) -> EditLinkItemScene {
+        
         let router = EditLinkItemRouter(nextSceneBuilders: self)
-        let viewModel = EditLinkItemViewModelImple(case: editCase, router: router, completed: completed)
+        let viewModel = EditLinkItemViewModelImple(collectionID: collectionID,
+                                                   editCase: editCase,
+                                                   readUsecase: self.readItemUsecase,
+                                                   router: router,
+                                                   completed: completed)
         let viewController = EditLinkItemViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

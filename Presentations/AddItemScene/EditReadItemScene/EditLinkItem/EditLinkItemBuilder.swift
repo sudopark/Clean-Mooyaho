@@ -20,12 +20,13 @@ import CommonPresenting
 // MARK: - Builder + DependencyInjector Extension
 
 public enum EditLinkItemCase {
-    case makeNew(url: String)
+    case makeNew( url: String)
     case edit(item: ReadLink)
 }
 
 public protocol EditLinkItemSceneBuilable {
     
     func makeEditLinkItemScene(_ editCase: EditLinkItemCase,
+                               collectionID: String?,
                                completed: @escaping (ReadLink) -> Void) -> EditLinkItemScene
 }

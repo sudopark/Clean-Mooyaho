@@ -74,8 +74,10 @@ extension AddItemNavigationRouter {
     public func pushConfirmAddLinkItemScene(at collectionID: String?,
                                             url: String,
                                             _ completed: @escaping (ReadLink) -> Void) {
+        
         guard let navigationController = self.embedNavigationController,
               let next = self.nextScenesBuilder?.makeEditLinkItemScene(.makeNew(url: url),
+                                                                       collectionID: collectionID,
                                                                        completed: completed) else {
                   return
               }
