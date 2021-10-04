@@ -103,7 +103,6 @@ extension EnterLinkURLViewController: Presenting {
         self.view.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 24)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
         }
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
