@@ -44,7 +44,7 @@ extension ReadCollectionMainRouter {
             return
         }
         
-        current.pushViewController(nextScene, animated: false)
+        current.viewControllers = [nextScene]
     }
     
     public func addNewColelctionAtCurrentCollection() {
