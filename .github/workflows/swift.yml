@@ -85,6 +85,17 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
+      - name: Viewer Scenes Unit Tests
+        id: test_viewer_scenes
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme ViewerScene \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
 
       - name: Domain Unit Tests
         id: test_domain
@@ -140,6 +151,11 @@ jobs:
 
       - name: Check Tests EditReadItem Scenes
         if: steps.test_edit_read_item_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Viewer Scenes
+        if: steps.test_viewer_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       
