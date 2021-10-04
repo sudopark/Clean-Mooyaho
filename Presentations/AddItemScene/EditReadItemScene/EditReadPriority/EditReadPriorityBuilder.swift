@@ -23,4 +23,7 @@ public protocol EditReadPrioritySceneBuilable {
     
     func makeSelectPriorityScene(startWithSelected: ReadPriority?,
                                  listener: ReadPrioritySelectListenable?) -> EditReadPriorityScene
+    
+    func makeChangePriorityScene(for item: ReadItem,
+                                 listener: ReadPriorityUpdateListenable?) -> EditReadPriorityScene
 }

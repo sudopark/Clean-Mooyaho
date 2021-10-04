@@ -14,10 +14,20 @@ import Optics
 
 import Domain
 import CommonPresenting
-import Alamofire
 
 
 public final class ReadPrioritySelectViewModelImple: BaseEditReadPriorityViewModelImple {
+    
+    private let startWith: ReadPriority?
+    
+    public init(startWithSelect: ReadPriority?,
+                router: EditReadPriorityRouting,
+                listener: ReadPrioritySelectListenable?) {
+        self.startWith = startWithSelect
+        super.init(router: router, listener: listener)
+    }
+    
+    override var startWithSelect: ReadPriority? { self.startWith }
     
     private var selectListener: ReadPrioritySelectListenable? {
         return self.listener as? ReadPrioritySelectListenable

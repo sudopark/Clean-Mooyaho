@@ -17,11 +17,6 @@ import Domain
 import CommonPresenting
 
 
-public enum EditPriorityCase {
-    case makeNew(startWithSelect: ReadPriority? = nil)
-    case edit(item: ReadItem)
-}
-
 public struct ReadPriorityCellViewMdoel {
     
     public let rawValue: Int
@@ -53,15 +48,11 @@ public protocol EditReadPriorityViewModel: AnyObject {
 
 public class BaseEditReadPriorityViewModelImple: EditReadPriorityViewModel {
     
-    
-    let editCase: EditPriorityCase
     let router: EditReadPriorityRouting
     weak var listener: EditReadPrioritySceneListenable?
     
-    public init(editCase: EditPriorityCase,
-                router: EditReadPriorityRouting,
+    public init(router: EditReadPriorityRouting,
                 listener: EditReadPrioritySceneListenable?) {
-        self.editCase = editCase
         self.router = router
         self.listener = listener
     }
@@ -74,7 +65,10 @@ public class BaseEditReadPriorityViewModelImple: EditReadPriorityViewModel {
     final class Subjects {
         let priorities = BehaviorRelay<[ReadPriority]>(value: [])
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
+        let isProcessing = BehaviorRelay<Bool>(value: false)
     }
+    
+    var startWithSelect: ReadPriority? { nil }
     
     let subjects = Subjects()
     let disposeBag = DisposeBag()
@@ -95,7 +89,7 @@ extension BaseEditReadPriorityViewModelImple {
     
     public func selectPriority(_ rawValue: Int) {
         
-        let oldOne = self.subjects.selectedPriority.value ?? self.editCase.startWith
+        let oldOne = self.subjects.selectedPriority.value ?? self.startWithSelect
         guard let newOne = ReadPriority(rawValue: rawValue), newOne != oldOne else {
             return
         }
@@ -110,7 +104,7 @@ extension BaseEditReadPriorityViewModelImple {
  
     public var cellViewModels: Observable<[ReadPriorityCellViewMdoel]> {
         
-        let startWith = self.editCase.startWith
+        let startWith = self.startWithSelect
         
         let asCellViewModels: ([ReadPriority], ReadPriority?) -> [ReadPriorityCellViewMdoel]
         asCellViewModels = { priorities, selected in
@@ -125,18 +119,8 @@ extension BaseEditReadPriorityViewModelImple {
     }
     
     public var isProcessing: Observable<Bool> {
-        return .empty()
-    }
-}
-
-
-private extension EditPriorityCase {
-    
-    var startWith: ReadPriority? {
-        switch self {
-        case let .makeNew(startWithSelect): return startWithSelect
-        case let .edit(item): return item.priority
-        }
+        return self.subjects.isProcessing
+            .distinctUntilChanged()
     }
 }
 
