@@ -36,7 +36,7 @@ extension EditLinkItemRouter {
     // EditLinkItemRouting implements
     public func requestRewind() {
         
-        guard let navigation = self.currentScene?.navigationController as? AddItemNavigationScene else {
+        guard let navigation = self.currentScene?.navigationController?.parent as? AddItemNavigationScene else {
             return
         }
         navigation.input?.requestpopToEnrerURLScene()

@@ -87,6 +87,12 @@ extension EditLinkItemViewController {
                 self?.titleInputField.text = title
             })
             .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirmSave()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindPreview() {
