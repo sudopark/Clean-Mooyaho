@@ -105,12 +105,7 @@ extension EditReadCollectionViewController: Presenting {
         self.setupBottomSlideLayout()
         
         bottomSlideMenuView.containerView.addSubview(self.confirmButton)
-        confirmButton.autoLayout.active(with: bottomSlideMenuView.containerView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
-            $0.heightAnchor.constraint(equalToConstant: 40)
-        }
+        confirmButton.setupLayout(bottomSlideMenuView.containerView)
         
         bottomSlideMenuView.containerView.addSubview(attributeStackView)
         attributeStackView.autoLayout.active(with: bottomSlideMenuView.containerView) {

@@ -41,14 +41,14 @@ extension BaseBottomSlideMenuView: Presenting {
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }
         self.containerBottomConstraint = containerView.bottomAnchor
-            .constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 10)
+            .constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: bottomOffset)
         NSLayoutConstraint.activate([self.containerBottomConstraint])
         
         self.addSubview(bottomAreaView)
         bottomAreaView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.topAnchor.constraint(equalTo: containerView.bottomAnchor)
+            $0.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
     }

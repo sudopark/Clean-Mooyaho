@@ -93,17 +93,17 @@ public final class BottomPullPangestureDismissalInteractor: PangestureDismissalI
         let gestureRecognizer = UIPanGestureRecognizer()
         gestureRecognizer.delegate = self
         targetView.addGestureRecognizer(gestureRecognizer)
-        
+
         return gestureRecognizer.rx.event
             .bind(onNext: { [weak self] gesture in
-                self?.handleLeftDismissPangesture(gesture, dismissController: dismissController)
+                self?.handleBottomDismissPangesture(gesture, dismissController: dismissController)
             })
     }
 }
 
 extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
     
-    private func handleLeftDismissPangesture(_ gesture: UIPanGestureRecognizer, dismissController: () -> Void) {
+    private func handleBottomDismissPangesture(_ gesture: UIPanGestureRecognizer, dismissController: () -> Void) {
         
         let transition = gesture.translation(in: gesture.view)
         
@@ -136,10 +136,15 @@ extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldReceive touch: UITouch) -> Bool {
-
+        
+        let isControllTapped = touch.view is UIControl
+        guard isControllTapped == false else {
+            return false
+        }
+        
         guard let view = viewController?.view else { return false }
         
         let scrollView = self.findScrollView(in: view, touch: touch)
