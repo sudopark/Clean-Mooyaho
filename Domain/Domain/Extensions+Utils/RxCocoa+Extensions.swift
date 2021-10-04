@@ -15,8 +15,8 @@ import RxCocoa
 
 extension Reactive where Base: UIButton {
     
-    public func throttleTap(_ time: TimeInterval = 800) -> Observable<Void> {
+    public func throttleTap(_ time: RxTimeInterval = .milliseconds(800)) -> Observable<Void> {
         return base.rx.tap
-            .throttle(.milliseconds(Int(time * 1000)), scheduler: MainScheduler.instance)
+            .throttle(time, scheduler: MainScheduler.instance)
     }
 }

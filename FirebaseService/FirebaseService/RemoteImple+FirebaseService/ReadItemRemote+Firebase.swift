@@ -15,15 +15,15 @@ import DataStore
 
 extension FirebaseServiceImple {
     
-    public func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]> { .empty() }
+    public func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]> { .just([]) }
     
-    public func requestLoadCollectionItems(collectionID: String) -> Maybe<[ReadItem]> { .empty() }
+    public func requestLoadCollectionItems(collectionID: String) -> Maybe<[ReadItem]> { .just([]) }
     
-    public func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> { .empty() }
+    public func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> { .just() }
     
-    public func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> { .empty() }
+    public func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> { .just() }
     
     public func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection> {
-        return .empty()
+        return .error(RemoteErrors.loadFail("not implemented", reason: nil))
     }
 }
