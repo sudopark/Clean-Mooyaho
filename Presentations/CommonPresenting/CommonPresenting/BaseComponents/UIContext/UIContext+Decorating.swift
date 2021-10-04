@@ -99,6 +99,18 @@ extension UIContext.Decorating {
     }
     
     @discardableResult
+    public static func roundedThumbnail(_ uiImageView: UIImageView,
+                                        radius: CGFloat) -> UIImageView {
+        return uiImageView
+            |> \.contentMode .~ .scaleAspectFill
+            |> \.layer.borderWidth .~ 1.0
+            |> \.layer.borderColor .~ (self.uiContext.colors.lineColor.cgColor as CGColor?)
+            |> \.backgroundColor .~ (self.uiContext.colors.lineColor as UIColor?)
+            |> \.layer.cornerRadius .~ radius
+            |> \.clipsToBounds .~ true
+    }
+    
+    @discardableResult
     public static func title(_ label: UILabel) -> UILabel {
         return label
             |> \.font .~ self.uiContext.fonts.get(18, weight: .bold)

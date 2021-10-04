@@ -418,11 +418,12 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     private func updateThumbnailIfPossible(with url: String?) {
         thumbNailView.cancelSetupThumbnail()
-        thumbNailView.isHidden = url == nil
+        thumbNailView.isHidden = true
         expandViewTrailing.constant = -12
         guard let url = url else { return }
         self.thumbNailView.setupThumbnail(url, resize: .init(width: 65, height: 65), completed:  { [weak self] result in
             guard case .success = result else { return }
+            self?.thumbNailView.isHidden = false
             self?.expandViewTrailing.constant = -12 - 4 - 65
         })
     }
@@ -471,11 +472,9 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     func setupStyling() {
     
-        self.thumbNailView.isHidden = true
-        self.thumbNailView.contentMode = .scaleAspectFit
-        self.thumbNailView.backgroundColor = self.uiContext.colors.lineColor
-        self.thumbNailView.layer.cornerRadius = 5
-        self.thumbNailView.clipsToBounds = true
+        _ = self.thumbNailView
+            |> flip(curry(self.uiContext.decorating.roundedThumbnail(_:radius:)))(5)
+            |> \.isHidden .~ true
         
         self.expandView.setupStyling()
         self.expandView.iconImageView.image = UIImage(named: "doc.text")

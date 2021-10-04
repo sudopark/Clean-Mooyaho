@@ -92,10 +92,8 @@ final class LinkPreviewView: BaseUIView, Presenting {
         self.stackView.spacing = 8
         self.stackView.distribution = .fill
         
-        self.thumbnailImageView.backgroundColor = self.uiContext.colors.lineColor
-        self.thumbnailImageView.contentMode = .scaleAspectFill
-        self.thumbnailImageView.layer.cornerRadius = 3
-        self.thumbnailImageView.clipsToBounds = true
+        _ = thumbnailImageView
+            |> flip(curry(self.uiContext.decorating.roundedThumbnail(_:radius:)))(3)
         
         _ = self.titleLabel
             |> self.uiContext.decorating.listSectionTitle
