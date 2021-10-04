@@ -222,9 +222,13 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
 
 extension DependencyInjector: EditReadPrioritySceneBuilable {
     
-    public func makeEditReadPriorityScene(listener: EditReadPrioritySceneListenable?) -> EditReadPriorityScene {
+    public func makeSelectPriorityScene(startWithSelected: ReadPriority?,
+                                        listener: ReadPrioritySelectListenable?) -> EditReadPriorityScene {
         let router = EditReadPriorityRouter(nextSceneBuilders: self)
-        let viewModel = EditReadPriorityViewModelImple(router: router, listener: listener)
+        let editCase: EditPriorityCase = .makeNew(startWithSelect: startWithSelected)
+        let viewModel = ReadPrioritySelectViewModelImple(editCase: editCase,
+                                                          router: router,
+                                                          listener: listener)
         let viewController = EditReadPriorityViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

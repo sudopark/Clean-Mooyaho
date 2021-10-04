@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -20,5 +21,6 @@ import CommonPresenting
 
 public protocol EditReadPrioritySceneBuilable {
     
-    func makeEditReadPriorityScene(listener: EditReadPrioritySceneListenable?) -> EditReadPriorityScene
+    func makeSelectPriorityScene(startWithSelected: ReadPriority?,
+                                 listener: ReadPrioritySelectListenable?) -> EditReadPriorityScene
 }
