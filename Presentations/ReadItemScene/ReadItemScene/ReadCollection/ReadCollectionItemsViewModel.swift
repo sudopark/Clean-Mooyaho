@@ -48,6 +48,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
+    var isEditable: Bool { get }
 }
 
 
@@ -242,6 +243,8 @@ extension ReadCollectionViewItemsModelImple {
         }
         return self.readItemUsecase.loadLinkPreview(linkItem.link)
     }
+    
+    public var isEditable: Bool { self.currentCollectionID != nil }
 }
 
 private extension Array where Element: ReadItem {

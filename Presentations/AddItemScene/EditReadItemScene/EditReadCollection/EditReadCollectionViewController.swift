@@ -101,7 +101,6 @@ extension EditReadCollectionViewController {
 extension EditReadCollectionViewController: Presenting {
     
     public func setupLayout() {
-        
         self.setupBottomSlideLayout()
         
         bottomSlideMenuView.containerView.addSubview(self.confirmButton)

@@ -22,7 +22,7 @@ public final class ReadCollectionMainViewController: BaseNavigationController, R
     public init(viewModel: ReadCollectionMainViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.isNavigationBarHidden = true
+        self.shouldHideNavigation = false
     }
     
     required init?(coder: NSCoder) {
@@ -67,6 +67,6 @@ extension ReadCollectionMainViewController: Presenting {
     }
     
     public func setupStyling() {
-        
+        self.navigationBar.backgroundColor = self.uiContext.colors.appBackground
     }
 }

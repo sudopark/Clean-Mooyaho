@@ -161,11 +161,11 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         
         self.priorityView.setupStyling()
         self.priorityView.iconView.image = UIImage(named: "arrow.up.arrow.down.square")
-        self.priorityView.keyLabel.text = "Priority"
+        self.priorityView.keyLabel.text = "Priority".localized
         
         self.categoryView.setupStyling()
         self.categoryView.iconView.image = UIImage(named: "list.dash")
-        self.categoryView.keyLabel.text = "Categories"
+        self.categoryView.keyLabel.text = "Categories".localized
         
         self.descriptionLabel.isHidden = true
         self.priorityView.isHidden = true
