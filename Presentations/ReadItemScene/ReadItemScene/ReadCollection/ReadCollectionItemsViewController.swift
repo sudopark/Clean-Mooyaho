@@ -53,6 +53,8 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        
+        self.viewModel.reloadCollectionItems()
     }
     
 }
