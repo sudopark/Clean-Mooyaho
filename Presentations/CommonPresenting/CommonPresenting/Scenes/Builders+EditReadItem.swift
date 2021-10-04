@@ -40,3 +40,17 @@ public protocol EditReadCollectionSceneBuilable {
                                      editCase: EditCollectionCase,
                                      completed: @escaping (ReadCollection) -> Void) -> EditReadCollectionScene
 }
+
+// MARK: - EditReadPriorityScene Interactable & Listenable
+
+public protocol EditReadPrioritySceneInteractable { }
+
+public protocol EditReadPrioritySceneListenable: AnyObject { }
+
+
+// MARK: - EditReadPriorityScene
+
+public protocol EditReadPriorityScene: Scenable, PangestureDismissableScene {
+    
+    var interactor: EditReadPrioritySceneInteractable? { get }
+}
