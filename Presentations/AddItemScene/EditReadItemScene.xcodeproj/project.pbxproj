@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F60153B227098E4700A86064 /* EditReadCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60153B127098E4700A86064 /* EditReadCollectionViewModelTests.swift */; };
+		F645F797270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645F796270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift */; };
 		F665B2562709692000A6361F /* EditLinkItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */; };
 		F66C2C212709054E003D56B1 /* EnterLinkURLViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */; };
 		F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */; };
@@ -64,6 +65,7 @@
 
 /* Begin PBXFileReference section */
 		F60153B127098E4700A86064 /* EditReadCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		F645F796270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPriorityChangeViewModelImple.swift; sourceTree = "<group>"; };
 		F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewModelTests.swift; sourceTree = "<group>"; };
 		F665B2612709882D00A6361F /* EditReadCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionRouter.swift; sourceTree = "<group>"; };
 		F665B2622709882D00A6361F /* EditReadCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				F6E30E16270B42CC0012A2A0 /* EditReadPriorityScene.swift */,
 				F6E30E17270B42CC0012A2A0 /* EditReadPriorityViewModel.swift */,
 				F6E30E23270B57580012A2A0 /* ReadPrioritySelectViewModelImple.swift */,
+				F645F796270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift */,
 			);
 			path = EditReadPriority;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */,
 				F6BBF16F2708422F00420A49 /* EnterLinkURLViewController.swift in Sources */,
 				F66C2C2B270909B5003D56B1 /* EditLinkItemBuilder.swift in Sources */,
+				F645F797270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift in Sources */,
 				F6C97B1B27095A4100990019 /* EditLinkItemView.swift in Sources */,
 				F6E30E18270B42CC0012A2A0 /* EditReadPriorityRouter.swift in Sources */,
 				F6E592CC27098B940087A623 /* EditReadCollectionRouter.swift in Sources */,
