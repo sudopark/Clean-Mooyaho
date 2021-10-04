@@ -38,7 +38,7 @@ public protocol ReadCollectionRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable
+public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
@@ -62,7 +62,11 @@ extension ReadCollectionItemsRouter {
     }
     
     public func showLinkDetail(_ linkID: String) {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(itemID: linkID) else {
+            return
+        }
+        self.currentScene?.present(next, animated: true)
     }
     
     public func routeToMakeNewCollectionScene(at collectionID: String?,

@@ -13,6 +13,7 @@ import CommonPresenting
 import MemberScenes
 import ReadItemScene
 import EditReadItemScene
+import ViewerScene
 
 
 // MARK: - Main Sceens
@@ -218,3 +219,20 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
         return viewController
     }
 }
+
+
+// MARK: - ViewerScenes
+
+extension DependencyInjector: InnerWebViewSceneBuilable {
+    
+    public func makeInnerWebViewScene(itemID: String) -> InnerWebViewScene {
+        let router = InnerWebViewRouter(nextSceneBuilders: self)
+        let viewModel = InnerWebViewViewModelImple(itemID: itemID,
+                                                   readItemUsecase: self.readItemUsecase,
+                                                   router: router)
+        let viewController = InnerWebViewViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+

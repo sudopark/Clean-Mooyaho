@@ -16,6 +16,10 @@
 		F64B12E3270B1FF0000B6AD2 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64B12E2270B1FF0000B6AD2 /* Common3rdParty.framework */; };
 		F64B12E5270B200D000B6AD2 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64B12E4270B200D000B6AD2 /* UsecaseDoubles.framework */; };
 		F64B12E7270B2014000B6AD2 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64B12E6270B2014000B6AD2 /* UnitTestHelpKit.framework */; };
+		F6851A29270B20FB0048197B /* InnerWebViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A24270B20FB0048197B /* InnerWebViewRouter.swift */; };
+		F6851A2A270B20FB0048197B /* InnerWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A25270B20FB0048197B /* InnerWebViewViewController.swift */; };
+		F6851A2C270B20FB0048197B /* InnerWebViewScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A27270B20FB0048197B /* InnerWebViewScene.swift */; };
+		F6851A2D270B20FB0048197B /* InnerWebViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A28270B20FB0048197B /* InnerWebViewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +43,10 @@
 		F64B12E2270B1FF0000B6AD2 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64B12E4270B200D000B6AD2 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64B12E6270B2014000B6AD2 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6851A24270B20FB0048197B /* InnerWebViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewRouter.swift; sourceTree = "<group>"; };
+		F6851A25270B20FB0048197B /* InnerWebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewViewController.swift; sourceTree = "<group>"; };
+		F6851A27270B20FB0048197B /* InnerWebViewScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewScene.swift; sourceTree = "<group>"; };
+		F6851A28270B20FB0048197B /* InnerWebViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +96,7 @@
 		F64B12C1270B1FB8000B6AD2 /* ViewerScene */ = {
 			isa = PBXGroup;
 			children = (
+				F6851A23270B20E80048197B /* InnerWebview */,
 				F64B12C2270B1FB8000B6AD2 /* ViewerScene.h */,
 			);
 			path = ViewerScene;
@@ -112,6 +121,17 @@
 				F64B12D8270B1FCC000B6AD2 /* Domain.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6851A23270B20E80048197B /* InnerWebview */ = {
+			isa = PBXGroup;
+			children = (
+				F6851A24270B20FB0048197B /* InnerWebViewRouter.swift */,
+				F6851A25270B20FB0048197B /* InnerWebViewViewController.swift */,
+				F6851A27270B20FB0048197B /* InnerWebViewScene.swift */,
+				F6851A28270B20FB0048197B /* InnerWebViewViewModel.swift */,
+			);
+			path = InnerWebview;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,6 +243,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6851A2D270B20FB0048197B /* InnerWebViewViewModel.swift in Sources */,
+				F6851A2A270B20FB0048197B /* InnerWebViewViewController.swift in Sources */,
+				F6851A2C270B20FB0048197B /* InnerWebViewScene.swift in Sources */,
+				F6851A29270B20FB0048197B /* InnerWebViewRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +450,7 @@
 		F64B12D5270B1FB8000B6AD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -447,6 +472,7 @@
 		F64B12D6270B1FB8000B6AD2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;

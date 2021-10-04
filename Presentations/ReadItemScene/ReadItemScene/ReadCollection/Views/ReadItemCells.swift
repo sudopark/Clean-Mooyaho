@@ -483,8 +483,5 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         self.expandView.addressLabel.isHidden = false
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
-        
-        self.expandView.isUserInteractionEnabled = false
-        self.isUserInteractionEnabled = false
     }
 }
