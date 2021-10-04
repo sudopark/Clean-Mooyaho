@@ -38,7 +38,7 @@ public protocol ReadCollectionRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable
+public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
@@ -63,15 +63,24 @@ extension ReadCollectionItemsRouter {
     
     public func routeToMakeNewCollectionScene(at collectionID: String?,
                                               _ completedHandler: @escaping (ReadCollection) -> Void) {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?
+                .makeEditReadCollectionScene(parentID: collectionID,
+                                             editCase: .makeNew, completed: completedHandler) else {
+            return
+        }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func routeToAddNewLink(at collectionID: String?,
                                   _ completionHandler: @escaping (ReadLink) -> Void) {
         guard let next = self.nextScenesBuilder?
                 .makeAddItemNavigationScene(at: collectionID, completionHandler) else {
-                    return
-                }
+            return
+        }
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
