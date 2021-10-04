@@ -47,6 +47,16 @@ public protocol EditReadPrioritySceneInteractable { }
 
 public protocol EditReadPrioritySceneListenable: AnyObject { }
 
+public protocol ReadPrioritySelectListenable: EditReadPrioritySceneListenable {
+
+    func editReadPriority(didSelect priority: ReadPriority)
+}
+
+public protocol ReadPriorityUpdateListenable: EditReadPrioritySceneListenable {
+    
+    func editReadPriority(didUpdate priority: ReadPriority, for item: ReadItem)
+}
+
 
 // MARK: - EditReadPriorityScene
 

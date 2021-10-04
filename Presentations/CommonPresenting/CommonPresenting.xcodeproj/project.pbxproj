@@ -89,6 +89,8 @@
 		F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9275268B815A00EA67EE /* UIView+Extension.swift */; };
 		F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */; };
 		F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */; };
+		F6E30E1E270B4BBD0012A2A0 /* ReadPriority+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */; };
+		F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E25270B5A180012A2A0 /* EmptyListener.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
@@ -194,6 +196,8 @@
 		F6DA9275268B815A00EA67EE /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extension.swift"; sourceTree = "<group>"; };
 		F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+ReadItem.swift"; sourceTree = "<group>"; };
+		F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadPriority+Extensions.swift"; sourceTree = "<group>"; };
+		F6E30E25270B5A180012A2A0 /* EmptyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListener.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickPermissionCheckService.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 				2B39E27626387BCB003EE954 /* Sceneable.swift */,
 				F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */,
 				F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */,
+				F6E30E25270B5A180012A2A0 /* EmptyListener.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -378,6 +383,7 @@
 				F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */,
 				F665A64F26FB674C00E866B7 /* UICollectionView+Extension.swift */,
 				F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */,
+				F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -596,6 +602,7 @@
 				F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */,
 				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
+				F6E30E1E270B4BBD0012A2A0 /* ReadPriority+Extensions.swift in Sources */,
 				F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */,
 				F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
@@ -636,6 +643,7 @@
 				F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */,
 				F645A66226936AA600E04D29 /* ConfrimButton.swift in Sources */,
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
+				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */,
 				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
