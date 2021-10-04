@@ -38,7 +38,7 @@ public protocol ReadCollectionRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable
+public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
@@ -54,7 +54,11 @@ extension ReadCollectionItemsRouter {
     }
     
     public func moveToSubCollection(collectionID: String) {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?.makeReadCollectionItemScene(collectionID: collectionID) else {
+            return
+        }
+        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func showLinkDetail(_ linkID: String) {

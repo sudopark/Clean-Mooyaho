@@ -30,9 +30,10 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
     let titleHeaderView = ReadCollectionTtileHeaderView()
     let tableView = UITableView()
     
+    private let cellActionSubject = PublishSubject<ReadItemCellActions>()
+    
     public init(viewModel: ReadCollectionItemsViewModel) {
         self.viewModel = viewModel
-//        self.viewModel = FakeReadCollectionViewItemsModel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -91,6 +92,15 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
             .asDriver(onErrorDriveWith: .never())
             .drive(self.tableView.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
+        
+        self.cellActionSubject
+            .subscribe(onNext: { [weak self] action in
+                switch action {
+                case let .itemSelected(uid):
+                    self?.viewModel.openItem(uid)
+                }
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func makeCollectionViewDataSource() -> DataSource {
@@ -104,11 +114,13 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
             
             case let collection as ReadCollectionCellViewModel:
                 let cell: ReadCollectionExpandCell = tableView.dequeueCell()
+                cell.cellActionSubject = self.cellActionSubject
                 cell.setupCell(collection)
                 return cell
 
             case let link as ReadLinkCellViewModel:
                 let cell: ReadLinkExpandCell = tableView.dequeueCell()
+                cell.cellActionSubject = self.cellActionSubject
                 cell.setupCell(link)
                 cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid))
                 return cell
@@ -175,6 +187,7 @@ extension ReadCollectionItemsViewController: Presenting {
             // Fallback on earlier versions
         }
         self.tableView.estimatedRowHeight = 100
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.separatorStyle = .none
         self.tableView.delegate = self
         
