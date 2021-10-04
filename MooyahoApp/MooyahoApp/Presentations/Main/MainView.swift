@@ -14,56 +14,6 @@ import RxCocoa
 import CommonPresenting
 
 
-// MARK: - CustomNavigationBar
-
-final class CustomNavigationBar: BaseUIView, Presenting {
-    
-    let backButton = UIButton()
-    let titleLabel = UILabel()
-    let editButton = UIButton()
-    
-    func setupLayout() {
-        
-        self.addSubview(backButton)
-        backButton.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.widthAnchor.constraint(equalToConstant: 22)
-            $0.heightAnchor.constraint(equalToConstant: 22)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-        }
-        
-        self.addSubview(editButton)
-        editButton.autoLayout.active(with: self) {
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
-        }
-        
-        self.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: self.backButton.trailingAnchor, constant: 16)
-            $0.trailingAnchor.constraint(lessThanOrEqualTo: self.editButton.leadingAnchor, constant: -16)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-        }
-    }
-    
-    func setupStyling() {
-        
-        self.backgroundColor = self.uiContext.colors.appBackground
-        
-        self.backButton.setImage(UIImage(named: "chevron.backward"), for: .normal)
-        self.backButton.isHidden = true
-        
-        self.titleLabel.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.titleLabel.textColor = self.uiContext.colors.text
-        self.titleLabel.isHidden = true
-        
-        self.editButton.setTitle("Edit".localized, for: .normal)
-        self.editButton.setTitleColor(UIColor.systemBlue, for: .normal)
-        self.editButton.titleLabel?.font = self.uiContext.fonts.get(14, weight: .regular)
-    }
-}
-
-
 // MARK: - FloatingButtonButtonView
 
 final class FloatingButtonButtonView: BaseUIView, Presenting {
@@ -129,8 +79,6 @@ extension Reactive where Base == FloatingButtonButtonView {
 
 final class MainView: BaseUIView {
     
-    let customNavigationBar = CustomNavigationBar()
-    
     let mainContainerView = UIView()
     let bottomSlideContainerView = UIView()
     let bottomSearchBarView = SingleLineInputView()
@@ -146,18 +94,9 @@ extension MainView: Presenting {
     
     func setupLayout() {
         
-        self.addSubview(customNavigationBar)
-        customNavigationBar.autoLayout.active(with: self) {
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 44)
-        }
-        customNavigationBar.setupLayout()
-        
         self.addSubview(mainContainerView)
         mainContainerView.autoLayout.active(with: self) {
-            $0.topAnchor.constraint(equalTo: customNavigationBar.bottomAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
@@ -210,9 +149,6 @@ extension MainView: Presenting {
     
     
     func setupStyling() {
-        
-        self.customNavigationBar.setupStyling()
-        self.customNavigationBar.editButton.isHidden = true
         
         self.mainContainerView.backgroundColor = self.uiContext.colors.raw.clear
         

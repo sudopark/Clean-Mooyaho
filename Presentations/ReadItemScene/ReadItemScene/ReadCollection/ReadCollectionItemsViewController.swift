@@ -66,16 +66,29 @@ extension ReadCollectionItemsViewController {
     
     private func bind() {
         
-        self.viewModel.collectionTitle
-            .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] title in
-                self?.titleHeaderView.setupTitle(title)
-            })
-            .disposed(by: self.disposeBag)
-        
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindTableView()
+                self?.bindTitleView()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.setupEditButtonIfPossible()
+    }
+    
+    private func setupEditButtonIfPossible() {
+        
+        guard self.viewModel.isEditable else {
+            self.navigationItem.rightBarButtonItem = nil
+            return
+        }
+        
+        let button = UIBarButtonItem(title: "Edit".localized, image: nil, primaryAction: nil, menu: nil)
+        self.navigationItem.rightBarButtonItem = button
+
+        button.rx.tap
+            .subscribe(onNext: { [weak self] in
+                // TODO: start edit mode
             })
             .disposed(by: self.disposeBag)
     }
@@ -160,12 +173,49 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - bind scroll and hide title
+
+extension ReadCollectionItemsViewController {
+    
+    private var isTitleHaderViewShowing: Observable<Bool> {
+        
+        let checkScrollAmount: (CGPoint) -> Bool? = { [weak self] point in
+            guard let self = self, self.titleHeaderView.frame.height > 0 else { return nil }
+            return point.y <= self.titleHeaderView.frame.height
+        }
+        return self.tableView.rx.contentOffset
+            .compactMap(checkScrollAmount)
+            .distinctUntilChanged()
+    }
+    
+    private func bindTitleView() {
+        
+        let selectTitle: (String, Bool) -> String? = { title, isHeaderShowing in
+            return isHeaderShowing ? nil : title
+        }
+        Observable
+            .combineLatest(self.viewModel.collectionTitle,
+                           self.isTitleHaderViewShowing,
+                           resultSelector: selectTitle)
+            .startWith(nil)
+            .subscribe(onNext: { [weak self] title in
+                self?.title = title
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.collectionTitle
+            .subscribe(onNext: { [weak self] title in
+                self?.titleHeaderView.setupTitle(title)
+            })
+            .disposed(by: self.disposeBag)
+    }
+}
+
 // MARK: - setup presenting
 
 extension ReadCollectionItemsViewController: Presenting {
     
     public func setupLayout() {
-        
         self.view.addSubview(tableView)
         tableView.autoLayout.fill(self.view, withSafeArea: true)
         
