@@ -48,6 +48,8 @@
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
+		F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; };
+		F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F69C1CC926A9C3AC0067315B /* StubFCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C1CC826A9C3AC0067315B /* StubFCMService.swift */; };
 		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
@@ -92,6 +94,7 @@
 				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
 				F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
+				F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */,
 				F6BBF17B2708523000420A49 /* EditReadItemScene.framework in Embed Frameworks */,
 				2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */,
 			);
@@ -146,6 +149,7 @@
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		F6851A20270B20640048197B /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69C1CC826A9C3AC0067315B /* StubFCMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFCMService.swift; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
@@ -181,6 +185,7 @@
 				F6BBF17A2708523000420A49 /* EditReadItemScene.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
+				F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
 				F6ECE4DA26FAF8B3008D7ECA /* FirebaseService.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
@@ -351,6 +356,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6851A20270B20640048197B /* ViewerScene.framework */,
 				F6BBF1792708523000420A49 /* EditReadItemScene.framework */,
 				F6BBF14927083EDB00420A49 /* AddItemScene.framework */,
 				F6ECE4D926FAF8B3008D7ECA /* FirebaseService.framework */,
