@@ -10,30 +10,58 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
 
 
+public enum EditPriorityCase {
+    case makeNew(startWithSelect: ReadPriority? = nil)
+    case edit(item: ReadItem)
+}
+
+public struct ReadPriorityCellViewMdoel {
+    
+    public let rawValue: Int
+    public let descriptionText: String
+    public var isSelected: Bool = false
+    
+    public init(priority: ReadPriority) {
+        self.rawValue = priority.rawValue
+        self.descriptionText = priority.longDescription
+    }
+}
+
 // MARK: - EditReadPriorityViewModel
 
 public protocol EditReadPriorityViewModel: AnyObject {
-
+    
     // interactor
+    func showPriorities()
+    func selectPriority(_ rawValue: Int)
+    func confirmSelect()
     
     // presenter
+    var cellViewModels: Observable<[ReadPriorityCellViewMdoel]> { get }
+    var isProcessing: Observable<Bool> { get }
 }
 
 
 // MARK: - EditReadPriorityViewModelImple
 
-public final class EditReadPriorityViewModelImple: EditReadPriorityViewModel {
+public class BaseEditReadPriorityViewModelImple: EditReadPriorityViewModel {
     
-    private let router: EditReadPriorityRouting
-    private weak var listener: EditReadPrioritySceneListenable?
     
-    public init(router: EditReadPriorityRouting,
+    let editCase: EditPriorityCase
+    let router: EditReadPriorityRouting
+    weak var listener: EditReadPrioritySceneListenable?
+    
+    public init(editCase: EditPriorityCase,
+                router: EditReadPriorityRouting,
                 listener: EditReadPrioritySceneListenable?) {
+        self.editCase = editCase
         self.router = router
         self.listener = listener
     }
@@ -43,24 +71,99 @@ public final class EditReadPriorityViewModelImple: EditReadPriorityViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
-        
+    final class Subjects {
+        let priorities = BehaviorRelay<[ReadPriority]>(value: [])
+        let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
     }
     
-    private let subjects = Subjects()
-    private let disposeBag = DisposeBag()
+    let subjects = Subjects()
+    let disposeBag = DisposeBag()
+    
+    // override
+    public func confirmSelect() { }
 }
 
 
 // MARK: - EditReadPriorityViewModelImple Interactor
 
-extension EditReadPriorityViewModelImple {
+extension BaseEditReadPriorityViewModelImple {
     
+    public func showPriorities() {
+        let priorities = ReadPriority.allCases.sorted(by: { $0.rawValue > $1.rawValue })
+        self.subjects.priorities.accept(priorities)
+    }
+    
+    public func selectPriority(_ rawValue: Int) {
+        
+        let oldOne = self.subjects.selectedPriority.value ?? self.editCase.startWith
+        guard let newOne = ReadPriority(rawValue: rawValue), newOne != oldOne else {
+            return
+        }
+        self.subjects.selectedPriority.accept(newOne)
+    }
 }
 
 
 // MARK: - EditReadPriorityViewModelImple Presenter
 
-extension EditReadPriorityViewModelImple {
+extension BaseEditReadPriorityViewModelImple {
+ 
+    public var cellViewModels: Observable<[ReadPriorityCellViewMdoel]> {
+        
+        let startWith = self.editCase.startWith
+        
+        let asCellViewModels: ([ReadPriority], ReadPriority?) -> [ReadPriorityCellViewMdoel]
+        asCellViewModels = { priorities, selected in
+            let selected = selected ?? startWith
+            return priorities.asCellViewModels(selected)
+        }
+        return Observable.combineLatest(
+            self.subjects.priorities.filter { $0.isNotEmpty },
+            self.subjects.selectedPriority,
+            resultSelector: asCellViewModels
+        )
+    }
     
+    public var isProcessing: Observable<Bool> {
+        return .empty()
+    }
+}
+
+
+private extension EditPriorityCase {
+    
+    var startWith: ReadPriority? {
+        switch self {
+        case let .makeNew(startWithSelect): return startWithSelect
+        case let .edit(item): return item.priority
+        }
+    }
+}
+
+private extension ReadPriority {
+    
+    var longDescription: String {
+        let text: String = {
+            switch self {
+            case .afterAWhile: return ""
+            case .onTheWaytoWork: return ""
+            case .beforeGoToBed: return ""
+            case .today: return ""
+            case .thisWeek: return ""
+            case .someDay: return ""
+            case .beforeDying: return ""
+            }
+        }()
+        return "\(self.emoji) \(text)"
+    }
+}
+
+private extension Array where Element == ReadPriority {
+    
+    func asCellViewModels(_ selected: ReadPriority?) -> [ReadPriorityCellViewMdoel] {
+        return self.map {
+            return ReadPriorityCellViewMdoel(priority: $0)
+                |> \.isSelected .~ (selected?.rawValue == $0.rawValue)
+        }
+    }
 }

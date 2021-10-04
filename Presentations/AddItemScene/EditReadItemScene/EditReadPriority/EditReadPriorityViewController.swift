@@ -44,17 +44,17 @@ final class ReadPriorityCell: BaseTableViewCell, Presenting {
     }
 }
 
-public final class EditReadPriorityViewController: BaseViewController, EditReadPriorityScene,
-                                                   BottomSlideViewSupporatble{
+public final class EditReadPriorityViewController<ViewModel: EditReadPriorityViewModel>
+    : BaseViewController, EditReadPriorityScene, BottomSlideViewSupporatble{
     
     public let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
     private let titleLabel = UILabel()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let confirmButton = ConfirmButton()
     
-    let viewModel: EditReadPriorityViewModel
+    let viewModel: ViewModel
     
-    public init(viewModel: EditReadPriorityViewModel) {
+    public init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

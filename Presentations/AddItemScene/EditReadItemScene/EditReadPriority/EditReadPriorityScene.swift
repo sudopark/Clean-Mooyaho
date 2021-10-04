@@ -15,7 +15,7 @@ import CommonPresenting
 
 // MARK: - EditReadPriorityViewModelImple conform EditReadPrioritySceneInteractor
 
-extension EditReadPriorityViewModelImple: EditReadPrioritySceneInteractable {
+extension BaseEditReadPriorityViewModelImple: EditReadPrioritySceneInteractable {
 
 }
 

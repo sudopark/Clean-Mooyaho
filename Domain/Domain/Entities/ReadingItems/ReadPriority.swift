@@ -9,7 +9,7 @@
 import Foundation
 
 
-public enum ReadPriority: Int {
+public enum ReadPriority: Int, CaseIterable {
     case beforeDying = 0
     case someDay = 10
     case thisWeek = 20
