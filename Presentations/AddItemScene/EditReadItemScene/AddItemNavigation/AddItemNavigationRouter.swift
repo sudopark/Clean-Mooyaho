@@ -45,6 +45,14 @@ public final class AddItemNavigationRouter: Router<AddItemNavigationRouterBuilda
 
 extension AddItemNavigationRouter {
     
+    private var urlEnterSceneHeight: CGFloat {
+        return 180
+    }
+    
+    private var confirmAddSceneHeigjt: CGFloat {
+        return 330
+    }
+    
     public func prepareNavigation() {
         guard let scene = self.currentScene as? AddItemNavigationScene else { return }
         let containerView = scene.navigationdContainerView
@@ -56,7 +64,7 @@ extension AddItemNavigationRouter {
         containerView.addSubview(navigationController.view)
         navigationController.view.autoLayout.fill(containerView)
         self.embedNavigationHeightConstranit = navigationController.view.heightAnchor
-            .constraint(equalToConstant: 180)
+            .constraint(equalToConstant: urlEnterSceneHeight)
         self.embedNavigationHeightConstranit?.isActive = true
         navigationController.didMove(toParent: scene)
         self.embedNavigationController = navigationController
@@ -82,13 +90,13 @@ extension AddItemNavigationRouter {
                                                                        completed: completed) else {
                   return
               }
-        self.embedNavigationHeightConstranit?.constant = 330
+        self.embedNavigationHeightConstranit?.constant = confirmAddSceneHeigjt
         navigationController.pushViewController(next, animated: true)
     }
     
     public func popToEnrerURLScene() {
         
         self.embedNavigationController?.popViewController(animated: true)
-        self.embedNavigationHeightConstranit?.constant = 180
+        self.embedNavigationHeightConstranit?.constant = urlEnterSceneHeight
     }
 }
