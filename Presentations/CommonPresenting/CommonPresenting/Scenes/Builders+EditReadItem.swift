@@ -25,3 +25,18 @@ public protocol AddItemNavigationSceneBuilable {
     func makeAddItemNavigationScene(at collectionID: String?,
                                     _ completed: @escaping (ReadLink) -> Void) -> AddItemNavigationScene
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public enum EditCollectionCase {
+    case makeNew
+    case edit(ReadCollection)
+}
+
+public protocol EditReadCollectionSceneBuilable {
+    
+    func makeEditReadCollectionScene(parentID: String?,
+                                     editCase: EditCollectionCase,
+                                     completed: @escaping (ReadCollection) -> Void) -> EditReadCollectionScene
+}

@@ -17,10 +17,13 @@ import CommonPresenting
 
 // MARK: - EditReadCollectionViewController
 
-public final class EditReadCollectionViewController: BaseViewController, EditReadCollectionScene {
+public final class EditReadCollectionViewController: BaseViewController, EditReadCollectionScene,
+                                                     BottomSlideViewSupporatble {
     
+    public let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
     private let titleLabel = UILabel()
     private let textField = UITextField()
+    private let descriptionInputField = UITextField()
     private let underLineView = UIView()
     private let attributeStackView = UIStackView()
     private let priorityLabelView = KeyAndLabeledValueView()
@@ -55,6 +58,9 @@ public final class EditReadCollectionViewController: BaseViewController, EditRea
         self.bind()
     }
     
+    public func requestCloseScene() {
+        self.viewModel.closeScene()
+    }
 }
 
 // MARK: - bind
@@ -63,6 +69,30 @@ extension EditReadCollectionViewController {
     
     private func bind() {
         
+        self.bindBottomSlideMenuView()
+        
+        self.textField.rx.text.orEmpty
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.enterName(text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.descriptionInputField.rx.text.orEmpty
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.enterDescription(text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirmUpdate()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isConfirmable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.confirmButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -70,18 +100,20 @@ extension EditReadCollectionViewController {
 
 extension EditReadCollectionViewController: Presenting {
     
-    
     public func setupLayout() {
-        self.view.addSubview(self.confirmButton)
-        confirmButton.autoLayout.active(with: self.view) {
+        
+        self.setupBottomSlideLayout()
+        
+        bottomSlideMenuView.containerView.addSubview(self.confirmButton)
+        confirmButton.autoLayout.active(with: bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
         
-        self.view.addSubview(attributeStackView)
-        attributeStackView.autoLayout.active(with: self.view) {
+        bottomSlideMenuView.containerView.addSubview(attributeStackView)
+        attributeStackView.autoLayout.active(with: bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -20)
@@ -103,31 +135,42 @@ extension EditReadCollectionViewController: Presenting {
         categoriesLabelView.setupLayout()
         categoriesLabelView.labelView.limitHeight(max: 18)
         
-        self.view.addSubview(underLineView)
-        underLineView.autoLayout.active(with: self.view) {
+        bottomSlideMenuView.containerView.addSubview(underLineView)
+        underLineView.autoLayout.active(with: bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: attributeStackView.topAnchor, constant: -16)
             $0.heightAnchor.constraint(equalToConstant: 1)
         }
-        self.view.addSubview(textField)
-        textField.autoLayout.active(with: self.view) {
+        
+        bottomSlideMenuView.containerView.addSubview(descriptionInputField)
+        descriptionInputField.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: underLineView.topAnchor, constant: -8)
         }
         
-        self.view.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: self.view) {
+        bottomSlideMenuView.containerView.addSubview(textField)
+        textField.autoLayout.active(with: bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.bottomAnchor.constraint(equalTo: self.underLineView.topAnchor, constant: -8)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: descriptionInputField.topAnchor, constant: -12)
+        }
+        
+        bottomSlideMenuView.containerView.addSubview(titleLabel)
+        titleLabel.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.bottomAnchor.constraint(equalTo: self.textField.topAnchor, constant: -16)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
         }
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         titleLabel.numberOfLines = 1
     }
     
     public func setupStyling() {
+        
+        self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
@@ -138,6 +181,14 @@ extension EditReadCollectionViewController: Presenting {
             |> \.placeholder .~ "Enter a collection name"
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
+        
+        let descriptionColor: UIColor? = self.uiContext.colors.descriptionText
+        _ = self.descriptionInputField
+            |> \.font .~ self.uiContext.fonts.get(13, weight: .regular)
+            |> \.placeholder .~ "collection description"
+            |> \.autocorrectionType .~ .no
+            |> \.autocapitalizationType .~ .none
+            |> \.textColor .~ descriptionColor
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
         

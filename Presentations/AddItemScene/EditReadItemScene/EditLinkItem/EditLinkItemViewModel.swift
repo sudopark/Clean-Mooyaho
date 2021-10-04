@@ -108,6 +108,8 @@ extension EditLinkItemViewModelImple {
     
     public func confirmSave() {
         
+        guard self.subjects.isProcessing.value == false else { return }
+        
         let newItem = self.prepareNewLinkItem()
         
         let completed: () -> Void = { [weak self] in

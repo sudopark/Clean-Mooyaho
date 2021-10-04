@@ -43,7 +43,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
     }
     
     open func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
-        return self.scenario.updateLinkResult.asMaybe()
+        return self.scenario.updateCollectionResult.asMaybe()
     }
     
     open func updateLink(_ link: ReadLink) -> Maybe<Void> {

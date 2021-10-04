@@ -73,7 +73,7 @@ public protocol EditReadCollectionSceneOutput { }
 
 // MARK: - EditReadCollectionScene
 
-public protocol EditReadCollectionScene: Scenable {
+public protocol EditReadCollectionScene: Scenable, PangestureDismissableScene {
     
     var input: EditReadCollectionSceneInput? { get }
 

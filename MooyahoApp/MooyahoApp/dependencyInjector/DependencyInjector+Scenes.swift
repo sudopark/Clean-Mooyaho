@@ -204,9 +204,15 @@ extension DependencyInjector: EditLinkItemSceneBuilable {
 
 extension DependencyInjector: EditReadCollectionSceneBuilable {
     
-    public func makeEditReadCollectionScene() -> EditReadCollectionScene {
+    public func makeEditReadCollectionScene(parentID: String?,
+                                            editCase: EditCollectionCase,
+                                            completed: @escaping (ReadCollection) -> Void) -> EditReadCollectionScene {
         let router = EditReadCollectionRouter(nextSceneBuilders: self)
-        let viewModel = EditReadCollectionViewModelImple(router: router)
+        let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
+                                                         editCase: editCase,
+                                                         updateUsecase: self.readItemUsecase,
+                                                         router: router,
+                                                         completed: completed)
         let viewController = EditReadCollectionViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
