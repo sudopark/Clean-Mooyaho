@@ -16,11 +16,7 @@ import CommonPresenting
 
 // MARK: - EditReadCollectionViewModelImple conform EditReadCollectionSceneInput and EditReadCollectionSceneOutput
 
-extension EditReadCollectionViewModelImple: EditReadCollectionSceneInput {
-
-}
-
-extension EditReadCollectionViewModelImple: EditReadCollectionSceneOutput {
+extension EditReadCollectionViewModelImple: EditReadCollectionSceneInteractable {
 
 }
 
@@ -28,11 +24,7 @@ extension EditReadCollectionViewModelImple: EditReadCollectionSceneOutput {
 
 extension EditReadCollectionViewController {
 
-    public var input: EditReadCollectionSceneInput? {
-        return self.viewModel as? EditReadCollectionSceneInput
-    }
-
-    public var output: EditReadCollectionSceneOutput? {
-        return self.viewModel as? EditReadCollectionSceneOutput
+    public var interactor: EditReadCollectionSceneInteractable? {
+        return self.viewModel as? EditReadCollectionSceneInteractable
     }
 }

@@ -25,6 +25,9 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
     var didClosed: Bool?
     var didErrorAlerted: Bool?
     var disposeBag: DisposeBag!
+    var didRequestedStartWithPriority: ReadPriority?
+    var mockSelectedPriority: ReadPriority?
+    private var editCollectionSceneInteractor: EditReadCollectionSceneInteractable?
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -35,6 +38,8 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
         self.didUpdated = nil
         self.didClosed = nil
         self.didErrorAlerted = nil
+        self.editCollectionSceneInteractor = nil
+        self.didRequestedStartWithPriority = nil
     }
     
     private func makeViewModel(editCase: EditCollectionCase,
@@ -44,10 +49,12 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
             |> \.updateCollectionResult .~ (shouldSaveFail ? .failure(ApplicationErrors.invalid) : .success(()))
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
         
-        return EditReadCollectionViewModelImple(parentID: "some",
-                                                editCase: editCase,
-                                                updateUsecase: stubUsecase,
-                                                router: self) { self.didUpdated?($0) }
+        let viewModel = EditReadCollectionViewModelImple(parentID: "some",
+                                                         editCase: editCase,
+                                                         updateUsecase: stubUsecase,
+                                                         router: self) { self.didUpdated?($0) }
+        self.editCollectionSceneInteractor = viewModel
+        return viewModel
     }
 }
 
@@ -107,6 +114,70 @@ extension EditReadCollectionViewModelTests {
 }
 
 
+// MARK: - select priority
+ 
+extension EditReadCollectionViewModelTests {
+    
+    func testViewModel_whenAfterSelectNewPriority_updatePriority() {
+        // given
+        let expect = expectation(description: "우선순위 선택 이후에 업데이트")
+        let viewModel = self.makeViewModel(editCase: .makeNew)
+        self.mockSelectedPriority = .beforeDying
+        
+        // when
+        let newPriority = self.waitFirstElement(expect, for: viewModel.priority, skip: 1) {
+            viewModel.addPriority()
+        }
+        
+        // then
+        XCTAssertEqual(newPriority, .beforeDying)
+    }
+    
+    func testViewModel_requestAddPriority_startWithPreviousSelectedValue() {
+        // given
+        let expect = expectation(description: "이전에 선택했던 priority 값과 함께 우선순위 선택 요청")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(editCase: .makeNew)
+        
+        // when
+        let priorities = self.waitElements(expect, for: viewModel.priority, skip: 1) {
+            self.mockSelectedPriority = .afterAWhile
+            viewModel.addPriority()
+            
+            self.mockSelectedPriority = .beforeDying
+            viewModel.addPriority()
+        }
+        
+        // then
+        XCTAssertEqual(priorities.count, 2)
+        XCTAssertEqual(self.didRequestedStartWithPriority, .afterAWhile)
+    }
+    
+    func testViewModel_confirmSaveWithPriority() {
+        // given
+        let expect = expectation(description: "선택된 우선순위와 함께 콜렉션 생성")
+        var newCollection: ReadCollection?
+        let viewModel = self.makeViewModel(editCase: .makeNew)
+        
+        viewModel.enterName("some name")
+        self.mockSelectedPriority = .afterAWhile
+        viewModel.addPriority()
+        
+        self.didUpdated = {
+            newCollection = $0
+            expect.fulfill()
+        }
+        
+        // when
+        viewModel.confirmUpdate()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(newCollection?.priority, .afterAWhile)
+    }
+}
+
+
 extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
     
     func closeScene(animated: Bool, completed: (() -> Void)?) {
@@ -116,5 +187,11 @@ extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
     
     func alertError(_ error: Error) {
         self.didErrorAlerted = true
+    }
+    
+    func selectPriority(startWith: ReadPriority?) {
+        self.didRequestedStartWithPriority = startWith
+        guard let mock = self.mockSelectedPriority else { return }
+        self.editCollectionSceneInteractor?.editReadPriority(didSelect: mock)
     }
 }

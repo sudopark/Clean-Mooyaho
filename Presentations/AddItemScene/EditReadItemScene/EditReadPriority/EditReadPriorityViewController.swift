@@ -10,6 +10,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 import Prelude
 import Optics
 
@@ -19,7 +20,7 @@ import CommonPresenting
 
 final class ReadPriorityCell: BaseTableViewCell, Presenting {
     
-    let label = UILabel()
+    let explainLabel = UILabel()
     
     override func afterViewInit() {
         super.afterViewInit()
@@ -27,25 +28,36 @@ final class ReadPriorityCell: BaseTableViewCell, Presenting {
         self.setupStyling()
     }
     
+    func setupCell(_ cellViewModel: ReadPriorityCellViewMdoel) {
+        
+        self.explainLabel.text = cellViewModel.descriptionText
+        self.accessoryType = cellViewModel.isSelected ? .checkmark : .none
+    }
+    
     func setupLayout() {
-        self.contentView.addSubview(label)
-        label.autoLayout.active(with: self.contentView) {
+        self.contentView.addSubview(explainLabel)
+        explainLabel.autoLayout.active(with: self.contentView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
             $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -12)
-            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
         }
     }
     
     func setupStyling() {
         
-        self.label.font = self.uiContext.fonts.get(15, weight: .regular)
-        self.label.textColor = self.uiContext.colors.text
+        self.explainLabel.font = self.uiContext.fonts.get(15, weight: .regular)
+        self.explainLabel.textColor = self.uiContext.colors.text
+        self.explainLabel.numberOfLines = 1
     }
 }
 
 public final class EditReadPriorityViewController<ViewModel: EditReadPriorityViewModel>
-    : BaseViewController, EditReadPriorityScene, BottomSlideViewSupporatble{
+    : BaseViewController, EditReadPriorityScene, BottomSlideViewSupporatble {
+    
+    private typealias CVM = ReadPriorityCellViewMdoel
+    private typealias Section = SectionModel<String, CVM>
+    private typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
     public let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
     private let titleLabel = UILabel()
@@ -53,6 +65,8 @@ public final class EditReadPriorityViewController<ViewModel: EditReadPriorityVie
     private let confirmButton = ConfirmButton()
     
     let viewModel: ViewModel
+    private var dataSource: DataSource!
+    private let tableViewDelegate = TableViewDelegate()
     
     public init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -90,6 +104,45 @@ extension EditReadPriorityViewController {
     private func bind() {
         
         self.bindBottomSlideMenuView()
+        self.viewModel.showPriorities()
+        
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindTableView()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirmSelect()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindTableView() {
+        
+        self.dataSource = self.makeDataSource()
+        
+        self.viewModel.cellViewModels
+            .map { [Section(model: "priorities", items: $0)] }
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.tableView.rx.items(dataSource: self.dataSource))
+            .disposed(by: self.disposeBag)
+        
+        self.tableView.rx.modelSelected(CVM.self)
+            .subscribe(onNext: { [weak self] model in
+                self?.viewModel.selectPriority(model.rawValue)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func makeDataSource() -> DataSource {
+        
+        return .init { _, tableView, indexPath, cellViewModel in
+            let cell: ReadPriorityCell = tableView.dequeueCell()
+            cell.setupCell(cellViewModel)
+            return cell
+        }
     }
 }
 
@@ -104,9 +157,12 @@ extension EditReadPriorityViewController: Presenting {
         
         self.bottomSlideMenuView.containerView.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
         }
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        titleLabel.numberOfLines = 1
         
         self.bottomSlideMenuView.containerView.addSubview(tableView)
         tableView.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
@@ -114,13 +170,14 @@ extension EditReadPriorityViewController: Presenting {
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
+            $0.heightAnchor.constraint(equalToConstant: 360)
         }
         
         self.bottomSlideMenuView.containerView.addSubview(confirmButton)
         confirmButton.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: 20)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
     }
@@ -128,12 +185,34 @@ extension EditReadPriorityViewController: Presenting {
     public func setupStyling() {
         
         self.bottomSlideMenuView.setupStyling()
+        self.bottomSlideMenuView.containerView.backgroundColor = UIColor.systemGroupedBackground
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Add read link item"
+            |> \.text .~ "Set a priority"
         
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 42.5
+        self.tableView.registerCell(ReadPriorityCell.self)
+        self.tableView.contentInset = .init(top: 0, left: 0, bottom: 30, right: 0)
+        self.tableView.delegate = self.tableViewDelegate
+        
+        self.confirmButton.setupStyling()
+    }
+}
+
+
+private class TableViewDelegate: NSObject, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
 }
