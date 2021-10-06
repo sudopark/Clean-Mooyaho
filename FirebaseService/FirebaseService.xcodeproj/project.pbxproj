@@ -30,7 +30,6 @@
 		2B8AC3ED263BB229002BA1AC /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D5263BB229002BA1AC /* GoogleAppMeasurement.xcframework */; };
 		2B8AC3EE263BB229002BA1AC /* GoogleUtilities.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D6263BB229002BA1AC /* GoogleUtilities.xcframework */; };
 		2B8AC3EF263BB229002BA1AC /* FirebaseMessaging.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D8263BB229002BA1AC /* FirebaseMessaging.xcframework */; };
-		2B8AC3F0263BB229002BA1AC /* FirebaseInstanceID.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D9263BB229002BA1AC /* FirebaseInstanceID.xcframework */; };
 		2B8AC3F1263BB229002BA1AC /* FirebaseStorage.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3DB263BB229002BA1AC /* FirebaseStorage.xcframework */; };
 		2B8AC3FD263C57C6002BA1AC /* FirebaseCrashlytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3F8263C57C6002BA1AC /* FirebaseCrashlytics.xcframework */; };
 		2B8AC3FE263C57C6002BA1AC /* run in Resources */ = {isa = PBXBuildFile; fileRef = 2B8AC3F9263C57C6002BA1AC /* run */; };
@@ -211,7 +210,6 @@
 				2B8AC3EC263BB229002BA1AC /* GoogleDataTransport.xcframework in Frameworks */,
 				2B8AC3DE263BB229002BA1AC /* gRPC-Core.xcframework in Frameworks */,
 				2B8AC3E3263BB229002BA1AC /* abseil.xcframework in Frameworks */,
-				2B8AC3F0263BB229002BA1AC /* FirebaseInstanceID.xcframework in Frameworks */,
 				2B8AC3E1263BB229002BA1AC /* gRPC-C++.xcframework in Frameworks */,
 				2B8AC3E9263BB229002BA1AC /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				2BD54F5C263D4AB4004B3EB0 /* DataStore.framework in Frameworks */,
