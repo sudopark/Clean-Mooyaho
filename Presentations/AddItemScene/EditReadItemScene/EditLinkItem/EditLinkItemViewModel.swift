@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -72,6 +74,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     
     fileprivate final class Subjects {
         let previewLoadStatus = PublishSubject<LoadPreviewStatus>()
+        let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let customName = BehaviorRelay<String?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)
     }
@@ -138,14 +141,12 @@ extension EditLinkItemViewModelImple {
         switch self.editCase {
         case let .makeNew(url):
             return ReadLink(link: url)
+                |> \.customName .~ self.subjects.customName.value.flatMap { $0.isEmpty ? nil : $0 }
+                |> \.priority .~ self.subjects.selectedPriority.value
             
         case let .edit(item):
             return item
         }
-    }
-    
-    public func editPriority() {
-        logger.todoImplement()
     }
     
     public func editCategory() {
@@ -154,6 +155,21 @@ extension EditLinkItemViewModelImple {
     
     public func rewind() {
         self.router.requestRewind()
+    }
+}
+
+
+// MARK: - EditLinkItemViewModelImple Interactor
+
+extension EditLinkItemViewModelImple {
+    
+    public func editPriority() {
+        let previousSelected = self.subjects.selectedPriority.value
+        self.router.editPriority(startWith: previousSelected)
+    }
+    
+    public func editReadPriority(didSelect priority: ReadPriority) {
+        self.subjects.selectedPriority.accept(priority)
     }
 }
 
@@ -193,7 +209,8 @@ extension EditLinkItemViewModelImple {
     }
     
     public var priority: Observable<ReadPriority?> {
-        return .empty()
+        return self.subjects.selectedPriority
+            .distinctUntilChanged()
     }
     
     public var categories: Observable<[ItemCategory]> {

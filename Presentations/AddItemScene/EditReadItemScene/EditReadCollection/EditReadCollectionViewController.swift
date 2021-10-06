@@ -232,7 +232,7 @@ extension EditReadCollectionViewController: Presenting {
         self.priorityLabelView.updateRightButtonIsHidden(false)
         
         self.categoriesLabelView.setupStyling()
-        self.categoriesLabelView.iconView.image = UIImage(named: "list.dash")
+        self.categoriesLabelView.iconView.image = UIImage(named: "line.horizontal.3.decrease.circle")
         self.categoriesLabelView.keyLabel.text = "Categories".localized
         self.categoriesLabelView.updateRightButtonIsHidden(false)
         

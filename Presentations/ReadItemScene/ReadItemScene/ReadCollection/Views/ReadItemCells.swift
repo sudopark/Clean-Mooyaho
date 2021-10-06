@@ -157,7 +157,7 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.priorityView.keyLabel.text = "Priority".localized
         
         self.categoryView.setupStyling()
-        self.categoryView.iconView.image = UIImage(named: "list.dash")
+        self.categoryView.iconView.image = UIImage(named: "line.horizontal.3.decrease.circle")
         self.categoryView.keyLabel.text = "Categories".localized
         
         self.descriptionLabel.isHidden = true

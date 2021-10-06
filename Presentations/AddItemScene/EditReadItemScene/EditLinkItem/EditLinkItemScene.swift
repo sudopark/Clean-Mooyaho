@@ -14,13 +14,9 @@ import RxCocoa
 import CommonPresenting
 
 
-// MARK: - EditLinkItemViewModelImple conform EditLinkItemSceneInput and EditLinkItemSceneOutput
+// MARK: - EditLinkItemViewModelImple conform EditLinkItemSceneInteractable
 
-extension EditLinkItemViewModelImple: EditLinkItemSceneInput {
-
-}
-
-extension EditLinkItemViewModelImple: EditLinkItemSceneOutput {
+extension EditLinkItemViewModelImple: EditLinkItemSceneInteractable {
 
 }
 
@@ -28,11 +24,7 @@ extension EditLinkItemViewModelImple: EditLinkItemSceneOutput {
 
 extension EditLinkItemViewController {
 
-    public var input: EditLinkItemSceneInput? {
-        return self.viewModel as? EditLinkItemSceneInput
-    }
-
-    public var output: EditLinkItemSceneOutput? {
-        return self.viewModel as? EditLinkItemSceneOutput
+    public var interactor: EditLinkItemSceneInteractable? {
+        return self.viewModel as? EditLinkItemSceneInteractable
     }
 }

@@ -13,6 +13,7 @@ import RxCocoa
 import Prelude
 import Optics
 
+import Domain
 import CommonPresenting
 
 // MARK: - EditLinkItemViewController
@@ -88,6 +89,23 @@ extension EditLinkItemViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.priority
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] priority in
+                self?.updatePriority(priority)
+            })
+            .disposed(by: self.disposeBag)
+        
+        let editPriorityTrigger = Observable.merge(
+            self.addPriorityButton.rx.throttleTap(),
+            self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in }
+        )
+        editPriorityTrigger
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.editPriority()
+            })
+            .disposed(by: self.disposeBag)
+        
         self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirmSave()
@@ -134,6 +152,12 @@ extension EditLinkItemViewController {
             self.previewView.setLoadpreviewFail(for: url)
         }
     }
+    
+    private func updatePriority(_ newValue: ReadPriority?) {
+        self.addPriorityButton.isHidden = newValue != nil
+        self.priorityLabelView.isHidden = newValue == nil
+        newValue.do <| priorityLabelView.labelView.setupPriority(_:)
+    }
 }
 
 // MARK: - setup presenting
@@ -161,6 +185,7 @@ extension EditLinkItemViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -20)
         }
         attributeStackView.axis = .vertical
+        attributeStackView.spacing = 8
         attributeStackView.addArrangedSubview(priorityLabelView)
         attributeStackView.addArrangedSubview(categoriesLabelView)
         attributeStackView.addArrangedSubview(addPriorityButton)
@@ -169,7 +194,6 @@ extension EditLinkItemViewController: Presenting {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         priorityLabelView.setupLayout()
-        priorityLabelView.labelView.limitHeight(max: 18)
         categoriesLabelView.autoLayout.active(with: attributeStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
@@ -230,7 +254,14 @@ extension EditLinkItemViewController: Presenting {
         self.addCategoryButton.contentHorizontalAlignment = .leading
         
         self.priorityLabelView.setupStyling()
+        self.priorityLabelView.iconView.image = UIImage(named: "arrow.up.arrow.down.square")
+        self.priorityLabelView.keyLabel.text = "Priority".localized
+        self.priorityLabelView.updateRightButtonIsHidden(false)
+        
         self.categoriesLabelView.setupStyling()
+        self.categoriesLabelView.iconView.image = UIImage(named: "line.horizontal.3.decrease.circle")
+        self.categoriesLabelView.keyLabel.text = "Categories".localized
+        self.categoriesLabelView.updateRightButtonIsHidden(false)
         
         self.previewView.setupStyling()
         self.previewView.isHidden = true

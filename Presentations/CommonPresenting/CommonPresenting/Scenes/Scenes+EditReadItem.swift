@@ -48,20 +48,16 @@ public protocol EnterLinkURLScene: Scenable {
     var output: EnterLinkURLSceneOutput? { get }
 }
 
-// MARK: - EditLinkItemScene Input & Output
+// MARK: - EditLinkItemScene interactor
 
-public protocol EditLinkItemSceneInput { }
-
-public protocol EditLinkItemSceneOutput { }
+public protocol EditLinkItemSceneInteractable: ReadPrioritySelectListenable  { }
 
 
 // MARK: - EditLinkItemScene
 
 public protocol EditLinkItemScene: Scenable {
     
-    var input: EditLinkItemSceneInput? { get }
-
-    var output: EditLinkItemSceneOutput? { get }
+    var interactor: EditLinkItemSceneInteractable? { get }
 }
 
 // MARK: - EditReadCollectionScene Input & Output

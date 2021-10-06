@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -21,17 +22,26 @@ import CommonPresenting
 public protocol EditLinkItemRouting: Routing {
     
     func requestRewind()
+    
+    func editPriority(startWith priority: ReadPriority?)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditLinkItemRouterBuildables = EmptyBuilder
+public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable
 
-public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, EditLinkItemRouting { }
+public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, EditLinkItemRouting {
+    
+    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+}
 
 
 extension EditLinkItemRouter {
+    
+    private var currentInteractor: EditLinkItemSceneInteractable? {
+        return (self.currentScene as? EditLinkItemScene)?.interactor
+    }
     
     // EditLinkItemRouting implements
     public func requestRewind() {
@@ -40,5 +50,18 @@ extension EditLinkItemRouter {
             return
         }
         navigation.input?.requestpopToEnrerURLScene()
+    }
+    
+    public func editPriority(startWith priority: ReadPriority?) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeSelectPriorityScene(startWithSelected: priority, listener: self.currentInteractor) else {
+            return
+        }
+        
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }
