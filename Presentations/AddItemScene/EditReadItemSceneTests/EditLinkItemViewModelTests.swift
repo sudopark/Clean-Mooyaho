@@ -8,10 +8,12 @@
 import XCTest
 
 import RxSwift
-
-import Domain
 import Prelude
 import Optics
+
+import Domain
+import CommonPresenting
+
 import UnitTestHelpKit
 import UsecaseDoubles
 
@@ -27,6 +29,10 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
     var didClose: Bool?
     var didErrorAlerted: Bool?
     var didRewind: Bool?
+    var didSelectPriorityStartWith: ReadPriority?
+    var selectPriorityMocking: ReadPriority?
+    private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
+
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -36,6 +42,11 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
         self.didClose = nil
         self.didRewind = nil
+        self.didErrorAlerted = nil
+        self.didRewind = nil
+        self.didSelectPriorityStartWith = nil
+        self.selectPriorityMocking = nil
+        self.editLinkItemSceneInteractable = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -59,10 +70,12 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
         let usecaseStub = PrivateReadItemUsecaseStub(scenario: scenario)
             |> \.previewMocking .~ loadPreviewMocking
         
-        return EditLinkItemViewModelImple(collectionID: "some",
-                                          editCase: editCase,
-                                          readUsecase: usecaseStub,
-                                          router: self) { self.editCompleted?($0) }
+        let viewModel =  EditLinkItemViewModelImple(collectionID: "some",
+                                                    editCase: editCase,
+                                                    readUsecase: usecaseStub,
+                                                    router: self) { self.editCompleted?($0) }
+        self.editLinkItemSceneInteractable = viewModel
+        return viewModel
     }
 }
 
@@ -76,6 +89,12 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
     
     func alertError(_ error: Error) {
         self.didErrorAlerted = true
+    }
+    
+    func editPriority(startWith priority: ReadPriority?) {
+        self.didSelectPriorityStartWith = priority
+        guard let mocking = self.selectPriorityMocking else { return }
+        self.editLinkItemSceneInteractable?.editReadPriority(didSelect: mocking)
     }
     
     class PrivateReadItemUsecaseStub: StubReadItemUsecase {
@@ -207,9 +226,45 @@ extension EditLinkItemViewModelTests_makeNew {
     }
 }
 
+// MARK: - select priority
+
 extension EditLinkItemViewModelTests_makeNew {
     
+    func testViewModel_requestSelectPriority() {
+        // given
+        let expect = expectation(description: "priority 선택")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let priority = self.waitFirstElement(expect, for: viewModel.priority, skip: 1) {
+            self.selectPriorityMocking = .beforeDying
+            viewModel.editPriority()
+        }
+        
+        // then
+        XCTAssertEqual(priority, .beforeDying)
+    }
     
+    func testViewModel_changeSelectedPriority() {
+        // given
+        let expect = expectation(description: "우선순위 선택 반복")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let priorities = self.waitElements(expect, for: viewModel.priority, skip: 1) {
+            self.selectPriorityMocking = .afterAWhile
+            viewModel.editPriority()
+            
+            self.selectPriorityMocking = .beforeGoToBed
+            viewModel.editPriority()
+        }
+        
+        // then
+        XCTAssertEqual(priorities.first, .afterAWhile)
+        XCTAssertEqual(priorities.last, .beforeGoToBed)
+        XCTAssertEqual(self.didSelectPriorityStartWith, .afterAWhile)
+    }
 }
 
 extension EditLinkItemViewModelTests_makeNew {
@@ -217,9 +272,15 @@ extension EditLinkItemViewModelTests_makeNew {
     func testViewModel_addLinkItem() {
         // given
         let expect = expectation(description: "link item 추가")
+        var newLink: ReadLink?
         let viewModel = self.makeViewModel()
         
-        self.editCompleted = { _ in
+        viewModel.enterCustomName("custom name")
+        self.selectPriorityMocking = .afterAWhile
+        viewModel.editPriority()
+        
+        self.editCompleted = {
+            newLink = $0
             expect.fulfill()
         }
         
@@ -229,6 +290,8 @@ extension EditLinkItemViewModelTests_makeNew {
         
         // then
         XCTAssertEqual(self.didClose, true)
+        XCTAssertEqual(newLink?.priority, .afterAWhile)
+        XCTAssertEqual(newLink?.customName, "custom name")
     }
     
     func testViewModel_whenSaveItemFail_showError() {

@@ -57,7 +57,8 @@ extension ItemLabelView {
     
     public func setupPriority(_ priority: ReadPriority) {
         let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
-        let attributeText = priority.asAttributeString(with: font)
+        let attributeText = priority
+            .asAttributeString(with: font, color: self.uiContext.colors.blueGray)
         self.setupAttributeItemTexts([attributeText])
     }
     
@@ -152,18 +153,14 @@ private extension ItemCategory {
 
 private extension ReadPriority {
     
-    private var color: UIColor? {
-        return .systemIndigo
-    }
-    
-    func asAttributeString(with font: UIFont) -> NSAttributedString {
+    func asAttributeString(with font: UIFont, color: UIColor?) -> NSAttributedString {
         let text = "\(self.emoji) \(self.description)"
         let attrString = NSMutableAttributedString(string: text)
         let range = NSRange(location: 0, length: text.utf16.count)
         attrString.addAttributes([
             .font: font,
             .foregroundColor: UIColor.white,
-            .roundBackgroundColor: self.color ?? .systemBlue,
+            .roundBackgroundColor: color ?? .systemBlue,
         ], range: range)
         return attrString
     }

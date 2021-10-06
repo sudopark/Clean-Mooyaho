@@ -36,6 +36,10 @@ extension ColorSet {
     public var buttonBlue: UIColor {
         return UIColor.systemBlue.withAlphaComponent(0.9)
     }
+    
+    public var blueGray: UIColor? {
+        return UIColor.from(hex: "#455A64")
+    }
 }
 
 public protocol FontSet {
