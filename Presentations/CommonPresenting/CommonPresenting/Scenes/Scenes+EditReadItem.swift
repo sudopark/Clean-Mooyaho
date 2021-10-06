@@ -66,16 +66,11 @@ public protocol EditLinkItemScene: Scenable {
 
 // MARK: - EditReadCollectionScene Input & Output
 
-public protocol EditReadCollectionSceneInput { }
-
-public protocol EditReadCollectionSceneOutput { }
-
+public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable  { }
 
 // MARK: - EditReadCollectionScene
 
 public protocol EditReadCollectionScene: Scenable, PangestureDismissableScene {
     
-    var input: EditReadCollectionSceneInput? { get }
-
-    var output: EditReadCollectionSceneOutput? { get }
+    var interactor: EditReadCollectionSceneInteractable? { get }
 }

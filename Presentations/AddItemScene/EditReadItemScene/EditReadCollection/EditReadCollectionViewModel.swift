@@ -69,6 +69,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         let collectionName = BehaviorRelay<String?>(value: nil)
         let description = BehaviorRelay<String?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)
+        let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
     }
     
     private let subjects = Subjects()
@@ -90,10 +91,6 @@ extension EditReadCollectionViewModelImple {
     
     public func enterDescription(_ description: String) {
         self.subjects.description.accept(description)
-    }
-    
-    public func addPriority() {
-        
     }
     
     public func addCategory() {
@@ -134,6 +131,7 @@ extension EditReadCollectionViewModelImple {
         let newCollection = ReadCollection(name: name)
             |> \.collectionDescription .~ self.subjects.description.value
             |> \.parentID .~ self.parentID
+            |> \.priority .~ self.subjects.selectedPriority.value
         return updateUsecase.updateCollection(newCollection)
             .map{ newCollection }
     }
@@ -147,11 +145,31 @@ extension EditReadCollectionViewModelImple {
 }
 
 
+// MARK: - EditReadCollectionViewModelImple Interactor + edit priority
+
+extension EditReadCollectionViewModelImple {
+ 
+    public func addPriority() {
+        
+        let previousSelectedValue = self.subjects.selectedPriority.value
+        self.router.selectPriority(startWith: previousSelectedValue)
+    }
+    
+    public func editReadPriority(didSelect priority: ReadPriority) {
+        
+        self.subjects.selectedPriority.accept(priority)
+    }
+}
+
+
 // MARK: - EditReadCollectionViewModelImple Presenter
 
 extension EditReadCollectionViewModelImple {
     
-    public var priority: Observable<ReadPriority?> { return .empty() }
+    public var priority: Observable<ReadPriority?> {
+        return self.subjects.selectedPriority
+            .distinctUntilChanged()
+    }
     
     public var categories: Observable<[ItemCategory]> { .empty() }
     

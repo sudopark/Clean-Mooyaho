@@ -13,7 +13,9 @@ import RxCocoa
 import Prelude
 import Optics
 
+import Domain
 import CommonPresenting
+
 
 // MARK: - EditReadCollectionViewController
 
@@ -83,9 +85,26 @@ extension EditReadCollectionViewController {
             })
             .disposed(by: self.disposeBag)
         
+        let editPriorityTrigger = Observable.merge (
+            self.addPriorityButton.rx.throttleTap(),
+            self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in }
+        )
+        editPriorityTrigger
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.addPriority()
+            })
+            .disposed(by: self.disposeBag)
+        
         self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirmUpdate()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.priority
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] priority in
+                self?.updatePriorityLabel(priority)
             })
             .disposed(by: self.disposeBag)
         
@@ -93,6 +112,12 @@ extension EditReadCollectionViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func updatePriorityLabel(_ newValue: ReadPriority?) {
+        self.addPriorityButton.isHidden = newValue != nil
+        self.priorityLabelView.isHidden = newValue == nil
+        newValue.do <| priorityLabelView.labelView.setupPriority(_:)
     }
 }
 
@@ -114,6 +139,7 @@ extension EditReadCollectionViewController: Presenting {
         }
         
         attributeStackView.axis = .vertical
+        attributeStackView.spacing = 8
         attributeStackView.addArrangedSubview(priorityLabelView)
         attributeStackView.addArrangedSubview(categoriesLabelView)
         attributeStackView.addArrangedSubview(addPriorityButton)
@@ -122,12 +148,11 @@ extension EditReadCollectionViewController: Presenting {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         priorityLabelView.setupLayout()
-        priorityLabelView.labelView.limitHeight(max: 18)
         categoriesLabelView.autoLayout.active(with: attributeStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         categoriesLabelView.setupLayout()
-        categoriesLabelView.labelView.limitHeight(max: 18)
+        categoriesLabelView.labelView.limitHeight(max: 25)
         
         bottomSlideMenuView.containerView.addSubview(underLineView)
         underLineView.autoLayout.active(with: bottomSlideMenuView.containerView) {
@@ -202,7 +227,14 @@ extension EditReadCollectionViewController: Presenting {
         self.addCategoryButton.contentHorizontalAlignment = .leading
         
         self.priorityLabelView.setupStyling()
+        self.priorityLabelView.iconView.image = UIImage(named: "arrow.up.arrow.down.square")
+        self.priorityLabelView.keyLabel.text = "Priority".localized
+        self.priorityLabelView.updateRightButtonIsHidden(false)
+        
         self.categoriesLabelView.setupStyling()
+        self.categoriesLabelView.iconView.image = UIImage(named: "list.dash")
+        self.categoriesLabelView.keyLabel.text = "Categories".localized
+        self.categoriesLabelView.updateRightButtonIsHidden(false)
         
         self.confirmButton.setupStyling()
         self.confirmButton.isEnabled = false
