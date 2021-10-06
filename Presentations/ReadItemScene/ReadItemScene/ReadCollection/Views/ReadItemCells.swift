@@ -74,15 +74,10 @@ final class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFooterVie
 
 // MARK: - ReadItemCells
 
-public enum ReadItemCellActions {
-    case itemSelected(_ itemID: String)
-}
-
 public protocol ReadItemCells: BaseTableViewCell {
     
     associatedtype CellViewModel: ReadItemCellViewModel
     
-    var cellActionSubject: PublishSubject<ReadItemCellActions>? { get set }
     func setupCell(_ cellViewModel: CellViewModel)
 }
 
@@ -98,8 +93,6 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
     private let priorityView = KeyAndLabeledValueView()
     private let categoryView = KeyAndLabeledValueView()
     private let underLineView = UIView()
-    
-    public weak var cellActionSubject: PublishSubject<ReadItemCellActions>?
     
     func setupCell(_ cellViewModel: ReadCollectionAttrCellViewModel) {
         
@@ -273,8 +266,6 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
     
     typealias CellViewModel = ReadCollectionCellViewModel
     
-    public weak var cellActionSubject: PublishSubject<ReadItemCellActions>?
-    
     private let expandView = ReadItemExppandContentView()
     private let arrowImageView = UIImageView()
     private let underLineView = UIView()
@@ -300,17 +291,6 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
         let validCategory = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
         validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
-            
-        self.bindCellSelected(cellViewModel.uid)
-    }
-    
-    private func bindCellSelected(_ itemID: String) {
-        
-        self.contentView.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.cellActionSubject?.onNext(.itemSelected(itemID))
-            })
-            .disposed(by: self.disposeBag)
     }
     
     func setupLayout() {
@@ -359,8 +339,6 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
 
 final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
-    public weak var cellActionSubject: PublishSubject<ReadItemCellActions>?
-    
     typealias CellViewModel = ReadLinkCellViewModel
     
     private let expandView = ReadItemExppandContentView()
@@ -391,17 +369,6 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         let validCategory = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
         validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
-            
-        self.bindCellSelected(cellViewModel.uid)
-    }
-    
-    private func bindCellSelected(_ itemID: String) {
-        
-        self.contentView.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.cellActionSubject?.onNext(.itemSelected(itemID))
-            })
-            .disposed(by: self.disposeBag)
     }
     
     func bindPreview(_ source: Observable<LinkPreview>) {

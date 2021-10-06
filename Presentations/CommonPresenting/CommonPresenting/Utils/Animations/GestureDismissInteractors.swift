@@ -145,11 +145,25 @@ extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
             return false
         }
         
+        guard self.isNotTouchTableView(touch) else {
+            return false
+        }
+        
         guard let view = viewController?.view else { return false }
         
         let scrollView = self.findScrollView(in: view, touch: touch)
         guard let contentOffsetY = scrollView?.contentOffset.y else { return true }
         return contentOffsetY <= 20
+    }
+    
+    private func isNotTouchTableView(_ touch: UITouch) -> Bool {
+        guard let view = touch.view else { return true }
+        switch view {
+        case _ where view is UITableViewCell: return false
+        case _ where view is UITableView: return false
+        case _ where view.superview is UITableViewCell: return false
+        default: return true
+        }
     }
     
     private func findScrollView(in view: UIView, touch: UITouch) -> UIScrollView? {

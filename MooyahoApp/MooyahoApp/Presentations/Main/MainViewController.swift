@@ -25,7 +25,7 @@ public protocol MainScene: Scenable {
 
 // MARK: - MainViewController
 
-public final class MainViewController: BaseNavigationController, MainScene {
+public final class MainViewController: BaseViewController, MainScene {
     
     private let mainView = MainView()
     private let viewModel: MainViewModel
@@ -76,25 +76,25 @@ extension MainViewController {
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.openSlideMenu()
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
         
         self.mainView.floatingBottomButtonContainerView.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.requestAddNewItem()
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindBottomSlideScroll()
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
         
         self.rx.viewDidAppear.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindMemberProfileImage()
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
     }
     
     private func bindMemberProfileImage() {
@@ -103,7 +103,7 @@ extension MainViewController {
             .drive(onNext: { [weak self] source in
                 self?.mainView.profileImageView.setupImage(using: source)
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -151,14 +151,14 @@ extension MainViewController {
         Observable
             .merge(self.newOffsetByPangestureDy(pangesture), self.newOffsetByPangestureEnd(pangesture))
             .bind(to: newBottonConstraint)
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
         
         newBottonConstraint
             .subscribe(onNext: { [weak self] params in
                 guard let self = self, let params = params else { return }
                 self.updateBottomSlideOffset(params.offset, withAnimation: params.animationDuration)
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
     }
     
     private func updateBottomSlideOffset(_ invertedNewOffset: CGFloat, withAnimation duration: TimeInterval? = nil) {

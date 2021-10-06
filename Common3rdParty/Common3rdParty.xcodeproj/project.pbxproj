@@ -10,15 +10,15 @@
 		2BA406AE26315DF2000CC122 /* Common3rdParty.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BA406AC26315DF2000CC122 /* Common3rdParty.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F603CCA02667D3D500FE6A8A /* RxDataSources */; };
 		F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = F603CCA22667D3D500FE6A8A /* Differentiator */; };
-		F6C8060626DC8F3C00F1F96D /* Reader in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060526DC8F3C00F1F96D /* Reader */; };
-		F6C8060826DC8F3C00F1F96D /* Optics in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060726DC8F3C00F1F96D /* Optics */; };
-		F6C8060A26DC8F3C00F1F96D /* Either in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060926DC8F3C00F1F96D /* Either */; };
-		F6C8060C26DC8F3C00F1F96D /* State in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060B26DC8F3C00F1F96D /* State */; };
-		F6C8060E26DC8F3C00F1F96D /* ValidationSemigroup in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060D26DC8F3C00F1F96D /* ValidationSemigroup */; };
-		F6C8061026DC8F3C00F1F96D /* Writer in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8060F26DC8F3C00F1F96D /* Writer */; };
-		F6C8061226DC8F3C00F1F96D /* Frp in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8061126DC8F3C00F1F96D /* Frp */; };
-		F6C8061426DC8F3C00F1F96D /* ValidationNearSemiring in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8061326DC8F3C00F1F96D /* ValidationNearSemiring */; };
-		F6C8061626DC8F3C00F1F96D /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = F6C8061526DC8F3C00F1F96D /* Prelude */; };
+		F60A583D270D499200E39AE0 /* Either in Frameworks */ = {isa = PBXBuildFile; productRef = F60A583C270D499200E39AE0 /* Either */; };
+		F60A583F270D499200E39AE0 /* Optics in Frameworks */ = {isa = PBXBuildFile; productRef = F60A583E270D499200E39AE0 /* Optics */; };
+		F60A5841270D499200E39AE0 /* Prelude in Frameworks */ = {isa = PBXBuildFile; productRef = F60A5840270D499200E39AE0 /* Prelude */; };
+		F60A5843270D499200E39AE0 /* Reader in Frameworks */ = {isa = PBXBuildFile; productRef = F60A5842270D499200E39AE0 /* Reader */; };
+		F60A5845270D499200E39AE0 /* State in Frameworks */ = {isa = PBXBuildFile; productRef = F60A5844270D499200E39AE0 /* State */; };
+		F60A5847270D499200E39AE0 /* Tuple in Frameworks */ = {isa = PBXBuildFile; productRef = F60A5846270D499200E39AE0 /* Tuple */; };
+		F60A5849270D499200E39AE0 /* ValidationNearSemiring in Frameworks */ = {isa = PBXBuildFile; productRef = F60A5848270D499200E39AE0 /* ValidationNearSemiring */; };
+		F60A584B270D499200E39AE0 /* ValidationSemigroup in Frameworks */ = {isa = PBXBuildFile; productRef = F60A584A270D499200E39AE0 /* ValidationSemigroup */; };
+		F60A584D270D499200E39AE0 /* Writer in Frameworks */ = {isa = PBXBuildFile; productRef = F60A584C270D499200E39AE0 /* Writer */; };
 		F6DDD30726FE6FCD000DA7BB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F6DDD30626FE6FCD000DA7BB /* RxCocoa */; };
 		F6DDD30926FE6FCD000DA7BB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = F6DDD30826FE6FCD000DA7BB /* RxRelay */; };
 		F6DDD30B26FE6FCD000DA7BB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F6DDD30A26FE6FCD000DA7BB /* RxSwift */; };
@@ -35,20 +35,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6C8060826DC8F3C00F1F96D /* Optics in Frameworks */,
+				F60A5847270D499200E39AE0 /* Tuple in Frameworks */,
+				F60A5849270D499200E39AE0 /* ValidationNearSemiring in Frameworks */,
+				F60A5841270D499200E39AE0 /* Prelude in Frameworks */,
+				F60A584D270D499200E39AE0 /* Writer in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
-				F6C8061626DC8F3C00F1F96D /* Prelude in Frameworks */,
-				F6C8061026DC8F3C00F1F96D /* Writer in Frameworks */,
+				F60A583F270D499200E39AE0 /* Optics in Frameworks */,
 				F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */,
-				F6C8060A26DC8F3C00F1F96D /* Either in Frameworks */,
 				F6DDD30B26FE6FCD000DA7BB /* RxSwift in Frameworks */,
 				F6DDD30726FE6FCD000DA7BB /* RxCocoa in Frameworks */,
-				F6C8060C26DC8F3C00F1F96D /* State in Frameworks */,
-				F6C8060626DC8F3C00F1F96D /* Reader in Frameworks */,
+				F60A5845270D499200E39AE0 /* State in Frameworks */,
 				F6DDD30926FE6FCD000DA7BB /* RxRelay in Frameworks */,
-				F6C8061226DC8F3C00F1F96D /* Frp in Frameworks */,
-				F6C8060E26DC8F3C00F1F96D /* ValidationSemigroup in Frameworks */,
-				F6C8061426DC8F3C00F1F96D /* ValidationNearSemiring in Frameworks */,
+				F60A5843270D499200E39AE0 /* Reader in Frameworks */,
+				F60A583D270D499200E39AE0 /* Either in Frameworks */,
+				F60A584B270D499200E39AE0 /* ValidationSemigroup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,18 +111,18 @@
 			packageProductDependencies = (
 				F603CCA02667D3D500FE6A8A /* RxDataSources */,
 				F603CCA22667D3D500FE6A8A /* Differentiator */,
-				F6C8060526DC8F3C00F1F96D /* Reader */,
-				F6C8060726DC8F3C00F1F96D /* Optics */,
-				F6C8060926DC8F3C00F1F96D /* Either */,
-				F6C8060B26DC8F3C00F1F96D /* State */,
-				F6C8060D26DC8F3C00F1F96D /* ValidationSemigroup */,
-				F6C8060F26DC8F3C00F1F96D /* Writer */,
-				F6C8061126DC8F3C00F1F96D /* Frp */,
-				F6C8061326DC8F3C00F1F96D /* ValidationNearSemiring */,
-				F6C8061526DC8F3C00F1F96D /* Prelude */,
 				F6DDD30626FE6FCD000DA7BB /* RxCocoa */,
 				F6DDD30826FE6FCD000DA7BB /* RxRelay */,
 				F6DDD30A26FE6FCD000DA7BB /* RxSwift */,
+				F60A583C270D499200E39AE0 /* Either */,
+				F60A583E270D499200E39AE0 /* Optics */,
+				F60A5840270D499200E39AE0 /* Prelude */,
+				F60A5842270D499200E39AE0 /* Reader */,
+				F60A5844270D499200E39AE0 /* State */,
+				F60A5846270D499200E39AE0 /* Tuple */,
+				F60A5848270D499200E39AE0 /* ValidationNearSemiring */,
+				F60A584A270D499200E39AE0 /* ValidationSemigroup */,
+				F60A584C270D499200E39AE0 /* Writer */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -152,8 +152,8 @@
 			mainGroup = 2BA4069F26315DF2000CC122;
 			packageReferences = (
 				F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */,
 				F6DDD30526FE6FCD000DA7BB /* XCRemoteSwiftPackageReference "RxSwift" */,
+				F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -477,7 +477,7 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */ = {
+		F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-prelude";
 			requirement = {
@@ -506,50 +506,50 @@
 			package = F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = Differentiator;
 		};
-		F6C8060526DC8F3C00F1F96D /* Reader */ = {
+		F60A583C270D499200E39AE0 /* Either */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
-			productName = Reader;
-		};
-		F6C8060726DC8F3C00F1F96D /* Optics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
-			productName = Optics;
-		};
-		F6C8060926DC8F3C00F1F96D /* Either */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
 			productName = Either;
 		};
-		F6C8060B26DC8F3C00F1F96D /* State */ = {
+		F60A583E270D499200E39AE0 /* Optics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Optics;
+		};
+		F60A5840270D499200E39AE0 /* Prelude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Prelude;
+		};
+		F60A5842270D499200E39AE0 /* Reader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Reader;
+		};
+		F60A5844270D499200E39AE0 /* State */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
 			productName = State;
 		};
-		F6C8060D26DC8F3C00F1F96D /* ValidationSemigroup */ = {
+		F60A5846270D499200E39AE0 /* Tuple */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
-			productName = ValidationSemigroup;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Tuple;
 		};
-		F6C8060F26DC8F3C00F1F96D /* Writer */ = {
+		F60A5848270D499200E39AE0 /* ValidationNearSemiring */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
-			productName = Writer;
-		};
-		F6C8061126DC8F3C00F1F96D /* Frp */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
-			productName = Frp;
-		};
-		F6C8061326DC8F3C00F1F96D /* ValidationNearSemiring */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
 			productName = ValidationNearSemiring;
 		};
-		F6C8061526DC8F3C00F1F96D /* Prelude */ = {
+		F60A584A270D499200E39AE0 /* ValidationSemigroup */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6C8060426DC8F3C00F1F96D /* XCRemoteSwiftPackageReference "swift-prelude" */;
-			productName = Prelude;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = ValidationSemigroup;
+		};
+		F60A584C270D499200E39AE0 /* Writer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
+			productName = Writer;
 		};
 		F6DDD30626FE6FCD000DA7BB /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
