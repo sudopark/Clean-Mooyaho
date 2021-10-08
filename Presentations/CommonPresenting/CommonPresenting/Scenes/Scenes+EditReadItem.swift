@@ -70,3 +70,18 @@ public protocol EditReadCollectionScene: Scenable, PangestureDismissableScene {
     
     var interactor: EditReadCollectionSceneInteractable? { get }
 }
+
+
+// MARK: - EditCategoryScene Interactable & Listenable
+
+public protocol EditCategorySceneInteractable { }
+
+public protocol EditCategorySceneListenable: AnyObject { }
+
+
+// MARK: - EditCategoryScene
+
+public protocol EditCategoryScene: Scenable {
+    
+    var interactor: EditCategorySceneInteractable? { get }
+}

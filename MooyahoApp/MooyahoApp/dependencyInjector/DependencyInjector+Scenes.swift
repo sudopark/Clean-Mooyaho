@@ -246,6 +246,17 @@ extension DependencyInjector: EditReadPrioritySceneBuilable {
     }
 }
 
+extension DependencyInjector: EditCategorySceneBuilable {
+    
+    public func makeEditCategoryScene(listener: EditCategorySceneListenable?) -> EditCategoryScene {
+        let router = EditCategoryRouter(nextSceneBuilders: self)
+        let viewModel = EditCategoryViewModelImple(router: router, listener: listener)
+        let viewController = EditCategoryViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
 
 
 // MARK: - ViewerScenes

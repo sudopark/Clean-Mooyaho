@@ -191,6 +191,7 @@ extension ReadCollectionItemsViewController {
                            self.isTitleHaderViewShowing,
                            resultSelector: selectTitle)
             .startWith(nil)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] title in
                 self?.title = title
             })
