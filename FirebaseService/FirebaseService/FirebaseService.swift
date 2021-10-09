@@ -24,6 +24,7 @@ public final class FirebaseServiceImple: NSObject, FirebaseService {
     var storage: Storage!
     let serverKey: String
     let disposeBag = DisposeBag()
+    public var signInMemberID: String?
     
     public init(httpAPI: HttpAPI, serverKey: String) {
         self.httpAPI = httpAPI

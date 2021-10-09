@@ -32,9 +32,9 @@ public enum RemoteErrors: Error {
 }
 
 
-public protocol AuthorizationNeed {
+public protocol AuthorizationNeed: AnyObject {
     
-    var signInMemberID: String? { get }
+    var signInMemberID: String? { get set }
 }
 
 

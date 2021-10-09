@@ -33,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                               router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
         UIContext.updateApp(status: .launched)
+        
+        super.init()
+        self.bind(usecase)
     }
 
     func application(_ application: UIApplication,
@@ -40,6 +43,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.applicationViewModel.appDidLaunched()
         return true
+    }
+    
+    private func bind(_ usecase: ApplicationUsecase) {
+        
+        usecase.currentSignedInMemeber
+            .map { $0?.uid }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] uid in
+                self?.dependencyInjector.remote.signInMemberID = uid
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 

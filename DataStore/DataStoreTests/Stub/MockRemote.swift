@@ -18,10 +18,7 @@ import UnitTestHelpKit
 
 class MockRemote: Remote, LinkPreviewRemote, Mocking {
     
-    var currentMemberID: String?
-    var signInMemberID: String? {
-        return self.currentMemberID
-    }
+    var signInMemberID: String?
     
     // auth
     func requestSignInAnonymously() -> Maybe<Auth> {

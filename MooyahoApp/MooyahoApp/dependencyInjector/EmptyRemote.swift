@@ -15,6 +15,17 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
+    func requestSuggestCategories(_ name: String,
+                                  cursor: String?) -> Maybe<SuggestCategoryCollection> {
+        .empty()
+    }
+    
+    func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
+        .empty()
+    }
+    
+    var signInMemberID: String?
+    
     func requestUploadMemberProfileImage(_ memberID: String, data: Data, ext: String, size: ImageSize) -> Observable<MemberProfileUploadStatus> {
         return .empty()
     }
