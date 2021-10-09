@@ -21,19 +21,19 @@ import DataStore
 class LocalStorageTests_ReadItem: BaseLocalStorageTests {
     
     private var dummyCategories: [ItemCategory] {
-        return (0..<3).map{ .init(name: "n:\($0)", colorCode: "$0") }
+        return (0..<3).map{ .init(uid: "c:\($0)", name: "n:\($0)", colorCode: "$0") }
     }
     
     private func collection(at int: Int, parent: String? = nil) -> ReadCollection {
         return ReadCollection(uid: "c:\(int)", name: "collection:\(int)", createdAt: .now(), lastUpdated: .now())
             |> \.parentID .~ parent
-            |> \.categories .~ self.dummyCategories
+            |> \.categoryIDs .~ self.dummyCategories.map { $0.uid }
     }
     
     private func link(at int: Int, parent: String? = nil) -> ReadLink {
         return ReadLink(uid: "l:\(int)", link: "link:\(int)", createAt: .now(), lastUpdated: .now())
             |> \.parentID .~ parent
-            |> \.categories .~ self.dummyCategories
+            |> \.categoryIDs .~ self.dummyCategories.map { $0.uid }
     }
     
     private func dummyMyItems() -> [ReadItem] {
@@ -116,7 +116,7 @@ extension LocalStorageTests_ReadItem {
             |> \.ownerID .~ "owner"
             |> \.customName .~ "custom name"
             |> \.priority .~ .afterAWhile
-            |> \.categories .~ [.init(name: "c1", colorCode: "0")]
+            |> \.categoryIDs .~ ["c1"]
         
         // when
         let save = self.local.updateReadItems([link])
@@ -133,7 +133,7 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual(savedLink?.lastUpdatedAt, link.lastUpdatedAt)
         XCTAssertEqual(savedLink?.customName, link.customName)
         XCTAssertEqual(savedLink?.priority, link.priority)
-        XCTAssertEqual(savedLink?.categories.count, link.categories.count)
+        XCTAssertEqual(savedLink?.categoryIDs.count, link.categoryIDs.count)
     }
     
     func testStorage_loadCollection() {

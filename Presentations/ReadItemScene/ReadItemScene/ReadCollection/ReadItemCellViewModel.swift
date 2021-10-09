@@ -16,6 +16,7 @@ public protocol ReadItemCellViewModel {
     var uid: String { get }
     
     var presetingID: Int { get }
+    var categoryIDs: [String] { get set }
 }
 
 
@@ -28,11 +29,11 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     public var presetingID: Int { self.uid.hashValue }
     
     public var priority: ReadPriority?
-    public var categories: [ItemCategory] = []
+    public var categoryIDs: [String] = []
     
     public init(collection: ReadCollection) {
         self.priority = collection.priority
-        self.categories = collection.categories
+        self.categoryIDs = collection.categories.map { $0.uid }
     }
 }
 
@@ -45,7 +46,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
     public let name: String
     public var collectionDescription: String?
     public var priority: ReadPriority?
-    public var categories: [ItemCategory] = []
+    public var categoryIDs: [String] = []
     
     public init(uid: String, name: String) {
         self.uid = uid
@@ -56,7 +57,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         self.uid = collection.uid
         self.name = collection.name
         self.priority = collection.priority
-        self.categories = collection.categories
+        self.categoryIDs = collection.categories.map { $0.uid }
         self.collectionDescription = collection.collectionDescription
     }
 
@@ -65,7 +66,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         hasher.combine(self.uid)
         hasher.combine(self.name)
         hasher.combine(self.priority?.rawValue)
-        hasher.combine(self.categories.map{ $0.presentingHashValud() })
+        hasher.combine(self.categoryIDs)
         hasher.combine(self.collectionDescription)
         return hasher.finalize()
     }
@@ -80,7 +81,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
     public let linkUrl: String
     public var customName: String?
     public var priority: ReadPriority?
-    public var categories: [ItemCategory] = []
+    public var categoryIDs: [String] = []
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -92,7 +93,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
         self.linkUrl = link.link
         self.customName = link.customName
         self.priority = link.priority
-        self.categories = link.categories
+        self.categoryIDs = link.categories.map { $0.uid }
     }
     
     public var presetingID: Int {
@@ -101,7 +102,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
         hasher.combine(self.linkUrl)
         hasher.combine(self.customName)
         hasher.combine(self.priority?.rawValue)
-        hasher.combine(self.categories.map{ $0.presentingHashValud() })
+        hasher.combine(self.categoryIDs)
         return hasher.finalize()
     }
 }
@@ -110,6 +111,7 @@ private extension ItemCategory {
     
     func presentingHashValud() -> Int {
         var hasher = Hasher()
+        hasher.combine(self.uid)
         hasher.combine(self.name)
         hasher.combine(self.colorCode)
         return hasher.finalize()

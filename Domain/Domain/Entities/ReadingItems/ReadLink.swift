@@ -21,7 +21,7 @@ public struct ReadLink: ReadItem {
     public var lastUpdatedAt: TimeStamp
     public var customName: String?
     public var priority: ReadPriority?
-    public var categories: [ItemCategory] = []
+    public var categoryIDs: [String] = []
     
     public init(uid: String, link: String,
                 createAt: TimeStamp, lastUpdated: TimeStamp) {

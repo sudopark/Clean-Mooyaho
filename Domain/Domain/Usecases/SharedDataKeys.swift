@@ -21,6 +21,7 @@ public enum SharedDataKeys: String {
     case readItemSortOptionMap
     case readItemCustomOrderMap
     case readLinkPreviewMap
+    case categoriesMap
 }
 
 

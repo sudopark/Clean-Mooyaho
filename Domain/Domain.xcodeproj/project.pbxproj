@@ -104,6 +104,10 @@
 		F6A72A3B2648247B006BE4BD /* MockTagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A3A2648247B006BE4BD /* MockTagRepository.swift */; };
 		F6AED2712700B85900A1DCCC /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AED2702700B85900A1DCCC /* String+Extensions.swift */; };
 		F6B21C6527004D69006243FD /* StubLinkPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B21C6427004D69006243FD /* StubLinkPreviewRepository.swift */; };
+		F6B6B413271071EB000652E0 /* ReadItemCategoryUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B412271071EB000652E0 /* ReadItemCategoryUsecase.swift */; };
+		F6B6B4152710733B000652E0 /* ItemCategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B4142710733B000652E0 /* ItemCategoryRepository.swift */; };
+		F6B6B41727107414000652E0 /* StubItemCategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B41627107414000652E0 /* StubItemCategoryRepository.swift */; };
+		F6B6B419271074C5000652E0 /* ItemCategoryUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B418271074C5000652E0 /* ItemCategoryUsecaseTests.swift */; };
 		F6CF34AC26D7DA19003B52CD /* HoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34AB26D7DA19003B52CD /* HoorayUsecaseTests.swift */; };
 		F6CF34AE26D7DA5E003B52CD /* BaseStubHoorayRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CF34AD26D7DA5E003B52CD /* BaseStubHoorayRepository.swift */; };
 		F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA5722645A91E00F9A049 /* SearchingPlace.swift */; };
@@ -233,6 +237,10 @@
 		F6A72A3A2648247B006BE4BD /* MockTagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTagRepository.swift; sourceTree = "<group>"; };
 		F6AED2702700B85900A1DCCC /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		F6B21C6427004D69006243FD /* StubLinkPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLinkPreviewRepository.swift; sourceTree = "<group>"; };
+		F6B6B412271071EB000652E0 /* ReadItemCategoryUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCategoryUsecase.swift; sourceTree = "<group>"; };
+		F6B6B4142710733B000652E0 /* ItemCategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCategoryRepository.swift; sourceTree = "<group>"; };
+		F6B6B41627107414000652E0 /* StubItemCategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubItemCategoryRepository.swift; sourceTree = "<group>"; };
+		F6B6B418271074C5000652E0 /* ItemCategoryUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCategoryUsecaseTests.swift; sourceTree = "<group>"; };
 		F6CF34AB26D7DA19003B52CD /* HoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoorayUsecaseTests.swift; sourceTree = "<group>"; };
 		F6CF34AD26D7DA5E003B52CD /* BaseStubHoorayRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseStubHoorayRepository.swift; sourceTree = "<group>"; };
 		F6CFA5722645A91E00F9A049 /* SearchingPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingPlace.swift; sourceTree = "<group>"; };
@@ -356,6 +364,7 @@
 				F6913F0226EE5CA300C6E105 /* ReadItemRepository.swift */,
 				F6E279D426F71CD800957AC4 /* ReadItemOptionsRepository.swift */,
 				F601724D26FEF98300E47B75 /* LinkPreviewRepository.swift */,
+				F6B6B4142710733B000652E0 /* ItemCategoryRepository.swift */,
 				F6913F0926F38AB100C6E105 /* Deprecated */,
 			);
 			path = Repositories;
@@ -388,6 +397,7 @@
 				F6913F0426EE5EB000C6E105 /* StubReadItemRepository.swift */,
 				F6E279D626F71DA000957AC4 /* StubReadItemOptionsRepository.swift */,
 				F6B21C6427004D69006243FD /* StubLinkPreviewRepository.swift */,
+				F6B6B41627107414000652E0 /* StubItemCategoryRepository.swift */,
 			);
 			path = Doubles;
 			sourceTree = "<group>";
@@ -420,6 +430,7 @@
 				F66B7D7726C789BD00D31FAC /* PlaceUsecaseTests.swift */,
 				F6CF34AB26D7DA19003B52CD /* HoorayUsecaseTests.swift */,
 				F6913F0626EE637300C6E105 /* ReadItemUsecaseTests.swift */,
+				F6B6B418271074C5000652E0 /* ItemCategoryUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -611,6 +622,7 @@
 				F6913F0026EE5A7800C6E105 /* ReadItemUpdateUsecase.swift */,
 				F6E279D226F71BF500957AC4 /* ReadItemOptionsUsecase.swift */,
 				F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */,
+				F6B6B412271071EB000652E0 /* ReadItemCategoryUsecase.swift */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -776,6 +788,7 @@
 				F615294F264EED6A003BCB59 /* SharedDataStoreService.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */,
+				F6B6B413271071EB000652E0 /* ReadItemCategoryUsecase.swift in Sources */,
 				F615292D264D9CBE003BCB59 /* UserPresence.swift in Sources */,
 				F6152933264DA0C0003BCB59 /* HoorayPublisherUsecase.swift in Sources */,
 				F6913F0126EE5A7800C6E105 /* ReadItemUpdateUsecase.swift in Sources */,
@@ -802,6 +815,7 @@
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
 				F6152939264DA35A003BCB59 /* MessagingService.swift in Sources */,
 				F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */,
+				F6B6B4152710733B000652E0 /* ItemCategoryRepository.swift in Sources */,
 				F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */,
 				F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
@@ -834,6 +848,7 @@
 				F6502DD5266CA4D50027800F /* Dummies.swift in Sources */,
 				F6CF34AC26D7DA19003B52CD /* HoorayUsecaseTests.swift in Sources */,
 				2B40BF89263F0A1D0031C7A6 /* MockLocationMonitoringService.swift in Sources */,
+				F6B6B419271074C5000652E0 /* ItemCategoryUsecaseTests.swift in Sources */,
 				F6B21C6527004D69006243FD /* StubLinkPreviewRepository.swift in Sources */,
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,
 				F637206326653F960089D0B3 /* MemberTests.swift in Sources */,
@@ -855,6 +870,7 @@
 				2B40BF91263F10350031C7A6 /* MockPlaceRepository.swift in Sources */,
 				F6CF34AE26D7DA5E003B52CD /* BaseStubHoorayRepository.swift in Sources */,
 				F6E279D726F71DA000957AC4 /* StubReadItemOptionsRepository.swift in Sources */,
+				F6B6B41727107414000652E0 /* StubItemCategoryRepository.swift in Sources */,
 				F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */,
 				F6913F0526EE5EB000C6E105 /* StubReadItemRepository.swift in Sources */,
 				2BFF24172641A546008C52EB /* SuggestPlaceUsecaseTests.swift in Sources */,

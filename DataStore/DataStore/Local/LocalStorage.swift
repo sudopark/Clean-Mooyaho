@@ -131,9 +131,16 @@ public protocol LinkPreviewCacheStorage {
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
 }
 
+public protocol ItemCategoryLocalStorage {
+    
+    func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
+    
+    func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage { }
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage { }
 
 
 // MARK: - LocalStorageImple

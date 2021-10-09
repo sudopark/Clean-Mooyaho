@@ -12,23 +12,17 @@ import SQLiteService
 
 import Domain
 
-struct ItemCategoriesTable: Table {
+
+extension ItemCategory: RowValueType {
     
-    struct Entity: RowValueType {
-        let itemID: String
-        let cate: ItemCategory
-        
-        init(_ cursor: CursorIterator) throws {
-            self.itemID = try cursor.next().unwrap()
-            self.cate = .init(name: try cursor.next().unwrap(),
-                              colorCode: try cursor.next().unwrap())
-        }
-        
-        init(_ itemID: String, category: ItemCategory) {
-            self.itemID = itemID
-            self.cate = category
-        }
+    public init(_ cursor: CursorIterator) throws {
+        self.init(uid: try cursor.next().unwrap(),
+                  name: try cursor.next().unwrap(),
+                  colorCode: try cursor.next().unwrap())
     }
+}
+
+struct ItemCategoriesTable: Table {
     
     enum Columns: String, TableColumn {
         case itemID
@@ -37,23 +31,23 @@ struct ItemCategoriesTable: Table {
         
         var dataType: ColumnDataType {
             switch self {
-            case .itemID: return .text([.notNull])
+            case .itemID: return .text([.primaryKey(autoIncrement: false), .notNull])
             case .name: return .text([.notNull])
             case .colorCode: return .text([.notNull])
             }
         }
     }
     
-    typealias EntityType = Entity
+    typealias EntityType = ItemCategory
     typealias ColumnType = Columns
     
     static var tableName: String { "item_cates" }
     
     static func scalar(_ entity: EntityType, for column: Columns) -> ScalarType? {
         switch column {
-        case .itemID: return entity.itemID
-        case .name: return entity.cate.name
-        case .colorCode: return entity.cate.colorCode
+        case .itemID: return entity.uid
+        case .name: return entity.name
+        case .colorCode: return entity.colorCode
         }
     }
 }
