@@ -175,5 +175,13 @@ class MockLocal: LocalStorage, Mocking {
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return self.resolve(key: "updateCategories") ?? .empty()
     }
+    
+    func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
+        return self.resolve(key: "suggestCategories") ?? .empty()
+    }
+    
+    func loadLatestCategories() -> Maybe<[SuggestCategory]> {
+        return self.resolve(key: "loadLatestCategories") ?? .empty()
+    }
 }
 

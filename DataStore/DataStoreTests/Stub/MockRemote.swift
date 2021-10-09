@@ -18,6 +18,11 @@ import UnitTestHelpKit
 
 class MockRemote: Remote, LinkPreviewRemote, Mocking {
     
+    var currentMemberID: String?
+    var signInMemberID: String? {
+        return self.currentMemberID
+    }
+    
     // auth
     func requestSignInAnonymously() -> Maybe<Auth> {
         self.verify(key: "requestSignInAnonymously")
@@ -160,5 +165,14 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     // preview
     func requestLoadPreview(_ url: String) -> Maybe<LinkPreview> {
         return self.resolve(key: "requestLoadPreview") ?? .empty()
+    }
+    
+    // category
+    func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
+        return self.resolve(key: "requestSuggestCategories") ?? .empty()
+    }
+    
+    func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
+        return self.resolve(key: "requestLoadLastestCategories") ?? .empty()
     }
 }

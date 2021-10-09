@@ -17,7 +17,7 @@ import Optics
 
 public protocol SuggestCategoryUsecase {
     
-    func startSuggestCategories(for memberID: String?, query: String)
+    func startSuggestCategories(query: String)
     
     func stopSuggest()
     
@@ -31,37 +31,31 @@ public protocol SuggestCategoryUsecase {
 
 public struct SuggestCategoryReqParams: SuggestReqParamType {
 
-    public typealias Cursor = Int
-    
-    public let memberID: String?
+    public typealias Cursor = String
     public let query: String?
-    public var currentPage: Int?
+    public var cursor: Cursor?
     
     public var isEmpty: Bool {
         return query?.isNotEmpty != true
     }
     
-    public func updateNextPageCursor(_ cursor: Int) -> SuggestCategoryReqParams {
-        return self |> \.currentPage .~ cursor
+    public func updateNextPageCursor(_ cursor: String) -> SuggestCategoryReqParams {
+        return self |> \.cursor .~ cursor
     }
 }
 
 extension SuggestCategoryCollection: SuggestResultCollectionType {
     
-    public typealias Cursor = Int
+    public typealias Cursor = String
     
-    public var nextPageCursor: Int? {
-        guard let current = self.currentPage,
-              self.isFinalPage == false else { return nil }
-        
-        return current + 1
+    public var nextPageCursor: String? {
+        return self.cursor
     }
     
     public func append(_ next: SuggestCategoryCollection) -> SuggestCategoryCollection {
         return .init(query: self.query,
-                     currentPage: next.currentPage,
                      categories: self.categories + next.categories,
-                     isFinalPage: next.isFinalPage)
+                     cursor: next.cursor)
     }
     
     public static func distinguisForSuggest(_ lhs: SuggestCategoryCollection,
@@ -94,16 +88,15 @@ public final class SuggestCategoryUsecaseImple: SuggestCategoryUsecase {
         guard let query = params.query, query.isNotEmpty else {
             return .just(.empty())
         }
-        return self.repository.suggestItemCategory(for: params.memberID, name: query)
-            .catchAndReturn(.empty(query))
+        return self.repository.suggestItemCategory(name: query, cursor: params.cursor)
     }
 }
 
 
 extension SuggestCategoryUsecaseImple {
     
-    public func startSuggestCategories(for memberID: String?, query: String) {
-        let params = ReqParama(memberID: memberID, query: query, currentPage: nil)
+    public func startSuggestCategories(query: String) {
+        let params = ReqParama(query: query, cursor: nil)
         self.internalUsecase.startSuggest(params)
     }
     

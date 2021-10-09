@@ -19,9 +19,9 @@ public protocol ItemCategoryRepository {
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
     
-    func suggestItemCategory(for memberID: String?, name: String) -> Maybe<SuggestCategoryCollection>
+    func suggestItemCategory(name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>
     
-    func loadLatestCategories(for memberID: String?) -> Maybe<[SuggestCategory]>
+    func loadLatestCategories() -> Maybe<[SuggestCategory]>
     
 //    func removeCategory(_ category: ItemCategory) -> Maybe<Void>
 }

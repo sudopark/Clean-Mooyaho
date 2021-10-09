@@ -44,11 +44,11 @@ extension StubItemCategoryRepository {
         return .just()
     }
     
-    func loadLatestCategories(for memberID: String?) -> Maybe<[SuggestCategory]> {
+    func loadLatestCategories() -> Maybe<[SuggestCategory]> {
         return self.scenario.latestCategories.asMaybe()
     }
     
-    func suggestItemCategory(for memberID: String?, name: String) -> Maybe<SuggestCategoryCollection> {
+    func suggestItemCategory(name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
         guard let mocking = self.suggestResultMocking else {
             return .empty()
         }

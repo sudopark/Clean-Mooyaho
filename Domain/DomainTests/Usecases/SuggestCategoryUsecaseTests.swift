@@ -43,24 +43,24 @@ extension SuggestCategoryUsecaseTests {
     
     private func dummyCollection(_ query: String,
                                  page: Int?,
-                                 isFianl: Bool = false) -> SuggestCategoryCollection {
+                                 cursor: String? = nil) -> SuggestCategoryCollection {
         let range = page.map { $0*10..<$0*10+10 } ?? (0..<10)
-        let categories = range.map { SuggestCategory(ownerID: nil, category: .dummy($0)) }
-        return SuggestCategoryCollection(query: query, currentPage: page,
-                                         categories: categories,
-                                         isFinalPage: isFianl)
+        let categories = range.map { SuggestCategory(ownerID: nil,
+                                                     category: .dummy($0),
+                                                     lastUpdated: .now()) }
+        return .init(query: query, categories: categories, cursor: cursor)
     }
     
     func testUsecase_suggestCategoryItems_withoutPaging() {
         // given
         let expect = expectation(description: "카테고리 서제스트")
         let usecase = self.makeUsecase()
-        let page = self.dummyCollection("some", page: nil)
+        let page = self.dummyCollection("some", page: nil, cursor: nil)
         self.mockRepository.suggestResultMocking = page
         
         // when
         let results = self.waitElements(expect, for: usecase.suggestedCategories.compactMap{ $0 }) {
-            usecase.startSuggestCategories(for: nil, query: "some")
+            usecase.startSuggestCategories(query: "some")
             usecase.loadMore()
         }
         
@@ -75,14 +75,15 @@ extension SuggestCategoryUsecaseTests {
         expect.expectedFulfillmentCount = 3
         let usecase = self.makeUsecase()
         let pages = [
-            self.dummyCollection("some", page: 0), self.dummyCollection("some", page: 1),
-            self.dummyCollection("some", page: 2, isFianl: true)
+            self.dummyCollection("some", page: 0, cursor: "n1"),
+            self.dummyCollection("some", page: 1, cursor: "n2"),
+            self.dummyCollection("some", page: 2, cursor: nil)
         ]
         
         // when
         let results = self.waitElements(expect, for: usecase.suggestedCategories.compactMap { $0 }) {
             self.mockRepository.suggestResultMocking = pages.first
-            usecase.startSuggestCategories(for: nil, query: "some")
+            usecase.startSuggestCategories(query: "some")
             
             (1..<pages.count).forEach { index in
                 self.mockRepository.suggestResultMocking = pages[index]
