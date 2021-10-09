@@ -18,12 +18,15 @@ class StubItemCategoryRepository: ItemCategoryRepository {
     struct Scenario {
         var localCategories: Result<[ItemCategory], Error> = .success([])
         var remoteCategories: Result<[ItemCategory], Error> = .success([])
+        var latestCategories: Result<[SuggestCategory], Error> = .success([])
     }
     
     private let scenario: Scenario
     init(scenario: Scenario = Scenario()) {
         self.scenario = scenario
     }
+    
+    var suggestResultMocking: SuggestCategoryCollection?
 }
 
 
@@ -39,5 +42,16 @@ extension StubItemCategoryRepository {
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return .just()
+    }
+    
+    func loadLatestCategories(for memberID: String?) -> Maybe<[SuggestCategory]> {
+        return self.scenario.latestCategories.asMaybe()
+    }
+    
+    func suggestItemCategory(for memberID: String?, name: String) -> Maybe<SuggestCategoryCollection> {
+        guard let mocking = self.suggestResultMocking else {
+            return .empty()
+        }
+        return .just(mocking)
     }
 }
