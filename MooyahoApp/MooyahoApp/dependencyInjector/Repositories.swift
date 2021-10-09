@@ -101,3 +101,14 @@ extension AppRepository: LinkPreviewRepository, LinkPreviewrepositoryDefImpleDep
         return self.local
     }
 }
+
+extension AppRepository: ItemCategoryRepository, ItemCategoryRepositoryDefImpleDependency {
+    
+    public var categoryRemote: ItemCategoryRemote {
+        return self.remote
+    }
+    
+    public var categoryLocal: ItemCategoryLocalStorage {
+        return self.local
+    }
+}

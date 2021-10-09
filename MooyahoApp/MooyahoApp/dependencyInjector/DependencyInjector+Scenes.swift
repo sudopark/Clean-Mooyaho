@@ -121,8 +121,9 @@ extension DependencyInjector: ReadCollectionItemSceneBuilable {
     public func makeReadCollectionItemScene(collectionID: String?) -> ReadCollectionScene {
         let router = ReadCollectionItemsRouter(nextSceneBuilders: self)
         let viewModel = ReadCollectionViewItemsModelImple(collectionID: collectionID,
-                                                     readItemUsecase: self.readItemUsecase,
-                                                     router: router)
+                                                          readItemUsecase: self.readItemUsecase,
+                                                          categoryUsecase: self.categoryUsecase,
+                                                          router: router)
         let viewController = ReadCollectionItemsViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

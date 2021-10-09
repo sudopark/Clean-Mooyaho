@@ -177,4 +177,9 @@ extension DependencyInjector {
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore)
     }
+    
+    var categoryUsecase: ReadItemCategoryUsecase {
+        return ReadItemCategoryUsecaseImple(repository: self.appReposiotry,
+                                            sharedService: self.shared.dataStore)
+    }
 }

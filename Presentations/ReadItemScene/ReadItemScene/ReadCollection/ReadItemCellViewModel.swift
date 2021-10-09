@@ -33,7 +33,7 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     
     public init(collection: ReadCollection) {
         self.priority = collection.priority
-        self.categoryIDs = collection.categories.map { $0.uid }
+        self.categoryIDs = collection.categoryIDs
     }
 }
 
@@ -57,7 +57,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         self.uid = collection.uid
         self.name = collection.name
         self.priority = collection.priority
-        self.categoryIDs = collection.categories.map { $0.uid }
+        self.categoryIDs = collection.categoryIDs
         self.collectionDescription = collection.collectionDescription
     }
 
@@ -93,7 +93,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
         self.linkUrl = link.link
         self.customName = link.customName
         self.priority = link.priority
-        self.categoryIDs = link.categories.map { $0.uid }
+        self.categoryIDs = link.categoryIDs
     }
     
     public var presetingID: Int {

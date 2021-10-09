@@ -48,6 +48,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
+    func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]>
     var isEditable: Bool { get }
 }
 
@@ -58,13 +59,16 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     
     public let currentCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
+    private let categoryUsecase: ReadItemCategoryUsecase
     private let router: ReadCollectionRouting
     
     public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
+                categoryUsecase: ReadItemCategoryUsecase,
                 router: ReadCollectionRouting) {
         self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
+        self.categoryUsecase = categoryUsecase
         self.router = router
         
         self.internalBinding()
@@ -247,7 +251,8 @@ extension ReadCollectionViewItemsModelImple {
     public var isEditable: Bool { self.currentCollectionID != nil }
     
     public func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]> {
-        return self.readItemUsecase.categories(for: categoryIDs)
+        return self.categoryUsecase.categories(for: categoryIDs)
+            .distinctUntilChanged()
     }
 }
 
