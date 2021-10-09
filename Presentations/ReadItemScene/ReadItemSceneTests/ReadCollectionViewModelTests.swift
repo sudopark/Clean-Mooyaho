@@ -60,12 +60,17 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             |> \.sortOrder .~ .success(sortOrder)
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
         
+        let categoryScenario = StubItemCategoryUsecase.Scenario()
+            |> \.categories .~ [(0..<10).map { .dummy($0) }]
+        let stubCategoryUsecase = StubItemCategoryUsecase(scenario: categoryScenario)
+        
         let router = FakeRouter()
         self.spyRouter = router
         
         let collectionID = isRootCollection ? ReadCollection.rootID : "some"
         return .init(collectionID: collectionID,
                      readItemUsecase: stubUsecase,
+                     categoryUsecase: stubCategoryUsecase,
                      router: router)
     }
     
@@ -134,6 +139,18 @@ extension ReadCollectionViewModelTests {
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_provideCategoryInfo() {
+        // given
+        let expect = expectation(description: "카테고리 정보 제공")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let categories = self.waitFirstElement(expect, for: viewModel.itemCategories(["some"]))
+        
+        // then
+        XCTAssertEqual(categories?.count, 10)
     }
 }
 

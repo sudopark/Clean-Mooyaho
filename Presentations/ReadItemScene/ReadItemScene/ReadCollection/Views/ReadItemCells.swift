@@ -79,6 +79,20 @@ public protocol ReadItemCells: BaseTableViewCell {
     associatedtype CellViewModel: ReadItemCellViewModel
     
     func setupCell(_ cellViewModel: CellViewModel)
+    
+    func updateCategories(_ categories: [ItemCategory])
+}
+
+extension ReadItemCells {
+    
+    func bindCategories(_ source: Observable<[ItemCategory]>) {
+        source
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] categories in
+                self?.updateCategories(categories)
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -103,8 +117,10 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         let priotiry = cellViewModel.priority
         self.priorityView.isHidden = priotiry == nil
         priotiry.do <| priorityView.labelView.setupPriority
-        
-        let validCategories = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
+    }
+    
+    func updateCategories(_ categories: [ItemCategory]) {
+        let validCategories = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.categoryView.isHidden = validCategories == nil
         validCategories.do <| categoryView.labelView.updateCategories
     }
@@ -287,8 +303,10 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
         let priority = cellViewModel.priority
         self.expandView.priorityLabel.isHidden = priority == nil
         priority.do <| self.expandView.priorityLabel.setupPriority
-        
-        let validCategory = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
+    }
+    
+    func updateCategories(_ categories: [ItemCategory]) {
+        let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
         validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
     }
@@ -365,8 +383,10 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         let priority = cellViewModel.priority
         self.expandView.priorityLabel.isHidden = priority == nil
         priority.do <| self.expandView.priorityLabel.setupPriority
-        
-        let validCategory = pure(cellViewModel.categories).flatMap{ $0.isNotEmpty ? $0 : nil }
+    }
+    
+    func updateCategories(_ categories: [ItemCategory]) {
+        let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
         validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
     }
