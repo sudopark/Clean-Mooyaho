@@ -68,7 +68,7 @@ public protocol DataModelStorage {
 
 public final class DataModelStorageImple: DataModelStorage {
     
-    private let sqliteService: SQLiteService
+    let sqliteService: SQLiteService
     
     private let disposeBag = DisposeBag()
     private let closeWhenDeinit: Bool
@@ -468,37 +468,6 @@ extension DataModelStorageImple {
         }
     }
 }
-
-
-// MARK: - DataModelStorageImpl + Migration
-
-extension DataModelStorageImple {
-    
-    private func migrationPlan(for version: Int) -> Maybe<Int32> {
-        
-        let requireVersion = Int32(version)
-        let migrationSteps: (Int32, DataBase) throws -> Void = { _, _ in }
-        
-        let createTablesAfterMigrationFinished: (Int32, DataBase) -> Void = { [weak self] _, database in
-            self?.createTables(database)
-        }
-        return self.sqliteService.rx
-            .migrate(upto: requireVersion,
-                     steps: migrationSteps,
-                     finalized: createTablesAfterMigrationFinished)
-    }
-    
-    private func createTables(_ database: DataBase) {
-        
-        try? database.createTableOrNot(MemberTable.self)
-        try? database.createTableOrNot(ImageSourceTable.self)
-        try? database.createTableOrNot(ThumbnailTable.self)
-        try? database.createTableOrNot(ItemCategoriesTable.self)
-        
-        logger.print(level: .debug, "sqlite tables are created..")
-    }
-}
-
 
 private extension CursorIterator {
     
