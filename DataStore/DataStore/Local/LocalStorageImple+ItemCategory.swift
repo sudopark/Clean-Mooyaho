@@ -24,11 +24,13 @@ extension LocalStorageImple {
     }
     
     public func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
-        return .empty()
+        return self.dataModelStorage.fetchingItemCategories(like: name)
+            .map { $0.map { .init(ownerID: nil, category: $0, lastUpdated: 0) } }
     }
     
     public func loadLatestCategories() -> Maybe<[SuggestCategory]> {
-        return .empty()
+        return self.dataModelStorage.fetchLatestItemCategories()
+            .map { $0.map { .init(ownerID: nil, category: $0, lastUpdated: 0) } }
     }
 }
 
