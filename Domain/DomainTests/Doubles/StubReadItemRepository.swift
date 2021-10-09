@@ -39,7 +39,7 @@ class StubReadItemRepository: ReadItemRepository {
     }
     
     private let scenario: Scenario
-    init(scenario: Scenario) {
+    init(scenario: Scenario = .init()) {
         self.scenario = scenario
     }
     
