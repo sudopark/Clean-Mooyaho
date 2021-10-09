@@ -20,6 +20,14 @@ final class RemoteImple: Remote {
     private let firebaseRemote: FirebaseRemote
     private let linkPreviewRemote: LinkPreviewRemote
     
+    var signInMemberID: String? {
+        get {
+            return self.firebaseRemote.signInMemberID
+        } set {
+            self.firebaseRemote.signInMemberID = newValue
+        }
+    }
+    
     init(firebaseRemote: FirebaseRemote, linkPreviewRemote: LinkPreviewRemote) {
         self.firebaseRemote = firebaseRemote
         self.linkPreviewRemote = linkPreviewRemote
@@ -174,5 +182,15 @@ extension RemoteImple {
     // link preview
     func requestLoadPreview(_ url: String) -> Maybe<LinkPreview> {
         return self.linkPreviewRemote.requestLoadPreview(url)
+    }
+    
+    
+    // itemCategory
+    func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
+        return self.firebaseRemote.requestSuggestCategories(name, cursor: cursor)
+    }
+    
+    func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
+        return self.firebaseRemote.requestLoadLastestCategories()
     }
 }

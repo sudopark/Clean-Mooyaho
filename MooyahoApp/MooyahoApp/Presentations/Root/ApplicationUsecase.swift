@@ -22,6 +22,8 @@ public protocol ApplicationUsecase {
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
     
     func userFCMTokenUpdated(_ newToken: String?)
+    
+    var currentSignedInMemeber: Observable<Member?> { get }
 }
 
 // MARK: - ApplicationUsecaseImple
@@ -62,16 +64,16 @@ extension ApplicationUsecaseImple {
     
     private func bindApplicationStatus() {
         
-        let status = self.subjects.applicationStatus.distinctUntilChanged()
-        
-        let didLanched = status.filter{ $0 == .launched }.take(1).map{ _ in }
-        let enterForeground = status.filter{ $0 == .forground }.map{ _ in true }
-        let enterBackground = status.filter{ $0 == .background }.map{ _ in false }
-        let terminated = status.filter{ $0 == .terminate }.map{ _ in false }
-        
-        let isUserInUseApp = Observable
-            .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
-            .distinctUntilChanged()
+//        let status = self.subjects.applicationStatus.distinctUntilChanged()
+//
+//        let didLanched = status.filter{ $0 == .launched }.take(1).map{ _ in }
+//        let enterForeground = status.filter{ $0 == .forground }.map{ _ in true }
+//        let enterBackground = status.filter{ $0 == .background }.map{ _ in false }
+//        let terminated = status.filter{ $0 == .terminate }.map{ _ in false }
+//
+//        let isUserInUseApp = Observable
+//            .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
+//            .distinctUntilChanged()
         
 //        isUserInUseApp
 //            .flatMapLatest{ [weak self] inUse in self?.waitForLocationUploadableAuth(inUse) ?? .empty()  }
@@ -91,20 +93,6 @@ extension ApplicationUsecaseImple {
 //                self?.memberUsecase.updateUserIsOnline(auth.userID, deviceID: deviceID, isOnline: isUse)
 //            })
 //            .disposed(by: self.disposeBag)
-    }
-    
-    private func waitForLocationUploadableAuth(_ isUserInUseApp: Bool) -> Observable<Auth?> {
-        guard isUserInUseApp else { return .just(nil) }
-        let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
-        let permissionGranted = self.locationUsecase.checkHasPermission().asObservable()
-            .flatMap { [weak self] status -> Observable<Void> in
-                guard let self = self else { return .empty() }
-                guard status != .granted else { return .just(()) }
-                return self.locationUsecase.isAuthorized.filter{ $0 }.map{ _ in }
-            }
-        return Observable
-            .combineLatest(preparedAuth, permissionGranted)
-            .map{ $0.0 }
     }
 }
 
@@ -139,5 +127,9 @@ extension ApplicationUsecaseImple {
     
     public func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
         return self.authUsecase.loadLastSignInAccountInfo()
+    }
+    
+    public var currentSignedInMemeber: Observable<Member?> {
+        return self.memberUsecase.currentMember
     }
 }

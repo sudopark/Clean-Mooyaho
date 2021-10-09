@@ -30,4 +30,6 @@ class MockApplicationUsecase: ApplicationUsecase, Mocking {
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
         return self.resolve(key: "loadLastSignInAccountInfo") ?? .empty()
     }
+    
+    var currentSignedInMemeber: Observable<Member?> { .empty() }
 }
