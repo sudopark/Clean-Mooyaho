@@ -32,6 +32,12 @@ public enum RemoteErrors: Error {
 }
 
 
+public protocol AuthorizationNeed {
+    
+    var signInMemberID: String? { get }
+}
+
+
 // MARK: - Remote Protocol
 
 public protocol Remote: AuthRemote, MemberRemote,
@@ -164,6 +170,9 @@ public protocol LinkPreviewRemote {
 
 // MARK: - item category
 
-public protocol ItemCategoryRemote {
+public protocol ItemCategoryRemote: AuthorizationNeed {
+ 
+    func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>
     
+    func requestLoadLastestCategories() -> Maybe<[SuggestCategory]>
 }

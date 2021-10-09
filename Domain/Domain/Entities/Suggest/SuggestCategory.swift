@@ -13,10 +13,12 @@ public struct SuggestCategory {
     
     public let ownerID: String?
     public let category: ItemCategory
+    public var lastUpdated: TimeStamp
     
-    public init(ownerID: String? = nil, category: ItemCategory) {
+    public init(ownerID: String? = nil, category: ItemCategory, lastUpdated: TimeStamp) {
         self.ownerID = ownerID
         self.category = category
+        self.lastUpdated = lastUpdated
     }
 }
 
@@ -24,19 +26,16 @@ public struct SuggestCategory {
 public struct SuggestCategoryCollection {
     
     public let query: String
-    public let currentPage: Int?
     public let categories: [SuggestCategory]
-    public let isFinalPage: Bool
+    public let cursor: String?
     
-    public init(query: String, currentPage: Int? = nil,
-                categories: [SuggestCategory], isFinalPage: Bool) {
+    public init(query: String, categories: [SuggestCategory], cursor: String? = nil) {
         self.query = query
-        self.currentPage = currentPage
         self.categories = categories
-        self.isFinalPage = isFinalPage
+        self.cursor = cursor
     }
 
     public static func empty(_ query: String = "") -> Self {
-        return SuggestCategoryCollection(query: query, currentPage: nil, categories: [], isFinalPage: true)
+        return .init(query: query, categories: [], cursor: nil)
     }
 }

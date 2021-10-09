@@ -136,6 +136,10 @@ public protocol ItemCategoryLocalStorage {
     func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+    
+    func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]>
+    
+    func loadLatestCategories() -> Maybe<[SuggestCategory]>
 }
 
 // MARK: - LocalStorage

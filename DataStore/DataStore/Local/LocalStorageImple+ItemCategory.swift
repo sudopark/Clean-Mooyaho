@@ -22,5 +22,13 @@ extension LocalStorageImple {
     public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return self.dataModelStorage.updateCategories(categories)
     }
+    
+    public func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
+        return .empty()
+    }
+    
+    public func loadLatestCategories() -> Maybe<[SuggestCategory]> {
+        return .empty()
+    }
 }
 

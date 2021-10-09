@@ -71,6 +71,75 @@ extension RepositoryTests_ItemCategory {
     }
 }
 
+extension RepositoryTests_ItemCategory {
+    
+    func testRepo_suggestItemCategoryWithoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 카테고리 서제스트 조회")
+        self.mockRemote.register(key: "requestSuggestCategories") { Maybe<SuggestCategoryCollection>.empty() }
+        self.mockLocal.register(key: "suggestCategories") { Maybe<[SuggestCategory]>.just([]) }
+        
+        // when
+        let suggesting = self.repository.suggestItemCategory(name: "some", cursor: nil)
+        let categories = self.waitFirstElement(expect, for: suggesting.asObservable())
+        
+        // then
+        XCTAssertNotNil(categories)
+    }
+    
+    func testRepo_suggestItemCategoryWithSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 카테고리 서제스트 조회")
+        self.mockRemote.register(key: "requestSuggestCategories") {
+            Maybe<SuggestCategoryCollection>.just(.init(query: "some", categories: [], cursor: nil))
+        }
+        self.mockLocal.register(key: "suggestCategories") { Maybe<[SuggestCategory]>.empty() }
+        
+        // when
+        let suggesting = self.repository.suggestItemCategory(name: "some", cursor: nil)
+        let categories = self.waitFirstElement(expect, for: suggesting.asObservable())
+        
+        // then
+        XCTAssertNotNil(categories)
+    }
+    
+    func testRepo_loadLatestCategories_withoutSignin() {
+        // given
+        let expect = expectation(description: "로그아웃상태에서 최근 카테고리 조회")
+        self.mockRemote.register(key: "requestLoadLastestCategories") {
+            return Maybe<[SuggestCategory]>.empty()
+        }
+        self.mockLocal.register(key: "loadLatestCategories") {
+            return Maybe<[SuggestCategory]>.just([])
+        }
+        
+        // when
+        let loading = self.repository.loadLatestCategories()
+        let categories = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(categories)
+    }
+    
+    func testRepo_loadLatestCategories_withSignin() {
+        // given
+        let expect = expectation(description: "로그인상태에서 최근 카테고리 조회")
+        self.mockRemote.register(key: "requestLoadLastestCategories") {
+            return Maybe<[SuggestCategory]>.just([])
+        }
+        self.mockLocal.register(key: "loadLatestCategories") {
+            return Maybe<[SuggestCategory]>.empty()
+        }
+        
+        // when
+        let loading = self.repository.loadLatestCategories()
+        let categories = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(categories)
+    }
+}
+
 
 extension RepositoryTests_ItemCategory {
     
