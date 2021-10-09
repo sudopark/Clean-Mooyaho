@@ -61,6 +61,10 @@ public protocol DataModelStorage {
     func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+    
+    func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]>
+    
+    func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
 }
 
 
@@ -466,6 +470,16 @@ extension DataModelStorageImple {
         return self.sqliteService.rx.run {
             try $0.insert(ItemCategoriesTable.self, entities: categories, shouldReplace: true)
         }
+    }
+    
+    public func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]> {
+        let query = ItemCategoriesTable.selectAll { $0.name.like( "\(name)%" ) }
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func fetchLatestItemCategories() -> Maybe<[ItemCategory]> {
+        let query = ItemCategoriesTable.selectAll().limit(100).orderBy("rowid", isAscending: false)
+        return self.sqliteService.rx.run { try $0.load(query) }
     }
 }
 
