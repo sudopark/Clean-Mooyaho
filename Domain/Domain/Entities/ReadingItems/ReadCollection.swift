@@ -24,7 +24,7 @@ public struct ReadCollection: ReadItem {
     public let createdAt: TimeStamp
     public var lastUpdatedAt: TimeStamp
     public var priority: ReadPriority?
-    public var categories: [ItemCategory] = []
+    public var categoryIDs: [String] = []
     public var collectionDescription: String?
     
     public init(name: String) {

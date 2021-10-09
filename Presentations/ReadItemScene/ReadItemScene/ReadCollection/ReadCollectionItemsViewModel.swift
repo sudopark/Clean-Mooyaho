@@ -245,6 +245,10 @@ extension ReadCollectionViewItemsModelImple {
     }
     
     public var isEditable: Bool { self.currentCollectionID != nil }
+    
+    public func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]> {
+        return self.readItemUsecase.categories(for: categoryIDs)
+    }
 }
 
 private extension Array where Element: ReadItem {

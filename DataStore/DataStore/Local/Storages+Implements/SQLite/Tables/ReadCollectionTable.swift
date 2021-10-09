@@ -31,6 +31,7 @@ struct ReadCollectionTable: Table {
         case .createdAt: return entity.createdAt
         case .lastUpdatedAt: return entity.lastUpdatedAt
         case .pritority: return entity.priority?.rawValue
+        case .categoryIDs: return try? entity.categoryIDs.asArrayText()
         }
     }
 }
@@ -47,6 +48,7 @@ extension ReadCollectionTable {
         let createdAt: TimeStamp
         let lastUpdatedAt: TimeStamp
         let priority: ReadPriority?
+        let categoryIDs: [String]
         
         init(_ cursor: CursorIterator) throws {
             self.uid = try cursor.next().unwrap()
@@ -57,6 +59,8 @@ extension ReadCollectionTable {
             self.createdAt = try cursor.next().unwrap()
             self.lastUpdatedAt = try cursor.next().unwrap()
             self.priority = cursor.next().flatMap{ ReadPriority.init(rawValue: $0) }
+            let idText: String = try cursor.next().unwrap()
+            self.categoryIDs = try idText.toArray()
         }
         
         init(collection: ReadCollection) {
@@ -68,6 +72,7 @@ extension ReadCollectionTable {
             self.createdAt = collection.createdAt
             self.lastUpdatedAt = collection.lastUpdatedAt
             self.priority = collection.priority
+            self.categoryIDs = collection.categoryIDs
         }
     }
 }
@@ -83,6 +88,7 @@ extension ReadCollectionTable {
         case createdAt = "create_at"
         case lastUpdatedAt = "last_updated_at"
         case pritority = "read_priority"
+        case categoryIDs = "cate_ids"
         
         var dataType: ColumnDataType {
             switch self {
@@ -94,6 +100,7 @@ extension ReadCollectionTable {
             case .createdAt: return .real([.notNull])
             case .lastUpdatedAt: return .real([.notNull])
             case .pritority: return .integer([])
+            case .categoryIDs: return .text([])
             }
         }
     }
@@ -110,5 +117,6 @@ extension ReadCollectionTable.Entity {
             |> \.parentID .~ self.parentID
             |> \.priority .~ self.priority
             |> \.collectionDescription .~ self.collectionDescription
+            |> \.categoryIDs .~ self.categoryIDs
     }
 }

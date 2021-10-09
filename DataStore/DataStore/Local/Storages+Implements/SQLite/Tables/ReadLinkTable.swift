@@ -31,6 +31,7 @@ struct ReadLinkTable: Table {
         case .lastUpdatedAt: return entity.lastUpdatedAt
         case .customName: return entity.customName
         case .pritority: return entity.priority?.rawValue
+        case .categoryIDs: return try? entity.categoryIDs.asArrayText()
         }
     }
 }
@@ -47,6 +48,7 @@ extension ReadLinkTable {
         let lastUpdatedAt: TimeStamp
         let customName: String?
         let priority: ReadPriority?
+        let categoryIDs: [String]
         
         init(_ cursor: CursorIterator) throws {
             self.uid = try cursor.next().unwrap()
@@ -57,6 +59,8 @@ extension ReadLinkTable {
             self.lastUpdatedAt = try cursor.next().unwrap()
             self.customName = cursor.next()
             self.priority = cursor.next().flatMap{ ReadPriority.init(rawValue: $0) }
+            let idText: String = try cursor.next().unwrap()
+            self.categoryIDs = try idText.toArray()
         }
         
         init(link: ReadLink) {
@@ -68,6 +72,7 @@ extension ReadLinkTable {
             self.lastUpdatedAt = link.lastUpdatedAt
             self.customName = link.customName
             self.priority = link.priority
+            self.categoryIDs = link.categoryIDs
         }
     }
 }
@@ -83,6 +88,7 @@ extension ReadLinkTable {
         case lastUpdatedAt = "last_updated_at"
         case customName = "custom_name"
         case pritority = "read_priority"
+        case categoryIDs = "cate_ids"
         
         var dataType: ColumnDataType {
             switch self {
@@ -94,6 +100,7 @@ extension ReadLinkTable {
             case .lastUpdatedAt: return .real([.notNull])
             case .customName: return .text([])
             case .pritority: return .integer([])
+            case .categoryIDs: return .text([])
             }
         }
     }
@@ -102,7 +109,7 @@ extension ReadLinkTable {
 
 extension ReadLinkTable.Entity {
     
-    func asReadLink() -> ReadLink {
+    func asLinkItem() -> ReadLink {
         let link = ReadLink(uid: self.uid, link: self.link,
                             createAt: self.createdAt, lastUpdated: self.lastUpdatedAt)
         return link
@@ -110,5 +117,6 @@ extension ReadLinkTable.Entity {
             |> \.parentID .~ self.parentID
             |> \.customName .~ self.customName
             |> \.priority .~ self.priority
+            |> \.categoryIDs .~ self.categoryIDs
     }
 }

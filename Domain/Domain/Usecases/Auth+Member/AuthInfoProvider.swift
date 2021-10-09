@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol AuthInfoProvider {
+public protocol AuthInfoProvider: AnyObject {
     
     func currentAuth() -> Auth?
     

@@ -36,7 +36,7 @@ public enum RemoteErrors: Error {
 
 public protocol Remote: AuthRemote, MemberRemote,
                         PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
-                        ReadItemRemote, LinkPreviewRemote { }
+                        ReadItemRemote, LinkPreviewRemote, ItemCategoryRemote { }
 
 // MARK: - Auth remote
 
@@ -160,4 +160,10 @@ public protocol ReadItemRemote {
 public protocol LinkPreviewRemote {
     
     func requestLoadPreview(_ url: String) -> Maybe<LinkPreview>
+}
+
+// MARK: - item category
+
+public protocol ItemCategoryRemote {
+    
 }

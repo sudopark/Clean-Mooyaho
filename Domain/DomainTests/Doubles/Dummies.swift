@@ -129,3 +129,10 @@ extension LinkPreview {
                            mainImageURL: "url", iconURL: nil)
     }
 }
+
+extension ItemCategory {
+    
+    static func dummy(_ int: Int) -> ItemCategory {
+        return ItemCategory(uid: "cate:\(int)", name: "name:\(int)", colorCode: "color:\(int)")
+    }
+}

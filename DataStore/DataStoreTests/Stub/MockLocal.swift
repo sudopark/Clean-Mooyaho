@@ -167,4 +167,13 @@ class MockLocal: LocalStorage, Mocking {
     func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
         return self.resolve(key: "fetchCollection") ?? .empty()
     }
+    
+    func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
+        return self.resolve(key: "fetchCategories") ?? .empty()
+    }
+    
+    func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        return self.resolve(key: "updateCategories") ?? .empty()
+    }
 }
+
