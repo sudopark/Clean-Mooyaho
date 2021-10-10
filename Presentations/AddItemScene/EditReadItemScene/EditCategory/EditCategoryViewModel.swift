@@ -94,7 +94,8 @@ public final class EditCategoryViewModelImple: EditCategoryViewModel {
     private let router: EditCategoryRouting
     private weak var listener: EditCategorySceneListenable?
     
-    public init(categoryUsecase: ReadItemCategoryUsecase,
+    public init(startWith selection: [ItemCategory],
+                categoryUsecase: ReadItemCategoryUsecase,
                 suggestUsecase: SuggestCategoryUsecase,
                 router: EditCategoryRouting,
                 listener: EditCategorySceneListenable?) {
@@ -103,6 +104,7 @@ public final class EditCategoryViewModelImple: EditCategoryViewModel {
         self.suggestUsecase = suggestUsecase
         self.router = router
         self.listener = listener
+        self.subjects = .init(startWith: selection)
         
         self.bindSuggestResult()
     }
@@ -117,11 +119,19 @@ public final class EditCategoryViewModelImple: EditCategoryViewModel {
         let latestCategories = BehaviorRelay<[ItemCategory]>(value: [])
         let suggestedCategories = BehaviorRelay<SuggestCategoryCollection?>(value: nil)
         let randColorCode = BehaviorSubject<String>(value: ItemCategory.colorCodes.randomElement() ?? "")
-        let selectedMap = BehaviorRelay<SelectedCellMap>(value: .init())
+        let selectedMap: BehaviorRelay<SelectedCellMap>
         let isMakingCategory = BehaviorRelay<Bool>(value: false)
+        
+        init(startWith: [ItemCategory]) {
+            var initialMap = SelectedCellMap()
+            startWith.forEach {
+                initialMap[$0.uid] = .init($0)
+            }
+            self.selectedMap = .init(value: initialMap)
+        }
     }
     
-    private let subjects = Subjects()
+    private let subjects: Subjects
     private let disposeBag = DisposeBag()
     
     private func bindSuggestResult() {
@@ -294,7 +304,7 @@ private struct SelectedCellMap {
     
     private var appendedNameSet: Set<String> = []
     
-    init() {}
+    init() { }
     
     subscript(_ k: String) -> SuggestingCategoryCellViewModel? {
         get {

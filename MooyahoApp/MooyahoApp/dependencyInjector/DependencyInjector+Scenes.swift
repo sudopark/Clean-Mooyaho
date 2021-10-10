@@ -249,9 +249,11 @@ extension DependencyInjector: EditReadPrioritySceneBuilable {
 
 extension DependencyInjector: EditCategorySceneBuilable {
     
-    public func makeEditCategoryScene(listener: EditCategorySceneListenable?) -> EditCategoryScene {
+    public func makeEditCategoryScene(startWith select: [ItemCategory],
+                                      listener: EditCategorySceneListenable?) -> EditCategoryScene {
         let router = EditCategoryRouter(nextSceneBuilders: self)
-        let viewModel = EditCategoryViewModelImple(categoryUsecase: self.categoryUsecase,
+        let viewModel = EditCategoryViewModelImple(startWith: select,
+                                                   categoryUsecase: self.categoryUsecase,
                                                    suggestUsecase: self.suggestCategoryUsecase,
                                                    router: router,
                                                    listener: listener)

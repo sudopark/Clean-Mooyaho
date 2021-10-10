@@ -21,5 +21,6 @@ import CommonPresenting
 
 public protocol EditCategorySceneBuilable {
     
-    func makeEditCategoryScene(startWith: [ItemCategory], listener: EditCategorySceneListenable?) -> EditCategoryScene
+    func makeEditCategoryScene(startWith select: [ItemCategory],
+                               listener: EditCategorySceneListenable?) -> EditCategoryScene
 }
