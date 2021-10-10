@@ -31,7 +31,9 @@ extension ItemCategoryRepository where Self: ItemCategoryRepositoryDefImpleDepen
     }
     
     public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
-        return self.categoryLocal.updateCategories(categories)
+        let remoteUpdating = self.categoryRemote.requestUpdateCategories(categories)
+        let updateLocals = { [weak self] in self?.categoryLocal.updateCategories(categories) ?? .empty() }
+        return remoteUpdating.switchOr(append: updateLocals, witoutError: ())
     }
     
     public func suggestItemCategory(name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {

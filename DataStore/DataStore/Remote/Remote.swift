@@ -171,6 +171,8 @@ public protocol LinkPreviewRemote {
 // MARK: - item category
 
 public protocol ItemCategoryRemote: AuthorizationNeed {
+    
+    func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
  
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>
     

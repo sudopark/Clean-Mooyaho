@@ -19,7 +19,16 @@ public protocol ReadItemCategoryUsecase {
     
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
     
-    func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory>
+    func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+}
+
+extension ReadItemCategoryUsecase {
+    
+    public func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory> {
+        let newCatetory = ItemCategory(name: name, colorCode: colorCode)
+        return self.updateCategories([newCatetory])
+            .map { newCatetory }
+    }
 }
 
 
@@ -62,7 +71,17 @@ extension ReadItemCategoryUsecaseImple {
                                     remoteLoading: remoteLoading)
     }
     
-    public func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory> {
-        return .empty()
+    public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        
+        let updateOnStore: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            let datKey = SharedDataKeys.categoriesMap.rawValue
+            self.sharedService.update([String: ItemCategory].self, key: datKey) {
+                return categories.reduce($0 ?? [:]) { $0 |> key($1.uid) .~ $1 }
+            }
+        }
+        
+        return self.repository.updateCategories(categories)
+            .do(onNext: updateOnStore)
     }
 }
