@@ -18,6 +18,8 @@ import Optics
 public protocol ReadItemCategoryUsecase {
     
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
+    
+    func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory>
 }
 
 
@@ -58,5 +60,9 @@ extension ReadItemCategoryUsecaseImple {
                                     idSelector: { $0.uid },
                                     localFetchinig: localFetching,
                                     remoteLoading: remoteLoading)
+    }
+    
+    public func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory> {
+        return .empty()
     }
 }
