@@ -186,6 +186,10 @@ extension RemoteImple {
     
     
     // itemCategory
+    func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        return self.firebaseRemote.requestUpdateCategories(categories)
+    }
+    
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
         return self.firebaseRemote.requestSuggestCategories(name, cursor: cursor)
     }

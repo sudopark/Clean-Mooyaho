@@ -15,6 +15,10 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
+    func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestSuggestCategories(_ name: String,
                                   cursor: String?) -> Maybe<SuggestCategoryCollection> {
         .empty()

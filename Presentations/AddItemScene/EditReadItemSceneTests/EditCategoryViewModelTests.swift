@@ -64,7 +64,8 @@ class EditCategoryViewModelTests: BaseTestCase, WaitObservableEvents, EditCatego
         return []
     }
     
-    private func makeViewModel(shouldFailMakeNewCategory: Bool = false) -> EditCategoryViewModel {
+    private func makeViewModel(startWith: [ItemCategory] = [],
+                               shouldFailMakeNewCategory: Bool = false) -> EditCategoryViewModel {
         
         let scenario = StubSuggestCategoryUsecase.Scenario()
             |> \.latestCategories .~ self.dummyLatests
@@ -75,7 +76,8 @@ class EditCategoryViewModelTests: BaseTestCase, WaitObservableEvents, EditCatego
             |> \.updateResult .~ (shouldFailMakeNewCategory ? .failure(ApplicationErrors.invalid) : .success(()))
         let stubCateUsecase = StubItemCategoryUsecase(scenario: cateScenario)
         
-        return EditCategoryViewModelImple(categoryUsecase: stubCateUsecase,
+        return EditCategoryViewModelImple(startWith: startWith,
+                                          categoryUsecase: stubCateUsecase,
                                           suggestUsecase: stubUsecase,
                                           router: self, listener: self)
     }
@@ -196,6 +198,21 @@ extension EditCategoryViewModelTests {
         XCTAssertEqual(ids, [
             [], ["c:100"]
         ])
+    }
+    
+    func testViewModel_whenStartWithSelectionExists_show() {
+        // given
+        let expect = expectation(description: "이미 선택된 항목이 있는경우 선택목록 최초에 노출")
+        let viewModel = self.makeViewModel(startWith: [.dummy(100)])
+        
+        // when
+        let selectCVMs = self.waitFirstElement(expect, for: viewModel.selectedCellViewModels) {
+            viewModel.prepareCategoryList()
+        }
+        
+        // then
+        let ids = selectCVMs.map { $0.map { $0.uid } }
+        XCTAssertEqual(ids, ["c:100"])
     }
     
     // select item -> update list(exclude)
