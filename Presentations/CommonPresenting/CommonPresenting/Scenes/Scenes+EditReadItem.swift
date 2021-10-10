@@ -50,7 +50,7 @@ public protocol EnterLinkURLScene: Scenable {
 
 // MARK: - EditLinkItemScene interactor
 
-public protocol EditLinkItemSceneInteractable: ReadPrioritySelectListenable  { }
+public protocol EditLinkItemSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable { }
 
 
 // MARK: - EditLinkItemScene
