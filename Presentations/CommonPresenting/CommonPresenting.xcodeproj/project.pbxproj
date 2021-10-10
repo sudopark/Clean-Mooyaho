@@ -83,6 +83,12 @@
 		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
+		F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43442713560900F26508 /* ColorSelectRouter.swift */; };
+		F6CB434A2713560900F26508 /* ColorSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43452713560900F26508 /* ColorSelectViewController.swift */; };
+		F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43462713560900F26508 /* ColorSelectBuilder.swift */; };
+		F6CB434C2713560900F26508 /* ColorSelectScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43472713560900F26508 /* ColorSelectScene.swift */; };
+		F6CB434D2713560900F26508 /* ColorSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43482713560900F26508 /* ColorSelectViewModel.swift */; };
+		F6CB434F271358EC00F26508 /* ColorSelectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */; };
 		F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
@@ -190,6 +196,12 @@
 		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6C97B1627091D2500990019 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAndLabeledValueView.swift; sourceTree = "<group>"; };
+		F6CB43442713560900F26508 /* ColorSelectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectRouter.swift; sourceTree = "<group>"; };
+		F6CB43452713560900F26508 /* ColorSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewController.swift; sourceTree = "<group>"; };
+		F6CB43462713560900F26508 /* ColorSelectBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectBuilder.swift; sourceTree = "<group>"; };
+		F6CB43472713560900F26508 /* ColorSelectScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectScene.swift; sourceTree = "<group>"; };
+		F6CB43482713560900F26508 /* ColorSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewModel.swift; sourceTree = "<group>"; };
+		F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewModelTests.swift; sourceTree = "<group>"; };
 		F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContext+Decorating.swift"; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
 		F6DA564126889A6000032348 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
@@ -273,6 +285,7 @@
 				2B39E25F26387B6A003EE954 /* Info.plist */,
 				F610146E2657122300D32E38 /* AutoLayoutTests.swift */,
 				F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */,
+				F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */,
 			);
 			path = CommonPresentingTests;
 			sourceTree = "<group>";
@@ -445,6 +458,7 @@
 				F6F295A6266D26F000CDF980 /* ImagePicker */,
 				F66CD9532673CB8D0031EEC5 /* TagInputs */,
 				F65215732674A363000CAB4B /* TextInputs */,
+				F6CB4343271355EE00F26508 /* ColorSelect */,
 			);
 			path = CommonScenes;
 			sourceTree = "<group>";
@@ -459,6 +473,18 @@
 				F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */,
 			);
 			path = TagInputs;
+			sourceTree = "<group>";
+		};
+		F6CB4343271355EE00F26508 /* ColorSelect */ = {
+			isa = PBXGroup;
+			children = (
+				F6CB43442713560900F26508 /* ColorSelectRouter.swift */,
+				F6CB43452713560900F26508 /* ColorSelectViewController.swift */,
+				F6CB43462713560900F26508 /* ColorSelectBuilder.swift */,
+				F6CB43472713560900F26508 /* ColorSelectScene.swift */,
+				F6CB43482713560900F26508 /* ColorSelectViewModel.swift */,
+			);
+			path = ColorSelect;
 			sourceTree = "<group>";
 		};
 		F6F295A6266D26F000CDF980 /* ImagePicker */ = {
@@ -594,6 +620,7 @@
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
 				F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */,
 				F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */,
+				F6CB434A2713560900F26508 /* ColorSelectViewController.swift in Sources */,
 				F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
 				F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */,
@@ -637,6 +664,7 @@
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
 				F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */,
+				F6CB434C2713560900F26508 /* ColorSelectScene.swift in Sources */,
 				F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */,
 				F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */,
 				F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */,
@@ -645,7 +673,9 @@
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
+				F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */,
 				F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */,
+				F6CB434D2713560900F26508 /* ColorSelectViewModel.swift in Sources */,
 				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
 				F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */,
@@ -656,6 +686,7 @@
 				F66B7D7126C5DD8C00D31FAC /* Time+Extension.swift in Sources */,
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
+				F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */,
 				F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
 				F65215832674A395000CAB4B /* TextInputRouter.swift in Sources */,
@@ -674,6 +705,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */,
+				F6CB434F271358EC00F26508 /* ColorSelectViewModelTests.swift in Sources */,
 				F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
