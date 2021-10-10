@@ -21,7 +21,7 @@ public final class KeyAndLabeledValueView: BaseUIView, Presenting {
     private var labelTrailing: NSLayoutConstraint!
     
     public func updateRightButtonIsHidden(_ isHidden: Bool) {
-        self.labelTrailing?.constant = isHidden ? 0 : 15 + 4
+        self.labelTrailing?.constant = isHidden ? 0 : -(15 + 4)
         self.rightButton.isHidden = isHidden
     }
     
@@ -57,7 +57,7 @@ public final class KeyAndLabeledValueView: BaseUIView, Presenting {
         self.addSubview(rightButton)
         rightButton.autoLayout.active(with: self) {
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.centerYAnchor.constraint(equalTo: keyLabel.centerYAnchor)
             $0.widthAnchor.constraint(equalToConstant: 15)
             $0.heightAnchor.constraint(equalToConstant: 15)
         }

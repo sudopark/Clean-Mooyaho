@@ -63,6 +63,7 @@ public final class EditCategoryViewController: BaseViewController, EditCategoryS
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        self.viewModel.prepareCategoryList()
     }
     
 }
@@ -86,6 +87,32 @@ extension EditCategoryViewController {
                 self?.confirmButton.setTitle(title, for: .normal)
             })
             .disposed(by: self.disposeBag)
+        
+        self.viewModel.clearText
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] in
+                self?.inputField.clearInput()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.inputField.rx.text
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.suggest(text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.inputField.rx.clear
+            .subscribe(onNext: { [weak self] in
+                self?.inputField.clearInput()
+                self?.viewModel.suggest("")
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirmSelect()
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -101,12 +128,24 @@ extension EditCategoryViewController {
         self.viewModel.selectedCellViewModels
             .map { [SelectSection(model: "select", items: $0)] }
             .asDriver(onErrorDriveWith: .never())
+            .do(onNext: { [weak self] sections in
+                self?.updateSelectedSectionVisibility(sections.first?.items.isNotEmpty == true)
+            })
             .drive(self.selectedCollectionView.rx.items(dataSource: self.selectDataSource))
             .disposed(by: self.disposeBag)
         
         self.selectedCollectionView.rx.modelSelected(SelectCVM.self)
             .subscribe(onNext: { [weak self] cellViewModel in
                 self?.viewModel.deselect(cellViewModel.uid)
+            })
+            .disposed(by: self.disposeBag)
+                
+        self.viewModel.scrollToLastSelectionSection
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] index in
+                guard let self = self else { return }
+                self.selectedCollectionView
+                    .scrollToItem(at: IndexPath(row: index, section: 0), at: .right, animated: true)
             })
             .disposed(by: self.disposeBag)
     }
@@ -117,6 +156,11 @@ extension EditCategoryViewController {
             cell.setupCell(cellViewModel)
             return cell
         }
+    }
+    
+    private func updateSelectedSectionVisibility(_ show: Bool) {
+        self.selectedCollectionView.isHidden = show == false
+        self.tableViewTopConstraint.constant = show ? 52 : 12
     }
 }
 
@@ -158,7 +202,7 @@ extension EditCategoryViewController {
     }
     
     private func makeTableViewDataSource() -> SuggestDataSource {
-        return .init { [weak self] _, tableView, indexPath, cellViewMdoel in
+        let configureCell: SuggestDataSource.ConfigureCell = { [weak self] _, tableView, indexPath, cellViewMdoel in
             switch cellViewMdoel {
             case let makeNew as SuggestMakeNewCategoryCellViewMdoel:
                 let cell: SuggestMakeNewCategoryCell = tableView.dequeueCell()
@@ -174,6 +218,10 @@ extension EditCategoryViewController {
             default: return UITableViewCell()
             }
         }
+        let configureTitle: SuggestDataSource.TitleForHeaderInSection = { _, _ in
+            return "Suggesting categories"
+        }
+        return .init(configureCell: configureCell, titleForHeaderInSection: configureTitle)
     }
 }
 
@@ -194,8 +242,8 @@ extension EditCategoryViewController: Presenting {
         
         self.view.addSubview(inputField)
         inputField.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32)
         }
         inputField.setupLayout()
@@ -217,8 +265,8 @@ extension EditCategoryViewController: Presenting {
         }.first
         tableViewTopConstraint.isActive = true
         tableView.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         
@@ -226,7 +274,7 @@ extension EditCategoryViewController: Presenting {
         confirmButton.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
     }
@@ -245,13 +293,16 @@ extension EditCategoryViewController: Presenting {
         
         self.selectedCollectionView.registerCell(SelectedCategoryCell.self)
         self.selectedCollectionView.delegate = self
+        self.selectedCollectionView.isHidden = true
         
         self.tableView.registerCell(SuggestingCategoryCell.self)
         self.tableView.registerCell(SuggestMakeNewCategoryCell.self)
         self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.delegate = self
-        self.tableView.contentInset = .init(top: 0, left: 0, bottom: -60, right: 0)
+        self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
+        
+        self.confirmButton.setupStyling()
     }
 }
 
@@ -282,17 +333,8 @@ extension EditCategoryViewController: UICollectionViewDelegateFlowLayout {
 
 extension EditCategoryViewController: UITableViewDelegate {
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        return nil
-    }
-    
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
-    }
-    
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 25
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

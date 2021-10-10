@@ -39,6 +39,7 @@ public final class ItemLabelView: BaseUIView, Presenting {
     public func setupLayout() {
         self.addSubview(self.underlyingTextView)
         underlyingTextView.autoLayout.fill(self)
+        underlyingTextView.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
     public func setupStyling() {

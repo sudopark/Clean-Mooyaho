@@ -219,7 +219,7 @@ extension EditCategoryViewModelTests {
     func testViewModel_whenAfterSelectItem_hideFromList() {
         // given
         let expect = expectation(description: "아이템 선택 이후에 서제스트 리스트에서는 숨김")
-        expect.expectedFulfillmentCount = 4
+        expect.expectedFulfillmentCount = 5
         let viewModel = self.makeViewModel()
         
         // when
@@ -232,11 +232,12 @@ extension EditCategoryViewModelTests {
         
         // then
         let idsLists = cvmStreams.map { $0.compactMap { $0 as? CVM }.map { $0.uid} }
-        XCTAssertEqual(idsLists.count, 4)
+        XCTAssertEqual(idsLists.count, 5)
         XCTAssertEqual(idsLists[safe: 0]?.contains("c:100"), true)
         XCTAssertEqual(idsLists[safe: 1]?.contains("c:100"), false)
         XCTAssertEqual(idsLists[safe: 2]?.contains("c:1"), true)
         XCTAssertEqual(idsLists[safe: 3]?.contains("c:1"), false)
+        XCTAssertEqual(idsLists[safe: 4]?.contains("c:100"), false) // 선택 완료시에 목록 초기화되고 디폴트 리스트 노출
     }
     
     // deselect item -> update remove from selected cell
@@ -323,7 +324,7 @@ extension EditCategoryViewModelTests {
     
     func testViewModel_whenAfterMakeNewCategory_notShowAtSuggestList() {
         // given
-        let expect = expectation(description: "카테고리 생성 이후에 서제스트 목록에서 추가셀 제거")
+        let expect = expectation(description: "카테고리 생성 이후에 디폴트 서제스트 목록 노출")
         expect.expectedFulfillmentCount = 2
         let viewModel = self.makeViewModel()
         
@@ -339,7 +340,7 @@ extension EditCategoryViewModelTests {
         let cvmLast = cellViewModels.last
         XCTAssert(cvmsFirst?.first is SuggestMakeNewCategoryCellViewMdoel)
         XCTAssertEqual(cvmsFirst?.count, 1)
-        XCTAssertEqual(cvmLast?.count, 0)
+        XCTAssertEqual(cvmLast?.count, 2)
     }
     
     // make category error -> show errorr

@@ -34,11 +34,46 @@ extension DataModelStorageImple {
     
     private func createTables(_ database: DataBase) {
         
-        try? database.createTableOrNot(MemberTable.self)
-        try? database.createTableOrNot(ImageSourceTable.self)
-        try? database.createTableOrNot(ThumbnailTable.self)
-        try? database.createTableOrNot(ItemCategoriesTable.self)
+        do {
+            try database.createTableOrNot(MemberTable.self)
+            logger.print(level: .debug, "sqlite MemberTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create MemberTable")
+        }
         
-        logger.print(level: .debug, "sqlite tables are created..")
+        do {
+            try database.createTableOrNot(ImageSourceTable.self)
+            logger.print(level: .debug, "sqlite ImageSourceTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ImageSourceTable")
+        }
+        
+        do {
+            try database.createTableOrNot(ThumbnailTable.self)
+            logger.print(level: .debug, "sqlite ThumbnailTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ThumbnailTable")
+        }
+        
+        do {
+            try database.createTableOrNot(ReadCollectionTable.self)
+            logger.print(level: .debug, "sqlite ReadCollectionTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ReadCollectionTable")
+        }
+        
+        do {
+            try database.createTableOrNot(ReadLinkTable.self)
+            logger.print(level: .debug, "sqlite ReadLinkTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ReadLinkTable")
+        }
+        
+        do {
+            try database.createTableOrNot(ItemCategoriesTable.self)
+            logger.print(level: .debug, "sqlite ItemCategoriesTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ItemCategoriesTable")
+        }
     }
 }

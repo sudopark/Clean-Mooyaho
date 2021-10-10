@@ -81,6 +81,8 @@ public protocol ReadItemCells: BaseTableViewCell {
     func setupCell(_ cellViewModel: CellViewModel)
     
     func updateCategories(_ categories: [ItemCategory])
+    
+    var tableView: UITableView? { get set }
 }
 
 extension ReadItemCells {
@@ -89,7 +91,9 @@ extension ReadItemCells {
         source
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] categories in
+                self?.tableView?.beginUpdates()
                 self?.updateCategories(categories)
+                self?.tableView?.endUpdates()
             })
             .disposed(by: self.disposeBag)
     }
@@ -101,6 +105,8 @@ extension ReadItemCells {
 final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadCollectionAttrCellViewModel
+    
+    weak var tableView: UITableView?
     
     private let stackView = UIStackView()
     private let descriptionLabel = UILabel()
@@ -195,8 +201,7 @@ final class ReadItemExppandContentView: BaseUIView, Presenting {
     let nameLabel = UILabel()
     let addressLabel = UILabel()
     let descriptionLabel = UILabel()
-    let priorityStackView = UIStackView()
-    let alarmLabel = UILabel()
+
     let priorityLabel = ItemLabelView()
     let categoriesView = ItemLabelView()
     
@@ -227,23 +232,26 @@ final class ReadItemExppandContentView: BaseUIView, Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
             $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 18)
         }
+        addressLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
         contentStackView.addArrangedSubview(descriptionLabel)
         descriptionLabel.autoLayout.active(with: contentStackView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
         }
+        descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
-        contentStackView.addArrangedSubview(priorityStackView)
-        priorityStackView.axis = .horizontal
-        priorityStackView.spacing = 4
-        
-        priorityStackView.addArrangedSubview(priorityLabel)
-        priorityLabel.setupLayout()
+        self.contentStackView.addArrangedSubview(priorityLabel)
+        priorityLabel.autoLayout.active(with: self.contentStackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
         priorityLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
-        priorityStackView.addArrangedSubview(alarmLabel)
+        priorityLabel.setupLayout()
         
         contentStackView.addArrangedSubview(categoriesView)
+        categoriesView.autoLayout.active(with: contentStackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
+        categoriesView.setContentCompressionResistancePriority(.required, for: .vertical)
         categoriesView.setupLayout()
     }
     
@@ -266,11 +274,6 @@ final class ReadItemExppandContentView: BaseUIView, Presenting {
         self.priorityLabel.setupStyling()
         self.priorityLabel.isHidden = true
         
-        _ = alarmLabel
-            |> self.uiContext.decorating.listItemAccentText(_:)
-            |> \.numberOfLines .~ 1
-            |> \.isHidden .~ true
-        
         self.categoriesView.setupStyling()
         self.categoriesView.isHidden = true
     }
@@ -281,6 +284,7 @@ final class ReadItemExppandContentView: BaseUIView, Presenting {
 final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadCollectionCellViewModel
+    weak var tableView: UITableView?
     
     private let expandView = ReadItemExppandContentView()
     private let arrowImageView = UIImageView()
@@ -359,6 +363,8 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadLinkCellViewModel
     
+    weak var tableView: UITableView?
+    
     private let expandView = ReadItemExppandContentView()
     private let thumbNailView = UIImageView()
     private let underLineView = UIView()
@@ -396,9 +402,11 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         source.asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] preview in
                 guard let self = self else { return }
+                self.tableView?.beginUpdates()
                 self.updateThumbnailIfPossible(with: preview.mainImageURL)
                 self.updateTitle(preview.title)
                 self.updateDescription(preview.description)
+                self.tableView?.endUpdates()
             })
             .disposed(by: self.disposeBag)
     }
