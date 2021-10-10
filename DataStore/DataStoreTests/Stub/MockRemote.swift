@@ -165,6 +165,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     }
     
     // category
+    func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateCategories") ?? .empty()
+    }
+    
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
         return self.resolve(key: "requestSuggestCategories") ?? .empty()
     }

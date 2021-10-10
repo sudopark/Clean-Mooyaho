@@ -69,6 +69,51 @@ extension RepositoryTests_ItemCategory {
         // then
         XCTAssertNotNil(result)
     }
+    
+    func testCategory_updateCategories_withoutSignedIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 카테고리 업데이트")
+        self.mockRemote.signInMemberID = nil
+        self.mockRemote.register(key: "requestUpdateCategories") { Maybe<Void>.empty() }
+        self.mockLocal.register(key: "updateCategories") { Maybe<Void>.just() }
+        
+        // when
+        let updating = self.repository.updateCategories([.init(name: "some", colorCode: "some")])
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testCategory_updateCategories_withSignedIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 카테고리 업데이트")
+        self.mockRemote.signInMemberID = "some"
+        self.mockRemote.register(key: "requestUpdateCategories") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "updateCategories") { Maybe<Void>.just() }
+        
+        // when
+        let updating = self.repository.updateCategories([.init(name: "some", colorCode: "some")])
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testCategory_whenUpdateCategoriesWithSignedIn_ignoreLocalError() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 카테고리 업데이트시에 로컬에러는 무시")
+        self.mockRemote.signInMemberID = "some"
+        self.mockRemote.register(key: "requestUpdateCategories") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "updateCategories") { Maybe<Void>.error(LocalErrors.notExists) }
+        
+        // when
+        let updating = self.repository.updateCategories([.init(name: "some", colorCode: "some")])
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
 }
 
 extension RepositoryTests_ItemCategory {
