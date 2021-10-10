@@ -182,4 +182,8 @@ extension DependencyInjector {
         return ReadItemCategoryUsecaseImple(repository: self.appReposiotry,
                                             sharedService: self.shared.dataStore)
     }
+    
+    var suggestCategoryUsecase: SuggestCategoryUsecase {
+        return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
+    }
 }

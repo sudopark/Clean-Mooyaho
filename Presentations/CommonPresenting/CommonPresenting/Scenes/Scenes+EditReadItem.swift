@@ -76,7 +76,10 @@ public protocol EditReadCollectionScene: Scenable, PangestureDismissableScene {
 
 public protocol EditCategorySceneInteractable { }
 
-public protocol EditCategorySceneListenable: AnyObject { }
+public protocol EditCategorySceneListenable: AnyObject {
+    
+    func editCategory(didSelect categories: [ItemCategory])
+}
 
 
 // MARK: - EditCategoryScene

@@ -132,3 +132,21 @@ extension ItemCategory {
         return  ItemCategory(uid: "c:\(int)", name: "n:\(int)", colorCode: "code:\(int)")
     }
 }
+
+
+extension SuggestCategory {
+    
+    public static func dummy(_ int: Int) -> SuggestCategory {
+        return .init(ownerID: "o:\(int)", category: .dummy(int), lastUpdated: .now() + Double(int))
+    }
+}
+
+extension SuggestCategoryCollection {
+    
+    public static func dummy(_ query: String, page: Int?, nextCursor: String?) -> SuggestCategoryCollection {
+        let page = page ?? 0
+        let range = page*10..<page*10+10
+        let categories = range.map { SuggestCategory.dummy($0) }
+        return .init(query: query, categories: categories, cursor: nextCursor)
+    }
+}

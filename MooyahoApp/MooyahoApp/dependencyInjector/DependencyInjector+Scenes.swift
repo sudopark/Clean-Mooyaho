@@ -251,7 +251,10 @@ extension DependencyInjector: EditCategorySceneBuilable {
     
     public func makeEditCategoryScene(listener: EditCategorySceneListenable?) -> EditCategoryScene {
         let router = EditCategoryRouter(nextSceneBuilders: self)
-        let viewModel = EditCategoryViewModelImple(router: router, listener: listener)
+        let viewModel = EditCategoryViewModelImple(categoryUsecase: self.categoryUsecase,
+                                                   suggestUsecase: self.suggestCategoryUsecase,
+                                                   router: router,
+                                                   listener: listener)
         let viewController = EditCategoryViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

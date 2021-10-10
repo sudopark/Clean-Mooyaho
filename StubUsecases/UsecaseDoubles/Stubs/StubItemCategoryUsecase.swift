@@ -16,6 +16,7 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
     
     public struct Scenario {
         public var categories: [[ItemCategory]] = []
+        public var makeResult: Result<ItemCategory, Error> = .success(.dummy(200))
         
         public init () {}
     }
@@ -27,5 +28,9 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
     
     public func categories(for ids: [String]) -> Observable<[ItemCategory]> {
         return .from(self.scenario.categories)
+    }
+    
+    public func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory> {
+        return self.scenario.makeResult.asMaybe()
     }
 }

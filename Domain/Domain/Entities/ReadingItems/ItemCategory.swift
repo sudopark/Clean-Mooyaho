@@ -29,3 +29,22 @@ public struct ItemCategory: Equatable {
         self.colorCode = colorCode
     }
 }
+
+extension ItemCategory {
+    
+    public static var colorCodes: [String] {
+        return [
+            "#f44336",
+            "#e91e63",
+            "#9c27b0",
+            "#3f51b5",
+            "#00838f",
+            "#00796b",
+            "#827717",
+            "#ff6f00",
+            "#5d4037",
+            "#424242",
+            "#546e7a"
+        ]
+    }
+}

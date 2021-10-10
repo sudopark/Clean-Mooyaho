@@ -23,6 +23,8 @@ public protocol SuggestCategoryUsecase {
     
     func loadMore()
     
+    func loadLatestCategories() -> Observable<[SuggestCategory]>
+    
     var suggestedCategories: Observable<SuggestCategoryCollection?> { get }
     
     var isSuggesting: Observable<Bool> { get }
@@ -110,6 +112,12 @@ extension SuggestCategoryUsecaseImple {
 }
 
 extension SuggestCategoryUsecaseImple {
+    
+    public func loadLatestCategories() -> Observable<[SuggestCategory]> {
+        return self.repository
+            .loadLatestCategories()
+            .asObservable()
+    }
     
     public var suggestedCategories: Observable<SuggestCategoryCollection?> {
         return self.internalUsecase.suggestResult
