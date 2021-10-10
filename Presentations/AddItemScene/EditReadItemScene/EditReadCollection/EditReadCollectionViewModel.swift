@@ -70,6 +70,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         let description = BehaviorRelay<String?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
+        let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])
     }
     
     private let subjects = Subjects()
@@ -91,10 +92,6 @@ extension EditReadCollectionViewModelImple {
     
     public func enterDescription(_ description: String) {
         self.subjects.description.accept(description)
-    }
-    
-    public func addCategory() {
-        
     }
     
     public func confirmUpdate() {
@@ -132,6 +129,7 @@ extension EditReadCollectionViewModelImple {
             |> \.collectionDescription .~ self.subjects.description.value
             |> \.parentID .~ self.parentID
             |> \.priority .~ self.subjects.selectedPriority.value
+            |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
         return updateUsecase.updateCollection(newCollection)
             .map{ newCollection }
     }
@@ -162,6 +160,22 @@ extension EditReadCollectionViewModelImple {
 }
 
 
+// MARK: - EditReadCollectionViewModelImple Interactor + edit categories
+
+extension EditReadCollectionViewModelImple {
+    
+    public func addCategory() {
+        
+        let previousSelected = self.subjects.selectedCategories.value
+        self.router.selectCategories(startWith: previousSelected)
+    }
+    
+    public func editCategory(didSelect categories: [ItemCategory]) {
+        self.subjects.selectedCategories.accept(categories)
+    }
+}
+
+
 // MARK: - EditReadCollectionViewModelImple Presenter
 
 extension EditReadCollectionViewModelImple {
@@ -171,7 +185,10 @@ extension EditReadCollectionViewModelImple {
             .distinctUntilChanged()
     }
     
-    public var categories: Observable<[ItemCategory]> { .empty() }
+    public var categories: Observable<[ItemCategory]> {
+        return self.subjects.selectedCategories
+            .distinctUntilChanged()
+    }
     
     public var isConfirmable: Observable<Bool> {
         return self.subjects.collectionName

@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -20,5 +21,5 @@ import CommonPresenting
 
 public protocol EditCategorySceneBuilable {
     
-    func makeEditCategoryScene(listener: EditCategorySceneListenable?) -> EditCategoryScene
+    func makeEditCategoryScene(startWith: [ItemCategory], listener: EditCategorySceneListenable?) -> EditCategoryScene
 }
