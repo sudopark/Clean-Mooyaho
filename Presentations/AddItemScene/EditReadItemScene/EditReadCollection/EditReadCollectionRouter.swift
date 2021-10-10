@@ -22,12 +22,14 @@ import CommonPresenting
 public protocol EditReadCollectionRouting: Routing {
     
     func selectPriority(startWith: ReadPriority?)
+    
+    func selectCategories(startWith: [ItemCategory])
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditReadCollectionRouterBuildables = EditReadPrioritySceneBuilable
+public typealias EditReadCollectionRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable
 
 public final class EditReadCollectionRouter: Router<EditReadCollectionRouterBuildables>, EditReadCollectionRouting {
     
@@ -52,6 +54,14 @@ extension EditReadCollectionRouter {
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func selectCategories(startWith: [ItemCategory]) {
+        
+        guard let next = self.nextScenesBuilder?.makeEditCategoryScene(startWith: startWith, listener: self.currentInteractor) else {
+            return
+        }
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

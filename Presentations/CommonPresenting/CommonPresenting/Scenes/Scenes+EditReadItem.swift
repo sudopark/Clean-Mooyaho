@@ -62,7 +62,7 @@ public protocol EditLinkItemScene: Scenable {
 
 // MARK: - EditReadCollectionScene Input & Output
 
-public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable  { }
+public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable { }
 
 // MARK: - EditReadCollectionScene
 
