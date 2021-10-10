@@ -30,7 +30,9 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
     var didErrorAlerted: Bool?
     var didRewind: Bool?
     var didSelectPriorityStartWith: ReadPriority?
+    var didSelectCategoriesStartWith: [ItemCategory]?
     var selectPriorityMocking: ReadPriority?
+    var selectCategoriesMocking: [ItemCategory]?
     private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
 
     
@@ -47,6 +49,8 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
         self.didSelectPriorityStartWith = nil
         self.selectPriorityMocking = nil
         self.editLinkItemSceneInteractable = nil
+        self.didSelectCategoriesStartWith = nil
+        self.selectCategoriesMocking = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -95,6 +99,12 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
         self.didSelectPriorityStartWith = priority
         guard let mocking = self.selectPriorityMocking else { return }
         self.editLinkItemSceneInteractable?.editReadPriority(didSelect: mocking)
+    }
+    
+    func editCategory(startWith categories: [ItemCategory]) {
+        self.didSelectCategoriesStartWith = categories
+        guard let mocking = self.selectCategoriesMocking else { return }
+        self.editLinkItemSceneInteractable?.editCategory(didSelect: mocking)
     }
     
     class PrivateReadItemUsecaseStub: StubReadItemUsecase {
@@ -267,6 +277,48 @@ extension EditLinkItemViewModelTests_makeNew {
     }
 }
 
+// MARK: - select categories
+
+extension EditLinkItemViewModelTests_makeNew {
+    
+    func testViewModel_requestSelectCategories() {
+        // given
+        let expect = expectation(description: "category 선택")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let categories = self.waitFirstElement(expect, for: viewModel.categories, skip: 1) {
+            self.selectCategoriesMocking = [.dummy(0)]
+            viewModel.editCategory()
+        }
+        
+        // then
+        XCTAssertEqual(categories, [.dummy(0)])
+    }
+    
+    func testViewModel_changeSelectedCategories() {
+        // given
+        let expect = expectation(description: "category 선택 반복")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let categoryLists = self.waitElements(expect, for: viewModel.categories, skip: 1) {
+            self.selectCategoriesMocking = [.dummy(0)]
+            viewModel.editCategory()
+            
+            self.selectCategoriesMocking = [.dummy(0), .dummy(1)]
+            viewModel.editCategory()
+        }
+        
+        // then
+        XCTAssertEqual(categoryLists.first, [.dummy(0)])
+        XCTAssertEqual(categoryLists.last, [.dummy(0), .dummy(1)])
+        XCTAssertEqual(self.didSelectCategoriesStartWith, [.dummy(0)])
+    }
+}
+
+
 extension EditLinkItemViewModelTests_makeNew {
     
     func testViewModel_addLinkItem() {
@@ -278,6 +330,8 @@ extension EditLinkItemViewModelTests_makeNew {
         viewModel.enterCustomName("custom name")
         self.selectPriorityMocking = .afterAWhile
         viewModel.editPriority()
+        self.selectCategoriesMocking = [.dummy(0)]
+        viewModel.editCategory()
         
         self.editCompleted = {
             newLink = $0
@@ -292,6 +346,7 @@ extension EditLinkItemViewModelTests_makeNew {
         XCTAssertEqual(self.didClose, true)
         XCTAssertEqual(newLink?.priority, .afterAWhile)
         XCTAssertEqual(newLink?.customName, "custom name")
+        XCTAssertEqual(newLink?.categoryIDs, [ItemCategory.dummy(0).uid])
     }
     
     func testViewModel_whenSaveItemFail_showError() {

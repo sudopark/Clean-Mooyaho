@@ -24,12 +24,14 @@ public protocol EditLinkItemRouting: Routing {
     func requestRewind()
     
     func editPriority(startWith priority: ReadPriority?)
+    
+    func editCategory(startWith categories: [ItemCategory])
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable
+public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable
 
 public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, EditLinkItemRouting {
     
@@ -62,6 +64,15 @@ extension EditLinkItemRouter {
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func editCategory(startWith categories: [ItemCategory]) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeEditCategoryScene(startWith: categories, listener: self.currentInteractor) else {
+            return
+        }
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

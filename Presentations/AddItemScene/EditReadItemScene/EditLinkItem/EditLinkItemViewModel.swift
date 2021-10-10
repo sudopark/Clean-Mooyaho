@@ -75,6 +75,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     fileprivate final class Subjects {
         let previewLoadStatus = PublishSubject<LoadPreviewStatus>()
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
+        let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])
         let customName = BehaviorRelay<String?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)
     }
@@ -143,14 +144,11 @@ extension EditLinkItemViewModelImple {
             return ReadLink(link: url)
                 |> \.customName .~ self.subjects.customName.value.flatMap { $0.isEmpty ? nil : $0 }
                 |> \.priority .~ self.subjects.selectedPriority.value
+                |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
             
         case let .edit(item):
             return item
         }
-    }
-    
-    public func editCategory() {
-        logger.todoImplement()
     }
     
     public func rewind() {
@@ -159,7 +157,7 @@ extension EditLinkItemViewModelImple {
 }
 
 
-// MARK: - EditLinkItemViewModelImple Interactor
+// MARK: - EditLinkItemViewModelImple Interactor + edit priority
 
 extension EditLinkItemViewModelImple {
     
@@ -170,6 +168,20 @@ extension EditLinkItemViewModelImple {
     
     public func editReadPriority(didSelect priority: ReadPriority) {
         self.subjects.selectedPriority.accept(priority)
+    }
+}
+
+// MARK: - EditLinkItemViewModelImple Interactor + edit categories
+
+extension EditLinkItemViewModelImple {
+    
+    public func editCategory() {
+        let previousSelected = self.subjects.selectedCategories.value
+        self.router.editCategory(startWith: previousSelected)
+    }
+    
+    public func editCategory(didSelect categories: [ItemCategory]) {
+        self.subjects.selectedCategories.accept(categories)
     }
 }
 
@@ -214,7 +226,8 @@ extension EditLinkItemViewModelImple {
     }
     
     public var categories: Observable<[ItemCategory]> {
-        return .empty()
+        return self.subjects.selectedCategories
+            .distinctUntilChanged()
     }
     
     public var isProcessing: Observable<Bool> {
