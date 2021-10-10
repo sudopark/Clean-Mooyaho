@@ -102,6 +102,20 @@ extension DependencyInjector: TextInputSceneBuilable {
     }
 }
 
+extension DependencyInjector: ColorSelectSceneBuilable {
+    
+    public func makeColorSelectScene(_ dependency: SelectColorDepedency,
+                                     listener: ColorSelectSceneListenable?) -> ColorSelectScene {
+        let router = ColorSelectRouter(nextSceneBuilders: self)
+        let viewModel = ColorSelectViewModelImple(startWithSelect: dependency.startWithSelect,
+                                                  colorSources: dependency.colorSources,
+                                                  router: router, listener: listener)
+        let viewController = ColorSelectViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
 
 // MARK: - ReadItemScene
 
