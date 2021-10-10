@@ -24,7 +24,7 @@ public protocol ColorSelectSceneListenable: AnyObject {
 
 // MARK: - ColorSelectScene
 
-public protocol ColorSelectScene: Scenable {
+public protocol ColorSelectScene: Scenable, PangestureDismissableScene {
     
     var interactor: ColorSelectSceneInteractable? { get }
 }

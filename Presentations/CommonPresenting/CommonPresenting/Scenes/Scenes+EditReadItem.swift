@@ -74,7 +74,7 @@ public protocol EditReadCollectionScene: Scenable, PangestureDismissableScene {
 
 // MARK: - EditCategoryScene Interactable & Listenable
 
-public protocol EditCategorySceneInteractable { }
+public protocol EditCategorySceneInteractable: ColorSelectSceneListenable { }
 
 public protocol EditCategorySceneListenable: AnyObject {
     

@@ -34,17 +34,19 @@ final class ColorCell: BaseTableViewCell, Presenting {
     
     func setupLayout() {
         
-        self.contentView.addSubview(colorView)
-        colorView.autoLayout.fill(self.contentView)
+        self.addSubview(colorView)
+        colorView.autoLayout.fill(self)
         
         self.contentView.addSubview(codeLabel)
         codeLabel.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
     }
     
     func setupStyling() {
+        
+        self.tintColor = .white
         
         _ = self.codeLabel
             |> self.uiContext.decorating.listItemTitle(_:)
@@ -169,6 +171,7 @@ extension ColorSelectViewController: Presenting {
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
             $0.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -8)
+            $0.heightAnchor.constraint(equalToConstant: 300)
         }
     }
     
@@ -180,7 +183,7 @@ extension ColorSelectViewController: Presenting {
             |> self.uiContext.decorating.smallHeader
             |> \.text .~ "Select a color"
         
-        self.tableView.rowHeight = 100
+        self.tableView.rowHeight = 75
         self.tableView.registerCell(ColorCell.self)
         self.tableView.dataSource = self
         self.tableView.delegate = self

@@ -50,6 +50,8 @@ class EditCategoryViewModelTests: BaseTestCase, WaitObservableEvents, EditCatego
         self.didSelectedCategories?(categories)
     }
     
+    func showColorPicker(startWith select: String?, sources: [String]) { }
+    
     private var dummyLatests: [SuggestCategory] {
         return (100..<102).map { .dummy($0) }
     }
