@@ -72,7 +72,7 @@ class EditCategoryViewModelTests: BaseTestCase, WaitObservableEvents, EditCatego
         let stubUsecase = StubSuggestCategoryUsecase(scenario: scenario)
         
         let cateScenario = StubItemCategoryUsecase.Scenario()
-            |> \.makeResult .~ (shouldFailMakeNewCategory ? .failure(ApplicationErrors.invalid) : .success(.init(name: "q2", colorCode: "some")))
+            |> \.updateResult .~ (shouldFailMakeNewCategory ? .failure(ApplicationErrors.invalid) : .success(()))
         let stubCateUsecase = StubItemCategoryUsecase(scenario: cateScenario)
         
         return EditCategoryViewModelImple(categoryUsecase: stubCateUsecase,

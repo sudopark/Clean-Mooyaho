@@ -16,7 +16,7 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
     
     public struct Scenario {
         public var categories: [[ItemCategory]] = []
-        public var makeResult: Result<ItemCategory, Error> = .success(.dummy(200))
+        public var updateResult: Result<Void, Error> = .success(())
         
         public init () {}
     }
@@ -30,7 +30,7 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
         return .from(self.scenario.categories)
     }
     
-    public func makeCategory(_ name: String, colorCode: String) -> Maybe<ItemCategory> {
-        return self.scenario.makeResult.asMaybe()
+    public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        return self.scenario.updateResult.asMaybe()
     }
 }
