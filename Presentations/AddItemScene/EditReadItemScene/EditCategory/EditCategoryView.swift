@@ -160,6 +160,8 @@ final class SuggestMakeNewCategoryCell: BaseTableViewCell {
     let labelView = SuggestingCategoryLabelView()
     let colorView = UIView()
     
+    weak var createSubject: PublishSubject<SuggestMakeNewCategoryCellViewMdoel>?
+    
     override func afterViewInit() {
         super.afterViewInit()
         self.setupLayout()
@@ -171,8 +173,14 @@ final class SuggestMakeNewCategoryCell: BaseTableViewCell {
         self.accessoryType = .disclosureIndicator
     }
     
-    func seutpCell(_ cellViewModel: SuggestMakeNewCategoryCellViewMdoel) {
+    func setupCell(_ cellViewModel: SuggestMakeNewCategoryCellViewMdoel) {
         self.labelView.setupLabel(cellViewModel)
+        
+        self.createButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.createSubject?.onNext(cellViewModel)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 

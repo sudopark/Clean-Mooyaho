@@ -10,6 +10,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 import Prelude
 import Optics
 
@@ -20,6 +21,14 @@ import CommonPresenting
 
 public final class EditCategoryViewController: BaseViewController, EditCategoryScene {
     
+    typealias SuggestCVM = SuggestingCategoryCellViewModelType
+    typealias SuggestSection = SectionModel<String, SuggestCVM>
+    typealias SuggestDataSource = RxTableViewSectionedReloadDataSource<SuggestSection>
+    
+    typealias SelectCVM = SuggestingCategoryCellViewModel
+    typealias SelectSection = SectionModel<String, SelectCVM>
+    typealias SelectDataSource = RxCollectionViewSectionedReloadDataSource<SelectSection>
+     
     private let titleLabel = UILabel()
     private let inputField = SingleLineInputView()
     private var selectedCollectionView: UICollectionView!
@@ -28,6 +37,9 @@ public final class EditCategoryViewController: BaseViewController, EditCategoryS
     private var tableViewTopConstraint: NSLayoutConstraint!
     
     let viewModel: EditCategoryViewModel
+    private var suggestDataSource: SuggestDataSource!
+    private var selectDataSource: SelectDataSource!
+    private let createCategorySubject = PublishSubject<SuggestMakeNewCategoryCellViewMdoel>()
     
     public init(viewModel: EditCategoryViewModel) {
         self.viewModel = viewModel
@@ -60,9 +72,111 @@ public final class EditCategoryViewController: BaseViewController, EditCategoryS
 extension EditCategoryViewController {
     
     private func bind() {
+    
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindCollectionView()
+                self?.bindTableView()
+            })
+            .disposed(by: self.disposeBag)
         
+        self.viewModel.confirmActionTitleBySelectedCount
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.confirmButton.setTitle(title, for: .normal)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
+
+
+// MARK: - bind collectionView
+
+extension EditCategoryViewController {
+    
+    private func bindCollectionView() {
+     
+        self.selectDataSource = self.makeCollectionViewDataSource()
+        
+        self.viewModel.selectedCellViewModels
+            .map { [SelectSection(model: "select", items: $0)] }
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.selectedCollectionView.rx.items(dataSource: self.selectDataSource))
+            .disposed(by: self.disposeBag)
+        
+        self.selectedCollectionView.rx.modelSelected(SelectCVM.self)
+            .subscribe(onNext: { [weak self] cellViewModel in
+                self?.viewModel.deselect(cellViewModel.uid)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func makeCollectionViewDataSource() -> SelectDataSource {
+        return .init { _, collectionView, indexPath, cellViewModel in
+            let cell: SelectedCategoryCell = collectionView.dequeueCell(for: indexPath)
+            cell.setupCell(cellViewModel)
+            return cell
+        }
+    }
+}
+
+
+// MARK: - bind tableview
+
+extension EditCategoryViewController {
+    
+    private func bindTableView() {
+        
+        self.suggestDataSource = self.makeTableViewDataSource()
+        
+        self.viewModel.cellViewModels
+            .map { [SuggestSection(model: "suggest", items: $0)] }
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.tableView.rx.items(dataSource: self.suggestDataSource))
+            .disposed(by: self.disposeBag)
+        
+        self.tableView.rx.modelSelected(SuggestCVM.self)
+            .subscribe(onNext: { [weak self] cellViewModel in
+                switch cellViewModel {
+                case let make as SuggestMakeNewCategoryCellViewMdoel:
+                    // TODO: request change color
+                    break
+                    
+                case let suggest as SuggestingCategoryCellViewModel:
+                    self?.viewModel.select(suggest.uid)
+                    
+                default: break
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.createCategorySubject
+            .subscribe(onNext: { [weak self] model in
+                self?.viewModel.makeNew(model)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func makeTableViewDataSource() -> SuggestDataSource {
+        return .init { [weak self] _, tableView, indexPath, cellViewMdoel in
+            switch cellViewMdoel {
+            case let makeNew as SuggestMakeNewCategoryCellViewMdoel:
+                let cell: SuggestMakeNewCategoryCell = tableView.dequeueCell()
+                cell.createSubject = self?.createCategorySubject
+                cell.setupCell(makeNew)
+                return cell
+                
+            case let sugest as SuggestingCategoryCellViewModel:
+                let cell: SuggestingCategoryCell = tableView.dequeueCell()
+                cell.setupCell(sugest)
+                return cell
+                
+            default: return UITableViewCell()
+            }
+        }
+    }
+}
+
 
 // MARK: - setup presenting
 
@@ -119,6 +233,8 @@ extension EditCategoryViewController: Presenting {
     
     public func setupStyling() {
         
+        self.view.backgroundColor = self.uiContext.colors.appBackground
+        
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
             |> \.text .~ "Choose a category"
@@ -147,7 +263,11 @@ extension EditCategoryViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .zero
+        guard let item = self.selectDataSource.sectionModels.first?.items[safe: indexPath.row] else {
+            return .zero
+        }
+        let font = self.uiContext.fonts.get(14, weight: .regular)
+        return SelectedCategoryCell.Metrics.expectCellSize(for: item.name, font: font)
     }
     
     public func collectionView(_ collectionView: UICollectionView,
