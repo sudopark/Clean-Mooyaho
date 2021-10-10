@@ -112,5 +112,8 @@ extension SingleLineInputView: Presenting {
         
         self.placeHolderLabel.numberOfLines = 1
         self.placeHolderLabel.decorate(self.uiContext.decorating.placeHolder)
+        
+        self.textField.autocorrectionType = .no
+        self.textField.autocapitalizationType = .none
     }
 }

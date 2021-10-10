@@ -74,6 +74,7 @@ public protocol EditCategoryViewModel: AnyObject {
     func select(_ uid: String)
     func deselect(_ uid: String)
     func makeNew(_ model: SuggestMakeNewCategoryCellViewMdoel)
+    func changeColor()
     func confirmSelect()
     
     
@@ -253,6 +254,22 @@ extension EditCategoryViewModelImple {
         self.subjects.clearText.onNext()
         self.suggestUsecase.stopSuggest()
         self.subjects.randColorCode.onNext(ItemCategory.colorCodes.randomElement() ?? "")
+    }
+}
+
+
+// MARK: - EditCategoryViewModelImple Interactor + chaneg color
+
+extension EditCategoryViewModelImple {
+    
+    public func changeColor() {
+        let currentColor = try? self.subjects.randColorCode.value()
+        let totalColors = ItemCategory.colorCodes
+        self.router.showColorPicker(startWith: currentColor, sources: totalColors)
+    }
+    
+    public func colorSelect(didSeelctColor hexCode: String) {
+        self.subjects.randColorCode.onNext(hexCode)
     }
 }
 

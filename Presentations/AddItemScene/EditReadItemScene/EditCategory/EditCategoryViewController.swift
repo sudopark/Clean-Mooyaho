@@ -182,9 +182,8 @@ extension EditCategoryViewController {
         self.tableView.rx.modelSelected(SuggestCVM.self)
             .subscribe(onNext: { [weak self] cellViewModel in
                 switch cellViewModel {
-                case let make as SuggestMakeNewCategoryCellViewMdoel:
-                    // TODO: request change color
-                    break
+                case is SuggestMakeNewCategoryCellViewMdoel:
+                    self?.viewModel.changeColor()
                     
                 case let suggest as SuggestingCategoryCellViewModel:
                     self?.viewModel.select(suggest.uid)
