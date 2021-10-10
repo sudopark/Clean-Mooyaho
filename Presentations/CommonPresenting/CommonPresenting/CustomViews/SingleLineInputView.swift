@@ -28,6 +28,11 @@ public final class SingleLineInputView: BaseUIView {
             self.cleaerButton.isHidden = (self.textField.text ?? "").isEmpty
         }
     }
+    
+    public func clearInput() {
+        self.textField.text = nil
+        self.cleaerButton.isHidden = true
+    }
 }
 
 extension Reactive where Base == SingleLineInputView {

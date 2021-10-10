@@ -46,8 +46,8 @@ final class SuggestingCategoryLabelView: BaseUIView, Presenting {
             $0.heightAnchor.constraint(equalToConstant: 15)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -4)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 4)
         }
+        
     }
     
     func setupStyling() {
@@ -58,6 +58,7 @@ final class SuggestingCategoryLabelView: BaseUIView, Presenting {
         self.closeImageView.image = UIImage(named: "xmark")
         self.closeImageView.tintColor = .white
         self.closeImageView.isHidden = true
+        self.closeImageView.contentMode = .scaleAspectFit
         
         self.layer.cornerRadius = 3
         self.clipsToBounds = true
@@ -140,7 +141,12 @@ extension SuggestingCategoryCell: Presenting {
     func setupLayout() {
         
         self.contentView.addSubview(labelView)
-        labelView.autoLayout.fill(self.contentView)
+        labelView.autoLayout.active(with: self.contentView) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
+        }
         labelView.setupLayout()
     }
     
@@ -175,6 +181,7 @@ final class SuggestMakeNewCategoryCell: BaseTableViewCell {
     
     func setupCell(_ cellViewModel: SuggestMakeNewCategoryCellViewMdoel) {
         self.labelView.setupLabel(cellViewModel)
+        self.colorView.backgroundColor = UIColor.from(hex: cellViewModel.colorCode)
         
         self.createButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
@@ -190,13 +197,13 @@ extension SuggestMakeNewCategoryCell: Presenting {
         
         self.contentView.addSubview(createButton)
         createButton.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
         
         self.contentView.addSubview(colorView)
         colorView.autoLayout.active(with: self.contentView) {
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -4)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
             $0.widthAnchor.constraint(equalToConstant: 15)
             $0.heightAnchor.constraint(equalToConstant: 15)
@@ -205,8 +212,8 @@ extension SuggestMakeNewCategoryCell: Presenting {
         self.contentView.addSubview(labelView)
         labelView.autoLayout.active(with: self.contentView) {
             $0.leadingAnchor.constraint(equalTo: createButton.trailingAnchor, constant: 6)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 4)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -4)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -12)
             $0.trailingAnchor.constraint(lessThanOrEqualTo: colorView.leadingAnchor, constant: -4)
         }
         labelView.setupLayout()
@@ -216,6 +223,7 @@ extension SuggestMakeNewCategoryCell: Presenting {
         
         self.createButton.titleLabel?.font = self.uiContext.fonts.get(13.5, weight: .medium)
         self.createButton.setTitle("Create".localized, for: .normal)
+        self.createButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         
         self.labelView.setupStyling()
         self.labelView.updateCloseViewIsHidden(true)

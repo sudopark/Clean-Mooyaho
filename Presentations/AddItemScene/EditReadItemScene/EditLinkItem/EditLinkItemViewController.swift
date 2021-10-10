@@ -96,13 +96,32 @@ extension EditLinkItemViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.categories
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] categories in
+                self?.updateCategoryLabel(categories)
+            })
+            .disposed(by: self.disposeBag)
+        
         let editPriorityTrigger = Observable.merge(
             self.addPriorityButton.rx.throttleTap(),
-            self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in }
+            self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in },
+            self.priorityLabelView.rightButton.rx.throttleTap()
         )
         editPriorityTrigger
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.editPriority()
+            })
+            .disposed(by: self.disposeBag)
+        
+        let editCategoryTrigger = Observable.merge(
+            self.addCategoryButton.rx.throttleTap(),
+            self.categoriesLabelView.rx.addTapgestureRecognizer().map { _ in },
+            self.categoriesLabelView.rightButton.rx.throttleTap()
+        )
+        editCategoryTrigger
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.editCategory()
             })
             .disposed(by: self.disposeBag)
         
@@ -158,6 +177,12 @@ extension EditLinkItemViewController {
         self.priorityLabelView.isHidden = newValue == nil
         newValue.do <| priorityLabelView.labelView.setupPriority(_:)
     }
+    
+    private func updateCategoryLabel(_ newValue: [ItemCategory]) {
+        self.addCategoryButton.isHidden = newValue.isNotEmpty
+        self.categoriesLabelView.isHidden = newValue.isEmpty
+        pure(newValue).do <| categoriesLabelView.labelView.updateCategories(_:)
+    }
 }
 
 // MARK: - setup presenting
@@ -198,7 +223,7 @@ extension EditLinkItemViewController: Presenting {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         categoriesLabelView.setupLayout()
-        categoriesLabelView.labelView.limitHeight(max: 18)
+        categoriesLabelView.labelView.limitHeight(max: 25)
         
         self.view.addSubview(previewShimmerView)
         previewShimmerView.autoLayout.active(with: self.view) {

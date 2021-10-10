@@ -87,11 +87,23 @@ extension EditReadCollectionViewController {
         
         let editPriorityTrigger = Observable.merge (
             self.addPriorityButton.rx.throttleTap(),
-            self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in }
+            self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in },
+            self.priorityLabelView.rightButton.rx.throttleTap()
         )
         editPriorityTrigger
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.addPriority()
+            })
+            .disposed(by: self.disposeBag)
+        
+        let editCategoryTrigger = Observable.merge(
+            self.addCategoryButton.rx.throttleTap(),
+            self.categoriesLabelView.rx.addTapgestureRecognizer().map { _ in },
+            self.categoriesLabelView.rightButton.rx.throttleTap()
+        )
+        editCategoryTrigger
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.addCategory()
             })
             .disposed(by: self.disposeBag)
         
@@ -108,6 +120,13 @@ extension EditReadCollectionViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.categories
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] categories in
+                self?.updateCategoryLabel(categories)
+            })
+            .disposed(by: self.disposeBag)
+        
         self.viewModel.isConfirmable
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isEnabled)
@@ -118,6 +137,12 @@ extension EditReadCollectionViewController {
         self.addPriorityButton.isHidden = newValue != nil
         self.priorityLabelView.isHidden = newValue == nil
         newValue.do <| priorityLabelView.labelView.setupPriority(_:)
+    }
+    
+    private func updateCategoryLabel(_ newValue: [ItemCategory]) {
+        self.addCategoryButton.isHidden = newValue.isNotEmpty
+        self.categoriesLabelView.isHidden = newValue.isEmpty
+        pure(newValue).do <| categoriesLabelView.labelView.updateCategories(_:)
     }
 }
 

@@ -82,6 +82,8 @@ public protocol EditCategoryViewModel: AnyObject {
     var selectedCellViewModels: Observable<[SuggestingCategoryCellViewModel]> { get }
     var confirmActionTitleBySelectedCount: Observable<String> { get }
     var isProcessing: Observable<Bool> { get }
+    var clearText: Observable<Void> { get }
+    var scrollToLastSelectionSection: Observable<Int> { get }
 }
 
 
@@ -121,6 +123,8 @@ public final class EditCategoryViewModelImple: EditCategoryViewModel {
         let randColorCode = BehaviorSubject<String>(value: ItemCategory.colorCodes.randomElement() ?? "")
         let selectedMap: BehaviorRelay<SelectedCellMap>
         let isMakingCategory = BehaviorRelay<Bool>(value: false)
+        let clearText = PublishSubject<Void>()
+        let scrollToLastSelectionSection = PublishSubject<Int>()
         
         init(startWith: [ItemCategory]) {
             var initialMap = SelectedCellMap()
@@ -182,6 +186,11 @@ extension EditCategoryViewModelImple {
         let cellViewModel = SuggestingCategoryCellViewModel(category)
         selected[uid] = cellViewModel
         self.subjects.selectedMap.accept(selected)
+        
+        let lastIndex = selected.count-1
+        self.subjects.scrollToLastSelectionSection.onNext(lastIndex)
+        
+        self.resetSuggest()
     }
     
     public func deselect(_ uid: String) {
@@ -198,6 +207,7 @@ extension EditCategoryViewModelImple {
         let handleMade: (ItemCategory) -> Void = { [weak self] newCategory in
             self?.subjects.isMakingCategory.accept(false)
             self?.appendNewMadeCategory(newCategory)
+            self?.resetSuggest()
         }
         let handleError: (Error) -> Void = { [weak self] error in
             self?.subjects.isMakingCategory.accept(false)
@@ -214,6 +224,18 @@ extension EditCategoryViewModelImple {
         var selectMap = self.subjects.selectedMap.value
         selectMap[category.uid] = cellViewModel
         self.subjects.selectedMap.accept(selectMap)
+        
+        self.appendNewcategoryAtDefaultList(category)
+        
+        let lastIndex = selectMap.count-1
+        self.subjects.scrollToLastSelectionSection.onNext(lastIndex)
+    }
+    
+    private func appendNewcategoryAtDefaultList(_ category: ItemCategory) {
+        var defaults = self.subjects.latestCategories.value
+        guard defaults.contains(where: { $0.uid == category.uid }) == false else { return }
+        defaults.append(category)
+        self.subjects.latestCategories.accept(defaults)
     }
     
     public func confirmSelect() {
@@ -226,6 +248,12 @@ extension EditCategoryViewModelImple {
             self?.listener?.editCategory(didSelect: selectedCategories)
         }
     }
+    
+    private func resetSuggest() {
+        self.subjects.clearText.onNext()
+        self.suggestUsecase.stopSuggest()
+        self.subjects.randColorCode.onNext(ItemCategory.colorCodes.randomElement() ?? "")
+    }
 }
 
 
@@ -236,32 +264,31 @@ extension EditCategoryViewModelImple {
     public var cellViewModels: Observable<[SuggestingCategoryCellViewModelType]> {
      
         typealias CVM = SuggestingCategoryCellViewModelType
-        let switchSuggestResult: (SuggestCategoryCollection?, String, SelectedCellMap) -> Observable<[CVM]>
-        switchSuggestResult = { [weak self] result, colorCode, selectMap in
+        
+        let switchSuggestResult: (SuggestCategoryCollection?) -> Observable<SuggestCategoryCollection>
+        switchSuggestResult = { [weak self] result in
             guard let self = self else { return .empty() }
-            switch result {
-            case _ where (result?.query.isEmpty ?? true) == true:
-                return self.subjects.latestCategories.map { $0.asCellViewModel(without: selectMap) }
-                
-            case let .some(collection)
-                where collection.categories.isEmpty && selectMap.isSelected(collection.query) == false:
-                
-                return [SuggestMakeNewCategoryCellViewMdoel(collection.query, colorCode)]
-                    |> Observable.just
-                
-            case let .some(collection) where collection.categories.isNotEmpty:
-                return collection.categories.map { $0.category }.asCellViewModel(without: selectMap)
-                    |> Observable.just
-                
-            default: return .just([])
+            guard (result?.query.isEmpty ?? true) == true else {
+                return .just(result ?? .empty(result?.query ?? ""))
             }
+            return self.subjects.latestCategories
+                .map { SuggestCategoryCollection.defaultList($0, for: result?.query) }
+        }
+        
+        let suggestedResult = self.subjects.suggestedCategories.flatMap(switchSuggestResult)
+        
+        let asCellViewModels: (SuggestCategoryCollection, SelectedCellMap, String) -> [CVM]
+        asCellViewModels = { collection, selectMap, colorCode in
+            let cvms = collection.categories.map { $0.category }.asCellViewModel(without: selectMap)
+            guard cvms.isEmpty, collection.query.isNotEmpty else { return cvms }
+            return [SuggestMakeNewCategoryCellViewMdoel(collection.query, colorCode)]
         }
         
         return Observable
-            .combineLatest(self.subjects.suggestedCategories,
-                           self.subjects.randColorCode,
-                           self.subjects.selectedMap)
-            .flatMap(switchSuggestResult)
+            .combineLatest(suggestedResult,
+                           self.subjects.selectedMap,
+                           self.subjects.randColorCode)
+            .map(asCellViewModels)
             .distinctUntilChanged { $0.map { $0.customCompareKey } == $1.map { $0.customCompareKey } }
     }
     
@@ -282,8 +309,18 @@ extension EditCategoryViewModelImple {
             .map(asCountTitle)
     }
     
+    public var clearText: Observable<Void> {
+        return self.subjects.clearText
+            .asObservable()
+    }
+    
     public var isProcessing: Observable<Bool> {
         return .empty()
+    }
+    
+    public var scrollToLastSelectionSection: Observable<Int> {
+        return self.subjects.scrollToLastSelectionSection
+            .asObservable()
     }
 }
 
@@ -345,5 +382,13 @@ private struct SelectedCellMap {
     
     var cellViewModels: [SuggestingCategoryCellViewModel] {
         return self.internalStorage.values.sorted(by: { $0.0 < $1.0 }).map{ $0.1 }
+    }
+}
+
+private extension SuggestCategoryCollection {
+    
+    static func defaultList(_ categories: [ItemCategory], for query: String?) -> SuggestCategoryCollection {
+        let suggestCategories = categories.map { SuggestCategory(ownerID: nil, category: $0, lastUpdated: 0) }
+        return self.init(query: query ?? "", categories: suggestCategories, cursor: nil)
     }
 }
