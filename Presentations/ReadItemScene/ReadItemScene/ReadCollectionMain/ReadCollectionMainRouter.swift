@@ -49,12 +49,12 @@ extension ReadCollectionMainRouter {
     
     public func addNewColelctionAtCurrentCollection() {
         guard let currentCollection = self.findCurrentCollectionScene() else { return }
-        currentCollection.input?.addNewCollectionItem()
+        currentCollection.interactor?.addNewCollectionItem()
     }
     
     public func addNewReadLinkItemAtCurrentCollection() {
         guard let currentCollection = self.findCurrentCollectionScene() else { return }
-        currentCollection.input?.addNewReadLinkItem()
+        currentCollection.interactor?.addNewReadLinkItem()
     }
     
     private func findCurrentCollectionScene() -> ReadCollectionScene? {

@@ -35,25 +35,18 @@ public protocol ReadCollectionMainScene: Scenable {
 
 // MARK: - ReadCollectionScene
 
-// MARK: - ReadCollectionScene Input & Output
-
-public protocol ReadCollectionItemsSceneInput {
+public protocol ReadCollectionItemsSceneInteractable: EditReadCollectionSceneListenable, AddItemNavigationSceneListenable, EditLinkItemSceneListenable {
     
     func addNewCollectionItem()
     
     func addNewReadLinkItem()
 }
 
-public protocol ReadCollectionItemsSceneOutput { }
-
-
 // MARK: - ReadCollectionScene
 
 public protocol ReadCollectionScene: Scenable {
     
-    var input: ReadCollectionItemsSceneInput? { get }
-
-    var output: ReadCollectionItemsSceneOutput? { get }
+    var interactor: ReadCollectionItemsSceneInteractable? { get }
 }
 
 

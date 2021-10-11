@@ -139,7 +139,11 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
             default: return UITableViewCell()
             }
         }
-        return .init(configureCell: configureCell)
+        let canEditRow: DataSource.CanEditRowAtIndexPath = { source, indexPath in
+            let item = source[indexPath]
+            return item is ReadCollectionCellViewModel || item is ReadLinkCellViewModel
+        }
+        return .init(configureCell: configureCell, canEditRowAtIndexPath: canEditRow)
     }
     
     public func tableView(_ tableView: UITableView,
@@ -168,6 +172,20 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView,
                           viewForFooterInSection section: Int) -> UIView? {
         return nil
+    }
+    
+    public func tableView(_ tableView: UITableView,
+                          trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let item = self.dataSource[indexPath]
+        guard let actions = self.viewModel.contextAction(for: item, isLeading: false) else { return nil }
+        
+        let actionSelected: (ReadCollectionItemSwipeContextAction) -> Void = { [weak self] selected in
+            self?.viewModel.handleContextAction(for: item, action: selected)
+        }
+        let contextActions = actions.map { $0.asUIContextAction(actionSelected) }
+        let configure = UISwipeActionsConfiguration(actions: contextActions)
+        configure.performsFirstActionWithFullSwipe = false
+        return configure
     }
 }
 
@@ -255,5 +273,38 @@ private extension ReadCollectionItemSectionType {
         let header = ReadCollectionSectionHeaderView()
         header.setupTitle(self.rawValue)
         return header
+    }
+}
+
+private extension ReadCollectionItemSwipeContextAction {
+    
+    private var image: UIImage? {
+        switch self {
+        case .delete: return UIImage(named: "trash.fill")
+        case .edit: return UIImage(named: "highlighter")
+        }
+    }
+    
+    private var title: String? {
+        return nil
+    }
+    
+    private var backgroundColor: UIColor {
+        switch self {
+        case .delete: return UIColor.systemRed
+        case .edit: return UIColor.systemGray
+        }
+    }
+    
+    func asUIContextAction(_ handler: @escaping (Self) -> Void) -> UIContextualAction {
+        
+        let action = UIContextualAction(style: .normal, title: self.title) { _, _, completionHandler in
+            completionHandler(false)
+            handler(self)
+        }
+        action.image = self.image
+        action.backgroundColor = backgroundColor
+        
+        return action
     }
 }

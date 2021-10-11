@@ -25,9 +25,7 @@ public protocol AddItemNavigationRouting: Routing {
     
     func pushToEnterURLScene(_ entered: @escaping (String) -> Void)
     
-    func pushConfirmAddLinkItemScene(at collectionID: String?,
-                                     url: String,
-                                     _ completed: @escaping (ReadLink) -> Void)
+    func pushConfirmAddLinkItemScene(at collectionID: String?, url: String)
     func popToEnrerURLScene()
 }
 
@@ -44,6 +42,10 @@ public final class AddItemNavigationRouter: Router<AddItemNavigationRouterBuilda
 
 
 extension AddItemNavigationRouter {
+    
+    private var currentInteractor: AddItemNavigationSceneInteractable? {
+        return (self.currentScene as? AddItemNavigationScene)?.interactor
+    }
     
     private var urlEnterSceneHeight: CGFloat {
         return 180
@@ -80,14 +82,12 @@ extension AddItemNavigationRouter {
         navigationController.pushViewController(next, animated: false)
     }
     
-    public func pushConfirmAddLinkItemScene(at collectionID: String?,
-                                            url: String,
-                                            _ completed: @escaping (ReadLink) -> Void) {
+    public func pushConfirmAddLinkItemScene(at collectionID: String?, url: String) {
         
         guard let navigationController = self.embedNavigationController,
               let next = self.nextScenesBuilder?.makeEditLinkItemScene(.makeNew(url: url),
                                                                        collectionID: collectionID,
-                                                                       completed: completed) else {
+                                                                       listener: self.currentInteractor) else {
                   return
               }
         self.embedNavigationHeightConstranit?.constant = confirmAddSceneHeigjt

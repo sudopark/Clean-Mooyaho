@@ -51,7 +51,7 @@ extension EditLinkItemRouter {
         guard let navigation = self.currentScene?.navigationController?.parent as? AddItemNavigationScene else {
             return
         }
-        navigation.input?.requestpopToEnrerURLScene()
+        navigation.interactor?.requestpopToEnrerURLScene()
     }
     
     public func editPriority(startWith priority: ReadPriority?) {

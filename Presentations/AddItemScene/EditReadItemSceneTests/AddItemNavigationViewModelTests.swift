@@ -10,21 +10,24 @@ import XCTest
 import RxSwift
 
 import Domain
+import CommonPresenting
 import UnitTestHelpKit
 import UsecaseDoubles
 
 import EditReadItemScene
 
 
-class AddItemNavigationViewModelTests: BaseTestCase {
+class AddItemNavigationViewModelTests: BaseTestCase, AddItemNavigationSceneListenable {
     
     private var didNavigationSetup: Bool?
     private var didMoveToEnterURLScene: Bool?
     private var didMoveToConfirmAdd: Bool?
     private var didClosed: Bool?
     private var enterURLMocking: ((String) -> Void)?
-    private var confirmAddNewMockding: ((ReadLink) -> Void)?
+    private var didAddedItem: ReadLink?
     private var didPop: Bool?
+    
+    private var interactor: AddItemNavigationSceneInteractable?
     
     override func tearDownWithError() throws {
         self.didNavigationSetup = nil
@@ -35,10 +38,16 @@ class AddItemNavigationViewModelTests: BaseTestCase {
         self.didPop = nil
     }
     
-    private func makeViewModel(_ completed: ((ReadLink) -> Void)? = nil) -> AddItemNavigationViewModel {
+    private func makeViewModel() -> AddItemNavigationViewModel {
         
-        return AddItemNavigationViewModelImple(targetCollectionID: nil,
-                                               router: self, completed ?? { _ in })
+        let viewModel = AddItemNavigationViewModelImple(targetCollectionID: nil,
+                                                        router: self, listener: self)
+        self.interactor = viewModel
+        return viewModel
+    }
+    
+    func addReadLink(didAdded newItem: ReadLink) {
+        self.didAddedItem = newItem
     }
 }
 
@@ -81,16 +90,11 @@ extension AddItemNavigationViewModelTests {
     
     func testViewModel_whenAfterAddIteMConfirmCompleted_closeAndEmitNewItem() {
         // given
-        let expect = expectation(description: "아이템 추가 확인 완료 이후에 화면 닫고 외부로 이벤트 전파")
-        let viewModel = self.makeViewModel { _ in
-            expect.fulfill()
-        }
+        let viewModel = self.makeViewModel()
         
         // when
         viewModel.prepareNavigation()
         self.enterURLMocking?("https://wwww.dummy_url.com")
-        self.confirmAddNewMockding?(.dummy(0))
-        self.wait(for: [expect], timeout: self.timeout)
         
         // then
         XCTAssertEqual(self.didClosed, true)
@@ -121,10 +125,9 @@ extension AddItemNavigationViewModelTests: AddItemNavigationRouting {
     }
     
     func pushConfirmAddLinkItemScene(at collectionID: String?,
-                                     url: String,
-                                     _ completed: @escaping (ReadLink) -> Void) {
+                                     url: String) {
         self.didMoveToConfirmAdd = true
-        self.confirmAddNewMockding = { completed($0) }
+        self.interactor?.editReadLink(didEdit: .dummy(0))
     }
     
     func closeScene(animated: Bool, completed: (() -> Void)?) {

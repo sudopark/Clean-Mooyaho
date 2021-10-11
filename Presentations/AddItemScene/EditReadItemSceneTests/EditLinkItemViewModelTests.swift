@@ -22,7 +22,7 @@ import EditReadItemScene
 
 // MARK: - BaseEditLinkItemViewModelTests
 
-class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
+class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLinkItemSceneListenable {
     
     var disposeBag: DisposeBag!
     var editCompleted: ((ReadLink) -> Void)?
@@ -77,9 +77,14 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents {
         let viewModel =  EditLinkItemViewModelImple(collectionID: "some",
                                                     editCase: editCase,
                                                     readUsecase: usecaseStub,
-                                                    router: self) { self.editCompleted?($0) }
+                                                    router: self,
+                                                    listener: self)
         self.editLinkItemSceneInteractable = viewModel
         return viewModel
+    }
+    
+    func editReadLink(didEdit item: ReadLink) {
+        self.editCompleted?(item)
     }
 }
 

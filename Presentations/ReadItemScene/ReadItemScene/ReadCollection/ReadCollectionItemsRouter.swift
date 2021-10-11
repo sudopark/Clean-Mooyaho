@@ -28,11 +28,13 @@ public protocol ReadCollectionRouting: Routing {
     
     func showLinkDetail(_ linkID: String)
     
-    func routeToMakeNewCollectionScene(at collectionID: String?,
-                                       _ completedHandler: @escaping (ReadCollection) -> Void)
+    func routeToMakeNewCollectionScene(at collectionID: String?)
     
-    func routeToAddNewLink(at collectionID: String?,
-                           _ completionHandler: @escaping (ReadLink) -> Void)
+    func routeToEditCollection(_ collection: ReadCollection)
+    
+    func routeToAddNewLink(at collectionID: String?)
+    
+    func routeToEditReadLink(_ link: ReadLink)
 }
 
 // MARK: - Routers
@@ -47,6 +49,10 @@ public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildab
 
 
 extension ReadCollectionItemsRouter {
+    
+    private var currentInteractor: ReadCollectionItemsSceneInteractable? {
+        return (self.currentScene as? ReadCollectionScene)?.interactor
+    }
     
     public func showItemSortOrderOptions(_ currentOrder: ReadCollectionItemSortOrder,
                                          selectedHandler: @escaping (ReadCollectionItemSortOrder) -> Void) {
@@ -69,12 +75,12 @@ extension ReadCollectionItemsRouter {
         self.currentScene?.present(next, animated: true)
     }
     
-    public func routeToMakeNewCollectionScene(at collectionID: String?,
-                                              _ completedHandler: @escaping (ReadCollection) -> Void) {
+    public func routeToMakeNewCollectionScene(at collectionID: String?) {
         
         guard let next = self.nextScenesBuilder?
                 .makeEditReadCollectionScene(parentID: collectionID,
-                                             editCase: .makeNew, completed: completedHandler) else {
+                                             editCase: .makeNew,
+                                             listener: self.currentInteractor) else {
             return
         }
         next.modalPresentationStyle = .custom
@@ -83,15 +89,31 @@ extension ReadCollectionItemsRouter {
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     
-    public func routeToAddNewLink(at collectionID: String?,
-                                  _ completionHandler: @escaping (ReadLink) -> Void) {
+    public func routeToEditCollection(_ collection: ReadCollection) {
         guard let next = self.nextScenesBuilder?
-                .makeAddItemNavigationScene(at: collectionID, completionHandler) else {
+                .makeEditReadCollectionScene(parentID: collection.parentID,
+                                             editCase: .edit(collection),
+                                             listener: self.currentInteractor) else {
             return
         }
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func routeToAddNewLink(at collectionID: String?) {
+        guard let next = self.nextScenesBuilder?
+                .makeAddItemNavigationScene(at: collectionID, self.currentInteractor) else {
+            return
+        }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func routeToEditReadLink(_ link: ReadLink) {
+        
     }
 }

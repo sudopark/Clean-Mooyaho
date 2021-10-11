@@ -23,7 +23,7 @@ public protocol SelectAddItemTypeSceneBuilable {
 public protocol AddItemNavigationSceneBuilable {
     
     func makeAddItemNavigationScene(at collectionID: String?,
-                                    _ completed: @escaping (ReadLink) -> Void) -> AddItemNavigationScene
+                                    _ listener: AddItemNavigationSceneListenable?) -> AddItemNavigationScene
 }
 
 
@@ -38,7 +38,7 @@ public protocol EditReadCollectionSceneBuilable {
     
     func makeEditReadCollectionScene(parentID: String?,
                                      editCase: EditCollectionCase,
-                                     completed: @escaping (ReadCollection) -> Void) -> EditReadCollectionScene
+                                     listener: EditReadCollectionSceneListenable?) -> EditReadCollectionScene
 }
 
 // MARK: - EditReadPriorityScene Interactable & Listenable

@@ -16,11 +16,7 @@ import CommonPresenting
 
 // MARK: - AddItemNavigationViewModelImple conform AddItemNavigationSceneInput and AddItemNavigationSceneOutput
 
-extension AddItemNavigationViewModelImple: AddItemNavigationSceneInput {
-
-}
-
-extension AddItemNavigationViewModelImple: AddItemNavigationSceneOutput {
+extension AddItemNavigationViewModelImple: AddItemNavigationSceneInteractable {
 
 }
 
@@ -28,11 +24,7 @@ extension AddItemNavigationViewModelImple: AddItemNavigationSceneOutput {
 
 extension AddItemNavigationViewController {
 
-    public var input: AddItemNavigationSceneInput? {
-        return self.viewModel as? AddItemNavigationSceneInput
-    }
-
-    public var output: AddItemNavigationSceneOutput? {
-        return self.viewModel as? AddItemNavigationSceneOutput
+    public var interactor: AddItemNavigationSceneInteractable? {
+        return self.viewModel as? AddItemNavigationSceneInteractable
     }
 }

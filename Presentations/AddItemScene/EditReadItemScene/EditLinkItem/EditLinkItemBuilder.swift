@@ -28,5 +28,5 @@ public protocol EditLinkItemSceneBuilable {
     
     func makeEditLinkItemScene(_ editCase: EditLinkItemCase,
                                collectionID: String?,
-                               completed: @escaping (ReadLink) -> Void) -> EditLinkItemScene
+                               listener: EditLinkItemSceneListenable?) -> EditLinkItemScene
 }

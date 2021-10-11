@@ -34,6 +34,7 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     public init(collection: ReadCollection) {
         self.priority = collection.priority
         self.categoryIDs = collection.categoryIDs
+        self.collectionDescription = collection.collectionDescription
     }
 }
 

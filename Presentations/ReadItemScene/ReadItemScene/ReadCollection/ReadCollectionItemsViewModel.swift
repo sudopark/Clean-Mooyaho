@@ -15,6 +15,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import CoreMIDI
 
 
 public enum ReadCollectionItemSectionType: String {
@@ -26,6 +27,11 @@ public enum ReadCollectionItemSectionType: String {
 public struct ReadCollectionItemSection {
     let type: ReadCollectionItemSectionType
     let cellViewModels: [ReadItemCellViewModel]
+}
+
+public enum ReadCollectionItemSwipeContextAction {
+    case edit
+    case delete
 }
 
 
@@ -41,6 +47,8 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     func openItem(_ itemID: String)
     func addNewCollectionItem()
     func addNewReadLinkItem()
+    func handleContextAction(for item: ReadItemCellViewModel,
+                             action: ReadCollectionItemSwipeContextAction)
     
     
     // presenter
@@ -50,6 +58,8 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
     func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]>
     var isEditable: Bool { get }
+    func contextAction(for item: ReadItemCellViewModel,
+                       isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]?
 }
 
 
@@ -169,30 +179,93 @@ extension ReadCollectionViewItemsModelImple {
         default: break
         }
     }
+
+    
+    public func handleContextAction(for item: ReadItemCellViewModel,
+                                    action: ReadCollectionItemSwipeContextAction) {
+        switch item {
+        case let colleciton as ReadCollectionCellViewModel where action == .edit:
+            self.requestEditCollection(colleciton)
+            
+        case let link as ReadLinkCellViewModel where action == .edit:
+            self.requestEditReadLink(link)
+            
+        default: break
+        }
+    }
+}
+
+
+// MARK: - ReadCollectionViewModelImple Interactor + edit collection
+
+extension ReadCollectionViewItemsModelImple {
     
     public func addNewCollectionItem() {
         
         let collectionID = self.currentCollectionID
         
-        let handleNewCollection: (ReadCollection) -> Void = { [weak self] newCollection in
-            guard let self = self, newCollection.parentID == collectionID else { return }
-            let newCollections = [newCollection] + (self.subjects.collections.value ?? [])
-            self.subjects.collections.accept(newCollections)
-        }
-        self.router.routeToMakeNewCollectionScene(at: collectionID,
-                                                  handleNewCollection)
+        self.router.routeToMakeNewCollectionScene(at: collectionID)
     }
+    
+    private func requestEditCollection(_ item: ReadCollectionCellViewModel) {
+        guard let collection = self.subjects.collections.value?.first(where: { $0.uid == item.uid }) else { return }
+        self.router.routeToEditCollection(collection)
+    }
+    
+    public func editReadCollection(didChange collection: ReadCollection) {
+        
+        guard collection.uid != self.currentCollectionID else {
+            self.subjects.currentCollection.onNext(collection)
+            return
+        }
+        
+        guard collection.parentID == self.currentCollectionID else { return }
+        
+        let collections = self.subjects.collections.value ?? []
+        
+        func appendNewCollection() -> [ReadCollection] {
+            return [collection] + collections
+        }
+        
+        func updateCollection(_ index: Int) -> [ReadCollection] {
+            return collections |> ix(index) .~ collection
+        }
+        
+        let index = collections.firstIndex(where: { $0.uid == collection.uid })
+        let newCollections = index.map { updateCollection($0) } ?? appendNewCollection()
+        self.subjects.collections.accept(newCollections)
+    }
+}
+
+
+// MARK: - ReadCollectionViewModelImple Interactor + edit read link
+
+extension ReadCollectionViewItemsModelImple {
     
     public func addNewReadLinkItem() {
         
         let collectionID = self.currentCollectionID
+        self.router.routeToAddNewLink(at: collectionID)
+    }
+    
+    private func requestEditReadLink(_ item: ReadLinkCellViewModel) {
+        guard let link = self.subjects.links.value?.first(where: { $0.uid == item.uid }) else { return }
+        self.router.routeToEditReadLink(link)
+    }
+    
+    public func addReadLink(didAdded newItem: ReadLink) {
+        guard newItem.parentID == collectionID else { return }
+        let newLinks = [newItem] + (self.subjects.links.value ?? [])
+        self.subjects.links.accept(newLinks)
+    }
+    
+    public func editReadLink(didEdit item: ReadLink) {
+        guard item.parentID == self.currentCollectionID,
+              let links = self.subjects.links.value,
+              let index = links.firstIndex(where:  { $0.uid == item.uid }) else { return }
         
-        let handleNewLinkItem: (ReadLink) -> Void = { [weak self] newLink in
-            guard let self = self, newLink.parentID == collectionID else { return }
-            let newLinks = [newLink] + (self.subjects.links.value ?? [])
-            self.subjects.links.accept(newLinks)
-        }
-        self.router.routeToAddNewLink(at: collectionID, handleNewLinkItem)
+        let newLinks = links |> ix(index) .~ item
+        self.subjects.links.accept(newLinks)
     }
 }
 
@@ -253,6 +326,12 @@ extension ReadCollectionViewItemsModelImple {
     public func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]> {
         return self.categoryUsecase.categories(for: categoryIDs)
             .distinctUntilChanged()
+    }
+    
+    public func contextAction(for item: ReadItemCellViewModel,
+                              isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
+        guard item is ReadCollectionCellViewModel || item is ReadLinkCellViewModel else { return nil }
+        return [.delete, .edit]
     }
 }
 
