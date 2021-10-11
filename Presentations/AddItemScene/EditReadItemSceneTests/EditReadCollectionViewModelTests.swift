@@ -48,15 +48,21 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
     }
     
     private func makeViewModel(editCase: EditCollectionCase,
-                               shouldSaveFail: Bool = false) -> EditReadCollectionViewModel {
+                               shouldSaveFail: Bool = false,
+                               categories: [ItemCategory] = []) -> EditReadCollectionViewModel {
         
         let scenario = StubReadItemUsecase.Scenario()
             |> \.updateCollectionResult .~ (shouldSaveFail ? .failure(ApplicationErrors.invalid) : .success(()))
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
         
+        let cateScenario = StubItemCategoryUsecase.Scenario()
+            |> \.categories .~ [categories]
+        let stubCategoryUsecase = StubItemCategoryUsecase(scenario: cateScenario)
+        
         let viewModel = EditReadCollectionViewModelImple(parentID: "some",
                                                          editCase: editCase,
                                                          updateUsecase: stubUsecase,
+                                                         categoriesUsecase: stubCategoryUsecase,
                                                          router: self,
                                                          listener: self)
         self.editCollectionSceneInteractor = viewModel
@@ -253,6 +259,63 @@ extension EditReadCollectionViewModelTests {
     }
 }
 
+
+// MARK: - edit case
+
+extension EditReadCollectionViewModelTests {
+    
+    var dummyCollection: ReadCollection {
+        return ReadCollection(name: "some")
+            |> \.collectionDescription .~ "description"
+            |> \.priority .~ .afterAWhile
+            |> \.categoryIDs .~ ["c:0", "c:1"]
+    }
+    
+    func testViewModel_whenEditCase_showCurrentCollectionAttibutes() {
+        // given
+        let expect = expectation(description: "수정케이스의 경우 현재 카테고리 상태 노출")
+        let viewModel = self.makeViewModel(editCase: .edit(self.dummyCollection),
+                                           categories: [.dummy(0), .dummy(1)])
+        
+        // when
+        let priorityAndCategorySource = Observable.combineLatest(
+            viewModel.priority.compactMap { $0 },
+            viewModel.categories.filter { $0.isNotEmpty }
+        )
+        let priorityAndCategory = self.waitFirstElement(expect, for: priorityAndCategorySource)
+        
+        // then
+        XCTAssertEqual(viewModel.editCaseCollectionValue?.name, "some")
+        XCTAssertEqual(viewModel.editCaseCollectionValue?.collectionDescription, "description")
+        XCTAssertEqual(priorityAndCategory?.0, .afterAWhile)
+        XCTAssertEqual(priorityAndCategory?.1.count, 2)
+    }
+    
+    func testViewModel_whenEditCase_confirmUpdateWithNewValues() {
+        // given
+        let expect = expectation(description: "수정케이스의 새로운 값들과 함께 수정 요청")
+        let viewModel = self.makeViewModel(editCase: .edit(self.dummyCollection),
+                                           categories: [.dummy(0), .dummy(1)])
+        var newCollection: ReadCollection?
+        didUpdated = {
+            newCollection = $0
+            expect.fulfill()
+        }
+        
+        // when
+        viewModel.enterName("new name")
+        self.mockSeelctedCategories = [.dummy(0)]
+        viewModel.addCategory()
+        viewModel.confirmUpdate()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(newCollection?.name, "new name")
+        XCTAssertEqual(newCollection?.collectionDescription, "description")
+        XCTAssertEqual(newCollection?.priority, .afterAWhile)
+        XCTAssertEqual(newCollection?.categoryIDs.count, 1)
+    }
+}
 
 extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
     

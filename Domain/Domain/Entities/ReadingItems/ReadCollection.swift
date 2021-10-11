@@ -20,7 +20,7 @@ public struct ReadCollection: ReadItem {
     public let uid: String
     public var ownerID: String?
     public var parentID: String?
-    public let name: String
+    public var name: String
     public let createdAt: TimeStamp
     public var lastUpdatedAt: TimeStamp
     public var priority: ReadPriority?

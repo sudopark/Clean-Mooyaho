@@ -227,6 +227,7 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
         let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
                                                          editCase: editCase,
                                                          updateUsecase: self.readItemUsecase,
+                                                         categoriesUsecase: self.categoryUsecase,
                                                          router: router,
                                                          listener: listener)
         let viewController = EditReadCollectionViewController(viewModel: viewModel)
