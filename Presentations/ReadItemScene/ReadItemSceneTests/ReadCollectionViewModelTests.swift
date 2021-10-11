@@ -12,6 +12,7 @@ import Prelude
 import Optics
 
 import Domain
+import CommonPresenting
 import UsecaseDoubles
 import UnitTestHelpKit
 
@@ -67,11 +68,13 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         let router = FakeRouter()
         self.spyRouter = router
         
-        let collectionID = isRootCollection ? ReadCollection.rootID : "some"
-        return .init(collectionID: collectionID,
-                     readItemUsecase: stubUsecase,
-                     categoryUsecase: stubCategoryUsecase,
-                     router: router)
+        let collectionID = isRootCollection ? nil : "some"
+        let viewModel =  ReadCollectionViewItemsModelImple(collectionID: collectionID,
+                                                           readItemUsecase: stubUsecase,
+                                                           categoryUsecase: stubCategoryUsecase,
+                                                           router: router)
+        router.interactor = viewModel
+        return viewModel
     }
     
 }
@@ -397,6 +400,82 @@ extension ReadCollectionViewModelTests {
     }
 }
 
+// MARK: - context menu
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_supportContextMenuForCollectionAndLinkItem() {
+        // given
+        let expect = expectation(description: "collection과 link 아이템에 대하여 컨텍스트 메뉴 제공")
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollectionItems()
+        }
+        
+        // when
+        let collectionCell = cvms?.compactMap { $0 as? ReadCollectionCellViewModel }.first
+        let linkCell = cvms?.compactMap { $0 as? ReadLinkCellViewModel }.first
+        
+        // then
+        let collecttionTrailing = viewModel.contextAction(for: collectionCell!, isLeading: false)
+        let linkTrailing = viewModel.contextAction(for: linkCell!, isLeading: false)
+        XCTAssertEqual(collecttionTrailing, [.delete, .edit])
+        XCTAssertEqual(linkTrailing, [.delete, .edit])
+    }
+    
+    func testViewModel_editCollectionItem() {
+        // given
+        let expect = expectation(description: "collection item 수정하고 업데이트")
+        let viewModel = self.makeViewModel()
+        
+        let collection = (self.dummyCollectionItems.first as? ReadCollection)!
+            |> \.parentID .~ "some"
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            let newCollection = collection |> \.collectionDescription .~ "new description"
+            self.spyRouter.mockNewCollection = newCollection
+            viewModel.handleContextAction(for: ReadCollectionCellViewModel(collection: collection),
+                                             action: .edit)
+        }
+        
+        // then
+        let collection1 = cvms?
+            .compactMap { $0 as? ReadCollectionCellViewModel }
+            .first(where: { $0.uid == collection.uid })
+        XCTAssertEqual(collection1?.collectionDescription, "new description")
+    }
+    
+    func testViewModel_editLinkItem() {
+        // given
+        let expect = expectation(description: "link 아이템 수정하고 업데이트")
+        let viewModel = self.makeViewModel()
+        
+        let link = (self.dummyCollectionItems.compactMap { $0 as? ReadLink }.first)!
+            |> \.parentID .~ "some"
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            let newLink = link |> \.categoryIDs .~ ["new"]
+            self.spyRouter.mockNewLink = newLink
+            viewModel.handleContextAction(for: ReadLinkCellViewModel(link: link),
+                                             action: .edit)
+        }
+        
+        // then
+        let link1 = cvms?
+            .compactMap { $0 as? ReadLinkCellViewModel }
+            .first(where: { $0.uid == link.uid })
+        XCTAssertEqual(link1?.categoryIDs, ["new"])
+    }
+    
+    // TODO: delete
+}
+
+
 extension ReadCollectionViewModelTests {
     
     class FakeRouter: ReadCollectionRouting, Mocking {
@@ -404,6 +483,8 @@ extension ReadCollectionViewModelTests {
         func alertError(_ error: Error) {
             self.verify(key: "alertError")
         }
+        
+        weak var interactor: ReadCollectionItemsSceneInteractable?
         
         var mockSelectedNewOrder: ReadCollectionItemSortOrder?
         
@@ -423,17 +504,25 @@ extension ReadCollectionViewModelTests {
         }
         
         var mockNewCollection: ReadCollection?
-        func routeToMakeNewCollectionScene(at collectionID: String?,
-                                           _ completedHandler: @escaping (ReadCollection) -> Void) {
+        func routeToMakeNewCollectionScene(at collectionID: String?) {
             guard let mock = self.mockNewCollection else { return }
-            completedHandler(mock)
+            interactor?.editReadCollection(didChange: mock)
+        }
+        
+        func routeToEditCollection(_ collection: ReadCollection) {
+            guard let mock = self.mockNewCollection else { return }
+            interactor?.editReadCollection(didChange: mock)
         }
         
         var mockNewLink: ReadLink?
-        func routeToAddNewLink(at collectionID: String?,
-                               _ completionHandler: @escaping (ReadLink) -> Void) {
+        func routeToAddNewLink(at collectionID: String?) {
             guard let mock = self.mockNewLink else { return }
-            completionHandler(mock)
+            self.interactor?.addReadLink(didAdded: mock)
+        }
+        
+        func routeToEditReadLink(_ link: ReadLink) {
+            guard let mock = self.mockNewLink else { return }
+            self.interactor?.editReadLink(didEdit: mock)
         }
     }
 }

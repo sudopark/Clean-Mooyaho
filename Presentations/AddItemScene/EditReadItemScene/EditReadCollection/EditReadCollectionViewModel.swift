@@ -45,19 +45,19 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     private let editCase: EditCollectionCase
     private let updateUsecase: ReadItemUpdateUsecase
     private let router: EditReadCollectionRouting
-    private let completed: (ReadCollection) -> Void
+    private weak var listener: EditReadCollectionSceneListenable?
     
     public init(parentID: String?,
                 editCase: EditCollectionCase,
                 updateUsecase: ReadItemUpdateUsecase,
                 router: EditReadCollectionRouting,
-                completed: @escaping (ReadCollection) -> Void) {
+                listener: EditReadCollectionSceneListenable?) {
         
         self.parentID = parentID
         self.editCase = editCase
         self.updateUsecase = updateUsecase
         self.router = router
-        self.completed =  completed
+        self.listener =  listener
     }
     
     deinit {
@@ -137,7 +137,7 @@ extension EditReadCollectionViewModelImple {
     private func closeAfterCollectionUpdated(_ newCollection: ReadCollection) {
         
         self.router.closeScene(animated: true) { [weak self] in
-            self?.completed(newCollection)
+            self?.listener?.editReadCollection(didChange: newCollection)
         }
     }
 }

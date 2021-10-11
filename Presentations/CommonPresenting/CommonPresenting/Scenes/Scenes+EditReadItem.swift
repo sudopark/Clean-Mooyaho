@@ -10,23 +10,21 @@ import UIKit
 import Domain
 
 
-// MARK: - AddItemNavigationScene Input & Output
-
-public protocol AddItemNavigationSceneInput {
+public protocol AddItemNavigationSceneInteractable: EditLinkItemSceneListenable {
     
     func requestpopToEnrerURLScene()
 }
 
-public protocol AddItemNavigationSceneOutput { }
-
+public protocol AddItemNavigationSceneListenable: AnyObject {
+    
+    func addReadLink(didAdded newItem: ReadLink)
+}
 
 // MARK: - AddItemNavigationScene
 
 public protocol AddItemNavigationScene: Scenable, PangestureDismissableScene {
     
-    var input: AddItemNavigationSceneInput? { get }
-
-    var output: AddItemNavigationSceneOutput? { get }
+    var interactor: AddItemNavigationSceneInteractable? { get }
     
     var navigationdContainerView: UIView { get }
 }
@@ -52,6 +50,10 @@ public protocol EnterLinkURLScene: Scenable {
 
 public protocol EditLinkItemSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable { }
 
+public protocol EditLinkItemSceneListenable: AnyObject {
+    
+    func editReadLink(didEdit item: ReadLink)
+}
 
 // MARK: - EditLinkItemScene
 
@@ -63,6 +65,11 @@ public protocol EditLinkItemScene: Scenable {
 // MARK: - EditReadCollectionScene Input & Output
 
 public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable { }
+
+public protocol EditReadCollectionSceneListenable: AnyObject {
+    
+    func editReadCollection(didChange collection: ReadCollection)
+}
 
 // MARK: - EditReadCollectionScene
 

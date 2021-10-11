@@ -32,15 +32,15 @@ public protocol AddItemNavigationViewModel: AnyObject {
 public final class AddItemNavigationViewModelImple: AddItemNavigationViewModel {
     
     private let targetCollectionID: String?
-    private var newLinkItemAddedCallback: (ReadLink) -> Void
     private let router: AddItemNavigationRouting
+    private weak var listener: AddItemNavigationSceneListenable?
     
     public init(targetCollectionID: String?,
                 router: AddItemNavigationRouting,
-                _ completed: @escaping (ReadLink) -> Void) {
+                listener: AddItemNavigationSceneListenable?) {
         self.targetCollectionID = targetCollectionID
-        self.newLinkItemAddedCallback = completed
         self.router = router
+        self.listener = listener
     }
     
     deinit {
@@ -77,24 +77,17 @@ extension AddItemNavigationViewModelImple {
     
     private func moveToConfirmAddItemScene(with url: String) {
         
-        let handleItemAdded: (ReadLink) -> Void = { [weak self] newLink in
-            self?.closeAfterItemAdded(newLink)
-        }
-        
-        self.router.pushConfirmAddLinkItemScene(at: self.targetCollectionID,
-                                                url: url,
-                                                handleItemAdded)
-    }
-    
-    private func closeAfterItemAdded(_ newLink: ReadLink) {
-        
-        self.router.closeScene(animated: true) { [weak self] in
-            self?.newLinkItemAddedCallback(newLink)
-        }
+        self.router.pushConfirmAddLinkItemScene(at: self.targetCollectionID, url: url)
     }
     
     public func requestpopToEnrerURLScene() {
         self.router.popToEnrerURLScene()
+    }
+    
+    public func editReadLink(didEdit item: ReadLink) {
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.listener?.addReadLink(didAdded: item)
+        }
     }
 }
 

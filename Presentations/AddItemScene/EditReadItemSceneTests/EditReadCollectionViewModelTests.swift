@@ -19,7 +19,7 @@ import UsecaseDoubles
 import EditReadItemScene
 
 
-class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
+class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, EditReadCollectionSceneListenable {
     
     var didUpdated: ((ReadCollection) -> Void)?
     var didClosed: Bool?
@@ -57,9 +57,14 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
         let viewModel = EditReadCollectionViewModelImple(parentID: "some",
                                                          editCase: editCase,
                                                          updateUsecase: stubUsecase,
-                                                         router: self) { self.didUpdated?($0) }
+                                                         router: self,
+                                                         listener: self)
         self.editCollectionSceneInteractor = viewModel
         return viewModel
+    }
+    
+    func editReadCollection(didChange collection: ReadCollection) {
+        self.didUpdated?(collection)
     }
 }
 

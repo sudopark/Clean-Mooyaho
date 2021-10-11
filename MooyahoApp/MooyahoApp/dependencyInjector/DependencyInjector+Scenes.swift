@@ -176,11 +176,11 @@ extension DependencyInjector: SelectAddItemTypeSceneBuilable {
 extension DependencyInjector: AddItemNavigationSceneBuilable {
     
     public func makeAddItemNavigationScene(at collectionID: String?,
-                                           _ completed: @escaping (ReadLink) -> Void) -> AddItemNavigationScene {
+                                           _ listener: AddItemNavigationSceneListenable?) -> AddItemNavigationScene {
         let router = AddItemNavigationRouter(nextSceneBuilders: self)
         let viewModel = AddItemNavigationViewModelImple(targetCollectionID: collectionID,
                                                         router: router,
-                                                        completed)
+                                                        listener: listener)
         let viewController = AddItemNavigationViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
@@ -204,14 +204,14 @@ extension DependencyInjector: EditLinkItemSceneBuilable {
     
     public func makeEditLinkItemScene(_ editCase: EditLinkItemCase,
                                       collectionID: String?,
-                                      completed: @escaping (ReadLink) -> Void) -> EditLinkItemScene {
+                                      listener: EditLinkItemSceneListenable?) -> EditLinkItemScene {
         
         let router = EditLinkItemRouter(nextSceneBuilders: self)
         let viewModel = EditLinkItemViewModelImple(collectionID: collectionID,
                                                    editCase: editCase,
                                                    readUsecase: self.readItemUsecase,
                                                    router: router,
-                                                   completed: completed)
+                                                   listener: listener)
         let viewController = EditLinkItemViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
@@ -222,13 +222,13 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
     
     public func makeEditReadCollectionScene(parentID: String?,
                                             editCase: EditCollectionCase,
-                                            completed: @escaping (ReadCollection) -> Void) -> EditReadCollectionScene {
+                                            listener: EditReadCollectionSceneListenable?) -> EditReadCollectionScene {
         let router = EditReadCollectionRouter(nextSceneBuilders: self)
         let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
                                                          editCase: editCase,
                                                          updateUsecase: self.readItemUsecase,
                                                          router: router,
-                                                         completed: completed)
+                                                         listener: listener)
         let viewController = EditReadCollectionViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

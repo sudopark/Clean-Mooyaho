@@ -53,18 +53,18 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     private let editCase: EditLinkItemCase
     private let readUsecase: ReadItemUsecase
     private let router: EditLinkItemRouting
-    private let completed: (ReadLink) -> Void
+    private weak var listener: EditLinkItemSceneListenable?
     
     public init(collectionID: String?,
                 editCase: EditLinkItemCase,
                 readUsecase: ReadItemUsecase,
                 router: EditLinkItemRouting,
-                completed: @escaping (ReadLink) -> Void) {
+                listener: EditLinkItemSceneListenable?) {
         self.collectionID = collectionID
         self.editCase = editCase
         self.readUsecase = readUsecase
         self.router = router
-        self.completed = completed
+        self.listener = listener
     }
     
     deinit {
@@ -134,7 +134,7 @@ extension EditLinkItemViewModelImple {
     
     private func closeSceneAfterUpdateItem(_ item: ReadLink) {
         self.router.closeScene(animated: true) { [weak self] in
-            self?.completed(item)
+            self?.listener?.editReadLink(didEdit: item)
         }
     }
     
