@@ -15,7 +15,7 @@ import Domain
 
 extension LocalStorageImple {
     
-    public func fetchMyItems() -> Maybe<[ReadItem]> {
+    public func fetchMyItems(memberID: String?) -> Maybe<[ReadItem]> {
         return self.dataModelStorage.fetchMyReadItems()
     }
     

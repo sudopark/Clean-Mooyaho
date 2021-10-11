@@ -15,15 +15,38 @@ import DataStore
 
 extension FirebaseServiceImple {
     
-    public func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]> { .just([]) }
+    public func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+    }
     
-    public func requestLoadCollectionItems(collectionID: String) -> Maybe<[ReadItem]> { .just([]) }
+    public func requestLoadCollectionItems(collectionID: String) -> Maybe<[ReadItem]> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+    }
     
-    public func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> { .just() }
+    public func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+    }
     
-    public func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> { .just() }
+    public func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+    }
     
-    public func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection> {
-        return .error(RemoteErrors.loadFail("not implemented", reason: nil))
+    public func requestLoadCollection(collectionID: String) -> Maybe<ReadCollection> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
     }
 }

@@ -56,7 +56,7 @@ extension LocalStorageTests_ReadItem {
         let saveAllItems = self.local.updateReadItems(self.dummyMyItems())
         
         // when
-        let loadMyItems = self.local.fetchMyItems()
+        let loadMyItems = self.local.fetchMyItems(memberID: nil)
         let saveAndLoad = saveAllItems.flatMap{ _ in loadMyItems }
         let items = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
         
@@ -120,7 +120,7 @@ extension LocalStorageTests_ReadItem {
         
         // when
         let save = self.local.updateReadItems([link])
-        let load = self.local.fetchMyItems()
+        let load = self.local.fetchMyItems(memberID: nil)
         let saveAndLoad = save.flatMap{ _ in load }
         let savedLink = self.waitFirstElement(expect, for: saveAndLoad.asObservable())?.first as? ReadLink
         

@@ -155,7 +155,7 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestUpdateReadLink") ?? .empty()
     }
     
-    func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection> {
+    func requestLoadCollection(collectionID: String) -> Maybe<ReadCollection> {
         return self.resolve(key: "requestLoadCollection") ?? .empty()
     }
     
