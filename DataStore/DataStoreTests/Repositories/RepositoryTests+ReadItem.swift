@@ -44,15 +44,15 @@ class RepositoryTests_ReadItem: BaseTestCase, WaitObservableEvents {
 extension RepositoryTests_ReadItem {
     
     // load my items
-    func testRepository_fetchdMyItems() {
+    func testRepository_loadMyItems_withoutSignin() {
         // given
         let expect = expectation(description: "내 아이템 패칭")
         
         self.mockLocal.register(key: "fetchMyItems") { Maybe<[ReadItem]>.just([]) }
         
         // when
-        let fetching = self.dummyRepository.fetchMyItems()
-        let items = self.waitElements(expect, for: fetching.asObservable())
+        let loading = self.dummyRepository.requestLoadMyItems(for: nil)
+        let items = self.waitElements(expect, for: loading)
         
         // then
         XCTAssertEqual(items.count, 1)
@@ -60,28 +60,28 @@ extension RepositoryTests_ReadItem {
     
     func testRepository_fetchdMyItemsFail() {
         // given
-        let expect = expectation(description: "내 아이템 패칭 실패")
+        let expect = expectation(description: "내 아이템 패칭 실패시 빈값")
         
         self.mockLocal.register(key: "fetchMyItems") { Maybe<[ReadItem]>.error(LocalErrors.invalidData(nil)) }
         
         // when
-        let fetching = self.dummyRepository.fetchMyItems()
-        let error = self.waitError(expect, for: fetching.asObservable())
+        let loading = self.dummyRepository.requestLoadMyItems(for: nil)
+        let items = self.waitElements(expect, for: loading)
         
         // then
-        XCTAssertNotNil(error)
+        XCTAssertEqual(items.first?.count, 0)
     }
     
     // load collectionItems
-    func testRepository_fetchCollectionItems() {
+    func testRepository_fetchCollectionItems_withoutSignIn() {
         // given
-        let expect = expectation(description: "상태에서 특정 콜렉션 아이템 패칭")
+        let expect = expectation(description: "로그아웃 상태에서 특정 콜렉션 아이템 패칭")
         
         self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.just([]) }
         
         // when
-        let fetching = self.dummyRepository.fetchCollectionItems(collectionID: "some")
-        let items = self.waitElements(expect, for: fetching.asObservable())
+        let loading = self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
+        let items = self.waitElements(expect, for: loading)
         
         // then
         XCTAssertEqual(items.count, 1)
@@ -89,27 +89,27 @@ extension RepositoryTests_ReadItem {
     
     func testRepository_fetchCollectionItemsFail() {
         // given
-        let expect = expectation(description: "특정 콜렉션 아이템 패칭 실패")
+        let expect = expectation(description: "특정 콜렉션 아이템 패칭 실패시에 빈값")
         
         self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.error(LocalErrors.invalidData(nil)) }
         
         // when
-        let fetching = self.dummyRepository.fetchCollectionItems(collectionID: "some")
-        let error = self.waitError(expect, for: fetching.asObservable())
+        let loading = self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
+        let items = self.waitElements(expect, for: loading)
         
         // then
-        XCTAssertNotNil(error)
+        XCTAssertEqual(items.first?.count, 0)
     }
     
     // udpate collection
-    func testRepository_updateCollection() {
+    func testRepository_updateCollection_withoutSignin() {
         // given
-        let expect = expectation(description: "특정 콜렉션 업데이트")
+        let expect = expectation(description: "로그아웃 상태에서 특정 콜렉션 업데이트")
         
         self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.just() }
         
         // when
-        let updating = self.dummyRepository.updateCollection(.init(name: "some"))
+        let updating = self.dummyRepository.requestUpdateCollection(.init(name: "some"))
         let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
         
         // then
@@ -123,7 +123,7 @@ extension RepositoryTests_ReadItem {
         self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.error(LocalErrors.invalidData(nil)) }
         
         // when
-        let updating = self.dummyRepository.updateCollection(.init(name: "some"))
+        let updating = self.dummyRepository.requestUpdateCollection(.init(name: "some"))
         let error = self.waitError(expect, for: updating.asObservable())
         
         // then
@@ -138,7 +138,7 @@ extension RepositoryTests_ReadItem {
         self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.just() }
         
         // when
-        let saving = self.dummyRepository.updateLink(.init(link: "some"))
+        let saving = self.dummyRepository.requestUpdateLink(.init(link: "some"))
         let result: Void? = self.waitFirstElement(expect, for: saving.asObservable())
         
         // then
@@ -152,7 +152,7 @@ extension RepositoryTests_ReadItem {
         self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.error(LocalErrors.invalidData(nil)) }
         
         // when
-        let saving = self.dummyRepository.updateLink(.init(link: "some"))
+        let saving = self.dummyRepository.requestUpdateLink(.init(link: "some"))
         let error = self.waitError(expect, for: saving.asObservable())
         
         // then
@@ -165,7 +165,7 @@ extension RepositoryTests_ReadItem {
         self.mockLocal.register(key: "fetchCollection") { Maybe<ReadCollection?>.just(.init(name: "some")) }
         
         // when
-        let loading = self.dummyRepository.fetchCollection("some")
+        let loading = self.dummyRepository.requestLoadCollection("some")
         let collection = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
@@ -196,18 +196,19 @@ extension RepositoryTests_ReadItem {
     
     func testRepository_whenSignInAndLoadMyItems_localFirstAndRemoteWithIgnoreLocalError() {
         // given
-        let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 무시 이후 리모트 로드")
-        expect.expectedFulfillmentCount = 1
+        let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 빈값 반환 이후 리모트 로드")
+        expect.expectedFulfillmentCount = 2
         
         self.mockLocal.register(key: "fetchMyItems") { Maybe<[ReadItem]>.error(LocalErrors.deserializeFail(nil)) }
-        self.mockRemote.register(key: "requestLoadMyItems") { Maybe<[ReadItem]>.just([]) }
+        self.mockRemote.register(key: "requestLoadMyItems") { Maybe<[ReadItem]>.just([ReadLink.init(link: "some")]) }
         
         // when
         let loading = self.dummyRepository.requestLoadMyItems(for: "some")
         let lists = self.waitElements(expect, for: loading)
         
         // then
-        XCTAssertEqual(lists.count, 1)
+        XCTAssertEqual(lists.first?.count, 0)
+        XCTAssertEqual(lists.last?.count, 1)
     }
     
     func testRepository_whenSignInAndLoadMyItemsFail_byRemoteFail() {
@@ -248,18 +249,19 @@ extension RepositoryTests_ReadItem {
     
     func testRepository_whenSignInAndLoadCollectionItems_localFirstAndRemoteWithIgnoreLocalError() {
         // given
-        let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 무시 이후 리모트 로드")
-        expect.expectedFulfillmentCount = 1
+        let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 빈값 반환 이후 리모트 로드")
+        expect.expectedFulfillmentCount = 2
         
         self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.error(LocalErrors.deserializeFail(nil)) }
-        self.mockRemote.register(key: "requestLoadCollectionItems") { Maybe<[ReadItem]>.just([]) }
+        self.mockRemote.register(key: "requestLoadCollectionItems") { Maybe<[ReadItem]>.just([ReadLink.init(link: "some")]) }
         
         // when
         let loading = self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
         let lists = self.waitElements(expect, for: loading)
         
         // then
-        XCTAssertEqual(lists.count, 1)
+        XCTAssertEqual(lists.first?.count, 0)
+        XCTAssertEqual(lists.last?.count, 1)
     }
     
     func testRepository_whenSignInAndLoadCollectionItemsFail_byRemoteFail() {
@@ -304,7 +306,7 @@ extension RepositoryTests_ReadItem {
         self.mockRemote.register(key: "requestLoadCollection") { Maybe<ReadCollection>.just(.init(name: "some")) }
         
         // when
-        let loading = self.dummyRepository.requestLoadCollection(for: "some", collectionID: "c")
+        let loading = self.dummyRepository.requestLoadCollection("c")
         let colletions = self.waitElements(expect, for: loading)
         
         // then
@@ -318,7 +320,7 @@ extension RepositoryTests_ReadItem {
         self.mockRemote.register(key: "requestLoadCollection") { Maybe<ReadCollection>.just(.init(name: "some")) }
         
         // when
-        let loading = self.dummyRepository.requestLoadCollection(for: "some", collectionID: "c")
+        let loading = self.dummyRepository.requestLoadCollection("c")
         let colletions = self.waitElements(expect, for: loading)
         
         // then
@@ -337,7 +339,7 @@ extension RepositoryTests_ReadItem {
         }
         
         // when
-        let loading = self.dummyRepository.requestLoadCollection(for: "some", collectionID: "c")
+        let loading = self.dummyRepository.requestLoadCollection("c")
         let colletions = self.waitElements(expect, for: loading)
         
         // then
@@ -352,13 +354,9 @@ extension RepositoryTests_ReadItem {
     func testRepository_whenSignInAndUpdateCollectionItems_withUpdateLocal() {
         // given
         let expect = expectation(description: "로그인 상태에서 collection item 업데이트 및 로컬 업데이트")
-        expect.expectedFulfillmentCount = 2
         
         self.mockRemote.register(key: "requestUpdateReadCollection") { Maybe<Void>.just() }
-        
-        self.mockLocal.called(key: "updateReadItems") { _ in
-            expect.fulfill()
-        }
+        self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.just() }
         
         // when
         let updating = self.dummyRepository.requestUpdateCollection(.init(name: "some"))
@@ -371,13 +369,9 @@ extension RepositoryTests_ReadItem {
     func testRepository_whenSignInAndUpdateReadLink_withUpdateLocal() {
         // given
         let expect = expectation(description: "로그인 상태에서 read link 업데이트 및 로컬 업데이트")
-        expect.expectedFulfillmentCount = 2
         
         self.mockRemote.register(key: "requestUpdateReadLink") { Maybe<Void>.just() }
-        
-        self.mockLocal.called(key: "updateReadItems") { _ in
-            expect.fulfill()
-        }
+        self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.just() }
         
         // when
         let updating = self.dummyRepository.requestUpdateLink(.init(link: "some"))

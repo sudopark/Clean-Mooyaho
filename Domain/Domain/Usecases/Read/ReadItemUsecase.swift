@@ -47,24 +47,15 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
 extension ReadItemUsecaseImple {
     
     public func loadMyItems() -> Observable<[ReadItem]> {
-        guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.itemsRespoitory.fetchMyItems().asObservable()
-        }
+        let memberID = self.authInfoProvider.signedInMemberID()
         return self.itemsRespoitory.requestLoadMyItems(for: memberID)
     }
     
     public func loadCollectionInfo(_ collectionID: String) -> Observable<ReadCollection> {
-        guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.itemsRespoitory.fetchCollection(collectionID).asObservable()
-        }
-        return self.itemsRespoitory.requestLoadCollection(for: memberID, collectionID: collectionID)
+        return self.itemsRespoitory.requestLoadCollection(collectionID)
     }
     
     public func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
-        guard self.authInfoProvider.isSignedIn() else {
-            return self.itemsRespoitory
-                .fetchCollectionItems(collectionID: collectionID).asObservable()
-        }
         return self.itemsRespoitory.requestLoadCollectionItems(collectionID: collectionID)
     }
     
@@ -106,17 +97,13 @@ extension ReadItemUsecaseImple {
 extension ReadItemUsecaseImple {
     
     public func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
-        guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.itemsRespoitory.updateCollection(newCollection)
-        }
+        let memberID = self.authInfoProvider.signedInMemberID()
         let newCollection = newCollection |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateCollection(newCollection)
     }
     
     public func updateLink(_ link: ReadLink) -> Maybe<Void> {
-        guard let memberID = self.authInfoProvider.signedInMemberID() else {
-            return self.itemsRespoitory.updateLink(link)
-        }
+        let memberID = self.authInfoProvider.signedInMemberID()
         let link = link |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateLink(link)
     }

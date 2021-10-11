@@ -147,7 +147,7 @@ public protocol MessagingRemote {
 
 // MARK: - ReadItem
 
-public protocol ReadItemRemote {
+public protocol ReadItemRemote: AuthorizationNeed {
     
     func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]>
     
@@ -157,7 +157,7 @@ public protocol ReadItemRemote {
     
     func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void>
     
-    func requestLoadCollection(for memberID: String, collectionID: String) -> Maybe<ReadCollection>
+    func requestLoadCollection(collectionID: String) -> Maybe<ReadCollection>
 }
 
 

@@ -22,96 +22,68 @@ public protocol ReadItemRepositryDefImpleDependency: AnyObject {
 
 extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
     
-    public func fetchMyItems() -> Maybe<[ReadItem]> {
-        return self.readItemLocal.fetchMyItems()
-    }
-    
-    public func requestLoadMyItems(for memberID: String) -> Observable<[ReadItem]> {
+    public func requestLoadMyItems(for memberID: String?) -> Observable<[ReadItem]> {
+        
+        let itemsOnLocal = self.readItemLocal.fetchMyItems(memberID: memberID)
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
             self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
         }
-        
-        let remoteLoadAndUpdateLocal = self.readItemRemote
-            .requestLoadMyItems(for: memberID)
+        let itemsOnRemote = memberID
+            .map { self.readItemRemote.requestLoadMyItems(for: $0) } ?? .empty()
             .do(onNext: updateLocal)
         
-        return self.fetchMyItems().ignoreError().asObservable()
-            .concat(remoteLoadAndUpdateLocal)
-    }
-    
-    public func fetchCollectionItems(collectionID: String) -> Maybe<[ReadItem]> {
-        return self.readItemLocal.fetchCollectionItems(collectionID)
+        return itemsOnLocal.catchAndReturn([]).asObservable()
+            .concat(itemsOnRemote)
+        
     }
     
     public func requestLoadCollectionItems(collectionID: String) -> Observable<[ReadItem]> {
         
+        let itemsOnLocal = self.readItemLocal.fetchCollectionItems(collectionID)
+        
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
             self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
         }
-        let remoteLoadAndUpdateLocal = self.readItemRemote.requestLoadCollectionItems(collectionID: collectionID)
+        let itemsOnRemote = self.readItemRemote
+            .requestLoadCollectionItems(collectionID: collectionID)
             .do(onNext: updateLocal)
             
-        return self.fetchCollectionItems(collectionID: collectionID).ignoreError().asObservable()
-            .concat(remoteLoadAndUpdateLocal)
+        return itemsOnLocal.catchAndReturn([]).asObservable()
+            .concat(itemsOnRemote)
     }
 
-    public func updateCollection(_ collection: ReadCollection) -> Maybe<Void> {
-        return self.readItemLocal.updateReadItems([collection])
-    }
-    
     public func requestUpdateCollection(_ collection: ReadCollection) -> Maybe<Void> {
-        
-        let updateLocal: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            self.updateCollection(collection).subscribe().disposed(by: self.disposeBag)
-        }
-        return self.readItemRemote.requestUpdateReadCollection(collection)
-            .do(onNext: updateLocal)
-    }
-    
-    public func updateLink(_ link: ReadLink) -> Maybe<Void> {
-        return self.readItemLocal.updateReadItems([link])
+
+        let updateOnLocal = { [weak self] in self?.readItemLocal.updateReadItems([collection]) ?? .empty() }
+        let updateOnRemote = self.readItemRemote.requestUpdateReadCollection(collection)
+        return updateOnRemote.switchOr(append: updateOnLocal, witoutError: ())
     }
     
     public func requestUpdateLink(_ link: ReadLink) -> Maybe<Void> {
-        let updateLocal: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            self.updateLink(link).subscribe().disposed(by: self.disposeBag)
-        }
-        return self.readItemRemote.requestUpdateReadLink(link)
-            .do(onNext: updateLocal)
+        let updateOnLocal = { [weak self] in self?.readItemLocal.updateReadItems([link]) ?? .empty() }
+        let updateOnRemote = self.readItemRemote.requestUpdateReadLink(link)
+        return updateOnRemote.switchOr(append: updateOnLocal, witoutError: ())
     }
-    
-    
-    public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection> {
-        let notExistsThenError: (ReadCollection?) throws -> ReadCollection
-        notExistsThenError = { collection in
-            guard let collection = collection else {
-                throw LocalErrors.notExists
-            }
-            return collection
-        }
-        return self.readItemLocal.fetchCollection(collectionID)
-            .map(notExistsThenError)
-    }
-    
-    public func requestLoadCollection(for memberID: String, collectionID: String) -> Observable<ReadCollection> {
+   
+    public func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection> {
         
-        let updateLocal: (ReadCollection) -> Void = { [weak self] collection in
+        let thenUdateLocal: (ReadCollection) -> Void = { [weak self] collection in
             guard let self = self else { return }
             self.readItemLocal.updateReadItems([collection])
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
         
-        let remoteLoadAndUpdateLocal = self.readItemRemote
-            .requestLoadCollection(for: memberID, collectionID: collectionID)
-            .do(onNext: updateLocal)
+        let collectionOnLocal = self.readItemLocal.fetchCollection(collectionID)
+        
+        let collectionOnRemote = self.readItemRemote
+            .requestLoadCollection(collectionID: collectionID)
+            .do(onNext: thenUdateLocal)
                 
-        return self.fetchCollection(collectionID).ignoreError().asObservable()
-                .concat(remoteLoadAndUpdateLocal)
+        return collectionOnLocal.catchAndReturn(nil).compactMap { $0 }.asObservable()
+            .concat(collectionOnRemote)
     }
 }

@@ -55,7 +55,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             repositoryScenario.myItems = .failure(ApplicationErrors.invalid)
         }
         shouldFailLoadCollection.then {
-            repositoryScenario.localCollectionItems = .failure(ApplicationErrors.invalid)
+            repositoryScenario.collectionItems = .failure(ApplicationErrors.invalid)
         }
         
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
@@ -112,14 +112,13 @@ extension ReadItemUsecaseTests {
     func testUsecase_loadMyItemsWithSignedIn() {
         // given
         let expect = expectation(description: "로그인 상태에서 내 아이템 조회")
-        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(signedIn: true)
         
         // when
         let itemLists = self.waitElements(expect, for: usecase.loadMyItems())
         
         // then
-        XCTAssertEqual(itemLists.count, 2)
+        XCTAssertEqual(itemLists.count, 1)
     }
     
     func testUsecase_loadCollectionItemWithoutSignedIn() {
@@ -151,14 +150,13 @@ extension ReadItemUsecaseTests {
     func testUsecase_loadCollectionItemsWithSignedIn() {
         // given
         let expect = expectation(description: "로그인 상태에서 콜렉션 items 로드")
-        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(signedIn: true)
         
         // when
         let itemLists = self.waitElements(expect, for: usecase.loadCollectionItems("some"))
         
         // then
-        XCTAssertEqual(itemLists.count, 2)
+        XCTAssertEqual(itemLists.count, 1)
     }
     
     // load collection + 로그인 상태 -> 캐시와 리모트에 둘다 없으면 에러
