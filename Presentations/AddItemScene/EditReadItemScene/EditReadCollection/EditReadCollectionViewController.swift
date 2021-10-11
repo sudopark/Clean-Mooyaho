@@ -73,6 +73,8 @@ extension EditReadCollectionViewController {
         
         self.bindBottomSlideMenuView()
         
+        self.setupInitialAttributeIfPossible()
+        
         self.textField.rx.text.orEmpty
             .subscribe(onNext: { [weak self] text in
                 self?.viewModel.enterName(text)
@@ -131,6 +133,13 @@ extension EditReadCollectionViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func setupInitialAttributeIfPossible() {
+        guard let colleciton = self.viewModel.editCaseCollectionValue else { return }
+        self.titleLabel.text = "Edit Collection"
+        self.textField.text = colleciton.name
+        self.descriptionInputField.text = colleciton.collectionDescription
     }
     
     private func updatePriorityLabel(_ newValue: ReadPriority?) {

@@ -34,6 +34,7 @@ public protocol EditReadCollectionViewModel: AnyObject {
     var categories: Observable<[ItemCategory]> { get }
     var isProcessing: Observable<Bool> { get }
     var isConfirmable: Observable<Bool> { get }
+    var editCaseCollectionValue: ReadCollection? { get }
 }
 
 
@@ -44,20 +45,25 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     private let parentID: String?
     private let editCase: EditCollectionCase
     private let updateUsecase: ReadItemUpdateUsecase
+    private let categoriesUsecase: ReadItemCategoryUsecase
     private let router: EditReadCollectionRouting
     private weak var listener: EditReadCollectionSceneListenable?
     
     public init(parentID: String?,
                 editCase: EditCollectionCase,
                 updateUsecase: ReadItemUpdateUsecase,
+                categoriesUsecase: ReadItemCategoryUsecase,
                 router: EditReadCollectionRouting,
                 listener: EditReadCollectionSceneListenable?) {
         
         self.parentID = parentID
         self.editCase = editCase
         self.updateUsecase = updateUsecase
+        self.categoriesUsecase = categoriesUsecase
         self.router = router
         self.listener =  listener
+        
+        self.setupPreviousSelectedCategoryAndPriorityIfNeed()
     }
     
     deinit {
@@ -75,6 +81,20 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    private func setupPreviousSelectedCategoryAndPriorityIfNeed() {
+        guard case let .edit(collection) = self.editCase else { return }
+        self.subjects.collectionName.accept(collection.name)
+        self.subjects.description.accept(collection.collectionDescription)
+        self.subjects.selectedPriority.accept(collection.priority)
+        
+        self.categoriesUsecase.categories(for: collection.categoryIDs)
+            .take(1)
+            .subscribe(onNext: { [weak self] categories in
+                self?.subjects.selectedCategories.accept(categories)
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -110,8 +130,15 @@ extension EditReadCollectionViewModelImple {
         
         let updatingAction: Maybe<ReadCollection> = {
             switch self.editCase {
-            case .makeNew: return self.makeNewColletion()
-            case .edit: return .empty()
+            case .makeNew:
+                guard let name = self.subjects.collectionName.value else { return .empty() }
+                let newCollection = ReadCollection(name: name)
+                return self.updateCollection(newCollection)
+                
+            case let .edit(collection):
+                let newCollection = collection
+                    |> \.name .~ (self.subjects.collectionName.value ?? collection.name)
+                return self.updateCollection(newCollection)
             }
         }()
         
@@ -123,9 +150,8 @@ extension EditReadCollectionViewModelImple {
             .disposed(by: self.disposeBag)
     }
     
-    private func makeNewColletion() -> Maybe<ReadCollection> {
-        guard let name = self.subjects.collectionName.value else { return .empty() }
-        let newCollection = ReadCollection(name: name)
+    private func updateCollection(_ collection: ReadCollection) -> Maybe<ReadCollection> {
+        let newCollection = collection
             |> \.collectionDescription .~ self.subjects.description.value
             |> \.parentID .~ self.parentID
             |> \.priority .~ self.subjects.selectedPriority.value
@@ -199,5 +225,10 @@ extension EditReadCollectionViewModelImple {
     public var isProcessing: Observable<Bool> {
         return self.subjects.isProcessing
             .distinctUntilChanged()
+    }
+    
+    public var editCaseCollectionValue: ReadCollection? {
+        guard case let .edit(collection) = self.editCase else { return nil }
+        return collection
     }
 }
