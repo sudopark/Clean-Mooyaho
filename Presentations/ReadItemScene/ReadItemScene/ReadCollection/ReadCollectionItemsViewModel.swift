@@ -56,7 +56,6 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
-    func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]>
     var isEditable: Bool { get }
     func contextAction(for item: ReadItemCellViewModel,
                        isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]?
@@ -98,6 +97,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let sortOrder = BehaviorRelay<ReadCollectionItemSortOrder?>(value: nil)
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
+        let categoryMap = BehaviorSubject<[String: ItemCategory]>(value: [:])
     }
     
     private let subjects = Subjects()
@@ -106,6 +106,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     private func internalBinding() {
         self.loadLatestSortOrder()
         self.loadCurrentCollectionInfoIfNeed()
+        self.bindRequireCategories()
     }
     
     private func loadLatestSortOrder() {
@@ -127,6 +128,33 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.readItemUsecase
             .loadCollectionInfo(self.collectionID)
             .subscribe(onNext: updateCurrentCollection)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindRequireCategories() {
+        
+        let totalItems: Observable<[ReadItem]> = Observable.merge(
+            self.subjects.collections.compactMap { $0 },
+            self.subjects.links.compactMap { $0 },
+            self.subjects.currentCollection.compactMap { $0 }.map { [$0] }
+        )
+        let foldAsSet: (Set<String>, [ReadItem]) -> Set<String> = { acc, items in
+            let newIDs = items.flatMap { $0.categoryIDs }
+            return acc.union(newIDs)
+        }
+        let categoryIDSet = totalItems.scan(Set<String>(), accumulator: foldAsSet)
+        let loadCategories: (Set<String>) -> Observable<[ItemCategory]> = { [weak self] idSet in
+            guard let self = self else { return .empty() }
+            return self.categoryUsecase.categories(for: Array(idSet))
+        }
+        categoryIDSet
+            .distinctUntilChanged()
+            .flatMapLatest(loadCategories)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] categories in
+                let dict = categories.reduce(into: [String: ItemCategory]()) { $0[$1.uid] = $1 }
+                self?.subjects.categoryMap.onNext(dict)
+            })
             .disposed(by: self.disposeBag)
     }
 }
@@ -289,13 +317,17 @@ extension ReadCollectionViewItemsModelImple {
         
     public var sections: Observable<[ReadCollectionItemSection]> {
         
-        let asSections: (ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, order in
+        let asSections: (ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder, [String: ItemCategory]) ->  [ReadCollectionItemSection]
+        asSections = { currentCollection, collections, links, order, cateMap in
             
             let attributeCell: [ReadItemCellViewModel] = currentCollection
-                .map{ [ReadCollectionAttrCellViewModel(collection: $0)] } ?? []
-            let collectionCells = collections.sort(by: order).asCellViewModels()
-            let linkCells = links.sort(by: order).asCellViewModels()
+                .map { ReadCollectionAttrCellViewModel(collection: $0)
+                    |> \.categories .~ $0.categoryIDs.compactMap{ cateMap[$0] }
+                }
+                .map { [$0] } ?? []
+            let collectionCells = collections.sort(by: order).asCellViewModels(with: cateMap)
+            let linkCells = links.sort(by: order).asCellViewModels(with: cateMap)
+            
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
                 collectionCells.asSectionIfNotEmpty(for: .collections),
@@ -309,6 +341,7 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.collections.compactMap { $0 },
             self.subjects.links.compactMap { $0 },
             self.subjects.sortOrder.compactMap { $0 },
+            self.subjects.categoryMap,
             resultSelector: asSections
         )
     }
@@ -322,11 +355,6 @@ extension ReadCollectionViewItemsModelImple {
     }
     
     public var isEditable: Bool { self.currentCollectionID != nil }
-    
-    public func itemCategories(_ categoryIDs: [String]) -> Observable<[ItemCategory]> {
-        return self.categoryUsecase.categories(for: categoryIDs)
-            .distinctUntilChanged()
-    }
     
     public func contextAction(for item: ReadItemCellViewModel,
                               isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
@@ -362,14 +390,16 @@ private extension Array where Element: ReadItem {
         return self.sorted(by: compare)
     }
     
-    func asCellViewModels() -> [ReadItemCellViewModel] {
+    func asCellViewModels(with cateMap: [String: ItemCategory]) -> [ReadItemCellViewModel] {
         let transform: (ReadItem) -> ReadItemCellViewModel? = { item in
             switch item {
             case let collection as ReadCollection:
                 return ReadCollectionCellViewModel(collection: collection)
+                    |> \.categories .~ collection.categoryIDs.compactMap { cateMap[$0] }
                 
             case let link as ReadLink:
                 return ReadLinkCellViewModel(link: link)
+                    |> \.categories .~ link.categoryIDs.compactMap { cateMap[$0] }
                 
             default: return nil
             }

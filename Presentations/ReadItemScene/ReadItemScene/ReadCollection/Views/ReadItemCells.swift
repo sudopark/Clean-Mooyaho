@@ -81,20 +81,6 @@ public protocol ReadItemCells: BaseTableViewCell {
     func setupCell(_ cellViewModel: CellViewModel)
     
     func updateCategories(_ categories: [ItemCategory])
-    
-    var tableView: UITableView? { get set }
-}
-
-extension ReadItemCells {
-    
-    func bindCategories(_ source: Observable<[ItemCategory]>) {
-        source
-            .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] categories in
-                self?.updateCategories(categories)
-            })
-            .disposed(by: self.disposeBag)
-    }
 }
 
 
@@ -103,8 +89,6 @@ extension ReadItemCells {
 final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadCollectionAttrCellViewModel
-    
-    weak var tableView: UITableView?
     
     private let stackView = UIStackView()
     private let descriptionLabel = UILabel()
@@ -121,6 +105,8 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         let priotiry = cellViewModel.priority
         self.priorityView.isHidden = priotiry == nil
         priotiry.do <| priorityView.labelView.setupPriority
+            
+        self.updateCategories(cellViewModel.categories)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -282,7 +268,6 @@ final class ReadItemExppandContentView: BaseUIView, Presenting {
 final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadCollectionCellViewModel
-    weak var tableView: UITableView?
     
     private let expandView = ReadItemExppandContentView()
     private let arrowImageView = UIImageView()
@@ -305,6 +290,8 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
         let priority = cellViewModel.priority
         self.expandView.priorityLabel.isHidden = priority == nil
         priority.do <| self.expandView.priorityLabel.setupPriority
+            
+        self.updateCategories(cellViewModel.categories)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -361,8 +348,6 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     typealias CellViewModel = ReadLinkCellViewModel
     
-    weak var tableView: UITableView?
-    
     private let expandView = ReadItemExppandContentView()
     private let thumbNailView = UIImageView()
     private let underLineView = UIView()
@@ -388,6 +373,8 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         let priority = cellViewModel.priority
         self.expandView.priorityLabel.isHidden = priority == nil
         priority.do <| self.expandView.priorityLabel.setupPriority
+                
+        self.updateCategories(cellViewModel.categories)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {

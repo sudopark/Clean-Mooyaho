@@ -118,21 +118,16 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
             case let attribute as ReadCollectionAttrCellViewModel:
                 let cell: ReadCollcetionAttrCell = tableView.dequeueCell()
                 cell.setupCell(attribute)
-                cell.bindCategories(self.viewModel.itemCategories(item.categoryIDs))
                 return cell
             
             case let collection as ReadCollectionCellViewModel:
                 let cell: ReadCollectionExpandCell = tableView.dequeueCell()
-                cell.tableView = tableView
                 cell.setupCell(collection)
-                cell.bindCategories(self.viewModel.itemCategories(item.categoryIDs))
                 return cell
 
             case let link as ReadLinkCellViewModel:
                 let cell: ReadLinkExpandCell = tableView.dequeueCell()
-                cell.tableView = tableView
                 cell.setupCell(link)
-                cell.bindCategories(self.viewModel.itemCategories(item.categoryIDs))
                 cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid), customTitle: link.customName)
                 return cell
 
