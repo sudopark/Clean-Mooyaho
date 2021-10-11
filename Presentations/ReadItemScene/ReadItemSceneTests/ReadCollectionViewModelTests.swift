@@ -143,18 +143,6 @@ extension ReadCollectionViewModelTests {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
-    
-    func testViewModel_provideCategoryInfo() {
-        // given
-        let expect = expectation(description: "카테고리 정보 제공")
-        let viewModel = self.makeViewModel()
-        
-        // when
-        let categories = self.waitFirstElement(expect, for: viewModel.itemCategories(["some"]))
-        
-        // then
-        XCTAssertEqual(categories?.count, 10)
-    }
 }
 
 // MAARK: - change order
@@ -459,7 +447,7 @@ extension ReadCollectionViewModelTests {
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
             viewModel.reloadCollectionItems()
-            let newLink = link |> \.categoryIDs .~ ["new"]
+            let newLink = link |> \.categoryIDs .~ ["c:3"]
             self.spyRouter.mockNewLink = newLink
             viewModel.handleContextAction(for: ReadLinkCellViewModel(link: link),
                                              action: .edit)
@@ -469,7 +457,7 @@ extension ReadCollectionViewModelTests {
         let link1 = cvms?
             .compactMap { $0 as? ReadLinkCellViewModel }
             .first(where: { $0.uid == link.uid })
-        XCTAssertEqual(link1?.categoryIDs, ["new"])
+        XCTAssertEqual(link1?.categories.map { $0.uid }, ["c:3"])
     }
     
     // TODO: delete
