@@ -40,7 +40,7 @@ public protocol ReadCollectionRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable
+public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable & EditLinkItemSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
@@ -115,5 +115,15 @@ extension ReadCollectionItemsRouter {
     
     public func routeToEditReadLink(_ link: ReadLink) {
         
+        guard let next = self.nextScenesBuilder?.makeEditLinkItemScene(.edit(item: link),
+                                                                       collectionID: link.parentID,
+                                                                       listener: self.currentInteractor) else {
+            return
+        }
+        
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

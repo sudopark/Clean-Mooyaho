@@ -20,6 +20,7 @@ import CommonPresenting
 
 public final class EditLinkItemViewController: BaseViewController, EditLinkItemScene {
     
+    private let fakeBackgroundView = UIView()
     private let titleInputField = UITextField()
     private let underLineView = UIView()
     
@@ -70,9 +71,17 @@ extension EditLinkItemViewController {
     
     private func bind() {
         
+        self.setupInitialAttributeIfPossible()
+        
         self.navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.rewind()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.titleInputField.rx.text.orEmpty
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.enterCustomName(text)
             })
             .disposed(by: self.disposeBag)
         
@@ -130,6 +139,12 @@ extension EditLinkItemViewController {
                 self?.viewModel.confirmSave()
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func setupInitialAttributeIfPossible() {
+        guard let link = self.viewModel.editcaseReadLink else { return }
+        self.fakeBackgroundView.isHidden = false
+        self.titleInputField.text = link.customName
     }
     
     private func bindPreview() {
@@ -195,6 +210,13 @@ extension EditLinkItemViewController: Presenting {
         let button = UIBarButtonItem(title: "< Back", style: .plain, target: nil, action: nil)
         self.navigationItem.leftBarButtonItem = button
         
+        self.view.addSubview(fakeBackgroundView)
+        fakeBackgroundView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: 20)
+        }
+        
         self.view.addSubview(confirmButton)
         confirmButton.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
@@ -257,11 +279,20 @@ extension EditLinkItemViewController: Presenting {
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.bottomAnchor.constraint(equalTo: underLineView.topAnchor, constant: -8)
         }
+        
+        fakeBackgroundView.autoLayout.active(with: titleInputField) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: -20)
+        }
     }
     
     public func setupStyling() {
         
         confirmButton.setupStyling()
+        
+        self.fakeBackgroundView.backgroundColor = self.uiContext.colors.appBackground
+        self.fakeBackgroundView.layer.cornerRadius = 10
+        self.fakeBackgroundView.clipsToBounds = true
+        self.fakeBackgroundView.isHidden = true
         
         self.priorityLabelView.isHidden = true
         self.categoriesLabelView.isHidden = true

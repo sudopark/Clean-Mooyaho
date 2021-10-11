@@ -74,9 +74,12 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         let usecaseStub = PrivateReadItemUsecaseStub(scenario: scenario)
             |> \.previewMocking .~ loadPreviewMocking
         
+        let stubCateUsecse = StubItemCategoryUsecase()
+        
         let viewModel =  EditLinkItemViewModelImple(collectionID: "some",
                                                     editCase: editCase,
                                                     readUsecase: usecaseStub,
+                                                    categoryUsecase: stubCateUsecse,
                                                     router: self,
                                                     listener: self)
         self.editLinkItemSceneInteractable = viewModel
@@ -382,6 +385,44 @@ extension EditLinkItemViewModelTests_makeNew {
     }
 }
 
+
+// MARK: - EditLinkItemViewModelTests + Edit
+
+class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
+    
+    private var dummyItem: ReadLink {
+        return ReadLink(link: "https://www.naver.com")
+            |> \.customName .~ "old custom name"
+    }
+    
+    func makeViewModel() -> EditLinkItemViewModel {
+        return self.makeViewModel(editCase: .edit(item: self.dummyItem))
+    }
+    
+    func testViewModel_whenEditCase_confirmUpdate() {
+        // given
+        let expect = expectation(description: "수정 케이스의 경우 새로운정보와 함께 업데이트")
+        let viewModel = self.makeViewModel()
+        var newLink: ReadLink?
+        self.editCompleted = {
+            newLink = $0
+            expect.fulfill()
+        }
+        
+        // when
+        self.selectPriorityMocking = .afterAWhile
+        viewModel.editPriority()
+        self.selectCategoriesMocking = [.dummy(0)]
+        viewModel.editCategory()
+        viewModel.confirmSave()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(newLink?.customName, "old custom name")
+        XCTAssertEqual(newLink?.priority, .afterAWhile)
+        XCTAssertEqual(newLink?.categoryIDs.count, 1)
+    }
+}
 
 private extension LoadPreviewStatus {
     

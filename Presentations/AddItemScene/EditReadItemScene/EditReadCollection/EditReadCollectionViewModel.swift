@@ -63,7 +63,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         self.router = router
         self.listener =  listener
         
-        self.setupPreviousSelectedCategoryAndPriorityIfNeed()
+        self.setupPreviousSelectedPropertiesIfNeed()
     }
     
     deinit {
@@ -82,7 +82,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    private func setupPreviousSelectedCategoryAndPriorityIfNeed() {
+    private func setupPreviousSelectedPropertiesIfNeed() {
         guard case let .edit(collection) = self.editCase else { return }
         self.subjects.collectionName.accept(collection.name)
         self.subjects.description.accept(collection.collectionDescription)

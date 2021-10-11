@@ -27,7 +27,22 @@ public protocol AddItemNavigationSceneBuilable {
 }
 
 
-// MARK: - Builder + DependencyInjector Extension
+// MARK: - EditLinkItemSceneBuilable
+
+public enum EditLinkItemCase {
+    case makeNew( url: String)
+    case edit(item: ReadLink)
+}
+
+public protocol EditLinkItemSceneBuilable {
+    
+    func makeEditLinkItemScene(_ editCase: EditLinkItemCase,
+                               collectionID: String?,
+                               listener: EditLinkItemSceneListenable?) -> EditLinkItemScene
+}
+
+
+// MARK: - EditCollectionCase
 
 public enum EditCollectionCase {
     case makeNew

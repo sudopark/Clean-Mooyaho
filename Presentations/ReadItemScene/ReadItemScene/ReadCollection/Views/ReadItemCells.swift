@@ -91,9 +91,7 @@ extension ReadItemCells {
         source
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] categories in
-                self?.tableView?.beginUpdates()
                 self?.updateCategories(categories)
-                self?.tableView?.endUpdates()
             })
             .disposed(by: self.disposeBag)
     }
@@ -384,6 +382,7 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
     func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
         
+        self.updateTitle(cellViewModel.customName)
         self.expandView.addressLabel.text = cellViewModel.linkUrl
         
         let priority = cellViewModel.priority
@@ -397,16 +396,17 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
     }
     
-    func bindPreview(_ source: Observable<LinkPreview>) {
+    func bindPreview(_ source: Observable<LinkPreview>, customTitle: String?) {
         
         source.asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] preview in
                 guard let self = self else { return }
-                self.tableView?.beginUpdates()
+//                self.tableView?.beginUpdates()
                 self.updateThumbnailIfPossible(with: preview.mainImageURL)
-                self.updateTitle(preview.title)
+                (customTitle?.isEmpty ?? true).then <| { self.updateTitle(preview.title) }
                 self.updateDescription(preview.description)
-                self.tableView?.endUpdates()
+                
+//                self.tableView?.endUpdates()
             })
             .disposed(by: self.disposeBag)
     }
