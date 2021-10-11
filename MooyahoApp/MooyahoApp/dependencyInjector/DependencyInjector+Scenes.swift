@@ -210,6 +210,7 @@ extension DependencyInjector: EditLinkItemSceneBuilable {
         let viewModel = EditLinkItemViewModelImple(collectionID: collectionID,
                                                    editCase: editCase,
                                                    readUsecase: self.readItemUsecase,
+                                                   categoryUsecase: self.categoryUsecase,
                                                    router: router,
                                                    listener: listener)
         let viewController = EditLinkItemViewController(viewModel: viewModel)

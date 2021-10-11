@@ -42,6 +42,7 @@ public protocol EditLinkItemViewModel: AnyObject {
     var categories: Observable<[ItemCategory]> { get }
     var linkPreviewStatus: Observable<LoadPreviewStatus> { get }
     var isProcessing: Observable<Bool> { get }
+    var editcaseReadLink: ReadLink? { get }
 }
 
 
@@ -52,19 +53,24 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     private let collectionID: String?
     private let editCase: EditLinkItemCase
     private let readUsecase: ReadItemUsecase
+    private let categoryUsecase: ReadItemCategoryUsecase
     private let router: EditLinkItemRouting
     private weak var listener: EditLinkItemSceneListenable?
     
     public init(collectionID: String?,
                 editCase: EditLinkItemCase,
                 readUsecase: ReadItemUsecase,
+                categoryUsecase: ReadItemCategoryUsecase,
                 router: EditLinkItemRouting,
                 listener: EditLinkItemSceneListenable?) {
         self.collectionID = collectionID
         self.editCase = editCase
         self.readUsecase = readUsecase
+        self.categoryUsecase = categoryUsecase
         self.router = router
         self.listener = listener
+        
+        self.setupPreviousSelectedPropertiesIfNeed()
     }
     
     deinit {
@@ -82,6 +88,19 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    private func setupPreviousSelectedPropertiesIfNeed() {
+        guard case let .edit(link) = self.editCase else { return }
+        self.subjects.customName.accept(link.customName)
+        self.subjects.selectedPriority.accept(link.priority)
+        
+        self.categoryUsecase.categories(for: link.categoryIDs)
+            .take(1)
+            .subscribe(onNext: { [weak self] categories in
+                self?.subjects.selectedCategories.accept(categories)
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -148,6 +167,9 @@ extension EditLinkItemViewModelImple {
             
         case let .edit(item):
             return item
+                |> \.customName .~ self.subjects.customName.value.flatMap { $0.isNotEmpty ? $0 : item.customName }
+                |> \.priority .~ self.subjects.selectedPriority.value
+                |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
         }
     }
     
@@ -233,6 +255,11 @@ extension EditLinkItemViewModelImple {
     public var isProcessing: Observable<Bool> {
         return self.subjects.isProcessing
             .distinctUntilChanged()
+    }
+    
+    public var editcaseReadLink: ReadLink? {
+        guard case let .edit(item) = self.editCase else { return nil }
+        return item
     }
 }
 

@@ -133,7 +133,7 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
                 cell.tableView = tableView
                 cell.setupCell(link)
                 cell.bindCategories(self.viewModel.itemCategories(item.categoryIDs))
-                cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid))
+                cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid), customTitle: link.customName)
                 return cell
 
             default: return UITableViewCell()

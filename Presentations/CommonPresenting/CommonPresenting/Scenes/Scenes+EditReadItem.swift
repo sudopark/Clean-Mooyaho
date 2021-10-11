@@ -57,7 +57,7 @@ public protocol EditLinkItemSceneListenable: AnyObject {
 
 // MARK: - EditLinkItemScene
 
-public protocol EditLinkItemScene: Scenable {
+public protocol EditLinkItemScene: Scenable, PangestureDismissableScene {
     
     var interactor: EditLinkItemSceneInteractable? { get }
 }

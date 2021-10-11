@@ -20,7 +20,6 @@
 		F66C2C212709054E003D56B1 /* EnterLinkURLViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */; };
 		F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */; };
 		F66C2C2A270909B5003D56B1 /* EditLinkItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */; };
-		F66C2C2B270909B5003D56B1 /* EditLinkItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C26270909B5003D56B1 /* EditLinkItemBuilder.swift */; };
 		F66C2C2C270909B5003D56B1 /* EditLinkItemScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C27270909B5003D56B1 /* EditLinkItemScene.swift */; };
 		F66C2C2D270909B5003D56B1 /* EditLinkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C28270909B5003D56B1 /* EditLinkItemViewModel.swift */; };
 		F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */; };
@@ -89,7 +88,6 @@
 		F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterLinkURLViewModelTests.swift; sourceTree = "<group>"; };
 		F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemRouter.swift; sourceTree = "<group>"; };
 		F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewController.swift; sourceTree = "<group>"; };
-		F66C2C26270909B5003D56B1 /* EditLinkItemBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemBuilder.swift; sourceTree = "<group>"; };
 		F66C2C27270909B5003D56B1 /* EditLinkItemScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemScene.swift; sourceTree = "<group>"; };
 		F66C2C28270909B5003D56B1 /* EditLinkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewModel.swift; sourceTree = "<group>"; };
 		F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeScene.swift; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 			children = (
 				F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */,
 				F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */,
-				F66C2C26270909B5003D56B1 /* EditLinkItemBuilder.swift */,
 				F66C2C27270909B5003D56B1 /* EditLinkItemScene.swift */,
 				F66C2C28270909B5003D56B1 /* EditLinkItemViewModel.swift */,
 				F6C97B1A27095A4100990019 /* EditLinkItemView.swift */,
@@ -449,7 +446,6 @@
 				F66C2C2A270909B5003D56B1 /* EditLinkItemViewController.swift in Sources */,
 				F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */,
 				F6BBF16F2708422F00420A49 /* EnterLinkURLViewController.swift in Sources */,
-				F66C2C2B270909B5003D56B1 /* EditLinkItemBuilder.swift in Sources */,
 				F645F797270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift in Sources */,
 				F6C97B1B27095A4100990019 /* EditLinkItemView.swift in Sources */,
 				F60A585A27103BA500E39AE0 /* EditCategoryView.swift in Sources */,

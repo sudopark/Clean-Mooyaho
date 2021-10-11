@@ -254,7 +254,7 @@ extension ReadCollectionViewItemsModelImple {
     }
     
     public func addReadLink(didAdded newItem: ReadLink) {
-        guard newItem.parentID == collectionID else { return }
+        guard newItem.parentID == currentCollectionID else { return }
         let newLinks = [newItem] + (self.subjects.links.value ?? [])
         self.subjects.links.accept(newLinks)
     }
