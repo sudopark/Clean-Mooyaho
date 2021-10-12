@@ -252,7 +252,7 @@ extension ReadCollectionViewItemsModelImple {
         let collections = self.subjects.collections.value ?? []
         
         func appendNewCollection() -> [ReadCollection] {
-            return [collection] + collections
+            return collections + [collection]
         }
         
         func updateCollection(_ index: Int) -> [ReadCollection] {
