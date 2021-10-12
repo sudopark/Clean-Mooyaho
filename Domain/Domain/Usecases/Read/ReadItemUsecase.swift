@@ -114,7 +114,7 @@ extension ReadItemUsecaseImple {
 
 extension ReadItemUsecaseImple {
     
-    public func loadShrinkModeIsOnOption() -> Maybe<Bool> {
+    public func loadLatestShrinkModeIsOnOption() -> Maybe<Bool> {
         let preloadedValue = self.sharedStoreService.fetch(Bool.self, key: .readItemShrinkIsOn)
         
         let updateOnStore: (Bool) -> Void = { [weak self] isOn in
@@ -122,87 +122,72 @@ extension ReadItemUsecaseImple {
         }
         let loadOnLocal = self.optionsRespository
             .fetchLastestsIsShrinkModeOn()
+            .map { $0 ?? false }
             .do(onNext: updateOnStore)
         
         return preloadedValue.map{ .just($0 )} ?? loadOnLocal
     }
     
-    public func updateIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
+    public func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
         
         let updateOnStore: () -> Void = { [weak self] in
             self?.sharedStoreService.save(Bool.self, key: .readItemShrinkIsOn, newvalue)
         }
-        return self.optionsRespository.updateIsShrinkModeOn(newvalue)
+        return self.optionsRespository.updateLatestIsShrinkModeOn(newvalue)
             .do(onNext: updateOnStore)
     }
     
-    private typealias OrderMap = [String: ReadCollectionItemSortOrder]
     private typealias CustomOrdersMap = [String: [String]]
-    private var orderKey: SharedDataKeys { .readItemSortOptionMap }
+    private var orderKey: SharedDataKeys { .latestReadItemSortOption }
     private var customOrderKey: SharedDataKeys { .readItemCustomOrderMap }
     
-    public func loadLatestSortOption(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder> {
+    public func loadLatestSortOption() -> Maybe<ReadCollectionItemSortOrder> {
+
+        let key = self.orderKey
         
-        let loadSortOrderForGivenCollection = self.loadSortOrder(for: collectionID)
-        
-        let selectLatestUsedSortorderOrDefaultIfNeed: (ReadCollectionItemSortOrder?) -> ReadCollectionItemSortOrder
-        selectLatestUsedSortorderOrDefaultIfNeed = { [weak self] order in
-            return order
-                ?? self?.sharedStoreService.fetch(ReadCollectionItemSortOrder.self, key: .latestReadItemSortOption)
-                ?? .default
-        }
         let updateLastestValueOnStore: (ReadCollectionItemSortOrder) -> Void = { [weak self] newValue in
-            let key = SharedDataKeys.latestReadItemSortOption.rawValue
-            self?.sharedStoreService.update(ReadCollectionItemSortOrder.self, key: key, value: newValue)
+            self?.sharedStoreService
+                .update(ReadCollectionItemSortOrder.self, key: key.rawValue, value: newValue)
         }
-        
-        return loadSortOrderForGivenCollection
-            .map(selectLatestUsedSortorderOrDefaultIfNeed)
+        let refreshedSortOption = self.optionsRespository.fetchLatestSortOrder()
+            .map { $0 ?? .default }
             .do(onNext: updateLastestValueOnStore)
+        
+        let preloaded = self.sharedStoreService.fetch(ReadCollectionItemSortOrder.self, key: key)
+                
+        return preloaded.map { .just($0) } ?? refreshedSortOption
     }
     
-    private func loadSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?> {
+    public func updateLatestSortOption(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
         
-        let preloadedValue = self.sharedStoreService.fetch(OrderMap.self, key: self.orderKey)?[collectionID]
+        let key = self.orderKey
         
-        let updateOrderMapOnStoreOrNot: (ReadCollectionItemSortOrder?) -> Void = { [weak self] order in
-            guard let self = self, let order = order else { return }
-            self.sharedStoreService.update(OrderMap.self, key: self.orderKey.rawValue) {
-                return ($0 ?? [:]) |> key(collectionID) .~ order
-            }
-        }
-        let loadonLocal = self.optionsRespository.fetchSortOrder(for: collectionID)
-            .do(onNext: updateOrderMapOnStoreOrNot)
-        
-        return preloadedValue.map { .just($0) } ?? loadonLocal
-    }
-    
-    public func updateSortOption(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
         let updateOnStore: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            self.sharedStoreService.update(OrderMap.self, key: self.orderKey.rawValue) {
-                return ($0 ?? [:]) |> key(collectionID) .~ newValue
-            }
-            self.sharedStoreService
-                .update(ReadCollectionItemSortOrder.self, key: SharedDataKeys.latestReadItemSortOption.rawValue, value: newValue)
+            self?.sharedStoreService
+                .update(ReadCollectionItemSortOrder.self, key: key.rawValue, value: newValue)
         }
-        return self.optionsRespository.updateSortOrder(for: collectionID, to: newValue)
+        return self.optionsRespository.updateLatestSortOrder(to: newValue)
             .do(onNext: updateOnStore)
     }
     
-    public func loadCustomOrder(for collectionID: String) -> Maybe<[String]> {
-        let preloaded = self.sharedStoreService.fetch(CustomOrdersMap.self, key: self.customOrderKey)?[collectionID]
-            
-        let updateOnLocal: ([String]) -> Void = { [weak self] ids in
+    public func customOrder(for collectionID: String) -> Observable<[String]> {
+        
+        let datKey = self.customOrderKey
+        
+        let updateOrderOnStore: ([String]) -> Void = { [weak self] ids in
             guard let self = self else { return }
-            self.sharedStoreService.update(CustomOrdersMap.self, key: self.customOrderKey.rawValue) {
+            self.sharedStoreService.update(CustomOrdersMap.self, key: datKey.rawValue) {
                 return ($0 ?? [:]) |> key(collectionID) .~ ids
             }
         }
-        let loadOnLocal = self.optionsRespository.fetchCustomSortOrder(for: collectionID)
-            .do(onNext: updateOnLocal)
-        
-        return preloaded.map{ .just($0) } ?? loadOnLocal
+        let refreshedOrders = self.optionsRespository.requestLoadCustomOrder(for: collectionID)
+            .do(onNext: updateOrderOnStore)
+            .ifEmpty(default: [])
+                
+        let preloaded = self.sharedStoreService
+            .fetch(CustomOrdersMap.self, key: datKey)?[collectionID]
+                
+        return preloaded.map { .just ($0) } ?? refreshedOrders
     }
     
     public func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
@@ -212,7 +197,7 @@ extension ReadItemUsecaseImple {
                 return ($0 ?? [:]) |> key(collectionID) .~ itemIDs
             }
         }
-        return self.optionsRespository.updateCustomSortOrder(for: collectionID, itemIDs: itemIDs)
+        return self.optionsRespository.requestUpdateCustomSortOrder(for: collectionID, itemIDs: itemIDs)
             .do(onNext: updateOnLocal)
     }
 }

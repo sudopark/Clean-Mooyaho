@@ -216,7 +216,8 @@ extension ReadCollectionItemsViewController {
             .disposed(by: self.disposeBag)
         
         self.viewModel.collectionTitle
-            .subscribe(onNext: { [weak self] title in
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
                 self?.titleHeaderView.setupTitle(title)
             })
             .disposed(by: self.disposeBag)

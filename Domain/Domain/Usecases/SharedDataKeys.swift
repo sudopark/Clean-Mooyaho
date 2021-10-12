@@ -18,7 +18,6 @@ public enum SharedDataKeys: String {
     case newHooray
     case readItemShrinkIsOn
     case latestReadItemSortOption
-    case readItemSortOptionMap
     case readItemCustomOrderMap
     case readLinkPreviewMap
     case categoriesMap

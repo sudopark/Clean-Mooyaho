@@ -114,7 +114,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             self?.subjects.sortOrder.accept(order)
         }
         self.readItemUsecase
-            .loadLatestSortOption(for: self.collectionID)
+            .loadLatestSortOption()
             .subscribe(onSuccess: setupLatestSortOrder)
             .disposed(by: self.disposeBag)
     }

@@ -16,7 +16,7 @@ import Domain
 class StubReadItemOptionsRepository: ReadItemOptionsRepository {
     
     struct Scenario {
-        var isShrinkMode: Result<Bool, Error> = .success(false)
+        var isShrinkMode: Result<Bool?, Error> = .success(false)
         var sortOrder: Result<ReadCollectionItemSortOrder?, Error> = .success(nil)
         var customOrder: Result<[String], Error> = .success([])
     }
@@ -26,27 +26,27 @@ class StubReadItemOptionsRepository: ReadItemOptionsRepository {
         self.scenario = scenario
     }
     
-    func fetchLastestsIsShrinkModeOn() -> Maybe<Bool> {
+    func fetchLastestsIsShrinkModeOn() -> Maybe<Bool?> {
         return self.scenario.isShrinkMode.asMaybe()
     }
     
-    func updateIsShrinkModeOn(_ newvalue: Bool) -> Maybe<Void> {
+    func updateLatestIsShrinkModeOn(_ newvalue: Bool) -> Maybe<Void> {
         return .just()
     }
     
-    func fetchSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?> {
+    func fetchLatestSortOrder() -> Maybe<ReadCollectionItemSortOrder?> {
         return self.scenario.sortOrder.asMaybe()
     }
     
-    func fetchCustomSortOrder(for collectionID: String) -> Maybe<[String]> {
-        return self.scenario.customOrder.asMaybe()
-    }
-    
-    func updateSortOrder(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+    func updateLatestSortOrder(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
         return .just()
     }
+
+    func requestLoadCustomOrder(for collectionID: String) -> Observable<[String]> {
+        return self.scenario.customOrder.asMaybe().asObservable()
+    }
     
-    func updateCustomSortOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
+    func requestUpdateCustomSortOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
         return .just()
     }
 }

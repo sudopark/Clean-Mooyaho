@@ -42,7 +42,7 @@ public protocol AuthorizationNeed: AnyObject {
 
 public protocol Remote: AuthRemote, MemberRemote,
                         PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
-                        ReadItemRemote, LinkPreviewRemote, ItemCategoryRemote { }
+                        ReadItemRemote, ReadItemOptionsRemote, LinkPreviewRemote, ItemCategoryRemote { }
 
 // MARK: - Auth remote
 
@@ -158,6 +158,13 @@ public protocol ReadItemRemote: AuthorizationNeed {
     func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void>
     
     func requestLoadCollection(collectionID: String) -> Maybe<ReadCollection>
+}
+
+public protocol ReadItemOptionsRemote: AuthorizationNeed {
+    
+    func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?>
+    
+    func requestUpdateReadItemCustomOrder(for collection: String, itemIDs: [String]) -> Maybe<Void>
 }
 
 

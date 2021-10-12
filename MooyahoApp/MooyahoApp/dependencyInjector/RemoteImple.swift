@@ -179,6 +179,16 @@ extension RemoteImple {
     }
     
     
+    // read item option
+    func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
+        return self.firebaseRemote.requestLoadReadItemCustomOrder(for: collectionID)
+    }
+    
+    func requestUpdateReadItemCustomOrder(for collection: String, itemIDs: [String]) -> Maybe<Void> {
+        return self.firebaseRemote.requestUpdateReadItemCustomOrder(for: collection, itemIDs: itemIDs)
+    }
+    
+    
     // link preview
     func requestLoadPreview(_ url: String) -> Maybe<LinkPreview> {
         return self.linkPreviewRemote.requestLoadPreview(url)
