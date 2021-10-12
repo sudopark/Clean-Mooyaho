@@ -38,10 +38,9 @@ class LocalStorageTests_ReadItemOptions: BaseLocalStorageTests {
     func testStorage_updateAndFetchSortOrder() {
         // given
         let expect = expectation(description: "sort order 저장 및 로드")
-        let update = self.local.updateReadItemSortOrder(for: "some", to: .byCustomOrder)
-        let updateOther = self.local.updateReadItemSortOrder(for: "other", to: .byPriority(false))
-        let loading = self.local.fetchReadItemSortOrder(for: "some")
-        let updateAndLoad = update.flatMap{ updateOther }.flatMap{ loading }
+        let update = self.local.updateLatestReadItemSortOrder(to: .byCustomOrder)
+        let loading = self.local.fetchLatestReadItemSortOrder()
+        let updateAndLoad = update.flatMap{ loading }
         let order = self.waitFirstElement(expect, for: updateAndLoad.asObservable())
         
         

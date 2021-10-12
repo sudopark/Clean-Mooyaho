@@ -15,6 +15,14 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
+    func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
+        return .empty()
+    }
+    
+    func requestUpdateReadItemCustomOrder(for collection: String, itemIDs: [String]) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return .empty()
     }

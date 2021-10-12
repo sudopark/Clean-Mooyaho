@@ -50,24 +50,24 @@ open class StubReadItemUsecase: ReadItemUsecase {
         return self.scenario.updateLinkResult.asMaybe()
     }
     
-    open func loadShrinkModeIsOnOption() -> Maybe<Bool> {
+    open func loadLatestShrinkModeIsOnOption() -> Maybe<Bool> {
         return .just(self.scenario.shrinkModeIsOn)
     }
     
-    open func updateIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
+    open func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
         self.scenario.shrinkModeIsOn = newvalue
         return .just()
     }
     
-    open func loadLatestSortOption(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder> {
+    open func loadLatestSortOption() -> Maybe<ReadCollectionItemSortOrder> {
         return self.scenario.sortOrder.asMaybe()
     }
     
-    open func loadCustomOrder(for collectionID: String) -> Maybe<[String]> {
+    open func updateLatestSortOption(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
         return .empty()
     }
     
-    open func updateSortOption(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+    open func customOrder(for collectionID: String) -> Observable<[String]> {
         return .empty()
     }
     

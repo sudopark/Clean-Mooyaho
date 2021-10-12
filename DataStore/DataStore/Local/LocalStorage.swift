@@ -109,16 +109,15 @@ public protocol ReadItemLocalStorage {
 
 public protocol ReadItemOptionsLocalStorage {
     
-    func fetchReadItemIsShrinkMode() -> Maybe<Bool>
+    func fetchReadItemIsShrinkMode() -> Maybe<Bool?>
     
     func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void>
     
-    func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?>
+    func fetchLatestReadItemSortOrder() -> Maybe<ReadCollectionItemSortOrder?>
     
-    func updateReadItemSortOrder(for collectionID: String,
-                                 to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
+    func updateLatestReadItemSortOrder(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
     
-    func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]>
+    func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?>
     
     func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
 }

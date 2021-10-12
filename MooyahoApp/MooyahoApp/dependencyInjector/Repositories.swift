@@ -86,6 +86,10 @@ extension AppRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency
 
 extension AppRepository: ReadItemOptionsRepository, ReadItemOptionReposiotryDefImpleDependency {
     
+    public var readItemOptionRemote: ReadItemOptionsRemote {
+        return self.remote
+    }
+    
     public var readItemOptionLocal: ReadItemOptionsLocalStorage {
         return self.local
     }

@@ -46,7 +46,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     private func makeUsecase(signedIn: Bool = true,
                              shouldfailLoadMyCollections: Bool = false,
                              shouldFailLoadCollection: Bool = false,
-                             isShrinkModeOn: Bool = true,
+                             isShrinkModeOn: Bool? = true,
                              sortOrder: ReadCollectionItemSortOrder? = .default,
                              customSortOrder: [String] = []) -> ReadItemUsecase {
         
@@ -323,11 +323,24 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let loading = usecase.loadShrinkModeIsOnOption()
+        let loading = usecase.loadLatestShrinkModeIsOnOption()
         let isOn = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
         XCTAssertEqual(isOn, true)
+    }
+    
+    func testUsecase_whenLoadShrinkModeOnIsNotExists_useDefaultValue() {
+        // given
+        let expect = expectation(description: "shrink mode 패치시 없으면 디폴트값 이용")
+        let usecase = self.makeUsecase(isShrinkModeOn: nil)
+        
+        // when
+        let loading = usecase.loadLatestShrinkModeIsOnOption()
+        let isOn = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(isOn, false)
     }
     
     func testUsecase_whenShrinkModeLoadbefore_useThatValue() {
@@ -336,8 +349,8 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(isShrinkModeOn: true)
         
         // when
-        let loadAndReload = usecase.loadShrinkModeIsOnOption()
-            .flatMap{ _ in usecase.loadShrinkModeIsOnOption() }
+        let loadAndReload = usecase.loadLatestShrinkModeIsOnOption()
+            .flatMap{ _ in usecase.loadLatestShrinkModeIsOnOption() }
         let isOn = self.waitFirstElement(expect, for: loadAndReload.asObservable())
         
         // then
@@ -350,7 +363,7 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let updating = usecase.updateIsShrinkModeIsOn(false)
+        let updating = usecase.updateLatestIsShrinkModeIsOn(false)
         let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
         
         // then
@@ -365,7 +378,7 @@ extension ReadItemUsecaseTests {
         // when
         let updated = self.spyStore.observe(Bool.self, key: SharedDataKeys.readItemShrinkIsOn.rawValue)
         let isOn = self.waitFirstElement(expect, for: updated) {
-            usecase.updateIsShrinkModeIsOn(true)
+            usecase.updateLatestIsShrinkModeIsOn(true)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
@@ -379,11 +392,11 @@ extension ReadItemUsecaseTests {
     
     func testUsecase_loadSortOrder() {
         // given
-        let expect = expectation(description: "sort order 로드")
+        let expect = expectation(description: "마지막으로 사용한 sort order 로드")
         let usecase = self.makeUsecase(sortOrder: .byPriority(false))
         
         // when
-        let loading = usecase.loadLatestSortOption(for: "some")
+        let loading = usecase.loadLatestSortOption()
         let order = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
@@ -396,35 +409,22 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(sortOrder: .byCustomOrder)
         
         // when
-        let loadAndReload = usecase.loadLatestSortOption(for: "some")
-            .flatMap{ _ in usecase.loadLatestSortOption(for: "some") }
+        let loadAndReload = usecase.loadLatestSortOption()
+            .flatMap{ _ in usecase.loadLatestSortOption() }
         let order = self.waitFirstElement(expect, for: loadAndReload.asObservable())
         
         // then
         XCTAssertEqual(order, .byCustomOrder)
     }
     
-    func testUsecase_whenSortOrderNotExistsForCollection_useLatestUsedSortOrder() {
-        // given
-        let expect = expectation(description: "해당 콜렉션을 위한 정렬옵션 존재 안하는 경우 마지막으로 이용했던값 이용")
-        let usecase = self.makeUsecase(sortOrder: nil)
-        self.spyStore.save(ReadCollectionItemSortOrder.self, key: .latestReadItemSortOption, .byPriority(true))
-        
-        // when
-        let loading = usecase.loadLatestSortOption(for: "some")
-        let order = self.waitFirstElement(expect, for: loading.asObservable())
-        
-        // then
-        XCTAssertEqual(order, .byPriority(true))
-    }
     
-    func testUsecase_whenSortOrderAndLatestSortOrderNotExistsForCollection_useDefaultValue() {
+    func testUsecase_whenLatestSortOrderNotExists_useDefaultValue() {
         // given
-        let expect = expectation(description: "해당 콜렉션을 위한 정렬옵션과 마지막 사용 정렬값이 존재 안하는 경우 디폴튿값 이룔")
+        let expect = expectation(description: "마지막 사용 정렬값이 존재 안하는 경우 디폴튿값 이룔")
         let usecase = self.makeUsecase(sortOrder: nil)
         
         // when
-        let loading = usecase.loadLatestSortOption(for: "some")
+        let loading = usecase.loadLatestSortOption()
         let order = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
@@ -439,9 +439,9 @@ extension ReadItemUsecaseTests {
         
         // when
         let updatedOnStore = self.spyStore
-            .observe([String: ReadCollectionItemSortOrder].self, key: SharedDataKeys.readItemSortOptionMap.rawValue)
-            .map{ $0?["some"] }.filter{ $0 == .byCustomOrder }.map{ _ in }
-        let updateOnLocal = usecase.updateSortOption(for: "some", to: .byCustomOrder).asObservable()
+            .observe(ReadCollectionItemSortOrder.self, key: SharedDataKeys.latestReadItemSortOption.rawValue)
+            .filter{ $0 == .byCustomOrder }.map{ _ in }
+        let updateOnLocal = usecase.updateLatestSortOption(to: .byCustomOrder).asObservable()
         let updatings = Observable.merge(updatedOnStore, updateOnLocal)
         let isUpdatedBoth: [Void] = self.waitElements(expect, for: updatings)
         
@@ -458,7 +458,7 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
         
         // when
-        let loading = usecase.loadCustomOrder(for: "some")
+        let loading = usecase.customOrder(for: "some")
         let orders = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
@@ -471,8 +471,8 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
         
         // when
-        let loadAndReload = usecase.loadCustomOrder(for: "some")
-            .flatMap{ _ in usecase.loadCustomOrder(for: "some") }
+        let loadAndReload = usecase.customOrder(for: "some")
+            .flatMap{ _ in usecase.customOrder(for: "some") }
         let orders = self.waitFirstElement(expect, for: loadAndReload.asObservable())
         
         // then

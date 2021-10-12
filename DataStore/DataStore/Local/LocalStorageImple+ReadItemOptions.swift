@@ -15,7 +15,7 @@ import Domain
 
 extension LocalStorageImple {
     
-    public func fetchReadItemIsShrinkMode() -> Maybe<Bool> {
+    public func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         return self.environmentStorage.fetchReadItemIsShrinkMode()
     }
     
@@ -23,16 +23,15 @@ extension LocalStorageImple {
         return self.environmentStorage.updateReadItemIsShrinkMode(newValue)
     }
     
-    public func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?> {
-        return environmentStorage.fetchReadItemSortOrder(for: collectionID)
+    public func fetchLatestReadItemSortOrder() -> Maybe<ReadCollectionItemSortOrder?> {
+        return environmentStorage.fetchLatestReadItemSortOrder()
     }
     
-    public func updateReadItemSortOrder(for collectionID: String,
-                                             to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
-        return environmentStorage.updateReadItemSortOrder(for: collectionID, to: newValue)
+    public func updateLatestReadItemSortOrder(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+        return environmentStorage.updateLatestReadItemSortOrder(to: newValue)
     }
     
-    public func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]> {
+    public func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
         return environmentStorage.fetchReadItemCustomOrder(for: collectionID)
     }
     

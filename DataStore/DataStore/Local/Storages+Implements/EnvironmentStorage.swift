@@ -23,16 +23,15 @@ public protocol EnvironmentStorage {
 
     func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void>
     
-    func fetchReadItemIsShrinkMode() -> Maybe<Bool>
+    func fetchReadItemIsShrinkMode() -> Maybe<Bool?>
     
     func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void>
     
-    func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?>
+    func fetchLatestReadItemSortOrder() -> Maybe<ReadCollectionItemSortOrder?>
     
-    func updateReadItemSortOrder(for collectionID: String,
-                                 to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
+    func updateLatestReadItemSortOrder(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
     
-    func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]>
+    func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?>
     
     func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
     
@@ -47,7 +46,7 @@ enum EnvironmentStorageKeys {
     
     case pendingPlaceInfo(_ memberID: String)
     case readItemIsShrinkMode
-    case readItemSortOrder(_ collectionID: String)
+    case readItemLatestSortOrder
     case readitemCustomOrder(_ collectionID: String)
     
     var keyvalue: String {
@@ -59,8 +58,8 @@ enum EnvironmentStorageKeys {
         case .readItemIsShrinkMode:
             return "readItemIsShrinkMode".insertPrefixOrNot(prefix)
             
-        case let .readItemSortOrder(collectionID):
-            return "readItemSortOrder:\(collectionID)".insertPrefixOrNot(prefix)
+        case .readItemLatestSortOrder:
+            return "readItemLatestSortOrder"
             
         case let .readitemCustomOrder(collectionID):
             return "readitemCustomOrder:\(collectionID)".insertPrefixOrNot(prefix)
@@ -72,7 +71,7 @@ enum EnvironmentStorageKeys {
         return [
             "pendingPlaceInfo".insertPrefixOrNot(prefix),
             "readItemIsShrinkMode".insertPrefixOrNot(prefix),
-            "readItemSortOrder".insertPrefixOrNot(prefix),
+            "readItemLatestSortOrder".insertPrefixOrNot(prefix),
             "readitemCustomOrder".insertPrefixOrNot(prefix)
         ]
     }
@@ -174,9 +173,9 @@ extension UserDefaults {
         return self.remove(key.keyvalue)
     }
     
-    public func fetchReadItemIsShrinkMode() -> Maybe<Bool> {
+    public func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         let key = EnvironmentStorageKeys.readItemIsShrinkMode
-        return self.load(key.keyvalue).map{ $0 ?? false }
+        return self.load(key.keyvalue)
     }
     
     public func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void> {
@@ -184,19 +183,19 @@ extension UserDefaults {
         return self.save(key.keyvalue, value: newValue)
     }
     
-    public func fetchReadItemSortOrder(for collectionID: String) -> Maybe<ReadCollectionItemSortOrder?> {
-        let key = EnvironmentStorageKeys.readItemSortOrder(collectionID)
+    public func fetchLatestReadItemSortOrder() -> Maybe<ReadCollectionItemSortOrder?> {
+        let key = EnvironmentStorageKeys.readItemLatestSortOrder
         return self.load(key.keyvalue)
     }
     
-    public func updateReadItemSortOrder(for collectionID: String, to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
-        let key = EnvironmentStorageKeys.readItemSortOrder(collectionID)
-        return  self.save(key.keyvalue, value: newValue)
+    public func updateLatestReadItemSortOrder(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {
+        let key = EnvironmentStorageKeys.readItemLatestSortOrder
+        return self.save(key.keyvalue, value: newValue)
     }
     
-    public func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]> {
+    public func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
         let key = EnvironmentStorageKeys.readitemCustomOrder(collectionID)
-        return self.load(key.keyvalue).map{ $0 ?? [] }
+        return self.load(key.keyvalue)
     }
     
     public func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
