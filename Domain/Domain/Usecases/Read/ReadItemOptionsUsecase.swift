@@ -17,7 +17,7 @@ public enum ReadCollectionItemSortOrder: Equatable {
     case byCustomOrder
     
     public static var `default`: Self {
-        return .byCreatedAt(false)
+        return .byCustomOrder
     }
 }
 
