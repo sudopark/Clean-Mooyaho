@@ -317,16 +317,21 @@ extension ReadCollectionViewItemsModelImple {
         
     public var sections: Observable<[ReadCollectionItemSection]> {
         
-        let asSections: (ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder, [String: ItemCategory]) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, order, cateMap in
+        let asSections: (
+            ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder,
+            [String: ItemCategory], [String]
+        ) ->  [ReadCollectionItemSection]
+        asSections = { currentCollection, collections, links, order, cateMap, customOrder in
             
             let attributeCell: [ReadItemCellViewModel] = currentCollection
                 .map { ReadCollectionAttrCellViewModel(collection: $0)
                     |> \.categories .~ $0.categoryIDs.compactMap{ cateMap[$0] }
                 }
                 .map { [$0] } ?? []
-            let collectionCells = collections.sort(by: order).asCellViewModels(with: cateMap)
-            let linkCells = links.sort(by: order).asCellViewModels(with: cateMap)
+            let collectionCells = collections.sort(by: order, with: customOrder)
+                .asCellViewModels(with: cateMap)
+            let linkCells = links.sort(by: order, with: customOrder)
+                .asCellViewModels(with: cateMap)
             
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
@@ -342,6 +347,7 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.links.compactMap { $0 },
             self.subjects.sortOrder.compactMap { $0 },
             self.subjects.categoryMap,
+            self.readItemUsecase.customOrder(for: self.collectionID),
             resultSelector: asSections
         )
     }
@@ -365,7 +371,8 @@ extension ReadCollectionViewItemsModelImple {
 
 private extension Array where Element: ReadItem {
     
-    func sort(by order: ReadCollectionItemSortOrder) -> Array {
+    func sort(by order: ReadCollectionItemSortOrder, with customOrder: [String]) -> Array {
+        let orderMap = customOrder.enumerated().reduce(into: [String: Int]()) { $0[$1.element] = $1.offset }
         
         let compare: (Element, Element) -> Bool = { lhs, rhs in
             switch order {
@@ -384,7 +391,12 @@ private extension Array where Element: ReadItem {
                     ? ReadPriority.isAscendingOrder(lhs.priority, rhs: rhs.priority)
                     : ReadPriority.isDescendingOrder(lhs.priority, rhs: rhs.priority)
                 
-            case .byCustomOrder: return true
+            case .byCustomOrder:
+                let (indexL, indexR) = (orderMap[lhs.uid], orderMap[rhs.uid])
+                return indexL.flatMap { idxl in indexR.map { idxl < $0 } ?? false }
+                    ?? indexR.map { _ in true }
+                    ?? (lhs.createdAt > rhs.createdAt)
+                    
             }
         }
         return self.sorted(by: compare)

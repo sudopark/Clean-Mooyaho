@@ -52,13 +52,15 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     
     func makeViewModel(isRootCollection: Bool = false,
                        shouldFailReload: Bool = false,
-                       sortOrder: ReadCollectionItemSortOrder = .default) -> ReadCollectionViewItemsModelImple {
+                       sortOrder: ReadCollectionItemSortOrder = .default,
+                       customOrder: [String] = []) -> ReadCollectionViewItemsModelImple {
         let reloadResult: Result<[ReadItem], Error> = shouldFailReload
             ? .failure(ApplicationErrors.invalid)
             : .success(self.dummyCollectionItems)
         let scenario = StubReadItemUsecase.Scenario()
             |> \.collectionItems .~ reloadResult
             |> \.sortOrder .~ .success(sortOrder)
+            |> \.customOrder .~ .success(customOrder)
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
         
         let categoryScenario = StubItemCategoryUsecase.Scenario()
@@ -262,14 +264,56 @@ extension ReadCollectionViewModelTests {
             ["c:1", "c:2", "c:3", "c:4", "c:0", "l:5", "l:6", "l:7", "l:8", "l:9"]
         ])
     }
+    
+    func testViewMdoel_orderByCustomOrder() {
+        // given
+        let expect = expectation(description: "커스텀 정렬 옵션으로 정렬")
+        let customOrder = ["c:2", "c:1", "c:4", "c:0", "c:3", "l:9", "l:6", "l:7", "l:8", "l:5"]
+        let viewModel = self.makeViewModel(sortOrder: .byCustomOrder, customOrder: customOrder)
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
+            viewModel.reloadCollectionItems()
+        }
+        
+        // then
+        let itemIDLists = cvms?.map{ $0.uid }
+        XCTAssertEqual(itemIDLists, customOrder)
+    }
+    
+    func testViewModel_whenCustomOrderNotExistItem_placeFrontAtOrderedItems() {
+        // given
+        let expect = expectation(description: "커스텀 오더에 없는 항목은 해당 섹션의 맨 앞에 위치")
+        let customOrder = ["c:2", "c:1", "c:4", "c:0", "c:3", "l:9", "l:6", "l:8", "l:5"]
+        let viewModel = self.makeViewModel(sortOrder: .byCustomOrder, customOrder: customOrder)
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
+            viewModel.reloadCollectionItems()
+        }
+        
+        // then
+        let itemIDLists = cvms?.map{ $0.uid }
+        XCTAssertEqual(itemIDLists, ["c:2", "c:1", "c:4", "c:0", "c:3", "l:7", "l:9", "l:6", "l:8", "l:5"])
+    }
+    
+    func testViewModel_whenCustomOrderNotExistItem_placeFrontAtOrderedItemsAndSortByCreatedDescending() {
+        // given
+        let expect = expectation(description: "커스텀 오더에 없는 항목은 해당 섹션의 맨 앞에 위치")
+        let customOrder = ["c:2", "c:1", "c:4", "l:9", "l:6", "l:7", "l:8", "l:5"]
+        let viewModel = self.makeViewModel(sortOrder: .byCustomOrder, customOrder: customOrder)
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
+            viewModel.reloadCollectionItems()
+        }
+        
+        // then
+        let itemIDLists = cvms?.map{ $0.uid }
+        XCTAssertEqual(itemIDLists, ["c:3", "c:0", "c:2", "c:1", "c:4", "l:9", "l:6", "l:7", "l:8", "l:5"])
+    }
 }
 
-// TODO: - change order + update custom order
-
-extension ReadCollectionViewModelTests {
-    
-    
-}
 
 // MAARK: - provide thumbnail
 
