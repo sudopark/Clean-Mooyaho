@@ -71,12 +71,17 @@ extension ReadCollectionItemsViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.setupEditButtonIfPossible()
+        self.viewModel.isEditable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isEditable in
+                self?.updateEditButton(by: isEditable)
+            })
+            .disposed(by: self.disposeBag)
     }
     
-    private func setupEditButtonIfPossible() {
+    private func updateEditButton(by isEditable: Bool) {
         
-        guard self.viewModel.isEditable else {
+        guard isEditable else {
             self.navigationItem.rightBarButtonItem = nil
             return
         }
@@ -86,7 +91,7 @@ extension ReadCollectionItemsViewController {
 
         button.rx.tap
             .subscribe(onNext: { [weak self] in
-                // TODO: start edit mode
+                self?.viewModel.editCollection()
             })
             .disposed(by: self.disposeBag)
     }

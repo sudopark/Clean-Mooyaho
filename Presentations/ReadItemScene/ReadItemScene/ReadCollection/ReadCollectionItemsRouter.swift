@@ -35,6 +35,8 @@ public protocol ReadCollectionRouting: Routing {
     func routeToAddNewLink(at collectionID: String?)
     
     func routeToEditReadLink(_ link: ReadLink)
+    
+    func roueToEditCustomOrder(for collectionID: String)
 }
 
 // MARK: - Routers
@@ -125,5 +127,9 @@ extension ReadCollectionItemsRouter {
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func roueToEditCustomOrder(for collectionID: String) {
+        logger.todoImplement(message: "roueToEditCustomOrder")
     }
 }

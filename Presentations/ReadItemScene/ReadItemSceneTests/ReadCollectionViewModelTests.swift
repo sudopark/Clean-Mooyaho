@@ -510,6 +510,61 @@ extension ReadCollectionViewModelTests {
 
 extension ReadCollectionViewModelTests {
     
+    func testViewModel_whenRootCollection_isOrderchangable() {
+        // given
+        let expect = expectation(description: "루트 콜렉션은 순서변경만 가능")
+        let viewModel = self.makeViewModel(isRootCollection: true)
+        
+        // when
+        let editable = self.waitFirstElement(expect, for: viewModel.isEditable) {
+            viewModel.reloadCollectionItems()
+        }
+        viewModel.editCollection()
+        
+        // then
+        XCTAssertEqual(editable, true)
+        XCTAssertEqual(
+            self.spyRouter.alertRequestedActions?.map { $0.text },
+            ["Change order".localized, "Cancel".localized]
+        )
+    }
+    
+    func testViewModel_whenIsNotRootCollection_editCollectionChangeOrderAndDeletable() {
+        // given
+        let expect = expectation(description: "루트 콜렉션이 아니면 편집, 순서변경, 삭제 가능")
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        
+        // when
+        let editable = self.waitFirstElement(expect, for: viewModel.isEditable) {
+            viewModel.reloadCollectionItems()
+        }
+        viewModel.editCollection()
+        
+        // then
+        XCTAssertEqual(editable, true)
+        XCTAssertEqual(
+            self.spyRouter.alertRequestedActions?.map { $0.text },
+            ["Edit collection".localized, "Change order".localized, "Delete".localized, "Cancel".localized]
+        )
+    }
+    
+    func testViewModel_requestChangeCustomOrder() {
+        // given
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        viewModel.reloadCollectionItems()
+        
+        // when
+        self.spyRouter.mockSelectActionTitle = "Change order".localized
+        viewModel.editCollection()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didMoveEditCustomOrder, true)
+    }
+}
+
+
+extension ReadCollectionViewModelTests {
+    
     class FakeRouter: ReadCollectionRouting, Mocking {
         
         func alertError(_ error: Error) {
@@ -555,6 +610,20 @@ extension ReadCollectionViewModelTests {
         func routeToEditReadLink(_ link: ReadLink) {
             guard let mock = self.mockNewLink else { return }
             self.interactor?.editReadLink(didEdit: mock)
+        }
+        
+        var alertRequestedActions: [ActionSheetForm.Action]?
+        var mockSelectActionTitle: String?
+        func alertActionSheet(_ form: ActionSheetForm) {
+            self.alertRequestedActions = form.actions
+            if let action = form.actions.first(where: { $0.text == mockSelectActionTitle }) {
+                action.selected?()
+            }
+        }
+        
+        var didMoveEditCustomOrder: Bool?
+        func roueToEditCustomOrder(for collectionID: String) {
+            self.didMoveEditCustomOrder = true
         }
     }
 }
