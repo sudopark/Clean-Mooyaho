@@ -49,6 +49,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     func addNewReadLinkItem()
     func handleContextAction(for item: ReadItemCellViewModel,
                              action: ReadCollectionItemSwipeContextAction)
+    func editCollection()
     
     
     // presenter
@@ -56,7 +57,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
-    var isEditable: Bool { get }
+    var isEditable: Observable<Bool> { get }
     func contextAction(for item: ReadItemCellViewModel,
                        isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]?
 }
@@ -83,8 +84,12 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.internalBinding()
     }
     
-    private var collectionID: String {
+    private var substituteCollectionID: String {
         return self.currentCollectionID ?? ReadCollection.rootID
+    }
+    
+    private var isRootCollection: Bool {
+        return self.currentCollectionID == nil
     }
     
     deinit {
@@ -120,13 +125,13 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     }
     
     private func loadCurrentCollectionInfoIfNeed() {
-        guard self.collectionID != ReadCollection.rootID else { return }
+        guard self.substituteCollectionID != ReadCollection.rootID else { return }
         
         let updateCurrentCollection: (ReadCollection) -> Void = { [weak self] collection in
             self?.subjects.currentCollection.onNext(collection)
         }
         self.readItemUsecase
-            .loadCollectionInfo(self.collectionID)
+            .loadCollectionInfo(self.substituteCollectionID)
             .subscribe(onNext: updateCurrentCollection)
             .disposed(by: self.disposeBag)
     }
@@ -175,9 +180,9 @@ extension ReadCollectionViewItemsModelImple {
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
-        let loadItems = self.collectionID == ReadCollection.rootID
+        let loadItems = self.substituteCollectionID == ReadCollection.rootID
             ? self.readItemUsecase.loadMyItems()
-            : self.readItemUsecase.loadCollectionItems(self.collectionID)
+            : self.readItemUsecase.loadCollectionItems(self.substituteCollectionID)
             
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
@@ -220,6 +225,27 @@ extension ReadCollectionViewItemsModelImple {
             
         default: break
         }
+    }
+    
+    public func editCollection() {
+        
+        let edit = ActionSheetForm.Action(text: "Edit collection".localized) { [weak self] in
+            guard let collection = try? self?.subjects.currentCollection.value() else { return }
+            self?.router.routeToEditCollection(collection)
+        }
+        let changeOrder = ActionSheetForm.Action(text: "Change order".localized) { [weak self] in
+            guard let self = self else { return }
+            self.router.roueToEditCustomOrder(for: self.substituteCollectionID)
+        }
+        let delete = ActionSheetForm.Action(text: "Delete".localized) { [weak self] in
+            // TODO: delete this collection
+        }
+        let cancel = ActionSheetForm.Action(text: "Cancel".localized, isCancel: true)
+        
+        let actions = self.isRootCollection ? [changeOrder, cancel] : [edit, changeOrder, delete, cancel]
+        let form = ActionSheetForm(title: "Select action")
+            |> \.actions .~ actions
+        self.router.alertActionSheet(form)
     }
 }
 
@@ -347,7 +373,7 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.links.compactMap { $0 },
             self.subjects.sortOrder.compactMap { $0 },
             self.subjects.categoryMap,
-            self.readItemUsecase.customOrder(for: self.collectionID),
+            self.readItemUsecase.customOrder(for: self.substituteCollectionID),
             resultSelector: asSections
         )
     }
@@ -360,7 +386,16 @@ extension ReadCollectionViewItemsModelImple {
         return self.readItemUsecase.loadLinkPreview(linkItem.link)
     }
     
-    public var isEditable: Bool { self.currentCollectionID != nil }
+    public var isEditable: Observable<Bool> {
+        let isRootCollection = self.isRootCollection
+        let checkIsEditableCollectionOrRoot: (ReadCollection?) -> Bool = { collection in
+            let isNotRootAndCollectionInfoReady = isRootCollection == false && collection != nil
+            return isRootCollection || isNotRootAndCollectionInfoReady
+        }
+        return self.subjects.currentCollection
+            .map(checkIsEditableCollectionOrRoot)
+            .distinctUntilChanged()
+    }
     
     public func contextAction(for item: ReadItemCellViewModel,
                               isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
