@@ -95,3 +95,18 @@ public protocol EditCategoryScene: Scenable {
     
     var interactor: EditCategorySceneInteractable? { get }
 }
+
+
+// MARK: - EditItemsCustomOrderScene Interactable & Listenable
+
+public protocol EditItemsCustomOrderSceneInteractable { }
+
+public protocol EditItemsCustomOrderSceneListenable: AnyObject { }
+
+
+// MARK: - EditItemsCustomOrderScene
+
+public protocol EditItemsCustomOrderScene: Scenable {
+    
+    var interactor: EditItemsCustomOrderSceneInteractable? { get }
+}
