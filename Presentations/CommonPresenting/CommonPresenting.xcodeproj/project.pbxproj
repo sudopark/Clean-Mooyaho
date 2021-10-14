@@ -72,6 +72,7 @@
 		F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */; };
 		F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */; };
 		F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */; };
+		F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E09A027187A410012B76E /* ReadItemContentView.swift */; };
 		F67DDE9D26FE1E63004BC542 /* ItemLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */; };
 		F6851A2F270B21120048197B /* Scenes+Viewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A2E270B21120048197B /* Scenes+Viewer.swift */; };
 		F6851A31270B21200048197B /* Builders+Viewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A30270B21200048197B /* Builders+Viewer.swift */; };
@@ -185,6 +186,7 @@
 		F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagScene.swift; sourceTree = "<group>"; };
 		F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModel.swift; sourceTree = "<group>"; };
 		F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		F66E09A027187A410012B76E /* ReadItemContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemContentView.swift; sourceTree = "<group>"; };
 		F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelView.swift; sourceTree = "<group>"; };
 		F6851A2E270B21120048197B /* Scenes+Viewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Viewer.swift"; sourceTree = "<group>"; };
 		F6851A30270B21200048197B /* Builders+Viewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Viewer.swift"; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				F66CD9532673CB8D0031EEC5 /* TagInputs */,
 				F65215732674A363000CAB4B /* TextInputs */,
 				F6CB4343271355EE00F26508 /* ColorSelect */,
+				F66E099F27187A020012B76E /* ReadItem */,
 			);
 			path = CommonScenes;
 			sourceTree = "<group>";
@@ -473,6 +476,14 @@
 				F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */,
 			);
 			path = TagInputs;
+			sourceTree = "<group>";
+		};
+		F66E099F27187A020012B76E /* ReadItem */ = {
+			isa = PBXGroup;
+			children = (
+				F66E09A027187A410012B76E /* ReadItemContentView.swift */,
+			);
+			path = ReadItem;
 			sourceTree = "<group>";
 		};
 		F6CB4343271355EE00F26508 /* ColorSelect */ = {
@@ -643,6 +654,7 @@
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
+				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,
 				F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
