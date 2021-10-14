@@ -21,6 +21,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
         public var updateLinkResult: Result<Void, Error> = .success(())
         public var sortOrder: Result<ReadCollectionItemSortOrder, Error> = .success(.default)
         public var customOrder: Result<[String], Error> = .success([])
+        public var updateCustomOrderResult: Result<Void, Error> = .success(())
         public var shrinkModeIsOn: Bool = false
         public var preview: Result<LinkPreview, Error> = .success(.dummy(0))
         
@@ -73,7 +74,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
     }
     
     open func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
-        return .empty()
+        return self.scenario.updateCustomOrderResult.asMaybe()
     }
     
     open func loadLinkPreview(_ url: String) -> Observable<LinkPreview> {
