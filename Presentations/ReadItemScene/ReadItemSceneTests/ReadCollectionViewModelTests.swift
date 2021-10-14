@@ -469,7 +469,7 @@ extension ReadCollectionViewModelTests {
             viewModel.reloadCollectionItems()
             let newCollection = collection |> \.collectionDescription .~ "new description"
             self.spyRouter.mockNewCollection = newCollection
-            viewModel.handleContextAction(for: ReadCollectionCellViewModel(collection: collection),
+            viewModel.handleContextAction(for: ReadCollectionCellViewModel(item: collection),
                                              action: .edit)
         }
         
@@ -493,7 +493,7 @@ extension ReadCollectionViewModelTests {
             viewModel.reloadCollectionItems()
             let newLink = link |> \.categoryIDs .~ ["c:3"]
             self.spyRouter.mockNewLink = newLink
-            viewModel.handleContextAction(for: ReadLinkCellViewModel(link: link),
+            viewModel.handleContextAction(for: ReadLinkCellViewModel(item: link),
                                              action: .edit)
         }
         

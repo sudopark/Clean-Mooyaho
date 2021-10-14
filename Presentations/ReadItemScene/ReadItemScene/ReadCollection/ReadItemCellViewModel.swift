@@ -8,21 +8,14 @@
 import Foundation
 
 import Domain
-
-
-// MARK: - ReadItemCellViewModel
-
-public protocol ReadItemCellViewModel {
-    var uid: String { get }
-    
-    var presetingID: Int { get }
-    var categories: [ItemCategory] { get set }
-}
+import CommonPresenting
 
 
 // MARK: - ReadCollectionSectionCellViewModel
 
-public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
+public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModelType {
+    
+    public typealias Item = ReadCollection
     
     public var uid: String { "collection_attr" }
     public var collectionDescription: String?
@@ -31,16 +24,18 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModel {
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     
-    public init(collection: ReadCollection) {
-        self.priority = collection.priority
-        self.collectionDescription = collection.collectionDescription
+    public init(item: ReadCollection) {
+        self.priority = item.priority
+        self.collectionDescription = item.collectionDescription
     }
 }
 
 
 // MARK: - ReadCollectionCellViewModel
 
-public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
+public struct ReadCollectionCellViewModel: ReadItemCellViewModelType {
+    
+    public typealias Item = ReadCollection
     
     public let uid: String
     public let name: String
@@ -53,11 +48,11 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
         self.name = name
     }
     
-    public init(collection: ReadCollection) {
-        self.uid = collection.uid
-        self.name = collection.name
-        self.priority = collection.priority
-        self.collectionDescription = collection.collectionDescription
+    public init(item: ReadCollection) {
+        self.uid = item.uid
+        self.name = item.name
+        self.priority = item.priority
+        self.collectionDescription = item.collectionDescription
     }
 
     public var presetingID: Int {
@@ -74,7 +69,9 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModel {
 
 // MARK: - ReadLinkCellViewModel
 
-public struct ReadLinkCellViewModel: ReadItemCellViewModel {
+public struct ReadLinkCellViewModel: ReadItemCellViewModelType {
+    
+    public typealias Item = ReadLink
     
     public let uid: String
     public let linkUrl: String
@@ -87,11 +84,11 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModel {
         self.linkUrl = linkUrl
     }
     
-    public init(link: ReadLink) {
-        self.uid = link.uid
-        self.linkUrl = link.link
-        self.customName = link.customName
-        self.priority = link.priority
+    public init(item: ReadLink) {
+        self.uid = item.uid
+        self.linkUrl = item.link
+        self.customName = item.customName
+        self.priority = item.priority
     }
     
     public var presetingID: Int {
