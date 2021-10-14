@@ -175,94 +175,6 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
 }
 
 
-// MARK: - item expand content view
-
-final class ReadItemExppandContentView: BaseUIView, Presenting {
-    
-    let contentStackView = UIStackView()
-    let titleAreaStackView = UIStackView()
-    let iconImageView = UIImageView()
-    let nameLabel = UILabel()
-    let addressLabel = UILabel()
-    let descriptionLabel = UILabel()
-
-    let priorityLabel = ItemLabelView()
-    let categoriesView = ItemLabelView()
-    
-    func setupLayout() {
-        
-        self.addSubview(contentStackView)
-        contentStackView.autoLayout.fill(self)
-        contentStackView.axis = .vertical
-        contentStackView.spacing = 4
-        
-        contentStackView.addArrangedSubview(titleAreaStackView)
-        titleAreaStackView.axis = .horizontal
-        titleAreaStackView.spacing = 6
-        
-        titleAreaStackView.addArrangedSubview(iconImageView)
-        iconImageView.autoLayout.active {
-            $0.widthAnchor.constraint(equalToConstant: 15)
-            $0.heightAnchor.constraint(equalToConstant: 15)
-        }
-        
-        titleAreaStackView.addArrangedSubview(nameLabel)
-        nameLabel.autoLayout.active {
-            $0.heightAnchor.constraint(equalToConstant: 22)
-        }
-        
-        contentStackView.addArrangedSubview(addressLabel)
-        addressLabel.autoLayout.active(with: contentStackView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
-            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 18)
-        }
-        addressLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        
-        contentStackView.addArrangedSubview(descriptionLabel)
-        descriptionLabel.autoLayout.active(with: contentStackView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
-        }
-        descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        
-        self.contentStackView.addArrangedSubview(priorityLabel)
-        priorityLabel.autoLayout.active(with: self.contentStackView) {
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-        }
-        priorityLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        priorityLabel.setupLayout()
-        
-        contentStackView.addArrangedSubview(categoriesView)
-        categoriesView.autoLayout.active(with: contentStackView) {
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-        }
-        categoriesView.setContentCompressionResistancePriority(.required, for: .vertical)
-        categoriesView.setupLayout()
-    }
-    
-    func setupStyling() {
-        
-        _ = nameLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
-            |> \.numberOfLines .~ 1
-        
-        _ = addressLabel
-            |> self.uiContext.decorating.listItemSubDescription(_:)
-            |> \.numberOfLines .~ 1
-            |> \.isHidden .~ true
-        
-        _ = descriptionLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
-            |> \.numberOfLines .~ 2
-            |> \.isHidden .~ true
-        
-        self.priorityLabel.setupStyling()
-        self.priorityLabel.isHidden = true
-        
-        self.categoriesView.setupStyling()
-        self.categoriesView.isHidden = true
-    }
-}
-
 // MARK: - section1: ReadCollectionExpandCell
 
 final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
@@ -388,12 +300,9 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         source.asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] preview in
                 guard let self = self else { return }
-//                self.tableView?.beginUpdates()
                 self.updateThumbnailIfPossible(with: preview.mainImageURL)
                 (customTitle?.isEmpty ?? true).then <| { self.updateTitle(preview.title) }
                 self.updateDescription(preview.description)
-                
-//                self.tableView?.endUpdates()
             })
             .disposed(by: self.disposeBag)
     }

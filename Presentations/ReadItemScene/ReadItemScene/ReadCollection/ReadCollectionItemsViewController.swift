@@ -254,7 +254,7 @@ extension ReadCollectionItemsViewController: Presenting {
         } else {
             // Fallback on earlier versions
         }
-        self.tableView.estimatedRowHeight = 100
+        self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.separatorStyle = .none
         self.tableView.delegate = self
