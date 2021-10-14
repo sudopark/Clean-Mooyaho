@@ -23,6 +23,13 @@ public protocol ReadItemCellViewModel {
     var categories: [ItemCategory] { get set }
 }
 
+extension ReadItemCellViewModel {
+    
+    public var categories: [ItemCategory] {
+        get { [] } set { }
+    }
+}
+
 public protocol ReadItemCellViewModelFactory {
     
     associatedtype Item: ReadItem

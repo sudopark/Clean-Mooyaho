@@ -179,9 +179,8 @@ extension ReadCollectionViewItemsModelImple {
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
-        let loadItems = self.substituteCollectionID == ReadCollection.rootID
-            ? self.readItemUsecase.loadMyItems()
-            : self.readItemUsecase.loadCollectionItems(self.substituteCollectionID)
+        let loadItems = self.currentCollectionID
+            .map { self.readItemUsecase.loadCollectionItems($0) } ?? self.readItemUsecase.loadMyItems()
             
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
