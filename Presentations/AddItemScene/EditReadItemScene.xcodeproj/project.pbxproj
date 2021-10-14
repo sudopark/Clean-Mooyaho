@@ -27,6 +27,7 @@
 		F67D652A2718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65252718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift */; };
 		F67D652B2718811300D8E9A5 /* EditItemsCustomOrderScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65262718811300D8E9A5 /* EditItemsCustomOrderScene.swift */; };
 		F67D652C2718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65272718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift */; };
+		F67D652E2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D652D2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift */; };
 		F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */; };
 		F6BBF15327083F5A00420A49 /* SelectAddItemTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */; };
 		F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */; };
@@ -100,6 +101,7 @@
 		F67D65252718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderBuilder.swift; sourceTree = "<group>"; };
 		F67D65262718811300D8E9A5 /* EditItemsCustomOrderScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderScene.swift; sourceTree = "<group>"; };
 		F67D65272718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderViewModel.swift; sourceTree = "<group>"; };
+		F67D652D2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeScene.swift; sourceTree = "<group>"; };
 		F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewController.swift; sourceTree = "<group>"; };
 		F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModel.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				F60153B127098E4700A86064 /* EditReadCollectionViewModelTests.swift */,
 				F6E30E21270B500F0012A2A0 /* EditReadPriorityViewModelTests.swift */,
 				F627A9EB27128F3600722BDD /* EditCategoryViewModelTests.swift */,
+				F67D652D2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift */,
 			);
 			path = EditReadItemSceneTests;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				F60153B227098E4700A86064 /* EditReadCollectionViewModelTests.swift in Sources */,
 				F6BBF17427084A0C00420A49 /* AddItemNavigationViewModelTests.swift in Sources */,
 				F665B2562709692000A6361F /* EditLinkItemViewModelTests.swift in Sources */,
+				F67D652E2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift in Sources */,
 				F6E30E22270B500F0012A2A0 /* EditReadPriorityViewModelTests.swift in Sources */,
 				F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */,
 			);

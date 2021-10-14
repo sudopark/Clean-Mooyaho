@@ -15,7 +15,6 @@ import Optics
 
 import Domain
 import CommonPresenting
-import CoreMIDI
 
 
 public enum ReadCollectionItemSectionType: String {
@@ -349,14 +348,16 @@ extension ReadCollectionViewItemsModelImple {
         ) ->  [ReadCollectionItemSection]
         asSections = { currentCollection, collections, links, order, cateMap, customOrder in
             
-            let attributeCell: [ReadItemCellViewModel] = currentCollection
-                .map { ReadCollectionAttrCellViewModel(collection: $0)
+            let attributeCell = currentCollection
+                .map { ReadCollectionAttrCellViewModel(item: $0)
                     |> \.categories .~ $0.categoryIDs.compactMap{ cateMap[$0] }
                 }
                 .map { [$0] } ?? []
-            let collectionCells = collections.sort(by: order, with: customOrder)
+            let collectionCells: [ReadCollectionCellViewModel] = collections
+                .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
-            let linkCells = links.sort(by: order, with: customOrder)
+            let linkCells: [ReadLinkCellViewModel] = links
+                .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
             
             let sections: [ReadCollectionItemSection?] =  [
@@ -404,59 +405,8 @@ extension ReadCollectionViewItemsModelImple {
     }
 }
 
-private extension Array where Element: ReadItem {
-    
-    func sort(by order: ReadCollectionItemSortOrder, with customOrder: [String]) -> Array {
-        let orderMap = customOrder.enumerated().reduce(into: [String: Int]()) { $0[$1.element] = $1.offset }
-        
-        let compare: (Element, Element) -> Bool = { lhs, rhs in
-            switch order {
-            case let .byCreatedAt(isAscending):
-                return isAscending
-                    ? lhs.createdAt < rhs.createdAt
-                    : lhs.createdAt > rhs.createdAt
-                
-            case let .byLastUpdatedAt(isAscending):
-                return isAscending
-                    ? lhs.lastUpdatedAt < rhs.lastUpdatedAt
-                    : lhs.lastUpdatedAt > rhs.lastUpdatedAt
-                
-            case let .byPriority(isAscending):
-                return isAscending
-                    ? ReadPriority.isAscendingOrder(lhs.priority, rhs: rhs.priority)
-                    : ReadPriority.isDescendingOrder(lhs.priority, rhs: rhs.priority)
-                
-            case .byCustomOrder:
-                let (indexL, indexR) = (orderMap[lhs.uid], orderMap[rhs.uid])
-                return indexL.flatMap { idxl in indexR.map { idxl < $0 } ?? false }
-                    ?? indexR.map { _ in true }
-                    ?? (lhs.createdAt > rhs.createdAt)
-                    
-            }
-        }
-        return self.sorted(by: compare)
-    }
-    
-    func asCellViewModels(with cateMap: [String: ItemCategory]) -> [ReadItemCellViewModel] {
-        let transform: (ReadItem) -> ReadItemCellViewModel? = { item in
-            switch item {
-            case let collection as ReadCollection:
-                return ReadCollectionCellViewModel(collection: collection)
-                    |> \.categories .~ collection.categoryIDs.compactMap { cateMap[$0] }
-                
-            case let link as ReadLink:
-                return ReadLinkCellViewModel(link: link)
-                    |> \.categories .~ link.categoryIDs.compactMap { cateMap[$0] }
-                
-            default: return nil
-            }
-        }
-        return self.compactMap(transform)
-    }
-}
 
-
-private extension Array where Element == ReadItemCellViewModel {
+private extension Array where Element: ReadItemCellViewModel {
     
     func asSectionIfNotEmpty(for type: ReadCollectionItemSectionType) -> ReadCollectionItemSection? {
         guard self.isNotEmpty else { return nil }
