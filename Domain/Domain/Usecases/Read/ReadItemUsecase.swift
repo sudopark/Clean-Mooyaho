@@ -174,20 +174,34 @@ extension ReadItemUsecaseImple {
         
         let datKey = self.customOrderKey
         
+        return self.sharedStoreService
+            .observeWithCache([String: [String]].self, key: datKey.rawValue)
+            .compactMap { $0?[collectionID] }
+            .do(onSubscribed: { [weak self] in
+                self?.prepareObservableCustomOrderIfNeed(collectionID)
+            })
+    }
+    
+    private func prepareObservableCustomOrderIfNeed(_ collectionID: String) {
+        
+        let datKey = self.customOrderKey
+        
+        let preloadedExists = self.sharedStoreService
+            .fetch(CustomOrdersMap.self, key: datKey)?[collectionID] != nil
+        
+        guard preloadedExists == false else { return }
+        
         let updateOrderOnStore: ([String]) -> Void = { [weak self] ids in
             guard let self = self else { return }
             self.sharedStoreService.update(CustomOrdersMap.self, key: datKey.rawValue) {
                 return ($0 ?? [:]) |> key(collectionID) .~ ids
             }
         }
-        let refreshedOrders = self.optionsRespository.requestLoadCustomOrder(for: collectionID)
-            .do(onNext: updateOrderOnStore)
+        
+        self.optionsRespository.requestLoadCustomOrder(for: collectionID)
             .ifEmpty(default: [])
-                
-        let preloaded = self.sharedStoreService
-            .fetch(CustomOrdersMap.self, key: datKey)?[collectionID]
-                
-        return preloaded.map { .just ($0) } ?? refreshedOrders
+            .subscribe(onNext: updateOrderOnStore)
+            .disposed(by: self.disposeBag)
     }
     
     public func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
