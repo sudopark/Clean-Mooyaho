@@ -22,6 +22,11 @@
 		F66C2C2A270909B5003D56B1 /* EditLinkItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */; };
 		F66C2C2C270909B5003D56B1 /* EditLinkItemScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C27270909B5003D56B1 /* EditLinkItemScene.swift */; };
 		F66C2C2D270909B5003D56B1 /* EditLinkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C28270909B5003D56B1 /* EditLinkItemViewModel.swift */; };
+		F67D65282718811300D8E9A5 /* EditItemsCustomOrderRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65232718811300D8E9A5 /* EditItemsCustomOrderRouter.swift */; };
+		F67D65292718811300D8E9A5 /* EditItemsCustomOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65242718811300D8E9A5 /* EditItemsCustomOrderViewController.swift */; };
+		F67D652A2718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65252718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift */; };
+		F67D652B2718811300D8E9A5 /* EditItemsCustomOrderScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65262718811300D8E9A5 /* EditItemsCustomOrderScene.swift */; };
+		F67D652C2718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65272718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift */; };
 		F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */; };
 		F6BBF15327083F5A00420A49 /* SelectAddItemTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */; };
 		F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */; };
@@ -90,6 +95,11 @@
 		F66C2C25270909B5003D56B1 /* EditLinkItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewController.swift; sourceTree = "<group>"; };
 		F66C2C27270909B5003D56B1 /* EditLinkItemScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemScene.swift; sourceTree = "<group>"; };
 		F66C2C28270909B5003D56B1 /* EditLinkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewModel.swift; sourceTree = "<group>"; };
+		F67D65232718811300D8E9A5 /* EditItemsCustomOrderRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderRouter.swift; sourceTree = "<group>"; };
+		F67D65242718811300D8E9A5 /* EditItemsCustomOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderViewController.swift; sourceTree = "<group>"; };
+		F67D65252718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderBuilder.swift; sourceTree = "<group>"; };
+		F67D65262718811300D8E9A5 /* EditItemsCustomOrderScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderScene.swift; sourceTree = "<group>"; };
+		F67D65272718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemsCustomOrderViewModel.swift; sourceTree = "<group>"; };
 		F6BBF14D27083F5A00420A49 /* SelectAddItemTypeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeScene.swift; sourceTree = "<group>"; };
 		F6BBF14E27083F5A00420A49 /* SelectAddItemTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewController.swift; sourceTree = "<group>"; };
 		F6BBF14F27083F5A00420A49 /* SelectAddItemTypeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAddItemTypeViewModel.swift; sourceTree = "<group>"; };
@@ -164,6 +174,18 @@
 				F60A585927103BA500E39AE0 /* EditCategoryView.swift */,
 			);
 			path = EditCategory;
+			sourceTree = "<group>";
+		};
+		F67D6522271880FC00D8E9A5 /* EditItemsCustomOrder */ = {
+			isa = PBXGroup;
+			children = (
+				F67D65232718811300D8E9A5 /* EditItemsCustomOrderRouter.swift */,
+				F67D65242718811300D8E9A5 /* EditItemsCustomOrderViewController.swift */,
+				F67D65252718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift */,
+				F67D65262718811300D8E9A5 /* EditItemsCustomOrderScene.swift */,
+				F67D65272718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift */,
+			);
+			path = EditItemsCustomOrder;
 			sourceTree = "<group>";
 		};
 		F6BBF14C27083F2B00420A49 /* SelecAddItemType */ = {
@@ -242,6 +264,7 @@
 				F6BBF1662708403C00420A49 /* EditLinkItem */,
 				F6E30E12270B42B10012A2A0 /* EditReadPriority */,
 				F60A584E27103A7300E39AE0 /* EditCategory */,
+				F67D6522271880FC00D8E9A5 /* EditItemsCustomOrder */,
 				F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */,
 			);
 			path = EditReadItemScene;
@@ -427,6 +450,7 @@
 				F6BBF15227083F5A00420A49 /* SelectAddItemTypeScene.swift in Sources */,
 				F6BBF16327083FF900420A49 /* AddItemNavigationViewModel.swift in Sources */,
 				F6BBF15F27083FF900420A49 /* AddItemNavigationRouter.swift in Sources */,
+				F67D65282718811300D8E9A5 /* EditItemsCustomOrderRouter.swift in Sources */,
 				F60A585727103A8D00E39AE0 /* EditCategoryScene.swift in Sources */,
 				F6BBF16227083FF900420A49 /* AddItemNavigationScene.swift in Sources */,
 				F66C2C2C270909B5003D56B1 /* EditLinkItemScene.swift in Sources */,
@@ -437,9 +461,11 @@
 				F6BBF1702708422F00420A49 /* EnterLinkURLBuilder.swift in Sources */,
 				F66C2C2D270909B5003D56B1 /* EditLinkItemViewModel.swift in Sources */,
 				F6BBF1722708422F00420A49 /* EnterLinkURLViewModel.swift in Sources */,
+				F67D652C2718811300D8E9A5 /* EditItemsCustomOrderViewModel.swift in Sources */,
 				F6BBF1712708422F00420A49 /* EnterLinkURLScene.swift in Sources */,
 				F6BBF15427083F5A00420A49 /* SelectAddItemTypeViewModel.swift in Sources */,
 				F6BBF15527083F5A00420A49 /* SelectAddItemTypeRouter.swift in Sources */,
+				F67D65292718811300D8E9A5 /* EditItemsCustomOrderViewController.swift in Sources */,
 				F6BBF16027083FF900420A49 /* AddItemNavigationViewController.swift in Sources */,
 				F6E30E1B270B42CC0012A2A0 /* EditReadPriorityScene.swift in Sources */,
 				F6E30E1C270B42CC0012A2A0 /* EditReadPriorityViewModel.swift in Sources */,
@@ -452,9 +478,11 @@
 				F60A585827103A8D00E39AE0 /* EditCategoryViewModel.swift in Sources */,
 				F6E30E18270B42CC0012A2A0 /* EditReadPriorityRouter.swift in Sources */,
 				F60A585527103A8D00E39AE0 /* EditCategoryViewController.swift in Sources */,
+				F67D652B2718811300D8E9A5 /* EditItemsCustomOrderScene.swift in Sources */,
 				F6E592CC27098B940087A623 /* EditReadCollectionRouter.swift in Sources */,
 				F60A585627103A8D00E39AE0 /* EditCategoryBuilder.swift in Sources */,
 				F6E592CF27098B940087A623 /* EditReadCollectionViewModel.swift in Sources */,
+				F67D652A2718811300D8E9A5 /* EditItemsCustomOrderBuilder.swift in Sources */,
 				F6BBF16E2708422F00420A49 /* EnterLinkURLRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
