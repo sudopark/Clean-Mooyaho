@@ -454,29 +454,39 @@ extension ReadItemUsecaseTests {
     
     func testUsecase_loadCustomSortOrder() {
         // given
-        let expect = expectation(description: "custom sort order 로드")
+        let expect = expectation(description: "custom sort order 로드 + 이후 변경된값 인지 가능")
+        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
         
         // when
         let loading = usecase.customOrder(for: "some")
-        let orders = self.waitFirstElement(expect, for: loading.asObservable())
+        let orders = self.waitElements(expect, for: loading.asObservable()) {
+            self.spyStore.update([String: [String]].self, key: SharedDataKeys.readItemCustomOrderMap.rawValue) {
+                return ($0 ?? [:]) |> key("some") .~ ["c1", "c2", "c3"]
+            }
+        }
         
         // then
-        XCTAssertEqual(orders, ["c1", "c2"])
+        XCTAssertEqual(orders, [["c1", "c2"], ["c1", "c2", "c3"]])
     }
     
     func testUsecase_whenPreloadedCustomSortOrderExists_useIt() {
         // given
-        let expect = expectation(description: "미리 로드된 custom 정렬 존재시에 해당값 사용")
+        let expect = expectation(description: "미리 로드된 custom 정렬 존재시에 해당값 사용 + 이후 변경된값 인지 가능")
+        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
         
         // when
         let loadAndReload = usecase.customOrder(for: "some")
             .flatMap{ _ in usecase.customOrder(for: "some") }
-        let orders = self.waitFirstElement(expect, for: loadAndReload.asObservable())
+        let orders = self.waitElements(expect, for: loadAndReload.asObservable()) {
+            self.spyStore.update([String: [String]].self, key: SharedDataKeys.readItemCustomOrderMap.rawValue) {
+                return ($0 ?? [:]) |> key("some") .~ ["c1", "c2", "c3"]
+            }
+        }
         
         // then
-        XCTAssertEqual(orders, ["c1", "c2"])
+        XCTAssertEqual(orders, [["c1", "c2"], ["c1", "c2", "c3"]])
     }
     
     func testUsecase_updateCustomSortOrder() {
