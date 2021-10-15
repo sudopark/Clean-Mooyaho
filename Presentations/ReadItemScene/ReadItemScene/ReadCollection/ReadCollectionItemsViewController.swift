@@ -125,13 +125,24 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
                 cell.setupCell(attribute)
                 return cell
             
-            case let collection as ReadCollectionCellViewModel:
+            case let collection as ReadCollectionCellViewModel where collection.isShrink == false:
                 let cell: ReadCollectionExpandCell = tableView.dequeueCell()
                 cell.setupCell(collection)
                 return cell
+                
+            case let collection as ReadCollectionCellViewModel where collection.isShrink == true:
+                let cell: ReadItemShrinkCollectionCell = tableView.dequeueCell()
+                cell.setupCell(collection)
+                return cell
 
-            case let link as ReadLinkCellViewModel:
+            case let link as ReadLinkCellViewModel where link.isShrink == false:
                 let cell: ReadLinkExpandCell = tableView.dequeueCell()
+                cell.setupCell(link)
+                cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid), customTitle: link.customName)
+                return cell
+                
+            case let link as ReadLinkCellViewModel where link.isShrink == true:
+                let cell: ReadItemShrinkLinkCell = tableView.dequeueCell()
                 cell.setupCell(link)
                 cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid), customTitle: link.customName)
                 return cell
@@ -264,6 +275,8 @@ extension ReadCollectionItemsViewController: Presenting {
         self.tableView.registerCell(ReadCollcetionAttrCell.self)
         self.tableView.registerCell(ReadCollectionExpandCell.self)
         self.tableView.registerCell(ReadLinkExpandCell.self)
+        self.tableView.registerCell(ReadItemShrinkCollectionCell.self)
+        self.tableView.registerCell(ReadItemShrinkLinkCell.self)
     }
 }
 
