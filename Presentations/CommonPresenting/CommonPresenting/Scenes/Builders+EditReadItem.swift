@@ -79,3 +79,12 @@ public protocol EditReadPriorityScene: Scenable, PangestureDismissableScene {
     
     var interactor: EditReadPrioritySceneInteractable? { get }
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol EditItemsCustomOrderSceneBuilable {
+    
+    func makeEditItemsCustomOrderScene(collectionID: String?,
+                                       listener: EditItemsCustomOrderSceneListenable?) -> EditItemsCustomOrderScene
+}

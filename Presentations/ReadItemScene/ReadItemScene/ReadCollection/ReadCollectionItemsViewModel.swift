@@ -233,7 +233,7 @@ extension ReadCollectionViewItemsModelImple {
         }
         let changeOrder = ActionSheetForm.Action(text: "Change order".localized) { [weak self] in
             guard let self = self else { return }
-            self.router.roueToEditCustomOrder(for: self.substituteCollectionID)
+            self.router.roueToEditCustomOrder(for: self.currentCollectionID)
         }
         let delete = ActionSheetForm.Action(text: "Delete".localized) { [weak self] in
             // TODO: delete this collection

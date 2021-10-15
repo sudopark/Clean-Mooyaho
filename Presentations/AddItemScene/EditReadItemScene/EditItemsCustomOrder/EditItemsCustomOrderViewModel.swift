@@ -39,19 +39,26 @@ public struct EditLinkItemOrderCellViewModel: ReadItemCellViewModelType {
     public typealias Item = ReadLink
     
     public var uid: String
+    public let customName: String?
     public let address: String
     
     public init(item: ReadLink) {
         self.uid = item.uid
+        self.customName = item.customName
         self.address = item.link
     }
     
     public var presetingID: Int { self.uid.hashValue }
 }
 
-public struct EditOrderItemsSection {
+public struct EditOrderItemsSection: Equatable {
     let title: String
     let cellViewModels: [ReadItemCellViewModel]
+    
+    public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+        return lhs.title == rhs.title
+            && lhs.cellViewModels.map { $0.presetingID } == rhs.cellViewModels.map { $0.presetingID }
+    }
 }
 
 
@@ -235,6 +242,7 @@ extension EditItemsCustomOrderViewModelImple {
             self.subjects.links.compactMap { $0 },
             resultSelector: asSections
         )
+        .distinctUntilChanged()
     }
 }
 
