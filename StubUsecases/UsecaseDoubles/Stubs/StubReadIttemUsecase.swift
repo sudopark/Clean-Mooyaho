@@ -19,11 +19,12 @@ open class StubReadItemUsecase: ReadItemUsecase {
         public var collectionItems: Result<[ReadItem], Error> = .success([])
         public var updateCollectionResult: Result<Void, Error> = .success(())
         public var updateLinkResult: Result<Void, Error> = .success(())
-        public var sortOrder: Result<ReadCollectionItemSortOrder, Error> = .success(.default)
+        public var refreshedSortOrder: Result<ReadCollectionItemSortOrder, Error> = .success(.default)
         public var customOrder: Result<[String], Error> = .success([])
         public var updateCustomOrderResult: Result<Void, Error> = .success(())
         public var shrinkModeIsOn: Bool = false
         public var preview: Result<LinkPreview, Error> = .success(.dummy(0))
+        public var sortOption: [ReadCollectionItemSortOrder] = [.default]
         
         public init() {}
     }
@@ -52,17 +53,24 @@ open class StubReadItemUsecase: ReadItemUsecase {
         return self.scenario.updateLinkResult.asMaybe()
     }
     
-    open func loadLatestShrinkModeIsOnOption() -> Maybe<Bool> {
-        return .just(self.scenario.shrinkModeIsOn)
+    private var fakeIsShrinkMode = PublishSubject<Bool>()
+    open var isShrinkModeOn: Observable<Bool> {
+        return self.fakeIsShrinkMode
+            .startWith(self.scenario.shrinkModeIsOn)
     }
     
     open func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
         self.scenario.shrinkModeIsOn = newvalue
+        self.fakeIsShrinkMode.onNext(newvalue)
         return .just()
     }
     
     open func loadLatestSortOption() -> Maybe<ReadCollectionItemSortOrder> {
-        return self.scenario.sortOrder.asMaybe()
+        return self.scenario.refreshedSortOrder.asMaybe()
+    }
+    
+    open var sortOrder: Observable<ReadCollectionItemSortOrder> {
+        return Observable.from(self.scenario.sortOption)
     }
     
     open func updateLatestSortOption(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {

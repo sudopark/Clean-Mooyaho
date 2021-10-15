@@ -33,7 +33,11 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModelType {
 
 // MARK: - ReadCollectionCellViewModel
 
-public struct ReadCollectionCellViewModel: ReadItemCellViewModelType {
+protocol ShrinkableCell {
+    var isShrink: Bool { get set }
+}
+
+public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     
     public typealias Item = ReadCollection
     
@@ -42,6 +46,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType {
     public var collectionDescription: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
+    var isShrink = false
     
     public init(uid: String, name: String) {
         self.uid = uid
@@ -62,6 +67,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType {
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map { $0.presentingHashValud() })
         hasher.combine(self.collectionDescription)
+        hasher.combine(self.isShrink)
         return hasher.finalize()
     }
 }
@@ -69,7 +75,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType {
 
 // MARK: - ReadLinkCellViewModel
 
-public struct ReadLinkCellViewModel: ReadItemCellViewModelType {
+public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     
     public typealias Item = ReadLink
     
@@ -78,6 +84,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType {
     public var customName: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
+    var isShrink = false
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -98,6 +105,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType {
         hasher.combine(self.customName)
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map { $0.presentingHashValud() })
+        hasher.combine(self.isShrink)
         return hasher.finalize()
     }
 }

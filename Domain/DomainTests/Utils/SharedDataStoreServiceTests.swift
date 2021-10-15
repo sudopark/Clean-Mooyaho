@@ -119,7 +119,7 @@ extension SharedDataStoreServiceTests {
         
         // when
         let observingValues: Observable<[Int]> = self.store
-            .observeValuesWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
+            .observeValuesInMappWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
                                     idSelector: { "\($0)" },
                                     localFetchinig: { _ in .empty() },
                                     remoteLoading: { _ in .empty() } )
@@ -139,7 +139,7 @@ extension SharedDataStoreServiceTests {
         
         // when
         let observingValues: Observable<[Int]> = self.store
-            .observeValuesWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
+            .observeValuesInMappWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
                                     idSelector: { "\($0)" },
                                     localFetchinig: { _ in .just([1]) },
                                     remoteLoading: { _ in .just([]) } )
@@ -159,7 +159,7 @@ extension SharedDataStoreServiceTests {
         
         // when
         let observingValues: Observable<[Int]> = self.store
-            .observeValuesWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
+            .observeValuesInMappWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
                                     idSelector: { "\($0)" },
                                     localFetchinig: { _ in .just([1]) },
                                     remoteLoading: { _ in .just([2]) } )

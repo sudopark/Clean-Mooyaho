@@ -323,8 +323,7 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let loading = usecase.loadLatestShrinkModeIsOnOption()
-        let isOn = self.waitFirstElement(expect, for: loading.asObservable())
+        let isOn = self.waitFirstElement(expect, for: usecase.isShrinkModeOn)
         
         // then
         XCTAssertEqual(isOn, true)
@@ -336,25 +335,10 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(isShrinkModeOn: nil)
         
         // when
-        let loading = usecase.loadLatestShrinkModeIsOnOption()
-        let isOn = self.waitFirstElement(expect, for: loading.asObservable())
+        let isOn = self.waitFirstElement(expect, for: usecase.isShrinkModeOn)
         
         // then
         XCTAssertEqual(isOn, false)
-    }
-    
-    func testUsecase_whenShrinkModeLoadbefore_useThatValue() {
-        // given
-        let expect = expectation(description: "이전에 로드한 플래그값이 있으면 이용")
-        let usecase = self.makeUsecase(isShrinkModeOn: true)
-        
-        // when
-        let loadAndReload = usecase.loadLatestShrinkModeIsOnOption()
-            .flatMap{ _ in usecase.loadLatestShrinkModeIsOnOption() }
-        let isOn = self.waitFirstElement(expect, for: loadAndReload.asObservable())
-        
-        // then
-        XCTAssertEqual(isOn, true)
     }
     
     func testUsecase_updateShrinkModeIsOn() {
@@ -396,27 +380,11 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(sortOrder: .byPriority(false))
         
         // when
-        let loading = usecase.loadLatestSortOption()
-        let order = self.waitFirstElement(expect, for: loading.asObservable())
+        let order = self.waitFirstElement(expect, for: usecase.sortOrder)
         
         // then
         XCTAssertEqual(order, .byPriority(false))
     }
-    
-    func testUsecase_whenPreloadedSortOrderExists_useIt() {
-        // given
-        let expect = expectation(description: "미리 로드된 정렬옵션 존재시에 해당값 사용")
-        let usecase = self.makeUsecase(sortOrder: .byCustomOrder)
-        
-        // when
-        let loadAndReload = usecase.loadLatestSortOption()
-            .flatMap{ _ in usecase.loadLatestSortOption() }
-        let order = self.waitFirstElement(expect, for: loadAndReload.asObservable())
-        
-        // then
-        XCTAssertEqual(order, .byCustomOrder)
-    }
-    
     
     func testUsecase_whenLatestSortOrderNotExists_useDefaultValue() {
         // given
@@ -424,8 +392,7 @@ extension ReadItemUsecaseTests {
         let usecase = self.makeUsecase(sortOrder: nil)
         
         // when
-        let loading = usecase.loadLatestSortOption()
-        let order = self.waitFirstElement(expect, for: loading.asObservable())
+        let order = self.waitFirstElement(expect, for: usecase.sortOrder)
         
         // then
         XCTAssertEqual(order, .default)
@@ -447,6 +414,22 @@ extension ReadItemUsecaseTests {
         
         // then
         XCTAssertEqual(isUpdatedBoth.count, 2)
+    }
+    
+    func testUsecase_provideCurrentSortOptionEventStream() {
+        // given
+        let expect = expectation(description: "현재 설정된 옵션값 이벤트 스트림 제공")
+        expect.expectedFulfillmentCount = 2
+        
+        let usecase = self.makeUsecase()
+        
+        // when
+        let orders = self.waitElements(expect, for: usecase.sortOrder) {
+            self.spyStore.save(ReadCollectionItemSortOrder.self, key: .latestReadItemSortOption, .byLastUpdatedAt(true))
+        }
+        
+        // then
+        XCTAssertEqual(orders, [.default, .byLastUpdatedAt(true)] )
     }
 }
 

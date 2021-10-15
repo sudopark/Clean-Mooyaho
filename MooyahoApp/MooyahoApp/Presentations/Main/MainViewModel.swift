@@ -23,9 +23,11 @@ public protocol MainViewModel: AnyObject {
     func setupSubScenes()
     func openSlideMenu()
     func requestAddNewItem()
+    func toggleIsReadItemShrinkMode()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
+    var isReadItemShrinkModeOn: Observable<Bool> { get }
 }
 
 
@@ -33,12 +35,8 @@ public protocol MainViewModel: AnyObject {
 
 public final class MainViewModelImple: MainViewModel {
     
-    fileprivate final class Subjects {
-        // define subjects
-    }
-    
     private let memberUsecase: MemberUsecase
-    private let hoorayUsecase: HoorayUsecase
+    private let readItemOptionUsecase: ReadItemOptionsUsecase
     private let router: MainRouting
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -46,16 +44,32 @@ public final class MainViewModelImple: MainViewModel {
     private weak var readCollectionMainSceneInput: ReadCollectionMainSceneInput?
     
     public init(memberUsecase: MemberUsecase,
-                hoorayUsecase: HoorayUsecase,
+                readItemOptionUsecase: ReadItemOptionsUsecase,
                 router: MainRouting) {
         
         self.memberUsecase = memberUsecase
-        self.hoorayUsecase = hoorayUsecase
+        self.readItemOptionUsecase = readItemOptionUsecase
         self.router = router
+        
+        self.internalBinding()
+    }
+    
+    fileprivate final class Subjects {
+        let isReadItemShrinkModeOn = BehaviorRelay<Bool?>(value: nil)
     }
     
     deinit {
         LeakDetector.instance.expectDeallocate(object: self.router)
+    }
+    
+    private func internalBinding() {
+        
+        self.readItemOptionUsecase
+            .isShrinkModeOn
+            .subscribe(onNext: { [weak self] isOn in
+                self?.subjects.isReadItemShrinkModeOn.accept(isOn)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -81,6 +95,19 @@ extension MainViewModelImple {
                 : input.addNewReadLinkItem()
         }
     }
+    
+    public func toggleIsReadItemShrinkMode() {
+        guard let newValue = self.subjects.isReadItemShrinkModeOn.value?.invert() else { return }
+        
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        
+        self.readItemOptionUsecase
+            .updateLatestIsShrinkModeIsOn(newValue)
+            .subscribe(onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -92,5 +119,12 @@ extension MainViewModelImple {
         return self.memberUsecase.currentMember
             .compactMap{ $0?.icon }
             .startWith(Member.memberDefaultEmoji)
+    }
+    
+    public var isReadItemShrinkModeOn: Observable<Bool> {
+        return self.subjects
+            .isReadItemShrinkModeOn
+            .compactMap { $0 }
+            .distinctUntilChanged()
     }
 }

@@ -108,18 +108,18 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     private let disposeBag = DisposeBag()
     
     private func internalBinding() {
-        self.loadLatestSortOrder()
+        self.bindCurrentSortOrder()
         self.loadCurrentCollectionInfoIfNeed()
         self.bindRequireCategories()
     }
     
-    private func loadLatestSortOrder() {
+    private func bindCurrentSortOrder() {
         let setupLatestSortOrder: (ReadCollectionItemSortOrder) -> Void = { [weak self] order in
             self?.subjects.sortOrder.accept(order)
         }
         self.readItemUsecase
-            .loadLatestSortOption()
-            .subscribe(onSuccess: setupLatestSortOrder)
+            .sortOrder
+            .subscribe(onNext: setupLatestSortOrder)
             .disposed(by: self.disposeBag)
     }
     
@@ -343,9 +343,9 @@ extension ReadCollectionViewItemsModelImple {
         
         let asSections: (
             ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder,
-            [String: ItemCategory], [String]
+            [String: ItemCategory], [String], Bool
         ) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, order, cateMap, customOrder in
+        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode in
             
             let attributeCell = currentCollection
                 .map { ReadCollectionAttrCellViewModel(item: $0)
@@ -355,9 +355,12 @@ extension ReadCollectionViewItemsModelImple {
             let collectionCells: [ReadCollectionCellViewModel] = collections
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
+                .updateIsShrinkMode(isShrinkMode)
+            
             let linkCells: [ReadLinkCellViewModel] = links
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
+                .updateIsShrinkMode(isShrinkMode)
             
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
@@ -374,6 +377,7 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.sortOrder.compactMap { $0 },
             self.subjects.categoryMap,
             self.readItemUsecase.customOrder(for: self.substituteCollectionID),
+            self.readItemUsecase.isShrinkModeOn,
             resultSelector: asSections
         )
     }
@@ -410,5 +414,11 @@ private extension Array where Element: ReadItemCellViewModel {
     func asSectionIfNotEmpty(for type: ReadCollectionItemSectionType) -> ReadCollectionItemSection? {
         guard self.isNotEmpty else { return nil }
         return .init(type: type, cellViewModels: self)
+    }
+    
+    func updateIsShrinkMode(_ flag: Bool) -> Array where Element: ShrinkableCell {
+        return self.map {
+            return  $0 |> \.isShrink .~ flag
+        }
     }
 }

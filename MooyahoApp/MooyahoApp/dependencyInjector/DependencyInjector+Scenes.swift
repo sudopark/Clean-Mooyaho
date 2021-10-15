@@ -23,7 +23,7 @@ extension DependencyInjector: MainSceneBuilable {
     public func makeMainScene(auth: Auth) -> MainScene {
         let router = MainRouter(nextSceneBuilders: self)
         let viewModel = MainViewModelImple(memberUsecase: self.memberUsecase,
-                                           hoorayUsecase: self.hoorayUsecase,
+                                           readItemOptionUsecase: self.readItemUsecase,
                                            router: router)
         let viewController = MainViewController(viewModel: viewModel)
         router.currentScene = viewController

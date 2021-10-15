@@ -33,7 +33,6 @@ public final class RoundImageButton: BaseUIView {
         }
     }
     
-    
     let imageView = UIImageView()
     let button = UIButton()
     

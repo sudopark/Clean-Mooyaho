@@ -86,7 +86,14 @@ extension MainViewController {
         
         self.mainView.shrinkButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
-                // TODO: toggle udpate
+                self?.viewModel.toggleIsReadItemShrinkMode()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isReadItemShrinkModeOn
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isOn in
+                self?.updateIsShrinkModeOn(isOn)
             })
             .disposed(by: self.disposeBag)
         
@@ -110,6 +117,11 @@ extension MainViewController {
                 self?.mainView.profileImageView.setupImage(using: source)
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func updateIsShrinkModeOn(_ newValue: Bool) {
+        self.mainView.shrinkButton.backgroundColor = newValue
+            ? self.uiContext.colors.accentColor : self.uiContext.colors.raw.lightGray
     }
 }
 
