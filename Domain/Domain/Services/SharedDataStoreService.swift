@@ -37,12 +37,12 @@ extension SharedDataStoreService {
         self.update(type, key: key, mutating: { _ in value })
     }
     
-    public func observeValuesWithSetup<V>(ids: [String],
-                                          sharedKey: String,
-                                          disposeBag: DisposeBag,
-                                          idSelector: @escaping (V) -> String,
-                                          localFetchinig: @escaping ([String]) -> Maybe<[V]>,
-                                          remoteLoading: @escaping ([String]) -> Maybe<[V]>) -> Observable<[V]> {
+    public func observeValuesInMappWithSetup<V>(ids: [String],
+                                                sharedKey: String,
+                                                disposeBag: DisposeBag,
+                                                idSelector: @escaping (V) -> String,
+                                                localFetchinig: @escaping ([String]) -> Maybe<[V]>,
+                                                remoteLoading: @escaping ([String]) -> Maybe<[V]>) -> Observable<[V]> {
         
         let filtering: ([String: V]?) -> [V]? = { dict in
             guard let dict = dict else { return nil }

@@ -23,6 +23,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     private var spyRouter: FakeRouter!
+    private var isShrinkModeMocking: ((Bool) -> Void)?
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -59,9 +60,13 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             : .success(self.dummyCollectionItems)
         let scenario = StubReadItemUsecase.Scenario()
             |> \.collectionItems .~ reloadResult
-            |> \.sortOrder .~ .success(sortOrder)
+            |> \.sortOption .~ [sortOrder]
             |> \.customOrder .~ .success(customOrder)
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
+        
+        self.isShrinkModeMocking = { newValue in
+            stubUsecase.updateLatestIsShrinkModeIsOn(newValue)
+        }
         
         let categoryScenario = StubItemCategoryUsecase.Scenario()
             |> \.categories .~ [(0..<10).map { .dummy($0) }]
@@ -314,6 +319,28 @@ extension ReadCollectionViewModelTests {
     }
 }
 
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_whenIsShrinkModeUpdated_updateCell() {
+        // given
+        let expect = expectation(description: "isShrink모드 변경시에 셀 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let cvms = self.waitElements(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollectionItems()
+            self.isShrinkModeMocking?(true)
+        }
+        
+        // then
+        let isShrinks1 = cvms.first?.compactMap { $0 as? ShrinkableCell }.map { $0.isShrink }
+        let isShrinks2 = cvms.last?.compactMap { $0 as? ShrinkableCell }.map { $0.isShrink }
+        XCTAssertEqual(isShrinks1, Array(repeating: false, count: 10))
+        XCTAssertEqual(isShrinks2, Array(repeating: true, count: 10))
+    }
+}
 
 // MAARK: - provide thumbnail
 

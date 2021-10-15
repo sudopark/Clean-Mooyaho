@@ -65,7 +65,7 @@ extension ReadItemCategoryUsecaseImple {
         }
         let key = SharedDataKeys.categoriesMap.rawValue
         return self.sharedService
-            .observeValuesWithSetup(ids: ids, sharedKey: key, disposeBag: self.disposeBag,
+            .observeValuesInMappWithSetup(ids: ids, sharedKey: key, disposeBag: self.disposeBag,
                                     idSelector: { $0.uid },
                                     localFetchinig: localFetching,
                                     remoteLoading: remoteLoading)

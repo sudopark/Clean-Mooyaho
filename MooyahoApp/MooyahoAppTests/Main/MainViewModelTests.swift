@@ -23,24 +23,23 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var mockMemberUsecase: MockMemberUsecase!
-    var mockHoorayUsecase: MockHoorayUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
         self.mockMemberUsecase = .init()
-        self.mockHoorayUsecase = .init()
         self.spyRouter = .init()
+        
+        let fakeUsecase = FakeReadItemOptionUsecase()
         self.viewModel = .init(memberUsecase: self.mockMemberUsecase,
-                               hoorayUsecase: self.mockHoorayUsecase,
+                               readItemOptionUsecase: fakeUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockMemberUsecase = nil
-        self.mockHoorayUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -92,6 +91,25 @@ extension MainViewModelTests {
         
         // then
         XCTAssertEqual(self.spyRouter.didAskNewItemType, true)
+    }
+}
+
+
+extension MainViewModelTests {
+    
+    func testViewModel_updateIsShrinkMode() {
+        // given
+        let expect = expectation(description: "isShrink mode 업데이트")
+        expect.expectedFulfillmentCount = 3
+        
+        // when
+        let isShrinkMode = self.waitElements(expect, for: self.viewModel.isReadItemShrinkModeOn) {
+            self.viewModel.toggleIsReadItemShrinkMode()
+            self.viewModel.toggleIsReadItemShrinkMode()
+        }
+        
+        // then
+        XCTAssertEqual(isShrinkMode, [false, true, false])
     }
 }
 
@@ -158,6 +176,19 @@ extension MainViewModelTests {
         
         func addNewReadLinkItem() {
             
+        }
+    }
+    
+    class FakeReadItemOptionUsecase: StubReadItemUsecase {
+        
+        private let fakeIsShrinkModeOn = BehaviorSubject<Bool>(value: false)
+        override var isShrinkModeOn: Observable<Bool> {
+            return fakeIsShrinkModeOn.asObservable()
+        }
+        
+        override func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
+            self.fakeIsShrinkModeOn.onNext(newvalue)
+            return .just()
         }
     }
 }

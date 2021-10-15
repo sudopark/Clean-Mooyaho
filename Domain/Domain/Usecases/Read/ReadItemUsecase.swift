@@ -114,18 +114,32 @@ extension ReadItemUsecaseImple {
 
 extension ReadItemUsecaseImple {
     
-    public func loadLatestShrinkModeIsOnOption() -> Maybe<Bool> {
-        let preloadedValue = self.sharedStoreService.fetch(Bool.self, key: .readItemShrinkIsOn)
+    private func sharedStream<V>(_ sharedKey: SharedDataKeys,
+                                 refreshing: @escaping () -> Maybe<V>) -> Observable<V> {
         
-        let updateOnStore: (Bool) -> Void = { [weak self] isOn in
-            self?.sharedStoreService.save(Bool.self, key: .readItemShrinkIsOn, isOn)
+        let refreshIfNeed: () -> Void = { [weak self] in
+            let isExist = self?.sharedStoreService.isExists(V.self, key: sharedKey) { $0 != nil }
+            guard let self = self, isExist == false else { return }
+            
+            let updateOnStore: (V) -> Void = { value in
+                self.sharedStoreService.update(V.self, key: sharedKey.rawValue, value: value)
+            }
+            refreshing()
+                .subscribe(onSuccess: updateOnStore)
+                .disposed(by: self.disposeBag)
         }
-        let loadOnLocal = self.optionsRespository
-            .fetchLastestsIsShrinkModeOn()
-            .map { $0 ?? false }
-            .do(onNext: updateOnStore)
-        
-        return preloadedValue.map{ .just($0 )} ?? loadOnLocal
+        return self.sharedStoreService
+            .observeWithCache(V.self, key: sharedKey.rawValue)
+            .compactMap { $0 }
+            .do(onSubscribe: refreshIfNeed)
+    }
+    
+    public var isShrinkModeOn: Observable<Bool> {
+        let refreshing: () -> Maybe<Bool> = { [weak self] in
+            return self?.optionsRespository
+                .fetchLastestsIsShrinkModeOn().map { $0 ?? false } ?? .empty()
+        }
+        return self.sharedStream(.readItemShrinkIsOn, refreshing: refreshing)
     }
     
     public func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
@@ -141,21 +155,13 @@ extension ReadItemUsecaseImple {
     private var orderKey: SharedDataKeys { .latestReadItemSortOption }
     private var customOrderKey: SharedDataKeys { .readItemCustomOrderMap }
     
-    public func loadLatestSortOption() -> Maybe<ReadCollectionItemSortOrder> {
-
-        let key = self.orderKey
+    public var sortOrder: Observable<ReadCollectionItemSortOrder> {
         
-        let updateLastestValueOnStore: (ReadCollectionItemSortOrder) -> Void = { [weak self] newValue in
-            self?.sharedStoreService
-                .update(ReadCollectionItemSortOrder.self, key: key.rawValue, value: newValue)
+        let refresh: () -> Maybe<ReadCollectionItemSortOrder> = { [weak self] in
+            return self?.optionsRespository
+                .fetchLatestSortOrder().map { $0 ?? .default } ?? .empty()
         }
-        let refreshedSortOption = self.optionsRespository.fetchLatestSortOrder()
-            .map { $0 ?? .default }
-            .do(onNext: updateLastestValueOnStore)
-        
-        let preloaded = self.sharedStoreService.fetch(ReadCollectionItemSortOrder.self, key: key)
-                
-        return preloaded.map { .just($0) } ?? refreshedSortOption
+        return self.sharedStream(self.orderKey, refreshing: refresh)
     }
     
     public func updateLatestSortOption(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void> {

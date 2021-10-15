@@ -209,7 +209,7 @@ extension MemberUsecaseImple {
         
         let key = SharedDataKeys.memberMap.rawValue
         let members: Observable<[Member]> = self.sharedDataStoreService
-            .observeValuesWithSetup(ids: ids, sharedKey: key, disposeBag: self.disposeBag,
+            .observeValuesInMappWithSetup(ids: ids, sharedKey: key, disposeBag: self.disposeBag,
                                     idSelector: { $0.uid },
                                     localFetchinig: localFetching,
                                     remoteLoading: remoteLoading)

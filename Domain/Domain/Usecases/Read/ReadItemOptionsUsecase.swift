@@ -24,11 +24,11 @@ public enum ReadCollectionItemSortOrder: Equatable {
 
 public protocol ReadItemOptionsUsecase {
     
-    func loadLatestShrinkModeIsOnOption() -> Maybe<Bool>
+    var isShrinkModeOn: Observable<Bool> { get }
     
     func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void>
     
-    func loadLatestSortOption() -> Maybe<ReadCollectionItemSortOrder>
+    var sortOrder: Observable<ReadCollectionItemSortOrder> { get }
     
     func updateLatestSortOption(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
     
