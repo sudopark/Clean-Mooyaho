@@ -84,6 +84,12 @@ extension MainViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.mainView.shrinkButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                // TODO: toggle udpate
+            })
+            .disposed(by: self.disposeBag)
+        
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindBottomSlideScroll()
@@ -111,7 +117,7 @@ extension MainViewController {
 
 extension MainViewController {
     
-    private var bottomSlideMinOffset: CGFloat { 80 }
+    private var bottomSlideMinOffset: CGFloat { 60 }
     private var bottomSlideMaxOffset: CGFloat { self.mainView.bottomSlideContainerView.frame.height-20 }
     
     typealias UpdateBottomOffsetParam = (offset: CGFloat, animationDuration: TimeInterval?)

@@ -84,6 +84,7 @@ final class MainView: BaseUIView {
     let bottomSearchBarView = SingleLineInputView()
     let profileImageView = IntegratedImageView()
     let bottomContentContainerView = UIView()
+    let shrinkButton = RoundImageButton()
     let floatingBottomButtonContainerView = FloatingButtonButtonView()
     var bottomSlideBottomOffsetConstraint: NSLayoutConstraint!
     var bottomSliderSearbarTrailingConstraint: NSLayoutConstraint!
@@ -108,7 +109,7 @@ extension MainView: Presenting {
             $0.heightAnchor.constraint(equalTo: $1.heightAnchor, constant: 0)
         }
         self.bottomSlideBottomOffsetConstraint = self.bottomSlideContainerView
-            .topAnchor.constraint(equalTo: self.bottomAnchor, constant: -80)
+            .topAnchor.constraint(equalTo: self.bottomAnchor, constant: -60)
         NSLayoutConstraint.activate([self.bottomSlideBottomOffsetConstraint])
         
         self.bottomSlideContainerView.addSubview(bottomSearchBarView)
@@ -127,8 +128,18 @@ extension MainView: Presenting {
         }
         profileImageView.setupLayout()
         
+        self.bottomSlideContainerView.addSubview(shrinkButton)
+        shrinkButton.autoLayout.active {
+            $0.widthAnchor.constraint(equalToConstant: 32)
+            $0.heightAnchor.constraint(equalToConstant: 32)
+            $0.trailingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: -12)
+            $0.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor)
+        }
+        shrinkButton.setupLayout()
+        
+        let defaultTrailing: CGFloat = -16 - 36 - 12 - 32 - 12
         bottomSliderSearbarTrailingConstraint = bottomSearchBarView.trailingAnchor
-            .constraint(equalTo: bottomSlideContainerView.trailingAnchor, constant: -16 - 36 - 12)
+            .constraint(equalTo: bottomSlideContainerView.trailingAnchor, constant: defaultTrailing)
         bottomSliderSearbarTrailingConstraint.isActive = true
         
         bottomSlideContainerView.addSubview(bottomContentContainerView)
@@ -167,6 +178,12 @@ extension MainView: Presenting {
         self.profileImageView.backgroundColor = self.uiContext.colors.hintText
         self.profileImageView.layer.cornerRadius = 18
         self.profileImageView.clipsToBounds = true
+        
+        self.shrinkButton.backgroundColor = self.uiContext.colors.raw.lightGray
+        self.shrinkButton.edge = .init(top: 6, left: 6, bottom: 6, right: 6)
+        self.shrinkButton.image = UIImage(named: "arrow.down.forward.and.arrow.up.backward")
+        self.shrinkButton.tintColor = .white
+        self.shrinkButton.updateRadius(16)
         
         self.floatingBottomButtonContainerView.setupStyling()
     }
