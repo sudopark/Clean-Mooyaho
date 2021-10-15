@@ -282,9 +282,13 @@ extension DependencyInjector: EditCategorySceneBuilable {
 
 extension DependencyInjector: EditItemsCustomOrderSceneBuilable {
     
-    public func makeEditItemsCustomOrderScene(listener: EditItemsCustomOrderSceneListenable?) -> EditItemsCustomOrderScene {
+    public func makeEditItemsCustomOrderScene(collectionID: String?,
+                                              listener: EditItemsCustomOrderSceneListenable?) -> EditItemsCustomOrderScene {
         let router = EditItemsCustomOrderRouter(nextSceneBuilders: self)
-        let viewModel = EditItemsCustomOrderViewModelImple(router: router, listener: listener)
+        let viewModel = EditItemsCustomOrderViewModelImple(collectionID: collectionID,
+                                                           readItemUsecase: self.readItemUsecase,
+                                                           router: router,
+                                                           listener: listener)
         let viewController = EditItemsCustomOrderViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

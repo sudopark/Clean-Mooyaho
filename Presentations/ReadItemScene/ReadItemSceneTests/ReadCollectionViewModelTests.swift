@@ -622,7 +622,7 @@ extension ReadCollectionViewModelTests {
         }
         
         var didMoveEditCustomOrder: Bool?
-        func roueToEditCustomOrder(for collectionID: String) {
+        func roueToEditCustomOrder(for collectionID: String?) {
             self.didMoveEditCustomOrder = true
         }
     }

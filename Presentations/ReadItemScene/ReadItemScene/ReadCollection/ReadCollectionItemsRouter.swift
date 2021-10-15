@@ -36,13 +36,13 @@ public protocol ReadCollectionRouting: Routing {
     
     func routeToEditReadLink(_ link: ReadLink)
     
-    func roueToEditCustomOrder(for collectionID: String)
+    func roueToEditCustomOrder(for collectionID: String?)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable & EditLinkItemSceneBuilable
+public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable & EditLinkItemSceneBuilable & EditItemsCustomOrderSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
@@ -129,7 +129,13 @@ extension ReadCollectionItemsRouter {
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     
-    public func roueToEditCustomOrder(for collectionID: String) {
-        logger.todoImplement(message: "roueToEditCustomOrder")
+    public func roueToEditCustomOrder(for collectionID: String?) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeEditItemsCustomOrderScene(collectionID: collectionID, listener: nil) else {
+            return
+        }
+        
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }
