@@ -376,3 +376,95 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
     }
 }
+
+
+// MARK: - shrink
+
+class ReadItemShrinkCell: BaseTableViewCell, Presenting {
+    
+    let shrinkView = ReadItemShrinkContentView()
+    let underLineView = UIView()
+    
+    override func afterViewInit() {
+        super.afterViewInit()
+        self.setupLayout()
+        self.setupStyling()
+    }
+    
+    func setupLayout() {
+        
+        self.contentView.addSubview(shrinkView)
+        shrinkView.autoLayout.fill(self.contentView, edges: .init(top: 8, left: 12, bottom: 8, right: 8))
+        shrinkView.setupLayout()
+        
+        self.contentView.addSubview(underLineView)
+        underLineView.autoLayout.active(with: self.contentView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 1)
+        }
+    }
+    
+    func setupStyling() {
+        
+        self.shrinkView.setupStyling()
+        self.underLineView.backgroundColor = self.uiContext.colors.lineColor
+    }
+}
+
+final class ReadItemShrinkCollectionCell: ReadItemShrinkCell {
+    
+    func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
+        
+        self.shrinkView.nameLabel.text = cellViewModel.name
+        
+        let validDescription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
+        self.shrinkView.descriptionLabel.isHidden = validDescription == nil
+        self.shrinkView.descriptionLabel.text = validDescription
+    }
+    
+    override func setupStyling() {
+        super.setupStyling()
+        self.shrinkView.iconImageView.image = UIImage(named: "folder")
+        self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
+    }
+}
+
+final class ReadItemShrinkLinkCell: ReadItemShrinkCell {
+    
+    func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
+        self.updateTitle(cellViewModel.customName)
+        
+        self.shrinkView.addressLabel.text = cellViewModel.linkUrl
+    }
+    
+    func bindPreview(_ source: Observable<LinkPreview>, customTitle: String?) {
+        
+        source
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] preview in
+                guard let self = self else { return }
+                (customTitle?.isEmpty ?? true).then <| { self.updateTitle(preview.title) }
+                self.updateDescription(preview.description)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateTitle(_ title: String?) {
+        let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "Fail to load preview".localized
+        self.shrinkView.nameLabel.text = title
+    }
+    
+    private func updateDescription(_ description: String?) {
+        let description = description.flatMap { $0.isNotEmpty ? $0 : nil }
+        self.shrinkView.descriptionLabel.isHidden = description == nil
+        self.shrinkView.descriptionLabel.text = description
+    }
+    
+    override func setupStyling() {
+        super.setupStyling()
+        self.shrinkView.iconImageView.image = UIImage(named: "doc.text")
+        self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
+    }
+}

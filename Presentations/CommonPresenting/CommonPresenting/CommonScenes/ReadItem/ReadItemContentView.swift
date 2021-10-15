@@ -36,6 +36,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         contentStackView.autoLayout.fill(self)
         contentStackView.axis = .vertical
         contentStackView.spacing = 4
+        contentStackView.setContentHuggingPriority(.init(rawValue: 250), for: .vertical)
         
         contentStackView.addArrangedSubview(titleAreaStackView)
         titleAreaStackView.axis = .horizontal
