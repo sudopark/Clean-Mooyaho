@@ -32,14 +32,11 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
-    private let locationUsecase: UserLocationUsecase
     
     public init(authUsecase: AuthUsecase,
-                memberUsecase: MemberUsecase,
-                locationUsecase: UserLocationUsecase) {
+                memberUsecase: MemberUsecase) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
-        self.locationUsecase = locationUsecase
         
         self.bindApplicationStatus()
         self.bindPushTokenUpload()

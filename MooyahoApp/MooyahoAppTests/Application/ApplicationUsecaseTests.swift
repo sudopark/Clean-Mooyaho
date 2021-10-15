@@ -22,24 +22,20 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var mockAuthUsecase: MockAuthUsecase!
     var mockMemberUsecase: MockMemberUsecase!
-    var mockUserLocationUsecase: MockUserLocationUsecase!
     var usecase: ApplicationUsecaseImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
         self.mockAuthUsecase = .init()
         self.mockMemberUsecase = .init()
-        self.mockUserLocationUsecase = .init()
         self.usecase = .init(authUsecase: self.mockAuthUsecase,
-                             memberUsecase: self.mockMemberUsecase,
-                             locationUsecase: self.mockUserLocationUsecase)
+                             memberUsecase: self.mockMemberUsecase)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockAuthUsecase = nil
         self.mockMemberUsecase = nil
-        self.mockUserLocationUsecase = nil
         self.usecase = nil
     }
 }

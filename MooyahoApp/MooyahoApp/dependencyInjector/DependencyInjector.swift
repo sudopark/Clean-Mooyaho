@@ -32,7 +32,6 @@ final class DependencyInjector {
         let firebaseServiceImple = FirebaseServiceImple(httpAPI: HttpAPIImple(),
                                                         serverKey: AppEnvironment.firebaseServiceKey ?? "")
         let kakaoService: KakaoService = KakaoServiceImple(remote: kakaoOAuthRemote)
-        let locationMonirotingService: LocationMonitoringService = LocationMonitoringServiceImple()
         
         let localStorage: LocalStorage = {
             let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
@@ -47,7 +46,7 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
-        var autoInfoManager: AuthInfoManger {
+        var authInfoManager: AuthInfoManger {
             return self.dataStoreImple
         }
         
@@ -103,10 +102,6 @@ extension DependencyInjector {
     var imagePickPermissionCheckService: ImagePickPermissionCheckService {
         return ImagePickPermissionCheckServiceImple()
     }
-    
-    var searchServiceProvider: SearchServiceProvider {
-        return SearchServiceProviders.naver
-    }
 }
 
 // MARK: - Usecases
@@ -117,7 +112,7 @@ extension DependencyInjector {
         
         return AuthUsecaseImple(authRepository: self.appReposiotry,
                                 oathServiceProviders: self.supportingOAuthServiceProviders,
-                                authInfoManager: self.shared.autoInfoManager,
+                                authInfoManager: self.shared.authInfoManager,
                                 sharedDataStroeService: self.shared.dataStore)
     }
     
@@ -127,47 +122,10 @@ extension DependencyInjector {
                                   sharedDataService: self.shared.dataStore)
     }
     
-    var userLocationUsecase: UserLocationUsecase {
-        
-        return UserLocationUsecaseImple(locationMonitoringService: self.shared.locationMonirotingService,
-                                        placeRepository: self.appReposiotry)
-    }
-    
-    var suggestPlaceUsecase: SuggestPlaceUsecase {
-        
-        return SuggestPlaceUsecaseImple(placeRepository: self.appReposiotry)
-    }
-    
     var applicationUsecase: ApplicationUsecase {
         
         return ApplicationUsecaseImple(authUsecase: self.authUsecase,
-                                       memberUsecase: self.memberUsecase,
-                                       locationUsecase: self.userLocationUsecase)
-    }
-    
-    var hoorayUsecase: HoorayUsecase {
-        
-        return HoorayUsecaseImple(authInfoProvider: self.shared.dataStore,
-                                  memberUsecase: self.memberUsecase,
-                                  hoorayRepository: self.appReposiotry,
-                                  messagingService: self.messagingService,
-                                  sharedStoreService: self.shared.dataStore)
-    }
-    
-    var searchNewPlaceUsecase: SearchNewPlaceUsecase {
-        
-        return SearchNewPlaceUsecaseImple(placeRepository: self.appReposiotry)
-    }
-    
-    var registerNewPlaceUsecase: RegisterNewPlaceUsecase {
-        let tags = PlaceCategoryTags.allCases.map{ $0.tag }.shuffled()
-        return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry,
-                                            categoryTags: tags)
-    }
-    
-    var placeUsecase: PlaceUsecase {
-        return PlaceUsecaseImple(placeRepository: self.appReposiotry,
-                                 sharedStoreService: self.shared.dataStore)
+                                       memberUsecase: self.memberUsecase)
     }
     
     var readItemUsecase: ReadItemUsecase {
