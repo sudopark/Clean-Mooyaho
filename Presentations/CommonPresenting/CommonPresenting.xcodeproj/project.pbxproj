@@ -101,6 +101,7 @@
 		F6E30E1E270B4BBD0012A2A0 /* ReadPriority+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */; };
 		F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E25270B5A180012A2A0 /* EmptyListener.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
+		F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
 		F6F29597266D1BB800CDF980 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F29596266D1BB800CDF980 /* Common3rdParty.framework */; };
@@ -217,6 +218,7 @@
 		F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadPriority+Extensions.swift"; sourceTree = "<group>"; };
 		F6E30E25270B5A180012A2A0 /* EmptyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListener.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
+		F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundShadowView.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickPermissionCheckService.swift; sourceTree = "<group>"; };
 		F6F29596266D1BB800CDF980 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -444,6 +446,7 @@
 				F6C97B1627091D2500990019 /* ShimmerView.swift */,
 				F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */,
 				F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */,
+				F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -641,6 +644,7 @@
 				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
+				F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */,
 				F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
 				F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */,
