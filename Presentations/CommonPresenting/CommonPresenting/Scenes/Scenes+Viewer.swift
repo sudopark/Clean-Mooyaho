@@ -10,18 +10,16 @@ import UIKit
 import Domain
 
 
-// MARK: - InnerWebViewScene Input & Output
+// MARK: - InnerWebViewScene Interactor & Listener
 
-public protocol InnerWebViewSceneInput { }
+public protocol InnerWebViewSceneInteractable { }
 
-public protocol InnerWebViewSceneOutput { }
+public protocol InnerWebViewSceneListenable { }
 
 
 // MARK: - InnerWebViewScene
 
 public protocol InnerWebViewScene: Scenable {
     
-    var input: InnerWebViewSceneInput? { get }
-
-    var output: InnerWebViewSceneOutput? { get }
+    var interactor: InnerWebViewSceneInteractable? { get }
 }

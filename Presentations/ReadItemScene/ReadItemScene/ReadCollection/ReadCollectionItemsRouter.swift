@@ -26,7 +26,7 @@ public protocol ReadCollectionRouting: Routing {
     
     func moveToSubCollection(collectionID: String)
     
-    func showLinkDetail(_ linkID: String)
+    func showLinkDetail(_ link: ReadLink)
     
     func routeToMakeNewCollectionScene(at collectionID: String?)
     
@@ -69,9 +69,9 @@ extension ReadCollectionItemsRouter {
         self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
-    public func showLinkDetail(_ linkID: String) {
+    public func showLinkDetail(_ link: ReadLink) {
         
-        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(itemID: linkID) else {
+        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(link: link) else {
             return
         }
         self.currentScene?.present(next, animated: true)

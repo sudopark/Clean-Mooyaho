@@ -300,9 +300,9 @@ extension DependencyInjector: EditItemsCustomOrderSceneBuilable {
 
 extension DependencyInjector: InnerWebViewSceneBuilable {
     
-    public func makeInnerWebViewScene(itemID: String) -> InnerWebViewScene {
+    public func makeInnerWebViewScene(link: ReadLink) -> InnerWebViewScene {
         let router = InnerWebViewRouter(nextSceneBuilders: self)
-        let viewModel = InnerWebViewViewModelImple(itemID: itemID,
+        let viewModel = InnerWebViewViewModelImple(link: link,
                                                    readItemUsecase: self.readItemUsecase,
                                                    router: router)
         let viewController = InnerWebViewViewController(viewModel: viewModel)

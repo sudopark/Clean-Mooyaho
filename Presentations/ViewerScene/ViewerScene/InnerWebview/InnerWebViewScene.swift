@@ -14,13 +14,9 @@ import RxCocoa
 import CommonPresenting
 
 
-// MARK: - InnerWebViewViewModelImple conform InnerWebViewSceneInput and InnerWebViewSceneOutput
+// MARK: - InnerWebViewViewModelImple conform InnerWebViewSceneInteractable and InnerWebViewSceneOutput
 
-extension InnerWebViewViewModelImple: InnerWebViewSceneInput {
-
-}
-
-extension InnerWebViewViewModelImple: InnerWebViewSceneOutput {
+extension InnerWebViewViewModelImple: InnerWebViewSceneInteractable {
 
 }
 
@@ -28,11 +24,7 @@ extension InnerWebViewViewModelImple: InnerWebViewSceneOutput {
 
 extension InnerWebViewViewController {
 
-    public var input: InnerWebViewSceneInput? {
-        return self.viewModel as? InnerWebViewSceneInput
-    }
-
-    public var output: InnerWebViewSceneOutput? {
-        return self.viewModel as? InnerWebViewSceneOutput
+    public var interactor: InnerWebViewSceneInteractable? {
+        return self.viewModel as? InnerWebViewSceneInteractable
     }
 }

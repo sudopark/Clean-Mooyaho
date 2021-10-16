@@ -29,15 +29,15 @@ public protocol InnerWebViewViewModel: AnyObject {
 
 public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     
-    private let itemID: String
+    private let link: ReadLink
     private let readItemUsecase: ReadItemUsecase
     private let router: InnerWebViewRouting
     
-    public init(itemID: String,
+    public init(link: ReadLink,
                 readItemUsecase: ReadItemUsecase,
                 router: InnerWebViewRouting) {
         
-        self.itemID = itemID
+        self.link = link
         self.readItemUsecase = readItemUsecase
         self.router = router
     }
