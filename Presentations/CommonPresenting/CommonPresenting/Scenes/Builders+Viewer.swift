@@ -7,10 +7,12 @@
 
 import UIKit
 
+import Domain
+
 
 // MARK: - Builder + DependencyInjector Extension
 
 public protocol InnerWebViewSceneBuilable {
     
-    func makeInnerWebViewScene(itemID: String) -> InnerWebViewScene
+    func makeInnerWebViewScene(link: ReadLink) -> InnerWebViewScene
 }

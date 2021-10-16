@@ -613,7 +613,7 @@ extension ReadCollectionViewModelTests {
             self.verify(key: "moveToSubCollection")
         }
         
-        func showLinkDetail(_ linkID: String) {
+        func showLinkDetail(_ link: ReadLink) {
             self.verify(key: "showLinkDetail")
         }
         

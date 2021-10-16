@@ -205,7 +205,7 @@ extension ReadCollectionViewItemsModelImple {
             self.router.moveToSubCollection(collectionID: collectionItem.uid)
             
         case let linkItem as ReadLink:
-            self.router.showLinkDetail(linkItem.uid)
+            self.router.showLinkDetail(linkItem)
             
         default: break
         }
