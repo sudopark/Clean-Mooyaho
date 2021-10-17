@@ -11,6 +11,7 @@ import WebKit
 
 import RxSwift
 import RxCocoa
+import Prelude
 
 import CommonPresenting
 
@@ -47,6 +48,7 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        self.loadWebPage()
     }
 }
 
@@ -62,28 +64,92 @@ extension InnerWebViewViewController {
             })
             .disposed(by: self.disposeBag)
         
-        let url = URL(string: "https://www.naver.com")
-        let request = URLRequest(url: url!)
-        self.webView.load(request)
+        
+        self.viewModel.urlPageTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.toolBar.titleLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        
+        self.bindWebView()
+    }
+    
+    private func loadWebPage() {
+        
+        guard let url = URL(string: self.viewModel.loadURL) else { return }
+        let urlRequest = URLRequest(url: url)
+        self.webView.load(urlRequest)
     }
     
     private func bindScrollView() {
         
-        self.webView.scrollView.rx.contentOffset
-            .map { $0.y }
+        let scrollY = self.webView.scrollView.rx.contentOffset.map { $0.y }.asObservable()
+        let scrollChanges = Observable.zip(scrollY, scrollY.skip(1))
+            .map { (previous, current) in current - previous }
+        let isScrollDown = scrollChanges.map { $0 >= 0 }
+        
+        let threshold = InnerWebViewBottomToolBar.Metric.height
+        let filterWhenUserDragging: (Bool) -> Bool? = { [weak self] isDown in
+            guard let self = self else { return nil }
+            let isAnimatable = self.webView.scrollView.isDragging && self.webView.scrollView.contentOffset.y > threshold
+            return isAnimatable ? isDown : nil
+        }
+        
+        isScrollDown
+            .compactMap(filterWhenUserDragging)
             .distinctUntilChanged()
-            .throttle(.milliseconds(50), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] y in
-                self?.toolBar.updateToolbarPosition(by: y)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] isDown in
+                self?.toolBar.hideOrShowToolbarWithAnimation(isDown)
             })
             .disposed(by: self.disposeBag)
+    }
+}
+
+// MARK: - handling webView delegates
+
+extension InnerWebViewViewController: WKNavigationDelegate {
+    
+    private func bindWebView() {
+        self.webView.rx.observeWeakly(Double.self, "estimatedProgress", options: .new)
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] progress in
+                self?.toolBar.updateLoadingStatus(progress)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.toolBar.backButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                guard self?.webView.canGoBack == true else { return }
+                self?.webView.goBack()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.toolBar.nextButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                guard self?.webView.canGoForward == true else { return }
+                self?.webView.goForward()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.toolBar.refreshButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                guard self?.webView.isLoading == false else { return }
+                self?.webView.reload()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        let forwardCount = self.webView.backForwardList.forwardList.count
+        let backwardCount = self.webView.backForwardList.backList.count
+        self.toolBar.updateNavigationButton(isBack: true, enable: backwardCount > 0)
+        self.toolBar.updateNavigationButton(isBack: false, enable: forwardCount > 0)
     }
 }
 
 // MARK: - setup presenting
 
 extension InnerWebViewViewController: Presenting {
-    
     
     public func setupLayout() {
         
@@ -126,6 +192,8 @@ extension InnerWebViewViewController: Presenting {
         self.webView.scrollView.contentInset = .init(top: 0, left: 0,
                                                      bottom: InnerWebViewBottomToolBar.Metric.height,
                                                      right: 0)
+        self.webView.allowsBackForwardNavigationGestures = true
+        self.webView.navigationDelegate = self
         
         self.toolBar.setupStyling()
     }

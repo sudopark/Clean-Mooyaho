@@ -32,9 +32,9 @@ final class InnerWebViewBottomToolBar: BaseUIView {
     let titleLabel = UILabel()
     let editButton = UIButton()
     let refreshButton = UIButton()
-    private var titleLabelWidthRatioConstraint: NSLayoutConstraint!
-    private var progressLayer: CAShapeLayer?
+    private let progressView = UIView()
     private var titleLabelCenterOffsetConstraint: NSLayoutConstraint!
+    private var progressPercentWidthConstraint: NSLayoutConstraint!
     
     let stackView = UIStackView()
     let backButton = UIButton()
@@ -44,21 +44,25 @@ final class InnerWebViewBottomToolBar: BaseUIView {
     let safariButton = UIButton()
     
     weak var bottomOffsetConstraint: NSLayoutConstraint?
+}
+
+
+// MARK: - udpate view position
+
+extension InnerWebViewBottomToolBar {
     
-    
-    func updateToolbarPosition(by scrollY: CGFloat) {
+    func hideOrShowToolbarWithAnimation(_ hide: Bool) {
+     
+        let percent: CGFloat = hide ? 1 : 0
         
-        let smallerThan1 = 1 |> CGFloat.init >>> curry(Swift.min)
-        let biggerThan0 = 0 |> CGFloat.init >>> curry(Swift.max)
-        
-        let distance = Metric.height - Metric.shrinkHeight
-        let percent = (scrollY / distance) |> smallerThan1 >>> biggerThan0
-        
-        self.udpateTopContainerVisibility(by: percent)
-        self.updateToolbarBottomOffset(by: percent, distance: distance)
+        self.updateToolbarBottomOffset(by: percent)
         self.updateTitleLabelTopConstraint(by: percent)
-        self.updateTitleLabelRatio(by: percent)
         
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.udpateTopContainerVisibility(by: percent)
+            self?.layoutIfNeeded()
+            self?.superview?.layoutIfNeeded()
+        })
     }
     
     private func udpateTopContainerVisibility(by percent: CGFloat) {
@@ -67,21 +71,40 @@ final class InnerWebViewBottomToolBar: BaseUIView {
         self.stackView.alpha = alpha
     }
     
-    private func updateToolbarBottomOffset(by percent: CGFloat, distance: CGFloat) {
+    private func updateToolbarBottomOffset(by percent: CGFloat) {
+        let distance = Metric.height - Metric.shrinkHeight
         let dy = distance * percent
         let newOffset = Metric.height - dy
         self.bottomOffsetConstraint?.constant = -newOffset
-    }
-    
-    private func updateTitleLabelRatio(by percent: CGFloat) {
-        let newPadding = Metric.titleHorizontalPadding * (1 - percent)
-        self.titleLabelWidthRatioConstraint.constant = -newPadding
     }
     
     private func updateTitleLabelTopConstraint(by percent: CGFloat) {
         let distance = Metric.titleLabelCenterOffsetShrink - Metric.titleLabelCenterOffset
         let dy = distance * percent
         self.titleLabelCenterOffsetConstraint.constant = -dy
+    }
+}
+
+
+// MARK: - update view loading status
+
+extension InnerWebViewBottomToolBar {
+    
+    func updateLoadingStatus(_ percent: Double) {
+        self.udpateLoadingPercentLayer(percent)
+    }
+    
+    private func udpateLoadingPercentLayer(_ percent: Double) {
+        let newWidth = (self.topContainerView.frame.width - 30.0) * percent
+        self.progressPercentWidthConstraint.constant = newWidth
+        self.progressView.isHidden = percent >= 1.0
+    }
+    
+    func updateNavigationButton(isBack: Bool, enable: Bool) {
+        let button = isBack ? self.backButton : self.nextButton
+        let color = enable ? self.uiContext.colors.buttonBlue : self.uiContext.colors.raw.lightGray
+        button.isEnabled = enable
+        button.tintColor = color
     }
 }
 
@@ -105,6 +128,16 @@ extension InnerWebViewBottomToolBar: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 36)
         }
         
+        topContainerView.addSubview(progressView)
+        progressView.autoLayout.active(with: self.topContainerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 15)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 2)
+        }
+        self.progressPercentWidthConstraint = progressView.widthAnchor
+            .constraint(equalToConstant: 0)
+        self.progressPercentWidthConstraint.isActive = true
+        
         topContainerView.addSubview(editButton)
         editButton.autoLayout.active(with: topContainerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
@@ -124,13 +157,11 @@ extension InnerWebViewBottomToolBar: Presenting {
         self.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: topContainerView) {
             $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor, constant: -Metric.titleHorizontalPadding)
         }
         self.titleLabelCenterOffsetConstraint = titleLabel.centerYAnchor
             .constraint(equalTo: topContainerView.centerYAnchor, constant: 0)
         self.titleLabelCenterOffsetConstraint.isActive = true
-        self.titleLabelWidthRatioConstraint = titleLabel.widthAnchor
-            .constraint(equalTo: self.topContainerView.widthAnchor, constant: -Metric.titleHorizontalPadding)
-        self.titleLabelWidthRatioConstraint.isActive = true
         
         self.addSubview(stackView)
         stackView.autoLayout.active(with: self) {
@@ -168,9 +199,7 @@ extension InnerWebViewBottomToolBar: Presenting {
         self.editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         self.editButton.tintColor = self.uiContext.colors.secondaryTitle
         
-        let configure = UIImage.SymbolConfiguration(pointSize: 12)
-        let closeImage = UIImage(systemName: "xmark", withConfiguration: configure)
-        self.refreshButton.setImage(closeImage, for: .normal)
+        self.refreshButton.setImage(UIImage(systemName: "arrow.clockwise.circle.fill"), for: .normal)
         self.refreshButton.tintColor = self.uiContext.colors.secondaryTitle
         
         _ = self.titleLabel
@@ -193,5 +222,7 @@ extension InnerWebViewBottomToolBar: Presenting {
         self.readMarkButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
         
         self.safariButton.setImage(UIImage(systemName: "safari"), for: .normal)
+        
+        self.progressView.backgroundColor = self.uiContext.colors.buttonBlue
     }
 }
