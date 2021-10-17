@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -20,8 +22,11 @@ import CommonPresenting
 public protocol InnerWebViewViewModel: AnyObject {
 
     // interactor
+    func prepareLinkData()
     
     // presenter
+    var loadURL: String { get }
+    var urlPageTitle: Observable<String> { get }
 }
 
 
@@ -40,6 +45,8 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
         self.link = link
         self.readItemUsecase = readItemUsecase
         self.router = router
+        
+        self.bindLinkItem(startWith: link)
     }
     
     deinit {
@@ -48,11 +55,16 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     }
     
     fileprivate final class Subjects {
-        
+        let item = BehaviorRelay<ReadLink?>(value: nil)
     }
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    private func bindLinkItem(startWith: ReadLink?) {
+        
+        self.subjects.item.accept(startWith)
+    }
 }
 
 
@@ -60,6 +72,9 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
 
 extension InnerWebViewViewModelImple {
     
+    public func prepareLinkData() {
+        
+    }
 }
 
 
@@ -67,4 +82,35 @@ extension InnerWebViewViewModelImple {
 
 extension InnerWebViewViewModelImple {
     
+    public var loadURL: String {
+        return self.link.link
+    }
+    
+    public var urlPageTitle: Observable<String> {
+        
+        typealias AddressAndTitle = (address: String, title: String?)
+        let customNameInLinkItem = self.subjects.item.compactMap { $0 }
+        let orUsePreviewTitle: (ReadLink) -> Observable<AddressAndTitle> = { [weak self] item in
+            guard let self = self else { return .empty() }
+            return item.customName?.emptyAsNil() != nil
+                ? .just((item.link, item.customName))
+                : self.readItemUsecase.previewTitle(for: item.link).map { (item.link, $0) }
+                
+        }
+        let elseUseAddress: (AddressAndTitle) -> String = { $0.title?.emptyAsNil() ?? $0.address }
+        
+        return customNameInLinkItem
+            .flatMapLatest(orUsePreviewTitle)
+            .map(elseUseAddress)
+            .distinctUntilChanged()
+    }
+}
+
+
+private extension ReadItemUsecase {
+    
+    func previewTitle(for address: String) -> Observable<String?> {
+        return self.loadLinkPreview(address)
+            .map { $0.title }
+    }
 }

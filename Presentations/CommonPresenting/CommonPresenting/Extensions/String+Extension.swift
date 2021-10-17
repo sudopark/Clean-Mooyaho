@@ -68,6 +68,10 @@ extension String {
         return self.data(using: .nonLossyASCII, allowLossyConversion: true)
             .flatMap{ String(data: $0, encoding: .utf8) } ?? self
     }
+    
+    public func emptyAsNil() -> String? {
+        return self.isEmpty ? nil : self
+    }
 }
 
 
