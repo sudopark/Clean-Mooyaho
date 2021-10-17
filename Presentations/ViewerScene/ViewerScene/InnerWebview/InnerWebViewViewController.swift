@@ -64,13 +64,27 @@ extension InnerWebViewViewController {
             })
             .disposed(by: self.disposeBag)
         
-        
         self.viewModel.urlPageTitle
             .asDriver(onErrorDriveWith: .never())
             .drive(self.toolBar.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
         
         self.bindWebView()
+        
+        self.toolBar.safariButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                guard let address = self?.viewModel.loadURL,
+                      let url = URL(string: address) else { return }
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            })
+            .disposed(by: self.disposeBag)
+        
+        Observable.merge(self.toolBar.editButton.rx.throttleTap(),
+                         self.toolBar.titleLabel.rx.addTapgestureRecognizer().map { _ in })
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.editReadLink()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func loadWebPage() {
@@ -135,6 +149,12 @@ extension InnerWebViewViewController: WKNavigationDelegate {
             .subscribe(onNext: { [weak self] in
                 guard self?.webView.isLoading == false else { return }
                 self?.webView.reload()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.toolBar.safariButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.openPageInSafari()
             })
             .disposed(by: self.disposeBag)
     }
