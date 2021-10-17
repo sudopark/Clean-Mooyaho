@@ -45,7 +45,7 @@ public final class InfoSectionView<InnerView: UIView>: BaseUIView, Presenting {
     public func setupStyling() {
         (self.innerView as? Presenting)?.setupStyling()
         
-        self.arrowImageView.image = UIImage(named: "chevron.right")
+        self.arrowImageView.image = UIImage(systemName: "chevron.right")
         self.arrowImageView.contentMode = .scaleAspectFit
         self.arrowImageView.tintColor = .lightGray.withAlphaComponent(0.5)
         

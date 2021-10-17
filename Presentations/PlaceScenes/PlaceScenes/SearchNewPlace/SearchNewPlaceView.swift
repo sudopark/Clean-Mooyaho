@@ -78,7 +78,7 @@ final class SearchNewPlaceAddCell: BaseTableViewCell, Presenting {
     
     func setupStyling() {
         
-        self.addImageView.image = UIImage(named: "plus")
+        self.addImageView.image = UIImage(systemName: "plus")
         
         self.label.font = UIFont.systemFont(ofSize: 13)
         self.label.textColor = UIColor.systemBlue
@@ -216,7 +216,7 @@ final class SearchNewPlaceCell: BaseTableViewCell, Presenting {
         self.distanceLabel.font = UIFont.systemFont(ofSize: 12)
         self.distanceLabel.numberOfLines = 2
         
-        self.checkImageView.image = UIImage(named: "checkmark.circle.fill")
+        self.checkImageView.image = UIImage(systemName: "checkmark.circle.fill")
         self.checkImageView.isHidden = true
         
         

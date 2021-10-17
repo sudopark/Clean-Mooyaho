@@ -55,7 +55,7 @@ final class SuggestingCategoryLabelView: BaseUIView, Presenting {
         self.nameLabel.font = self.uiContext.fonts.get(14, weight: .regular)
         self.nameLabel.textColor = UIColor.white
         
-        self.closeImageView.image = UIImage(named: "xmark")
+        self.closeImageView.image = UIImage(systemName: "xmark")
         self.closeImageView.tintColor = .white
         self.closeImageView.isHidden = true
         self.closeImageView.contentMode = .scaleAspectFit

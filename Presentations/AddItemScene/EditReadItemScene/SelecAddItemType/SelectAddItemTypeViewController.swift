@@ -60,7 +60,7 @@ final class ItemTypeView: BaseUIView, Presenting {
     
     func setupStyling() {
         
-        self.addIconView.image = UIImage(named: "plus")
+        self.addIconView.image = UIImage(systemName: "plus")
         self.addIconView.tintColor = self.uiContext.colors.buttonBlue
         
         _ = self.titleLabel
@@ -181,12 +181,12 @@ extension SelectAddItemTypeViewController: Presenting {
             |> \.text .~ "Select new item type"
         
         self.addCollectionButtonView.setupStyling()
-        self.addCollectionButtonView.itemTypeImageView.image = UIImage(named: "folder")
+        self.addCollectionButtonView.itemTypeImageView.image = UIImage(systemName: "folder")
         self.addCollectionButtonView.itemTypeImageView.tintColor = self.uiContext.colors.buttonBlue
         self.addCollectionButtonView.titleLabel.text = "Add a new collection"
         
         self.addLinkButtonView.setupStyling()
-        self.addLinkButtonView.itemTypeImageView.image = UIImage(named: "doc.text")
+        self.addLinkButtonView.itemTypeImageView.image = UIImage(systemName: "doc.text")
         self.addLinkButtonView.itemTypeImageView.tintColor = self.uiContext.colors.buttonBlue
         self.addLinkButtonView.titleLabel.text = "Add a new read link"
     }

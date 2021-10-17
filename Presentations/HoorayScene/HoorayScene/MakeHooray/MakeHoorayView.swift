@@ -135,7 +135,7 @@ extension MakeHoorayView: Presenting {
         self.inputImageView.clipsToBounds = true
         self.inputImageView.isUserInteractionEnabled = true
         
-        self.imageInputButton.image = UIImage(named: "plus")
+        self.imageInputButton.image = UIImage(systemName: "plus")
         self.imageInputButton.isUserInteractionEnabled = false
         
         self.messageTextView.textColor = self.uiContext.colors.text

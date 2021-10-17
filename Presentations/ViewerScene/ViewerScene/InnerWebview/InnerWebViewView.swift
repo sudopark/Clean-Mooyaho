@@ -213,7 +213,7 @@ extension InnerWebViewBottomToolBar: Presenting {
         self.backButton.isEnabled = false
         self.backButton.tintColor = self.uiContext.colors.raw.lightGray
         
-        self.nextButton.setImage(UIImage(named: "chevron.right"), for: .normal)
+        self.nextButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         self.nextButton.isEnabled = false
         self.nextButton.tintColor = self.uiContext.colors.raw.lightGray
         

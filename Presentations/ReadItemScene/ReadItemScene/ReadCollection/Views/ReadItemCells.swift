@@ -159,11 +159,11 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.descriptionLabel.numberOfLines = 1
         
         self.priorityView.setupStyling()
-        self.priorityView.iconView.image = UIImage(named: "arrow.up.arrow.down.square")
+        self.priorityView.iconView.image = UIImage(systemName: "arrow.up.arrow.down.square")
         self.priorityView.keyLabel.text = "Priority".localized
         
         self.categoryView.setupStyling()
-        self.categoryView.iconView.image = UIImage(named: "line.horizontal.3.decrease.circle")
+        self.categoryView.iconView.image = UIImage(systemName: "line.horizontal.3.decrease.circle")
         self.categoryView.keyLabel.text = "Categories".localized
         
         self.descriptionLabel.isHidden = true
@@ -242,12 +242,12 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
     
     func setupStyling() {
         
-        self.arrowImageView.image = UIImage(named: "chevron.right")
+        self.arrowImageView.image = UIImage(systemName: "chevron.right")
         self.arrowImageView.contentMode = .scaleAspectFit
         self.arrowImageView.tintColor = self.uiContext.colors.hintText
         
         self.expandView.setupStyling()
-        self.expandView.iconImageView.image = UIImage(named: "folder")
+        self.expandView.iconImageView.image = UIImage(systemName: "folder")
         self.expandView.tintColor = self.uiContext.colors.secondaryTitle
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
@@ -368,7 +368,7 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
             |> \.isHidden .~ true
         
         self.expandView.setupStyling()
-        self.expandView.iconImageView.image = UIImage(named: "doc.text")
+        self.expandView.iconImageView.image = UIImage(systemName: "doc.text")
         self.expandView.tintColor = self.uiContext.colors.secondaryTitle
         
         self.expandView.addressLabel.isHidden = false
@@ -426,7 +426,7 @@ final class ReadItemShrinkCollectionCell: ReadItemShrinkCell {
     
     override func setupStyling() {
         super.setupStyling()
-        self.shrinkView.iconImageView.image = UIImage(named: "folder")
+        self.shrinkView.iconImageView.image = UIImage(systemName: "folder")
         self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
     }
 }
@@ -464,7 +464,7 @@ final class ReadItemShrinkLinkCell: ReadItemShrinkCell {
     
     override func setupStyling() {
         super.setupStyling()
-        self.shrinkView.iconImageView.image = UIImage(named: "doc.text")
+        self.shrinkView.iconImageView.image = UIImage(systemName: "doc.text")
         self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
     }
 }

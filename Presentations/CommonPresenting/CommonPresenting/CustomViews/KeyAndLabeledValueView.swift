@@ -74,7 +74,7 @@ public final class KeyAndLabeledValueView: BaseUIView, Presenting {
         self.labelView.font = self.uiContext.fonts.get(13, weight: .regular)
         self.labelView.setupStyling()
         
-        self.rightButton.setImage(UIImage(named: "chevron.right"), for: .normal)
+        self.rightButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         self.rightButton.tintColor = self.uiContext.colors.hintText
         self.rightButton.isHidden = true
     }

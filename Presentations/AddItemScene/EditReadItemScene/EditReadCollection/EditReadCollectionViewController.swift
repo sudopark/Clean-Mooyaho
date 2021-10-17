@@ -261,12 +261,12 @@ extension EditReadCollectionViewController: Presenting {
         self.addCategoryButton.contentHorizontalAlignment = .leading
         
         self.priorityLabelView.setupStyling()
-        self.priorityLabelView.iconView.image = UIImage(named: "arrow.up.arrow.down.square")
+        self.priorityLabelView.iconView.image = UIImage(systemName: "arrow.up.arrow.down.square")
         self.priorityLabelView.keyLabel.text = "Priority".localized
         self.priorityLabelView.updateRightButtonIsHidden(false)
         
         self.categoriesLabelView.setupStyling()
-        self.categoriesLabelView.iconView.image = UIImage(named: "line.horizontal.3.decrease.circle")
+        self.categoriesLabelView.iconView.image = UIImage(systemName: "line.horizontal.3.decrease.circle")
         self.categoriesLabelView.keyLabel.text = "Categories".localized
         self.categoriesLabelView.updateRightButtonIsHidden(false)
         

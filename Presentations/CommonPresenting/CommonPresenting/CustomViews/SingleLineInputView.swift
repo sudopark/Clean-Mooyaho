@@ -103,8 +103,8 @@ extension SingleLineInputView: Presenting {
         
         self.backgroundColor = self.uiContext.colors.lineColor
         
-        self.iconImageView.image = UIImage(named: "magnifyingglass")
-        self.cleaerButton.setImage(UIImage(named: "xmark.circle.fill"), for: .normal)
+        self.iconImageView.image = UIImage(systemName: "magnifyingglass")
+        self.cleaerButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         self.cleaerButton.isHidden = true
 
         self.indicator.isHidden = true

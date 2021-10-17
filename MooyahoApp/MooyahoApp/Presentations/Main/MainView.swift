@@ -58,7 +58,7 @@ final class FloatingButtonButtonView: BaseUIView, Presenting {
         self.roundView.clipsToBounds = true
         self.roundView.backgroundColor = UIColor.systemIndigo
         
-        self.iconImageView.image = UIImage(named: "plus")
+        self.iconImageView.image = UIImage(systemName: "plus")
         self.iconImageView.tintColor = .white
         
         self.titleLabel.font = self.uiContext.fonts.get(16, weight: .bold)
@@ -181,7 +181,7 @@ extension MainView: Presenting {
         
         self.shrinkButton.backgroundColor = self.uiContext.colors.raw.lightGray
         self.shrinkButton.edge = .init(top: 6, left: 6, bottom: 6, right: 6)
-        self.shrinkButton.image = UIImage(named: "arrow.down.forward.and.arrow.up.backward")
+        self.shrinkButton.image = UIImage(systemName: "arrow.down.forward.and.arrow.up.backward")
         self.shrinkButton.tintColor = .white
         self.shrinkButton.updateRadius(16)
         

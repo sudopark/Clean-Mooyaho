@@ -67,9 +67,9 @@ extension SearchBar: Presenting {
         self.inputBackgroundView.layer.cornerRadius = 4
         self.inputBackgroundView.clipsToBounds = true
         
-        self.searchIconImageView.image = UIImage(named: "magnifyingglass")
+        self.searchIconImageView.image = UIImage(systemName: "magnifyingglass")
         
-        self.clearButton.setImage(UIImage(named: "xmark.circle.fill"), for: .normal)
+        self.clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         self.clearButton.isHidden = true
         self.clearButton.tintColor = .gray
         

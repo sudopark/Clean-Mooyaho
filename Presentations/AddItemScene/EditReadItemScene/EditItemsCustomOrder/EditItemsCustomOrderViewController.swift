@@ -71,7 +71,7 @@ final class EditItemOrderCollectionCell: EditItemOrderCell {
     
     override func setupStyling() {
         super.setupStyling()
-        self.shrinkView.iconImageView.image = UIImage(named: "folder")
+        self.shrinkView.iconImageView.image = UIImage(systemName: "folder")
         self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
     }
 }
@@ -109,7 +109,7 @@ final class EditItemOrderLinkCell: EditItemOrderCell {
     
     override func setupStyling() {
         super.setupStyling()
-        self.shrinkView.iconImageView.image = UIImage(named: "doc.text")
+        self.shrinkView.iconImageView.image = UIImage(systemName: "doc.text")
         self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
     }
 }

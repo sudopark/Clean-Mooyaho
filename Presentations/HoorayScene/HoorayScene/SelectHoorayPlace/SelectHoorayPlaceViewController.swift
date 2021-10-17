@@ -209,7 +209,7 @@ extension SelectHoorayPlaceViewController: MKMapViewDelegate {
         annotationView.markerTintColor = placeAnnotation.isSelected ? UIColor.systemBlue : UIColor.gray
         
         let checkImageName = placeAnnotation.isSelected ? "checkmark.circle.fill" : "checkmark.circle"
-        annotationView.leftCalloutAccessoryView = UIImageView(image: UIImage(named: checkImageName))
+        annotationView.leftCalloutAccessoryView = UIImageView(image: UIImage(systemName: checkImageName))
         
         let detailButton = UIButton(type: .detailDisclosure)
         annotationView.rightCalloutAccessoryView = detailButton

@@ -135,7 +135,7 @@ private extension OAuthServiceProviderType {
         switch definedTypes {
         case .kakao:
             let button = UIButton()
-            button.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
+            button.setImage(UIImage(systemName: "kakao_login_large_wide"), for: .normal)
             return button
             
         case .apple:

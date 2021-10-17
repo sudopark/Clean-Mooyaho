@@ -294,8 +294,8 @@ private extension ReadCollectionItemSwipeContextAction {
     
     private var image: UIImage? {
         switch self {
-        case .delete: return UIImage(named: "trash.fill")
-        case .edit: return UIImage(named: "highlighter")
+        case .delete: return UIImage(systemName: "trash.fill")
+        case .edit: return UIImage(systemName: "highlighter")
         }
     }
     
