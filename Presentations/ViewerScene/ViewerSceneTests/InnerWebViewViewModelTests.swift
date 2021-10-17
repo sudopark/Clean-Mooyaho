@@ -22,6 +22,8 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     
     var disposeBag: DisposeBag!
     var didShowError: Bool?
+    var didSafariOpen: Bool?
+    var didEditRequested: Bool?
 
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -30,10 +32,20 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.didShowError = nil
+        self.didSafariOpen = nil
+        self.didEditRequested = nil
     }
     
     private var dummyItem: ReadLink {
         return ReadLink.dummy(10)
+    }
+    
+    func openSafariBrowser(_ address: String) {
+        self.didSafariOpen = true
+    }
+    
+    func editReadLink(_ item: ReadLink) {
+        self.didEditRequested = true
     }
     
     private func makeViewModel(_ item: ReadLink,
@@ -102,5 +114,27 @@ extension InnerWebViewViewModelTests {
         
         // then
         XCTAssertEqual(title, "custom title")
+    }
+    
+    func testViewModel_openSafari() {
+        // given
+        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        
+        // when
+        viewModel.openPageInSafari()
+        
+        // then
+        XCTAssert(self.didSafariOpen == true)
+    }
+    
+    func testViewModel_editItem() {
+        // given
+        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        
+        // when
+        viewModel.editReadLink()
+        
+        // then
+        XCTAssert(self.didEditRequested == true)
     }
 }

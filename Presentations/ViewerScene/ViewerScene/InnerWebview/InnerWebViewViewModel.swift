@@ -23,6 +23,8 @@ public protocol InnerWebViewViewModel: AnyObject {
 
     // interactor
     func prepareLinkData()
+    func openPageInSafari()
+    func editReadLink()
     
     // presenter
     var loadURL: String { get }
@@ -74,6 +76,14 @@ extension InnerWebViewViewModelImple {
     
     public func prepareLinkData() {
         
+    }
+    
+    public func openPageInSafari() {
+        self.router.openSafariBrowser(self.link.link)
+    }
+    
+    public func editReadLink() {
+        self.router.editReadLink(self.link)
     }
 }
 
