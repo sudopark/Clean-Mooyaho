@@ -18,9 +18,7 @@ public protocol FCMService {
     func setupFCMService()
     
     func apnsTokenUpdated(_ token: Data)
-    
-    func checkIsGranted()
-    
+
     func didReceiveDataMessage(_ userInfo: [AnyHashable: Any])
     
     var isNotificationGranted: Observable<Bool> { get }
@@ -31,32 +29,59 @@ public protocol FCMService {
 }
 
 
+extension FirebaseServiceImple: MessagingService {
+    
+    public func prepareNotificationPermission() -> Maybe<Bool> {
+        
+        let currentStatus = self.getCurrentPermission()
+        
+        let requestIfNeed: (UNAuthorizationStatus) -> Maybe<Bool> = { [weak self] status in
+            guard let self = self else { return .empty() }
+            return status == .notDetermined
+                ? self.requestPermission()
+                : status == .authorized ? .just(true)
+                : .just(false)
+        }
+        return currentStatus
+            .flatMap(requestIfNeed)
+    }
+    
+    private func getCurrentPermission() -> Maybe<UNAuthorizationStatus> {
+        return Maybe.create { callback in
+            UNUserNotificationCenter.current().getNotificationSettings { setting in
+                callback(.success(setting.authorizationStatus))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    private func requestPermission() -> Maybe<Bool> {
+        return Maybe.create { callback in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { result, _ in
+                callback(.success(result))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public var receivedMessage: Observable<Message> {
+        return self.receivePushMessage
+    }
+}
+
+
 extension FirebaseServiceImple: FCMService {
     
     public func setupFCMService() {
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { grant, _ in
-            self.notificationAuthorizationGranted.onNext(grant)
-            if grant {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
-        }
-    }
-    
-    public func checkIsGranted() {
-        
-        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { setting in
-            switch setting.authorizationStatus {
-            case .denied:
-                self.notificationAuthorizationGranted.onNext(false)
-            case .authorized:
-                self.notificationAuthorizationGranted.onNext(true)
-            default: break
-            }
-        })
+        self.prepareNotificationPermission()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] grant in
+                self?.notificationAuthorizationGranted.onNext(grant)
+                UIApplication.shared.registerForRemoteNotifications()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     public func apnsTokenUpdated(_ token: Data) {

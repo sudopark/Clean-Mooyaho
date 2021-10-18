@@ -90,27 +90,6 @@ extension ApplicationViewModelTests {
     }
 }
 
-// MARK: - test notification
-
-extension ApplicationViewModelTests {
-    
-    func testViewModel_whenRequestNotificationAuthorizationAndDenied_showGrantNeedBanner() {
-        // given
-        let expect = expectation(description: "앱 론칭 이후에 알림권한없으면 필요 배너 알림")
-        let _ = self.makeViewModel(false)
-        
-        self.spyRouter.called(key: "showNotificationAuthorizationNeedBanner") { _ in
-            expect.fulfill()
-        }
-        // when
-        self.stubFCMService.checkIsGranted()
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-}
-
-
 // MARK: - test handle urls
 
 extension ApplicationViewModelTests {

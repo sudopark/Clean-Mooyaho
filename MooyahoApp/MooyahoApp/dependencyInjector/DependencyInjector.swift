@@ -49,11 +49,6 @@ final class DependencyInjector {
         var authInfoManager: AuthInfoManger {
             return self.dataStoreImple
         }
-        
-        var pushBaseMessageService: PushBaseMessageService {
-            let source = self.firebaseServiceImple.receivePushMessage
-            return PushBaseMessageService(pushMessageSource: source)
-        }
     }
     
     let shared: Shared = Shared()
@@ -67,7 +62,7 @@ final class DependencyInjector {
     }
     
     var messagingService: MessagingService {
-        return self.shared.pushBaseMessageService
+        return self.shared.firebaseServiceImple
     }
 }
 
