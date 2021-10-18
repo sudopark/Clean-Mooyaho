@@ -17,6 +17,10 @@ import UnitTestHelpKit
 
 class MockMessagingService: MessagingService, Mocking {
     
+    let mockPermission = PublishSubject<Bool>()
+    func prepareNotificationPermission() -> Maybe<Bool> {
+        return self.mockPermission.asMaybe()
+    }
     
     let newMessage = PublishSubject<Message>()
     var receivedMessage: Observable<Message> {

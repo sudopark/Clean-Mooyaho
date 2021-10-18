@@ -15,5 +15,7 @@ import RxSwift
 
 public protocol MessagingService {
     
+    func prepareNotificationPermission() -> Maybe<Bool>
+    
     var receivedMessage: Observable<Message> { get }
 }
