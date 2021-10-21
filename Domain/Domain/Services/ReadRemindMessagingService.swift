@@ -12,6 +12,10 @@ import RxSwift
 
 
 public protocol ReadRemindMessagingService: MessagingService {
+    
+    func sendPendingMessage(_ message: ReadRemindMessage) -> Maybe<Void>
+    
+    func cancelMessage(for readMinderID: String) -> Maybe<Void>
 
-    func sendMessages(_ message: [ReadRemindMessage]) -> Maybe<Void>
+    func boardcastRemind(_ message: ReadRemindMessage) -> Maybe<Void>
 }

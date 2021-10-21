@@ -20,4 +20,13 @@ extension String {
 
         return matches.isNotEmpty
     }
+    
+    public var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+    
+    public func localized(with args: Any...) -> String {
+        let format = self.localized
+        return String(format: format, args)
+    }
 }

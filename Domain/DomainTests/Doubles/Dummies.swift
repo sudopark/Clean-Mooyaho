@@ -136,3 +136,18 @@ extension ItemCategory {
         return ItemCategory(uid: "cate:\(int)", name: "name:\(int)", colorCode: "color:\(int)")
     }
 }
+
+
+extension ReadRemind {
+    
+    static func dummy(_ int: Int) -> ReadRemind {
+        return ReadRemind(uid: "rm:\(int)", itemID: "c:\(int)", scheduledTime: .now())
+    }
+}
+
+extension ReadRemindMessage {
+    
+    static func dummy(_ int: Int) -> ReadRemindMessage {
+        return ReadRemindMessage(uid: "rrm:\(int)", itemID: "c:\(int)")
+    }
+}

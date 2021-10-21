@@ -15,20 +15,27 @@ public struct ReadRemindMessage {
     
     public let uid: String
     public let itemID: String
-    public let destDevID: String
     
-    public var title: String?
+    public var title: String {
+        return "Read Remind Notification".localized
+    }
     public var message: String?
     
-    public init(uid: String, itemID: String, destDevID: String) {
+    public init(uid: String, itemID: String) {
         self.uid = uid
         self.itemID = itemID
-        self.destDevID = destDevID
     }
     
-    public init(itemID: String, destDevID: String) {
+    public init(itemID: String) {
         self.uid = "\(Self.uidPrefix)-\(UUID().uuidString)"
         self.itemID = itemID
-        self.destDevID = destDevID
+    }
+}
+
+
+extension ReadRemindMessage {
+    
+    public static var defaultReadLinkMessage: String {
+        return "It's time to read".localized
     }
 }
