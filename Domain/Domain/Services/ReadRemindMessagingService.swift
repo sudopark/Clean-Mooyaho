@@ -17,5 +17,5 @@ public protocol ReadRemindMessagingService: MessagingService {
     
     func cancelMessage(for readMinderID: String) -> Maybe<Void>
 
-    func boardcastRemind(_ message: ReadRemindMessage) -> Maybe<Void>
+    func broadcastRemind(_ message: ReadRemindMessage) -> Maybe<Void>
 }

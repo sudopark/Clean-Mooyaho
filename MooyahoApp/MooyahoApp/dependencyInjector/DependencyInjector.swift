@@ -64,6 +64,10 @@ final class DependencyInjector {
     var messagingService: MessagingService {
         return self.shared.firebaseServiceImple
     }
+    
+    var readRemindMessagingService: ReadRemindMessagingService {
+        return self.shared.firebaseServiceImple
+    }
 }
 
 extension DependencyInjector: EmptyBuilder { }
@@ -138,5 +142,13 @@ extension DependencyInjector {
     
     var suggestCategoryUsecase: SuggestCategoryUsecase {
         return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
+    }
+    
+    var remindUsecase: ReadRemindUsecase {
+        return ReadRemindUsecaseImple(authInfoProvider: self.shared.dataStore,
+                                      sharedStore: self.shared.dataStore,
+                                      readItemUsecase: self.readItemUsecase,
+                                      reminderRepository: self.appReposiotry,
+                                      messagingService: self.readRemindMessagingService)
     }
 }

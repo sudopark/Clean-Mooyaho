@@ -15,7 +15,12 @@
 		F60A585827103A8D00E39AE0 /* EditCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A585327103A8D00E39AE0 /* EditCategoryViewModel.swift */; };
 		F60A585A27103BA500E39AE0 /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A585927103BA500E39AE0 /* EditCategoryView.swift */; };
 		F627A9EC27128F3600722BDD /* EditCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F627A9EB27128F3600722BDD /* EditCategoryViewModelTests.swift */; };
+		F6391C7E2721C8B00000F927 /* EditReadRemindRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C792721C8B00000F927 /* EditReadRemindRouter.swift */; };
+		F6391C7F2721C8B00000F927 /* EditReadRemindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C7A2721C8B00000F927 /* EditReadRemindViewController.swift */; };
+		F6391C812721C8B00000F927 /* EditReadRemindScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C7C2721C8B00000F927 /* EditReadRemindScene.swift */; };
+		F6391C822721C8B00000F927 /* EditReadRemindViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C7D2721C8B00000F927 /* EditReadRemindViewModel.swift */; };
 		F645F797270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645F796270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift */; };
+		F650680D2721D6510071111B /* EditReadRemindViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650680C2721D6510071111B /* EditReadRemindViewModelTests.swift */; };
 		F665B2562709692000A6361F /* EditLinkItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */; };
 		F66C2C212709054E003D56B1 /* EnterLinkURLViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C202709054E003D56B1 /* EnterLinkURLViewModelTests.swift */; };
 		F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C24270909B5003D56B1 /* EditLinkItemRouter.swift */; };
@@ -83,7 +88,12 @@
 		F60A585327103A8D00E39AE0 /* EditCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewModel.swift; sourceTree = "<group>"; };
 		F60A585927103BA500E39AE0 /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
 		F627A9EB27128F3600722BDD /* EditCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewModelTests.swift; sourceTree = "<group>"; };
+		F6391C792721C8B00000F927 /* EditReadRemindRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindRouter.swift; sourceTree = "<group>"; };
+		F6391C7A2721C8B00000F927 /* EditReadRemindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindViewController.swift; sourceTree = "<group>"; };
+		F6391C7C2721C8B00000F927 /* EditReadRemindScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindScene.swift; sourceTree = "<group>"; };
+		F6391C7D2721C8B00000F927 /* EditReadRemindViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindViewModel.swift; sourceTree = "<group>"; };
 		F645F796270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPriorityChangeViewModelImple.swift; sourceTree = "<group>"; };
+		F650680C2721D6510071111B /* EditReadRemindViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindViewModelTests.swift; sourceTree = "<group>"; };
 		F665B2552709692000A6361F /* EditLinkItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLinkItemViewModelTests.swift; sourceTree = "<group>"; };
 		F665B2612709882D00A6361F /* EditReadCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionRouter.swift; sourceTree = "<group>"; };
 		F665B2622709882D00A6361F /* EditReadCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadCollectionViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +186,17 @@
 			path = EditCategory;
 			sourceTree = "<group>";
 		};
+		F6391C782721C8930000F927 /* EditReadRemind */ = {
+			isa = PBXGroup;
+			children = (
+				F6391C792721C8B00000F927 /* EditReadRemindRouter.swift */,
+				F6391C7A2721C8B00000F927 /* EditReadRemindViewController.swift */,
+				F6391C7C2721C8B00000F927 /* EditReadRemindScene.swift */,
+				F6391C7D2721C8B00000F927 /* EditReadRemindViewModel.swift */,
+			);
+			path = EditReadRemind;
+			sourceTree = "<group>";
+		};
 		F67D6522271880FC00D8E9A5 /* EditItemsCustomOrder */ = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +285,7 @@
 				F6E30E12270B42B10012A2A0 /* EditReadPriority */,
 				F60A584E27103A7300E39AE0 /* EditCategory */,
 				F67D6522271880FC00D8E9A5 /* EditItemsCustomOrder */,
+				F6391C782721C8930000F927 /* EditReadRemind */,
 				F6D8DDE627083DA200B4D817 /* EditReadItemScene.h */,
 			);
 			path = EditReadItemScene;
@@ -280,6 +302,7 @@
 				F6E30E21270B500F0012A2A0 /* EditReadPriorityViewModelTests.swift */,
 				F627A9EB27128F3600722BDD /* EditCategoryViewModelTests.swift */,
 				F67D652D2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift */,
+				F650680C2721D6510071111B /* EditReadRemindViewModelTests.swift */,
 			);
 			path = EditReadItemSceneTests;
 			sourceTree = "<group>";
@@ -457,6 +480,7 @@
 				F6E30E1A270B42CC0012A2A0 /* EditReadPriorityBuilder.swift in Sources */,
 				F6BBF15327083F5A00420A49 /* SelectAddItemTypeViewController.swift in Sources */,
 				F60A585427103A8D00E39AE0 /* EditCategoryRouter.swift in Sources */,
+				F6391C822721C8B00000F927 /* EditReadRemindViewModel.swift in Sources */,
 				F6E30E19270B42CC0012A2A0 /* EditReadPriorityViewController.swift in Sources */,
 				F6BBF1702708422F00420A49 /* EnterLinkURLBuilder.swift in Sources */,
 				F66C2C2D270909B5003D56B1 /* EditLinkItemViewModel.swift in Sources */,
@@ -473,6 +497,7 @@
 				F66C2C29270909B5003D56B1 /* EditLinkItemRouter.swift in Sources */,
 				F6BBF16F2708422F00420A49 /* EnterLinkURLViewController.swift in Sources */,
 				F645F797270B631D004AEFE1 /* ReadPriorityChangeViewModelImple.swift in Sources */,
+				F6391C7F2721C8B00000F927 /* EditReadRemindViewController.swift in Sources */,
 				F6C97B1B27095A4100990019 /* EditLinkItemView.swift in Sources */,
 				F60A585A27103BA500E39AE0 /* EditCategoryView.swift in Sources */,
 				F60A585827103A8D00E39AE0 /* EditCategoryViewModel.swift in Sources */,
@@ -482,7 +507,9 @@
 				F6E592CC27098B940087A623 /* EditReadCollectionRouter.swift in Sources */,
 				F60A585627103A8D00E39AE0 /* EditCategoryBuilder.swift in Sources */,
 				F6E592CF27098B940087A623 /* EditReadCollectionViewModel.swift in Sources */,
+				F6391C812721C8B00000F927 /* EditReadRemindScene.swift in Sources */,
 				F6BBF16E2708422F00420A49 /* EnterLinkURLRouter.swift in Sources */,
+				F6391C7E2721C8B00000F927 /* EditReadRemindRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +524,7 @@
 				F665B2562709692000A6361F /* EditLinkItemViewModelTests.swift in Sources */,
 				F67D652E2718847300D8E9A5 /* EditItemsCustomOrderViewModelImpleTests.swift in Sources */,
 				F6E30E22270B500F0012A2A0 /* EditReadPriorityViewModelTests.swift in Sources */,
+				F650680D2721D6510071111B /* EditReadRemindViewModelTests.swift in Sources */,
 				F6BBF15827083F9D00420A49 /* SelectAddItemTypeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

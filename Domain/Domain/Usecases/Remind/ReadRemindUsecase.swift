@@ -156,7 +156,7 @@ extension ReadRemindUsecaseImple {
     }
     
     public func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void> {
-        return self.messagingService.boardcastRemind(readReminder)
+        return self.messagingService.broadcastRemind(readReminder)
     }
 }
 

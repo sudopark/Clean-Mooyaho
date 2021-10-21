@@ -150,3 +150,11 @@ extension SuggestCategoryCollection {
         return .init(query: query, categories: categories, cursor: nextCursor)
     }
 }
+
+
+extension ReadRemind {
+    
+    public static func dummy(_ int: Int) -> Self {
+        return .init(uid: "rm:\(int)", itemID: "i:\(int)", scheduledTime: .now())
+    }
+}
