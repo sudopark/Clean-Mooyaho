@@ -110,3 +110,26 @@ public protocol EditItemsCustomOrderScene: Scenable {
     
     var interactor: EditItemsCustomOrderSceneInteractable? { get }
 }
+
+
+// MARK: - EditReadRemindScene Interactable & Listenable
+
+public protocol EditReadRemindSceneInteractable { }
+
+public protocol EditReadRemindSceneListenable: AnyObject {
+    
+    func editreadReadRemind(didSelect time: Date)
+}
+
+extension EditReadRemindSceneListenable {
+    
+    public func editreadReadRemind(didSelect time: Date) { }
+}
+
+
+// MARK: - EditReadRemindScene
+
+public protocol EditReadRemindScene: Scenable {
+    
+    var interactor: EditReadRemindSceneInteractable? { get }
+}

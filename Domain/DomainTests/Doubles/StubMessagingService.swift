@@ -47,7 +47,7 @@ class StubReminderMessagingService: StubMessagingService, ReadRemindMessagingSer
     
     var broadcastResultMocking: Void?
     var didBroadcastedMessage: ReadRemindMessage?
-    func boardcastRemind(_ message: ReadRemindMessage) -> Maybe<Void> {
+    func broadcastRemind(_ message: ReadRemindMessage) -> Maybe<Void> {
         self.didBroadcastedMessage = message
         return self.broadcastResultMocking.map { .just($0) } ?? .just()
     }

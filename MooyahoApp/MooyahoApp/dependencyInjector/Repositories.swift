@@ -116,3 +116,22 @@ extension AppRepository: ItemCategoryRepository, ItemCategoryRepositoryDefImpleD
         return self.local
     }
 }
+
+
+extension AppRepository: ReadRemindRepository {
+    
+    public func requestLoadReadReminds(for itemIDs: [String]) -> Observable<[ReadRemind]> {
+        logger.todoImplement()
+        return .empty()
+    }
+    
+    public func requestScheduleReadRemind(_ readRemind: ReadRemind) -> Maybe<Void> {
+        logger.todoImplement()
+        return .empty()
+    }
+    
+    public func requestCancelReadRemind(for uid: String) -> Maybe<Void> {
+        logger.todoImplement()
+        return .empty()
+    }
+}

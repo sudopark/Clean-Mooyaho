@@ -88,3 +88,17 @@ public protocol EditItemsCustomOrderSceneBuilable {
     func makeEditItemsCustomOrderScene(collectionID: String?,
                                        listener: EditItemsCustomOrderSceneListenable?) -> EditItemsCustomOrderScene
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public enum EditRemindCase {
+    case makeNew
+    case edit(ReadRemind)
+}
+
+public protocol EditReadRemindSceneBuilable {
+    
+    func makeEditReadRemindScene(_ editCase: EditRemindCase,
+                                 listener: EditReadRemindSceneListenable?) -> EditReadRemindScene
+}

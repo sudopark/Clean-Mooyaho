@@ -296,6 +296,21 @@ extension DependencyInjector: EditItemsCustomOrderSceneBuilable {
 }
 
 
+extension DependencyInjector: EditReadRemindSceneBuilable {
+    
+    public func makeEditReadRemindScene(_ editCase: EditRemindCase,
+                                        listener: EditReadRemindSceneListenable?) -> EditReadRemindScene {
+        let router = EditReadRemindRouter(nextSceneBuilders: self)
+        let viewModel = EditReadRemindViewModelImple(editCase,
+                                                     remindUsecase: self.remindUsecase,
+                                                     router: router, listener: listener)
+        let viewController = EditReadRemindViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
 // MARK: - ViewerScenes
 
 extension DependencyInjector: InnerWebViewSceneBuilable {

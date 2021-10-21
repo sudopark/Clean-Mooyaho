@@ -13,23 +13,10 @@ import RxRelay
 import Domain
 
 
-public protocol FCMService {
-    
-    func setupFCMService()
-    
-    func apnsTokenUpdated(_ token: Data)
 
-    func didReceiveDataMessage(_ userInfo: [AnyHashable: Any])
-    
-    var isNotificationGranted: Observable<Bool> { get }
-    
-    var currentFCMToken: Observable<String?> { get }
-    
-    var receivePushMessage: Observable<Message> { get }
-}
+// MARK: - FirebaseServiceImple + ReadRemindMessagingService
 
-
-extension FirebaseServiceImple: MessagingService {
+extension FirebaseServiceImple: ReadRemindMessagingService {
     
     public func prepareNotificationPermission() -> Maybe<Bool> {
         
@@ -67,8 +54,40 @@ extension FirebaseServiceImple: MessagingService {
     public var receivedMessage: Observable<Message> {
         return self.receivePushMessage
     }
+    
+    public func sendPendingMessage(_ message: ReadRemindMessage) -> Maybe<Void> {
+        logger.todoImplement()
+        return .empty()
+    }
+    
+    public func cancelMessage(for readMinderID: String) -> Maybe<Void> {
+        logger.todoImplement()
+        return .empty()
+    }
+    
+    public func broadcastRemind(_ message: ReadRemindMessage) -> Maybe<Void> {
+        logger.todoImplement()
+        return .empty()
+    }
 }
 
+
+// MARK: - FCMService
+
+public protocol FCMService {
+    
+    func setupFCMService()
+    
+    func apnsTokenUpdated(_ token: Data)
+
+    func didReceiveDataMessage(_ userInfo: [AnyHashable: Any])
+    
+    var isNotificationGranted: Observable<Bool> { get }
+    
+    var currentFCMToken: Observable<String?> { get }
+    
+    var receivePushMessage: Observable<Message> { get }
+}
 
 extension FirebaseServiceImple: FCMService {
     
