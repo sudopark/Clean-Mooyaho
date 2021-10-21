@@ -13,7 +13,7 @@ import RxSwift
 
 public protocol ReadRemindRepository {
     
-    func requestLoadReadReminds(for itemID: String) -> Observable<ReadRemind>
+    func requestLoadReadReminds(for itemIDs: [String]) -> Observable<[ReadRemind]>
     
     func requestScheduleReadRemind(_ readRemind: ReadRemind) -> Maybe<Void>
     

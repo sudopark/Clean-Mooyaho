@@ -47,15 +47,6 @@ extension String {
         return image
     }
     
-    public var localized: String {
-        return NSLocalizedString(self, comment: "")
-    }
-    
-    public func localized(with args: Any...) -> String {
-        let format = self.localized
-        return String(format: format, args)
-    }
-    
     public func with(attribute: [NSAttributedString.Key: Any]) -> NSAttributedString {
         return NSAttributedString(string: self, attributes: attribute)
     }

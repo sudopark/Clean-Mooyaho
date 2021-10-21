@@ -181,7 +181,7 @@ extension HoorayReceiveUsecaseTests {
         let newHoorays = self.waitElements(expect, for: self.usecase.newReceivedHoorayMessage) {
             let newMessage: [NewHoorayMessage] = (0..<3).map{ .dummy($0) }
             newMessage.forEach {
-                self.mockMessagingService.newMessage.onNext($0)
+                self.mockMessagingService.newMessageMocking.onNext($0)
             }
         }
         
@@ -207,7 +207,7 @@ extension HoorayReceiveUsecaseTests {
         // when
         let newMessage: [NewHoorayMessage] = (0..<3).map{ .dummy($0) }
         newMessage.forEach {
-            self.mockMessagingService.newMessage.onNext($0)
+            self.mockMessagingService.newMessageMocking.onNext($0)
         }
         
         // then

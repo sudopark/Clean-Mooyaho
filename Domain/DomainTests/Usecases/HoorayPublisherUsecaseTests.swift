@@ -289,7 +289,7 @@ extension HoorayPublisherUsecaseTests {
         let acks = self.waitElements(expect, for: self.usecase.receiveHoorayAck) {
             (0..<3).forEach { int in
                 let message = HoorayAckMessage(hoorayID: "id", publisherID: "pub", ackUserID: "id:\(int)")
-                self.mockMessagingService.newMessage.onNext(message)
+                self.mockMessagingService.newMessageMocking.onNext(message)
             }
         }
         
@@ -308,7 +308,7 @@ extension HoorayPublisherUsecaseTests {
                 let reaction = HoorayReaction(hoorayID: "id", reactionID: "some", reactMemberID: "res:\(int)",
                                               icon: .emoji("😍"), reactAt: 0)
                 let message = HoorayReactionMessage(hoorayID: "id", publisherID: "pub", reaction: reaction)
-                self.mockMessagingService.newMessage.onNext(message)
+                self.mockMessagingService.newMessageMocking.onNext(message)
             }
         }
         
