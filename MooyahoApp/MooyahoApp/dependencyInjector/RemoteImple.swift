@@ -207,4 +207,17 @@ extension RemoteImple {
     func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
         return self.firebaseRemote.requestLoadLastestCategories()
     }
+    
+    // remind
+    func requestLoadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]> {
+        return self.firebaseRemote.requestLoadReminds(for: itemIDs)
+    }
+    
+    func requestUpdateReimnd(_ remind: ReadRemind) -> Maybe<Void> {
+        return self.firebaseRemote.requestUpdateReimnd(remind)
+    }
+    
+    func requestRemoveRemind(remindID: String) -> Maybe<Void> {
+        return self.firebaseRemote.requestRemoveRemind(remindID: remindID)
+    }
 }

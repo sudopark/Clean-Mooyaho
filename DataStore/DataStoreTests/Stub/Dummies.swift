@@ -13,6 +13,14 @@ import Domain
 @testable import DataStore
 
 
+extension ReadRemind {
+    
+    static func dummy(_ int: Int) -> Self {
+        return .init(uid: "rm:\(int)", itemID: "i:\(int)", scheduledTime: .now())
+    }
+}
+
+
 extension UserLocation {
     
     static func dummy(_ int: Int) -> UserLocation {

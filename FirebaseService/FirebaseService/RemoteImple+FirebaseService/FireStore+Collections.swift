@@ -36,7 +36,7 @@ extension Firestore {
 
 public protocol FirebaseRemote: AuthRemote, MemberRemote, PlaceRemote, TagRemote,
                                 HoorayRemote, MessagingRemote, ReadItemRemote, ReadItemOptionsRemote,
-                                ItemCategoryRemote { }
+                                ItemCategoryRemote, ReadRemindRemote { }
 
 extension FirebaseServiceImple: FirebaseRemote{ }
 

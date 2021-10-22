@@ -44,6 +44,7 @@
 		2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */; };
 		F6078F0A26AD2EC1000B8AA4 /* FCMPayload+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */; };
 		F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */; };
+		F636E584272319A30042D8A2 /* ReadRemindRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F636E583272319A30042D8A2 /* ReadRemindRemote+Firebase.swift */; };
 		F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206726668BB70089D0B3 /* Storage+Extensions.swift */; };
 		F64CCB6C265508490007F7C6 /* UserDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB6B265508490007F7C6 /* UserDevices.swift */; };
 		F6684DF82647CC1000820368 /* GFGeoHashQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -159,6 +160,7 @@
 		2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FCMPayload+Mapping.swift"; sourceTree = "<group>"; };
 		F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberRemote+Firebase.swift"; sourceTree = "<group>"; };
+		F636E583272319A30042D8A2 /* ReadRemindRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadRemindRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F637206726668BB70089D0B3 /* Storage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Extensions.swift"; sourceTree = "<group>"; };
 		F64CCB6B265508490007F7C6 /* UserDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevices.swift; sourceTree = "<group>"; };
 		F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFGeoHashQuery.h; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 				F6CEF8B226F4E8B300061097 /* ReadItemRemote+Firebase.swift */,
 				F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */,
 				F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */,
+				F636E583272319A30042D8A2 /* ReadRemindRemote+Firebase.swift */,
 			);
 			path = "RemoteImple+FirebaseService";
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				F67848DC265123D20074C344 /* RemotePolicy.swift in Sources */,
 				F6684E012647CC1000820368 /* GFUtils.m in Sources */,
 				F6684E062647E38600820368 /* Place+Mapping.swift in Sources */,
+				F636E584272319A30042D8A2 /* ReadRemindRemote+Firebase.swift in Sources */,
 				F67848D726510CB50074C344 /* Hooray+Mapping.swift in Sources */,
 				F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */,
 				F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */,
