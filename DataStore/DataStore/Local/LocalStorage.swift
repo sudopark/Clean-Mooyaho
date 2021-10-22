@@ -141,9 +141,18 @@ public protocol ItemCategoryLocalStorage {
     func loadLatestCategories() -> Maybe<[SuggestCategory]>
 }
 
+public protocol ReadRemindLocalStorage {
+    
+    func fetchReadReminds(for itemsIDs: [String]) -> Maybe<[ReadRemind]>
+    
+    func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void>
+    
+    func removeReadRemind(for reminderID: String) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadRemindLocalStorage { }
 
 
 // MARK: - LocalStorageImple

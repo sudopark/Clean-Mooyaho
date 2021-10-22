@@ -185,4 +185,17 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
         return self.resolve(key: "requestLoadLastestCategories") ?? .empty()
     }
+    
+    // read remind
+    func requestLoadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]> {
+        return self.resolve(key: "requestLoadReminds") ?? .empty()
+    }
+    
+    func requestUpdateReimnd(_ remind: ReadRemind) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateReimnd") ?? .empty()
+    }
+    
+    func requestRemoveRemind(remindID: String) -> Maybe<Void> {
+        return self.resolve(key: "requestRemoveRemind") ?? .empty()
+    }
 }
