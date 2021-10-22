@@ -65,6 +65,12 @@ public protocol DataModelStorage {
     func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]>
     
     func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
+    
+    func fetchReadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]>
+    
+    func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void>
+    
+    func removeReadRemind(for reminderID: String) -> Maybe<Void>
 }
 
 
@@ -482,6 +488,29 @@ extension DataModelStorageImple {
         return self.sqliteService.rx.run { try $0.load(query) }
     }
 }
+
+
+// MARK: - ReadRemind
+
+extension DataModelStorageImple {
+    
+    public func fetchReadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]> {
+        let query = ReadRemindTable.selectAll { $0.itemID.in(itemIDs) }
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void> {
+        return self.sqliteService.rx.run {
+            try $0.insert(ReadRemindTable.self, entities: [remind], shouldReplace: true)
+        }
+    }
+    
+    public func removeReadRemind(for reminderID: String) -> Maybe<Void> {
+        let deleteQuery = ReadRemindTable.delete().where { $0.uid == reminderID }
+        return self.sqliteService.rx.run { try $0.delete(ReadRemindTable.self, query: deleteQuery) }
+    }
+}
+
 
 private extension CursorIterator {
     
