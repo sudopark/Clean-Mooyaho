@@ -46,6 +46,8 @@
 		F636E57E27230FDB0042D8A2 /* RepositoryImple+ReadRemid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F636E57D27230FDB0042D8A2 /* RepositoryImple+ReadRemid.swift */; };
 		F636E580272311B10042D8A2 /* RepositoryTests+ReadRemind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F636E57F272311B10042D8A2 /* RepositoryTests+ReadRemind.swift */; };
 		F636E5822723125F0042D8A2 /* LocalStorageImple+ReadRemind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F636E5812723125F0042D8A2 /* LocalStorageImple+ReadRemind.swift */; };
+		F636E58627231ABF0042D8A2 /* ReadRemindTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F636E58527231ABF0042D8A2 /* ReadRemindTable.swift */; };
+		F636E58827231CA50042D8A2 /* LocalStorageTests+ReadRemind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F636E58727231CA50042D8A2 /* LocalStorageTests+ReadRemind.swift */; };
 		F63D29F8269AE7DD007580E2 /* PlaceInfoTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63D29F7269AE7DD007580E2 /* PlaceInfoTable.swift */; };
 		F63D29FA269C906D007580E2 /* TagTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63D29F9269C906D007580E2 /* TagTable.swift */; };
 		F6419BF626822FB000C7919B /* LocalStorageTests+Auth&Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */; };
@@ -137,6 +139,8 @@
 		F636E57D27230FDB0042D8A2 /* RepositoryImple+ReadRemid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+ReadRemid.swift"; sourceTree = "<group>"; };
 		F636E57F272311B10042D8A2 /* RepositoryTests+ReadRemind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+ReadRemind.swift"; sourceTree = "<group>"; };
 		F636E5812723125F0042D8A2 /* LocalStorageImple+ReadRemind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+ReadRemind.swift"; sourceTree = "<group>"; };
+		F636E58527231ABF0042D8A2 /* ReadRemindTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindTable.swift; sourceTree = "<group>"; };
+		F636E58727231CA50042D8A2 /* LocalStorageTests+ReadRemind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+ReadRemind.swift"; sourceTree = "<group>"; };
 		F63D29F7269AE7DD007580E2 /* PlaceInfoTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTable.swift; sourceTree = "<group>"; };
 		F63D29F9269C906D007580E2 /* TagTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTable.swift; sourceTree = "<group>"; };
 		F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Auth&Member.swift"; sourceTree = "<group>"; };
@@ -366,6 +370,7 @@
 				F6E279DC26F857E200957AC4 /* LocalStorageTests+ReadItemOptions.swift */,
 				F60172572700145500E47B75 /* LocalStorageTests+LinkPreview.swift */,
 				F6B6B42227116AB4000652E0 /* LocalStorageTests+ItemCategory.swift */,
+				F636E58727231CA50042D8A2 /* LocalStorageTests+ReadRemind.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -403,6 +408,7 @@
 				F6CEF8B826F4F0A800061097 /* ReadLinkTable.swift */,
 				F6CEF8BC26F4F89600061097 /* ReadCollectionTable.swift */,
 				F601725527000F9800E47B75 /* LinkPreviewTable.swift */,
+				F636E58527231ABF0042D8A2 /* ReadRemindTable.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -529,6 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F636E58627231ABF0042D8A2 /* ReadRemindTable.swift in Sources */,
 				F601725426FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift in Sources */,
 				F6913F0F26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift in Sources */,
 				F6CEF8BB26F4F0ED00061097 /* ItemCategoriesTable.swift in Sources */,
@@ -581,6 +588,7 @@
 				F636E580272311B10042D8A2 /* RepositoryTests+ReadRemind.swift in Sources */,
 				F6913F0D26F38C1600C6E105 /* RepositoryTests+ReadItem.swift in Sources */,
 				F6CEF8BF26F508FD00061097 /* LocalStorageTests+ReadItem.swift in Sources */,
+				F636E58827231CA50042D8A2 /* LocalStorageTests+ReadRemind.swift in Sources */,
 				F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */,
 				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
 				F60172582700145500E47B75 /* LocalStorageTests+LinkPreview.swift in Sources */,

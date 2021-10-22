@@ -16,14 +16,14 @@ import Domain
 extension LocalStorageImple {
     
     public func fetchReadReminds(for itemsIDs: [String]) -> Maybe<[ReadRemind]> {
-        return .empty()
+        return self.dataModelStorage.fetchReadReminds(for: itemsIDs)
     }
     
     public func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void> {
-        return .empty()
+        return self.dataModelStorage.updateReadRemind(remind)
     }
     
     public func removeReadRemind(for reminderID: String) -> Maybe<Void> {
-        return .empty()
+        return self.dataModelStorage.removeReadRemind(for: reminderID)
     }
 }
