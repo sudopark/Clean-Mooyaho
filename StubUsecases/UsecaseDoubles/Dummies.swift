@@ -157,4 +157,8 @@ extension ReadRemind {
     public static func dummy(_ int: Int) -> Self {
         return .init(uid: "rm:\(int)", itemID: "i:\(int)", scheduledTime: .now())
     }
+    
+    public static func dummy(itemID: String, time: TimeStamp = .now()) -> Self {
+        return .init(uid: "rm:\(itemID)", itemID: itemID, scheduledTime: time)
+    }
 }

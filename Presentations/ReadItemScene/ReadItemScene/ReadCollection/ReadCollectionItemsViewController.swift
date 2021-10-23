@@ -186,6 +186,19 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView,
+                          leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let item = self.dataSource[indexPath]
+        guard let actions = self.viewModel.contextAction(for: item, isLeading: true) else { return nil }
+        let actionSelected: (ReadCollectionItemSwipeContextAction) -> Void = { [weak self] selected in
+            self?.viewModel.handleContextAction(for: item, action: selected)
+        }
+        let contextActions = actions.map { $0.asUIContextAction(actionSelected) }
+        let configure = UISwipeActionsConfiguration(actions: contextActions)
+        configure.performsFirstActionWithFullSwipe = false
+        return configure
+    }
+    
+    public func tableView(_ tableView: UITableView,
                           trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let item = self.dataSource[indexPath]
         guard let actions = self.viewModel.contextAction(for: item, isLeading: false) else { return nil }
@@ -296,6 +309,8 @@ private extension ReadCollectionItemSwipeContextAction {
         switch self {
         case .delete: return UIImage(systemName: "trash.fill")
         case .edit: return UIImage(systemName: "highlighter")
+        case .remind(true): return UIImage(systemName: "alarm.fill")
+        case .remind(false): return UIImage(systemName: "alarm")
         }
     }
     
@@ -303,10 +318,12 @@ private extension ReadCollectionItemSwipeContextAction {
         return nil
     }
     
-    private var backgroundColor: UIColor {
+    private var backgroundColor: UIColor? {
         switch self {
         case .delete: return UIColor.systemRed
         case .edit: return UIColor.systemGray
+        case .remind(true): return UIColor.from(hex: "#1976d2")
+        case .remind(false): return UIColor.from(hex: "#03a9f4")
         }
     }
     

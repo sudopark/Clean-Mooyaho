@@ -72,15 +72,6 @@ public protocol ReadPriorityUpdateListenable: EditReadPrioritySceneListenable {
     func editReadPriority(didUpdate priority: ReadPriority, for item: ReadItem)
 }
 
-
-// MARK: - EditReadPriorityScene
-
-public protocol EditReadPriorityScene: Scenable, PangestureDismissableScene {
-    
-    var interactor: EditReadPrioritySceneInteractable? { get }
-}
-
-
 // MARK: - Builder + DependencyInjector Extension
 
 public protocol EditItemsCustomOrderSceneBuilable {
@@ -93,7 +84,7 @@ public protocol EditItemsCustomOrderSceneBuilable {
 // MARK: - Builder + DependencyInjector Extension
 
 public enum EditRemindCase {
-    case makeNew
+    case makeNew(for: ReadItem? = nil)
     case edit(ReadRemind)
 }
 

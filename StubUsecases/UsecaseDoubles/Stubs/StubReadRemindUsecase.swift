@@ -15,7 +15,9 @@ import Domain
 open class StubReadRemindUsecase: ReadRemindUsecase {
     
     public struct Scenario {
-        public init() {}
+        
+        public var reminds: Result<[ReadRemind], Error> = .success([])
+        public init() { }
     }
     
     private let scenario: Scenario
@@ -34,11 +36,19 @@ open class StubReadRemindUsecase: ReadRemindUsecase {
     }
     
     public func cancelRemind(_ remind: ReadRemind) -> Maybe<Void> {
+        guard let items = try? self.fakeReminds.value() else { return .just() }
+        let newItems = items.filter { $0.uid != remind.uid }
+        self.fakeReminds.onNext(newItems)
         return .just()
     }
     
+    private let fakeReminds: BehaviorSubject<[ReadRemind]?> = .init(value: nil)
     public func readReminds(for itemIDs: [String]) -> Observable<[ReadRemind]> {
-        return .just([])
+        return self.fakeReminds.compactMap { $0 }
+            .do(onSubscribed: {
+                guard let reminds = try? self.scenario.reminds.get() else { return }
+                self.fakeReminds.onNext(reminds)
+            })
     }
     
     public func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void> {

@@ -13,16 +13,30 @@ import CommonPresenting
 
 // MARK: - ReadCollectionSectionCellViewModel
 
-public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModelType {
+public protocol ReadCollectionItemCellViewMdoelType: ReadItemCellViewModelType {
+    
+    var remind: ReadRemind? { get set }
+}
+
+public struct ReadCollectionAttrCellViewModel: ReadCollectionItemCellViewMdoelType {
     
     public typealias Item = ReadCollection
     
     public var uid: String { "collection_attr" }
     public var collectionDescription: String?
-    public var presetingID: Int { self.uid.hashValue }
+    public var presetingID: Int {
+        var hasher = Hasher()
+        hasher.combine(self.uid)
+        hasher.combine(self.collectionDescription)
+        hasher.combine(self.priority?.rawValue)
+        hasher.combine(self.categories.map { $0.presentingHashValue() })
+        hasher.combine(self.remind?.presentingHasValue())
+        return hasher.finalize()
+    }
     
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
+    public var remind: ReadRemind?
     
     public init(item: ReadCollection) {
         self.priority = item.priority
@@ -37,7 +51,7 @@ protocol ShrinkableCell {
     var isShrink: Bool { get set }
 }
 
-public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
+public struct ReadCollectionCellViewModel: ReadCollectionItemCellViewMdoelType, ShrinkableCell {
     
     public typealias Item = ReadCollection
     
@@ -47,6 +61,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, Shrinkable
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     var isShrink = false
+    public var remind: ReadRemind?
     
     public init(uid: String, name: String) {
         self.uid = uid
@@ -65,9 +80,10 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, Shrinkable
         hasher.combine(self.uid)
         hasher.combine(self.name)
         hasher.combine(self.priority?.rawValue)
-        hasher.combine(self.categories.map { $0.presentingHashValud() })
+        hasher.combine(self.categories.map { $0.presentingHashValue() })
         hasher.combine(self.collectionDescription)
         hasher.combine(self.isShrink)
+        hasher.combine(self.remind?.presentingHasValue())
         return hasher.finalize()
     }
 }
@@ -75,7 +91,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, Shrinkable
 
 // MARK: - ReadLinkCellViewModel
 
-public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
+public struct ReadLinkCellViewModel: ReadCollectionItemCellViewMdoelType, ShrinkableCell {
     
     public typealias Item = ReadLink
     
@@ -85,6 +101,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     var isShrink = false
+    public var remind: ReadRemind?
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -104,19 +121,31 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
         hasher.combine(self.linkUrl)
         hasher.combine(self.customName)
         hasher.combine(self.priority?.rawValue)
-        hasher.combine(self.categories.map { $0.presentingHashValud() })
+        hasher.combine(self.categories.map { $0.presentingHashValue() })
         hasher.combine(self.isShrink)
+        hasher.combine(self.remind?.presentingHasValue())
         return hasher.finalize()
     }
 }
 
 private extension ItemCategory {
     
-    func presentingHashValud() -> Int {
+    func presentingHashValue() -> Int {
         var hasher = Hasher()
         hasher.combine(self.uid)
         hasher.combine(self.name)
         hasher.combine(self.colorCode)
+        return hasher.finalize()
+    }
+}
+
+private extension ReadRemind {
+    
+    func presentingHasValue() -> Int {
+        var hasher = Hasher()
+        hasher.combine(self.uid)
+        hasher.combine(self.itemID)
+        hasher.combine(self.scheduledTime)
         return hasher.finalize()
     }
 }

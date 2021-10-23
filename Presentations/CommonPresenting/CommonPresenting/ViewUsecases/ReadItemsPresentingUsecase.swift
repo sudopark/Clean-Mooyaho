@@ -21,12 +21,17 @@ public protocol ReadItemCellViewModel {
     
     var presetingID: Int { get }
     var categories: [ItemCategory] { get set }
+    var remind: ReadRemind? { get set }
 }
 
 extension ReadItemCellViewModel {
     
     public var categories: [ItemCategory] {
         get { [] } set { }
+    }
+    
+    public var remind: ReadRemind? {
+        get { nil } set { }
     }
 }
 
