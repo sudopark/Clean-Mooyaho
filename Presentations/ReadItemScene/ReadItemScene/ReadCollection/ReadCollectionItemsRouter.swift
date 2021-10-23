@@ -37,12 +37,14 @@ public protocol ReadCollectionRouting: Routing {
     func routeToEditReadLink(_ link: ReadLink)
     
     func roueToEditCustomOrder(for collectionID: String?)
+    
+    func routeToSetupRemind(for item: ReadItem)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable & EditLinkItemSceneBuilable & EditItemsCustomOrderSceneBuilable
+public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable & EditReadCollectionSceneBuilable & ReadCollectionItemSceneBuilable & InnerWebViewSceneBuilable & EditLinkItemSceneBuilable & EditItemsCustomOrderSceneBuilable & EditReadRemindSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
@@ -136,6 +138,18 @@ extension ReadCollectionItemsRouter {
             return
         }
         
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func routeToSetupRemind(for item: ReadItem) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeEditReadRemindScene(.makeNew(for: item), listener: self.currentInteractor)
+        else { return }
+        
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

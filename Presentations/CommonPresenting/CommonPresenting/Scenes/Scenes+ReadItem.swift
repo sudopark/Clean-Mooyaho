@@ -35,7 +35,7 @@ public protocol ReadCollectionMainScene: Scenable {
 
 // MARK: - ReadCollectionScene
 
-public protocol ReadCollectionItemsSceneInteractable: EditReadCollectionSceneListenable, AddItemNavigationSceneListenable, EditLinkItemSceneListenable {
+public protocol ReadCollectionItemsSceneInteractable: EditReadCollectionSceneListenable, AddItemNavigationSceneListenable, EditLinkItemSceneListenable, EditReadRemindSceneListenable {
     
     func addNewCollectionItem()
     

@@ -127,9 +127,16 @@ extension EditReadRemindSceneListenable {
 }
 
 
+// MARK: - EditReadPriorityScene
+
+public protocol EditReadPriorityScene: Scenable, PangestureDismissableScene {
+    
+    var interactor: EditReadPrioritySceneInteractable? { get }
+}
+
 // MARK: - EditReadRemindScene
 
-public protocol EditReadRemindScene: Scenable {
+public protocol EditReadRemindScene: Scenable, PangestureDismissableScene {
     
     var interactor: EditReadRemindSceneInteractable? { get }
 }

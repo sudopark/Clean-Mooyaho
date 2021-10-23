@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct ReadRemind {
+public struct ReadRemind: Equatable {
     
     public let uid: String
     public let itemID: String

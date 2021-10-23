@@ -28,9 +28,10 @@ public struct ReadCollectionItemSection {
     let cellViewModels: [ReadItemCellViewModel]
 }
 
-public enum ReadCollectionItemSwipeContextAction {
+public enum ReadCollectionItemSwipeContextAction: Equatable {
     case edit
     case delete
+    case remind(isOn: Bool)
 }
 
 
@@ -69,15 +70,18 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     public let currentCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
     private let categoryUsecase: ReadItemCategoryUsecase
+    private let remindUsecase: ReadRemindUsecase
     private let router: ReadCollectionRouting
     
     public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 categoryUsecase: ReadItemCategoryUsecase,
+                remindUsecase: ReadRemindUsecase,
                 router: ReadCollectionRouting) {
         self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
         self.categoryUsecase = categoryUsecase
+        self.remindUsecase = remindUsecase
         self.router = router
         
         self.internalBinding()
@@ -102,6 +106,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
         let categoryMap = BehaviorSubject<[String: ItemCategory]>(value: [:])
+        let remindsMap = BehaviorRelay<[String: ReadRemind]>(value: [:])
     }
     
     private let subjects = Subjects()
@@ -111,6 +116,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.bindCurrentSortOrder()
         self.loadCurrentCollectionInfoIfNeed()
         self.bindRequireCategories()
+        self.bindRequireReminds()
     }
     
     private func bindCurrentSortOrder() {
@@ -135,18 +141,22 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             .disposed(by: self.disposeBag)
     }
     
-    private func bindRequireCategories() {
-        
+    private func totalItemSomeIDSet(_ extracting: @escaping ([ReadItem]) -> [String]) -> Observable<Set<String>> {
         let totalItems: Observable<[ReadItem]> = Observable.merge(
             self.subjects.collections.compactMap { $0 },
             self.subjects.links.compactMap { $0 },
             self.subjects.currentCollection.compactMap { $0 }.map { [$0] }
         )
         let foldAsSet: (Set<String>, [ReadItem]) -> Set<String> = { acc, items in
-            let newIDs = items.flatMap { $0.categoryIDs }
+            let newIDs = extracting(items)
             return acc.union(newIDs)
         }
-        let categoryIDSet = totalItems.scan(Set<String>(), accumulator: foldAsSet)
+        return totalItems.scan(Set<String>(), accumulator: foldAsSet)
+    }
+    
+    private func bindRequireCategories() {
+
+        let categoryIDSet = self.totalItemSomeIDSet { $0.flatMap { $0.categoryIDs } }
         let loadCategories: (Set<String>) -> Observable<[ItemCategory]> = { [weak self] idSet in
             guard let self = self else { return .empty() }
             return self.categoryUsecase.categories(for: Array(idSet))
@@ -158,6 +168,24 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             .subscribe(onNext: { [weak self] categories in
                 let dict = categories.reduce(into: [String: ItemCategory]()) { $0[$1.uid] = $1 }
                 self?.subjects.categoryMap.onNext(dict)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindRequireReminds() {
+        
+        let itemIDs = self.totalItemSomeIDSet { $0.map { $0.uid } }
+        let loadReminds: (Set<String>) -> Observable<[ReadRemind]> = { [weak self] idSet in
+            guard let self = self else { return .empty() }
+            return self.remindUsecase.readReminds(for: Array(idSet))
+        }
+        itemIDs
+            .distinctUntilChanged()
+            .flatMapLatest(loadReminds)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] reminds in
+                let dict = reminds.reduce(into: [String: ReadRemind]()) { $0[$1.itemID] = $1 }
+                self?.subjects.remindsMap.accept(dict)
             })
             .disposed(by: self.disposeBag)
     }
@@ -220,6 +248,12 @@ extension ReadCollectionViewItemsModelImple {
             
         case let link as ReadLinkCellViewModel where action == .edit:
             self.requestEditReadLink(link)
+            
+        case _ where action == .remind(isOn: true):
+            self.askConfirmCancelRemind(for: item.remind)
+            
+        case _ where action == .remind(isOn: false):
+            self.requestSetupRemind(for: item.uid)
             
         default: break
         }
@@ -322,6 +356,48 @@ extension ReadCollectionViewItemsModelImple {
 }
 
 
+// MARK: - ReadCollectionViewModelImple Interactor + edit collection
+
+extension ReadCollectionViewItemsModelImple {
+    
+    private func item(for itemID: String) -> ReadItem? {
+        let totalItems: [ReadItem] = (self.subjects.collections.value ?? []) + (self.subjects.links.value ?? [])
+        return totalItems.first(where: { $0.uid == itemID })
+    }
+    
+    private func requestSetupRemind(for itemID: String) {
+        guard let item = self.item(for: itemID) else { return }
+        
+        self.router.routeToSetupRemind(for: item)
+    }
+    
+    private func askConfirmCancelRemind(for remind: ReadRemind?) {
+        guard let remind = remind else { return }
+        
+        let confirmCancel: () -> Void = { [weak self] in
+            self?.cancelRemind(remind)
+        }
+        guard let form = AlertBuilder(base: .init())
+                .title("Cancel remind".localized)
+                .message("Do you want to cancel this read remind?".localized)
+                .confirmed(confirmCancel)
+                .build()
+        else { return }
+        
+        self.router.alertForConfirm(form)
+    }
+    
+    private func cancelRemind(_ remind: ReadRemind) {
+        
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        self.remindUsecase.cancelRemind(remind)
+            .subscribe(onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+}
+
 // MARK: - ReadCollectionViewModelImple Presenter
 
 extension ReadCollectionViewItemsModelImple {
@@ -343,24 +419,27 @@ extension ReadCollectionViewItemsModelImple {
         
         let asSections: (
             ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder,
-            [String: ItemCategory], [String], Bool
+            [String: ItemCategory], [String], Bool, [String: ReadRemind]
         ) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode in
+        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode, remindsMap in
             
             let attributeCell = currentCollection
                 .map { ReadCollectionAttrCellViewModel(item: $0)
                     |> \.categories .~ $0.categoryIDs.compactMap{ cateMap[$0] }
+                    |> \.remind .~ remindsMap[$0.uid]
                 }
                 .map { [$0] } ?? []
             let collectionCells: [ReadCollectionCellViewModel] = collections
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
                 .updateIsShrinkMode(isShrinkMode)
+                |> { isShrinkMode ? $0 : $0.updateRemind(remindsMap) }
             
             let linkCells: [ReadLinkCellViewModel] = links
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
                 .updateIsShrinkMode(isShrinkMode)
+                |> { isShrinkMode ? $0 : $0.updateRemind(remindsMap) }
             
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
@@ -378,6 +457,7 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.categoryMap,
             self.readItemUsecase.customOrder(for: self.substituteCollectionID),
             self.readItemUsecase.isShrinkModeOn,
+            self.subjects.remindsMap,
             resultSelector: asSections
         )
     }
@@ -404,7 +484,9 @@ extension ReadCollectionViewItemsModelImple {
     public func contextAction(for item: ReadItemCellViewModel,
                               isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
         guard item is ReadCollectionCellViewModel || item is ReadLinkCellViewModel else { return nil }
-        return [.delete, .edit]
+        return isLeading
+            ? [.remind(isOn: item.remind != nil)]
+            : [.delete, .edit]
     }
 }
 
@@ -419,6 +501,15 @@ private extension Array where Element: ReadItemCellViewModel {
     func updateIsShrinkMode(_ flag: Bool) -> Array where Element: ShrinkableCell {
         return self.map {
             return  $0 |> \.isShrink .~ flag
+        }
+    }
+    
+    func updateRemind(_ remindsMap: [String: ReadRemind]) -> Array where Element: ReadCollectionItemCellViewMdoelType {
+        return self.map {
+            let validateRemind: (ReadRemind) -> ReadRemind? = {
+                return $0.scheduledTime > .now() ? $0 : nil
+            }
+            return $0 |> \.remind .~ remindsMap[$0.uid].flatMap(validateRemind)
         }
     }
 }
