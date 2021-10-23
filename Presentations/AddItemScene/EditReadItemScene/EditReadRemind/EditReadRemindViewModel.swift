@@ -65,7 +65,7 @@ public final class EditReadRemindViewModelImple: EditReadRemindViewModel {
     
     private func setupInitialTime() {
         switch self.editCase {
-        case let .edit(remind):
+        case let .edit(remind, _):
             self.subjects.selectedDate.accept(Date(timeIntervalSince1970: remind.scheduledTime))
             
         default:
@@ -86,13 +86,42 @@ extension EditReadRemindViewModelImple {
     public func confirmSelectRemindTime() {
         
         guard let date = self.subjects.selectedDate.value, date.timeIntervalSince(Date()) > 0 else { return }
-        self.closeSceneAndEmitEvent(date)
+        
+        switch self.editCase {
+        case .makeNew(nil):
+            self.closeSceneAndEmitEvent(date)
+            
+        case let .makeNew(item):
+            guard let item = item else { return }
+            self.updateRemindAndCloseScene(for: item, newTime: date)
+            
+        case let .edit(_, item):
+            self.updateRemindAndCloseScene(for: item, newTime: date)
+        }
     }
     
     private func closeSceneAndEmitEvent(_ newDate: Date) {
         self.router.closeScene(animated: true) { [weak self] in
-            self?.listener?.editreadReadRemind(didSelect: newDate)
+            self?.listener?.editReadRemind(didSelect: newDate)
         }
+    }
+    
+    private func updateRemindAndCloseScene(for item: ReadItem, newTime: Date) {
+        
+        let handleScheduled: (ReadRemind) -> Void = { [weak self] newRemind in
+            self?.router.closeScene(animated: true) {
+                self?.listener?.editReadRemind(didScheduled: newRemind)
+            }
+        }
+        
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        
+        self.remindUsecase
+            .scheduleRemind(for: item, at: newTime.timeIntervalSince1970)
+            .subscribe(onSuccess: handleScheduled, onError: handleError)
+            .disposed(by: self.disposeBag)
     }
 }
 
