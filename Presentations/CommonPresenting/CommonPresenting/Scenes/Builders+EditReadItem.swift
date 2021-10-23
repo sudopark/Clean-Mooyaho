@@ -85,7 +85,7 @@ public protocol EditItemsCustomOrderSceneBuilable {
 
 public enum EditRemindCase {
     case makeNew(for: ReadItem? = nil)
-    case edit(ReadRemind)
+    case edit(ReadRemind, for: ReadItem)
 }
 
 public protocol EditReadRemindSceneBuilable {

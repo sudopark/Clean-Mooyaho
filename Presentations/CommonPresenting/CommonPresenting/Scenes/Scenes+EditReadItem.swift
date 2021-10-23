@@ -118,12 +118,16 @@ public protocol EditReadRemindSceneInteractable { }
 
 public protocol EditReadRemindSceneListenable: AnyObject {
     
-    func editreadReadRemind(didSelect time: Date)
+    func editReadRemind(didSelect time: Date)
+    
+    func editReadRemind(didScheduled newRemind: ReadRemind)
 }
 
 extension EditReadRemindSceneListenable {
     
-    public func editreadReadRemind(didSelect time: Date) { }
+    public func editReadRemind(didSelect time: Date) { }
+    
+    public func editReadRemind(didScheduled newRemind: ReadRemind) { }
 }
 
 
