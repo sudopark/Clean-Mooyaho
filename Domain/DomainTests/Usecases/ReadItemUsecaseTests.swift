@@ -240,6 +240,26 @@ extension ReadItemUsecaseTests {
         XCTAssertNotNil(result)
     }
     
+    func testUsecase_whenAfterUpdateCollection_broadcast() {
+        // given
+        let expect = expectation(description: "콜렉션 수정 이후 업데이트된 콜렉션 광역 전파")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let dummyCollection = ReadCollection.dummy(0)
+        let event = self.waitFirstElement(expect, for: usecase.readItemUpdated) {
+            usecase.updateCollection(dummyCollection)
+                .subscribe().disposed(by: self.disposeBag)
+        }
+        
+        // then
+        if case let .updated(item) = event, let collection = item as? ReadCollection {
+            XCTAssertEqual(collection.uid, dummyCollection.uid)
+        } else {
+            XCTFail("이벤트 전파 실패")
+        }
+    }
+    
     
     func testUsecase_whenUpdateCollectionWithSignedIn_setOwnerID() {
         // given
@@ -295,19 +315,61 @@ extension ReadItemUsecaseTests {
         XCTAssertNotNil(result)
     }
     
+    func testUsecase_whenAfterUpdateLink_broadcast() {
+        // given
+        let expect = expectation(description: "link item 수정 이후 업데이트된 콜렉션 광역 전파")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let dummyLink = ReadLink.dummy(0)
+        let event = self.waitFirstElement(expect, for: usecase.readItemUpdated) {
+            usecase.updateLink(dummyLink)
+                .subscribe().disposed(by: self.disposeBag)
+        }
+        
+        // then
+        if case let .updated(item) = event, let link = item as? ReadLink {
+            XCTAssertEqual(link.uid, dummyLink.uid)
+        } else {
+            XCTFail("이벤트 전파 실패")
+        }
+    }
+    
     func testUsecase_updateItemWithParams() {
         // given
         let expect = expectation(description: "파라미터로 아이템 업데이트 요청")
         let usecase = self.makeUsecase()
         
         // when
-        let params = ReadItemUpdateParams(itemID: "some", isCollection: true)
+        let params = ReadItemUpdateParams(item: ReadLink.dummy(9, parent: nil))
             |> \.updatePropertyParams .~ [.remindTime(.now())]
         let updating = usecase.updateItem(params)
         let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
         
         // then
         XCTAssertNotNil(result)
+    }
+    
+    func testUSecase_whenAfterUpdateItemWithParams_broadCast() {
+        // given
+        let expect = expectation(description: "파라미터로 아이템 수정한 이후에 광역 전파")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase()
+        let dummyItem = ReadLink.dummy(0)
+        
+        // when
+        let events = self.waitElements(expect, for: usecase.readItemUpdated) {
+            let param1 = ReadItemUpdateParams(item: dummyItem)
+                |> \.updatePropertyParams .~ [.remindTime(100)]
+            usecase.updateItem(param1).subscribe().disposed(by: self.disposeBag)
+            
+            let param2 = ReadItemUpdateParams(item: dummyItem |> \.remindTime .~ 100)
+                |> \.updatePropertyParams .~ [.remindTime(nil)]
+            usecase.updateItem(param2).subscribe().disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(events.map { $0.remindTime }, [100, nil])
     }
     
     func testUsecase_whenUpdateLinkWithSignedIn_updateOwnerID() {
@@ -546,5 +608,13 @@ private extension ReadItemUsecaseTests {
             self.updatedLink = link
             return super.requestUpdateLink(link)
         }
+    }
+}
+
+private extension ReadItemUpdateEvent {
+    
+    var remindTime: TimeStamp? {
+        guard case let .updated(item) = self else { return nil }
+        return item.remindTime
     }
 }

@@ -447,7 +447,14 @@ extension DataModelStorageImple {
             return self.sqliteService.rx.run { try $0.update(ReadLinkTable.self, query: query) }
         }
         
-        return params.isCollection ? updateCollection() : updateLink()
+        switch params.item {
+        case is ReadCollection:
+            return updateCollection()
+        case is ReadLink:
+            return updateLink()
+            
+        default: return .empty()
+        }
     }
 }
 

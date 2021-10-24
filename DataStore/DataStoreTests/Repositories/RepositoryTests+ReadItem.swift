@@ -180,7 +180,7 @@ extension RepositoryTests_ReadItem {
         self.mockLocal.register(key: "updateItem") { Maybe<Void>.just() }
         
         // when
-        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+        let params = ReadItemUpdateParams(item: ReadLink(link: "some"))
             |> \.updatePropertyParams .~ [.remindTime(.now())]
         let updating = self.dummyRepository.requestUpdateItem(params)
         let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
@@ -195,7 +195,7 @@ extension RepositoryTests_ReadItem {
         self.mockLocal.register(key: "updateItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
         
         // when
-        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+        let params = ReadItemUpdateParams(item: ReadLink(link: "some"))
             |> \.updatePropertyParams .~ [.remindTime(.now())]
         let updating = self.dummyRepository.requestUpdateItem(params)
         let error: Error? = self.waitError(expect, for: updating.asObservable())
@@ -420,7 +420,7 @@ extension RepositoryTests_ReadItem {
         self.mockRemote.register(key: "requestUpdateItem") { Maybe<Void>.just() }
         
         // when
-        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+        let params = ReadItemUpdateParams(item: ReadLink(link: "some"))
             |> \.updatePropertyParams .~ [.remindTime(.now())]
         let updating = self.dummyRepository.requestUpdateItem(params)
         let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
@@ -436,7 +436,7 @@ extension RepositoryTests_ReadItem {
         self.mockRemote.register(key: "requestUpdateItem") { Maybe<Void>.just() }
         
         // when
-        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+        let params = ReadItemUpdateParams(item: ReadLink(link: "some"))
             |> \.updatePropertyParams .~ [.remindTime(.now())]
         let updating = self.dummyRepository.requestUpdateItem(params)
         let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
@@ -452,7 +452,7 @@ extension RepositoryTests_ReadItem {
         self.mockRemote.register(key: "requestUpdateItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
         
         // when
-        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+        let params = ReadItemUpdateParams(item: ReadLink(link: "some"))
             |> \.updatePropertyParams .~ [.remindTime(.now())]
         let updating = self.dummyRepository.requestUpdateItem(params)
         let error: Error? = self.waitError(expect, for: updating.asObservable())

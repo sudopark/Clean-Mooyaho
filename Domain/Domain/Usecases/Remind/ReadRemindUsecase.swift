@@ -103,7 +103,7 @@ extension ReadRemindUsecaseImple {
     }
     
     private func updateItem(_ item: ReadItem, remindTime: TimeStamp?) -> Maybe<Void> {
-        let params = ReadItemUpdateParams(itemID: item.uid, isCollection: item is ReadCollection)
+        let params = ReadItemUpdateParams(item: item)
             |> \.updatePropertyParams .~ [.remindTime(remindTime)]
         return self.readItemUsecase.updateItem(params)
     }

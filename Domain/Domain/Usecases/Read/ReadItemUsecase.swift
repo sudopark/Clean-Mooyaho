@@ -13,9 +13,17 @@ import Prelude
 import Optics
 
 
+public enum ReadItemUpdateEvent {
+    case updated(_ item: ReadItem)
+    case removed(itemID: String, parent: String?)
+}
+
 // MARK: - ReadItemUsecase
 
-public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, ReadItemOptionsUsecase { }
+public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, ReadItemOptionsUsecase {
+    
+    var readItemUpdated: Observable<ReadItemUpdateEvent> { get }
+}
 
 
 // MARK: - ReadItemUsecaseImple
@@ -41,6 +49,8 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
         self.authInfoProvider = authInfoProvider
         self.sharedStoreService = sharedStoreService
     }
+    
+    private static let readItemUpdated = PublishSubject<ReadItemUpdateEvent>()
 }
 
 
@@ -106,16 +116,30 @@ extension ReadItemUsecaseImple {
         let memberID = self.authInfoProvider.signedInMemberID()
         let newCollection = newCollection |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateCollection(newCollection)
+            .do(onNext: { [weak self] in
+                self?.broadCastItemUpdated(newCollection)
+            })
     }
     
     public func updateLink(_ link: ReadLink) -> Maybe<Void> {
         let memberID = self.authInfoProvider.signedInMemberID()
         let link = link |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateLink(link)
+            .do(onNext: { [weak self] in
+                self?.broadCastItemUpdated(link)
+            })
     }
     
     public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return self.itemsRespoitory.requestUpdateItem(params)
+            .do(onNext: { [weak self] in
+                let newItem = params.applyChanges()
+                self?.broadCastItemUpdated(newItem)
+            })
+    }
+    
+    private func broadCastItemUpdated(_ newItem: ReadItem) {
+        Self.readItemUpdated.onNext(.updated(newItem))
     }
 }
 
@@ -230,6 +254,10 @@ extension ReadItemUsecaseImple {
         return self.optionsRespository.requestUpdateCustomSortOrder(for: collectionID, itemIDs: itemIDs)
             .do(onNext: updateOnLocal)
     }
+    
+    public var readItemUpdated: Observable<ReadItemUpdateEvent> {
+        return Self.readItemUpdated.asObservable()
+    }
 }
 
 private extension ReadItem {
@@ -244,5 +272,24 @@ private extension Array where Element == ReadItem {
     
     func removeAlreadyPassedRemind() -> [Element] {
         return self.map { $0.removeAlreadyPassedRemind() }
+    }
+}
+
+private extension ReadItemUpdateParams {
+    
+    func applyChanges() -> ReadItem {
+        return self.updatePropertyParams.reduce(self.item) { acc, property in
+            return property.applyChange(to: acc)
+        }
+    }
+}
+
+private extension ReadItemUpdateParams.ProperyUpdateParams {
+    
+    func applyChange(to item: ReadItem) -> ReadItem {
+        switch self {
+        case let .remindTime(time):
+            return item |> \.remindTime .~ time
+        }
     }
 }
