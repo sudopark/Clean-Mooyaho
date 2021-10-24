@@ -117,6 +117,7 @@ extension LocalStorageTests_ReadItem {
             |> \.customName .~ "custom name"
             |> \.priority .~ .afterAWhile
             |> \.categoryIDs .~ ["c1"]
+            |> \.isRed .~ true
         
         // when
         let save = self.local.updateReadItems([link])
@@ -134,6 +135,7 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual(savedLink?.customName, link.customName)
         XCTAssertEqual(savedLink?.priority, link.priority)
         XCTAssertEqual(savedLink?.categoryIDs.count, link.categoryIDs.count)
+        XCTAssertEqual(savedLink?.isRed, true)
     }
     
     func testStorage_loadCollection() {
@@ -192,13 +194,16 @@ extension LocalStorageTests_ReadItem {
     func testStorage_updateLink_withParams() {
         // given
         let expect = expectation(description: "파라미터로 link 업데이트")
-        let dummy = ReadLink(link: "some") |> \.parentID .~ "p"
+        let dummy = ReadLink(link: "some")
+            |> \.parentID .~ "p"
+            |> \.isRed .~ false
         let params = ReadItemUpdateParams(item: dummy)
         let newTime = TimeStamp.now() + 1000
         
         // when
         let save = self.local.updateReadItems([dummy])
-        let updateParams = params |> \.updatePropertyParams .~ [.remindTime(newTime)]
+        let updateParams = params
+            |> \.updatePropertyParams .~ [.remindTime(newTime), .isRed(true)]
         let update = self.local.updateItem(updateParams)
         let load = self.local.fetchCollectionItems("p")
         let saveUpdateAndLoad = save.flatMap { update }.flatMap { load }
@@ -206,6 +211,7 @@ extension LocalStorageTests_ReadItem {
         
         // then
         XCTAssertEqual(loadedLink?.remindTime, newTime)
+        XCTAssertEqual((loadedLink as? ReadLink)?.isRed, true)
     }
     
     func testStorage_removeLinkProperty_withParams() {
@@ -214,11 +220,13 @@ extension LocalStorageTests_ReadItem {
         let dummy = ReadLink(link: "some")
             |> \.parentID .~ "p"
             |> \.remindTime .~ (.now() + 1000)
+            |> \.isRed .~ true
         let params = ReadItemUpdateParams(item: dummy)
         
         // when
         let save = self.local.updateReadItems([dummy])
-        let removeParams = params |> \.updatePropertyParams .~ [.remindTime(nil)]
+        let removeParams = params
+            |> \.updatePropertyParams .~ [.remindTime(nil), .isRed(false)]
         let remove = self.local.updateItem(removeParams)
         let load = self.local.fetchCollectionItems("p")
         let saveRemoveAndLoad = save.flatMap { remove }.flatMap { load }
@@ -226,5 +234,6 @@ extension LocalStorageTests_ReadItem {
         
         // then
         XCTAssertEqual(loadedLink?.remindTime, nil)
+        XCTAssertEqual((loadedLink as? ReadLink)?.isRed, false)
     }
 }

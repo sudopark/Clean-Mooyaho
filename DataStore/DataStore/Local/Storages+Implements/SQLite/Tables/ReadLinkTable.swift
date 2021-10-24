@@ -33,6 +33,7 @@ struct ReadLinkTable: Table {
         case .pritority: return entity.priority?.rawValue
         case .categoryIDs: return try? entity.categoryIDs.asArrayText()
         case .remindTime: return entity.remindTime
+        case .isRed: return entity.isRed
         }
     }
 }
@@ -51,6 +52,7 @@ extension ReadLinkTable {
         let priority: ReadPriority?
         let categoryIDs: [String]
         let remindTime: TimeStamp?
+        let isRed: Bool
         
         init(_ cursor: CursorIterator) throws {
             self.uid = try cursor.next().unwrap()
@@ -64,6 +66,7 @@ extension ReadLinkTable {
             let idText: String = try cursor.next().unwrap()
             self.categoryIDs = try idText.toArray()
             self.remindTime = cursor.next()
+            self.isRed = try cursor.next().unwrap()
         }
         
         init(link: ReadLink) {
@@ -77,6 +80,7 @@ extension ReadLinkTable {
             self.priority = link.priority
             self.categoryIDs = link.categoryIDs
             self.remindTime = link.remindTime
+            self.isRed = link.isRed
         }
     }
 }
@@ -94,6 +98,7 @@ extension ReadLinkTable {
         case pritority = "read_priority"
         case categoryIDs = "cate_ids"
         case remindTime = "remind_time"
+        case isRed = "is_red"
         
         var dataType: ColumnDataType {
             switch self {
@@ -107,6 +112,7 @@ extension ReadLinkTable {
             case .pritority: return .integer([])
             case .categoryIDs: return .text([])
             case .remindTime: return .real([])
+            case .isRed: return .integer([.default(0)])
             }
         }
     }
@@ -125,5 +131,6 @@ extension ReadLinkTable.Entity {
             |> \.priority .~ self.priority
             |> \.categoryIDs .~ self.categoryIDs
             |> \.remindTime .~ self.remindTime
+            |> \.isRed .~ self.isRed
     }
 }
