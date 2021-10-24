@@ -22,6 +22,7 @@ public struct ReadLink: ReadItem {
     public var customName: String?
     public var priority: ReadPriority?
     public var categoryIDs: [String] = []
+    public var remindTime: TimeStamp?
     
     public init(uid: String, link: String,
                 createAt: TimeStamp, lastUpdated: TimeStamp) {

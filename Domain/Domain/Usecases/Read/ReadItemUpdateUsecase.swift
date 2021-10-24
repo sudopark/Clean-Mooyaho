@@ -13,11 +13,34 @@ import Prelude
 import Optics
 
 
+// MARK: - ReadItemUpdateParams
+
+public struct ReadItemUpdateParams {
+    
+    public enum ProperyUpdateParams {
+        case remindTime(_ newValue: TimeStamp?)
+    }
+    
+    public let itemID: String
+    public let isCollection: Bool
+    public var updatePropertyParams: [ProperyUpdateParams] = []
+    
+    public init(itemID: String, isCollection: Bool) {
+        self.itemID = itemID
+        self.isCollection = isCollection
+    }
+}
+
+
+// MARK: - ReadItemUpdateUsecase
+
 public protocol ReadItemUpdateUsecase {
     
     func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void>
     
     func updateLink(_ link: ReadLink) -> Maybe<Void>
+    
+    func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
 }
 
 

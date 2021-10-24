@@ -107,6 +107,10 @@ extension ReadItemUsecaseImple {
         let link = link |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateLink(link)
     }
+    
+    public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        return self.itemsRespoitory.requestUpdateItem(params)
+    }
 }
 
 

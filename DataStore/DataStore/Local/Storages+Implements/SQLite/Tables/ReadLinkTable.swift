@@ -32,6 +32,7 @@ struct ReadLinkTable: Table {
         case .customName: return entity.customName
         case .pritority: return entity.priority?.rawValue
         case .categoryIDs: return try? entity.categoryIDs.asArrayText()
+        case .remindTime: return entity.remindTime
         }
     }
 }
@@ -49,6 +50,7 @@ extension ReadLinkTable {
         let customName: String?
         let priority: ReadPriority?
         let categoryIDs: [String]
+        let remindTime: TimeStamp?
         
         init(_ cursor: CursorIterator) throws {
             self.uid = try cursor.next().unwrap()
@@ -61,6 +63,7 @@ extension ReadLinkTable {
             self.priority = cursor.next().flatMap{ ReadPriority.init(rawValue: $0) }
             let idText: String = try cursor.next().unwrap()
             self.categoryIDs = try idText.toArray()
+            self.remindTime = cursor.next()
         }
         
         init(link: ReadLink) {
@@ -73,6 +76,7 @@ extension ReadLinkTable {
             self.customName = link.customName
             self.priority = link.priority
             self.categoryIDs = link.categoryIDs
+            self.remindTime = link.remindTime
         }
     }
 }
@@ -89,6 +93,7 @@ extension ReadLinkTable {
         case customName = "custom_name"
         case pritority = "read_priority"
         case categoryIDs = "cate_ids"
+        case remindTime = "remind_time"
         
         var dataType: ColumnDataType {
             switch self {
@@ -101,6 +106,7 @@ extension ReadLinkTable {
             case .customName: return .text([])
             case .pritority: return .integer([])
             case .categoryIDs: return .text([])
+            case .remindTime: return .real([])
             }
         }
     }
@@ -118,5 +124,6 @@ extension ReadLinkTable.Entity {
             |> \.customName .~ self.customName
             |> \.priority .~ self.priority
             |> \.categoryIDs .~ self.categoryIDs
+            |> \.remindTime .~ self.remindTime
     }
 }

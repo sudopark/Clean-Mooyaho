@@ -27,6 +27,8 @@ class StubReadItemRepository: ReadItemRepository {
         
         var updateCollectionResult: Result<Void, Error> = .success(())
         var updateLinkResult: Result<Void, Error> = .success(())
+        
+        var updateWithParamsResult: Result<Void, Error> = .success(())
     }
     
     private let scenario: Scenario
@@ -52,5 +54,9 @@ class StubReadItemRepository: ReadItemRepository {
     
     func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection> {
         return self.scenario.collection.asMaybe().asObservable()
+    }
+    
+    func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        return scenario.updateWithParamsResult.asMaybe()
     }
 }

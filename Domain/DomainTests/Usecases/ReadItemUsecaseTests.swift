@@ -272,6 +272,21 @@ extension ReadItemUsecaseTests {
         XCTAssertNotNil(result)
     }
     
+    func testUsecase_updateItemWithParams() {
+        // given
+        let expect = expectation(description: "파라미터로 아이템 업데이트 요청")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let params = ReadItemUpdateParams(itemID: "some", isCollection: true)
+            |> \.updatePropertyParams .~ [.remindTime(.now())]
+        let updating = usecase.updateItem(params)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
     func testUsecase_whenUpdateLinkWithSignedIn_updateOwnerID() {
         // given
         let expect = expectation(description: "로그인상태에서 링크 업데이트시에 오너아이디 세팅")

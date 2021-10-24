@@ -86,4 +86,10 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
         return collectionOnLocal.catchAndReturn(nil).compactMap { $0 }.asObservable()
             .concat(collectionOnRemote)
     }
+    
+    public func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        let updateOnRemote = self.readItemRemote.requestUpdateItem(params)
+        let updateOnLocal = { [weak self] in self?.readItemLocal.updateItem(params) ?? .empty() }
+        return updateOnRemote.switchOr(append: updateOnLocal, witoutError: ())
+    }
 }

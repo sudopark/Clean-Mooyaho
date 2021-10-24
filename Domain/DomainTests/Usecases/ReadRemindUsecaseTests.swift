@@ -13,7 +13,6 @@ import Prelude
 import Optics
 
 import UnitTestHelpKit
-import UsecaseDoubles
 
 import Domain
 
@@ -33,25 +32,22 @@ class ReadRemindUsecaseTests: BaseTestCase, WaitObservableEvents {
     }
     
     private func makeUsecase(shouldFailSchedule: Bool = false,
-                             shouldFailLoadPreview: Bool = false,
-                             prepareRemind: ReadRemind? = nil) -> ReadRemindUsecase {
+                             shouldFailLoadPreview: Bool = false) -> ReadRemindUsecase {
         
         let store = SharedDataStoreServiceImple()
-        prepareRemind.whenExists {
-            store.save([String: ReadRemind].self, key: .readMindersMap, [$0.itemID: $0])
-        }
         
         let previewScenario = StubLinkPreviewRepository.Scenario()
             |> \.preview .~ (shouldFailLoadPreview ? .failure(ApplicationErrors.invalid) : .success(.dummy(0)))
         let previewRepo = StubLinkPreviewRepository(scenario: previewScenario)
-        let readItemUsecase = ReadItemUsecaseImple(itemsRespoitory: StubReadItemRepository(),
+        
+        let repoScenario = StubReadItemRepository.Scenario()
+            |> \.updateWithParamsResult .~ (shouldFailSchedule ? .failure(ApplicationErrors.invalid) : .success(()))
+        let repository = StubReadItemRepository(scenario: repoScenario)
+        
+        let readItemUsecase = ReadItemUsecaseImple(itemsRespoitory: repository,
                                                    previewRepository: previewRepo,
                                                    optionsRespository: StubReadItemOptionsRepository(scenario: .init()),
                                                    authInfoProvider: store, sharedStoreService: store)
-        
-        let repoScenario = StubReadRemiderReposiotry.Scenario()
-            |> \.makeReminderResult .~ (shouldFailSchedule ? .failure(ApplicationErrors.invalid) : .success(()))
-        let repository = StubReadRemiderReposiotry(scenario: repoScenario)
         
         let messageService = StubReminderMessagingService()
         self.spyMessagingService = messageService
@@ -59,7 +55,6 @@ class ReadRemindUsecaseTests: BaseTestCase, WaitObservableEvents {
         return ReadRemindUsecaseImple(authInfoProvider: store,
                                       sharedStore: store,
                                       readItemUsecase: readItemUsecase,
-                                      reminderRepository: repository,
                                       messagingService: messageService)
     }
 }
@@ -88,11 +83,11 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase(shouldFailSchedule: false)
 
         // when
-        let scheduling = usecase.scheduleRemind(for: ReadCollection.dummy(0), at: .now())
-        let remind: ReadRemind? = self.waitFirstElement(expect, for: scheduling.asObservable())
+        let scheduling = usecase.scheduleRemid(for: ReadCollection.dummy(0), futureTime: .now())
+        let result: Void? = self.waitFirstElement(expect, for: scheduling.asObservable())
 
         // then
-        XCTAssertNotNil(remind)
+        XCTAssertNotNil(result)
     }
     
     func testUsecase_whenScheduleRemind_sendPendingMessage() {
@@ -101,8 +96,8 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let scheduling = usecase.scheduleRemind(for: ReadCollection.dummy(0), at: .now())
-        let _ : ReadRemind? = self.waitFirstElement(expect, for: scheduling.asObservable())
+        let scheduling = usecase.scheduleRemid(for: ReadCollection.dummy(0), futureTime: .now())
+        let _ : Void? = self.waitFirstElement(expect, for: scheduling.asObservable())
         
         // then
         XCTAssertNotNil(self.spyMessagingService?.didSentPendingMessage)
@@ -114,7 +109,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase(shouldFailSchedule: true)
 
         // when
-        let making = usecase.scheduleRemind(for: ReadCollection.dummy(0), at: .now())
+        let making = usecase.scheduleRemid(for: ReadCollection.dummy(0), futureTime: .now())
         let error: Error? = self.waitError(expect, for: making.asObservable())
 
         // then
@@ -133,11 +128,11 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let scheduling = usecase.scheduleRemind(for: ReadLink.dummy(0), at: .now())
-        let remind = self.waitFirstElement(expect, for: scheduling.asObservable())
+        let scheduling = usecase.scheduleRemid(for: ReadLink.dummy(0), futureTime: .now())
+        let result: Void? = self.waitFirstElement(expect, for: scheduling.asObservable())
         
         // then
-        XCTAssertNotNil(remind)
+        XCTAssertNotNil(result)
     }
     
     func testUsecase_whenScheduleReadLinkRemind_sendPendingMessage() {
@@ -146,7 +141,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let scheduling = usecase.scheduleRemind(for: ReadLink.dummy(0), at: .now())
+        let scheduling = usecase.scheduleRemid(for: ReadLink.dummy(0), futureTime: .now())
         let _ = self.waitFirstElement(expect, for: scheduling.asObservable())
         
         // then
@@ -165,7 +160,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let canceling = usecase.cancelRemind(.dummy(0))
+        let canceling = usecase.cancelRemind(for: ReadLink.dummy(0))
         let result: Void? = self.waitFirstElement(expect, for: canceling.asObservable())
         
         // then
@@ -178,62 +173,13 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let canceling = usecase.cancelRemind(.dummy(0))
+        let canceling = usecase.cancelRemind(for: ReadLink.dummy(0))
         let _ : Void? = self.waitFirstElement(expect, for: canceling.asObservable())
         
         // then
         XCTAssertNotNil(self.spyMessagingService?.didCancelRemindID)
     }
-    
-    func testUSecase_whenAfterCancelRemind_updateSharedStore() {
-        // given
-        let expect = expectation(description: "에정된 알림 취소 이후에 공유 데이터 업데이트")
-        expect.expectedFulfillmentCount = 2
-        let usecase = self.makeUsecase()
-        
-        // when
-        let reminds = self.waitElements(expect, for: usecase.readReminds(for: ["c:0"])) {
-            usecase.cancelRemind(.dummy(0))
-                .subscribe().disposed(by: self.disposeBag)
-        }
-        
-        // then
-        XCTAssertEqual(reminds.map { $0.count }, [1, 0])
-    }
 }
-
-
-extension ReadRemindUsecaseTests {
-    
-    
-    func testUsecase_loadRemind_withoutShared() {
-        // given
-        let expect = expectation(description: "미리 로드된 리마인드 없이 리마인드 아이템 로드")
-        let usecase = self.makeUsecase()
-        
-        // when
-        let loadnig = usecase.readReminds(for: ["c:0"])
-        let reminds = self.waitElements(expect, for: loadnig)
-        
-        // then
-        XCTAssertEqual(reminds.map { $0.count }, [1])
-    }
-    
-    func testUsecase_whenRemindExistOnSharedStore_startWuthIt() {
-        // given
-        let expect = expectation(description: "미리 로드된 리마인드 존재시에 해당값 먼저 방출")
-        expect.expectedFulfillmentCount = 2
-        let usecase = self.makeUsecase(prepareRemind: ReadRemind.dummy(0))
-        
-        // when
-        let loadnig = usecase.readReminds(for: ["c:0"])
-        let reminds = self.waitElements(expect, for: loadnig)
-        
-        // then
-        XCTAssertEqual(reminds.map { $0.count }, [1, 1])
-    }
-}
-
 
 // MARK: - handling readmind message
 

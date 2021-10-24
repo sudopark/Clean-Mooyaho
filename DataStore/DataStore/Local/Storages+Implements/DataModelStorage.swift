@@ -54,6 +54,8 @@ public protocol DataModelStorage {
     
     func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void>
     
+    func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
+    
     func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
     
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
@@ -65,12 +67,6 @@ public protocol DataModelStorage {
     func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]>
     
     func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
-    
-    func fetchReadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]>
-    
-    func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void>
-    
-    func removeReadRemind(for reminderID: String) -> Maybe<Void>
 }
 
 
@@ -438,6 +434,21 @@ extension DataModelStorageImple {
         let entities = links.map{ Entity(link: $0) }
         return self.sqliteService.rx.run { try $0.insert(ReadLinkTable.self, entities: entities) }
     }
+    
+    public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        
+        func updateCollection() -> Maybe<Void> {
+            let query = ReadCollectionTable.update(replace: params.updateCollectionConditions(_:))
+            return self.sqliteService.rx.run { try $0.update(ReadCollectionTable.self, query: query) }
+        }
+        
+        func updateLink() -> Maybe<Void> {
+            let query = ReadLinkTable.update(replace: params.updateLinkConditions(_:))
+            return self.sqliteService.rx.run { try $0.update(ReadLinkTable.self, query: query) }
+        }
+        
+        return params.isCollection ? updateCollection() : updateLink()
+    }
 }
 
 
@@ -486,28 +497,6 @@ extension DataModelStorageImple {
     public func fetchLatestItemCategories() -> Maybe<[ItemCategory]> {
         let query = ItemCategoriesTable.selectAll().limit(100).orderBy("rowid", isAscending: false)
         return self.sqliteService.rx.run { try $0.load(query) }
-    }
-}
-
-
-// MARK: - ReadRemind
-
-extension DataModelStorageImple {
-    
-    public func fetchReadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]> {
-        let query = ReadRemindTable.selectAll { $0.itemID.in(itemIDs) }
-        return self.sqliteService.rx.run { try $0.load(query) }
-    }
-    
-    public func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void> {
-        return self.sqliteService.rx.run {
-            try $0.insert(ReadRemindTable.self, entities: [remind], shouldReplace: true)
-        }
-    }
-    
-    public func removeReadRemind(for reminderID: String) -> Maybe<Void> {
-        let deleteQuery = ReadRemindTable.delete().where { $0.uid == reminderID }
-        return self.sqliteService.rx.run { try $0.delete(ReadRemindTable.self, query: deleteQuery) }
     }
 }
 
@@ -587,5 +576,33 @@ private extension Array where Element == String {
     
     func filtering(_ dict: [String: ItemCategory]) -> [ItemCategory] {
         return self.compactMap { dict[$0] }
+    }
+}
+
+
+private extension ReadItemUpdateParams {
+    
+    func updateCollectionConditions(_ columType: ReadCollectionTable.Columns.Type) -> [QueryExpression.Condition] {
+        return self.updatePropertyParams.compactMap { param -> QueryExpression.Condition? in
+            switch param {
+            case .remindTime(nil):
+                return columType.remindTime == Optional<Double>.none
+                
+            case let .remindTime(time):
+                return columType.remindTime == time
+            }
+        }
+    }
+    
+    func updateLinkConditions(_ columType: ReadLinkTable.Columns.Type) -> [QueryExpression.Condition] {
+        return self.updatePropertyParams.compactMap { param -> QueryExpression.Condition? in
+            switch param {
+            case .remindTime(nil):
+                return columType.remindTime == Optional<Double>.none
+                
+            case let .remindTime(time):
+                return columType.remindTime == time
+            }
+        }
     }
 }

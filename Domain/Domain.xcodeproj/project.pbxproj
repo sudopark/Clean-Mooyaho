@@ -75,13 +75,11 @@
 		F61529672650171A003BCB59 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61529662650171A003BCB59 /* Auth.swift */; };
 		F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152968265017E5003BCB59 /* AuthInfoProvider.swift */; };
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
+		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
 		F637206326653F960089D0B3 /* MemberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206226653F960089D0B3 /* MemberTests.swift */; };
-		F6391C64271C86270000F927 /* ReadRemind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C63271C86270000F927 /* ReadRemind.swift */; };
-		F6391C6B271DBB400000F927 /* ReadRemindRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C6A271DBB400000F927 /* ReadRemindRepository.swift */; };
 		F6391C6D271DBD350000F927 /* ReadRemindMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C6C271DBD350000F927 /* ReadRemindMessage.swift */; };
 		F6391C6F271DBF650000F927 /* ReadRemindMessagingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C6E271DBF650000F927 /* ReadRemindMessagingService.swift */; };
 		F6391C73271DC6240000F927 /* ReadRemindUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C72271DC6240000F927 /* ReadRemindUsecase.swift */; };
-		F6391C75271DC9790000F927 /* StubReadRemiderReposiotry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C74271DC9790000F927 /* StubReadRemiderReposiotry.swift */; };
 		F6391C77271DCB860000F927 /* ReadRemindUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C76271DCB860000F927 /* ReadRemindUsecaseTests.swift */; };
 		F63A3D8A266227E400DAF4AE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A3D89266227E400DAF4AE /* Logger.swift */; };
 		F63AB5D126B06A1E00115A25 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63AB5D026B06A1E00115A25 /* Coordinate.swift */; };
@@ -218,13 +216,11 @@
 		F61529662650171A003BCB59 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		F6152968265017E5003BCB59 /* AuthInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProvider.swift; sourceTree = "<group>"; };
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
+		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
 		F637206226653F960089D0B3 /* MemberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTests.swift; sourceTree = "<group>"; };
-		F6391C63271C86270000F927 /* ReadRemind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemind.swift; sourceTree = "<group>"; };
-		F6391C6A271DBB400000F927 /* ReadRemindRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindRepository.swift; sourceTree = "<group>"; };
 		F6391C6C271DBD350000F927 /* ReadRemindMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindMessage.swift; sourceTree = "<group>"; };
 		F6391C6E271DBF650000F927 /* ReadRemindMessagingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindMessagingService.swift; sourceTree = "<group>"; };
 		F6391C72271DC6240000F927 /* ReadRemindUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindUsecase.swift; sourceTree = "<group>"; };
-		F6391C74271DC9790000F927 /* StubReadRemiderReposiotry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubReadRemiderReposiotry.swift; sourceTree = "<group>"; };
 		F6391C76271DCB860000F927 /* ReadRemindUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindUsecaseTests.swift; sourceTree = "<group>"; };
 		F63A3D89266227E400DAF4AE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F63AB5D026B06A1E00115A25 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -334,6 +330,7 @@
 				F6E3F60A264983E900DD4986 /* Location+Extension.swift */,
 				F63A3D89266227E400DAF4AE /* Logger.swift */,
 				F6AED2702700B85900A1DCCC /* String+Extensions.swift */,
+				F62AA2952723EA9700E395CB /* Time+Extension.swift */,
 			);
 			path = "Extensions+Utils";
 			sourceTree = "<group>";
@@ -358,7 +355,6 @@
 				F615295B264F135A003BCB59 /* Messages */,
 				F6913EE926EC635400C6E105 /* ReadingItems */,
 				F6E279C726F6EA2900957AC4 /* Link */,
-				F6391C62271C86120000F927 /* Remind */,
 				F6A8CE3A271174EA00CA6D3D /* Suggest */,
 				F6913EE826EC631B00C6E105 /* Deprecated */,
 			);
@@ -389,7 +385,6 @@
 				F6E279D426F71CD800957AC4 /* ReadItemOptionsRepository.swift */,
 				F601724D26FEF98300E47B75 /* LinkPreviewRepository.swift */,
 				F6B6B4142710733B000652E0 /* ItemCategoryRepository.swift */,
-				F6391C6A271DBB400000F927 /* ReadRemindRepository.swift */,
 				F6913F0926F38AB100C6E105 /* Deprecated */,
 			);
 			path = Repositories;
@@ -423,7 +418,6 @@
 				F6E279D626F71DA000957AC4 /* StubReadItemOptionsRepository.swift */,
 				F6B21C6427004D69006243FD /* StubLinkPreviewRepository.swift */,
 				F6B6B41627107414000652E0 /* StubItemCategoryRepository.swift */,
-				F6391C74271DC9790000F927 /* StubReadRemiderReposiotry.swift */,
 			);
 			path = Doubles;
 			sourceTree = "<group>";
@@ -612,14 +606,6 @@
 				F6391C6C271DBD350000F927 /* ReadRemindMessage.swift */,
 			);
 			path = Messages;
-			sourceTree = "<group>";
-		};
-		F6391C62271C86120000F927 /* Remind */ = {
-			isa = PBXGroup;
-			children = (
-				F6391C63271C86270000F927 /* ReadRemind.swift */,
-			);
-			path = Remind;
 			sourceTree = "<group>";
 		};
 		F6391C65271DB8BA0000F927 /* Remind */ = {
@@ -837,7 +823,6 @@
 				F6913EFF26EE55B400C6E105 /* ReadItemLoadUsecase.swift in Sources */,
 				2B40BF7F263F06FB0031C7A6 /* UserLocationUsecase.swift in Sources */,
 				2B9F27A32633F17500FEBCE3 /* Seller.swift in Sources */,
-				F6391C64271C86270000F927 /* ReadRemind.swift in Sources */,
 				2B40BF84263F09800031C7A6 /* LocationMonitoringService.swift in Sources */,
 				F6152958264F0B0C003BCB59 /* ApplicationErrors.swift in Sources */,
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
@@ -874,7 +859,6 @@
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
 				F6152939264DA35A003BCB59 /* MessagingService.swift in Sources */,
 				F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */,
-				F6391C6B271DBB400000F927 /* ReadRemindRepository.swift in Sources */,
 				F6B6B4152710733B000652E0 /* ItemCategoryRepository.swift in Sources */,
 				F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */,
 				F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */,
@@ -882,6 +866,7 @@
 				F6913EFD26EE54D500C6E105 /* ReadLink.swift in Sources */,
 				F61529672650171A003BCB59 /* Auth.swift in Sources */,
 				F63AB5D126B06A1E00115A25 /* Coordinate.swift in Sources */,
+				F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */,
 				F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
 				F615293D264DA999003BCB59 /* HoorayAck+Reaction.swift in Sources */,
@@ -909,7 +894,6 @@
 				F6502DD5266CA4D50027800F /* Dummies.swift in Sources */,
 				F6CF34AC26D7DA19003B52CD /* HoorayUsecaseTests.swift in Sources */,
 				2B40BF89263F0A1D0031C7A6 /* MockLocationMonitoringService.swift in Sources */,
-				F6391C75271DC9790000F927 /* StubReadRemiderReposiotry.swift in Sources */,
 				F6B6B419271074C5000652E0 /* ItemCategoryUsecaseTests.swift in Sources */,
 				F6B21C6527004D69006243FD /* StubLinkPreviewRepository.swift in Sources */,
 				2BF00BCA262B7DF400E235C0 /* DomainTests.swift in Sources */,

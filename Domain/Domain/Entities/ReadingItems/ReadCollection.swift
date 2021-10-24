@@ -25,6 +25,7 @@ public struct ReadCollection: ReadItem {
     public var lastUpdatedAt: TimeStamp
     public var priority: ReadPriority?
     public var categoryIDs: [String] = []
+    public var remindTime: TimeStamp?
     public var collectionDescription: String?
     
     public init(name: String) {

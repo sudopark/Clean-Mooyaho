@@ -131,6 +131,11 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "updateReadItems") ?? .empty()
     }
     
+    func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        self.verify(key: "updateItem")
+        return self.resolve(key: "updateItem") ?? .empty()
+    }
+    
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         return self.resolve(key: "fetchReadItemIsShrinkMode") ?? .empty()
     }
@@ -182,18 +187,6 @@ class MockLocal: LocalStorage, Mocking {
     
     func loadLatestCategories() -> Maybe<[SuggestCategory]> {
         return self.resolve(key: "loadLatestCategories") ?? .empty()
-    }
-    
-    func fetchReadReminds(for itemsIDs: [String]) -> Maybe<[ReadRemind]> {
-        return self.resolve(key: "fetchReadReminds") ?? .empty()
-    }
-    
-    func updateReadRemind(_ remind: ReadRemind) -> Maybe<Void> {
-        return self.resolve(key: "updateReadRemind") ?? .empty()
-    }
-    
-    func removeReadRemind(for reminderID: String) -> Maybe<Void> {
-        return self.resolve(key: "removeReadRemind") ?? .empty()
     }
 }
 
