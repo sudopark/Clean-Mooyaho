@@ -24,6 +24,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     var didShowError: Bool?
     var didSafariOpen: Bool?
     var didEditRequested: Bool?
+    var didEditRequestedMemo: ReadLinkMemo?
 
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -34,6 +35,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.didShowError = nil
         self.didSafariOpen = nil
         self.didEditRequested = nil
+        self.didEditRequestedMemo = nil
     }
     
     private var dummyItem: ReadLink {
@@ -48,16 +50,22 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.didEditRequested = true
     }
     
+    func editMemo(_ memo: ReadLinkMemo) {
+        self.didEditRequestedMemo = memo
+    }
+    
     private func makeViewModel(_ item: ReadLink,
-                               preview: LinkPreview? = nil) -> InnerWebViewViewModel {
+                               preview: LinkPreview? = nil) -> InnerWebViewViewModelImple {
         
         let preview = preview ?? LinkPreview.dummy(0)
         let scenario = StubReadItemUsecase.Scenario()
             |> \.preview .~ .success(preview)
         let usecase = StubReadItemUsecase(scenario: scenario)
         
+        let memoUsecase = StubMemoUsecase()
         return InnerWebViewViewModelImple(link: item,
                                           readItemUsecase: usecase,
+                                          memoUsecase: memoUsecase,
                                           router: self)
     }
 }
@@ -152,5 +160,45 @@ extension InnerWebViewViewModelTests {
 
         // then
         XCTAssertEqual(isReds, [false, true, false])
+    }
+    
+    func testViewModel_updateMemo() {
+        // given
+        let expect = expectation(description: "메모 업데이트")
+        expect.expectedFulfillmentCount = 3
+        let dummy = ReadLink.dummy(0)
+        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        
+        // when
+        let hasMemos = self.waitElements(expect, for: viewModel.hasMemo) {
+            viewModel.prepareLinkData()
+            
+            viewModel.editMemo()
+            
+            let newMemo = ReadLinkMemo(itemID: dummy.uid) |> \.content .~ "value"
+            viewModel.linkMemo(didUpdated: newMemo)
+            
+            viewModel.linkMemo(didRemoved: dummy.uid)
+        }
+        
+        // then
+        XCTAssertEqual(hasMemos, [false, true, false])
+    }
+    
+    func testViewModel_whenMemoNotExistAndRequestEdit_requestWithEmptyMemo() {
+        // given
+        let expect = expectation(description: "메모가 없는 아이템 메모 수정 요청시에 빈 값으로 요청")
+        let dummy = ReadLink.dummy(0)
+        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        
+        // when
+        let _ = self.waitFirstElement(expect, for: viewModel.hasMemo) {
+            viewModel.prepareLinkData()
+            viewModel.editMemo()
+        }
+        
+        // then
+        XCTAssertEqual(self.didEditRequestedMemo?.linkItemID, dummy.uid)
+        XCTAssertEqual(self.didEditRequestedMemo?.content, nil)
     }
 }

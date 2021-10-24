@@ -25,12 +25,14 @@ public protocol InnerWebViewViewModel: AnyObject {
     func prepareLinkData()
     func openPageInSafari()
     func editReadLink()
+    func editMemo()
     func toggleMarkAsRed()
     
     // presenter
     var loadURL: String { get }
     var urlPageTitle: Observable<String> { get }
     var isRed: Observable<Bool> { get }
+    var hasMemo: Observable<Bool> { get }
 }
 
 
@@ -40,14 +42,17 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     
     private let link: ReadLink
     private let readItemUsecase: ReadItemUsecase
+    private let memoUsecase: ReadLinkMemoUsecase
     private let router: InnerWebViewRouting
     
     public init(link: ReadLink,
                 readItemUsecase: ReadItemUsecase,
+                memoUsecase: ReadLinkMemoUsecase,
                 router: InnerWebViewRouting) {
         
         self.link = link
         self.readItemUsecase = readItemUsecase
+        self.memoUsecase = memoUsecase
         self.router = router
         
         self.bindLinkItem(startWith: link)
@@ -61,6 +66,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     fileprivate final class Subjects {
         let item = BehaviorRelay<ReadLink?>(value: nil)
         let isToggling = BehaviorRelay<Bool>(value: false)
+        let memo = BehaviorRelay<ReadLinkMemo?>(value: nil)
     }
     
     private let subjects = Subjects()
@@ -78,7 +84,12 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
 extension InnerWebViewViewModelImple {
     
     public func prepareLinkData() {
-        
+        guard let item = self.subjects.item.value else { return }
+        self.memoUsecase.loadMemo(for: item.uid)
+            .subscribe(onNext: { [weak self] memo in
+                self?.subjects.memo.accept(memo)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     public func toggleMarkAsRed() {
@@ -114,6 +125,28 @@ extension InnerWebViewViewModelImple {
 }
 
 
+// MARK: - InnerWebViewViewModelImple Interactor + memo
+
+extension InnerWebViewViewModelImple {
+    
+    public func editMemo() {
+        guard let item = self.subjects.item.value else { return }
+        let memo = self.subjects.memo.value ?? ReadLinkMemo(itemID: item.uid)
+        self.router.editMemo(memo)
+    }
+    
+    public func linkMemo(didUpdated newVlaue: ReadLinkMemo) {
+        guard let item = self.subjects.item.value, item.uid == newVlaue.linkItemID else { return }
+        self.subjects.memo.accept(newVlaue)
+    }
+    
+    public func linkMemo(didRemoved linkItemID: String) {
+        guard let item = self.subjects.item.value, item.uid == linkItemID else { return }
+        self.subjects.memo.accept(nil)
+    }
+}
+
+
 // MARK: - InnerWebViewViewModelImple Presenter
 
 extension InnerWebViewViewModelImple {
@@ -144,6 +177,12 @@ extension InnerWebViewViewModelImple {
     public var isRed: Observable<Bool> {
         return self.subjects.item
             .map { $0?.isRed ?? false }
+            .distinctUntilChanged()
+    }
+    
+    public var hasMemo: Observable<Bool> {
+        return self.subjects.memo
+            .map { $0 != nil }
             .distinctUntilChanged()
     }
 }

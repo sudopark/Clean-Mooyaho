@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F62692BF2725638A00841B40 /* LinkMemoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BA2725638A00841B40 /* LinkMemoRouter.swift */; };
+		F62692C02725638A00841B40 /* LinkMemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BB2725638A00841B40 /* LinkMemoViewController.swift */; };
+		F62692C12725638A00841B40 /* LinkMemoBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BC2725638A00841B40 /* LinkMemoBuilder.swift */; };
+		F62692C22725638A00841B40 /* LinkMemoScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BD2725638A00841B40 /* LinkMemoScene.swift */; };
+		F62692C32725638A00841B40 /* LinkMemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BE2725638A00841B40 /* LinkMemoViewModel.swift */; };
+		F62692C5272565EC00841B40 /* LinkMemoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692C4272565EC00841B40 /* LinkMemoViewModelTests.swift */; };
 		F64B12C8270B1FB8000B6AD2 /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64B12BF270B1FB8000B6AD2 /* ViewerScene.framework */; };
 		F64B12CD270B1FB8000B6AD2 /* ViewerSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64B12CC270B1FB8000B6AD2 /* ViewerSceneTests.swift */; };
 		F64B12CE270B1FB8000B6AD2 /* ViewerScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F64B12C2270B1FB8000B6AD2 /* ViewerScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -35,6 +41,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F62692BA2725638A00841B40 /* LinkMemoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoRouter.swift; sourceTree = "<group>"; };
+		F62692BB2725638A00841B40 /* LinkMemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoViewController.swift; sourceTree = "<group>"; };
+		F62692BC2725638A00841B40 /* LinkMemoBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoBuilder.swift; sourceTree = "<group>"; };
+		F62692BD2725638A00841B40 /* LinkMemoScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoScene.swift; sourceTree = "<group>"; };
+		F62692BE2725638A00841B40 /* LinkMemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoViewModel.swift; sourceTree = "<group>"; };
+		F62692C4272565EC00841B40 /* LinkMemoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoViewModelTests.swift; sourceTree = "<group>"; };
 		F64B12BF270B1FB8000B6AD2 /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64B12C2270B1FB8000B6AD2 /* ViewerScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerScene.h; sourceTree = "<group>"; };
 		F64B12C7270B1FB8000B6AD2 /* ViewerSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ViewerSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +90,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F62692B92725637300841B40 /* Memo */ = {
+			isa = PBXGroup;
+			children = (
+				F62692BA2725638A00841B40 /* LinkMemoRouter.swift */,
+				F62692BB2725638A00841B40 /* LinkMemoViewController.swift */,
+				F62692BC2725638A00841B40 /* LinkMemoBuilder.swift */,
+				F62692BD2725638A00841B40 /* LinkMemoScene.swift */,
+				F62692BE2725638A00841B40 /* LinkMemoViewModel.swift */,
+			);
+			path = Memo;
+			sourceTree = "<group>";
+		};
 		F64B12B5270B1FB8000B6AD2 = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				F6851A23270B20E80048197B /* InnerWebview */,
+				F62692B92725637300841B40 /* Memo */,
 				F64B12C2270B1FB8000B6AD2 /* ViewerScene.h */,
 			);
 			path = ViewerScene;
@@ -111,6 +136,7 @@
 			children = (
 				F64B12CC270B1FB8000B6AD2 /* ViewerSceneTests.swift */,
 				F6EAC61E271AC553005C0C2F /* InnerWebViewViewModelTests.swift */,
+				F62692C4272565EC00841B40 /* LinkMemoViewModelTests.swift */,
 			);
 			path = ViewerSceneTests;
 			sourceTree = "<group>";
@@ -249,9 +275,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F62692BF2725638A00841B40 /* LinkMemoRouter.swift in Sources */,
+				F62692C02725638A00841B40 /* LinkMemoViewController.swift in Sources */,
 				F6851A2D270B20FB0048197B /* InnerWebViewViewModel.swift in Sources */,
+				F62692C12725638A00841B40 /* LinkMemoBuilder.swift in Sources */,
+				F62692C32725638A00841B40 /* LinkMemoViewModel.swift in Sources */,
 				F6851A2A270B20FB0048197B /* InnerWebViewViewController.swift in Sources */,
 				F6851A2C270B20FB0048197B /* InnerWebViewScene.swift in Sources */,
+				F62692C22725638A00841B40 /* LinkMemoScene.swift in Sources */,
 				F6851A29270B20FB0048197B /* InnerWebViewRouter.swift in Sources */,
 				F6EAC61B271A1203005C0C2F /* InnerWebViewView.swift in Sources */,
 			);
@@ -261,6 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F62692C5272565EC00841B40 /* LinkMemoViewModelTests.swift in Sources */,
 				F6EAC61F271AC553005C0C2F /* InnerWebViewViewModelTests.swift in Sources */,
 				F64B12CD270B1FB8000B6AD2 /* ViewerSceneTests.swift in Sources */,
 			);

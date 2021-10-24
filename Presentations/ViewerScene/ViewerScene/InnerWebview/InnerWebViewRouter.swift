@@ -24,12 +24,14 @@ public protocol InnerWebViewRouting: Routing {
     func openSafariBrowser(_ address: String)
     
     func editReadLink(_ item: ReadLink)
+    
+    func editMemo(_ memo: ReadLinkMemo)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias InnerWebViewRouterBuildables = EditLinkItemSceneBuilable
+public typealias InnerWebViewRouterBuildables = EditLinkItemSceneBuilable & LinkMemoSceneBuilable
 
 public final class InnerWebViewRouter: Router<InnerWebViewRouterBuildables>, InnerWebViewRouting {
     
@@ -38,6 +40,10 @@ public final class InnerWebViewRouter: Router<InnerWebViewRouterBuildables>, Inn
 
 
 extension InnerWebViewRouter {
+    
+    private var currentSceneInteractor: InnerWebViewSceneInteractable? {
+        return (self.currentScene as? InnerWebViewScene)?.interactor
+    }
     
     // InnerWebViewRouting implements
     public func openSafariBrowser(_ address: String) {
@@ -49,6 +55,18 @@ extension InnerWebViewRouter {
     public func editReadLink(_ item: ReadLink) {
         guard let next = self.nextScenesBuilder?
                 .makeEditLinkItemScene(.edit(item: item), collectionID: item.parentID, listener: nil)
+        else { return }
+        
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func editMemo(_ memo: ReadLinkMemo) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeLinkMemoScene(memo: memo, listener: self.currentSceneInteractor)
         else { return }
         
         next.modalPresentationStyle = .custom
