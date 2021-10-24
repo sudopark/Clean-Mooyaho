@@ -52,8 +52,10 @@ class StubReadItemRepository: ReadItemRepository {
         return self.scenario.updateLinkResult.asMaybe()
     }
     
+    public var collectionMocking: ReadCollection?
     func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection> {
-        return self.scenario.collection.asMaybe().asObservable()
+        return self.collectionMocking.map { .just($0) }
+            ?? self.scenario.collection.asMaybe().asObservable()
     }
     
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {

@@ -48,15 +48,21 @@ extension ReadItemUsecaseImple {
     
     public func loadMyItems() -> Observable<[ReadItem]> {
         let memberID = self.authInfoProvider.signedInMemberID()
-        return self.itemsRespoitory.requestLoadMyItems(for: memberID)
+        return self.itemsRespoitory
+            .requestLoadMyItems(for: memberID)
+            .map {$0.removeAlreadyPassedRemind() }
     }
     
     public func loadCollectionInfo(_ collectionID: String) -> Observable<ReadCollection> {
-        return self.itemsRespoitory.requestLoadCollection(collectionID)
+        return self.itemsRespoitory
+            .requestLoadCollection(collectionID)
+            .map { $0.removeAlreadyPassedRemind() }
     }
     
     public func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
-        return self.itemsRespoitory.requestLoadCollectionItems(collectionID: collectionID)
+        return self.itemsRespoitory
+            .requestLoadCollectionItems(collectionID: collectionID)
+            .map {$0.removeAlreadyPassedRemind() }
     }
     
     public func loadLinkPreview(_ url: String) -> Observable<LinkPreview> {
@@ -223,5 +229,20 @@ extension ReadItemUsecaseImple {
         }
         return self.optionsRespository.requestUpdateCustomSortOrder(for: collectionID, itemIDs: itemIDs)
             .do(onNext: updateOnLocal)
+    }
+}
+
+private extension ReadItem {
+    
+    func removeAlreadyPassedRemind() -> Self {
+        let isPassed = self.remindTime.map { $0 <= .now() } ?? false
+        return isPassed ? (self |> \.remindTime .~ nil) : self
+    }
+}
+
+private extension Array where Element == ReadItem {
+    
+    func removeAlreadyPassedRemind() -> [Element] {
+        return self.map { $0.removeAlreadyPassedRemind() }
     }
 }

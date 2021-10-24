@@ -48,6 +48,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                              shouldFailLoadCollection: Bool = false,
                              isShrinkModeOn: Bool? = true,
                              sortOrder: ReadCollectionItemSortOrder? = .default,
+                             collectionMocking: ReadCollection? = nil,
                              customSortOrder: [String] = []) -> ReadItemUsecase {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
@@ -57,8 +58,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         shouldFailLoadCollection.then {
             repositoryScenario.collectionItems = .failure(ApplicationErrors.invalid)
         }
-        
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
+        repositoryStub.collectionMocking = collectionMocking
         self.spyRepository = repositoryStub
         
         let previewRepositoryStub = StubLinkPreviewRepository()
@@ -197,6 +198,28 @@ extension ReadItemUsecaseTests {
         
         // then
         XCTAssertNotNil(collection)
+    }
+    
+    func testUsecase_excludeAlreadPassedRemidTime() {
+        // given
+        let expect1 = expectation(description: "이미 지난 리마인드 타임이 있는 콜렉션 로드")
+        let expect2 = expectation(description: "유효한 리마인드 타임이 있는 콜렉션 로드")
+    
+        let collection1 = ReadCollection.dummy(0, parent: nil) |> \.remindTime .~ (0)
+        let collection2 = ReadCollection.dummy(0, parent: nil) |> \.remindTime .~ (.now() + 1000)
+        
+        let usecase1 = self.makeUsecase(collectionMocking: collection1)
+        let usecase2 = self.makeUsecase(collectionMocking: collection2)
+        
+        // when
+        let loading1 = usecase1.loadCollectionInfo(collection1.uid)
+        let remindTime1 = self.waitFirstElement(expect1, for: loading1.asObservable()).map { $0.remindTime }
+        let loading2 = usecase2.loadCollectionInfo(collection2.uid)
+        let remindTime2 = self.waitFirstElement(expect2, for: loading2.asObservable()).map { $0.remindTime }
+        
+        // then
+        XCTAssertEqual(remindTime1 ?? nil, nil)
+        XCTAssertEqual(remindTime2, collection2.remindTime)
     }
 }
 
