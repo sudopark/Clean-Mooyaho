@@ -34,12 +34,14 @@ public protocol EditLinkItemViewModel: AnyObject {
     func confirmSave()
     func editPriority()
     func editCategory()
+    func editRemind()
     func rewind()
     
     // presenter
     var itemSuggestedTitle: Observable<String> { get }
     var priority: Observable<ReadPriority?> { get }
     var categories: Observable<[ItemCategory]> { get }
+    var remindTime: Observable<TimeStamp?> { get }
     var linkPreviewStatus: Observable<LoadPreviewStatus> { get }
     var isProcessing: Observable<Bool> { get }
     var editcaseReadLink: ReadLink? { get }
@@ -83,6 +85,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])
         let customName = BehaviorRelay<String?>(value: nil)
+        let selectedRemindTime = BehaviorRelay<TimeStamp?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)
     }
     
@@ -164,12 +167,14 @@ extension EditLinkItemViewModelImple {
                 |> \.customName .~ self.subjects.customName.value.flatMap { $0.isEmpty ? nil : $0 }
                 |> \.priority .~ self.subjects.selectedPriority.value
                 |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
+                |> \.remindTime .~ self.subjects.selectedRemindTime.value
             
         case let .edit(item):
             return item
                 |> \.customName .~ self.subjects.customName.value.flatMap { $0.isNotEmpty ? $0 : item.customName }
                 |> \.priority .~ self.subjects.selectedPriority.value
                 |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
+                |> \.remindTime .~ self.subjects.selectedRemindTime.value
         }
     }
     
@@ -204,6 +209,21 @@ extension EditLinkItemViewModelImple {
     
     public func editCategory(didSelect categories: [ItemCategory]) {
         self.subjects.selectedCategories.accept(categories)
+    }
+}
+
+
+// MARK: - EditLinkItemViewModelImple Interactor + edit categories
+
+extension EditLinkItemViewModelImple {
+    
+    public func editRemind() {
+        let previousSelected = self.subjects.selectedRemindTime.value
+        self.router.editRemind(.select(startWith: previousSelected))
+    }
+    
+    public func editReadRemind(didSelect time: Date?) {
+        self.subjects.selectedRemindTime.accept(time?.timeIntervalSince1970)
     }
 }
 
@@ -249,6 +269,11 @@ extension EditLinkItemViewModelImple {
     
     public var categories: Observable<[ItemCategory]> {
         return self.subjects.selectedCategories
+            .distinctUntilChanged()
+    }
+    
+    public var remindTime: Observable<TimeStamp?> {
+        return self.subjects.selectedRemindTime
             .distinctUntilChanged()
     }
     

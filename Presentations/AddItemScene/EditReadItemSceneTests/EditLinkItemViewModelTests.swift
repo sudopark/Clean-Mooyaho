@@ -31,8 +31,10 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
     var didRewind: Bool?
     var didSelectPriorityStartWith: ReadPriority?
     var didSelectCategoriesStartWith: [ItemCategory]?
+    var didSelectRemindStartWith: TimeStamp?
     var selectPriorityMocking: ReadPriority?
     var selectCategoriesMocking: [ItemCategory]?
+    var selectRemindTimeMocking: TimeStamp?
     private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
 
     
@@ -51,6 +53,8 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         self.editLinkItemSceneInteractable = nil
         self.didSelectCategoriesStartWith = nil
         self.selectCategoriesMocking = nil
+        self.didSelectRemindStartWith = nil
+        self.selectRemindTimeMocking = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -113,6 +117,14 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
         self.didSelectCategoriesStartWith = categories
         guard let mocking = self.selectCategoriesMocking else { return }
         self.editLinkItemSceneInteractable?.editCategory(didSelect: mocking)
+    }
+    
+    func editRemind(_ editCase: EditRemindCase) {
+        if case let .select(startWith) = editCase {
+            self.didSelectRemindStartWith = startWith
+        }
+        guard let mocking = self.selectRemindTimeMocking else { return }
+        self.editLinkItemSceneInteractable?.editReadRemind(didSelect: Date(timeIntervalSince1970: mocking))
     }
     
     class PrivateReadItemUsecaseStub: StubReadItemUsecase {
@@ -327,6 +339,50 @@ extension EditLinkItemViewModelTests_makeNew {
 }
 
 
+// MARK: - select remind time
+
+extension EditLinkItemViewModelTests_makeNew {
+    
+    func testViewModel_requestSelectRemindTime() {
+        // given
+        let expect = expectation(description: "remind time 선택")
+        let viewModel = self.makeViewModel()
+        let newTime = TimeStamp.now() + 100
+        
+        // when
+        let time = self.waitFirstElement(expect, for: viewModel.remindTime, skip: 1) {
+            self.selectRemindTimeMocking = newTime
+            viewModel.editRemind()
+        }
+        
+        // then
+        XCTAssertEqual(time, newTime)
+    }
+    
+    func testViewModel_changeSelectedRemindTime() {
+        // given
+        let expect = expectation(description: "remind time 선택 반복")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        let (oldTime, newTime) = (TimeStamp.now() + 100, TimeStamp.now() + 200)
+        
+        // when
+        let times = self.waitElements(expect, for: viewModel.remindTime, skip: 1) {
+            self.selectRemindTimeMocking = oldTime
+            viewModel.editRemind()
+            
+            self.selectRemindTimeMocking = newTime
+            viewModel.editRemind()
+        }
+        
+        // then
+        XCTAssertEqual(times.first, oldTime)
+        XCTAssertEqual(times.last, newTime)
+        XCTAssertEqual(self.didSelectRemindStartWith, oldTime)
+    }
+}
+
+
 extension EditLinkItemViewModelTests_makeNew {
     
     func testViewModel_addLinkItem() {
@@ -340,6 +396,8 @@ extension EditLinkItemViewModelTests_makeNew {
         viewModel.editPriority()
         self.selectCategoriesMocking = [.dummy(0)]
         viewModel.editCategory()
+        self.selectRemindTimeMocking = 200
+        viewModel.editRemind()
         
         self.editCompleted = {
             newLink = $0
@@ -355,6 +413,7 @@ extension EditLinkItemViewModelTests_makeNew {
         XCTAssertEqual(newLink?.priority, .afterAWhile)
         XCTAssertEqual(newLink?.customName, "custom name")
         XCTAssertEqual(newLink?.categoryIDs, [ItemCategory.dummy(0).uid])
+        XCTAssertEqual(newLink?.remindTime, 200)
     }
     
     func testViewModel_whenSaveItemFail_showError() {
@@ -414,6 +473,8 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         viewModel.editPriority()
         self.selectCategoriesMocking = [.dummy(0)]
         viewModel.editCategory()
+        self.selectRemindTimeMocking = 200
+        viewModel.editRemind()
         viewModel.confirmSave()
         self.wait(for: [expect], timeout: self.timeout)
         
@@ -421,6 +482,7 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         XCTAssertEqual(newLink?.customName, "old custom name")
         XCTAssertEqual(newLink?.priority, .afterAWhile)
         XCTAssertEqual(newLink?.categoryIDs.count, 1)
+        XCTAssertEqual(newLink?.remindTime, 200)
     }
 }
 

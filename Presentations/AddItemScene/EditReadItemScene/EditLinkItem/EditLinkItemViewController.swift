@@ -30,8 +30,10 @@ public final class EditLinkItemViewController: BaseViewController, EditLinkItemS
     private let attributeStackView = UIStackView()
     private let priorityLabelView = KeyAndLabeledValueView()
     private let categoriesLabelView = KeyAndLabeledValueView()
+    private let remindLabelView = KeyAndLabeledValueView()
     private let addPriorityButton = UIButton()
     private let addCategoryButton = UIButton()
+    private let addRemindButton = UIButton()
     
     private let confirmButton = ConfirmButton()
     
@@ -112,6 +114,13 @@ extension EditLinkItemViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.remindTime
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] time in
+                self?.updateRemindLabel(time)
+            })
+            .disposed(by: self.disposeBag)
+        
         let editPriorityTrigger = Observable.merge(
             self.addPriorityButton.rx.throttleTap(),
             self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in },
@@ -131,6 +140,17 @@ extension EditLinkItemViewController {
         editCategoryTrigger
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.editCategory()
+            })
+            .disposed(by: self.disposeBag)
+        
+        let editRemindTrigger = Observable.merge(
+            self.addRemindButton.rx.throttleTap(),
+            self.remindLabelView.rx.addTapgestureRecognizer().map { _ in },
+            self.remindLabelView.rightButton.rx.throttleTap()
+        )
+        editRemindTrigger
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.editRemind()
             })
             .disposed(by: self.disposeBag)
         
@@ -198,6 +218,12 @@ extension EditLinkItemViewController {
         self.categoriesLabelView.isHidden = newValue.isEmpty
         pure(newValue).do <| categoriesLabelView.labelView.updateCategories(_:)
     }
+    
+    private func updateRemindLabel(_ time: TimeStamp?) {
+        self.addRemindButton.isHidden = time != nil
+        self.remindLabelView.isHidden = time == nil
+        time.do <| remindLabelView.labelView.setupRemind(_:)
+    }
 }
 
 // MARK: - setup presenting
@@ -235,8 +261,10 @@ extension EditLinkItemViewController: Presenting {
         attributeStackView.spacing = 8
         attributeStackView.addArrangedSubview(priorityLabelView)
         attributeStackView.addArrangedSubview(categoriesLabelView)
+        attributeStackView.addArrangedSubview(remindLabelView)
         attributeStackView.addArrangedSubview(addPriorityButton)
         attributeStackView.addArrangedSubview(addCategoryButton)
+        attributeStackView.addArrangedSubview(addRemindButton)
         priorityLabelView.autoLayout.active(with: attributeStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
@@ -246,6 +274,9 @@ extension EditLinkItemViewController: Presenting {
         }
         categoriesLabelView.setupLayout()
         categoriesLabelView.labelView.limitHeight(max: 25)
+        
+        remindLabelView.setupLayout()
+        remindLabelView.labelView.limitHeight(max: 25)
         
         self.view.addSubview(previewShimmerView)
         previewShimmerView.autoLayout.active(with: self.view) {
@@ -296,7 +327,9 @@ extension EditLinkItemViewController: Presenting {
         
         self.priorityLabelView.isHidden = true
         self.categoriesLabelView.isHidden = true
+        self.remindLabelView.isHidden = true
         self.addPriorityButton.isHidden = false
+        self.addCategoryButton.isHidden = false
         self.addCategoryButton.isHidden = false
         
         self.addPriorityButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
@@ -309,6 +342,11 @@ extension EditLinkItemViewController: Presenting {
         self.addCategoryButton.setTitle("+ add some category", for: .normal)
         self.addCategoryButton.contentHorizontalAlignment = .leading
         
+        self.addRemindButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
+        self.addRemindButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
+        self.addRemindButton.setTitle("+ add remind", for: .normal)
+        self.addRemindButton.contentHorizontalAlignment = .leading
+        
         self.priorityLabelView.setupStyling()
         self.priorityLabelView.iconView.image = UIImage(systemName: "arrow.up.arrow.down.square")
         self.priorityLabelView.keyLabel.text = "Priority".localized
@@ -318,6 +356,11 @@ extension EditLinkItemViewController: Presenting {
         self.categoriesLabelView.iconView.image = UIImage(systemName: "line.horizontal.3.decrease.circle")
         self.categoriesLabelView.keyLabel.text = "Categories".localized
         self.categoriesLabelView.updateRightButtonIsHidden(false)
+        
+        self.remindLabelView.setupStyling()
+        self.remindLabelView.iconView.image = UIImage(systemName: "alarm")
+        self.remindLabelView.keyLabel.text = "Remind".localized
+        self.remindLabelView.updateRightButtonIsHidden(false)
         
         self.previewView.setupStyling()
         self.previewView.isHidden = true
