@@ -16,6 +16,18 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
+        return .empty()
+    }
+    
+    func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return .empty()
     }

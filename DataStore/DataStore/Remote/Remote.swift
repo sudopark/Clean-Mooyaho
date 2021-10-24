@@ -42,7 +42,8 @@ public protocol AuthorizationNeed: AnyObject {
 
 public protocol Remote: AuthRemote, MemberRemote,
                         PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
-                        ReadItemRemote, ReadItemOptionsRemote, LinkPreviewRemote, ItemCategoryRemote { }
+                        ReadItemRemote, ReadItemOptionsRemote, LinkPreviewRemote, ItemCategoryRemote,
+                        ReadLinkMemoRemote { }
 
 // MARK: - Auth remote
 
@@ -169,6 +170,14 @@ public protocol ReadItemOptionsRemote: AuthorizationNeed {
     func requestUpdateReadItemCustomOrder(for collection: String, itemIDs: [String]) -> Maybe<Void>
 }
 
+public protocol ReadLinkMemoRemote: AuthorizationNeed {
+    
+    func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
+    
+    func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void>
+    
+    func requestDeleteMemo(for linkItemID: String) -> Maybe<Void>
+}
 
 // MARK: - link preview
 

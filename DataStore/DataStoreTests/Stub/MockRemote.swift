@@ -189,4 +189,17 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
         return self.resolve(key: "requestLoadLastestCategories") ?? .empty()
     }
+    
+    // memo
+    func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
+        return self.resolve(key: "requestLoadMemo") ?? .empty()
+    }
+    
+    func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateMemo") ?? .empty()
+    }
+    
+    func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
+        return self.resolve(key: "requestDeleteMemo") ?? .empty()
+    }
 }

@@ -143,3 +143,10 @@ extension ReadRemindMessage {
         return ReadRemindMessage(itemID: "c:\(int)", scheduledTime: .now() + 1000)
     }
 }
+
+extension ReadLinkMemo {
+    
+    static func dummyID(_ id: String) -> ReadLinkMemo {
+        return .init(itemID: id)
+    }
+}

@@ -143,9 +143,18 @@ public protocol ItemCategoryLocalStorage {
     func loadLatestCategories() -> Maybe<[SuggestCategory]>
 }
 
+public protocol ReadLinkMemoLocalStorage {
+    
+    func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
+    
+    func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void>
+    
+    func deleteMemo(for linkItemID: String) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage { }
+public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage { }
 
 
 // MARK: - LocalStorageImple

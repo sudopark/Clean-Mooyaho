@@ -211,4 +211,17 @@ extension RemoteImple {
     func requestLoadLastestCategories() -> Maybe<[SuggestCategory]> {
         return self.firebaseRemote.requestLoadLastestCategories()
     }
+    
+    // memo
+    func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
+        return self.firebaseRemote.requestLoadMemo(for: linkItemID)
+    }
+    
+    func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
+        return self.firebaseRemote.requestUpdateMemo(newValue)
+    }
+    
+    func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
+        return self.firebaseRemote.requestDeleteMemo(for: linkItemID)
+    }
 }
