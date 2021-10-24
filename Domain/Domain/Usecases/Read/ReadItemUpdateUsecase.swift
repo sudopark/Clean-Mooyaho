@@ -21,13 +21,11 @@ public struct ReadItemUpdateParams {
         case remindTime(_ newValue: TimeStamp?)
     }
     
-    public let itemID: String
-    public let isCollection: Bool
+    public let item: ReadItem
     public var updatePropertyParams: [ProperyUpdateParams] = []
     
-    public init(itemID: String, isCollection: Bool) {
-        self.itemID = itemID
-        self.isCollection = isCollection
+    public init(item: ReadItem){
+        self.item = item
     }
 }
 

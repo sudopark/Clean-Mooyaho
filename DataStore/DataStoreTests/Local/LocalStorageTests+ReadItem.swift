@@ -156,7 +156,7 @@ extension LocalStorageTests_ReadItem {
         // given
         let expect = expectation(description: "파라미터로 콜렉션 업데이트")
         let dummy = ReadCollection(name: "some")
-        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: true)
+        let params = ReadItemUpdateParams(item: ReadCollection(name: "some"))
         let newTime = TimeStamp.now() + 1000
         
         // when
@@ -175,7 +175,7 @@ extension LocalStorageTests_ReadItem {
         // given
         let expect = expectation(description: "파라미터로 콜렉션 프로퍼티 삭제 업데이트")
         let dummy = ReadCollection(name: "some") |> \.remindTime .~ (.now() + 1000)
-        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: true)
+        let params = ReadItemUpdateParams(item: dummy)
         
         // when
         let save = self.local.updateReadItems([dummy])
@@ -193,7 +193,7 @@ extension LocalStorageTests_ReadItem {
         // given
         let expect = expectation(description: "파라미터로 link 업데이트")
         let dummy = ReadLink(link: "some") |> \.parentID .~ "p"
-        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: false)
+        let params = ReadItemUpdateParams(item: dummy)
         let newTime = TimeStamp.now() + 1000
         
         // when
@@ -214,7 +214,7 @@ extension LocalStorageTests_ReadItem {
         let dummy = ReadLink(link: "some")
             |> \.parentID .~ "p"
             |> \.remindTime .~ (.now() + 1000)
-        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: false)
+        let params = ReadItemUpdateParams(item: dummy)
         
         // when
         let save = self.local.updateReadItems([dummy])
