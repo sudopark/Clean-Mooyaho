@@ -67,6 +67,12 @@ public protocol DataModelStorage {
     func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]>
     
     func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
+    
+    func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
+    
+    func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void>
+    
+    func deleteMemo(for linkItemID: String) -> Maybe<Void>
 }
 
 
@@ -507,6 +513,27 @@ extension DataModelStorageImple {
     }
 }
 
+
+// MARK: - ReadLinkMemo
+
+extension DataModelStorageImple {
+    
+    public func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
+        let query = ReadLinkMemoTable.selectAll { $0.itemID == linkItemID }
+        return self.sqliteService.rx.run { try $0.loadOne(query) }
+    }
+    
+    public func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
+        return self.sqliteService.rx.run {
+            try $0.insert(ReadLinkMemoTable.self, entities: [newValue], shouldReplace: true)
+        }
+    }
+    
+    public func deleteMemo(for linkItemID: String) -> Maybe<Void> {
+        let query = ReadLinkMemoTable.delete().where { $0.itemID == linkItemID }
+        return self.sqliteService.rx.run { try $0.delete(ReadLinkMemoTable.self, query: query) }
+    }
+}
 
 private extension CursorIterator {
     

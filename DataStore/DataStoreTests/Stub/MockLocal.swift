@@ -188,5 +188,17 @@ class MockLocal: LocalStorage, Mocking {
     func loadLatestCategories() -> Maybe<[SuggestCategory]> {
         return self.resolve(key: "loadLatestCategories") ?? .empty()
     }
+    
+    func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
+        return self.resolve(key: "fetchMemo") ?? .empty()
+    }
+    
+    func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
+        return self.resolve(key: "updateMemo") ?? .empty()
+    }
+    
+    func deleteMemo(for linkItemID: String) -> Maybe<Void> {
+        return self.resolve(key: "deleteMemo") ?? .empty()
+    }
 }
 
