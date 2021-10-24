@@ -137,17 +137,9 @@ extension ItemCategory {
     }
 }
 
-
-extension ReadRemind {
-    
-    static func dummy(_ int: Int) -> ReadRemind {
-        return ReadRemind(uid: "rm:\(int)", itemID: "c:\(int)", scheduledTime: .now())
-    }
-}
-
 extension ReadRemindMessage {
     
     static func dummy(_ int: Int) -> ReadRemindMessage {
-        return ReadRemindMessage(uid: "rrm:\(int)", itemID: "c:\(int)")
+        return ReadRemindMessage(itemID: "c:\(int)", scheduledTime: .now() + 1000)
     }
 }

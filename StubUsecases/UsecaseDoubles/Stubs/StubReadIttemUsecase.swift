@@ -88,4 +88,8 @@ open class StubReadItemUsecase: ReadItemUsecase {
     open func loadLinkPreview(_ url: String) -> Observable<LinkPreview> {
         return self.scenario.preview.asMaybe().asObservable()
     }
+    
+    open func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        return .just()
+    }
 }

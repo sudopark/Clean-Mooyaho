@@ -151,4 +151,80 @@ extension LocalStorageTests_ReadItem {
         // then
         XCTAssertNotNil(collection)
     }
+    
+    func testStorage_updateCollection_withParams() {
+        // given
+        let expect = expectation(description: "파라미터로 콜렉션 업데이트")
+        let dummy = ReadCollection(name: "some")
+        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: true)
+        let newTime = TimeStamp.now() + 1000
+        
+        // when
+        let save = self.local.updateReadItems([dummy])
+        let updateParams = params |> \.updatePropertyParams .~ [.remindTime(newTime)]
+        let update = self.local.updateItem(updateParams)
+        let load = self.local.fetchCollection(dummy.uid)
+        let saveUpdateAndLoad = save.flatMap { update }.flatMap { load }
+        let loadedCollection = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(loadedCollection?.remindTime, newTime)
+    }
+    
+    func testStorage_removeCollectionProperty_withParams() {
+        // given
+        let expect = expectation(description: "파라미터로 콜렉션 프로퍼티 삭제 업데이트")
+        let dummy = ReadCollection(name: "some") |> \.remindTime .~ (.now() + 1000)
+        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: true)
+        
+        // when
+        let save = self.local.updateReadItems([dummy])
+        let removeParams = params |> \.updatePropertyParams .~ [.remindTime(nil)]
+        let remove = self.local.updateItem(removeParams)
+        let load = self.local.fetchCollection(dummy.uid)
+        let saveRemoveAndLoad = save.flatMap { remove }.flatMap { load }
+        let loadedCollection = self.waitFirstElement(expect, for: saveRemoveAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(loadedCollection?.remindTime, nil)
+    }
+    
+    func testStorage_updateLink_withParams() {
+        // given
+        let expect = expectation(description: "파라미터로 link 업데이트")
+        let dummy = ReadLink(link: "some") |> \.parentID .~ "p"
+        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: false)
+        let newTime = TimeStamp.now() + 1000
+        
+        // when
+        let save = self.local.updateReadItems([dummy])
+        let updateParams = params |> \.updatePropertyParams .~ [.remindTime(newTime)]
+        let update = self.local.updateItem(updateParams)
+        let load = self.local.fetchCollectionItems("p")
+        let saveUpdateAndLoad = save.flatMap { update }.flatMap { load }
+        let loadedLink = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())?.first
+        
+        // then
+        XCTAssertEqual(loadedLink?.remindTime, newTime)
+    }
+    
+    func testStorage_removeLinkProperty_withParams() {
+        // given
+        let expect = expectation(description: "파라미터로 link 프로퍼티 삭제 업데이트")
+        let dummy = ReadLink(link: "some")
+            |> \.parentID .~ "p"
+            |> \.remindTime .~ (.now() + 1000)
+        let params = ReadItemUpdateParams(itemID: dummy.uid, isCollection: false)
+        
+        // when
+        let save = self.local.updateReadItems([dummy])
+        let removeParams = params |> \.updatePropertyParams .~ [.remindTime(nil)]
+        let remove = self.local.updateItem(removeParams)
+        let load = self.local.fetchCollectionItems("p")
+        let saveRemoveAndLoad = save.flatMap { remove }.flatMap { load }
+        let loadedLink = self.waitFirstElement(expect, for: saveRemoveAndLoad.asObservable())?.first
+        
+        // then
+        XCTAssertEqual(loadedLink?.remindTime, nil)
+    }
 }

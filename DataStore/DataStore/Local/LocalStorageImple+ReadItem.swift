@@ -40,4 +40,8 @@ extension LocalStorageImple {
     public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
         return self.dataModelStorage.fetchCollection(collectionID)
     }
+    
+    public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        return self.dataModelStorage.updateItem(params)
+    }
 }

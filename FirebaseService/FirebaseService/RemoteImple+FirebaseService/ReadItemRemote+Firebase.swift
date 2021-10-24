@@ -49,4 +49,11 @@ extension FirebaseServiceImple {
         }
         return .error(RemoteErrors.notFound("not implemented", reason: nil))
     }
+    
+    public func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+    }
 }

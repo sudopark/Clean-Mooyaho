@@ -17,5 +17,6 @@ public protocol ReadItem {
     var createdAt: TimeStamp { get }
     var lastUpdatedAt: TimeStamp { get set }
     var priority: ReadPriority? { get set }
+    var remindTime: TimeStamp? { get set }
     var categoryIDs: [String] { get set }
 }

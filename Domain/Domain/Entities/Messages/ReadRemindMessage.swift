@@ -11,24 +11,17 @@ import Foundation
 
 public struct ReadRemindMessage {
     
-    private static var uidPrefix: String  { "rmm" }
-    
-    public let uid: String
     public let itemID: String
+    public let scheduledTime: TimeStamp
     
     public var title: String {
         return "Read Remind Notification".localized
     }
     public var message: String?
     
-    public init(uid: String, itemID: String) {
-        self.uid = uid
+    public init(itemID: String, scheduledTime: TimeStamp) {
         self.itemID = itemID
-    }
-    
-    public init(itemID: String) {
-        self.uid = "\(Self.uidPrefix)-\(UUID().uuidString)"
-        self.itemID = itemID
+        self.scheduledTime = scheduledTime
     }
 }
 

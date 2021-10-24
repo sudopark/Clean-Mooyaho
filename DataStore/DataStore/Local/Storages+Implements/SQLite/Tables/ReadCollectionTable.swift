@@ -32,6 +32,7 @@ struct ReadCollectionTable: Table {
         case .lastUpdatedAt: return entity.lastUpdatedAt
         case .pritority: return entity.priority?.rawValue
         case .categoryIDs: return try? entity.categoryIDs.asArrayText()
+        case .remindTime: return entity.remindTime
         }
     }
 }
@@ -49,6 +50,7 @@ extension ReadCollectionTable {
         let lastUpdatedAt: TimeStamp
         let priority: ReadPriority?
         let categoryIDs: [String]
+        let remindTime: TimeStamp?
         
         init(_ cursor: CursorIterator) throws {
             self.uid = try cursor.next().unwrap()
@@ -61,6 +63,7 @@ extension ReadCollectionTable {
             self.priority = cursor.next().flatMap{ ReadPriority.init(rawValue: $0) }
             let idText: String = try cursor.next().unwrap()
             self.categoryIDs = try idText.toArray()
+            self.remindTime = cursor.next()
         }
         
         init(collection: ReadCollection) {
@@ -73,6 +76,7 @@ extension ReadCollectionTable {
             self.lastUpdatedAt = collection.lastUpdatedAt
             self.priority = collection.priority
             self.categoryIDs = collection.categoryIDs
+            self.remindTime = collection.remindTime
         }
     }
 }
@@ -89,6 +93,7 @@ extension ReadCollectionTable {
         case lastUpdatedAt = "last_updated_at"
         case pritority = "read_priority"
         case categoryIDs = "cate_ids"
+        case remindTime = "remind_time"
         
         var dataType: ColumnDataType {
             switch self {
@@ -101,6 +106,7 @@ extension ReadCollectionTable {
             case .lastUpdatedAt: return .real([.notNull])
             case .pritority: return .integer([])
             case .categoryIDs: return .text([])
+            case .remindTime: return .real([])
             }
         }
     }
@@ -118,5 +124,6 @@ extension ReadCollectionTable.Entity {
             |> \.priority .~ self.priority
             |> \.collectionDescription .~ self.collectionDescription
             |> \.categoryIDs .~ self.categoryIDs
+            |> \.remindTime .~ self.remindTime
     }
 }

@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import UnitTestHelpKit
@@ -170,6 +172,36 @@ extension RepositoryTests_ReadItem {
         
         // then
         XCTAssertNotNil(collection)
+    }
+    
+    func testReposiotry_updateItem() {
+        // given
+        let expect = expectation(description: "아이템 업데이트")
+        self.mockLocal.register(key: "updateItem") { Maybe<Void>.just() }
+        
+        // when
+        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+            |> \.updatePropertyParams .~ [.remindTime(.now())]
+        let updating = self.dummyRepository.requestUpdateItem(params)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testReposiotry_updateItemFail() {
+        // given
+        let expect = expectation(description: "아이템 업데이트 실패")
+        self.mockLocal.register(key: "updateItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
+        
+        // when
+        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+            |> \.updatePropertyParams .~ [.remindTime(.now())]
+        let updating = self.dummyRepository.requestUpdateItem(params)
+        let error: Error? = self.waitError(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
     }
 }
 
@@ -379,6 +411,54 @@ extension RepositoryTests_ReadItem {
         
         // then
         XCTAssertNotNil(result)
+    }
+    
+    func testReposiotry_updateItemWithSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 업데이트")
+        self.mockLocal.register(key: "updateItem") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestUpdateItem") { Maybe<Void>.just() }
+        
+        // when
+        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+            |> \.updatePropertyParams .~ [.remindTime(.now())]
+        let updating = self.dummyRepository.requestUpdateItem(params)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testReposiotry_whenUpdateItemInLocalFailWithSignIn_ignore() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 업데이트 로컬 실패는 무시")
+        self.mockLocal.register(key: "updateItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
+        self.mockRemote.register(key: "requestUpdateItem") { Maybe<Void>.just() }
+        
+        // when
+        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+            |> \.updatePropertyParams .~ [.remindTime(.now())]
+        let updating = self.dummyRepository.requestUpdateItem(params)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testReposiotry_updateItemFailWithSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 업데이트 실패")
+        self.mockLocal.register(key: "updateItem") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestUpdateItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
+        
+        // when
+        let params = ReadItemUpdateParams(itemID: "some", isCollection: false)
+            |> \.updatePropertyParams .~ [.remindTime(.now())]
+        let updating = self.dummyRepository.requestUpdateItem(params)
+        let error: Error? = self.waitError(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
     }
 }
 
