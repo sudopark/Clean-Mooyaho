@@ -69,13 +69,25 @@ extension InnerWebViewViewController {
             .drive(self.toolBar.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
         
+        self.viewModel.isRed
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isRed in
+                let imageName = isRed ? "checkmark.circle.fill" : "checkmark.circle"
+                self?.toolBar.readMarkButton.setImage(UIImage(systemName: imageName), for: .normal)
+            })
+            .disposed(by: self.disposeBag)
+        
         self.bindWebView()
         
         self.toolBar.safariButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
-                guard let address = self?.viewModel.loadURL,
-                      let url = URL(string: address) else { return }
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                self?.viewModel.openPageInSafari()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.toolBar.readMarkButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.toggleMarkAsRed()
             })
             .disposed(by: self.disposeBag)
         

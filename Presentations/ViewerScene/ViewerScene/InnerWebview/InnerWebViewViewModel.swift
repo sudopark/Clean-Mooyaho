@@ -25,10 +25,12 @@ public protocol InnerWebViewViewModel: AnyObject {
     func prepareLinkData()
     func openPageInSafari()
     func editReadLink()
+    func toggleMarkAsRed()
     
     // presenter
     var loadURL: String { get }
     var urlPageTitle: Observable<String> { get }
+    var isRed: Observable<Bool> { get }
 }
 
 
@@ -58,6 +60,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     
     fileprivate final class Subjects {
         let item = BehaviorRelay<ReadLink?>(value: nil)
+        let isToggling = BehaviorRelay<Bool>(value: false)
     }
     
     private let subjects = Subjects()
@@ -76,6 +79,29 @@ extension InnerWebViewViewModelImple {
     
     public func prepareLinkData() {
         
+    }
+    
+    public func toggleMarkAsRed() {
+        guard let link = self.subjects.item.value,
+              self.subjects.isToggling.value == false else { return }
+        
+        let isToRed = link.isRed.invert()
+        let params = ReadItemUpdateParams(item: link)
+            |> \.updatePropertyParams .~ [.isRed(isToRed)]
+            
+        let updated: () -> Void = { [weak self] in
+            self?.subjects.isToggling.accept(false)
+            let newItem = link |> \.isRed .~ isToRed
+            self?.subjects.item.accept(newItem)
+        }
+        let updateFail: (Error) -> Void = { [weak self] error in
+            self?.subjects.isToggling.accept(false)
+            self?.router.alertError(error)
+        }
+        self.subjects.isToggling.accept(true)
+        self.readItemUsecase.updateItem(params)
+            .subscribe(onSuccess: updated, onError: updateFail)
+            .disposed(by: self.disposeBag)
     }
     
     public func openPageInSafari() {
@@ -112,6 +138,12 @@ extension InnerWebViewViewModelImple {
         return customNameInLinkItem
             .flatMapLatest(orUsePreviewTitle)
             .map(elseUseAddress)
+            .distinctUntilChanged()
+    }
+    
+    public var isRed: Observable<Bool> {
+        return self.subjects.item
+            .map { $0?.isRed ?? false }
             .distinctUntilChanged()
     }
 }

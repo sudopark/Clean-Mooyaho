@@ -19,6 +19,7 @@ public struct ReadItemUpdateParams {
     
     public enum ProperyUpdateParams {
         case remindTime(_ newValue: TimeStamp?)
+        case isRed(_ newValue: Bool)
     }
     
     public let item: ReadItem
