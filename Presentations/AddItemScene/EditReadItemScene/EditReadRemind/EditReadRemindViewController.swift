@@ -21,6 +21,7 @@ public final class EditReadRemindViewController: BaseViewController, EditReadRem
     
     public let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
     let titleLabel = UILabel()
+    let clearButton = UIButton()
     let datePicker = UIDatePicker()
     let confirmButton = ConfirmButton()
     let viewModel: EditReadRemindViewModel
@@ -60,6 +61,8 @@ extension EditReadRemindViewController {
     
     private func bind() {
         
+        self.clearButton.isHidden = self.viewModel.showClearButton == false
+        
         viewModel.initialDate
             .asDriver(onErrorDriveWith: .never())
             .drive(self.datePicker.rx.date)
@@ -70,9 +73,22 @@ extension EditReadRemindViewController {
             .drive(self.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
         
+        viewModel.confirmButtonTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.confirmButton.setTitle(title, for: .normal)
+            })
+            .disposed(by: self.disposeBag)
+        
         self.datePicker.rx.date
             .subscribe(onNext: { [weak self] date in
                 self?.viewModel.selectDate(date)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.clearButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.clearSelect()
             })
             .disposed(by: self.disposeBag)
         
@@ -107,8 +123,14 @@ extension EditReadRemindViewController: Presenting {
         titleLabel.autoLayout.active(with: bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.bottomAnchor.constraint(equalTo: self.datePicker.topAnchor, constant: -20)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
             $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
+        }
+        
+        bottomSlideMenuView.containerView.addSubview(clearButton)
+        clearButton.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 8)
         }
     }
     
@@ -120,8 +142,12 @@ extension EditReadRemindViewController: Presenting {
             |> self.uiContext.decorating.smallHeader
             |> \.text .~ pure("Select a remind time".localized)
         
+        self.clearButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
+        self.clearButton.setTitle("Clear".localized, for: .normal)
+        
         self.datePicker.preferredDatePickerStyle = .inline
         self.datePicker.datePickerMode = .dateAndTime
+        self.datePicker.minimumDate = Date()
         
         
         self.confirmButton.setupStyling()

@@ -24,7 +24,8 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
     var disposeBag: DisposeBag!
     var didSelectedTime: Date?
     var didClose: Bool?
-    var didScheduled: ReadRemind?
+    var didScheduled: TimeStamp?
+    var didUpdatedItem: ReadItem?
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -35,9 +36,10 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
         self.didSelectedTime = nil
         self.didClose = nil
         self.didScheduled = nil
+        self.didUpdatedItem = nil
     }
     
-    private func makeViewModel(editcase: EditRemindCase = .makeNew(for: nil)) -> EditReadRemindViewModel {
+    private func makeViewModel(editcase: EditRemindCase = .select(startWith: nil)) -> EditReadRemindViewModel {
         
         let scenrio = StubReadRemindUsecase.Scenario()
         let usecaes = StubReadRemindUsecase(scenario: scenrio)
@@ -47,12 +49,12 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
                                             router: self, listener: self)
     }
     
-    func editReadRemind(didSelect time: Date) {
+    func editReadRemind(didSelect time: Date?) {
         self.didSelectedTime = time
     }
     
-    func editReadRemind(didScheduled newRemind: ReadRemind) {
-        self.didScheduled = newRemind
+    func editReadRemind(didUpdate item: ReadItem) {
+        self.didUpdatedItem = item
     }
     
     func closeScene(animated: Bool, completed: (() -> Void)?) {
@@ -64,38 +66,37 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
 
 extension EditReadRemindViewModelTests {
     
-    func testViewModel_makeNewCase_initialDateIsNowWithoutTime() {
+    func testViewModel_whenSelectCaseAndReEnterSelectRemindScene_startWithPreviousSelectedvalue() {
         // given
-        let expect = expectation(description: "생성케이스 에서는 초기 날짜값이 시간 없이 현재날짜")
-        let viewModel = self.makeViewModel(editcase: .makeNew())
+        let expect = expectation(description: "선택케이스에서 다시 진입시에 이전값 최초 노출")
+        let previousTime = TimeStamp.now() + 100
+        let viewModel = self.makeViewModel(editcase: .select(startWith: previousTime))
         
         // when
         let initial = self.waitFirstElement(expect, for: viewModel.initialDate)
         
         // then
-        let interval = initial.map { Date().timeIntervalSince($0) }
-        XCTAssert(interval ?? 0 > 0)
-        XCTAssert(interval ?? 0 < 1)
+        XCTAssertEqual(initial?.timeIntervalSince1970, previousTime)
     }
     
     func testViewModel_whenEditCase_initialDateRemindTime() {
         // given
         let expect = expectation(description: "수정케이스에서 초기시간은 수정하는 리마인드의 예정 시간")
-        let item = ReadLink.dummy(0); let remind = ReadRemind(itemID: item.uid, scheduledTime: .now() + 1000)
-        let viewModel = self.makeViewModel(editcase: .edit(remind, for: item))
+        let item = ReadLink.dummy(0) |> \.remindTime .~ (.now() + 1000)
+        let viewModel = self.makeViewModel(editcase: .edit(item))
         
         // when
         let initial = self.waitFirstElement(expect, for: viewModel.initialDate)
         
         // then
-        XCTAssertEqual(initial, Date(timeIntervalSince1970: remind.scheduledTime))
+        XCTAssertEqual(initial, item.remindTime.map { Date(timeIntervalSince1970: $0) })
     }
     
-    func testViewModel_whenMakecase_updateConfirmWithSelectedtime() {
+    func testViewModel_whenSelectCase_updateConfirmWithSelectedtime() {
         // given
         let expct = expectation(description: "선택된 날짜에 따라(미래의 경우에만) 확인버튼 활성화")
         expct.expectedFulfillmentCount = 3
-        let viewModel = self.makeViewModel(editcase: .makeNew())
+        let viewModel = self.makeViewModel(editcase: .select(startWith: nil))
         
         // when
         let isConfirmables = self.waitElements(expct, for: viewModel.isConfirmable) {
@@ -110,9 +111,31 @@ extension EditReadRemindViewModelTests {
         XCTAssertEqual(isConfirmables, [false, true, false])
     }
     
+    func testViewModel_updateButtonTitle_bySelectedTime() {
+        // given
+        let expect = expectation(description: "선택한 날짜에따라 선택버튼 타이틀 업데이트")
+        expect.expectedFulfillmentCount = 3
+        let newTime = TimeStamp.now() + 200
+        let pastTime = TimeStamp.now() - 100
+        let viewModel = self.makeViewModel(editcase: .select(startWith: nil))
+        
+        // when
+        let titles = self.waitElements(expect, for: viewModel.confirmButtonTitle) {
+            viewModel.selectDate(Date(timeIntervalSince1970: newTime))
+            viewModel.selectDate(Date(timeIntervalSince1970: pastTime))
+        }
+        
+        // then
+        XCTAssertEqual(titles, [
+            "Select a future time".localized,
+            newTime.remindTimeText(),
+            "Select a future time".localized
+        ])
+    }
+    
     func testViewModel_selectTime() {
         // given
-        let viewModel = self.makeViewModel(editcase: .makeNew())
+        let viewModel = self.makeViewModel(editcase: .select(startWith: nil))
         
         // when
         viewModel.selectDate(Date().addingTimeInterval(100))
@@ -123,24 +146,10 @@ extension EditReadRemindViewModelTests {
         XCTAssertNotNil(self.didSelectedTime)
     }
     
-    func testViewModel_makeRemindForItem() {
-        // given
-        let dummyItem = ReadLink.dummy(0)
-        let viewModel = self.makeViewModel(editcase: .makeNew(for: dummyItem))
-        
-        // when
-        viewModel.selectDate(Date().addingTimeInterval(100))
-        viewModel.confirmSelectRemindTime()
-        
-        // then
-        XCTAssertEqual(self.didClose, true)
-        XCTAssertNotNil(self.didScheduled)
-    }
-    
     func testViewModel_editRemindForItem() {
         // given
-        let item = ReadLink.dummy(0); let remind = ReadRemind(itemID: item.uid, scheduledTime: .now() + 1000)
-        let viewModel = self.makeViewModel(editcase: .edit(remind, for: item))
+        let item = ReadLink.dummy(0) |> \.remindTime .~ (.now() + 1000)
+        let viewModel = self.makeViewModel(editcase: .edit(item))
         
         // when
         viewModel.selectDate(Date().addingTimeInterval(100))
@@ -148,6 +157,30 @@ extension EditReadRemindViewModelTests {
         
         // then
         XCTAssertEqual(self.didClose, true)
-        XCTAssertNotNil(self.didScheduled)
+        XCTAssertNotNil(self.didUpdatedItem)
+    }
+    
+    func testViewModel_showClearButtonWhenSelectMode() {
+        // given
+        let viewModel = self.makeViewModel(editcase: .select(startWith: nil))
+        
+        // when
+        let show = viewModel.showClearButton
+        
+        // then
+        XCTAssertEqual(show, true)
+    }
+    
+    func testViewmodel_whenSelectCase_clearSelection() {
+        // given
+        let viewModel = self.makeViewModel(editcase: .select(startWith: nil))
+        
+        // when
+        viewModel.selectDate(.init().addingTimeInterval(100))
+        viewModel.clearSelect()
+        
+        // then
+        XCTAssertEqual(self.didClose, true)
+        XCTAssertEqual(self.didSelectedTime, nil)
     }
 }

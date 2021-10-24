@@ -64,7 +64,7 @@ public protocol EditLinkItemScene: Scenable, PangestureDismissableScene {
 
 // MARK: - EditReadCollectionScene Input & Output
 
-public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable { }
+public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable { }
 
 public protocol EditReadCollectionSceneListenable: AnyObject {
     
@@ -118,16 +118,16 @@ public protocol EditReadRemindSceneInteractable { }
 
 public protocol EditReadRemindSceneListenable: AnyObject {
     
-    func editReadRemind(didSelect time: Date)
+    func editReadRemind(didSelect time: Date?)
     
-    func editReadRemind(didScheduled newRemind: ReadRemind)
+    func editReadRemind(didUpdate item: ReadItem)
 }
 
 extension EditReadRemindSceneListenable {
     
-    public func editReadRemind(didSelect time: Date) { }
+    public func editReadRemind(didSelect time: Date?) { }
     
-    public func editReadRemind(didScheduled newRemind: ReadRemind) { }
+    public func editReadRemind(didUpdate item: ReadItem) { }
 }
 
 

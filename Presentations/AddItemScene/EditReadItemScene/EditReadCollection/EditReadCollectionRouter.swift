@@ -24,12 +24,14 @@ public protocol EditReadCollectionRouting: Routing {
     func selectPriority(startWith: ReadPriority?)
     
     func selectCategories(startWith: [ItemCategory])
+    
+    func updateRemind(_ editCase: EditRemindCase)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditReadCollectionRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable
+public typealias EditReadCollectionRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable & EditReadRemindSceneBuilable
 
 public final class EditReadCollectionRouter: Router<EditReadCollectionRouterBuildables>, EditReadCollectionRouting {
     
@@ -62,6 +64,17 @@ extension EditReadCollectionRouter {
         guard let next = self.nextScenesBuilder?.makeEditCategoryScene(startWith: startWith, listener: self.currentInteractor) else {
             return
         }
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func updateRemind(_ editCase: EditRemindCase) {
+            
+        guard let next = self.nextScenesBuilder?
+                .makeEditReadRemindScene(editCase, listener: self.currentInteractor)
+        else { return }
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

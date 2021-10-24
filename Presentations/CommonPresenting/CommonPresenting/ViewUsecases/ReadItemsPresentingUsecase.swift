@@ -21,7 +21,7 @@ public protocol ReadItemCellViewModel {
     
     var presetingID: Int { get }
     var categories: [ItemCategory] { get set }
-    var remind: ReadRemind? { get set }
+    var remindTime: TimeStamp? { get set }
 }
 
 extension ReadItemCellViewModel {
@@ -30,7 +30,7 @@ extension ReadItemCellViewModel {
         get { [] } set { }
     }
     
-    public var remind: ReadRemind? {
+    public var remindTime: TimeStamp? {
         get { nil } set { }
     }
 }

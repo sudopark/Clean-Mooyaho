@@ -23,6 +23,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     private var spyRouter: FakeRouter!
+    private var spyRemindUsecase: StubReadRemindUsecase!
     private var isShrinkModeMocking: ((Bool) -> Void)?
     
     override func setUpWithError() throws {
@@ -31,12 +32,15 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.spyRouter = nil
+        self.spyRemindUsecase = nil
     }
     
     private var dummySubCollections: [ReadCollection] {
         return (0..<5).map { int -> ReadCollection in
             return ReadCollection.dummy(int)
                 |> \.priority .~ ReadPriority.makeDummy(int)
+                |> \.remindTime .~ (int == 0 ? TimeStamp.now() + 1000 : nil)
         }
     }
     
@@ -44,6 +48,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         return (5..<10).map { int -> ReadLink in
             return ReadLink.dummy(int)
                 |> \.priority .~ ReadPriority.makeDummy(int)
+                |> \.remindTime .~ (int == 5 ? TimeStamp.now() + 1000 : nil)
         }
     }
     
@@ -54,8 +59,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     func makeViewModel(isRootCollection: Bool = false,
                        shouldFailReload: Bool = false,
                        sortOrder: ReadCollectionItemSortOrder = .default,
-                       customOrder: [String] = [],
-                       reminds: [ReadRemind] = []) -> ReadCollectionViewItemsModelImple {
+                       customOrder: [String] = []) -> ReadCollectionViewItemsModelImple {
         let reloadResult: Result<[ReadItem], Error> = shouldFailReload
             ? .failure(ApplicationErrors.invalid)
             : .success(self.dummyCollectionItems)
@@ -75,8 +79,8 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         let stubCategoryUsecase = StubItemCategoryUsecase(scenario: categoryScenario)
         
         let remindSceneaio = StubReadRemindUsecase.Scenario()
-            |> \.reminds .~ .success(reminds)
         let stubRemindUsecase = StubReadRemindUsecase(scenario: remindSceneaio)
+        self.spyRemindUsecase = stubRemindUsecase
         
         let router = FakeRouter()
         self.spyRouter = router
@@ -357,8 +361,7 @@ extension ReadCollectionViewModelTests {
     func testViewModel_provideItemCellViewMdoels_withRemindInfo() {
         // given
         let expect = expectation(description: "remind 정보와 함께 remind 정보 제공")
-        let reminds: [ReadRemind] = self.dummyReminderHasItemIDs.map { ReadRemind(uid: "rm:\($0)", itemID: $0, scheduledTime: .now() + 1000) }
-        let viewModel = self.makeViewModel(reminds: reminds)
+        let viewModel = self.makeViewModel()
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
@@ -366,31 +369,10 @@ extension ReadCollectionViewModelTests {
         }
         
         // then
-        let remindCollections = cvms?.compactMap { ($0 as? ReadCollectionCellViewModel)?.remind }
-        let remindLinks = cvms?.compactMap { ($0 as? ReadLinkCellViewModel)?.remind }
-        let remindIDs = (remindCollections?.map { $0.itemID } ?? []) + (remindLinks?.map { $0.itemID } ?? [])
+        let remindCollections = cvms?.filter { ($0 as? ReadCollectionCellViewModel)?.remindTime != nil }
+        let remindLinks = cvms?.filter { ($0 as? ReadLinkCellViewModel)?.remindTime != nil }
+        let remindIDs = (remindCollections?.map { $0.uid } ?? []) + (remindLinks?.map { $0.uid } ?? [])
         XCTAssertEqual(remindIDs, self.dummyReminderHasItemIDs)
-    }
-    
-    func testViewModel_excludeExpiredReminds() {
-        // given
-        let expect = expectation(description: "이미 지난 remind는 제외")
-        let reminds: [ReadRemind] = self.dummyReminderHasItemIDs.enumerated().map {
-            let offfset: TimeStamp = $0.offset == 0 ? 1000 : -1000
-            return ReadRemind(uid: "rm:\($0.offset)", itemID: $0.element, scheduledTime: .now() + offfset)
-        }
-        let viewModel = self.makeViewModel(reminds: reminds)
-        
-        // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
-        }
-        
-        // then
-        let remindCollections = cvms?.compactMap { ($0 as? ReadCollectionCellViewModel)?.remind }
-        let remindLinks = cvms?.compactMap { ($0 as? ReadLinkCellViewModel)?.remind }
-        let remindIDs = (remindCollections?.map { $0.itemID } ?? []) + (remindLinks?.map { $0.itemID } ?? [])
-        XCTAssertEqual(remindIDs, ["c:0"])
     }
 }
 
@@ -542,21 +524,20 @@ extension ReadCollectionViewModelTests {
     func testViewModel_supportLeadingContentMenuForItems() {
         // given
         let expect = expectation(description: "아이템에 대하여 리딩 컨텍스트 메뉴 제공")
-        let reminds = self.dummyReminderHasItemIDs.map { ReadRemind(uid: "rm:\($0)", itemID: $0, scheduledTime: .now() + 1000) }
-        let viewModel = self.makeViewModel(isRootCollection: false, reminds: reminds)
+        let viewModel = self.makeViewModel(isRootCollection: false)
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
             viewModel.reloadCollectionItems()
         }
         
         // when
         let collectionCell = cvms?.compactMap { $0 as? ReadCollectionCellViewModel }
-                .first(where: { $0.remind != nil })
+                .first(where: { $0.remindTime != nil })
         let collectionNoRemindCell = cvms?.compactMap { $0 as? ReadCollectionCellViewModel }
-                .first(where: { $0.remind == nil })
+                .first(where: { $0.remindTime == nil })
         let linkCell = cvms?.compactMap { $0 as? ReadLinkCellViewModel }
-            .first(where: { $0.remind != nil })
+            .first(where: { $0.remindTime != nil })
         let linkNotRemindCell = cvms?.compactMap { $0 as? ReadLinkCellViewModel }
-            .first(where: { $0.remind == nil })
+            .first(where: { $0.remindTime == nil })
         
         let collectionLeading = viewModel.contextAction(for: collectionCell!, isLeading: true)
         let collectionLeadingWithoutRemind = viewModel.contextAction(for: collectionNoRemindCell!, isLeading: true)
@@ -630,7 +611,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvm = cvms?.filter { ($0 is ReadCollectionAttrCellViewModel) == false }
-            .first(where: { $0.remind == nil })
+            .first(where: { $0.remindTime == nil })
         viewModel.handleContextAction(for: cvm!, action: .remind(isOn: false))
         
         // then
@@ -640,22 +621,17 @@ extension ReadCollectionViewModelTests {
     func testViewModel_cancelRemind() {
         // given
         let expect = expectation(description: "리마인드 취소")
-        expect.expectedFulfillmentCount = 2
-        let dummyRemind = ReadRemind.dummy(itemID: self.dummySubCollections.first!.uid, time: .now() + 1000)
-        let viewModel = self.makeViewModel(reminds: [dummyRemind])
+        let viewModel = self.makeViewModel()
         
         // when
-        let cvms = self.waitElements(expect, for: viewModel.cellViewModels) {
+        let _ = self.waitElements(expect, for: viewModel.cellViewModels) {
             viewModel.reloadCollectionItems()
-            
-            let cvm = ReadCollectionCellViewModel(item: self.dummySubCollections.first!)
-                |> \.remind .~ dummyRemind
-            viewModel.handleContextAction(for: cvm, action: .remind(isOn: true))
         }
+        let cvm = ReadCollectionCellViewModel(item: self.dummySubCollections.first!)
+        viewModel.handleContextAction(for: cvm, action: .remind(isOn: true))
         
         // then
-        let cellWithRemindCounts = cvms.map { $0.filter{ $0.remind != nil }.count }
-        XCTAssertEqual(cellWithRemindCounts, [1, 0])
+        XCTAssertEqual(self.spyRemindUsecase.didCanceledRemindItemID, cvm.uid)
     }
 }
 

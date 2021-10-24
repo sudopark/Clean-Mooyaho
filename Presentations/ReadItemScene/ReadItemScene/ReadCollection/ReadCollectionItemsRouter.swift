@@ -144,7 +144,7 @@ extension ReadCollectionItemsRouter {
     public func routeToSetupRemind(for item: ReadItem) {
         
         guard let next = self.nextScenesBuilder?
-                .makeEditReadRemindScene(.makeNew(for: item), listener: self.currentInteractor)
+                .makeEditReadRemindScene(.edit(item), listener: self.currentInteractor)
         else { return }
         
         next.modalPresentationStyle = .custom

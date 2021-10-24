@@ -13,12 +13,7 @@ import CommonPresenting
 
 // MARK: - ReadCollectionSectionCellViewModel
 
-public protocol ReadCollectionItemCellViewMdoelType: ReadItemCellViewModelType {
-    
-    var remind: ReadRemind? { get set }
-}
-
-public struct ReadCollectionAttrCellViewModel: ReadCollectionItemCellViewMdoelType {
+public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModelType {
     
     public typealias Item = ReadCollection
     
@@ -30,17 +25,18 @@ public struct ReadCollectionAttrCellViewModel: ReadCollectionItemCellViewMdoelTy
         hasher.combine(self.collectionDescription)
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map { $0.presentingHashValue() })
-        hasher.combine(self.remind?.presentingHasValue())
+        hasher.combine(self.remindTime)
         return hasher.finalize()
     }
     
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
-    public var remind: ReadRemind?
+    public var remindTime: TimeStamp?
     
     public init(item: ReadCollection) {
         self.priority = item.priority
         self.collectionDescription = item.collectionDescription
+        self.remindTime = item.remindTime
     }
 }
 
@@ -51,7 +47,7 @@ protocol ShrinkableCell {
     var isShrink: Bool { get set }
 }
 
-public struct ReadCollectionCellViewModel: ReadCollectionItemCellViewMdoelType, ShrinkableCell {
+public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     
     public typealias Item = ReadCollection
     
@@ -61,7 +57,7 @@ public struct ReadCollectionCellViewModel: ReadCollectionItemCellViewMdoelType, 
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     var isShrink = false
-    public var remind: ReadRemind?
+    public var remindTime: TimeStamp?
     
     public init(uid: String, name: String) {
         self.uid = uid
@@ -73,6 +69,7 @@ public struct ReadCollectionCellViewModel: ReadCollectionItemCellViewMdoelType, 
         self.name = item.name
         self.priority = item.priority
         self.collectionDescription = item.collectionDescription
+        self.remindTime = item.remindTime
     }
 
     public var presetingID: Int {
@@ -83,7 +80,7 @@ public struct ReadCollectionCellViewModel: ReadCollectionItemCellViewMdoelType, 
         hasher.combine(self.categories.map { $0.presentingHashValue() })
         hasher.combine(self.collectionDescription)
         hasher.combine(self.isShrink)
-        hasher.combine(self.remind?.presentingHasValue())
+        hasher.combine(self.remindTime)
         return hasher.finalize()
     }
 }
@@ -91,7 +88,7 @@ public struct ReadCollectionCellViewModel: ReadCollectionItemCellViewMdoelType, 
 
 // MARK: - ReadLinkCellViewModel
 
-public struct ReadLinkCellViewModel: ReadCollectionItemCellViewMdoelType, ShrinkableCell {
+public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     
     public typealias Item = ReadLink
     
@@ -101,7 +98,7 @@ public struct ReadLinkCellViewModel: ReadCollectionItemCellViewMdoelType, Shrink
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     var isShrink = false
-    public var remind: ReadRemind?
+    public var remindTime: TimeStamp?
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -113,6 +110,7 @@ public struct ReadLinkCellViewModel: ReadCollectionItemCellViewMdoelType, Shrink
         self.linkUrl = item.link
         self.customName = item.customName
         self.priority = item.priority
+        self.remindTime = item.remindTime
     }
     
     public var presetingID: Int {
@@ -123,7 +121,7 @@ public struct ReadLinkCellViewModel: ReadCollectionItemCellViewMdoelType, Shrink
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map { $0.presentingHashValue() })
         hasher.combine(self.isShrink)
-        hasher.combine(self.remind?.presentingHasValue())
+        hasher.combine(self.remindTime)
         return hasher.finalize()
     }
 }
@@ -135,17 +133,6 @@ private extension ItemCategory {
         hasher.combine(self.uid)
         hasher.combine(self.name)
         hasher.combine(self.colorCode)
-        return hasher.finalize()
-    }
-}
-
-private extension ReadRemind {
-    
-    func presentingHasValue() -> Int {
-        var hasher = Hasher()
-        hasher.combine(self.uid)
-        hasher.combine(self.itemID)
-        hasher.combine(self.scheduledTime)
         return hasher.finalize()
     }
 }

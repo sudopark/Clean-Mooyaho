@@ -15,15 +15,8 @@ import DataStore
 
 
 final class EmptyRemote: Remote {
-    func requestLoadReminds(for itemIDs: [String]) -> Maybe<[ReadRemind]> {
-        return .empty()
-    }
     
-    func requestUpdateReimnd(_ remind: ReadRemind) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    func requestRemoveRemind(remindID: String) -> Maybe<Void> {
+    func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return .empty()
     }
     
