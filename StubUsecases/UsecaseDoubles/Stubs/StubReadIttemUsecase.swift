@@ -47,10 +47,16 @@ open class StubReadItemUsecase: ReadItemUsecase {
     
     open func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {
         return self.scenario.updateCollectionResult.asMaybe()
+            .do(onNext: {
+                self.readItemUpdateMocking.onNext(.updated(newCollection))
+            })
     }
     
     open func updateLink(_ link: ReadLink) -> Maybe<Void> {
         return self.scenario.updateLinkResult.asMaybe()
+            .do(onNext: {
+                self.readItemUpdateMocking.onNext(.updated(link))
+            })
     }
     
     private var fakeIsShrinkMode = PublishSubject<Bool>()

@@ -96,6 +96,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
         guard case let .edit(link) = self.editCase else { return }
         self.subjects.customName.accept(link.customName)
         self.subjects.selectedPriority.accept(link.priority)
+        self.subjects.selectedRemindTime.accept(link.remindTime)
         
         self.categoryUsecase.categories(for: link.categoryIDs)
             .take(1)

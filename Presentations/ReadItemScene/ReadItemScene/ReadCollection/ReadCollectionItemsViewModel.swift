@@ -115,6 +115,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.bindCurrentSortOrder()
         self.loadCurrentCollectionInfoIfNeed()
         self.bindRequireCategories()
+        self.bindSubItemUpdated()
     }
     
     private func bindCurrentSortOrder() {
@@ -168,6 +169,48 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
                 self?.subjects.categoryMap.onNext(dict)
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func bindSubItemUpdated() {
+        
+        let handleUpdate: (ReadItemUpdateEvent) -> Void = { [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case let .updated(newItem) where newItem.uid == self.currentCollectionID :
+                self.updateCurrentCollection(newItem)
+                
+            case let .updated(newItem) where newItem.parentID == self.currentCollectionID:
+                self.updateSubItem(newItem)
+                
+            default: break
+            }
+        }
+        self.readItemUsecase.readItemUpdated
+            .subscribe(onNext: handleUpdate)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateCurrentCollection(_ newItem: ReadItem) {
+        guard let collection = newItem as? ReadCollection, self.isRootCollection == false else { return }
+        self.subjects.currentCollection.onNext(collection)
+    }
+    
+    private func updateSubItem(_ newItem: ReadItem) {
+        switch newItem {
+        case let collection as ReadCollection:
+            guard let collections = self.subjects.collections.value else { return }
+            let index = collections.firstIndex(where: { $0.uid == newItem.uid })
+            let newCollection = index.map { collections |> ix($0) .~ collection } ?? collections + [collection]
+            self.subjects.collections.accept(newCollection)
+            
+        case let link as ReadLink:
+            guard let links = self.subjects.links.value else { return }
+            let index = links.firstIndex(where: { $0.uid == link.uid })
+            let newLinks = index.map { links |> ix($0) .~ link } ?? links + [link]
+            self.subjects.links.accept(newLinks)
+            
+        default: break
+        }
     }
 }
 
@@ -278,29 +321,7 @@ extension ReadCollectionViewItemsModelImple {
         self.router.routeToEditCollection(collection)
     }
     
-    public func editReadCollection(didChange collection: ReadCollection) {
-        
-        guard collection.uid != self.currentCollectionID else {
-            self.subjects.currentCollection.onNext(collection)
-            return
-        }
-        
-        guard collection.parentID == self.currentCollectionID else { return }
-        
-        let collections = self.subjects.collections.value ?? []
-        
-        func appendNewCollection() -> [ReadCollection] {
-            return collections + [collection]
-        }
-        
-        func updateCollection(_ index: Int) -> [ReadCollection] {
-            return collections |> ix(index) .~ collection
-        }
-        
-        let index = collections.firstIndex(where: { $0.uid == collection.uid })
-        let newCollections = index.map { updateCollection($0) } ?? appendNewCollection()
-        self.subjects.collections.accept(newCollections)
-    }
+    public func editReadCollection(didChange collection: ReadCollection) { }
 }
 
 
@@ -319,20 +340,9 @@ extension ReadCollectionViewItemsModelImple {
         self.router.routeToEditReadLink(link)
     }
     
-    public func addReadLink(didAdded newItem: ReadLink) {
-        guard newItem.parentID == currentCollectionID else { return }
-        let newLinks = [newItem] + (self.subjects.links.value ?? [])
-        self.subjects.links.accept(newLinks)
-    }
+    public func addReadLink(didAdded newItem: ReadLink) { }
     
-    public func editReadLink(didEdit item: ReadLink) {
-        guard item.parentID == self.currentCollectionID,
-              let links = self.subjects.links.value,
-              let index = links.firstIndex(where:  { $0.uid == item.uid }) else { return }
-        
-        let newLinks = links |> ix(index) .~ item
-        self.subjects.links.accept(newLinks)
-    }
+    public func editReadLink(didEdit item: ReadLink) { }
 }
 
 
