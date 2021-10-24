@@ -159,7 +159,7 @@ extension LocalStorageTests_ReadItem {
         let expect = expectation(description: "파라미터로 콜렉션 업데이트")
         let dummy = ReadCollection(name: "some")
         let params = ReadItemUpdateParams(item: ReadCollection(name: "some"))
-        let newTime = TimeStamp.now() + 1000
+        let newTime: TimeStamp = 100_000_000
         
         // when
         let save = self.local.updateReadItems([dummy])
@@ -198,7 +198,7 @@ extension LocalStorageTests_ReadItem {
             |> \.parentID .~ "p"
             |> \.isRed .~ false
         let params = ReadItemUpdateParams(item: dummy)
-        let newTime = TimeStamp.now() + 1000
+        let newTime: TimeStamp = 200
         
         // when
         let save = self.local.updateReadItems([dummy])

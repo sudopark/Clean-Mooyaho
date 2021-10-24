@@ -32,6 +32,7 @@ public enum ReadCollectionItemSwipeContextAction: Equatable {
     case edit
     case delete
     case remind(isOn: Bool)
+    case markAsRead(isRed: Bool)
 }
 
 
@@ -271,12 +272,18 @@ extension ReadCollectionViewItemsModelImple {
             
         case let link as ReadLinkCellViewModel where action == .edit:
             self.requestEditReadLink(link)
-            
+                
         case _ where action == .remind(isOn: true):
             self.askConfirmCancelRemind(for: item.uid)
             
         case _ where action == .remind(isOn: false):
             self.requestSetupRemind(for: item.uid)
+            
+        case let link as ReadLinkCellViewModel where action == .markAsRead(isRed: true):
+            self.toggleReadLinkIsRedMark(link.uid, isRedNow: true)
+            
+        case let link as ReadLinkCellViewModel where action == .markAsRead(isRed: false):
+            self.toggleReadLinkIsRedMark(link.uid, isRedNow: false)
             
         default: break
         }
@@ -301,6 +308,19 @@ extension ReadCollectionViewItemsModelImple {
         let form = ActionSheetForm(title: "Select action")
             |> \.actions .~ actions
         self.router.alertActionSheet(form)
+    }
+    
+    private func toggleReadLinkIsRedMark(_ itemID: String, isRedNow: Bool) {
+        guard let item = self.item(for: itemID) else { return }
+        let isToRed = isRedNow.invert()
+        let params = ReadItemUpdateParams(item: item) |> \.updatePropertyParams .~ [.isRed(isToRed)]
+        
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        self.readItemUsecase.updateItem(params)
+            .subscribe(onError: handleError)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -469,10 +489,18 @@ extension ReadCollectionViewItemsModelImple {
     
     public func contextAction(for item: ReadItemCellViewModel,
                               isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
-        guard item is ReadCollectionCellViewModel || item is ReadLinkCellViewModel else { return nil }
-        return isLeading
-            ? [.remind(isOn: item.remindTime != nil)]
-            : [.delete, .edit]
+        switch item {
+        case _ where isLeading == false:
+            return [.delete, .edit]
+            
+        case let collection as ReadCollectionCellViewModel:
+            return [.remind(isOn: collection.remindTime != nil)]
+            
+        case let link as ReadLinkCellViewModel:
+            return [.markAsRead(isRed: link.isRed), .remind(isOn: link.remindTime != nil)]
+            
+        default: return nil
+        }
     }
 }
 

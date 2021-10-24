@@ -275,7 +275,7 @@ private extension Array where Element == ReadItem {
     }
 }
 
-private extension ReadItemUpdateParams {
+public extension ReadItemUpdateParams {
     
     func applyChanges() -> ReadItem {
         return self.updatePropertyParams.reduce(self.item) { acc, property in

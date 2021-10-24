@@ -190,7 +190,9 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
         let item = self.dataSource[indexPath]
         guard let actions = self.viewModel.contextAction(for: item, isLeading: true) else { return nil }
         let actionSelected: (ReadCollectionItemSwipeContextAction) -> Void = { [weak self] selected in
-            self?.viewModel.handleContextAction(for: item, action: selected)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self?.viewModel.handleContextAction(for: item, action: selected)
+            }
         }
         let contextActions = actions.map { $0.asUIContextAction(actionSelected) }
         let configure = UISwipeActionsConfiguration(actions: contextActions)
@@ -311,6 +313,8 @@ private extension ReadCollectionItemSwipeContextAction {
         case .edit: return UIImage(systemName: "highlighter")
         case .remind(true): return UIImage(systemName: "alarm.fill")
         case .remind(false): return UIImage(systemName: "alarm")
+        case .markAsRead(isRed: true): return UIImage(systemName: "checkmark.circle.fill")
+        case .markAsRead(isRed: false): return UIImage(systemName: "checkmark.circle")
         }
     }
     
@@ -322,8 +326,10 @@ private extension ReadCollectionItemSwipeContextAction {
         switch self {
         case .delete: return UIColor.systemRed
         case .edit: return UIColor.systemGray
-        case .remind(true): return UIColor.from(hex: "#1976d2")
-        case .remind(false): return UIColor.from(hex: "#03a9f4")
+        case .remind(false): return UIColor.from(hex: "#26a69a")
+        case .remind(true): return UIColor.from(hex: "#00695c")
+        case .markAsRead(isRed: false): return UIColor.from(hex: "#26c6da")
+        case .markAsRead(isRed: true): return UIColor.from(hex: "#00838f")
         }
     }
     
