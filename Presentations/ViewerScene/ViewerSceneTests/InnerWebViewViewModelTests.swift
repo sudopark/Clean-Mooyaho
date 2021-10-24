@@ -137,4 +137,20 @@ extension InnerWebViewViewModelTests {
         // then
         XCTAssert(self.didEditRequested == true)
     }
+    
+    func testViewModel_updateIsRed() {
+        // given
+        let expect = expectation(description: "읽음처리 업데이트")
+        expect.expectedFulfillmentCount = 3
+        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        
+        // when
+        let isReds = self.waitElements(expect, for: viewModel.isRed) {
+            viewModel.toggleMarkAsRed()
+            viewModel.toggleMarkAsRed()
+        }
+
+        // then
+        XCTAssertEqual(isReds, [false, true, false])
+    }
 }

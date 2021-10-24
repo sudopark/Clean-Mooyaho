@@ -290,6 +290,9 @@ private extension ReadItemUpdateParams.ProperyUpdateParams {
         switch self {
         case let .remindTime(time):
             return item |> \.remindTime .~ time
+            
+        case let .isRed(flag):
+            return (item as? ReadLink).map { $0 |> \.isRed .~ flag } ?? item
         }
     }
 }

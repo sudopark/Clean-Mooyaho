@@ -300,6 +300,7 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
         
         self.updateTitle(cellViewModel.customName)
+        self.updateIsRed(cellViewModel.isRed)
         self.expandView.addressLabel.text = cellViewModel.linkUrl
         
         let priority = cellViewModel.priority
@@ -311,6 +312,15 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         let remindtime = cellViewModel.remindTime
         self.expandView.remindView.isHidden = remindtime == nil
         remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
+    }
+    
+    func updateIsRed(_ isRed: Bool) {
+        let imageName = isRed ? "checkmark.circle.fill" : "folder"
+        let imagetintColor = isRed ? UIColor.systemGreen : self.uiContext.colors.secondaryTitle
+        self.expandView.iconImageView.image = UIImage(systemName: imageName)
+        self.expandView.iconImageView.tintColor = imagetintColor
+        
+        self.expandView.nameLabel.alpha = isRed ? 0.4 : 1.0
     }
     
     func updateCategories(_ categories: [ItemCategory]) {

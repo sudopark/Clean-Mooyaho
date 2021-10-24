@@ -99,6 +99,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     public var categories: [ItemCategory] = []
     var isShrink = false
     public var remindTime: TimeStamp?
+    public var isRed: Bool = false
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -122,6 +123,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
         hasher.combine(self.categories.map { $0.presentingHashValue() })
         hasher.combine(self.isShrink)
         hasher.combine(self.remindTime)
+        hasher.combine(self.isRed)
         return hasher.finalize()
     }
 }
