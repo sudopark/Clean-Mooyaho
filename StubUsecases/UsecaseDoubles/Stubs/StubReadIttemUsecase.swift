@@ -95,8 +95,13 @@ open class StubReadItemUsecase: ReadItemUsecase {
         return self.scenario.preview.asMaybe().asObservable()
     }
     
+    public var didUpdated: ReadItemUpdateParams?
     open func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
-        return .just()
+        self.didUpdated = params
+        return .just().do(onNext: {
+            let item = params.applyChanges()
+            self.readItemUpdateMocking.onNext(.updated(item))
+        })
     }
     
     public let readItemUpdateMocking = PublishSubject<ReadItemUpdateEvent>()

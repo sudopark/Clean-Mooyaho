@@ -24,6 +24,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var spyRouter: FakeRouter!
     private var spyRemindUsecase: StubReadRemindUsecase!
+    private var spyItemsUsecase: StubReadItemUsecase!
     private var itemUpdateMocking: ((ReadItemUpdateEvent) -> Void)?
     private var isShrinkModeMocking: ((Bool) -> Void)?
     
@@ -35,6 +36,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         self.disposeBag = nil
         self.spyRouter = nil
         self.spyRemindUsecase = nil
+        self.spyItemsUsecase = nil
         self.isShrinkModeMocking = nil
         self.itemUpdateMocking = nil
     }
@@ -71,6 +73,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             |> \.sortOption .~ [sortOrder]
             |> \.customOrder .~ .success(customOrder)
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
+        self.spyItemsUsecase = stubUsecase
         
         self.isShrinkModeMocking = { newValue in
             stubUsecase.updateLatestIsShrinkModeIsOn(newValue)
@@ -549,8 +552,8 @@ extension ReadCollectionViewModelTests {
         // then
         XCTAssertEqual(collectionLeading, [.remind(isOn: true)])
         XCTAssertEqual(collectionLeadingWithoutRemind, [.remind(isOn: false)])
-        XCTAssertEqual(linkLeading, [.remind(isOn: true)])
-        XCTAssertEqual(linkLeadingWithoutRemind, [.remind(isOn: false)])
+        XCTAssertEqual(linkLeading, [.markAsRead(isRed: false), .remind(isOn: true)])
+        XCTAssertEqual(linkLeadingWithoutRemind, [.markAsRead(isRed: false), .remind(isOn: false)])
     }
     
     func testViewModel_editCollectionItem() {
@@ -582,7 +585,7 @@ extension ReadCollectionViewModelTests {
             |> \.parentID .~ "some"
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
             viewModel.reloadCollectionItems()
 
             viewModel.handleContextAction(for: ReadLinkCellViewModel(item: link),
@@ -626,6 +629,27 @@ extension ReadCollectionViewModelTests {
         
         // then
         XCTAssertEqual(self.spyRemindUsecase.didCanceledRemindItemID, cvm.uid)
+    }
+    
+    func testViewmodel_toggleUpdateMarkAsRead() {
+        // given
+        let expect = expectation(description: "읽음여부 업데이트")
+        let viewModel = self.makeViewModel()
+        
+        let dummyCell = ReadLinkCellViewModel(uid: self.dummySubLinks.first!.uid, linkUrl: "some")
+        
+        // when
+        let _ = self.waitElements(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollectionItems()
+        }
+        viewModel.handleContextAction(for: dummyCell, action: .markAsRead(isRed: false))
+
+        // then
+        if case let .isRed(flag) = self.spyItemsUsecase.didUpdated?.updatePropertyParams.first, flag {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
     }
 }
 
