@@ -116,3 +116,15 @@ extension AppRepository: ItemCategoryRepository, ItemCategoryRepositoryDefImpleD
         return self.local
     }
 }
+
+
+extension AppRepository: ReadLinkMemoRepository, ReadLinkMemoRepositoryDefImpleDependency {
+    
+    public var memoRemote: ReadLinkMemoRemote {
+        return self.remote
+    }
+    
+    public var memoLocal: ReadLinkMemoLocalStorage {
+        return self.local
+    }
+}

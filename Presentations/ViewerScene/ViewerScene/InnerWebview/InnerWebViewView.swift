@@ -217,7 +217,7 @@ extension InnerWebViewBottomToolBar: Presenting {
         self.nextButton.isEnabled = false
         self.nextButton.tintColor = self.uiContext.colors.raw.lightGray
         
-        self.memoButton.setImage(UIImage(systemName: "note.text"), for: .normal)
+        self.memoButton.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
         
         self.readMarkButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
         

@@ -150,4 +150,8 @@ extension DependencyInjector {
                                       readItemUsecase: self.readItemUsecase,
                                       messagingService: self.readRemindMessagingService)
     }
+    
+    var memoUsecase: ReadLinkMemoUsecase {
+        return ReadLinkMemoUsecaseImple(repository: self.appReposiotry)
+    }
 }

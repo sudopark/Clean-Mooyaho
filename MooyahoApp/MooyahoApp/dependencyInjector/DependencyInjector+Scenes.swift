@@ -321,6 +321,7 @@ extension DependencyInjector: InnerWebViewSceneBuilable {
         let router = InnerWebViewRouter(nextSceneBuilders: self)
         let viewModel = InnerWebViewViewModelImple(link: link,
                                                    readItemUsecase: self.readItemUsecase,
+                                                   memoUsecase: self.memoUsecase,
                                                    router: router)
         let viewController = InnerWebViewViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -328,3 +329,15 @@ extension DependencyInjector: InnerWebViewSceneBuilable {
     }
 }
 
+extension DependencyInjector: LinkMemoSceneBuilable {
+    
+    public func makeLinkMemoScene(memo: ReadLinkMemo, listener: LinkMemoSceneListenable?) -> LinkMemoScene {
+        let router = LinkMemoRouter(nextSceneBuilders: self)
+        let viewModel = LinkMemoViewModelImple(memo: memo,
+                                               memoUsecase: self.memoUsecase,
+                                               router: router, listener: listener)
+        let viewController = LinkMemoViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
