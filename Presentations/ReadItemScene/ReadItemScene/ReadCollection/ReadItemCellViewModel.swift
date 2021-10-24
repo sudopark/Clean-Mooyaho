@@ -112,6 +112,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
         self.customName = item.customName
         self.priority = item.priority
         self.remindTime = item.remindTime
+        self.isRed = item.isRed
     }
     
     public var presetingID: Int {

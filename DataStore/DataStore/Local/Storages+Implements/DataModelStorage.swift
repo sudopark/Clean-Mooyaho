@@ -597,6 +597,8 @@ private extension ReadItemUpdateParams {
                 
             case let .remindTime(time):
                 return columType.remindTime == time
+                
+            default: return nil
             }
         }
     }
@@ -609,6 +611,9 @@ private extension ReadItemUpdateParams {
                 
             case let .remindTime(time):
                 return columType.remindTime == time
+                
+            case let .isRed(flag):
+                return columType.isRed == flag
             }
         }
     }
