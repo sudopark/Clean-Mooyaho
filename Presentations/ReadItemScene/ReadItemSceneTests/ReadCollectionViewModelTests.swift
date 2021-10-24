@@ -24,6 +24,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var spyRouter: FakeRouter!
     private var spyRemindUsecase: StubReadRemindUsecase!
+    private var itemUpdateMocking: ((ReadItemUpdateEvent) -> Void)?
     private var isShrinkModeMocking: ((Bool) -> Void)?
     
     override func setUpWithError() throws {
@@ -34,6 +35,8 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         self.disposeBag = nil
         self.spyRouter = nil
         self.spyRemindUsecase = nil
+        self.isShrinkModeMocking = nil
+        self.itemUpdateMocking = nil
     }
     
     private var dummySubCollections: [ReadCollection] {
@@ -72,6 +75,10 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         self.isShrinkModeMocking = { newValue in
             stubUsecase.updateLatestIsShrinkModeIsOn(newValue)
                 .subscribe().disposed(by: self.disposeBag)
+        }
+        
+        self.itemUpdateMocking = { evnet in
+            stubUsecase.readItemUpdateMocking.onNext(evnet)
         }
         
         let categoryScenario = StubItemCategoryUsecase.Scenario()
@@ -459,18 +466,16 @@ extension ReadCollectionViewModelTests {
         // given
         let expect = expectation(description: "콜렉션 생성이후 아이템 추가해서 리로드")
         let viewModel = self.makeViewModel(isRootCollection: false)
-        
+
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell(), skip: 1) {
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
             viewModel.reloadCollectionItems()
-            
-            self.spyRouter.mockNewCollection = self.newCollection
+
             viewModel.addNewCollectionItem()
         }
-        
+
         // then
-        XCTAssertEqual(cvms?.count, self.dummyCollectionItems.count + 1)
-        XCTAssertEqual(cvms?.first?.uid, self.newCollection.uid)
+        XCTAssertEqual(self.spyRouter.didMakeNewCollectionRequested, true)
     }
     
     func testViewModel_whenAfterAddLink_appendItemAndReload() {
@@ -479,17 +484,14 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell(), skip: 1) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
             viewModel.reloadCollectionItems()
             
-            self.spyRouter.mockNewLink = self.newLinkItem
             viewModel.addNewReadLinkItem()
         }
         
         // then
-        let linkCells = cvms?.compactMap{ $0 as? ReadLinkCellViewModel }
-        XCTAssertEqual(cvms?.count, self.dummyCollectionItems.count + 1)
-        XCTAssertEqual(linkCells?.first?.uid, self.newLinkItem.uid)
+        XCTAssertEqual(self.spyRouter.didAddNewLinkRequested, true)
     }
 }
 
@@ -560,19 +562,15 @@ extension ReadCollectionViewModelTests {
             |> \.parentID .~ "some"
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
             viewModel.reloadCollectionItems()
-            let newCollection = collection |> \.collectionDescription .~ "new description"
-            self.spyRouter.mockNewCollection = newCollection
+            
             viewModel.handleContextAction(for: ReadCollectionCellViewModel(item: collection),
                                              action: .edit)
         }
         
         // then
-        let collection1 = cvms?
-            .compactMap { $0 as? ReadCollectionCellViewModel }
-            .first(where: { $0.uid == collection.uid })
-        XCTAssertEqual(collection1?.collectionDescription, "new description")
+        XCTAssertEqual(self.spyRouter.didEditNewCollectionRequested, true)
     }
     
     func testViewModel_editLinkItem() {
@@ -584,19 +582,15 @@ extension ReadCollectionViewModelTests {
             |> \.parentID .~ "some"
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
             viewModel.reloadCollectionItems()
-            let newLink = link |> \.categoryIDs .~ ["c:3"]
-            self.spyRouter.mockNewLink = newLink
+
             viewModel.handleContextAction(for: ReadLinkCellViewModel(item: link),
                                              action: .edit)
         }
         
         // then
-        let link1 = cvms?
-            .compactMap { $0 as? ReadLinkCellViewModel }
-            .first(where: { $0.uid == link.uid })
-        XCTAssertEqual(link1?.categories.map { $0.uid }, ["c:3"])
+        XCTAssertEqual(self.spyRouter.didEditReadLinkRequested, true)
     }
     
     // TODO: delete
@@ -691,6 +685,144 @@ extension ReadCollectionViewModelTests {
 }
 
 
+// MARK: - apply item updated
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_whenNotRootCollectionAndCurrentCollectionUpdated_updateAttributeCell() {
+        // given
+        let expect = expectation(description: "루트가 아닐때 콜렉션이 업데이트 되었다먄 attribute cell 업데이트")
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        let dummyItem = ReadCollection(uid: "some", name: "name", createdAt: 0, lastUpdated: 0)
+        
+        // when
+        let newAttrCell = viewModel.sections.compactMap { $0.first?.cellViewModels.first as? ReadCollectionAttrCellViewModel }
+            .filter { $0.collectionDescription == "new value" }
+        let cell = self.waitFirstElement(expect, for: newAttrCell) {
+            viewModel.reloadCollectionItems()
+            
+            let newCollection = dummyItem |> \.collectionDescription .~ pure("new value")
+            self.itemUpdateMocking?(.updated(newCollection))
+        }
+        
+        // then
+        XCTAssertNotNil(cell)
+    }
+    
+    func testViewModel_whenRootCollectionSubLinkItemUpdated_udpateList() {
+        // given
+        let expect = expectation(description: "루트 콜렉션에 서브 링트 아이템 업데이트시 리스트 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(isRootCollection: true)
+        let dummyItem = self.dummySubLinks.first!
+        
+        // when
+        let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            
+            let updated = dummyItem |> \.remindTime .~ 777
+            self.itemUpdateMocking?(.updated(updated))
+            
+            let appened = ReadLink.dummy(1000) |> \.parentID .~ nil
+            self.itemUpdateMocking?(.updated(appened))
+            
+            let otherItem = ReadLink.dummy(1221) |> \.parentID .~ "other collection"
+            self.itemUpdateMocking?(.updated(otherItem))
+        }
+        
+        // then
+        let updated = sectionLists.first?.first(where: { $0.uid == dummyItem.uid })
+        XCTAssertEqual(updated?.remindTime, 777)
+        let itemCounts = sectionLists.map { $0.count }
+        XCTAssertEqual(itemCounts, [1, 2])
+    }
+    
+    func testViewModel_whenNotRootCollectionSubLinkUpdated_udpateList() {
+        // given
+        let expect = expectation(description: "루트가 아닌 콜렉션에 서브 링트 아이템 업데이트시 리스트 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        let dummyItem = self.dummySubLinks.first! |> \.parentID .~ "some"
+        
+        // when
+        let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            
+            let updated = dummyItem |> \.remindTime .~ 777
+            self.itemUpdateMocking?(.updated(updated))
+            
+            let appened = ReadLink.dummy(1000) |> \.parentID .~ "some"
+            self.itemUpdateMocking?(.updated(appened))
+            
+            let otherItem = ReadLink.dummy(1221) |> \.parentID .~ "other collection"
+            self.itemUpdateMocking?(.updated(otherItem))
+        }
+        
+        // then
+        let updated = sectionLists.first?.first(where: { $0.uid == dummyItem.uid })
+        XCTAssertEqual(updated?.remindTime, 777)
+        let itemCounts = sectionLists.map { $0.compactMap { $0 as? ReadLinkCellViewModel }.count }
+        XCTAssertEqual(itemCounts, [self.dummySubLinks.count, self.dummySubLinks.count + 1])
+    }
+    
+    func testViewModel_whenRootCollectionSubCollectionItemUpdated_udpateList() {
+        // given
+        let expect = expectation(description: "루트 콜렉션에 서브 collection 아이템 업데이트시 리스트 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(isRootCollection: true)
+        let dummyItem = self.dummySubCollections.first!
+        
+        // when
+        let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            
+            let updated = dummyItem |> \.collectionDescription .~ "new value"
+            self.itemUpdateMocking?(.updated(updated))
+            
+            let appened = ReadCollection(name: "some collection") |> \.parentID .~ nil
+            self.itemUpdateMocking?(.updated(appened))
+            
+            let otherItem = ReadCollection(name: "other collection") |> \.parentID .~ "other collection"
+            self.itemUpdateMocking?(.updated(otherItem))
+        }
+        
+        // then
+        let updated = sectionLists.first?.first(where: { $0.uid == dummyItem.uid }) as? ReadCollectionCellViewModel
+        XCTAssertEqual(updated?.collectionDescription, "new value")
+        let itemCounts = sectionLists.map { $0.count }
+        XCTAssertEqual(itemCounts, [1, 2])
+    }
+    
+    func testViewModel_whenNotRootCollectionSubCollectionUpdated_udpateList() {
+        // given
+        let expect = expectation(description: "루트가 아닌 콜렉션에 서브 collection 아이템 업데이트시 리스트 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        let dummyItem = self.dummySubCollections.first! |> \.parentID .~ "some"
+        
+        // when
+        let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            
+            let updated = dummyItem |> \.collectionDescription .~ "new value"
+            self.itemUpdateMocking?(.updated(updated))
+            
+            let appened = ReadCollection(name: "some collection") |> \.parentID .~ "some"
+            self.itemUpdateMocking?(.updated(appened))
+            
+            let otherItem = ReadCollection(name: "other collection") |> \.parentID .~ "other collection"
+            self.itemUpdateMocking?(.updated(otherItem))
+        }
+        
+        // then
+        let updated = sectionLists.first?.first(where: { $0.uid == dummyItem.uid }) as? ReadCollectionCellViewModel
+        XCTAssertEqual(updated?.collectionDescription, "new value")
+        let itemCounts = sectionLists.map { $0.compactMap { $0 as? ReadCollectionCellViewModel }.count }
+        XCTAssertEqual(itemCounts, [self.dummySubCollections.count, self.dummySubCollections.count + 1])
+    }
+}
+
+
 extension ReadCollectionViewModelTests {
     
     class FakeRouter: ReadCollectionRouting, Mocking {
@@ -718,26 +850,24 @@ extension ReadCollectionViewModelTests {
             self.verify(key: "showLinkDetail")
         }
         
-        var mockNewCollection: ReadCollection?
+        var didMakeNewCollectionRequested: Bool?
         func routeToMakeNewCollectionScene(at collectionID: String?) {
-            guard let mock = self.mockNewCollection else { return }
-            interactor?.editReadCollection(didChange: mock)
+            self.didMakeNewCollectionRequested = true
         }
         
+        var didEditNewCollectionRequested: Bool?
         func routeToEditCollection(_ collection: ReadCollection) {
-            guard let mock = self.mockNewCollection else { return }
-            interactor?.editReadCollection(didChange: mock)
+            self.didEditNewCollectionRequested = true
         }
         
-        var mockNewLink: ReadLink?
+        var didAddNewLinkRequested: Bool?
         func routeToAddNewLink(at collectionID: String?) {
-            guard let mock = self.mockNewLink else { return }
-            self.interactor?.addReadLink(didAdded: mock)
+            self.didAddNewLinkRequested = true
         }
         
+        var didEditReadLinkRequested: Bool?
         func routeToEditReadLink(_ link: ReadLink) {
-            guard let mock = self.mockNewLink else { return }
-            self.interactor?.editReadLink(didEdit: mock)
+            self.didEditReadLinkRequested = true
         }
         
         var alertRequestedActions: [ActionSheetForm.Action]?

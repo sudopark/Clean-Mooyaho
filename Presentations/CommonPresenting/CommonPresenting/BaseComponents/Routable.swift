@@ -64,7 +64,9 @@ extension Router {
     }
     
     public func closeScene(animated: Bool, completed: (() -> Void)?) {
-        self.currentScene?.dismiss(animated: true, completion: completed)
+        DispatchQueue.main.async { [weak self] in
+            self?.currentScene?.dismiss(animated: true, completion: completed)
+        }
     }
     
     public func alertForConfirm(_ form: AlertForm) {
