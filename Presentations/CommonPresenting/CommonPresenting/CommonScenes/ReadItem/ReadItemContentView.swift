@@ -94,6 +94,7 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
     
     public let priorityLabel = ItemLabelView()
     public let categoriesView = ItemLabelView()
+    public let remindView = ItemLabelView()
     
     public override init() {
         super.init()
@@ -119,6 +120,13 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         }
         categoriesView.setContentCompressionResistancePriority(.required, for: .vertical)
         categoriesView.setupLayout()
+        
+        self.contentStackView.addArrangedSubview(remindView)
+        remindView.autoLayout.active(with: contentStackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
+        remindView.setContentCompressionResistancePriority(.required, for: .vertical)
+        remindView.setupLayout()
     }
     
     public override func setupStyling() {
@@ -130,5 +138,8 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         
         self.categoriesView.setupStyling()
         self.categoriesView.isHidden = true
+        
+        self.remindView.setupStyling()
+        self.remindView.isHidden = true
     }
 }

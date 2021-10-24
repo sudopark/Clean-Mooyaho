@@ -106,7 +106,6 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
         let categoryMap = BehaviorSubject<[String: ItemCategory]>(value: [:])
-        let remindsMap = BehaviorRelay<[String: ReadRemind]>(value: [:])
     }
     
     private let subjects = Subjects()
@@ -116,7 +115,6 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.bindCurrentSortOrder()
         self.loadCurrentCollectionInfoIfNeed()
         self.bindRequireCategories()
-        self.bindRequireReminds()
     }
     
     private func bindCurrentSortOrder() {
@@ -168,24 +166,6 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             .subscribe(onNext: { [weak self] categories in
                 let dict = categories.reduce(into: [String: ItemCategory]()) { $0[$1.uid] = $1 }
                 self?.subjects.categoryMap.onNext(dict)
-            })
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func bindRequireReminds() {
-        
-        let itemIDs = self.totalItemSomeIDSet { $0.map { $0.uid } }
-        let loadReminds: (Set<String>) -> Observable<[ReadRemind]> = { [weak self] idSet in
-            guard let self = self else { return .empty() }
-            return self.remindUsecase.readReminds(for: Array(idSet))
-        }
-        itemIDs
-            .distinctUntilChanged()
-            .flatMapLatest(loadReminds)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] reminds in
-                let dict = reminds.reduce(into: [String: ReadRemind]()) { $0[$1.itemID] = $1 }
-                self?.subjects.remindsMap.accept(dict)
             })
             .disposed(by: self.disposeBag)
     }
@@ -250,7 +230,7 @@ extension ReadCollectionViewItemsModelImple {
             self.requestEditReadLink(link)
             
         case _ where action == .remind(isOn: true):
-            self.askConfirmCancelRemind(for: item.remind)
+            self.askConfirmCancelRemind(for: item.uid)
             
         case _ where action == .remind(isOn: false):
             self.requestSetupRemind(for: item.uid)
@@ -371,11 +351,11 @@ extension ReadCollectionViewItemsModelImple {
         self.router.routeToSetupRemind(for: item)
     }
     
-    private func askConfirmCancelRemind(for remind: ReadRemind?) {
-        guard let remind = remind else { return }
+    private func askConfirmCancelRemind(for itemID: String) {
+        guard let item = self.item(for: itemID) else { return }
         
         let confirmCancel: () -> Void = { [weak self] in
-            self?.cancelRemind(remind)
+            self?.cancelRemind(item)
         }
         guard let form = AlertBuilder(base: .init())
                 .title("Cancel remind".localized)
@@ -387,12 +367,12 @@ extension ReadCollectionViewItemsModelImple {
         self.router.alertForConfirm(form)
     }
     
-    private func cancelRemind(_ remind: ReadRemind) {
+    private func cancelRemind(_ item: ReadItem) {
         
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
-        self.remindUsecase.cancelRemind(remind)
+        self.remindUsecase.cancelRemind(for: item)
             .subscribe(onError: handleError)
             .disposed(by: self.disposeBag)
     }
@@ -419,27 +399,24 @@ extension ReadCollectionViewItemsModelImple {
         
         let asSections: (
             ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder,
-            [String: ItemCategory], [String], Bool, [String: ReadRemind]
+            [String: ItemCategory], [String], Bool
         ) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode, remindsMap in
+        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode in
             
             let attributeCell = currentCollection
                 .map { ReadCollectionAttrCellViewModel(item: $0)
                     |> \.categories .~ $0.categoryIDs.compactMap{ cateMap[$0] }
-                    |> \.remind .~ remindsMap[$0.uid]
                 }
                 .map { [$0] } ?? []
             let collectionCells: [ReadCollectionCellViewModel] = collections
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
                 .updateIsShrinkMode(isShrinkMode)
-                |> { isShrinkMode ? $0 : $0.updateRemind(remindsMap) }
             
             let linkCells: [ReadLinkCellViewModel] = links
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
                 .updateIsShrinkMode(isShrinkMode)
-                |> { isShrinkMode ? $0 : $0.updateRemind(remindsMap) }
             
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
@@ -457,7 +434,6 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.categoryMap,
             self.readItemUsecase.customOrder(for: self.substituteCollectionID),
             self.readItemUsecase.isShrinkModeOn,
-            self.subjects.remindsMap,
             resultSelector: asSections
         )
     }
@@ -485,7 +461,7 @@ extension ReadCollectionViewItemsModelImple {
                               isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
         guard item is ReadCollectionCellViewModel || item is ReadLinkCellViewModel else { return nil }
         return isLeading
-            ? [.remind(isOn: item.remind != nil)]
+            ? [.remind(isOn: item.remindTime != nil)]
             : [.delete, .edit]
     }
 }
@@ -501,15 +477,6 @@ private extension Array where Element: ReadItemCellViewModel {
     func updateIsShrinkMode(_ flag: Bool) -> Array where Element: ShrinkableCell {
         return self.map {
             return  $0 |> \.isShrink .~ flag
-        }
-    }
-    
-    func updateRemind(_ remindsMap: [String: ReadRemind]) -> Array where Element: ReadCollectionItemCellViewMdoelType {
-        return self.map {
-            let validateRemind: (ReadRemind) -> ReadRemind? = {
-                return $0.scheduledTime > .now() ? $0 : nil
-            }
-            return $0 |> \.remind .~ remindsMap[$0.uid].flatMap(validateRemind)
         }
     }
 }

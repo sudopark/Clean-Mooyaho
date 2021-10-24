@@ -148,7 +148,6 @@ extension DependencyInjector {
         return ReadRemindUsecaseImple(authInfoProvider: self.shared.dataStore,
                                       sharedStore: self.shared.dataStore,
                                       readItemUsecase: self.readItemUsecase,
-                                      reminderRepository: self.appReposiotry,
                                       messagingService: self.readRemindMessagingService)
     }
 }

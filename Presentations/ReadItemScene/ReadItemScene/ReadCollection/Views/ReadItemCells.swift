@@ -94,6 +94,7 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
     private let descriptionLabel = UILabel()
     private let priorityView = KeyAndLabeledValueView()
     private let categoryView = KeyAndLabeledValueView()
+    private let remindView = KeyAndLabeledValueView()
     private let underLineView = UIView()
     
     func setupCell(_ cellViewModel: ReadCollectionAttrCellViewModel) {
@@ -107,6 +108,10 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         priotiry.do <| priorityView.labelView.setupPriority
             
         self.updateCategories(cellViewModel.categories)
+            
+        let remindtime = cellViewModel.remindTime
+        self.remindView.isHidden = remindtime == nil
+        remindtime.do <| remindView.labelView.setupRemind(_:)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -127,6 +132,7 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.stackView.addArrangedSubview(self.descriptionLabel)
         self.stackView.addArrangedSubview(self.priorityView)
         self.stackView.addArrangedSubview(self.categoryView)
+        self.stackView.addArrangedSubview(self.remindView)
         self.descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         self.priorityView.autoLayout.active(with: self.stackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
@@ -135,9 +141,14 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.categoryView.autoLayout.active(with: self.stackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
+        self.remindView.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.remindView.autoLayout.active(with: self.stackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
         self.categoryView.setContentCompressionResistancePriority(.required, for: .vertical)
         self.priorityView.setupLayout()
         self.categoryView.setupLayout()
+        self.remindView.setupLayout()
         
         self.contentView.addSubview(underLineView)
         underLineView.autoLayout.active(with: self.contentView) {
@@ -166,9 +177,14 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.categoryView.iconView.image = UIImage(systemName: "line.horizontal.3.decrease.circle")
         self.categoryView.keyLabel.text = "Categories".localized
         
+        self.remindView.setupStyling()
+        self.remindView.iconView.image = UIImage(systemName: "alarm")
+        self.remindView.keyLabel.text = "Remind".localized
+        
         self.descriptionLabel.isHidden = true
         self.priorityView.isHidden = true
         self.categoryView.isHidden = true
+        self.remindView.isHidden = true
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
     }
@@ -204,6 +220,10 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
         priority.do <| self.expandView.priorityLabel.setupPriority
             
         self.updateCategories(cellViewModel.categories)
+            
+        let remindtime = cellViewModel.remindTime
+        self.expandView.remindView.isHidden = remindtime == nil
+        remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -287,6 +307,10 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         priority.do <| self.expandView.priorityLabel.setupPriority
                 
         self.updateCategories(cellViewModel.categories)
+            
+        let remindtime = cellViewModel.remindTime
+        self.expandView.remindView.isHidden = remindtime == nil
+        remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {

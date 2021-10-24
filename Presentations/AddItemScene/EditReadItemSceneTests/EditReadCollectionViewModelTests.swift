@@ -27,9 +27,15 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
     var disposeBag: DisposeBag!
     var didRequestedStartWithPriority: ReadPriority?
     var didRequestStartWithCategories: [ItemCategory]?
+    var didRequestStartWithRemindTime: TimeStamp?
+    var didRequestStartWithRemindItem: ReadItem?
     var mockSelectedPriority: ReadPriority?
-    var mockSeelctedCategories: [ItemCategory]?
+    var mockSelectedCategories: [ItemCategory]?
+    var mockSelectedRemindtime: TimeStamp?
+    var mockSelectedRemindedItem: ReadItem?
     private var editCollectionSceneInteractor: EditReadCollectionSceneInteractable?
+    
+    private var spyRemindUsecase: StubReadRemindUsecase!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -43,8 +49,13 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
         self.editCollectionSceneInteractor = nil
         self.didRequestedStartWithPriority = nil
         self.didRequestStartWithCategories = nil
+        self.didRequestStartWithRemindTime = nil
+        self.didRequestStartWithRemindItem = nil
         self.mockSelectedPriority = nil
-        self.mockSeelctedCategories = nil
+        self.mockSelectedCategories = nil
+        self.mockSelectedRemindtime = nil
+        self.mockSelectedRemindedItem = nil
+        self.spyRemindUsecase = nil
     }
     
     private func makeViewModel(editCase: EditCollectionCase,
@@ -59,10 +70,15 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
             |> \.categories .~ [categories]
         let stubCategoryUsecase = StubItemCategoryUsecase(scenario: cateScenario)
         
+        let remindScenario = StubReadRemindUsecase.Scenario()
+        let stubRemindUsecase = StubReadRemindUsecase(scenario: remindScenario)
+        self.spyRemindUsecase = stubRemindUsecase
+        
         let viewModel = EditReadCollectionViewModelImple(parentID: "some",
                                                          editCase: editCase,
                                                          updateUsecase: stubUsecase,
                                                          categoriesUsecase: stubCategoryUsecase,
+                                                         remindUsecase: stubRemindUsecase,
                                                          router: self,
                                                          listener: self)
         self.editCollectionSceneInteractor = viewModel
@@ -194,6 +210,58 @@ extension EditReadCollectionViewModelTests {
 }
 
 
+// MARK: - select remind
+
+extension EditReadCollectionViewModelTests {
+    
+    func testViewModel_updateRemindBySelection() {
+        // given
+        let expect = expectation(description: "생성케이스일때 선택한 리마인드 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let oldRemindTime = TimeStamp.now() + 1000
+        let newRemindTime = TimeStamp.now() + 200
+        let viewModel = self.makeViewModel(editCase: .makeNew)
+        
+        // when
+        let times = self.waitElements(expect, for: viewModel.remindTime, skip: 1) {
+            self.mockSelectedRemindtime = oldRemindTime
+            viewModel.addRemind()
+            
+            self.mockSelectedRemindtime = newRemindTime
+            viewModel.addRemind()
+        }
+        
+        // then
+        XCTAssertEqual(self.didRequestStartWithRemindTime, oldRemindTime)
+        XCTAssertEqual(times, [oldRemindTime, newRemindTime])
+    }
+    
+    func testViewModel_makeNewCollectionWithRemind() {
+        // given
+        let expect = expectation(description: "선택한 리마인드와 함께 콜렉션 생성")
+        var newCollection: ReadCollection?
+        let viewModel = self.makeViewModel(editCase: .makeNew)
+        
+        let remindTime = TimeStamp.now() + 1000
+        viewModel.enterName("some name")
+        self.mockSelectedRemindtime = remindTime
+        viewModel.addRemind()
+        
+        self.didUpdated = {
+            newCollection = $0
+            expect.fulfill()
+        }
+        
+        // when
+        viewModel.confirmUpdate()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(newCollection?.remindTime, remindTime)
+    }
+}
+
+
 // MARK: - select categories
 
 extension EditReadCollectionViewModelTests {
@@ -206,7 +274,7 @@ extension EditReadCollectionViewModelTests {
         
         // when
         let categories = self.waitElements(expect, for: viewModel.categories) {
-            self.mockSeelctedCategories = [.dummy(0)]
+            self.mockSelectedCategories = [.dummy(0)]
             viewModel.addCategory()
         }
         
@@ -224,10 +292,10 @@ extension EditReadCollectionViewModelTests {
         
         // when
         let _ = self.waitElements(expect, for: viewModel.categories) {
-            self.mockSeelctedCategories = [.dummy(0)]
+            self.mockSelectedCategories = [.dummy(0)]
             viewModel.addCategory()
             
-            self.mockSeelctedCategories = [.dummy(0), .dummy(1)]
+            self.mockSelectedCategories = [.dummy(0), .dummy(1)]
             viewModel.addCategory()
         }
         
@@ -242,7 +310,7 @@ extension EditReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(editCase: .makeNew)
         
         viewModel.enterName("some name")
-        self.mockSeelctedCategories = [.dummy(0)]
+        self.mockSelectedCategories = [.dummy(0)]
         viewModel.addCategory()
         
         self.didUpdated = {
@@ -304,7 +372,7 @@ extension EditReadCollectionViewModelTests {
         
         // when
         viewModel.enterName("new name")
-        self.mockSeelctedCategories = [.dummy(0)]
+        self.mockSelectedCategories = [.dummy(0)]
         viewModel.addCategory()
         viewModel.confirmUpdate()
         self.wait(for: [expect], timeout: self.timeout)
@@ -336,7 +404,22 @@ extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
     
     func selectCategories(startWith: [ItemCategory]) {
         self.didRequestStartWithCategories = startWith
-        guard let mock = self.mockSeelctedCategories else { return }
+        guard let mock = self.mockSelectedCategories else { return }
         self.editCollectionSceneInteractor?.editCategory(didSelect: mock)
+    }
+    
+    func updateRemind(_ editCase: EditRemindCase) {
+        switch editCase {
+        case .select(let startWith):
+            self.didRequestStartWithRemindTime = startWith
+        case .edit(let item):
+            self.didRequestStartWithRemindItem = item
+        }
+        
+        if let time = self.mockSelectedRemindtime {
+            self.editCollectionSceneInteractor?.editReadRemind(didSelect: Date(timeIntervalSince1970: time))
+        } else if let remind = self.mockSelectedRemindedItem {
+            self.editCollectionSceneInteractor?.editReadRemind(didUpdate: remind)
+        }
     }
 }

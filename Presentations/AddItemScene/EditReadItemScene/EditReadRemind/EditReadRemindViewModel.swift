@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -21,11 +23,14 @@ public protocol EditReadRemindViewModel: AnyObject {
 
     // interactor
     func selectDate(_ newDate: Date)
+    func clearSelect()
     func confirmSelectRemindTime()
     
     // presenter
     var initialDate: Observable<Date> { get }
     var isConfirmable: Observable<Bool> { get }
+    var confirmButtonTitle: Observable<String> { get }
+    var showClearButton: Bool { get }
 }
 
 
@@ -65,11 +70,13 @@ public final class EditReadRemindViewModelImple: EditReadRemindViewModel {
     
     private func setupInitialTime() {
         switch self.editCase {
-        case let .edit(remind, _):
-            self.subjects.selectedDate.accept(Date(timeIntervalSince1970: remind.scheduledTime))
+        case let .select(startWith):
+            let time = startWith.map { Date(timeIntervalSince1970: $0) }
+            self.subjects.selectedDate.accept(time)
             
-        default:
-            self.subjects.selectedDate.accept(Date())
+        case let .edit(item):
+            let time = item.remindTime.map { Date(timeIntervalSince1970: $0) }
+            self.subjects.selectedDate.accept(time)
         }
     }
 }
@@ -83,34 +90,38 @@ extension EditReadRemindViewModelImple {
         self.subjects.selectedDate.accept(newDate)
     }
     
+    public func clearSelect() {
+    
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.listener?.editReadRemind(didSelect: nil)
+        }
+    }
+    
     public func confirmSelectRemindTime() {
         
-        guard let date = self.subjects.selectedDate.value, date.timeIntervalSince(Date()) > 0 else { return }
+        let date = self.subjects.selectedDate.value
         
         switch self.editCase {
-        case .makeNew(nil):
+        case .select:
             self.closeSceneAndEmitEvent(date)
             
-        case let .makeNew(item):
-            guard let item = item else { return }
-            self.updateRemindAndCloseScene(for: item, newTime: date)
-            
-        case let .edit(_, item):
+        case let .edit(item):
             self.updateRemindAndCloseScene(for: item, newTime: date)
         }
     }
     
-    private func closeSceneAndEmitEvent(_ newDate: Date) {
+    private func closeSceneAndEmitEvent(_ newDate: Date?) {
         self.router.closeScene(animated: true) { [weak self] in
             self?.listener?.editReadRemind(didSelect: newDate)
         }
     }
     
-    private func updateRemindAndCloseScene(for item: ReadItem, newTime: Date) {
+    private func updateRemindAndCloseScene(for item: ReadItem, newTime: Date?) {
         
-        let handleScheduled: (ReadRemind) -> Void = { [weak self] newRemind in
+        let handleScheduled: () -> Void = { [weak self] in
             self?.router.closeScene(animated: true) {
-                self?.listener?.editReadRemind(didScheduled: newRemind)
+                let newItem = item |> \.remindTime .~ newTime?.timeIntervalSince1970
+                self?.listener?.editReadRemind(didUpdate: newItem)
             }
         }
         
@@ -119,7 +130,7 @@ extension EditReadRemindViewModelImple {
         }
         
         self.remindUsecase
-            .scheduleRemind(for: item, at: newTime.timeIntervalSince1970)
+            .updateRemind(for: item, futureTime: newTime?.timeIntervalSince1970)
             .subscribe(onSuccess: handleScheduled, onError: handleError)
             .disposed(by: self.disposeBag)
     }
@@ -137,9 +148,30 @@ extension EditReadRemindViewModelImple {
     }
     
     public var isConfirmable: Observable<Bool> {
+        let checkDate: (Date?) -> Bool = { date in
+            return date.map { $0.timeIntervalSince(Date()) > 0 } ?? false
+        }
         return self.subjects.selectedDate
-            .compactMap { $0 }
-            .map { $0.timeIntervalSince(Date()) > 0 }
+            .map(checkDate)
             .distinctUntilChanged()
+    }
+    
+    public var confirmButtonTitle: Observable<String> {
+        let transform: (Date?) -> String = { date in
+            
+            let validateTimeText: (Date) -> String? = {
+                $0.timeIntervalSince(Date()) > 0 ? $0.timeIntervalSince1970.remindTimeText() : nil
+            }
+ 
+            return date.flatMap(validateTimeText) ?? "Select a future time".localized
+        }
+        return self.subjects.selectedDate
+            .map(transform)
+            .distinctUntilChanged()
+    }
+    
+    public var showClearButton: Bool {
+        guard case .select = self.editCase else { return false }
+        return true
     }
 }

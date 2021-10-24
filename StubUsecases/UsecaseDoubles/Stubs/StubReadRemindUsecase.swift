@@ -29,11 +29,10 @@ open class StubReadRemindUsecase: ReadRemindUsecase {
         return .just(true)
     }
     
-    public var didScheduledRemind: Bool?
-    
+    public var didCanceledRemindItemID: String?
     public func updateRemind(for item: ReadItem, futureTime: TimeStamp?) -> Maybe<Void> {
-        if futureTime != nil {
-            self.didScheduledRemind = true
+        if futureTime == nil {
+            self.didCanceledRemindItemID = item.uid
         }
         return .just()
     }

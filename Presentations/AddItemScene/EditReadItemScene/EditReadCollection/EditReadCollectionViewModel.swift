@@ -27,11 +27,13 @@ public protocol EditReadCollectionViewModel: AnyObject {
     func enterDescription(_ description: String)
     func addPriority()
     func addCategory()
+    func addRemind()
     func confirmUpdate()
     
     // presenter
     var priority: Observable<ReadPriority?> { get }
     var categories: Observable<[ItemCategory]> { get }
+    var remindTime: Observable<TimeStamp?> { get }
     var isProcessing: Observable<Bool> { get }
     var isConfirmable: Observable<Bool> { get }
     var editCaseCollectionValue: ReadCollection? { get }
@@ -46,6 +48,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     private let editCase: EditCollectionCase
     private let updateUsecase: ReadItemUpdateUsecase
     private let categoriesUsecase: ReadItemCategoryUsecase
+    private let remindUsecase: ReadRemindUsecase
     private let router: EditReadCollectionRouting
     private weak var listener: EditReadCollectionSceneListenable?
     
@@ -53,6 +56,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
                 editCase: EditCollectionCase,
                 updateUsecase: ReadItemUpdateUsecase,
                 categoriesUsecase: ReadItemCategoryUsecase,
+                remindUsecase: ReadRemindUsecase,
                 router: EditReadCollectionRouting,
                 listener: EditReadCollectionSceneListenable?) {
         
@@ -60,10 +64,11 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         self.editCase = editCase
         self.updateUsecase = updateUsecase
         self.categoriesUsecase = categoriesUsecase
+        self.remindUsecase = remindUsecase
         self.router = router
         self.listener =  listener
         
-        self.setupPreviousSelectedPropertiesIfNeed()
+        self.setupPreviousSelectedAttributesIfNeed()
     }
     
     deinit {
@@ -77,16 +82,18 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         let isProcessing = BehaviorRelay<Bool>(value: false)
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])
+        let selectedRemindTime = BehaviorRelay<TimeStamp?>(value: nil)
     }
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    private func setupPreviousSelectedPropertiesIfNeed() {
+    private func setupPreviousSelectedAttributesIfNeed() {
         guard case let .edit(collection) = self.editCase else { return }
         self.subjects.collectionName.accept(collection.name)
         self.subjects.description.accept(collection.collectionDescription)
         self.subjects.selectedPriority.accept(collection.priority)
+        self.subjects.selectedRemindTime.accept(collection.remindTime)
         
         self.categoriesUsecase.categories(for: collection.categoryIDs)
             .take(1)
@@ -156,6 +163,7 @@ extension EditReadCollectionViewModelImple {
             |> \.parentID .~ self.parentID
             |> \.priority .~ self.subjects.selectedPriority.value
             |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
+            |> \.remindTime .~ self.subjects.selectedRemindTime.value
         return updateUsecase.updateCollection(newCollection)
             .map{ newCollection }
     }
@@ -202,6 +210,22 @@ extension EditReadCollectionViewModelImple {
 }
 
 
+// MARK: - EditReadCollectionViewModelImple Interactor + edit remind
+
+extension EditReadCollectionViewModelImple {
+    
+    public func addRemind() {
+        
+        let previousSelected = self.subjects.selectedRemindTime.value
+        self.router.updateRemind(.select(startWith: previousSelected))
+    }
+    
+    public func editReadRemind(didSelect time: Date?) {
+        self.subjects.selectedRemindTime.accept(time?.timeIntervalSince1970)
+    }
+}
+
+
 // MARK: - EditReadCollectionViewModelImple Presenter
 
 extension EditReadCollectionViewModelImple {
@@ -213,6 +237,11 @@ extension EditReadCollectionViewModelImple {
     
     public var categories: Observable<[ItemCategory]> {
         return self.subjects.selectedCategories
+            .distinctUntilChanged()
+    }
+    
+    public var remindTime: Observable<TimeStamp?> {
+        return self.subjects.selectedRemindTime
             .distinctUntilChanged()
     }
     

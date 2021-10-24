@@ -84,8 +84,8 @@ public protocol EditItemsCustomOrderSceneBuilable {
 // MARK: - Builder + DependencyInjector Extension
 
 public enum EditRemindCase {
-    case makeNew(for: ReadItem? = nil)
-    case edit(ReadRemind, for: ReadItem)
+    case select(startWith: TimeStamp?)
+    case edit(_ item: ReadItem)
 }
 
 public protocol EditReadRemindSceneBuilable {

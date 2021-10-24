@@ -137,6 +137,7 @@ extension DependencyInjector: ReadCollectionItemSceneBuilable {
         let viewModel = ReadCollectionViewItemsModelImple(collectionID: collectionID,
                                                           readItemUsecase: self.readItemUsecase,
                                                           categoryUsecase: self.categoryUsecase,
+                                                          remindUsecase: self.remindUsecase,
                                                           router: router)
         let viewController = ReadCollectionItemsViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -229,6 +230,7 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
                                                          editCase: editCase,
                                                          updateUsecase: self.readItemUsecase,
                                                          categoriesUsecase: self.categoryUsecase,
+                                                         remindUsecase: self.remindUsecase,
                                                          router: router,
                                                          listener: listener)
         let viewController = EditReadCollectionViewController(viewModel: viewModel)

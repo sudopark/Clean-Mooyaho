@@ -63,6 +63,23 @@ extension ItemLabelView {
         self.setupAttributeItemTexts([attributeText])
     }
     
+    public func setupRemind(_ time: TimeStamp) {
+        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
+        let attributeText = time.remindTimeText()
+            .asAttributeString(with: font,
+                               textColor: self.uiContext.colors.text, backgorundColor: .clear)
+        self.setupAttributeItemTexts([attributeText])
+    }
+    
+    public func setupRemindWithIcon(_ time: TimeStamp) {
+        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
+        let attributeText = "⛳️ \(time.remindTimeText())"
+            .asAttributeString(with: font,
+                               textColor: UIColor.black,
+                               backgorundColor: UIColor.systemGray6)
+        self.setupAttributeItemTexts([attributeText])
+    }
+    
     private func setupAttributeItemTexts(_ texts: [NSAttributedString]) {
         let seperator: String = "    "
         let totalAttributeText = texts.join(seperator: seperator).asMutable()
@@ -162,6 +179,22 @@ private extension ReadPriority {
             .font: font,
             .foregroundColor: UIColor.white,
             .roundBackgroundColor: color ?? .systemBlue,
+        ], range: range)
+        return attrString
+    }
+}
+
+private extension String {
+    
+    func asAttributeString(with font: UIFont,
+                           textColor: UIColor?,
+                           backgorundColor: UIColor?) -> NSAttributedString {
+        let attrString = NSMutableAttributedString(string: self)
+        let range = NSRange(location: 0, length: self.utf16.count)
+        attrString.addAttributes([
+            .font: font,
+            .foregroundColor: textColor ?? .label,
+            .roundBackgroundColor: backgorundColor ?? .clear,
         ], range: range)
         return attrString
     }

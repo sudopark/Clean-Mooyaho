@@ -57,17 +57,17 @@ extension FirebaseServiceImple: ReadRemindMessagingService {
     
     public func sendPendingMessage(_ message: ReadRemindMessage) -> Maybe<Void> {
         logger.todoImplement()
-        return .empty()
+        return .just()
     }
     
     public func cancelMessage(for readMinderID: String) -> Maybe<Void> {
         logger.todoImplement()
-        return .empty()
+        return .just()
     }
     
     public func broadcastRemind(_ message: ReadRemindMessage) -> Maybe<Void> {
         logger.todoImplement()
-        return .empty()
+        return .just()
     }
 }
 
