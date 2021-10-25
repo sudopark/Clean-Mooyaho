@@ -8,3 +8,11 @@
 import Foundation
 
 import Domain
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol NavigateCollectionSceneBuilable {
+    
+    func makeNavigateCollectionScene(listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene
+}

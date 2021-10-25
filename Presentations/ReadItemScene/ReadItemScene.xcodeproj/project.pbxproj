@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F620518827276E1F009CA975 /* NavigateCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518327276E1F009CA975 /* NavigateCollectionRouter.swift */; };
+		F620518927276E1F009CA975 /* NavigateCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518427276E1F009CA975 /* NavigateCollectionViewController.swift */; };
+		F620518B27276E1F009CA975 /* NavigateCollectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518627276E1F009CA975 /* NavigateCollectionScene.swift */; };
+		F620518C27276E1F009CA975 /* NavigateCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */; };
 		F64EE40A26F5219200CFA357 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE40026F5219200CFA357 /* ReadItemScene.framework */; };
 		F64EE41126F5219200CFA357 /* ReadItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F64EE40326F5219200CFA357 /* ReadItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F64EE41C26F521D700CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE41B26F521D700CFA357 /* Common3rdParty.framework */; };
@@ -43,6 +47,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F620518327276E1F009CA975 /* NavigateCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionRouter.swift; sourceTree = "<group>"; };
+		F620518427276E1F009CA975 /* NavigateCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewController.swift; sourceTree = "<group>"; };
+		F620518627276E1F009CA975 /* NavigateCollectionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionScene.swift; sourceTree = "<group>"; };
+		F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewModel.swift; sourceTree = "<group>"; };
 		F64EE40026F5219200CFA357 /* ReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE40326F5219200CFA357 /* ReadItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadItemScene.h; sourceTree = "<group>"; };
 		F64EE40426F5219200CFA357 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +104,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F620518227276DF4009CA975 /* NavigateCollection */ = {
+			isa = PBXGroup;
+			children = (
+				F620518327276E1F009CA975 /* NavigateCollectionRouter.swift */,
+				F620518427276E1F009CA975 /* NavigateCollectionViewController.swift */,
+				F620518627276E1F009CA975 /* NavigateCollectionScene.swift */,
+				F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */,
+			);
+			path = NavigateCollection;
+			sourceTree = "<group>";
+		};
 		F64EE3F626F5219200CFA357 = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +139,7 @@
 			children = (
 				F68B670E2707F0A9004A255A /* ReadCollectionMain */,
 				F6E279B726F6E6B800957AC4 /* ReadCollection */,
+				F620518227276DF4009CA975 /* NavigateCollection */,
 				F64EE40326F5219200CFA357 /* ReadItemScene.h */,
 				F64EE40426F5219200CFA357 /* Info.plist */,
 			);
@@ -295,13 +315,17 @@
 				F68B67152707F0EE004A255A /* ReadCollectionMainViewController.swift in Sources */,
 				F68B67182707F0EE004A255A /* ReadCollectionMainViewModel.swift in Sources */,
 				F68B67172707F0EE004A255A /* ReadCollectionMainScene.swift in Sources */,
+				F620518C27276E1F009CA975 /* NavigateCollectionViewModel.swift in Sources */,
 				F6E279BF26F6E71700957AC4 /* ReadCollectionItemsBuilder.swift in Sources */,
 				F6E279C126F6E71700957AC4 /* ReadCollectionItemsViewModel.swift in Sources */,
+				F620518B27276E1F009CA975 /* NavigateCollectionScene.swift in Sources */,
 				F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */,
 				F6E279BE26F6E71700957AC4 /* ReadCollectionItemsViewController.swift in Sources */,
 				F68B67142707F0EE004A255A /* ReadCollectionMainRouter.swift in Sources */,
 				F68B67162707F0EE004A255A /* ReadCollectionMainBuilder.swift in Sources */,
+				F620518827276E1F009CA975 /* NavigateCollectionRouter.swift in Sources */,
 				F6E279C026F6E71700957AC4 /* ReadCollectionItemsScene.swift in Sources */,
+				F620518927276E1F009CA975 /* NavigateCollectionViewController.swift in Sources */,
 				F6E279BD26F6E71700957AC4 /* ReadCollectionItemsRouter.swift in Sources */,
 				F6ECE4DD26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift in Sources */,
 				F6E279CB26F6EC7900957AC4 /* ReadItemCellViewModel.swift in Sources */,
