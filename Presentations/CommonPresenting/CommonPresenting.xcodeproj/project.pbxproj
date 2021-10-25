@@ -30,6 +30,7 @@
 		F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */; };
 		F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */; };
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
+		F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518D272771E9009CA975 /* SimpleReadItemCells.swift */; };
 		F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202BD269972FE00B26B50 /* MapCameramovement.swift */; };
 		F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */; };
 		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
@@ -148,6 +149,7 @@
 		F610147C26578CAE00D32E38 /* GestureDismissInteractors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureDismissInteractors.swift; sourceTree = "<group>"; };
 		F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
+		F620518D272771E9009CA975 /* SimpleReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleReadItemCells.swift; sourceTree = "<group>"; };
 		F62202BD269972FE00B26B50 /* MapCameramovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCameramovement.swift; sourceTree = "<group>"; };
 		F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputView.swift; sourceTree = "<group>"; };
 		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 			isa = PBXGroup;
 			children = (
 				F66E09A027187A410012B76E /* ReadItemContentView.swift */,
+				F620518D272771E9009CA975 /* SimpleReadItemCells.swift */,
 			);
 			path = ReadItem;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,
 				F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */,
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
 				F65215842674A395000CAB4B /* TextInputViewController.swift in Sources */,
 				F66EF6AF2719EFD000AC0DAB /* RoundImageButton.swift in Sources */,

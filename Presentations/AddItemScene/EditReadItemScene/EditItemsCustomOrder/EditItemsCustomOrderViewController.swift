@@ -18,65 +18,24 @@ import Domain
 import CommonPresenting
 
 
-// MARK: - EditItemOrderCellViewModel
+// MARK: - EditItemOrderCells
 
-class EditItemOrderCell: BaseTableViewCell, Presenting {
-    
-    let shrinkView = ReadItemShrinkContentView()
-    let underLineView = UIView()
-    
-    override func afterViewInit() {
-        super.afterViewInit()
-        self.setupLayout()
-        self.setupStyling()
-    }
-    
-    func setupLayout() {
-        
-        self.contentView.addSubview(shrinkView)
-        shrinkView.autoLayout.active(with: self.contentView) {
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
-            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-        }
-        shrinkView.setupLayout()
-        
-        self.contentView.addSubview(underLineView)
-        underLineView.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 1)
-        }
-    }
-    
-    func setupStyling() {
-        
-        self.shrinkView.setupStyling()
-        self.underLineView.backgroundColor = self.uiContext.colors.lineColor
-    }
-}
 
-final class EditItemOrderCollectionCell: EditItemOrderCell {
+typealias EditItemOrderCollectionCell = SimpleReadCollectionCell
+
+extension EditItemOrderCollectionCell {
     
     func setupCell(_ cellViewModel: EditCollectionItemOrderCellViewModel) {
         
         self.shrinkView.nameLabel.text = cellViewModel.name
         
-        let validDescription = cellViewModel.description.flatMap{ $0.isNotEmpty ? $0 : nil }
-        self.shrinkView.descriptionLabel.isHidden = validDescription == nil
-        self.shrinkView.descriptionLabel.text = validDescription
-    }
-    
-    override func setupStyling() {
-        super.setupStyling()
-        self.shrinkView.iconImageView.image = UIImage(systemName: "folder")
-        self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
+        self.updateDescription(cellViewModel.description)
     }
 }
 
-final class EditItemOrderLinkCell: EditItemOrderCell {
+typealias EditItemOrderLinkCell = SimpleReadLinkCell
+
+extension EditItemOrderLinkCell {
     
     func setupCell(_ cellViewModel: EditLinkItemOrderCellViewModel) {
         self.updateTitle(cellViewModel.customName)
@@ -99,18 +58,6 @@ final class EditItemOrderLinkCell: EditItemOrderCell {
     private func updateTitle(_ title: String?) {
         let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "Fail to load preview".localized
         self.shrinkView.nameLabel.text = title
-    }
-    
-    private func updateDescription(_ description: String?) {
-        let description = description.flatMap { $0.isNotEmpty ? $0 : nil }
-        self.shrinkView.descriptionLabel.isHidden = description == nil
-        self.shrinkView.descriptionLabel.text = description
-    }
-    
-    override func setupStyling() {
-        super.setupStyling()
-        self.shrinkView.iconImageView.image = UIImage(systemName: "doc.text")
-        self.shrinkView.iconImageView.tintColor = self.uiContext.colors.secondaryTitle
     }
 }
 

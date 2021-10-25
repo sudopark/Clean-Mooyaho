@@ -50,23 +50,6 @@ public protocol ReadCollectionScene: Scenable {
 }
 
 
-// MARK: - AddReadLinkScene Input & Output
-
-public protocol AddReadLinkSceneInput { }
-
-public protocol AddReadLinkSceneOutput { }
-
-
-// MARK: - AddReadLinkScene
-
-public protocol AddReadLinkScene: Scenable {
-    
-    var input: AddReadLinkSceneInput? { get }
-
-    var output: AddReadLinkSceneOutput? { get }
-}
-
-
 // MARK: - SelectAddItemTypeScene Input & Output
 
 public protocol SelectAddItemTypeSceneInput { }
@@ -81,4 +64,19 @@ public protocol SelectAddItemTypeScene: Scenable, PangestureDismissableScene {
     var input: SelectAddItemTypeSceneInput? { get }
 
     var output: SelectAddItemTypeSceneOutput? { get }
+}
+
+
+// MARK: - NavigateCollectionScene Interactable & Listenable
+
+public protocol NavigateCollectionSceneInteractable { }
+
+public protocol NavigateCollectionSceneListenable: AnyObject { }
+
+
+// MARK: - NavigateCollectionScene
+
+public protocol NavigateCollectionScene: Scenable {
+    
+    var interactor: NavigateCollectionSceneInteractable? { get }
 }
