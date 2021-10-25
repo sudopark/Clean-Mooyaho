@@ -145,21 +145,6 @@ extension DependencyInjector: ReadCollectionItemSceneBuilable {
     }
 }
 
-extension DependencyInjector: AddReadLinkSceneBuilable {
-    
-    public func makeAddReadLinkScene(collectionID: String?,
-                                     itemAddded: (() -> Void)?) -> AddReadLinkScene {
-        let router = AddReadLinkRouter(nextSceneBuilders: self)
-        let viewModel = AddReadLinkViewModelImple(collectionID: collectionID,
-                                                  readItemUsecase: self.readItemUsecase,
-                                                  router: router,
-                                                  itemAddded: itemAddded)
-        let viewController = AddReadLinkViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
 extension DependencyInjector: SelectAddItemTypeSceneBuilable {
     
     public func makeSelectAddItemTypeScene(_ completed: @escaping (Bool) -> Void) -> SelectAddItemTypeScene {
