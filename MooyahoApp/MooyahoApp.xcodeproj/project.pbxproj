@@ -58,6 +58,7 @@
 		F6BE6BB9272846FD00F5C544 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BE6BB8272846FD00F5C544 /* ShareViewController.swift */; };
 		F6BE6BBC272846FD00F5C544 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6BE6BBA272846FD00F5C544 /* MainInterface.storyboard */; };
 		F6BE6BC0272846FD00F5C544 /* ReadReminderShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F6C54A83272849160012E08B /* ReadReminderShareExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C54A82272849160012E08B /* ReadReminderShareExtensionTests.swift */; };
 		F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */; };
 		F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */; };
@@ -180,6 +181,8 @@
 		F6BE6BBB272846FD00F5C544 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		F6BE6BBD272846FD00F5C544 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6C0784026A47D0D0070E75E /* MapScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MapScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6C54A80272849160012E08B /* ReadReminderShareExtensionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadReminderShareExtensionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6C54A82272849160012E08B /* ReadReminderShareExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadReminderShareExtensionTests.swift; sourceTree = "<group>"; };
 		F6E279C426F6E8AA00957AC4 /* ReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311D265C4D5400C91F3B /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E8311F265C4F1000C91F3B /* ApplicationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationUsecase.swift; sourceTree = "<group>"; };
@@ -229,6 +232,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F6BE6BB3272846FD00F5C544 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6C54A7D272849160012E08B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -293,6 +303,7 @@
 				2B79FC4A262B640C0006291F /* MooyahoApp */,
 				2B79FC61262B640F0006291F /* MooyahoAppTests */,
 				F6BE6BB7272846FD00F5C544 /* ReadReminderShareExtension */,
+				F6C54A81272849160012E08B /* ReadReminderShareExtensionTests */,
 				2B79FC49262B640C0006291F /* Products */,
 				2BF00BF9262B872A00E235C0 /* Frameworks */,
 			);
@@ -304,6 +315,7 @@
 				2B79FC48262B640C0006291F /* MooyahoApp.app */,
 				2B79FC5E262B640F0006291F /* MooyahoAppTests.xctest */,
 				F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */,
+				F6C54A80272849160012E08B /* ReadReminderShareExtensionTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -442,6 +454,14 @@
 			path = ReadReminderShareExtension;
 			sourceTree = "<group>";
 		};
+		F6C54A81272849160012E08B /* ReadReminderShareExtensionTests */ = {
+			isa = PBXGroup;
+			children = (
+				F6C54A82272849160012E08B /* ReadReminderShareExtensionTests.swift */,
+			);
+			path = ReadReminderShareExtensionTests;
+			sourceTree = "<group>";
+		};
 		F6E8312B2660099500C91F3B /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,6 +534,23 @@
 			productReference = F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		F6C54A7F272849160012E08B /* ReadReminderShareExtensionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6C54A86272849160012E08B /* Build configuration list for PBXNativeTarget "ReadReminderShareExtensionTests" */;
+			buildPhases = (
+				F6C54A7C272849160012E08B /* Sources */,
+				F6C54A7D272849160012E08B /* Frameworks */,
+				F6C54A7E272849160012E08B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReadReminderShareExtensionTests;
+			productName = ReadReminderShareExtensionTests;
+			productReference = F6C54A80272849160012E08B /* ReadReminderShareExtensionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -532,6 +569,9 @@
 						TestTargetID = 2B79FC47262B640C0006291F;
 					};
 					F6BE6BB5272846FD00F5C544 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					F6C54A7F272849160012E08B = {
 						CreatedOnToolsVersion = 13.1;
 					};
 				};
@@ -555,6 +595,7 @@
 				2B79FC47262B640C0006291F /* MooyahoApp */,
 				2B79FC5D262B640F0006291F /* MooyahoAppTests */,
 				F6BE6BB5272846FD00F5C544 /* ReadReminderShareExtension */,
+				F6C54A7F272849160012E08B /* ReadReminderShareExtensionTests */,
 			);
 		};
 /* End PBXProject section */
@@ -584,6 +625,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6BE6BBC272846FD00F5C544 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6C54A7E272849160012E08B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,6 +708,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6BE6BB9272846FD00F5C544 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6C54A7C272849160012E08B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6C54A83272849160012E08B /* ReadReminderShareExtensionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,7 +979,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -939,6 +995,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -952,7 +1009,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -968,8 +1025,57 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F6C54A84272849160012E08B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.ReadReminderShareExtensionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F6C54A85272849160012E08B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.ReadReminderShareExtensionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1010,6 +1116,15 @@
 			buildConfigurations = (
 				F6BE6BC2272846FD00F5C544 /* Debug */,
 				F6BE6BC3272846FD00F5C544 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F6C54A86272849160012E08B /* Build configuration list for PBXNativeTarget "ReadReminderShareExtensionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6C54A84272849160012E08B /* Debug */,
+				F6C54A85272849160012E08B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

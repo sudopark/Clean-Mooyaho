@@ -20,6 +20,20 @@
                ReferencedContainer = "container:MooyahoApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F6C54A7F272849160012E08B"
+               BuildableName = "ReadReminderShareExtensionTests.xctest"
+               BlueprintName = "ReadReminderShareExtensionTests"
+               ReferencedContainer = "container:MooyahoApp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
