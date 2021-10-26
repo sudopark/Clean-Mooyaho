@@ -158,9 +158,14 @@ extension DependencyInjector: SelectAddItemTypeSceneBuilable {
 
 extension DependencyInjector: NavigateCollectionSceneBuilable {
     
-    public func makeNavigateCollectionScene(listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene {
+    public func makeNavigateCollectionScene(collection: ReadCollection?,
+                                            listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene {
+        
         let router = NavigateCollectionRouter(nextSceneBuilders: self)
-        let viewModel = NavigateCollectionViewModelImple(router: router, listener: listener)
+        let viewModel = NavigateCollectionViewModelImple(currentCollection: collection,
+                                                         readItemUsecase: self.readItemUsecase,
+                                                         router: router,
+                                                         listener: listener)
         let viewController = NavigateCollectionViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

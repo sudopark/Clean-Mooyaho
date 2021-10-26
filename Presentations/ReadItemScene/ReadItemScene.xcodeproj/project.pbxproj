@@ -11,6 +11,7 @@
 		F620518927276E1F009CA975 /* NavigateCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518427276E1F009CA975 /* NavigateCollectionViewController.swift */; };
 		F620518B27276E1F009CA975 /* NavigateCollectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518627276E1F009CA975 /* NavigateCollectionScene.swift */; };
 		F620518C27276E1F009CA975 /* NavigateCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */; };
+		F620519027277D75009CA975 /* NavigateCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518F27277D75009CA975 /* NavigateCollectionViewModelTests.swift */; };
 		F64EE40A26F5219200CFA357 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE40026F5219200CFA357 /* ReadItemScene.framework */; };
 		F64EE41126F5219200CFA357 /* ReadItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F64EE40326F5219200CFA357 /* ReadItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F64EE41C26F521D700CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE41B26F521D700CFA357 /* Common3rdParty.framework */; };
@@ -51,6 +52,7 @@
 		F620518427276E1F009CA975 /* NavigateCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewController.swift; sourceTree = "<group>"; };
 		F620518627276E1F009CA975 /* NavigateCollectionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionScene.swift; sourceTree = "<group>"; };
 		F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewModel.swift; sourceTree = "<group>"; };
+		F620518F27277D75009CA975 /* NavigateCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		F64EE40026F5219200CFA357 /* ReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE40326F5219200CFA357 /* ReadItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadItemScene.h; sourceTree = "<group>"; };
 		F64EE40426F5219200CFA357 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				F64EE41026F5219200CFA357 /* Info.plist */,
 				F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */,
 				F68B67192707F877004A255A /* ReadCollectionMainViewModelTests.swift */,
+				F620518F27277D75009CA975 /* NavigateCollectionViewModelTests.swift */,
 			);
 			path = ReadItemSceneTests;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			files = (
 				F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */,
 				F68B671A2707F877004A255A /* ReadCollectionMainViewModelTests.swift in Sources */,
+				F620519027277D75009CA975 /* NavigateCollectionViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

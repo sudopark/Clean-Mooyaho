@@ -14,5 +14,6 @@ import Domain
 
 public protocol NavigateCollectionSceneBuilable {
     
-    func makeNavigateCollectionScene(listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene
+    func makeNavigateCollectionScene(collection: ReadCollection?,
+                                     listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene
 }

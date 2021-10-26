@@ -13,17 +13,21 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - Routing
 
-public protocol NavigateCollectionRouting: Routing { }
+public protocol NavigateCollectionRouting: Routing {
+    
+    func moveToSubCollection(_ collection: ReadCollection)
+}
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias NavigateCollectionRouterBuildables = EmptyBuilder
+public typealias NavigateCollectionRouterBuildables = NavigateCollectionSceneBuilable
 
 public final class NavigateCollectionRouter: Router<NavigateCollectionRouterBuildables>, NavigateCollectionRouting { }
 
@@ -33,5 +37,14 @@ extension NavigateCollectionRouter {
     // NavigateCollectionRouting implements
     private var currentInteractor: NavigateCollectionSceneInteractable? {
         return (self.currentScene as? NavigateCollectionScene)?.interactor
+    }
+    
+    public func moveToSubCollection(_ collection: ReadCollection) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeNavigateCollectionScene(collection: collection, listener: nil)
+        else { return }
+        
+        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
 }
