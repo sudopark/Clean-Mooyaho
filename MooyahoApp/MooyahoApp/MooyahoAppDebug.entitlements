@@ -14,7 +14,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.sudo.park.Mooyaho-iOS</string>
+		<string>$(AppIdentifierPrefix)com.sudo.park.Mooyaho-iOS.shared</string>
 	</array>
 </dict>
 </plist>

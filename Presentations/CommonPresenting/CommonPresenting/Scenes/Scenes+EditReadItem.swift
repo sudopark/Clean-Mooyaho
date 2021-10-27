@@ -60,6 +60,8 @@ public protocol EditLinkItemSceneListenable: AnyObject {
 public protocol EditLinkItemScene: Scenable, PangestureDismissableScene {
     
     var interactor: EditLinkItemSceneInteractable? { get }
+    
+    func setupUIForShareExtension()
 }
 
 // MARK: - EditReadCollectionScene Input & Output

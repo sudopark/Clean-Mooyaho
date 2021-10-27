@@ -49,6 +49,10 @@ struct AppEnvironment {
         return secretJsons["legacy_api_path"] as? String
     }()
     
+    static var groupID: String {
+        return "group.sudo.park.clean-mooyaho"
+    }
+    
     static var dbFileName: String {
         if self.isTestBuild {
             return "test_dummy.db"
@@ -59,10 +63,8 @@ struct AppEnvironment {
     
     static var dataModelDBPath: String {
         
-        let dbName = self.dbFileName
-        let dbURL = try? FileManager.default
-            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent(dbName)
+        let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.groupID)
+        let dbURL = directory?.appendingPathComponent(self.dbFileName)
         
         return dbURL?.path ?? ""
     }

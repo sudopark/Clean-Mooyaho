@@ -375,4 +375,14 @@ extension EditLinkItemViewController: Presenting {
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
     }
+    
+    
+    public func setupUIForShareExtension() {
+        
+        self.rx.viewWillAppear
+            .subscribe(onNext: { [weak self] _ in
+                self?.fakeBackgroundView.isHidden = false
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
