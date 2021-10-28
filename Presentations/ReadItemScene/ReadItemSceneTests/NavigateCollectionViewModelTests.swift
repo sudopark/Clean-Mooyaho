@@ -20,13 +20,22 @@ import UsecaseDoubles
 @testable import ReadItemScene
 
 
-class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, NavigateCollectionRouting {
+class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, NavigateCollectionRouting, NavigateCollectionSceneListenable {
     
     var disposeBag: DisposeBag!
     var didMoveTo: ReadCollection?
+    var didSelectCollection: ReadCollection?
     
     func moveToSubCollection(_ collection: ReadCollection) {
         self.didMoveTo = collection
+    }
+    
+    func navigateCollection(didSelectCollection collection: ReadCollection?) {
+        self.didSelectCollection = collection
+    }
+    
+    func closeScene(animated: Bool, completed: (() -> Void)?) {
+        completed?()
     }
     
     override func setUpWithError() throws {
@@ -59,7 +68,7 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
         let collection = isRoot ? nil : ReadCollection.dummy(0)
         return NavigateCollectionViewModelImple(currentCollection: collection,
                                                 readItemUsecase: usecase,
-                                                router: self, listener: nil)
+                                                router: self, listener: self)
     }
 }
 
@@ -146,5 +155,21 @@ extension NavigateCollectionViewModelTests {
         
         // then
         XCTAssertEqual(self.didMoveTo?.uid, "c:31")
+    }
+    
+    func testViewModel_selectCollection() {
+        // given
+        let expect = expectation(description: "현재 콜렉션 선택 이동")
+        let viewModel = self.makeViewModel(isRoot: false)
+        
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollections()
+        }
+        
+        // when
+        viewModel.confirmSelect()
+        
+        // then
+        XCTAssertEqual(self.didSelectCollection?.uid, "c:0")
     }
 }

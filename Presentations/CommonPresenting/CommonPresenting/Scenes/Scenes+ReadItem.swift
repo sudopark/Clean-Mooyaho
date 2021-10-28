@@ -71,7 +71,15 @@ public protocol SelectAddItemTypeScene: Scenable, PangestureDismissableScene {
 
 public protocol NavigateCollectionSceneInteractable { }
 
-public protocol NavigateCollectionSceneListenable: AnyObject { }
+public protocol NavigateCollectionSceneListenable: AnyObject {
+    
+    func navigateCollection(didSelectCollection collection: ReadCollection?)
+}
+
+extension NavigateCollectionSceneListenable {
+    
+    public func navigateCollection(didSelectCollection collection: ReadCollection?) { }
+}
 
 
 // MARK: - NavigateCollectionScene

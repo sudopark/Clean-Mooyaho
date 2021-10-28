@@ -36,6 +36,7 @@ public protocol NavigateCollectionViewModel: AnyObject {
     // interactor
     func reloadCollections()
     func moveToSubCollection(_ collectionID: String)
+    func confirmSelect()
     
     // presenter
     var collectionTitle: Observable<String> { get }
@@ -113,6 +114,14 @@ extension NavigateCollectionViewModelImple {
         else { return }
         
         self.router.moveToSubCollection(collection)
+    }
+    
+    public func confirmSelect() {
+        
+        let collection = self.subjects.currentCollection.value
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.listener?.navigateCollection(didSelectCollection: collection)
+        }
     }
 }
 
