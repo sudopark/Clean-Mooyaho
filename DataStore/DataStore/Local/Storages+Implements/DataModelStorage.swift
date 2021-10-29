@@ -636,11 +636,17 @@ private extension ReadItemUpdateParams {
             case .remindTime(nil):
                 return columType.remindTime == Optional<Double>.none
                 
+            case .parentID(nil):
+                return columType.parentID == Optional<String>.none
+                
             case let .remindTime(time):
                 return columType.remindTime == time
                 
             case let .isRed(flag):
                 return columType.isRed == flag
+                
+            case let .parentID(id):
+                return columType.parentID == id
             }
         }
     }

@@ -79,6 +79,8 @@ extension NavigateCollectionViewController {
                 self?.viewModel.confirmSelect()
             })
             .disposed(by: self.disposeBag)
+        
+        self.confirmButton.isEnabled = self.viewModel.isParentChangable
     }
     
     private func bindTableView() {

@@ -293,6 +293,9 @@ private extension ReadItemUpdateParams.ProperyUpdateParams {
             
         case let .isRed(flag):
             return (item as? ReadLink).map { $0 |> \.isRed .~ flag } ?? item
+            
+        case let .parentID(id):
+            return item |> \.parentID .~ id
         }
     }
 }

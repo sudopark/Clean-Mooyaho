@@ -98,8 +98,8 @@ open class StubReadItemUsecase: ReadItemUsecase {
     public var didUpdated: ReadItemUpdateParams?
     open func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         self.didUpdated = params
+        let item = params.applyChanges()
         return .just().do(onNext: {
-            let item = params.applyChanges()
             self.readItemUpdateMocking.onNext(.updated(item))
         })
     }
