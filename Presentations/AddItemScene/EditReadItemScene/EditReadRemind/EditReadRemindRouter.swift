@@ -18,7 +18,10 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditReadRemindRouting: Routing { }
+public protocol EditReadRemindRouting: Routing {
+    
+    func openAlertSetting()
+}
 
 // MARK: - Routers
 
@@ -33,5 +36,14 @@ extension EditReadRemindRouter {
     // EditReadRemindRouting implements
     private var currentInteractor: EditReadRemindSceneInteractable? {
         return (self.currentScene as? EditReadRemindScene)?.interactor
+    }
+    
+    public func openAlertSetting() {
+        
+        guard let appSettings = URL(string: UIApplication.openSettingsURLString),
+              UIApplication.shared.canOpenURL(appSettings)
+        else { return }
+        
+        UIApplication.shared.open(appSettings)
     }
 }
