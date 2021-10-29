@@ -47,6 +47,11 @@
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
+		F6732519272C6EA800F3AE3E /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6732518272C6EA800F3AE3E /* UserNotifications.framework */; };
+		F673251B272C6EA800F3AE3E /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F673251A272C6EA800F3AE3E /* UserNotificationsUI.framework */; };
+		F673251E272C6EA800F3AE3E /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F673251D272C6EA800F3AE3E /* NotificationViewController.swift */; };
+		F6732521272C6EA800F3AE3E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F673251F272C6EA800F3AE3E /* MainInterface.storyboard */; };
+		F6732525272C6EA800F3AE3E /* ReadReminderNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F6732517272C6EA800F3AE3E /* ReadReminderNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; };
 		F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B7307272863DC00DD5456 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7304272863DC00DD5456 /* Common3rdParty.framework */; };
@@ -106,6 +111,13 @@
 			remoteGlobalIDString = 2B79FC47262B640C0006291F;
 			remoteInfo = BreadRoadApp;
 		};
+		F6732523272C6EA800F3AE3E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B79FC40262B640C0006291F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F6732516272C6EA800F3AE3E;
+			remoteInfo = ReadReminderNotificationExtension;
+		};
 		F6BE6BBE272846FD00F5C544 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2B79FC40262B640C0006291F /* Project object */;
@@ -159,6 +171,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				F6BE6BC0272846FD00F5C544 /* ReadReminderShareExtension.appex in Embed App Extensions */,
+				F6732525272C6EA800F3AE3E /* ReadReminderNotificationExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,6 +223,12 @@
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		F6732517272C6EA800F3AE3E /* ReadReminderNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ReadReminderNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6732518272C6EA800F3AE3E /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		F673251A272C6EA800F3AE3E /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		F673251D272C6EA800F3AE3E /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		F6732520272C6EA800F3AE3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		F6732522272C6EA800F3AE3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6851A20270B20640048197B /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68B7304272863DC00DD5456 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68B7305272863DC00DD5456 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +248,7 @@
 		F68B732D272A0C1200DD5456 /* ShareMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMainScene.swift; sourceTree = "<group>"; };
 		F68B732E272A0C1200DD5456 /* ShareMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMainViewModel.swift; sourceTree = "<group>"; };
 		F69C1CC826A9C3AC0067315B /* StubFCMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFCMService.swift; sourceTree = "<group>"; };
+		F69FE0C9272C6EE600048030 /* ReadReminderNotificationExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReadReminderNotificationExtensionDebug.entitlements; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
 		F6B21C6227004389006243FD /* RemoteImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteImple.swift; path = MooyahoApp/dependencyInjector/RemoteImple.swift; sourceTree = SOURCE_ROOT; };
@@ -284,6 +304,15 @@
 				F6025FF926A9D201007A1AA8 /* UsecaseDoubles.framework in Frameworks */,
 				2BE9787F2639624C0000C0C6 /* Common3rdParty.framework in Frameworks */,
 				2BE9787D263962280000C0C6 /* UnitTestHelpKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6732514272C6EA800F3AE3E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F673251B272C6EA800F3AE3E /* UserNotificationsUI.framework in Frameworks */,
+				F6732519272C6EA800F3AE3E /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +396,7 @@
 				2B79FC61262B640F0006291F /* MooyahoAppTests */,
 				F6BE6BB7272846FD00F5C544 /* ReadReminderShareExtension */,
 				F6C54A81272849160012E08B /* ReadReminderShareExtensionTests */,
+				F673251C272C6EA800F3AE3E /* ReadReminderNotificationExtension */,
 				2B79FC49262B640C0006291F /* Products */,
 				2BF00BF9262B872A00E235C0 /* Frameworks */,
 			);
@@ -379,6 +409,7 @@
 				2B79FC5E262B640F0006291F /* MooyahoAppTests.xctest */,
 				F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */,
 				F6C54A80272849160012E08B /* ReadReminderShareExtensionTests.xctest */,
+				F6732517272C6EA800F3AE3E /* ReadReminderNotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -493,6 +524,8 @@
 				2B39E22A2638784F003EE954 /* FirebaseCrashlytics.framework */,
 				2B39E2292638784F003EE954 /* GoogleMobileAds.xcframework */,
 				2B39E22B2638784F003EE954 /* UserMessagingPlatform.xcframework */,
+				F6732518272C6EA800F3AE3E /* UserNotifications.framework */,
+				F673251A272C6EA800F3AE3E /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -505,6 +538,17 @@
 				F631DE7D27022DD1003948C2 /* Scenes.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F673251C272C6EA800F3AE3E /* ReadReminderNotificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				F69FE0C9272C6EE600048030 /* ReadReminderNotificationExtensionDebug.entitlements */,
+				F673251D272C6EA800F3AE3E /* NotificationViewController.swift */,
+				F673251F272C6EA800F3AE3E /* MainInterface.storyboard */,
+				F6732522272C6EA800F3AE3E /* Info.plist */,
+			);
+			path = ReadReminderNotificationExtension;
 			sourceTree = "<group>";
 		};
 		F68B7329272A0B8300DD5456 /* ShareMain */ = {
@@ -574,6 +618,7 @@
 			);
 			dependencies = (
 				F6BE6BBF272846FD00F5C544 /* PBXTargetDependency */,
+				F6732524272C6EA800F3AE3E /* PBXTargetDependency */,
 			);
 			name = MooyahoApp;
 			packageProductDependencies = (
@@ -602,6 +647,23 @@
 			productName = BreadRoadAppTests;
 			productReference = 2B79FC5E262B640F0006291F /* MooyahoAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F6732516272C6EA800F3AE3E /* ReadReminderNotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6732528272C6EA800F3AE3E /* Build configuration list for PBXNativeTarget "ReadReminderNotificationExtension" */;
+			buildPhases = (
+				F6732513272C6EA800F3AE3E /* Sources */,
+				F6732514272C6EA800F3AE3E /* Frameworks */,
+				F6732515272C6EA800F3AE3E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReadReminderNotificationExtension;
+			productName = ReadReminderNotificationExtension;
+			productReference = F6732517272C6EA800F3AE3E /* ReadReminderNotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		F6BE6BB5272846FD00F5C544 /* ReadReminderShareExtension */ = {
 			isa = PBXNativeTarget;
@@ -655,6 +717,9 @@
 						CreatedOnToolsVersion = 11.7;
 						TestTargetID = 2B79FC47262B640C0006291F;
 					};
+					F6732516272C6EA800F3AE3E = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					F6BE6BB5272846FD00F5C544 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -683,6 +748,7 @@
 				2B79FC5D262B640F0006291F /* MooyahoAppTests */,
 				F6BE6BB5272846FD00F5C544 /* ReadReminderShareExtension */,
 				F6C54A7F272849160012E08B /* ReadReminderShareExtensionTests */,
+				F6732516272C6EA800F3AE3E /* ReadReminderNotificationExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -704,6 +770,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6732515272C6EA800F3AE3E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6732521272C6EA800F3AE3E /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +864,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F6732513272C6EA800F3AE3E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F673251E272C6EA800F3AE3E /* NotificationViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6BE6BB2272846FD00F5C544 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -824,6 +906,11 @@
 			target = 2B79FC47262B640C0006291F /* MooyahoApp */;
 			targetProxy = 2B79FC5F262B640F0006291F /* PBXContainerItemProxy */;
 		};
+		F6732524272C6EA800F3AE3E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F6732516272C6EA800F3AE3E /* ReadReminderNotificationExtension */;
+			targetProxy = F6732523272C6EA800F3AE3E /* PBXContainerItemProxy */;
+		};
 		F6BE6BBF272846FD00F5C544 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F6BE6BB5272846FD00F5C544 /* ReadReminderShareExtension */;
@@ -838,6 +925,14 @@
 				2B79FC57262B640F0006291F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		F673251F272C6EA800F3AE3E /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6732520272C6EA800F3AE3E /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1062,6 +1157,67 @@
 			};
 			name = Release;
 		};
+		F6732526272C6EA800F3AE3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_ENTITLEMENTS = ReadReminderNotificationExtension/ReadReminderNotificationExtensionDebug.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ReadReminderNotificationExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ReadReminderNotificationExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 ParkHyunsoo. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderNotificationExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS.ReadReminderNotificationExtension";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F6732527272C6EA800F3AE3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2ABNASUGL6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ReadReminderNotificationExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ReadReminderNotificationExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 ParkHyunsoo. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderNotificationExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS.ReadReminderNotificationExtension";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F6BE6BC2272846FD00F5C544 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1198,6 +1354,15 @@
 			buildConfigurations = (
 				2B79FC6B262B640F0006291F /* Debug */,
 				2B79FC6C262B640F0006291F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F6732528272C6EA800F3AE3E /* Build configuration list for PBXNativeTarget "ReadReminderNotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6732526272C6EA800F3AE3E /* Debug */,
+				F6732527272C6EA800F3AE3E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
