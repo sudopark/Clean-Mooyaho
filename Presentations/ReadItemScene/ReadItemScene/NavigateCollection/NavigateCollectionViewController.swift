@@ -10,6 +10,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 import CommonPresenting
 
@@ -17,10 +18,15 @@ import CommonPresenting
 
 public final class NavigateCollectionViewController: BaseViewController, NavigateCollectionScene {
     
+    typealias CVM = NavigateCollectionCellViewModel
+    typealias Section = SectionModel<String, CVM>
+    typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
+    
     private let tableView = UITableView()
     private let confirmButton = ConfirmButton()
     
     let viewModel: NavigateCollectionViewModel
+    private var dataSource: DataSource!
     
     public init(viewModel: NavigateCollectionViewModel) {
         self.viewModel = viewModel
@@ -44,6 +50,7 @@ public final class NavigateCollectionViewController: BaseViewController, Navigat
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        self.viewModel.reloadCollections()
     }
     
 }
@@ -54,6 +61,52 @@ extension NavigateCollectionViewController {
     
     private func bind() {
         
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindTableView()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.confirmTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.confirmButton.setTitle(title, for: .normal)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.confirmButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirmSelect()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindTableView() {
+        
+        self.dataSource = self.makeDataSource()
+        
+        self.viewModel.cellViewModels
+            .map { [Section(model: "collections", items: $0)] }
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.tableView.rx.items(dataSource: self.dataSource))
+            .disposed(by: self.disposeBag)
+        
+        self.tableView.rx.modelSelected(CVM.self)
+            .subscribe(onNext: { [weak self] cellViewModel in
+                self?.viewModel.moveToSubCollection(cellViewModel.uid)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func makeDataSource() -> DataSource {
+        
+        let configureCell: DataSource.ConfigureCell = { _, tableView, _, cellViewModel in
+            let cell: NavigateCollectionCell = tableView.dequeueCell()
+            cell.setupCell(cellViewModel)
+            return cell
+        }
+        
+        return DataSource(configureCell: configureCell)
     }
 }
 
@@ -64,6 +117,9 @@ extension NavigateCollectionViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(tableView)
+        tableView.autoLayout.fill(self.view, withSafeArea: true)
+        
         self.view.addSubview(confirmButton)
         confirmButton.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
@@ -71,19 +127,34 @@ extension NavigateCollectionViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        
-        self.view.addSubview(tableView)
-        tableView.autoLayout.fill(self.view, withSafeArea: true)
+        confirmButton.setupLayout()
     }
     
     public func setupStyling() {
         
         self.view.backgroundColor = self.uiContext.colors.appBackground
         
-        self.tableView.registerCell(SimpleReadCollectionCell.self)
+        self.title = "Select a collection".localized
+        
+        self.tableView.registerCell(NavigateCollectionCell.self)
         self.tableView.estimatedRowHeight = 150
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
         self.tableView.separatorStyle = .none
+        
+        self.confirmButton.setupStyling()
+    }
+}
+
+
+typealias NavigateCollectionCell = SimpleReadCollectionCell
+
+
+extension NavigateCollectionCell {
+    
+    func setupCell(_ cellViewModel: NavigateCollectionCellViewModel) {
+        self.shrinkView.nameLabel.text = cellViewModel.name
+        
+        self.updateDescription(cellViewModel.description)
     }
 }

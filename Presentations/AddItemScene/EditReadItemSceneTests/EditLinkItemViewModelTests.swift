@@ -22,7 +22,7 @@ import EditReadItemScene
 
 // MARK: - BaseEditLinkItemViewModelTests
 
-class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLinkItemSceneListenable {
+class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLinkItemSceneListenable, NavigateCollectionSceneListenable {
     
     var disposeBag: DisposeBag!
     var editCompleted: ((ReadLink) -> Void)?
@@ -35,6 +35,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
     var selectPriorityMocking: ReadPriority?
     var selectCategoriesMocking: [ItemCategory]?
     var selectRemindTimeMocking: TimeStamp?
+    var selectedCollectionMocking: ReadCollection?
     private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
 
     
@@ -55,6 +56,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         self.selectCategoriesMocking = nil
         self.didSelectRemindStartWith = nil
         self.selectRemindTimeMocking = nil
+        self.selectedCollectionMocking = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -138,6 +140,10 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
     
     func requestRewind() {
         self.didRewind = true
+    }
+    
+    func editParentCollection(_ current: ReadCollection?) {
+        self.editLinkItemSceneInteractable?.navigateCollection(didSelectCollection: self.selectedCollectionMocking)
     }
 }
 
@@ -383,6 +389,29 @@ extension EditLinkItemViewModelTests_makeNew {
 }
 
 
+// MARK: - select collection
+
+extension EditLinkItemViewModelTests_makeNew {
+    
+    func testViewModel_changeSelectedCollection() {
+        // given
+        let expect = expectation(description: "콜렉션 변경")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        let dummySelectCollection = ReadCollection.dummy(100)
+        
+        // when
+        let names = self.waitElements(expect, for: viewModel.selectedParentCollectionName) {
+            self.selectedCollectionMocking = dummySelectCollection
+            viewModel.changeCollection()
+        }
+        
+        // then
+        XCTAssertEqual(names, ["My Read Collections".localized, dummySelectCollection.name])
+    }
+}
+
+
 extension EditLinkItemViewModelTests_makeNew {
     
     func testViewModel_addLinkItem() {
@@ -397,6 +426,8 @@ extension EditLinkItemViewModelTests_makeNew {
         self.selectCategoriesMocking = [.dummy(0)]
         viewModel.editCategory()
         self.selectRemindTimeMocking = 200
+        self.selectedCollectionMocking = ReadCollection.dummy(100)
+        viewModel.changeCollection()
         viewModel.editRemind()
         
         self.editCompleted = {
@@ -414,6 +445,7 @@ extension EditLinkItemViewModelTests_makeNew {
         XCTAssertEqual(newLink?.customName, "custom name")
         XCTAssertEqual(newLink?.categoryIDs, [ItemCategory.dummy(0).uid])
         XCTAssertEqual(newLink?.remindTime, 200)
+        XCTAssertEqual(newLink?.parentID, "c:100")
     }
     
     func testViewModel_whenSaveItemFail_showError() {
@@ -452,6 +484,7 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
     private var dummyItem: ReadLink {
         return ReadLink(link: "https://www.naver.com")
             |> \.customName .~ "old custom name"
+            |> \.parentID .~ "some"
     }
     
     func makeViewModel() -> EditLinkItemViewModel {
@@ -475,6 +508,8 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         viewModel.editCategory()
         self.selectRemindTimeMocking = 200
         viewModel.editRemind()
+        self.selectedCollectionMocking = ReadCollection.dummy(100)
+        viewModel.changeCollection()
         viewModel.confirmSave()
         self.wait(for: [expect], timeout: self.timeout)
         
@@ -483,6 +518,19 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         XCTAssertEqual(newLink?.priority, .afterAWhile)
         XCTAssertEqual(newLink?.categoryIDs.count, 1)
         XCTAssertEqual(newLink?.remindTime, 200)
+        XCTAssertEqual(newLink?.parentID, "c:100")
+    }
+    
+    func testViewModel_whenEditCase_showParentCollectionName() {
+        // given
+        let expect = expectation(description: "수정케이스에서는 페런트 콜렉션 이름 노출")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let name = self.waitFirstElement(expect, for: viewModel.selectedParentCollectionName)
+        
+        // then
+        XCTAssertEqual(name, "collection:0")
     }
 }
 

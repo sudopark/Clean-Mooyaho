@@ -73,6 +73,8 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
     
     public func setupStyling() {
         
+        self.iconImageView.contentMode = .scaleAspectFit
+        
         _ = nameLabel
             |> self.uiContext.decorating.listItemTitle(_:)
         

@@ -65,9 +65,13 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
                        shouldFailReload: Bool = false,
                        sortOrder: ReadCollectionItemSortOrder = .default,
                        customOrder: [String] = []) -> ReadCollectionViewItemsModelImple {
+        
+        let collectionID = isRootCollection ? nil : "some"
+        let dummies = self.dummyCollectionItems.map { $0 |> \.parentID .~ collectionID }
+        
         let reloadResult: Result<[ReadItem], Error> = shouldFailReload
             ? .failure(ApplicationErrors.invalid)
-            : .success(self.dummyCollectionItems)
+            : .success(dummies)
         let scenario = StubReadItemUsecase.Scenario()
             |> \.collectionItems .~ reloadResult
             |> \.sortOption .~ [sortOrder]
@@ -95,7 +99,6 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         let router = FakeRouter()
         self.spyRouter = router
         
-        let collectionID = isRootCollection ? nil : "some"
         let viewModel =  ReadCollectionViewItemsModelImple(collectionID: collectionID,
                                                            readItemUsecase: stubUsecase,
                                                            categoryUsecase: stubCategoryUsecase,
@@ -487,7 +490,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(sortOrder: .byCreatedAt(false))
         
         // when
-        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
             viewModel.reloadCollectionItems()
             
             viewModel.addNewReadLinkItem()
@@ -634,6 +637,7 @@ extension ReadCollectionViewModelTests {
     func testViewmodel_toggleUpdateMarkAsRead() {
         // given
         let expect = expectation(description: "읽음여부 업데이트")
+        expect.assertForOverFulfill = false
         let viewModel = self.makeViewModel()
         
         let dummyCell = ReadLinkCellViewModel(uid: self.dummySubLinks.first!.uid, linkUrl: "some")
@@ -843,6 +847,27 @@ extension ReadCollectionViewModelTests {
         XCTAssertEqual(updated?.collectionDescription, "new value")
         let itemCounts = sectionLists.map { $0.compactMap { $0 as? ReadCollectionCellViewModel }.count }
         XCTAssertEqual(itemCounts, [self.dummySubCollections.count, self.dummySubCollections.count + 1])
+    }
+    
+    func testViewModel_whenSubLinkItemParentIsMoved_updateItems() {
+        // given
+        let expect = expectation(description: "서브 링크아이템의 페런츠가 변경된 경우 목록에서 제외")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        let dummyItem = self.dummySubLinks.first! |> \.parentID .~ "some"
+
+        // when
+        let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollectionItems()
+
+            let updated = dummyItem |> \.parentID .~ "new collection"
+            self.itemUpdateMocking?(.updated(updated))
+        }
+
+        // then
+        let linkCells = sectionLists.map { $0.compactMap { $0 as? ReadLinkCellViewModel } }
+        let isIncludeDummyItem = linkCells.map { $0.contains(where: { $0.uid == dummyItem.uid }) }
+        XCTAssertEqual(isIncludeDummyItem, [true, false])
     }
 }
 

@@ -41,6 +41,7 @@ public protocol NavigateCollectionViewModel: AnyObject {
     // presenter
     var collectionTitle: Observable<String> { get }
     var cellViewModels: Observable<[NavigateCollectionCellViewModel]> { get }
+    var confirmTitle: Observable<String> { get }
 }
 
 
@@ -113,7 +114,7 @@ extension NavigateCollectionViewModelImple {
               let collection = collections.first(where: { $0.uid == collectionID })
         else { return }
         
-        self.router.moveToSubCollection(collection)
+        self.router.moveToSubCollection(collection, listener: self.listener)
     }
     
     public func confirmSelect() {
@@ -142,6 +143,18 @@ extension NavigateCollectionViewModelImple {
     public var cellViewModels: Observable<[NavigateCollectionCellViewModel]> {
         return self.subjects.collections
             .compactMap { $0?.asCellViewModels() }
+            .distinctUntilChanged()
+    }
+    
+    public var confirmTitle: Observable<String> {
+        
+        let transform: (String?) -> String = { name in
+            return name.map { "Select \'\($0)\'"} ?? "Select current collection".localized
+        }
+        
+        return self.subjects.currentCollection
+            .map { $0?.name }
+            .map(transform)
             .distinctUntilChanged()
     }
 }

@@ -28,12 +28,14 @@ public protocol EditLinkItemRouting: Routing {
     func editCategory(startWith categories: [ItemCategory])
     
     func editRemind(_ editCase: EditRemindCase)
+    
+    func editParentCollection(_ current: ReadCollection?)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable & EditReadRemindSceneBuilable
+public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable & EditReadRemindSceneBuilable & NavigateCollectionSceneBuilable
 
 public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, EditLinkItemRouting {
     
@@ -88,5 +90,16 @@ extension EditLinkItemRouter {
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func editParentCollection(_ current: ReadCollection?) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor)
+        else { return }
+        
+        let navigationController = BaseNavigationController(rootViewController: next)
+        navigationController.shouldHideNavigation = false
+        self.currentScene?.present(navigationController, animated: true, completion: nil)
     }
 }

@@ -26,7 +26,7 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
     var didMoveTo: ReadCollection?
     var didSelectCollection: ReadCollection?
     
-    func moveToSubCollection(_ collection: ReadCollection) {
+    func moveToSubCollection(_ collection: ReadCollection, listener: NavigateCollectionSceneListenable?) {
         self.didMoveTo = collection
     }
     
