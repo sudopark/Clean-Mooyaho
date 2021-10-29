@@ -16,6 +16,7 @@ open class StubReadRemindUsecase: ReadRemindUsecase {
     
     public struct Scenario {
 
+        public var hasPermission: Bool = true
         public init() { }
     }
     
@@ -26,7 +27,7 @@ open class StubReadRemindUsecase: ReadRemindUsecase {
     }
     
     public func preparePermission() -> Maybe<Bool> {
-        return .just(true)
+        return .just(self.scenario.hasPermission)
     }
     
     public var didCanceledRemindItemID: String?

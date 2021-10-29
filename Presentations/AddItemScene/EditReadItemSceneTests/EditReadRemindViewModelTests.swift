@@ -27,6 +27,8 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
     var didScheduled: TimeStamp?
     var didUpdatedItem: ReadItem?
     
+    var didAlerted: Bool?
+    
     override func setUpWithError() throws {
         self.disposeBag = .init()
     }
@@ -37,11 +39,14 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
         self.didClose = nil
         self.didScheduled = nil
         self.didUpdatedItem = nil
+        self.didAlerted = nil
     }
     
-    private func makeViewModel(editcase: EditRemindCase = .select(startWith: nil)) -> EditReadRemindViewModel {
+    private func makeViewModel(editcase: EditRemindCase = .select(startWith: nil),
+                               withoutPermission: Bool = false) -> EditReadRemindViewModel {
         
         let scenrio = StubReadRemindUsecase.Scenario()
+            |> \.hasPermission .~ withoutPermission.invert()
         let usecaes = StubReadRemindUsecase(scenario: scenrio)
         
         return EditReadRemindViewModelImple(editcase,
@@ -61,10 +66,27 @@ class EditReadRemindViewModelTests: BaseTestCase, WaitObservableEvents, EditRead
         self.didClose = true
         completed?()
     }
+    
+    func openAlertSetting() { }
+    
+    func alertForConfirm(_ form: AlertForm) {
+        self.didAlerted = true
+    }
 }
 
 
 extension EditReadRemindViewModelTests {
+    
+    func testViewModel_whenAfterEnterScene_ifAlertPermissionDisabled_askPermission() {
+        // given
+        let viewModel = self.makeViewModel(withoutPermission: true)
+        
+        // when
+        viewModel.checkPermission()
+        
+        // then
+        XCTAssertEqual(self.didAlerted, true)
+    }
     
     func testViewModel_whenSelectCaseAndReEnterSelectRemindScene_startWithPreviousSelectedvalue() {
         // given

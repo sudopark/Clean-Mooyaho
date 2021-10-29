@@ -56,12 +56,52 @@ extension FirebaseServiceImple: ReadRemindMessagingService {
     }
     
     public func sendPendingMessage(_ message: ReadRemindMessage) -> Maybe<Void> {
-        logger.todoImplement()
-        return .just()
+        
+        let uuid = "reminder:\(message.itemID)"
+        
+        let prepareContent: () -> UNMutableNotificationContent = {
+            let content = UNMutableNotificationContent()
+            content.title = message.title
+            content.body = message.message ?? ReadRemindMessage.defaultReadLinkMessage
+            return content
+        }
+        
+        let setupTrigger: (UNMutableNotificationContent) -> (UNMutableNotificationContent, UNTimeIntervalNotificationTrigger)
+        setupTrigger = { content in
+            let interval = message.scheduledTime - Date().timeIntervalSince1970
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
+            return (content, trigger)
+        }
+        
+        let makeRequest: (UNMutableNotificationContent, UNTimeIntervalNotificationTrigger) -> UNNotificationRequest
+        makeRequest = { content, trigger in
+            return UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        }
+        
+        let addPendingMessage: (UNNotificationRequest) -> Maybe<Void> = { request in
+            return Maybe.create { callback in
+                let center = UNUserNotificationCenter.current()
+                center.add(request) { error in
+                    if let error = error {
+                        callback(.error(error))
+                    } else {
+                        callback(.success(()))
+                    }
+                }
+                return Disposables.create()
+            }
+        }
+        
+        return self.cancelMessage(for: uuid)
+            .map(prepareContent)
+            .map(setupTrigger)
+            .map(makeRequest)
+            .flatMap(addPendingMessage)
     }
     
     public func cancelMessage(for readMinderID: String) -> Maybe<Void> {
-        logger.todoImplement()
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [readMinderID])
         return .just()
     }
     

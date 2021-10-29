@@ -22,6 +22,7 @@ import CommonPresenting
 public protocol EditReadRemindViewModel: AnyObject {
 
     // interactor
+    func checkPermission()
     func selectDate(_ newDate: Date)
     func clearSelect()
     func confirmSelectRemindTime()
@@ -85,6 +86,40 @@ public final class EditReadRemindViewModelImple: EditReadRemindViewModel {
 // MARK: - EditReadRemindViewModelImple Interactor
 
 extension EditReadRemindViewModelImple {
+    
+    public func checkPermission() {
+        
+        let alertPermissionNeedIfNeed: (Bool) -> Void = { [weak self] hasPermission in
+            guard hasPermission == false else { return }
+            self?.alertPermissionNeed()
+        }
+        
+        self.remindUsecase.preparePermission()
+            .subscribe(onSuccess: alertPermissionNeedIfNeed)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func alertPermissionNeed() {
+        
+        let close: () -> Void = { [weak self] in
+            self?.router.closeScene(animated: true, completed: nil)
+        }
+        
+        let moveToSetting: () -> Void = { [weak self] in
+            self?.router.openAlertSetting()
+        }
+        
+        guard let form = AlertBuilder(base: .init())
+                .title("Can't use remind service".localized)
+                .message("To use remind service activate alert setting".localized)
+                .confirmed(moveToSetting)
+                .customConfirmText("Setting".localized)
+                .canceled(close)
+                .build()
+        else { return }
+        
+        self.router.alertForConfirm(form)
+    }
 
     public func selectDate(_ newDate: Date) {
         self.subjects.selectedDate.accept(newDate)
