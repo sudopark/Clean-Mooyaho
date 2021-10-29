@@ -34,6 +34,7 @@
 		F6E279C126F6E71700957AC4 /* ReadCollectionItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279BC26F6E71700957AC4 /* ReadCollectionItemsViewModel.swift */; };
 		F6E279CB26F6EC7900957AC4 /* ReadItemCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279CA26F6EC7900957AC4 /* ReadItemCellViewModel.swift */; };
 		F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */; };
+		F6E9BC85272C4A0F004E4F75 /* NavigateAndChageItemParentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E9BC84272C4A0F004E4F75 /* NavigateAndChageItemParentViewModel.swift */; };
 		F6ECE4DD26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECE4DC26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		F6E279BC26F6E71700957AC4 /* ReadCollectionItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionItemsViewModel.swift; sourceTree = "<group>"; };
 		F6E279CA26F6EC7900957AC4 /* ReadItemCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCellViewModel.swift; sourceTree = "<group>"; };
 		F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		F6E9BC84272C4A0F004E4F75 /* NavigateAndChageItemParentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateAndChageItemParentViewModel.swift; sourceTree = "<group>"; };
 		F6ECE4DC26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadCollectionView+SwiftUI.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				F620518427276E1F009CA975 /* NavigateCollectionViewController.swift */,
 				F620518627276E1F009CA975 /* NavigateCollectionScene.swift */,
 				F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */,
+				F6E9BC84272C4A0F004E4F75 /* NavigateAndChageItemParentViewModel.swift */,
 			);
 			path = NavigateCollection;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				F68B67152707F0EE004A255A /* ReadCollectionMainViewController.swift in Sources */,
 				F68B67182707F0EE004A255A /* ReadCollectionMainViewModel.swift in Sources */,
 				F68B67172707F0EE004A255A /* ReadCollectionMainScene.swift in Sources */,
+				F6E9BC85272C4A0F004E4F75 /* NavigateAndChageItemParentViewModel.swift in Sources */,
 				F620518C27276E1F009CA975 /* NavigateCollectionViewModel.swift in Sources */,
 				F6E279BF26F6E71700957AC4 /* ReadCollectionItemsBuilder.swift in Sources */,
 				F6E279C126F6E71700957AC4 /* ReadCollectionItemsViewModel.swift in Sources */,

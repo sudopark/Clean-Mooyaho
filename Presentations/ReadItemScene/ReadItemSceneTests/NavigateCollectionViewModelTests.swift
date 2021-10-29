@@ -47,7 +47,7 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
         self.didMoveTo = nil
     }
     
-    private var dummyCollectionItems: [ReadCollection] {
+    var dummyCollectionItems: [ReadCollection] {
         return (1...10).map { ReadCollection.dummy($0) }
     }
     
@@ -171,5 +171,78 @@ extension NavigateCollectionViewModelTests {
         
         // then
         XCTAssertEqual(self.didSelectCollection?.uid, "c:0")
+    }
+}
+
+
+class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModelTests {
+    
+    private func targetItem(_ parentID: String?) -> ReadLink {
+        return ReadLink.dummy(0)
+            |> \.parentID .~ parentID
+    }
+    
+    private var didClose: Bool?
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.didClose = nil
+    }
+    
+    private func makeViewModel(isRoot: Bool, target: ReadLink) -> NavigateAndChageItemParentViewModelImple {
+        let collection = isRoot
+            ? nil : ReadCollection(uid: "some_parent", name: "some", createdAt: .now(), lastUpdated: .now())
+        let subCollections = self.dummyCollectionItems.map { $0 |> \.parentID .~ collection?.uid }
+        let scenario = StubReadItemUsecase.Scenario()
+            |> \.myItems .~ .success(subCollections)
+            |> \.collectionItems .~ .success(subCollections)
+        let usecase = StubReadItemUsecase(scenario: scenario)
+        return NavigateAndChageItemParentViewModelImple(targetItem: target,
+                                                        currentCollection: collection,
+                                                        readItemUsecase: usecase,
+                                                        router: self)
+    }
+    
+    override func closeScene(animated: Bool, completed: (() -> Void)?) {
+        self.didClose = true
+        completed?()
+    }
+    
+    func testViewModel_updateIsParentChangable_onlyWhenTargetParentIsNotCurrentCollection() {
+        // given
+        let subItemInRoot = self.targetItem(nil)
+        let subItemInSomeCollection = self.targetItem("some_parent")
+        
+        // when + then
+        XCTAssertEqual(self.makeViewModel(isRoot: true, target: subItemInRoot).isParentChangable, false)
+        XCTAssertEqual(self.makeViewModel(isRoot: true, target: subItemInSomeCollection).isParentChangable, true)
+        XCTAssertEqual(self.makeViewModel(isRoot: false, target: subItemInRoot).isParentChangable, true)
+        XCTAssertEqual(self.makeViewModel(isRoot: true, target: subItemInRoot).isParentChangable, false)
+    }
+    
+    func testViewModel_whenRootCollection_changeLinkItemParent() {
+        // given
+        let subItemInSomeCollection = self.targetItem("some_parent")
+        
+        let viewModel = self.makeViewModel(isRoot: true, target: subItemInSomeCollection)
+        
+        // when
+        viewModel.confirmSelect()
+        
+        // then
+        XCTAssertEqual(self.didClose, true)
+    }
+    
+    func testViewModeL_whenNotRootCollection_changeLinkItemParent() {
+        // given
+        let subitemInRoot = self.targetItem(nil)
+        
+        let viewModel = self.makeViewModel(isRoot: false, target: subitemInRoot)
+        
+        // when
+        viewModel.confirmSelect()
+        
+        // then
+        XCTAssertEqual(self.didClose, true)
     }
 }

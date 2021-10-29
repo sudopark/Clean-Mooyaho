@@ -226,14 +226,15 @@ extension LocalStorageTests_ReadItem {
         // when
         let save = self.local.updateReadItems([dummy])
         let removeParams = params
-            |> \.updatePropertyParams .~ [.remindTime(nil), .isRed(false)]
+            |> \.updatePropertyParams .~ [.remindTime(nil), .isRed(false), .parentID("new_parent_id")]
         let remove = self.local.updateItem(removeParams)
-        let load = self.local.fetchCollectionItems("p")
+        let load = self.local.fetchCollectionItems("new_parent_id")
         let saveRemoveAndLoad = save.flatMap { remove }.flatMap { load }
         let loadedLink = self.waitFirstElement(expect, for: saveRemoveAndLoad.asObservable())?.first
         
         // then
         XCTAssertEqual(loadedLink?.remindTime, nil)
         XCTAssertEqual((loadedLink as? ReadLink)?.isRed, false)
+        XCTAssertEqual(loadedLink?.parentID, "new_parent_id")
     }
 }

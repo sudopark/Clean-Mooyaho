@@ -42,15 +42,16 @@ public protocol NavigateCollectionViewModel: AnyObject {
     var collectionTitle: Observable<String> { get }
     var cellViewModels: Observable<[NavigateCollectionCellViewModel]> { get }
     var confirmTitle: Observable<String> { get }
+    var isParentChangable: Bool { get }
 }
 
 
 // MARK: - NavigateCollectionViewModelImple
 
-public final class NavigateCollectionViewModelImple: NavigateCollectionViewModel {
+public class NavigateCollectionViewModelImple: NavigateCollectionViewModel {
     
-    private let readItemUsecase: ReadItemUsecase
-    private let router: NavigateCollectionRouting
+    let readItemUsecase: ReadItemUsecase
+    let router: NavigateCollectionRouting
     private weak var listener: NavigateCollectionSceneListenable?
     
     public init(currentCollection: ReadCollection?,
@@ -76,13 +77,23 @@ public final class NavigateCollectionViewModelImple: NavigateCollectionViewModel
     }
     
     private let subjects = Subjects()
-    private let disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
 
     private func handleError() -> (Error) -> Void {
         return { [weak self] error in
             self?.router.alertError(error)
         }
     }
+    
+    public func confirmSelect() {
+        
+        let collection = self.subjects.currentCollection.value
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.listener?.navigateCollection(didSelectCollection: collection)
+        }
+    }
+    
+    public var isParentChangable: Bool { true }
 }
 
 
@@ -115,14 +126,6 @@ extension NavigateCollectionViewModelImple {
         else { return }
         
         self.router.moveToSubCollection(collection, listener: self.listener)
-    }
-    
-    public func confirmSelect() {
-        
-        let collection = self.subjects.currentCollection.value
-        self.router.closeScene(animated: true) { [weak self] in
-            self?.listener?.navigateCollection(didSelectCollection: collection)
-        }
     }
 }
 

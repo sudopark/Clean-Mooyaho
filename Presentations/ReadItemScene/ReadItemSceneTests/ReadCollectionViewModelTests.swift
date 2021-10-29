@@ -643,17 +643,15 @@ extension ReadCollectionViewModelTests {
         let dummyCell = ReadLinkCellViewModel(uid: self.dummySubLinks.first!.uid, linkUrl: "some")
         
         // when
-        let _ = self.waitElements(expect, for: viewModel.cellViewModels) {
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
             viewModel.reloadCollectionItems()
+            viewModel.handleContextAction(for: dummyCell, action: .markAsRead(isRed: false))
         }
-        viewModel.handleContextAction(for: dummyCell, action: .markAsRead(isRed: false))
-
+        
         // then
-        if case let .isRed(flag) = self.spyItemsUsecase.didUpdated?.updatePropertyParams.first, flag {
-            XCTAssert(true)
-        } else {
-            XCTFail("기대하는 이벤트가 아님")
-        }
+        let readCell = cvms?.compactMap { $0 as? ReadLinkCellViewModel }.filter { $0.isRed == true }
+        XCTAssertEqual(readCell?.count, 1)
+        XCTAssertEqual(readCell?.first?.uid, dummyCell.uid)
     }
 }
 
