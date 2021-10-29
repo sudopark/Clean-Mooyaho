@@ -183,6 +183,9 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             case let .updated(newItem) where newItem.parentID == self.currentCollectionID:
                 self.updateSubItem(newItem)
                 
+            case let .updated(newItem) where newItem.parentID != self.currentCollectionID:
+                self.checkSubLinkItemParentChanged(newItem)
+                
             default: break
             }
         }
@@ -212,6 +215,14 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             
         default: break
         }
+    }
+    
+    private func checkSubLinkItemParentChanged(_ item: ReadItem) {
+        guard let link = item as? ReadLink,
+              let links = self.subjects.links.value, links.isNotEmpty else { return }
+        let newLinks = links.filter { $0.uid != link.uid }
+        guard newLinks.count != links.count else { return }
+        self.subjects.links.accept(newLinks)
     }
 }
 

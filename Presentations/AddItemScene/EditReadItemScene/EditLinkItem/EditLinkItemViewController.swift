@@ -16,6 +16,59 @@ import Optics
 import Domain
 import CommonPresenting
 
+
+class CollectionPathView: BaseUIView, Presenting {
+    
+    let iconView = UIImageView()
+    let nameLabel = UILabel()
+    let arrowView = UIImageView()
+    
+    func setupLayout() {
+        
+        self.addSubview(iconView)
+        iconView.autoLayout.active(with: self) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.widthAnchor.constraint(equalToConstant: 15)
+            $0.heightAnchor.constraint(equalToConstant: 15)
+        }
+        
+        self.addSubview(arrowView)
+        arrowView.autoLayout.active(with: self) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.widthAnchor.constraint(equalToConstant: 8)
+            $0.heightAnchor.constraint(equalToConstant: 22)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+        }
+        
+        self.addSubview(nameLabel)
+        nameLabel.autoLayout.active(with: self) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: arrowView.leadingAnchor, constant: -8)
+        }
+    }
+    
+    func setupStyling() {
+        
+        _ = self.iconView
+            |> \.image .~ UIImage(systemName: "folder")
+            |> \.tintColor .~ self.uiContext.colors.buttonBlue
+            |> \.contentMode .~ .scaleAspectFit
+        
+        _ = nameLabel
+            |> self.uiContext.decorating.listItemTitle(_:)
+            |> \.numberOfLines .~ 1
+            |> \.textColor .~ self.uiContext.colors.buttonBlue
+        
+        _ = self.arrowView
+            |> \.image .~ UIImage(systemName: "chevron.right")
+            |> \.contentMode .~ .scaleAspectFit
+            |> \.tintColor .~ self.uiContext.colors.buttonBlue
+    }
+}
+
+
 // MARK: - EditLinkItemViewController
 
 public final class EditLinkItemViewController: BaseViewController, EditLinkItemScene {
@@ -28,6 +81,7 @@ public final class EditLinkItemViewController: BaseViewController, EditLinkItemS
     private let previewShimmerView = PreviewShimmerView()
     
     private let attributeStackView = UIStackView()
+    private let collectionPathView = CollectionPathView()
     private let priorityLabelView = KeyAndLabeledValueView()
     private let categoriesLabelView = KeyAndLabeledValueView()
     private let remindLabelView = KeyAndLabeledValueView()
@@ -118,6 +172,24 @@ extension EditLinkItemViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] time in
                 self?.updateRemindLabel(time)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.selectedParentCollectionName
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] name in
+                self?.updateParentCollectionSection(name)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isConfirmable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.confirmButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+        
+        self.collectionPathView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.changeCollection()
             })
             .disposed(by: self.disposeBag)
         
@@ -224,6 +296,13 @@ extension EditLinkItemViewController {
         self.remindLabelView.isHidden = time == nil
         time.do <| remindLabelView.labelView.setupRemind(_:)
     }
+    
+    private func updateParentCollectionSection(_ name: String) {
+        self.collectionPathView.isHidden.then {
+            self.collectionPathView.isHidden = false
+        }
+        self.collectionPathView.nameLabel.text = name
+    }
 }
 
 // MARK: - setup presenting
@@ -259,12 +338,19 @@ extension EditLinkItemViewController: Presenting {
         }
         attributeStackView.axis = .vertical
         attributeStackView.spacing = 8
+        attributeStackView.addArrangedSubview(collectionPathView)
         attributeStackView.addArrangedSubview(priorityLabelView)
         attributeStackView.addArrangedSubview(categoriesLabelView)
         attributeStackView.addArrangedSubview(remindLabelView)
         attributeStackView.addArrangedSubview(addPriorityButton)
         attributeStackView.addArrangedSubview(addCategoryButton)
         attributeStackView.addArrangedSubview(addRemindButton)
+        
+        collectionPathView.autoLayout.active {
+            $0.heightAnchor.constraint(equalToConstant: 32)
+        }
+        collectionPathView.setupLayout()
+        
         priorityLabelView.autoLayout.active(with: attributeStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
@@ -319,11 +405,15 @@ extension EditLinkItemViewController: Presenting {
     public func setupStyling() {
         
         confirmButton.setupStyling()
+        confirmButton.isEnabled = false
         
         self.fakeBackgroundView.backgroundColor = self.uiContext.colors.appBackground
         self.fakeBackgroundView.layer.cornerRadius = 10
         self.fakeBackgroundView.clipsToBounds = true
         self.fakeBackgroundView.isHidden = true
+        
+        self.collectionPathView.setupStyling()
+        self.collectionPathView.isHidden = true
         
         self.priorityLabelView.isHidden = true
         self.categoriesLabelView.isHidden = true

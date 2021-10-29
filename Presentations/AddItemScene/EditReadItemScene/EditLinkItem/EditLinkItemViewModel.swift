@@ -36,6 +36,7 @@ public protocol EditLinkItemViewModel: AnyObject {
     func editCategory()
     func editRemind()
     func rewind()
+    func changeCollection()
     
     // presenter
     var itemSuggestedTitle: Observable<String> { get }
@@ -45,12 +46,31 @@ public protocol EditLinkItemViewModel: AnyObject {
     var linkPreviewStatus: Observable<LoadPreviewStatus> { get }
     var isProcessing: Observable<Bool> { get }
     var editcaseReadLink: ReadLink? { get }
+    var isConfirmable: Observable<Bool> { get }
+    var selectedParentCollectionName: Observable<String> { get }
 }
 
 
 // MARK: - EditLinkItemViewModelImple
 
 public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
+    
+    enum ParentCollection {
+        case root
+        case some(ReadCollection)
+        
+        init(_ collection: ReadCollection?) {
+            switch collection {
+            case .none: self = .root
+            case let .some(value): self = .some(value)
+            }
+        }
+        
+        var collection: ReadCollection? {
+            guard case let .some(collection) = self else { return nil }
+            return collection
+        }
+    }
     
     private let collectionID: String?
     private let editCase: EditLinkItemCase
@@ -73,6 +93,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
         self.listener = listener
         
         self.setupPreviousSelectedPropertiesIfNeed()
+        self.setupParentCollection()
     }
     
     deinit {
@@ -84,6 +105,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
         let previewLoadStatus = PublishSubject<LoadPreviewStatus>()
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])
+        let selectParentCollection = BehaviorRelay<ParentCollection?>(value: nil)
         let customName = BehaviorRelay<String?>(value: nil)
         let selectedRemindTime = BehaviorRelay<TimeStamp?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)
@@ -102,6 +124,20 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
             .take(1)
             .subscribe(onNext: { [weak self] categories in
                 self?.subjects.selectedCategories.accept(categories)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func setupParentCollection() {
+        guard let parentID = self.editCase.parentID
+        else {
+            self.subjects.selectParentCollection.accept(.root)
+            return
+        }
+        
+        self.readUsecase.loadCollectionInfo(parentID)
+            .subscribe(onNext: { [weak self] collection in
+                self?.subjects.selectParentCollection.accept(.some(collection))
             })
             .disposed(by: self.disposeBag)
     }
@@ -148,8 +184,10 @@ extension EditLinkItemViewModelImple {
             self?.router.alertError(error)
         }
         
+        let parentCollectionID = newItem.parentID
+        
         self.subjects.isProcessing.accept(true)
-        self.readUsecase.saveLink(newItem, at: self.collectionID)
+        self.readUsecase.saveLink(newItem, at: parentCollectionID)
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: completed, onError: handleError)
             .disposed(by: self.disposeBag)
@@ -169,6 +207,7 @@ extension EditLinkItemViewModelImple {
                 |> \.priority .~ self.subjects.selectedPriority.value
                 |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
                 |> \.remindTime .~ self.subjects.selectedRemindTime.value
+                |> \.parentID .~ self.subjects.selectParentCollection.value?.collection?.uid
             
         case let .edit(item):
             return item
@@ -176,6 +215,7 @@ extension EditLinkItemViewModelImple {
                 |> \.priority .~ self.subjects.selectedPriority.value
                 |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
                 |> \.remindTime .~ self.subjects.selectedRemindTime.value
+                |> \.parentID .~ self.subjects.selectParentCollection.value?.collection?.uid
         }
     }
     
@@ -225,6 +265,26 @@ extension EditLinkItemViewModelImple {
     
     public func editReadRemind(didSelect time: Date?) {
         self.subjects.selectedRemindTime.accept(time?.timeIntervalSince1970)
+    }
+}
+
+
+// MARK: - EditLinkItemViewModelImple Interactor + edit parent collection
+
+extension EditLinkItemViewModelImple {
+    
+    public func changeCollection() {
+        
+//        let collection = self.subjects.selectParentCollection.value?.collection
+        // TODO: 임시로 최상위 콜렉션으로만 라퉁팅되도록 설정
+        let collection: ReadCollection? = nil
+        self.router.editParentCollection(collection)
+    }
+    
+    public func navigateCollection(didSelectCollection collection: ReadCollection?) {
+        
+        let parentCollection = ParentCollection(collection)
+        self.subjects.selectParentCollection.accept(parentCollection)
     }
 }
 
@@ -287,6 +347,24 @@ extension EditLinkItemViewModelImple {
         guard case let .edit(item) = self.editCase else { return nil }
         return item
     }
+    
+    public var selectedParentCollectionName: Observable<String> {
+    
+        let transform: (ParentCollection) -> String = { collection in
+            return collection.collection?.name ?? "My Read Collections".localized
+        }
+        return self.subjects.selectParentCollection
+            .compactMap { $0 }
+            .map(transform)
+            .distinctUntilChanged()
+    }
+    
+    public var isConfirmable: Observable<Bool> {
+        
+        return self.subjects.selectParentCollection
+            .map { $0 != nil }
+            .distinctUntilChanged()
+    }
 }
 
 private extension EditLinkItemCase {
@@ -296,6 +374,11 @@ private extension EditLinkItemCase {
         case let .makeNew(url): return url
         case let .edit(item): return item.link
         }
+    }
+    
+    var parentID: String? {
+        guard case let .edit(item) = self else { return nil }
+        return item.parentID
     }
 }
 

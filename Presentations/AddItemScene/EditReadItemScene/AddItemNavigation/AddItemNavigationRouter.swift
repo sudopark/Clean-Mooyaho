@@ -52,7 +52,7 @@ extension AddItemNavigationRouter {
     }
     
     private var confirmAddSceneHeigjt: CGFloat {
-        return 360
+        return 400
     }
     
     public func prepareNavigation() {
