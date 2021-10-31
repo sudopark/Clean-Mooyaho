@@ -25,7 +25,7 @@ import ReadItemScene
 
 public protocol MainRouting: Routing {
 
-    func addReadCollectionScene() -> ReadCollectionMainSceneInput?
+    func addReadCollectionScene() -> ReadCollectionMainSceneInteractable?
     
     func openSlideMenu()
     
@@ -52,7 +52,7 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 extension MainRouter {
     
-    public func addReadCollectionScene() -> ReadCollectionMainSceneInput? {
+    public func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
               let collectionMainScene = self.nextScenesBuilder?.makeReadCollectionMainScene() else {
@@ -65,7 +65,7 @@ extension MainRouter {
         mainScene.childContainerView.addSubview(collectionMainScene.view)
         collectionMainScene.didMove(toParent: mainScene)
         
-        return collectionMainScene.input
+        return collectionMainScene.interactor
     }
     
     public func openSlideMenu() {

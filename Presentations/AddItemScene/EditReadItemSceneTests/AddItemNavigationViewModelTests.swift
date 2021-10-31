@@ -40,7 +40,8 @@ class AddItemNavigationViewModelTests: BaseTestCase, AddItemNavigationSceneListe
     
     private func makeViewModel() -> AddItemNavigationViewModel {
         
-        let viewModel = AddItemNavigationViewModelImple(targetCollectionID: nil,
+        let viewModel = AddItemNavigationViewModelImple(startWith: nil,
+                                                        targetCollectionID: nil,
                                                         router: self, listener: self)
         self.interactor = viewModel
         return viewModel
@@ -119,7 +120,7 @@ extension AddItemNavigationViewModelTests: AddItemNavigationRouting {
         self.didNavigationSetup = true
     }
     
-    func pushToEnterURLScene(_ entered: @escaping (String) -> Void) {
+    func pushToEnterURLScene(startWith url: String?, _ entered: @escaping (String) -> Void) {
         self.didMoveToEnterURLScene = true
         self.enterURLMocking = { entered($0) }
     }

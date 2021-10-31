@@ -16,11 +16,7 @@ import CommonPresenting
 
 // MARK: - ReadCollectionMainViewModelImple conform ReadCollectionMainSceneInput and ReadCollectionMainSceneOutput
 
-extension ReadCollectionMainViewModelImple: ReadCollectionMainSceneInput {
-
-}
-
-extension ReadCollectionMainViewModelImple: ReadCollectionMainSceneOutput {
+extension ReadCollectionMainViewModelImple: ReadCollectionMainSceneInteractable {
 
 }
 
@@ -28,11 +24,7 @@ extension ReadCollectionMainViewModelImple: ReadCollectionMainSceneOutput {
 
 extension ReadCollectionMainViewController {
 
-    public var input: ReadCollectionMainSceneInput? {
-        return self.viewModel as? ReadCollectionMainSceneInput
-    }
-
-    public var output: ReadCollectionMainSceneOutput? {
-        return self.viewModel as? ReadCollectionMainSceneOutput
+    public var interactor: ReadCollectionMainSceneInteractable? {
+        return self.viewModel as? ReadCollectionMainSceneInteractable
     }
 }

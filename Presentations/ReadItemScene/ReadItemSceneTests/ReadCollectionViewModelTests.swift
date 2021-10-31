@@ -908,8 +908,10 @@ extension ReadCollectionViewModelTests {
         }
         
         var didAddNewLinkRequested: Bool?
-        func routeToAddNewLink(at collectionID: String?) {
+        var dudAddNewLinkRequestedWithURL: String?
+        func routeToAddNewLink(at collectionID: String?, startWith url: String?) {
             self.didAddNewLinkRequested = true
+            self.dudAddNewLinkRequestedWithURL = url
         }
         
         var didEditReadLinkRequested: Bool?

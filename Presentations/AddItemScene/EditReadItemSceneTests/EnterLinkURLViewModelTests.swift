@@ -30,9 +30,11 @@ class EnterLinkURLViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
     }
     
-    private func makeViewModel() -> EnterLinkURLViewModel {
+    private func makeViewModel(_ startWith: String? = nil) -> EnterLinkURLViewModel {
         
-        return EnterLinkURLViewModelImple(router: self) { self.isURLEntered?($0) }
+        return EnterLinkURLViewModelImple(startWith: startWith, router: self) {
+            self.isURLEntered?($0)
+        }
     }
 }
 
@@ -67,6 +69,22 @@ extension EnterLinkURLViewModelTests {
         // when
         viewModel.enterURL("https://www.naver.com")
         viewModel.confirmEnter()
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_whenStartWithURLExists_updateURLAndRouteToNext() {
+        // given
+        let expect = expectation(description: "start with url 존재시 바로 다음화면으로 이동")
+        let viewModel = self.makeViewModel("some")
+        
+        self.isURLEntered = { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        viewModel.startAutoEnterURLIfNeed()
         
         // then
         self.wait(for: [expect], timeout: self.timeout)

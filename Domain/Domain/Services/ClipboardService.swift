@@ -18,6 +18,8 @@ public protocol ClipboardServie {
 extension UIPasteboard: ClipboardServie {
     
     public func getCopedString() -> String? {
-        return self.string
+        let sender = self.string
+        self.string = nil
+        return sender
     }
 }

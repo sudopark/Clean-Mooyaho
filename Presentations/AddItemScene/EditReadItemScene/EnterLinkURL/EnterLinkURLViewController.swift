@@ -51,6 +51,9 @@ public final class EnterLinkURLViewController: BaseViewController, EnterLinkURLS
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        
+        self.textField.text = self.viewModel.startWithURL
+        self.viewModel.startAutoEnterURLIfNeed()
     }
 }
 

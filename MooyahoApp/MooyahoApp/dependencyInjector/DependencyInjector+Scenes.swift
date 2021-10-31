@@ -182,9 +182,11 @@ extension DependencyInjector: NavigateCollectionSceneBuilable {
 extension DependencyInjector: AddItemNavigationSceneBuilable {
     
     public func makeAddItemNavigationScene(at collectionID: String?,
+                                           startWith: String?,
                                            _ listener: AddItemNavigationSceneListenable?) -> AddItemNavigationScene {
         let router = AddItemNavigationRouter(nextSceneBuilders: self)
-        let viewModel = AddItemNavigationViewModelImple(targetCollectionID: collectionID,
+        let viewModel = AddItemNavigationViewModelImple(startWith: startWith,
+                                                        targetCollectionID: collectionID,
                                                         router: router,
                                                         listener: listener)
         let viewController = AddItemNavigationViewController(viewModel: viewModel)
@@ -196,9 +198,11 @@ extension DependencyInjector: AddItemNavigationSceneBuilable {
 
 extension DependencyInjector: EnterLinkURLSceneBuilable {
     
-    public func makeEnterLinkURLScene(_ entered: @escaping (String) -> Void) -> EnterLinkURLScene {
+    public func makeEnterLinkURLScene(startWith: String?,
+                                      _ entered: @escaping (String) -> Void) -> EnterLinkURLScene {
         let router = EnterLinkURLRouter(nextSceneBuilders: self)
-        let viewModel = EnterLinkURLViewModelImple(router: router, callback: entered)
+        let viewModel = EnterLinkURLViewModelImple(startWith: startWith,
+                                                   router: router, callback: entered)
         let viewController = EnterLinkURLViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

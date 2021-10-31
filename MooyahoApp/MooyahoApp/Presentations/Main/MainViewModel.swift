@@ -45,7 +45,7 @@ public final class MainViewModelImple: MainViewModel {
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    private weak var readCollectionMainSceneInput: ReadCollectionMainSceneInput?
+    private weak var readCollectionMainSceneInteractor: ReadCollectionMainSceneInteractable?
     
     public init(memberUsecase: MemberUsecase,
                 readItemOptionUsecase: ReadItemOptionsUsecase,
@@ -86,7 +86,7 @@ public final class MainViewModelImple: MainViewModel {
 extension MainViewModelImple {
     
     public func setupSubScenes() {
-        self.readCollectionMainSceneInput = self.router.addReadCollectionScene()
+        self.readCollectionMainSceneInteractor = self.router.addReadCollectionScene()
     }
     
     public func openSlideMenu() {
@@ -96,10 +96,10 @@ extension MainViewModelImple {
     public func requestAddNewItem() {
         
         self.router.askAddNewitemType { [weak self] isCollectionSelected in
-            guard let input = self?.readCollectionMainSceneInput else { return }
+            guard let interactor = self?.readCollectionMainSceneInteractor else { return }
             return isCollectionSelected
-                ? input.addNewCollectionItem()
-                : input.addNewReadLinkItem()
+                ? interactor.addNewCollectionItem()
+                : interactor.addNewReadLinkItem()
         }
     }
     
@@ -118,7 +118,9 @@ extension MainViewModelImple {
     
     public func requestAddNewItemUsingURLInClipBoard() {
         
-        
+        guard let url = self.subjects.suggestAddItemURL.value,
+              let interactor = self.readCollectionMainSceneInteractor else { return }
+        interactor.addNewReaedLinkItem(with: url)
     }
     
     public func toggleIsReadItemShrinkMode() {

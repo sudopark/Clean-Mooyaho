@@ -13,23 +13,23 @@ import Domain
 
 // MARK: - ReadCollectionMainScene Input & Output
 
-public protocol ReadCollectionMainSceneInput: AnyObject {
+public protocol ReadCollectionMainSceneInteractable: AnyObject {
     
     func addNewCollectionItem()
     
     func addNewReadLinkItem()
+    
+    func addNewReaedLinkItem(with url: String)
 }
 
-public protocol ReadCollectionMainSceneOutput { }
+public protocol ReadCollectionMainSceneListenable { }
 
 
 // MARK: - ReadCollectionMainScene
 
 public protocol ReadCollectionMainScene: Scenable {
     
-    var input: ReadCollectionMainSceneInput? { get }
-
-    var output: ReadCollectionMainSceneOutput? { get }
+    var interactor: ReadCollectionMainSceneInteractable? { get }
 }
 
 
@@ -40,6 +40,8 @@ public protocol ReadCollectionItemsSceneInteractable: EditReadCollectionSceneLis
     func addNewCollectionItem()
     
     func addNewReadLinkItem()
+    
+    func addNewReadLinkItem(using url: String)
 }
 
 // MARK: - ReadCollectionScene

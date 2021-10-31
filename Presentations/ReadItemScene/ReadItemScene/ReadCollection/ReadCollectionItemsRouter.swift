@@ -32,7 +32,7 @@ public protocol ReadCollectionRouting: Routing {
     
     func routeToEditCollection(_ collection: ReadCollection)
     
-    func routeToAddNewLink(at collectionID: String?)
+    func routeToAddNewLink(at collectionID: String?, startWith url: String?)
     
     func routeToEditReadLink(_ link: ReadLink)
     
@@ -106,9 +106,9 @@ extension ReadCollectionItemsRouter {
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     
-    public func routeToAddNewLink(at collectionID: String?) {
+    public func routeToAddNewLink(at collectionID: String?, startWith url: String?) {
         guard let next = self.nextScenesBuilder?
-                .makeAddItemNavigationScene(at: collectionID, self.currentInteractor) else {
+                .makeAddItemNavigationScene(at: collectionID, startWith: url, self.currentInteractor) else {
             return
         }
         next.modalPresentationStyle = .custom

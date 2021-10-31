@@ -365,7 +365,12 @@ extension ReadCollectionViewItemsModelImple {
     public func addNewReadLinkItem() {
         
         let collectionID = self.currentCollectionID
-        self.router.routeToAddNewLink(at: collectionID)
+        self.router.routeToAddNewLink(at: collectionID, startWith: nil)
+    }
+    
+    public func addNewReadLinkItem(using url: String) {
+        let collectionID = self.currentCollectionID
+        self.router.routeToAddNewLink(at: collectionID, startWith: url)
     }
     
     private func requestEditReadLink(_ item: ReadLinkCellViewModel) {

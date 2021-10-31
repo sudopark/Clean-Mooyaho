@@ -25,6 +25,8 @@ public protocol ReadCollectionMainRouting: Routing {
     func addNewColelctionAtCurrentCollection()
     
     func addNewReadLinkItemAtCurrentCollection()
+    
+    func addNewReadLinkItem(using url: String)
 }
 
 // MARK: - Routers
@@ -63,5 +65,10 @@ extension ReadCollectionMainRouter {
         }
         let collectionScenes = childViewControllers.compactMap { $0 as? ReadCollectionScene }
         return collectionScenes.last
+    }
+    
+    public func addNewReadLinkItem(using url: String) {
+        guard let currentCollection = self.findCurrentCollectionScene() else { return }
+        currentCollection.interactor?.addNewReadLinkItem(using: url)
     }
 }
