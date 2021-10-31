@@ -19,7 +19,7 @@ import CommonPresenting
 final class FloatingButtonButtonView: BaseUIView, Presenting {
     
     private let iconImageView = UIImageView()
-    private let roundView = UIView()
+    private let roundView = RoundShadowView()
     private let titleLabel = UILabel()
     fileprivate let backgroundButton = UIButton()
     
@@ -50,13 +50,9 @@ final class FloatingButtonButtonView: BaseUIView, Presenting {
     
     func setupStyling() {
         
-        self.layer.shadowColor = UIColor.black.withAlphaComponent(0.4).cgColor
-        self.layer.shadowRadius = 15
-        self.layer.shadowOpacity = 0.9
-        
-        self.roundView.layer.cornerRadius = 15
-        self.roundView.clipsToBounds = true
-        self.roundView.backgroundColor = UIColor.systemIndigo
+        self.roundView.cornerRadius = 15
+        self.roundView.fillColor = UIColor.systemIndigo
+        self.roundView.shadowOpacity = 0.9
         
         self.iconImageView.image = UIImage(systemName: "plus")
         self.iconImageView.tintColor = .white
