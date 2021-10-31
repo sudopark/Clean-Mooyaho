@@ -24,4 +24,6 @@ public protocol ReadItemRepository {
     func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection>
     
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
+    
+    func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
 }

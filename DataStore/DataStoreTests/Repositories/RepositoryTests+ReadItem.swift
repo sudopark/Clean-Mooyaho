@@ -462,6 +462,84 @@ extension RepositoryTests_ReadItem {
     }
 }
 
+extension RepositoryTests_ReadItem {
+    
+    func testRepository_findItem_andExistsOnLocal() {
+        // given
+        let expect = expectation(description: "로컬에서 url에 해당하는 아이템 찾음")
+        self.mockLocal.register(key: "findLinkItem") { Maybe<ReadLink?>.just(ReadLink(link: "some")) }
+        
+        // when
+        let finding = self.dummyRepository.requestFindLinkItem(using: "some")
+        let link = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(link)
+    }
+    
+    func testRepository_findItem_andExistsOnRemote() {
+        // given
+        let expect = expectation(description: "리모트에서 url에 해당하는 아이템 찾음")
+        self.mockLocal.register(key: "findLinkItem") { Maybe<ReadLink?>.just(nil) }
+        self.mockRemote.register(key: "requestFindLinkItem") { Maybe<ReadLink?>.just(ReadLink(link: "some")) }
+        
+        // when
+        let finding = self.dummyRepository.requestFindLinkItem(using: "some")
+        let link = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(link)
+    }
+    
+    func testRepository_findItemAndLocalErrror_andExistsOnRemote() {
+        // given
+        let expect = expectation(description: "로컬에서 찾기 실패 이후에 리모트에서 url에 해당하는 아이템 찾음")
+        self.mockLocal.register(key: "findLinkItem") { Maybe<ReadLink?>.error(ApplicationErrors.invalid) }
+        self.mockRemote.register(key: "requestFindLinkItem") { Maybe<ReadLink?>.just(ReadLink(link: "some")) }
+        
+        // when
+        let finding = self.dummyRepository.requestFindLinkItem(using: "some")
+        let link = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(link)
+    }
+    
+    func testRepository_findItem_andFindFromRemoteFail_isError() {
+        // given
+        let expect = expectation(description: "리모트에서 url에 해당하는 아이템 찾기 실패시 에러")
+        self.mockLocal.register(key: "findLinkItem") { Maybe<ReadLink?>.just(nil) }
+        self.mockRemote.register(key: "requestFindLinkItem") { Maybe<ReadLink?>.error(ApplicationErrors.invalid) }
+        
+        // when
+        let finding = self.dummyRepository.requestFindLinkItem(using: "some")
+        let error = self.waitError(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
+    func testReposotory_whenFindItemFromRemote_updateLocal() {
+        // given
+        let expect = expectation(description: "리모트에서 url에 해당하는 아이템 찾은 이후 로컬 업데이트")
+        self.mockLocal.register(key: "findLinkItem") { Maybe<ReadLink?>.just(nil) }
+        self.mockRemote.register(key: "requestFindLinkItem") { Maybe<ReadLink?>.just(ReadLink(link: "some")) }
+        
+        self.mockLocal.called(key: "updateReadItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.requestFindLinkItem(using: "some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
 
 extension RepositoryTests_ReadItem {
     

@@ -21,9 +21,12 @@ import ViewerScene
 extension DependencyInjector: MainSceneBuilable {
     
     public func makeMainScene(auth: Auth) -> MainScene {
+        
+        let itemUsecase = self.readItemUsecaseImple
         let router = MainRouter(nextSceneBuilders: self)
         let viewModel = MainViewModelImple(memberUsecase: self.memberUsecase,
-                                           readItemOptionUsecase: self.readItemUsecase,
+                                           readItemOptionUsecase: itemUsecase,
+                                           addItemSuggestUsecase: itemUsecase,
                                            router: router)
         let viewController = MainViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -227,6 +230,7 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
     public func makeEditReadCollectionScene(parentID: String?,
                                             editCase: EditCollectionCase,
                                             listener: EditReadCollectionSceneListenable?) -> EditReadCollectionScene {
+        
         let router = EditReadCollectionRouter(nextSceneBuilders: self)
         let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
                                                          editCase: editCase,

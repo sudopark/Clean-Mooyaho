@@ -75,7 +75,8 @@ extension SharedDependencyInjecttor {
                                     previewRepository: self.appReposiotry,
                                     optionsRespository: self.appReposiotry,
                                     authInfoProvider: self.shared.dataStore,
-                                    sharedStoreService: self.shared.dataStore)
+                                    sharedStoreService: self.shared.dataStore,
+                                    clipBoardService: UIPasteboard.general)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {

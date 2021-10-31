@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestFindLinkItem(using url: String) -> Maybe<ReadLink?> {
+        return .empty()
+    }
+    
     func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
         return .empty()
     }

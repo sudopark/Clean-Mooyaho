@@ -49,7 +49,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                              isShrinkModeOn: Bool? = true,
                              sortOrder: ReadCollectionItemSortOrder? = .default,
                              collectionMocking: ReadCollection? = nil,
-                             customSortOrder: [String] = []) -> ReadItemUsecase {
+                             customSortOrder: [String] = [],
+                             copiedText: String? = nil) -> ReadItemUsecaseImple {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
         shouldfailLoadMyCollections.then {
@@ -58,6 +59,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         shouldFailLoadCollection.then {
             repositoryScenario.collectionItems = .failure(ApplicationErrors.invalid)
         }
+        repositoryScenario.ulrAndLinkItemMap = ["some": ReadLink.dummy(0, parent: nil)]
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
         repositoryStub.collectionMocking = collectionMocking
         self.spyRepository = repositoryStub
@@ -73,11 +75,15 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let store = SharedDataStoreServiceImple()
         self.spyStore = store
         
+        let clipboardService = StubClipBoardService()
+            |> \.copiedString .~ copiedText
+        
         return ReadItemUsecaseImple(itemsRespoitory: repositoryStub,
                                     previewRepository: previewRepositoryStub,
                                     optionsRespository: optionRepository,
                                     authInfoProvider: self.authProvider(signedIn),
-                                    sharedStoreService: store)
+                                    sharedStoreService: store,
+                                    clipBoardService: clipboardService)
     }
 }
 
@@ -588,6 +594,65 @@ extension ReadItemUsecaseTests {
         
         // then
         XCTAssertEqual(isUpdatedBoth.count, 2)
+    }
+}
+
+
+// MARK: - ReadLinkAddSuggestUsecase
+
+extension ReadItemUsecaseTests {
+    
+    func testUsecase_whenLinkItemExists_checkURLIsExists() {
+        // given
+        let expect = expectation(description: "url에 해당하는 link item이 추가되어있는지 검사")
+        let usecase = self.makeUsecase(copiedText: "https://www.naver.com")
+        
+        // when
+        let finding = usecase.loadSuggestAddNewItemByURLExists()
+        let url = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(url)
+    }
+    
+    func testUsecase_whenCopiedTextIsNotExists_suggestAddItemIsNil() {
+        // given
+        let expect = expectation(description: "복사된 텍스트 없을경우 추가 서제스트 안함")
+        let usecase = self.makeUsecase(copiedText: nil)
+        
+        // when
+        let finding = usecase.loadSuggestAddNewItemByURLExists()
+        let url = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNil(url)
+    }
+    
+    func testUsecase_whenCopiedTextIsNotURL_notSuggestAddItem() {
+        // given
+        let expect = expectation(description: "복사된 텍스트가 url이 아닐떼 추가 서제스트 안함")
+        let usecase = self.makeUsecase(copiedText: "not url text")
+        
+        // when
+        let finding = usecase.loadSuggestAddNewItemByURLExists()
+        let url = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNil(url)
+    }
+    
+    func testUsecase_whenCopiedURLIsAlreadySuggested_notSuggestAddItem() {
+        // given
+        let expect = expectation(description: "이미 서제스트 한번 요청했던 rul이면 서제스트 안함")
+        let usecase = self.makeUsecase(copiedText: "https://www.naver.com")
+        
+        self.spyStore.save(Set<String>.self, key: .addSuggestedURLSet, ["https://www.naver.com"])
+        // when
+        let find = usecase.loadSuggestAddNewItemByURLExists()
+        let url = self.waitFirstElement(expect, for: find.asObservable())
+        
+        // then
+        XCTAssertNil(url)
     }
 }
 

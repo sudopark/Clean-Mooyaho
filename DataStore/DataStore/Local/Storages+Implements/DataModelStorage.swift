@@ -56,6 +56,8 @@ public protocol DataModelStorage {
     
     func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     
+    func findLinkItem(using url: String) -> Maybe<ReadLink?>
+    
     func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
     
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
@@ -461,6 +463,15 @@ extension DataModelStorageImple {
             
         default: return .empty()
         }
+    }
+    
+    public func findLinkItem(using url: String) -> Maybe<ReadLink?> {
+        let query = ReadLinkTable.selectAll { $0.link == url }
+        
+        let mapping: (CursorIterator) throws -> ReadLink = { cursor in
+            return try ReadLinkTable.Entity(cursor).asLinkItem()
+        }
+        return self.sqliteService.rx.run { try $0.loadOne(query, mapping: mapping) }
     }
 }
 

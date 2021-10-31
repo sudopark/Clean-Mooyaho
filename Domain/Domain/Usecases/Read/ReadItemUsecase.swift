@@ -35,6 +35,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
     private let optionsRespository: ReadItemOptionsRepository
     private let authInfoProvider: AuthInfoProvider
     private let sharedStoreService: SharedDataStoreService
+    private let clipBoardService: ClipboardServie
     
     private let disposeBag = DisposeBag()
     
@@ -42,12 +43,14 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
                 previewRepository: LinkPreviewRepository,
                 optionsRespository: ReadItemOptionsRepository,
                 authInfoProvider: AuthInfoProvider,
-                sharedStoreService: SharedDataStoreService) {
+                sharedStoreService: SharedDataStoreService,
+                clipBoardService: ClipboardServie) {
         self.itemsRespoitory = itemsRespoitory
         self.previewRepository = previewRepository
         self.optionsRespository = optionsRespository
         self.authInfoProvider = authInfoProvider
         self.sharedStoreService = sharedStoreService
+        self.clipBoardService = clipBoardService
     }
     
     private static let readItemUpdated = PublishSubject<ReadItemUpdateEvent>()
@@ -259,6 +262,48 @@ extension ReadItemUsecaseImple {
         return Self.readItemUpdated.asObservable()
     }
 }
+
+
+// MARK; - ReadLinkAddSuggestUsecase
+
+extension ReadItemUsecaseImple: ReadLinkAddSuggestUsecase {
+    
+    public func loadSuggestAddNewItemByURLExists() -> Maybe<String?> {
+        
+        guard let copiedURL = self.clipBoardService.getCopedString(),
+              copiedURL.isURLAddress else { return .just(nil) }
+        
+        let isNotSuggestedBefore = self.isSuggestedBefore(copiedURL) == false
+        guard isNotSuggestedBefore else { return .just(nil) }
+        
+        let findItem = self.itemsRespoitory.requestFindLinkItem(using: copiedURL)
+        
+        let checkIsNotAdded: (ReadLink?) -> String? = { item in
+            return item == nil ? copiedURL : nil
+        }
+        
+        let updateSuggested: (String?) -> Void = { [weak self] url in
+            guard let self = self, let url = url else { return }
+            let datKey = SharedDataKeys.addSuggestedURLSet
+            self.sharedStoreService.update(Set<String>.self, key: datKey.rawValue) {
+                return ($0 ?? []).union([url])
+            }
+        }
+        
+        return findItem
+            .map(checkIsNotAdded)
+            .do(onNext: updateSuggested)
+    }
+    
+    private func isSuggestedBefore(_ url: String) -> Bool {
+        guard let suggestSet = self.sharedStoreService
+                .fetch(Set<String>.self, key: .addSuggestedURLSet) else {
+            return false
+        }
+        return suggestSet.contains(url)
+    }
+}
+
 
 private extension ReadItem {
     

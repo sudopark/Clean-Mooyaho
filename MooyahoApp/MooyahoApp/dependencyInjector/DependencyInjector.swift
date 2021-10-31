@@ -130,11 +130,16 @@ extension DependencyInjector {
     }
     
     var readItemUsecase: ReadItemUsecase {
+        return self.readItemUsecaseImple
+    }
+    
+    var readItemUsecaseImple: ReadItemUsecaseImple {
         return ReadItemUsecaseImple(itemsRespoitory: self.appReposiotry,
                                     previewRepository: self.appReposiotry,
                                     optionsRespository: self.appReposiotry,
                                     authInfoProvider: self.shared.dataStore,
-                                    sharedStoreService: self.shared.dataStore)
+                                    sharedStoreService: self.shared.dataStore,
+                                    clipBoardService: UIPasteboard.general)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {

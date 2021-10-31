@@ -76,6 +76,9 @@
 		F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152968265017E5003BCB59 /* AuthInfoProvider.swift */; };
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
 		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
+		F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */; };
+		F631986B272E71D500E66417 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631986A272E71D500E66417 /* ClipboardService.swift */; };
+		F631986D272E725500E66417 /* StubClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631986C272E725500E66417 /* StubClipboardService.swift */; };
 		F637206326653F960089D0B3 /* MemberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206226653F960089D0B3 /* MemberTests.swift */; };
 		F6391C6D271DBD350000F927 /* ReadRemindMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C6C271DBD350000F927 /* ReadRemindMessage.swift */; };
 		F6391C6F271DBF650000F927 /* ReadRemindMessagingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C6E271DBF650000F927 /* ReadRemindMessagingService.swift */; };
@@ -222,6 +225,9 @@
 		F6152968265017E5003BCB59 /* AuthInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProvider.swift; sourceTree = "<group>"; };
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
 		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
+		F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkAddSuggestUsecase.swift; sourceTree = "<group>"; };
+		F631986A272E71D500E66417 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
+		F631986C272E725500E66417 /* StubClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubClipboardService.swift; sourceTree = "<group>"; };
 		F637206226653F960089D0B3 /* MemberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTests.swift; sourceTree = "<group>"; };
 		F6391C6C271DBD350000F927 /* ReadRemindMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindMessage.swift; sourceTree = "<group>"; };
 		F6391C6E271DBF650000F927 /* ReadRemindMessagingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindMessagingService.swift; sourceTree = "<group>"; };
@@ -313,6 +319,7 @@
 				F6391C6E271DBF650000F927 /* ReadRemindMessagingService.swift */,
 				F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */,
 				F6F29590266D136200CDF980 /* FileHandleService.swift */,
+				F631986A272E71D500E66417 /* ClipboardService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -432,6 +439,7 @@
 				F6B21C6427004D69006243FD /* StubLinkPreviewRepository.swift */,
 				F6B6B41627107414000652E0 /* StubItemCategoryRepository.swift */,
 				F6C1C8DB272556CB007277A5 /* StubReadLinkMemoRepository.swift */,
+				F631986C272E725500E66417 /* StubClipboardService.swift */,
 			);
 			path = Doubles;
 			sourceTree = "<group>";
@@ -670,6 +678,7 @@
 				F6E279D226F71BF500957AC4 /* ReadItemOptionsUsecase.swift */,
 				F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */,
 				F6B6B412271071EB000652E0 /* ReadItemCategoryUsecase.swift */,
+				F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -875,6 +884,7 @@
 				F6152937264DA31A003BCB59 /* HoorayUsecase.swift in Sources */,
 				F6A8CE3C271174F900CA6D3D /* SuggestCategory.swift in Sources */,
 				F6391C6F271DBF650000F927 /* ReadRemindMessagingService.swift in Sources */,
+				F631986B272E71D500E66417 /* ClipboardService.swift in Sources */,
 				F66B7D7626C787CE00D31FAC /* PlaceUsecase.swift in Sources */,
 				F6684E082647EE7D00820368 /* SuggestPlace.swift in Sources */,
 				F6CFA5732645A91E00F9A049 /* SearchingPlace.swift in Sources */,
@@ -896,6 +906,7 @@
 				F6B6B4152710733B000652E0 /* ItemCategoryRepository.swift in Sources */,
 				F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */,
 				F6152949264EE3CC003BCB59 /* MemberShip.swift in Sources */,
+				F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,
 				F6913EFD26EE54D500C6E105 /* ReadLink.swift in Sources */,
 				F61529672650171A003BCB59 /* Auth.swift in Sources */,
@@ -954,6 +965,7 @@
 				F6CF34AE26D7DA5E003B52CD /* BaseStubHoorayRepository.swift in Sources */,
 				F6E279D726F71DA000957AC4 /* StubReadItemOptionsRepository.swift in Sources */,
 				F6B6B41727107414000652E0 /* StubItemCategoryRepository.swift in Sources */,
+				F631986D272E725500E66417 /* StubClipboardService.swift in Sources */,
 				F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */,
 				F6C1C8DE27255711007277A5 /* ReadLinkMemoUsecaseTests.swift in Sources */,
 				F6913F0526EE5EB000C6E105 /* StubReadItemRepository.swift in Sources */,

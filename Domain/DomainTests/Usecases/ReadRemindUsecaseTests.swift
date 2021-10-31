@@ -47,7 +47,8 @@ class ReadRemindUsecaseTests: BaseTestCase, WaitObservableEvents {
         let readItemUsecase = ReadItemUsecaseImple(itemsRespoitory: repository,
                                                    previewRepository: previewRepo,
                                                    optionsRespository: StubReadItemOptionsRepository(scenario: .init()),
-                                                   authInfoProvider: store, sharedStoreService: store)
+                                                   authInfoProvider: store, sharedStoreService: store,
+                                                   clipBoardService: StubClipBoardService())
         
         let messageService = StubReminderMessagingService()
         self.spyMessagingService = messageService
