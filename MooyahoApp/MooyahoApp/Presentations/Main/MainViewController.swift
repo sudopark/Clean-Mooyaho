@@ -78,15 +78,34 @@ extension MainViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.mainView.floatingBottomButtonContainerView.rx.throttleTap()
+        self.mainView.addItemButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.requestAddNewItem()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.floatingBottomButtonContainerView.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.requestAddNewItemUsingURLInClipBoard()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.floatingBottomButtonContainerView.rx.closeTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.cancelAddNewItemUsingURLInCliipboard()
             })
             .disposed(by: self.disposeBag)
         
         self.mainView.shrinkButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.toggleIsReadItemShrinkMode()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.showAddItemInUsingURLInClipBoard
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] suggesting in
+                self?.updateSuggestAddView(suggesting)
             })
             .disposed(by: self.disposeBag)
         
@@ -121,7 +140,17 @@ extension MainViewController {
     
     private func updateIsShrinkModeOn(_ newValue: Bool) {
         self.mainView.shrinkButton.backgroundColor = newValue
-            ? self.uiContext.colors.accentColor : self.uiContext.colors.raw.lightGray
+            ? self.uiContext.colors.secondaryAccentColor
+            : self.uiContext.colors.raw.lightGray
+    }
+    
+    private func updateSuggestAddView(_ suggesting: SuggestAdditem) {
+        switch suggesting {
+        case .suggest(let url):
+            self.mainView.floatingBottomButtonContainerView.showButton(with: url)
+        case .hide:
+            self.mainView.floatingBottomButtonContainerView.hideButton()
+        }
     }
 }
 

@@ -11,6 +11,7 @@ import UIKit
 public protocol ColorSet {
     
     var accentColor: UIColor { get }
+    var secondaryAccentColor: UIColor { get }
     
     var appBackground: UIColor { get }
     var appSecondBackground: UIColor { get }
@@ -59,7 +60,9 @@ public protocol Theme {
 
 public struct DefaultColorSet: ColorSet {
     
-    public var accentColor: UIColor { .systemIndigo }
+    public var accentColor: UIColor { self.buttonBlue }
+    
+    public var secondaryAccentColor: UIColor { UIColor(red: 0/255, green: 171/255, blue: 142/255, alpha: 1.0) }
     
     public var appBackground: UIColor { .white }
     
