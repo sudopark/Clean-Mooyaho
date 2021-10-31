@@ -92,4 +92,33 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
         let updateOnLocal = { [weak self] in self?.readItemLocal.updateItem(params) ?? .empty() }
         return updateOnRemote.switchOr(append: updateOnLocal, witoutError: ())
     }
+    
+    public func requestFindLinkItem(using url: String) -> Maybe<ReadLink?> {
+        
+        let findInLocalWithoutError = self.readItemLocal.findLinkItem(using: url)
+            .catchAndReturn(nil)
+        
+        let orFindInRemoteIfNotExistsOnLocal: (ReadLink?) -> Maybe<ReadLink?>
+        orFindInRemoteIfNotExistsOnLocal = { [weak self] link in
+            guard let self = self else { return .empty() }
+            return link.map { .just($0) } ?? self.findLikItemInRemote(url)
+        }
+        
+        return findInLocalWithoutError
+            .flatMap(orFindInRemoteIfNotExistsOnLocal)
+    }
+    
+    private func findLikItemInRemote(_ url: String) -> Maybe<ReadLink?> {
+        
+        let updateLocalIfPossible: (ReadLink?) -> Void = { [weak self] link in
+            guard let self = self, let link = link else { return }
+            self.readItemLocal.updateReadItems([link])
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        return self.readItemRemote.requestFindLinkItem(using: url)
+            .do(onNext: updateLocalIfPossible)
+    }
+    
 }

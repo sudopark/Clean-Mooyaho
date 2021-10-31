@@ -161,6 +161,8 @@ public protocol ReadItemRemote: AuthorizationNeed {
     func requestLoadCollection(collectionID: String) -> Maybe<ReadCollection>
     
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
+    
+    func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
 }
 
 public protocol ReadItemOptionsRemote: AuthorizationNeed {

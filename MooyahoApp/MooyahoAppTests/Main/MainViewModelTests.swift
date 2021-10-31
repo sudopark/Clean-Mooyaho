@@ -23,6 +23,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var mockMemberUsecase: MockMemberUsecase!
+    var stubReadLinkAddSuggestUsecase: StubReadLinkAddSuggestUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
@@ -32,14 +33,19 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.spyRouter = .init()
         
         let fakeUsecase = FakeReadItemOptionUsecase()
+        
+        self.stubReadLinkAddSuggestUsecase = .init()
+        
         self.viewModel = .init(memberUsecase: self.mockMemberUsecase,
                                readItemOptionUsecase: fakeUsecase,
+                               addItemSuggestUsecase: self.stubReadLinkAddSuggestUsecase,
                                router: self.spyRouter)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockMemberUsecase = nil
+        self.stubReadLinkAddSuggestUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -110,6 +116,20 @@ extension MainViewModelTests {
         
         // then
         XCTAssertEqual(isShrinkMode, [false, true, false])
+    }
+    
+    func testViewModel_whenSuggestAddItemByURLExists_showSuggesting() {
+        // given
+        let expect = expectation(description: "아이템 추가 서제스트 아이템이 존재하는 경우 서제스트 노출")
+        self.stubReadLinkAddSuggestUsecase.url = "https://www.naver.com"
+        
+        // when
+        let suggestURL = self.waitFirstElement(expect, for: viewModel.showAddItemInUsingURLInClipBoard) {
+            self.viewModel.checkHasSomeSuggestAddItem()
+        }
+        
+        // then
+        XCTAssertNotNil(suggestURL)
     }
 }
 

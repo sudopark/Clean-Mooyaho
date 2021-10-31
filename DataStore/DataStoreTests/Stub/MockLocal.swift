@@ -136,6 +136,10 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "updateItem") ?? .empty()
     }
     
+    func findLinkItem(using url: String) -> Maybe<ReadLink?> {
+        return self.resolve(key: "findLinkItem") ?? .empty()
+    }
+    
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         return self.resolve(key: "fetchReadItemIsShrinkMode") ?? .empty()
     }

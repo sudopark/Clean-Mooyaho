@@ -61,6 +61,7 @@ public final class MainViewController: BaseViewController, MainScene {
         super.viewDidLoad()
         self.viewModel.setupSubScenes()
         self.bind()
+        self.viewModel.checkHasSomeSuggestAddItem()
     }
 
 }
@@ -86,13 +87,14 @@ extension MainViewController {
         
         self.mainView.floatingBottomButtonContainerView.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
+                self?.mainView.floatingBottomButtonContainerView.hideButton()
                 self?.viewModel.requestAddNewItemUsingURLInClipBoard()
             })
             .disposed(by: self.disposeBag)
         
         self.mainView.floatingBottomButtonContainerView.rx.closeTap()
             .subscribe(onNext: { [weak self] in
-                self?.viewModel.cancelAddNewItemUsingURLInCliipboard()
+                self?.mainView.floatingBottomButtonContainerView.hideButton()
             })
             .disposed(by: self.disposeBag)
         
@@ -102,10 +104,17 @@ extension MainViewController {
             })
             .disposed(by: self.disposeBag)
         
+        UIContext.currentAppStatus
+            .subscribe(onNext: { [weak self] state in
+                guard state == .forground else { return }
+                self?.viewModel.checkHasSomeSuggestAddItem()
+            })
+            .disposed(by: self.disposeBag)
+        
         self.viewModel.showAddItemInUsingURLInClipBoard
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] suggesting in
-                self?.updateSuggestAddView(suggesting)
+            .drive(onNext: { [weak self] url in
+                self?.mainView.floatingBottomButtonContainerView.showButton(with: url)
             })
             .disposed(by: self.disposeBag)
         
@@ -142,15 +151,6 @@ extension MainViewController {
         self.mainView.shrinkButton.backgroundColor = newValue
             ? self.uiContext.colors.secondaryAccentColor
             : self.uiContext.colors.raw.lightGray
-    }
-    
-    private func updateSuggestAddView(_ suggesting: SuggestAdditem) {
-        switch suggesting {
-        case .suggest(let url):
-            self.mainView.floatingBottomButtonContainerView.showButton(with: url)
-        case .hide:
-            self.mainView.floatingBottomButtonContainerView.hideButton()
-        }
     }
 }
 

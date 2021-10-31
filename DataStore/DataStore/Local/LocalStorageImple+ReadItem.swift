@@ -44,4 +44,8 @@ extension LocalStorageImple {
     public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return self.dataModelStorage.updateItem(params)
     }
+    
+    public func findLinkItem(using url: String) -> Maybe<ReadLink?> {
+        return self.dataModelStorage.findLinkItem(using: url)
+    }
 }

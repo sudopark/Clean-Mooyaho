@@ -17,25 +17,20 @@ import CommonPresenting
 
 // MARK: - MainViewModel
 
-public enum SuggestAdditem {
-    case suggest(String)
-    case hide
-}
-
 public protocol MainViewModel: AnyObject {
 
     // interactor
     func setupSubScenes()
     func openSlideMenu()
     func requestAddNewItem()
+    func checkHasSomeSuggestAddItem()
     func requestAddNewItemUsingURLInClipBoard()
-    func cancelAddNewItemUsingURLInCliipboard()
     func toggleIsReadItemShrinkMode()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
     var isReadItemShrinkModeOn: Observable<Bool> { get }
-    var showAddItemInUsingURLInClipBoard: Observable<SuggestAdditem> { get }
+    var showAddItemInUsingURLInClipBoard: Observable<String> { get }
 }
 
 
@@ -45,6 +40,7 @@ public final class MainViewModelImple: MainViewModel {
     
     private let memberUsecase: MemberUsecase
     private let readItemOptionUsecase: ReadItemOptionsUsecase
+    private let addItemSuggestUsecase: ReadLinkAddSuggestUsecase
     private let router: MainRouting
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -53,10 +49,12 @@ public final class MainViewModelImple: MainViewModel {
     
     public init(memberUsecase: MemberUsecase,
                 readItemOptionUsecase: ReadItemOptionsUsecase,
+                addItemSuggestUsecase: ReadLinkAddSuggestUsecase,
                 router: MainRouting) {
         
         self.memberUsecase = memberUsecase
         self.readItemOptionUsecase = readItemOptionUsecase
+        self.addItemSuggestUsecase = addItemSuggestUsecase
         self.router = router
         
         self.internalBinding()
@@ -105,11 +103,21 @@ extension MainViewModelImple {
         }
     }
     
-    public func requestAddNewItemUsingURLInClipBoard() {
+    public func checkHasSomeSuggestAddItem() {
         
+        let suggestIfNeed: (String?) -> Void = { [weak self] url in
+            guard let self = self, let url = url else { return }
+            self.subjects.suggestAddItemURL.accept(url)
+        }
+        
+        self.addItemSuggestUsecase
+            .loadSuggestAddNewItemByURLExists()
+            .subscribe(onSuccess: suggestIfNeed)
+            .disposed(by: self.disposeBag)
     }
     
-    public func cancelAddNewItemUsingURLInCliipboard() {
+    public func requestAddNewItemUsingURLInClipBoard() {
+        
         
     }
     
@@ -145,7 +153,9 @@ extension MainViewModelImple {
             .distinctUntilChanged()
     }
     
-    public var showAddItemInUsingURLInClipBoard: Observable<SuggestAdditem> {
-        return .empty()
+    public var showAddItemInUsingURLInClipBoard: Observable<String> {
+        return self.subjects
+            .suggestAddItemURL
+            .compactMap { $0 }
     }
 }

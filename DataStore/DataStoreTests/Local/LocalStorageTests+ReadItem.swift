@@ -237,4 +237,32 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual((loadedLink as? ReadLink)?.isRed, false)
         XCTAssertEqual(loadedLink?.parentID, "new_parent_id")
     }
+    
+    func testStorage_findItemUsingURL() {
+        // given
+        let expect = expectation(description: "url로 링크아이템 탐색")
+        let link1 = ReadLink(link: self.dummyURL1)
+        let link2 = ReadLink(link: self.dummyURL2)
+        
+        // when
+        let save = self.local.updateReadItems([link1, link2])
+        let find = self.local.findLinkItem(using: self.dummyURL1)
+        let saveAndFind = save.flatMap { _ in find }
+        let finded = self.waitFirstElement(expect, for: saveAndFind.asObservable())
+        
+        // then
+        XCTAssertEqual(finded?.link, self.dummyURL1)
+    }
+    
+    private var dummyURL1: String {
+        return """
+        https://www.google.co.kr/search?q=swift+cg+animation&newwindow=1&bih=895&biw=1530&hl=ko&sxsrf=AOaemvLLuvpHGCDsyor5jBU4_d6NjW-1Og%3A1635659653056&ei=hS9-YYHXAs22mAWfqriQDg&oq=swift+cg+animation&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoECAAQQzoHCAAQgAQQCjoICAAQgAQQsQM6BwgAELEDEEM6CggAEIAEEIcCEBQ6BQgAEIAEOgcIIxCxAhAnOgQIABAKOgcIIRAKEKABOgQIIRAVSgQIQRgBUOf6J1iiiihgqowoaANwAHgAgAGZAYgB9xCSAQQwLjE4mAEAoAEBwAEB&sclient=gws-wiz&ved=0ahUKEwjBrd-E-_PzAhVNG6YKHR8VDuIQ4dUDCA4&uact=5
+        """
+    }
+    
+    private var dummyURL2: String {
+        return """
+        https://www.google.co.kr/search?q=firebase+fcm+send+message+schedule+date&btnK=Google+%EA%B2%80%EC%83%89&newwindow=1&bih=944&biw=1397&hl=ko&sxsrf=AOaemvKTvpUqMZEaJ4CoS4essjh2eq2a-A%3A1635250959171&source=hp&ei=D_N3YZfHB8j2-gScj5nAAQ&iflsig=ALs-wAMAAAAAYXgBH9jwr5bCJvLc8KggQtK7uRbMstAN&ved=0ahUKEwjXiqbEiOjzAhVIu54KHZxHBhgQ4dUDCAc&uact=5&oq=ribs+git&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBQgAEIAEMgYIABAFEB4yBggAEAgQHjoGCCMQJxATOgsIABCABBCxAxCDAToECAAQQzoHCCMQsQIQJzoICAAQgAQQsQM6BwgjEOoCECc6CggAEIAEEIcCEBQ6BAgAEB5Q-ghYoiRg0CVoA3AAeACAAXmIAcUJkgEEMC4xMZgBAKABAbABCg&sclient=gws-wiz
+        """
+    }
 }

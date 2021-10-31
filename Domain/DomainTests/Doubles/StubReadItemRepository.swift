@@ -29,6 +29,8 @@ class StubReadItemRepository: ReadItemRepository {
         var updateLinkResult: Result<Void, Error> = .success(())
         
         var updateWithParamsResult: Result<Void, Error> = .success(())
+        
+        var ulrAndLinkItemMap = [String: ReadLink]()
     }
     
     private let scenario: Scenario
@@ -60,5 +62,10 @@ class StubReadItemRepository: ReadItemRepository {
     
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return scenario.updateWithParamsResult.asMaybe()
+    }
+    
+    func requestFindLinkItem(using url: String) -> Maybe<ReadLink?> {
+        let item = self.scenario.ulrAndLinkItemMap[url]
+        return .just(item)
     }
 }

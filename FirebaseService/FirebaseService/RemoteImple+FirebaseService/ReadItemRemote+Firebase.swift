@@ -56,4 +56,11 @@ extension FirebaseServiceImple {
         }
         return .error(RemoteErrors.notFound("not implemented", reason: nil))
     }
+    
+    public func requestFindLinkItem(using url: String) -> Maybe<ReadLink?> {
+        guard let _ = self.signInMemberID else {
+            return .just(nil)
+        }
+        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+    }
 }
