@@ -17,17 +17,25 @@ import CommonPresenting
 
 // MARK: - MainViewModel
 
+public enum SuggestAdditem {
+    case suggest(String)
+    case hide
+}
+
 public protocol MainViewModel: AnyObject {
 
     // interactor
     func setupSubScenes()
     func openSlideMenu()
     func requestAddNewItem()
+    func requestAddNewItemUsingURLInClipBoard()
+    func cancelAddNewItemUsingURLInCliipboard()
     func toggleIsReadItemShrinkMode()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
     var isReadItemShrinkModeOn: Observable<Bool> { get }
+    var showAddItemInUsingURLInClipBoard: Observable<SuggestAdditem> { get }
 }
 
 
@@ -56,6 +64,7 @@ public final class MainViewModelImple: MainViewModel {
     
     fileprivate final class Subjects {
         let isReadItemShrinkModeOn = BehaviorRelay<Bool?>(value: nil)
+        let suggestAddItemURL = BehaviorRelay<String?>(value: nil)
     }
     
     deinit {
@@ -96,6 +105,14 @@ extension MainViewModelImple {
         }
     }
     
+    public func requestAddNewItemUsingURLInClipBoard() {
+        
+    }
+    
+    public func cancelAddNewItemUsingURLInCliipboard() {
+        
+    }
+    
     public func toggleIsReadItemShrinkMode() {
         guard let newValue = self.subjects.isReadItemShrinkModeOn.value?.invert() else { return }
         
@@ -126,5 +143,9 @@ extension MainViewModelImple {
             .isReadItemShrinkModeOn
             .compactMap { $0 }
             .distinctUntilChanged()
+    }
+    
+    public var showAddItemInUsingURLInClipBoard: Observable<SuggestAdditem> {
+        return .empty()
     }
 }

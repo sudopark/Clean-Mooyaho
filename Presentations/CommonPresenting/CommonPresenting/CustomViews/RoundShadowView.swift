@@ -17,6 +17,8 @@ public class RoundShadowView: BaseUIView {
     public var shadowColor: UIColor = UIColor.black.withAlphaComponent(0.4)
     
     public func updateLayer() {
+        self.shadowLayer?.removeAllAnimations()
+        self.shadowLayer?.removeFromSuperlayer()
         self.shadowLayer = nil
         self.layoutIfNeeded()
     }

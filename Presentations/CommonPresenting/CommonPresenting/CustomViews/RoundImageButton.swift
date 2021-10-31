@@ -80,5 +80,8 @@ extension RoundImageButton: Presenting {
         button.autoLayout.fill(self)
     }
     
-    public func setupStyling() { }
+    public func setupStyling() {
+        
+        self.imageView.contentMode = .scaleAspectFit
+    }
 }
