@@ -23,7 +23,7 @@ public protocol AddItemNavigationRouting: Routing {
     
     func prepareNavigation()
     
-    func pushToEnterURLScene(_ entered: @escaping (String) -> Void)
+    func pushToEnterURLScene(startWith url: String?, _ entered: @escaping (String) -> Void)
     
     func pushConfirmAddLinkItemScene(at collectionID: String?, url: String)
     func popToEnrerURLScene()
@@ -73,10 +73,10 @@ extension AddItemNavigationRouter {
     }
     
     // AddItemNavigationRouting implements
-    public func pushToEnterURLScene(_ entered: @escaping (String) -> Void) {
+    public func pushToEnterURLScene(startWith url: String?, _ entered: @escaping (String) -> Void) {
         
         guard let navigationController = self.embedNavigationController,
-              let next = self.nextScenesBuilder?.makeEnterLinkURLScene(entered) else {
+              let next = self.nextScenesBuilder?.makeEnterLinkURLScene(startWith: url, entered) else {
                   return
               }
         navigationController.pushViewController(next, animated: false)

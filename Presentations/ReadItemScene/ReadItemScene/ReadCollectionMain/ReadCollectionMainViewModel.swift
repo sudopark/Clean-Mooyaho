@@ -67,6 +67,10 @@ extension ReadCollectionMainViewModelImple {
     public func addNewReadLinkItem() {
         self.router.addNewReadLinkItemAtCurrentCollection()
     }
+    
+    public func addNewReaedLinkItem(with url: String) {
+        self.router.addNewReadLinkItem(using: url)
+    }
 }
 
 

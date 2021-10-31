@@ -145,7 +145,7 @@ extension MainViewModelTests {
             return nil
         }
         
-        func addReadCollectionScene() -> ReadCollectionMainSceneInput? {
+        func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
             self.verify(key: "addReadCollectionScene")
             return spyCollectionMainSceneInput
         }
@@ -188,13 +188,17 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyReadCollectionMainInput: ReadCollectionMainSceneInput  {
+    class SpyReadCollectionMainInput: ReadCollectionMainSceneInteractable  {
         
         func addNewCollectionItem() {
             
         }
         
         func addNewReadLinkItem() {
+            
+        }
+        
+        func addNewReaedLinkItem(with url: String) {
             
         }
     }

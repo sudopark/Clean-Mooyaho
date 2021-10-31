@@ -24,7 +24,9 @@ public protocol EnterLinkURLViewModel: AnyObject {
     func confirmEnter()
     
     // presenter
+    var startWithURL: String? { get }
     var isConfirmable: Observable<Bool> { get }
+    func startAutoEnterURLIfNeed()
 }
 
 
@@ -32,10 +34,15 @@ public protocol EnterLinkURLViewModel: AnyObject {
 
 public final class EnterLinkURLViewModelImple: EnterLinkURLViewModel {
     
+    public let startWithURL: String?
     private let callback: (String) -> Void
     private let router: EnterLinkURLRouting
     
-    public init(router: EnterLinkURLRouting, callback: @escaping (String) -> Void) {
+    public init(startWith url: String?,
+                router: EnterLinkURLRouting,
+                callback: @escaping (String) -> Void) {
+        
+        self.startWithURL = url
         self.router = router
         self.callback = callback
     }
@@ -57,6 +64,13 @@ public final class EnterLinkURLViewModelImple: EnterLinkURLViewModel {
 // MARK: - EnterLinkURLViewModelImple Interactor
 
 extension EnterLinkURLViewModelImple {
+    
+    public func startAutoEnterURLIfNeed() {
+        guard let startURL = self.startWithURL else { return }
+        self.subjects.inputURLAddress.accept(startURL)
+        
+        self.callback(startURL)
+    }
     
     public func enterURL(_ address: String) {
         self.subjects.inputURLAddress.accept(address)

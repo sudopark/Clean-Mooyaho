@@ -70,7 +70,9 @@ extension ReadCollectionMainViewModelTests {
 
 extension ReadCollectionMainViewModelTests: ReadCollectionMainRouting {
     
-    
+    func addNewReadLinkItem(using url: String) {
+        
+    }
     
     func setupSubCollections() {
         self.didSubCollectionSetuped = true

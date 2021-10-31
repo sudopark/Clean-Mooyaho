@@ -31,13 +31,16 @@ public protocol AddItemNavigationViewModel: AnyObject {
 
 public final class AddItemNavigationViewModelImple: AddItemNavigationViewModel {
     
+    private let startWithURL: String?
     private let targetCollectionID: String?
     private let router: AddItemNavigationRouting
     private weak var listener: AddItemNavigationSceneListenable?
     
-    public init(targetCollectionID: String?,
+    public init(startWith url: String?,
+                targetCollectionID: String?,
                 router: AddItemNavigationRouting,
                 listener: AddItemNavigationSceneListenable?) {
+        self.startWithURL = url
         self.targetCollectionID = targetCollectionID
         self.router = router
         self.listener = listener
@@ -63,16 +66,16 @@ extension AddItemNavigationViewModelImple {
     
     public func prepareNavigation() {
         self.router.prepareNavigation()
-        self.moveToEnterLinkURL()
+        self.moveToEnterLinkURL(startWith: self.startWithURL)
     }
     
-    private func moveToEnterLinkURL() {
+    private func moveToEnterLinkURL(startWith url: String? = nil) {
         
         let handleEnteredURL: (String) -> Void = { [weak self] url in
             guard let self = self else { return }
             self.moveToConfirmAddItemScene(with: url)
         }
-        self.router.pushToEnterURLScene(handleEnteredURL)
+        self.router.pushToEnterURLScene(startWith: url, handleEnteredURL)
     }
     
     private func moveToConfirmAddItemScene(with url: String) {

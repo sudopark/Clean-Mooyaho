@@ -23,6 +23,7 @@ public protocol SelectAddItemTypeSceneBuilable {
 public protocol AddItemNavigationSceneBuilable {
     
     func makeAddItemNavigationScene(at collectionID: String?,
+                                    startWith: String?,
                                     _ listener: AddItemNavigationSceneListenable?) -> AddItemNavigationScene
 }
 

@@ -20,5 +20,6 @@ import CommonPresenting
 
 public protocol EnterLinkURLSceneBuilable {
     
-    func makeEnterLinkURLScene(_ entered: @escaping (String) -> Void) -> EnterLinkURLScene
+    func makeEnterLinkURLScene(startWith: String?,
+                               _ entered: @escaping (String) -> Void) -> EnterLinkURLScene
 }
