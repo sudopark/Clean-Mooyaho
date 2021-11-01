@@ -27,7 +27,7 @@ extension ItemCategoryRepository where Self: ItemCategoryRepositoryDefImpleDepen
     }
     
     public func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
-        return .empty()
+        return self.categoryRemote.requestLoadCategories(ids)
     }
     
     public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {

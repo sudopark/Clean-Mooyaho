@@ -114,6 +114,19 @@ extension RepositoryTests_ItemCategory {
         // then
         XCTAssertNotNil(result)
     }
+    
+    func testCategory_loadCategries_fromRemote() {
+        // given
+        let expect = expectation(description: "remote에서 카테고리 조회")
+        self.mockRemote.register(key: "requestLoadCategories") { Maybe<[ItemCategory]>.just([.init(name: "some", colorCode: "some")]) }
+        
+        // when
+        let loading = self.repository.requestLoadCategories(["some"])
+        let categories = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(categories?.count, 1)
+    }
 }
 
 extension RepositoryTests_ItemCategory {

@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
+        return .empty()
+    }
+    
     func requestFindLinkItem(using url: String) -> Maybe<ReadLink?> {
         return .empty()
     }
