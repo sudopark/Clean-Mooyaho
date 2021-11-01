@@ -319,28 +319,3 @@ private extension Array where Element == ReadItem {
         return self.map { $0.removeAlreadyPassedRemind() }
     }
 }
-
-public extension ReadItemUpdateParams {
-    
-    func applyChanges() -> ReadItem {
-        return self.updatePropertyParams.reduce(self.item) { acc, property in
-            return property.applyChange(to: acc)
-        }
-    }
-}
-
-private extension ReadItemUpdateParams.ProperyUpdateParams {
-    
-    func applyChange(to item: ReadItem) -> ReadItem {
-        switch self {
-        case let .remindTime(time):
-            return item |> \.remindTime .~ time
-            
-        case let .isRed(flag):
-            return (item as? ReadLink).map { $0 |> \.isRed .~ flag } ?? item
-            
-        case let .parentID(id):
-            return item |> \.parentID .~ id
-        }
-    }
-}

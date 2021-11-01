@@ -21,6 +21,19 @@ public struct ReadItemUpdateParams {
         case remindTime(_ newValue: TimeStamp?)
         case isRed(_ newValue: Bool)
         case parentID(_ newValue: String?)
+        
+        public func applyChange(to item: ReadItem) -> ReadItem {
+            switch self {
+            case let .remindTime(time):
+                return item |> \.remindTime .~ time
+                
+            case let .isRed(flag):
+                return (item as? ReadLink).map { $0 |> \.isRed .~ flag } ?? item
+                
+            case let .parentID(id):
+                return item |> \.parentID .~ id
+            }
+        }
     }
     
     public let item: ReadItem
@@ -28,6 +41,12 @@ public struct ReadItemUpdateParams {
     
     public init(item: ReadItem){
         self.item = item
+    }
+    
+    public func applyChanges() -> ReadItem {
+        return self.updatePropertyParams.reduce(self.item) { acc, property in
+            return property.applyChange(to: acc)
+        }
     }
 }
 
