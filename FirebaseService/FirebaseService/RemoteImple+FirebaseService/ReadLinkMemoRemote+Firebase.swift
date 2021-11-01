@@ -15,25 +15,27 @@ import DataStore
 
 extension FirebaseServiceImple {
     
+    private typealias Key = ReadLinkMemoMappingKey
+    
     public func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
         guard let _ = self.signInMemberID else {
             return .empty()
         }
-        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+        return self.load(docuID: linkItemID, in: .linkMemo)
     }
     
     public func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
         guard let _ = self.signInMemberID else {
             return .empty()
         }
-        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+        return self.save(newValue, at: .linkMemo, merging: true)
     }
     
     public func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
         guard let _ = self.signInMemberID else {
             return .empty()
         }
-        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+        return self.delete(linkItemID, at: .linkMemo)
     }
 }
 
