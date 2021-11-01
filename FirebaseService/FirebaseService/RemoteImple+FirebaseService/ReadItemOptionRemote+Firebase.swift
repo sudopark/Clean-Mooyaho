@@ -19,13 +19,15 @@ extension FirebaseServiceImple {
         guard let _ = self.signInMemberID else {
             return .empty()
         }
-        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+        let order: Maybe<CollectionCustomOrders?> = self.load(docuID: collectionID, in: .readCollectionCustomOrders)
+        return order.map { $0?.itemIDs }
     }
     
     public func requestUpdateReadItemCustomOrder(for collection: String, itemIDs: [String]) -> Maybe<Void> {
         guard let _ = self.signInMemberID else {
             return .empty()
         }
-        return .error(RemoteErrors.notFound("not implemented", reason: nil))
+        let order = CollectionCustomOrders(collectionID: collection, itemIDs: itemIDs)
+        return self.save(order, at: .readCollectionCustomOrders, merging: true)
     }
 }

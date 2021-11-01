@@ -29,6 +29,9 @@ enum ReadItemMappingKey: String, JSONMappingKeys {
     case link
     case customName = "custom_nm"
     case isRed = "is_red"
+    
+    // key for option
+    case customOrders = "custom_ords"
 }
 
 private typealias Key = ReadItemMappingKey
@@ -98,5 +101,30 @@ extension ReadLink: DocumentMappable {
         json[Key.remindTime.rawValue] = self.remindTime
         json[Key.isRed.rawValue] = self.isRed
         return (self.uid, json)
+    }
+}
+
+
+struct CollectionCustomOrders: DocumentMappable {
+    
+    let collectionID: String
+    let itemIDs: [String]
+    
+    init(collectionID: String, itemIDs: [String]) {
+        self.collectionID = collectionID
+        self.itemIDs = itemIDs
+    }
+    
+    init?(docuID: String, json: JSON) {
+        guard let itemIDs = json[Key.customOrders] as? [String] else { return nil }
+        self.collectionID = docuID
+        self.itemIDs = itemIDs
+    }
+    
+    func asDocument() -> (String, JSON) {
+        let json: JSON = [
+            Key.customOrders.rawValue: self.itemIDs
+        ]
+        return (self.collectionID, json)
     }
 }

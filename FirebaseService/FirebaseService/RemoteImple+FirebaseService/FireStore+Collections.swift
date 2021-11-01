@@ -25,6 +25,7 @@ enum FireStoreCollectionType: String {
     case hoorayReactions = "hoorayreactions"
     case readCollection
     case readLinks
+    case readCollectionCustomOrders
     case itemCategory
     case suggestIndexes
     case linkMemo
@@ -110,8 +111,8 @@ extension FirebaseServiceImple {
                 newFields: [String: Any],
                 at collectionType: FireStoreCollectionType) -> Maybe<Void> {
         
-        return Maybe.create { callback in
-            guard let db = self.fireStoreDB else { return Disposables.create() }
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
             
             let documentRef = db.collection(collectionType).document(docuID)
             documentRef.setData(newFields, merge: true) { error in
@@ -126,6 +127,26 @@ extension FirebaseServiceImple {
                 callback(.success(()))
             }
             
+            return Disposables.create()
+        }
+    }
+    
+    func batch(_ collectionType: FireStoreCollectionType,
+               write: @escaping (CollectionReference) -> Void) -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            
+            let batch = db.batch()
+            let collectionRef = db.collection(collectionType)
+            write(collectionRef)
+            
+            batch.commit { error in
+                if let error = error {
+                    callback(.error(error))
+                } else {
+                    callback(.success(()))
+                }
+            }
             return Disposables.create()
         }
     }
@@ -198,6 +219,22 @@ extension FirebaseServiceImple {
         }
         return eachLoadings.reduce(seed) { acc, next in
             return acc.asObservable().concat(next.asObservable())
+        }
+    }
+    
+    func delete(_ docuID: String, at collectionType: FireStoreCollectionType) -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            let collectionRef = db.collection(collectionType)
+            collectionRef.document(docuID).delete { error in
+                if let error = error {
+                    callback(.error(error))
+                } else {
+                    callback(.success(()))
+                }
+            }
+            
+            return Disposables.create()
         }
     }
 }
