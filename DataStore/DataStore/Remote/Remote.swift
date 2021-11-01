@@ -192,6 +192,8 @@ public protocol LinkPreviewRemote {
 
 public protocol ItemCategoryRemote: AuthorizationNeed {
     
+    func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
+    
     func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
  
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>

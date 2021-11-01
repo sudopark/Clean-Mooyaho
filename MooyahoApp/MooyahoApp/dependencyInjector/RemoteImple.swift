@@ -203,6 +203,10 @@ extension RemoteImple {
     
     
     // itemCategory
+    func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
+        return self.firebaseRemote.requestLoadCategories(ids)
+    }
+    
     func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return self.firebaseRemote.requestUpdateCategories(categories)
     }
