@@ -16,20 +16,32 @@ import Domain
 extension LocalStorageImple {
     
     public func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
-        return self.dataModelStorage.fetchCategories(ids)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchCategories(ids)
     }
     
     public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
-        return self.dataModelStorage.updateCategories(categories)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.updateCategories(categories)
     }
     
     public func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
-        return self.dataModelStorage.fetchingItemCategories(like: name)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchingItemCategories(like: name)
             .map { $0.map { .init(ownerID: nil, category: $0, lastUpdated: 0) } }
     }
     
     public func loadLatestCategories() -> Maybe<[SuggestCategory]> {
-        return self.dataModelStorage.fetchLatestItemCategories()
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchLatestItemCategories()
             .map { $0.map { .init(ownerID: nil, category: $0, lastUpdated: 0) } }
     }
 }

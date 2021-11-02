@@ -16,6 +16,7 @@ public enum LocalErrors: Error {
     case invalidData(_ reason: String?)
     case deserializeFail(_ for: String?)
     case notExists
+    case localStorageNotReady
 }
 
 
@@ -165,15 +166,19 @@ public final class LocalStorageImple: LocalStorage {
     
     let encryptedStorage: EncryptedStorage
     let environmentStorage: EnvironmentStorage
-    let dataModelStorage: DataModelStorage
+    let dataModelGateway: DataModelStorageGateway
+    
+    var dataModelStorage: DataModelStorage? {
+        return self.dataModelGateway.curentStorage
+    }
     
     public init(encryptedStorage: EncryptedStorage,
                 environmentStorage: EnvironmentStorage,
-                dataModelStorage: DataModelStorage) {
+                dataModelGateway: DataModelStorageGateway) {
         
         self.encryptedStorage = encryptedStorage
         self.environmentStorage = environmentStorage
-        self.dataModelStorage = dataModelStorage
+        self.dataModelGateway = dataModelGateway
     }
 }
 

@@ -31,7 +31,11 @@ extension LocalStorageImple {
         let currentMemberID = self.fetchCurrentAuth().map{ $0?.userID }
         let thenFetchMember: (String?) -> Maybe<Member?> = { [weak self] memberID in
             guard let memberID = memberID else { return .just(nil) }
-            return self?.dataModelStorage.fetchMember(for: memberID) ?? .empty()
+            guard let storage = self?.dataModelStorage
+            else {
+                return .error(LocalErrors.localStorageNotReady)
+            }
+            return storage.fetchMember(for: memberID)
         }
         return currentMemberID
             .flatMap(thenFetchMember)
@@ -49,8 +53,10 @@ extension LocalStorageImple {
     }
     
     public func saveSignedIn(member: Member) -> Maybe<Void> {
-        
-        return self.dataModelStorage.save(member: member)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.save(member: member)
     }
 }
 

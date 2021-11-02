@@ -32,9 +32,9 @@ final class ShareExtensionEnvironment {
     
     static var dbFileName: String {
         if self.isTestBuild {
-            return "test_dummy.db"
+            return "test_dummy"
         } else {
-            return "datamodels.db"
+            return "datamodels"
         }
     }
     
@@ -42,11 +42,11 @@ final class ShareExtensionEnvironment {
         return "group.sudo.park.clean-mooyaho"
     }
     
-    static var dataModelDBPath: String {
-        
+    static func dataModelDBPath(for userID: String? = nil) -> String {
         let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.groupID)
-        let dbURL = directory?.appendingPathComponent(self.dbFileName)
         
+        let fileName = userID.map { "\(self.dbFileName)_\($0)" } ?? self.dbFileName
+        let dbURL = directory?.appendingPathComponent("\(fileName).db")
         return dbURL?.path ?? ""
     }
 }

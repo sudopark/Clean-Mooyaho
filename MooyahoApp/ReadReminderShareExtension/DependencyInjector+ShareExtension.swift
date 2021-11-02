@@ -33,11 +33,22 @@ final class SharedDependencyInjecttor: EmptyBuilder {
         let localStorage: LocalStorage = {
             let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
             encryptedStorage.setupSharedGroup(ShareExtensionEnvironment.groupID)
-            let dataModelStorage = DataModelStorageImple(dbPath: ShareExtensionEnvironment.dataModelDBPath)
             let envStore: UserDefaults = UserDefaults(suiteName: ShareExtensionEnvironment.groupID) ?? .standard
+            
+            let makeAnonymousStorage: () -> DataModelStorage = {
+                let path = ShareExtensionEnvironment.dataModelDBPath()
+                return DataModelStorageImple(dbPath: path)
+            }
+            let makeUserStorage: (String) -> DataModelStorage = {
+                let path = ShareExtensionEnvironment.dataModelDBPath(for: $0)
+                return DataModelStorageImple(dbPath: path)
+            }
+            let gateway = DataModelStorageGatewayImple(makeAnonymousStorage: makeAnonymousStorage,
+                                                       makeUserStorage: makeUserStorage)
+            
             return LocalStorageImple(encryptedStorage: encryptedStorage,
                                      environmentStorage: envStore,
-                                     dataModelStorage: dataModelStorage)
+                                     dataModelGateway: gateway)
         }()
     }
     

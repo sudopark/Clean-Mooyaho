@@ -16,14 +16,23 @@ import Domain
 extension LocalStorageImple {
     
     public func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
-        return self.dataModelStorage.fetchMemo(for: linkItemID)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchMemo(for: linkItemID)
     }
     
     public func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
-        return self.dataModelStorage.updateMemo(newValue)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.updateMemo(newValue)
     }
     
     public func deleteMemo(for linkItemID: String) -> Maybe<Void> {
-        return self.dataModelStorage.deleteMemo(for: linkItemID)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.deleteMemo(for: linkItemID)
     }
 }

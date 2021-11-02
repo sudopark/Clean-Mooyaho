@@ -28,10 +28,10 @@ extension LocalStorageImple {
     }
     
     public func savePlace(_ place: Place) -> Maybe<Void> {
-        return self.dataModelStorage.savePlace(place)
+        return self.dataModelStorage?.savePlace(place) ?? .empty()
     }
     
     public func fetchPlace(_ placeID: String) -> Maybe<Place?> {
-        return self.dataModelStorage.fetchPlace(placeID)
+        return self.dataModelStorage?.fetchPlace(placeID) ?? .empty()
     }
 }
