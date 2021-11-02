@@ -20,6 +20,10 @@ import Optics
 
 public protocol DataModelStorage {
     
+    func openDatabase() -> Maybe<Void>
+    
+    func closeDatabase() -> Maybe<Void>
+    
     func fetchMember(for memberID: String) -> Maybe<Member?>
     
     func fetchMembers(_ memberIDs: [String]) -> Maybe<[Member]>
@@ -84,14 +88,21 @@ public final class DataModelStorageImple: DataModelStorage {
     
     let sqliteService: SQLiteService
     
+    private let dbPath: String
+    private let version: Int
+    
     private let disposeBag = DisposeBag()
     private let closeWhenDeinit: Bool
     
-    public init(dbPath: String, verstion: Int = 0, closeWhenDeinit: Bool = true) {
+    var isOpen = false
+    
+    public init(dbPath: String, version: Int = 0, closeWhenDeinit: Bool = true) {
+        
+        self.dbPath = dbPath
+        self.version = version
         
         self.sqliteService = SQLiteService()
         self.closeWhenDeinit = closeWhenDeinit
-        self.openAndStartMigrationIfNeed(dbPath, version: verstion)
     }
     
     deinit {
@@ -100,19 +111,72 @@ public final class DataModelStorageImple: DataModelStorage {
         }
     }
     
-    private func openAndStartMigrationIfNeed(_ path: String, version: Int) {
+    public func openDatabase() -> Maybe<Void> {
         
-        let openResult = self.sqliteService.open(path: path)
-        guard case .success = openResult else {
-            logger.print(level: .error, "fail to open sqlite database -> path: \(path)")
-            return
+        guard self.isOpen == false else { return .just() }
+        
+        let updateFlag: () -> Void = { [weak self] in
+            self?.isOpen = true
         }
         
-        self.migrationPlan(for: version)
-            .subscribe(onSuccess: { dbVersion in
-                logger.print(level: .info, "sqlite db open, version: \(dbVersion) and path: \(path)")
-            })
-            .disposed(by: self.disposeBag)
+        let startMigration: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            self.migrationPlan(for: self.version)
+                .subscribe(onSuccess: { dbVersion in
+                    logger.print(level: .info, "sqlite db open, version: \(dbVersion) and path: \(self.dbPath)")
+                })
+                .disposed(by: self.disposeBag)
+        }
+        
+        let logError: (Error) -> Void = { error in
+            logger.print(level: .error, "fail to open sqlite database -> path: \(self.dbPath) and reason: \(error)")
+        }
+        
+        return self.openAction()
+            .do(onNext: updateFlag)
+            .do(onNext: startMigration, onError: logError)
+    }
+    
+    private func openAction() -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let self = self else { return Disposables.create() }
+            let result = self.sqliteService.open(path: self.dbPath)
+            switch result {
+            case .success:
+                callback(.success(()))
+                
+            case let .failure(error):
+                callback(.error(error))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public func closeDatabase() -> Maybe<Void> {
+        
+        guard self.isOpen == true else { return .just() }
+        
+        let updateFlag: () -> Void = { [weak self] in
+            self?.isOpen = false
+        }
+        return self.closeAction()
+            .do(onNext: updateFlag)
+    }
+    
+    private func closeAction() -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let self = self else { return Disposables.create() }
+            self.sqliteService.open(path: self.dbPath) { result in
+                switch result {
+                case .success:
+                    callback(.success(()))
+                    
+                case let .failure(error):
+                    callback(.error(error))
+                }
+            }
+            return Disposables.create()
+        }
     }
 }
 
