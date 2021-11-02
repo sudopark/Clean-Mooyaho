@@ -42,7 +42,8 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         environmentStorageKeyPrefix = "test"
         self.testEnvironmentStorage = UserDefaults.standard
         
-        let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0, closeWhenDeinit: false)
+        let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, version: 0, closeWhenDeinit: false)
+        dataModelStorage.openDatabase().subscribe().disposed(by: self.disposeBag)
         
         self.local = LocalStorageImple(encryptedStorage: mockEncrytedStorage,
                                        environmentStorage: UserDefaults.standard,
