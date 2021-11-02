@@ -23,10 +23,10 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     var testEnvironmentStorage: EnvironmentStorage!
     var local: LocalStorageImple!
     
-    private var testDBPath: String {
+    private func testDBPath(_ name: String) -> String {
         return try! FileManager.default
             .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent("test.db")
+            .appendingPathComponent("\(name).db")
             .path
             
     }
@@ -42,12 +42,18 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         environmentStorageKeyPrefix = "test"
         self.testEnvironmentStorage = UserDefaults.standard
         
-        let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, version: 0, closeWhenDeinit: false)
-        dataModelStorage.openDatabase().subscribe().disposed(by: self.disposeBag)
+        let gateway = DataModelStorageGatewayImple(makeAnonymousStorage: {
+            DataModelStorageImple(dbPath: self.testDBPath("test1"), version: 0, closeWhenDeinit: false)
+            
+        }, makeUserStorage: { _ in
+            DataModelStorageImple(dbPath: self.testDBPath("test2"), version: 0, closeWhenDeinit: false)
+        })
+        gateway.openAnonymousStorage().subscribe().disposed(by: self.disposeBag)
+        gateway.openUserStorage("some").subscribe().disposed(by: self.disposeBag)
         
         self.local = LocalStorageImple(encryptedStorage: mockEncrytedStorage,
                                        environmentStorage: UserDefaults.standard,
-                                       dataModelStorage: dataModelStorage)
+                                       dataModelGateway: gateway)
     }
     
     override func tearDownWithError() throws {
@@ -55,7 +61,8 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         self.mockEncrytedStorage = nil
         self.testEnvironmentStorage.clearAll()
         self.local = nil
-        try? FileManager.default.removeItem(atPath: self.testDBPath)
+        try? FileManager.default.removeItem(atPath: self.testDBPath("test1"))
+        try? FileManager.default.removeItem(atPath: self.testDBPath("test2"))
     }
 }
 

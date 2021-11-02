@@ -17,10 +17,16 @@ extension LocalStorageImple {
     
     
     public func fetchPreview(_ url: String) -> Maybe<LinkPreview?> {
-        return self.dataModelStorage.fetchLinkPreview(url)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchLinkPreview(url)
     }
     
     public func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void> {
-        return self.dataModelStorage.saveLinkPreview(for: url, preview: preview)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.saveLinkPreview(for: url, preview: preview)
     }
 }

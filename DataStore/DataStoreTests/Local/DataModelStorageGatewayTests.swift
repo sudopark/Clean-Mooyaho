@@ -37,6 +37,10 @@ class DataModelStorageGatewayTests: BaseTestCase, WaitObservableEvents {
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.spyUserStorage = nil
+        self.spyAnonymousStorage = nil
+        try? FileManager.default.removeItem(atPath: self.testDBPath("gateway-test"))
+        try? FileManager.default.removeItem(atPath: self.testDBPath("gateway-test-some"))
     }
     
     private func makeAnonymousStorage() -> DataModelStorage {
