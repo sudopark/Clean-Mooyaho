@@ -19,6 +19,14 @@ public enum LocalErrors: Error {
     case localStorageNotReady
 }
 
+public protocol DataModelStorageSwitchable {
+    
+    func openStorage(for auth: Auth) -> Maybe<Void>
+    
+    func switchToAnonymousStorage() -> Maybe<Void>
+    
+    func switchToUserStorage(_ userID: String) -> Maybe<Void>
+}
 
 public protocol AuthLocalStorage {
 
@@ -157,7 +165,7 @@ public protocol ReadLinkMemoLocalStorage {
 
 // MARK: - LocalStorage
 
-public protocol LocalStorage: AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage { }
+public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage { }
 
 
 // MARK: - LocalStorageImple
@@ -179,6 +187,20 @@ public final class LocalStorageImple: LocalStorage {
         self.encryptedStorage = encryptedStorage
         self.environmentStorage = environmentStorage
         self.dataModelGateway = dataModelGateway
+    }
+    
+    public func openStorage(for auth: Auth) -> Maybe<Void> {
+        return auth.isSignIn
+            ? self.dataModelGateway.openUserStorage(auth.userID)
+            : self.dataModelGateway.openAnonymousStorage()
+    }
+    
+    public func switchToAnonymousStorage() -> Maybe<Void> {
+        return self.dataModelGateway.switchToAnonymousStorage()
+    }
+    
+    public func switchToUserStorage(_ userID: String) -> Maybe<Void> {
+        return self.dataModelGateway.switToUserStorage(userID)
     }
 }
 

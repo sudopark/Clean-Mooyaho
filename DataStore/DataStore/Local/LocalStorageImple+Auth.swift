@@ -65,15 +65,18 @@ extension Auth: Codable {
     
     enum CodingKeys: String, CodingKey {
         case userID = "uid"
+        case isSignIn = "is_sign_in"
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.userID, forKey: .userID)
+        try container.encode(self.isSignIn, forKey: .isSignIn)
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.init(userID: try container.decode(String.self, forKey: .userID))
+        self.isSignIn = (try? container.decode(Bool.self, forKey: .isSignIn)) ?? false
     }
 }

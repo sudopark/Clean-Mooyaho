@@ -80,7 +80,7 @@ extension AuthUsecaseTests {
         // given
         let expect = expectation(description: "마지막 이용한 계정정보 로드시 공용 스토어에 저장")
         self.mockAuthRepo.register(key: "fetchLastSignInAccountInfo") {
-            return Maybe<(Auth, Member?)>.just((Auth(userID: "dummy"), Member(uid: "dummy")))
+            return Maybe<(Auth, Member?)>.just((.signIn("dummy"), Member(uid: "dummy")))
         }
         
         // when + then
@@ -240,4 +240,13 @@ extension AuthUsecaseTests {
 extension AuthUsecaseTests {
     
     struct DummyOAuth2Credentail: OAuthCredential { }
+}
+
+private extension Auth {
+    
+    static func signIn(_ id: String) -> Auth {
+        var auth = Auth(userID: id)
+        auth.isSignIn = true
+        return auth
+    }
 }

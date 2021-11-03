@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 
+import Domain
+
 
 // MARK: - DataModelStorageGateWay
 
@@ -85,11 +87,13 @@ extension DataModelStorageGatewayImple {
     }
     
     public func openAnonymousStorage() -> Maybe<Void> {
+        logger.print(level: .info, "open anonymous storage")
         let storage = self.makeAnonymousStorageIfNeed()
         return storage.openDatabase()
     }
     
     public func closeAnonymousStorage() -> Maybe<Void> {
+        logger.print(level: .info, "close anonymous storage")
         guard let storage = self.anonymousStorage else { return .just() }
         return storage.closeDatabase()
             .catchAndReturn(())
@@ -103,11 +107,13 @@ extension DataModelStorageGatewayImple {
     }
     
     public func openUserStorage(_ userID: String) -> Maybe<Void> {
+        logger.print(level: .info, "open user storage: \(userID)")
         let storage = self.makeUserStorageIfNeed(userID)
         return storage.openDatabase()
     }
     
     public func closeUserStorage() -> Maybe<Void> {
+        logger.print(level: .info, "close user storage")
         guard let storage = self.userStorage else { return .just() }
         return storage.closeDatabase()
             .catchAndReturn(())
