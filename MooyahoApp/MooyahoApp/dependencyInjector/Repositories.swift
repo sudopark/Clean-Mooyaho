@@ -34,7 +34,7 @@ extension AppRepository: AuthRepository, AuthRepositoryDefImpleDependency {
         return self.remote
     }
     
-    public var authLocal: AuthLocalStorage {
+    public var authLocal: AuthLocalStorage & DataModelStorageSwitchable {
         return self.local
     }
 }

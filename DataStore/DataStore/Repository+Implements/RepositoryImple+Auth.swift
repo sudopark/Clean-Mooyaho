@@ -17,7 +17,7 @@ public protocol AuthRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
     var authRemote: AuthRemote { get }
-    var authLocal: AuthLocalStorage { get }
+    var authLocal: AuthLocalStorage & DataModelStorageSwitchable { get }
 }
 
 
@@ -34,6 +34,12 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
             }
         }
         
+        let prepareStorage: (Auth) -> Maybe<Auth> = { [weak self] auth in
+            guard let self = self else { return .empty() }
+            return self.authLocal.openStorage(for: auth)
+                .map { auth }
+        }
+        
         let thenLoadExistingCurrentMember: (Auth) -> Maybe<(Auth, Member?)>
         thenLoadExistingCurrentMember = { [weak self] auth in
             guard let self = self else { return .empty() }
@@ -42,9 +48,19 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
                 .map{ (auth, $0) }
         }
         
+        let switchStorageIfNeed: ((Auth, Member?)) -> Maybe<(Auth, Member?)> = { [weak self] pair in
+            guard let self = self else { return .empty() }
+            let isSignedInBeforeButNoMember = pair.0.isSignIn && pair.1 == nil
+            guard isSignedInBeforeButNoMember else { return .just(pair) }
+            return self.authLocal.switchToAnonymousStorage()
+                .map { pair }
+        }
+        
         return getLastAuth
             .flatMap(prepareAnonymousAuthIfNeed)
+            .flatMap(prepareStorage)
             .flatMap(thenLoadExistingCurrentMember)
+            .flatMap(switchStorageIfNeed)
     }
     
     private func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth> {
@@ -72,6 +88,13 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
     }
     
     private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<SigninResult>) -> Maybe<SigninResult> {
+        
+        let switchStorage: (SigninResult) -> Maybe<SigninResult> = { [weak self] result in
+            guard let self = self else { return .empty() }
+            return self.authLocal.switchToUserStorage(result.auth.userID)
+                .map { result }
+        }
+        
         let andSaveMemberInfo: (SigninResult) -> Void = { [weak self] result in
             guard let self = self else { return }
             self.disposeBag.insert {
@@ -80,6 +103,7 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
             }
         }
         return signingAction
+            .flatMap(switchStorage)
             .do(onNext: andSaveMemberInfo)
             .map{ $0 }
     }

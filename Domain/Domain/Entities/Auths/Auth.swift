@@ -14,6 +14,7 @@ import Foundation
 public struct Auth: Equatable {
     
     public let userID: String
+    public var isSignIn = false
     
     public init(userID: String) {
         self.userID = userID
@@ -21,6 +22,7 @@ public struct Auth: Equatable {
     
     public static func == (_ lhs: Self, _ rhs: Self) -> Bool {
         return lhs.userID == rhs.userID
+            && lhs.isSignIn == rhs.isSignIn
     }
 }
 

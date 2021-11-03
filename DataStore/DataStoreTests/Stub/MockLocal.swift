@@ -18,6 +18,25 @@ import Domain
 
 class MockLocal: LocalStorage, Mocking {
     
+    func openStorage(for auth: Auth) -> Maybe<Void> {
+        if auth.isSignIn {
+            self.verify(key: "openStorage-\(auth.userID)")
+        } else {
+            self.verify(key: "openStorage-anonymous")
+        }
+        return .just()
+    }
+    
+    func switchToAnonymousStorage() -> Maybe<Void> {
+        self.verify(key: "switchToAnonymousStorage")
+        return .just()
+    }
+    
+    func switchToUserStorage(_ userID: String) -> Maybe<Void> {
+        self.verify(key: "switchToUserStorage", with: userID)
+        return .just()
+    }
+    
     func fetchCurrentAuth() -> Maybe<Auth?> {
         return self.resolve(key: "fetchCurrentAuth") ?? .empty()
     }
