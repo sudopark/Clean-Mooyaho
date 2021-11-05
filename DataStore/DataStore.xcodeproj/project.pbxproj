@@ -228,12 +228,10 @@
 		2B9F27652633E60B00FEBCE3 /* Local */ = {
 			isa = PBXGroup;
 			children = (
+				F64061822735B2E200902787 /* Deprecated */,
 				2B9F27712633E77900FEBCE3 /* LocalStorage.swift */,
 				F625EDC426821DB4000C87F0 /* LocalStorageImple+Auth.swift */,
 				F625EDC626821E3B000C87F0 /* LocalStorageImple+Member.swift */,
-				F625EDC826821E4E000C87F0 /* LocalStorageImple+Tag.swift */,
-				F625EDCA26821E63000C87F0 /* LocalStorageImple+Place.swift */,
-				F625EDCC26821E75000C87F0 /* LocalStorageImple+Hooray.swift */,
 				F6913F0E26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift */,
 				F6E279DA26F856BA00957AC4 /* LocalStorageImple+ReadItemOptions.swift */,
 				F601725326FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift */,
@@ -362,6 +360,16 @@
 				F601724826FEF49C00E47B75 /* LinkPreviewRemoteImple.swift */,
 			);
 			path = "RemoteImple+LinkPreview";
+			sourceTree = "<group>";
+		};
+		F64061822735B2E200902787 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				F625EDC826821E4E000C87F0 /* LocalStorageImple+Tag.swift */,
+				F625EDCA26821E63000C87F0 /* LocalStorageImple+Place.swift */,
+				F625EDCC26821E75000C87F0 /* LocalStorageImple+Hooray.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		F6419BF426822F9B00C7919B /* Local */ = {
