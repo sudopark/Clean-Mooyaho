@@ -20,6 +20,7 @@ public enum UserDataMigrationStatus {
     case idle
     case migrating
     case finished
+    case fail(Error)
 }
 
 
@@ -75,20 +76,25 @@ extension UserDataMigrationUsecaseImple {
             return self?.migrateReadLinkMemoIfNeed(for: userID) ?? .empty()
         }
         
-        let thenCopyMemberCache: () -> Maybe<Void> = { [weak self] in
-            return self?.migrateMemberCache() ?? .empty()
+        let finalizeMigration: () -> Maybe<Void> = { [weak self] in
+            return self?.migrationRepository.clearMigrationNeedData() ?? .empty()
         }
         
         let updateStatus: () -> Void = { [weak self] in
             self?.subjects.status.accept(.finished)
         }
         
+        let didFailMigration: (Error) -> Void = { [weak self] error in
+            let applicationError = ApplicationErrors.userDataMigrationFail(error)
+            self?.subjects.status.accept(.fail(applicationError))
+        }
+        
         self.subjects.status.accept(.migrating)
         migrateCategories
             .flatMap(thenMigrateReadItems)
             .flatMap(thenMigrateReadLinkMemo)
-            .flatMap(thenCopyMemberCache)
-            .subscribe(onSuccess: updateStatus)
+            .flatMap(finalizeMigration)
+            .subscribe(onSuccess: updateStatus, onError: didFailMigration)
             .disposed(by: self.disposeBag)
     }
     
@@ -144,12 +150,6 @@ extension UserDataMigrationUsecaseImple {
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
     }
-    
-    private func migrateMemberCache() -> Maybe<Void> {
-        return self.migrationRepository.copyMemberCache()
-            .asObservable()
-            .asMaybe()
-    }
 }
 
 
@@ -163,11 +163,3 @@ extension UserDataMigrationUsecaseImple {
         return self.subjects.status.asObservable()
     }
 }
-
-
-//private extension Infallible {
-//
-//    func concatAll() -> Maybe<Void> {
-//
-//    }
-//}

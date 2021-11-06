@@ -231,4 +231,9 @@ extension RemoteImple {
     func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
         return self.firebaseRemote.requestDeleteMemo(for: linkItemID)
     }
+    
+    // batch
+    func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void> {
+        return self.firebaseRemote.requestBatchUpload(type, data: data)
+    }
 }

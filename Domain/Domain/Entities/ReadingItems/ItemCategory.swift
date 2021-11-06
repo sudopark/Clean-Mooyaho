@@ -16,6 +16,7 @@ public struct ItemCategory: Equatable {
     public let uid: String
     public let name: String
     public let colorCode: String
+    public var ownerID: String?
     
     public init(uid: String, name: String, colorCode: String) {
         self.uid = uid

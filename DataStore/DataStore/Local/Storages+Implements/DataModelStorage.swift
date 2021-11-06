@@ -79,6 +79,12 @@ public protocol DataModelStorage {
     func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void>
     
     func deleteMemo(for linkItemID: String) -> Maybe<Void>
+    
+    func fetch<T>(_ type: T.Type, with size: Int) -> Maybe<[T]>
+    
+    func remove<T>(_ type: T.Type, in ids: [String]) -> Maybe<Void>
+    
+    func save<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void>
 }
 
 

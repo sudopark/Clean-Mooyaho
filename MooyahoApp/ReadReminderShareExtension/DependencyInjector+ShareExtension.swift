@@ -35,15 +35,16 @@ final class SharedDependencyInjecttor: EmptyBuilder {
             encryptedStorage.setupSharedGroup(ShareExtensionEnvironment.groupID)
             let envStore: UserDefaults = UserDefaults(suiteName: ShareExtensionEnvironment.groupID) ?? .standard
             
+            let defaultPath = ShareExtensionEnvironment.dataModelDBPath()
             let makeAnonymousStorage: () -> DataModelStorage = {
-                let path = ShareExtensionEnvironment.dataModelDBPath()
-                return DataModelStorageImple(dbPath: path)
+                return DataModelStorageImple(dbPath: defaultPath)
             }
             let makeUserStorage: (String) -> DataModelStorage = {
                 let path = ShareExtensionEnvironment.dataModelDBPath(for: $0)
                 return DataModelStorageImple(dbPath: path)
             }
-            let gateway = DataModelStorageGatewayImple(makeAnonymousStorage: makeAnonymousStorage,
+            let gateway = DataModelStorageGatewayImple(anonymousStoragePath: defaultPath,
+                                                       makeAnonymousStorage: makeAnonymousStorage,
                                                        makeUserStorage: makeUserStorage)
             
             return LocalStorageImple(encryptedStorage: encryptedStorage,

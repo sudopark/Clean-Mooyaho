@@ -19,6 +19,8 @@ public protocol DataModelStorageGateway: AnyObject {
     
     func openAnonymousStorage() -> Maybe<Void>
     
+    func openedAnonymousStorage() -> Maybe<DataModelStorage>
+    
     func closeAnonymousStorage() -> Maybe<Void>
     
     func openUserStorage(_ userID: String) -> Maybe<Void>
@@ -26,6 +28,10 @@ public protocol DataModelStorageGateway: AnyObject {
     func closeUserStorage() -> Maybe<Void>
     
     var curentStorage: DataModelStorage? { get }
+    
+    func checkHasAnonymousStorage() -> Bool
+    
+    func removeAnonymousStorage()
 }
 
 
@@ -57,11 +63,14 @@ extension DataModelStorageGateway {
 
 public final class DataModelStorageGatewayImple: DataModelStorageGateway {
     
+    private let anonymousStoragePath: String
     private let makeAnonymousStorage: () -> DataModelStorage
     private let makeUserStorage: (String) -> DataModelStorage
     
-    public init(makeAnonymousStorage: @escaping () -> DataModelStorage,
+    public init(anonymousStoragePath: String,
+                makeAnonymousStorage: @escaping () -> DataModelStorage,
                 makeUserStorage: @escaping (String) -> DataModelStorage) {
+        self.anonymousStoragePath = anonymousStoragePath
         self.makeAnonymousStorage = makeAnonymousStorage
         self.makeUserStorage = makeUserStorage
     }
@@ -87,9 +96,15 @@ extension DataModelStorageGatewayImple {
     }
     
     public func openAnonymousStorage() -> Maybe<Void> {
+        return self.openedAnonymousStorage()
+            .map { _ in }
+    }
+    
+    public func openedAnonymousStorage() -> Maybe<DataModelStorage> {
         logger.print(level: .info, "open anonymous storage")
         let storage = self.makeAnonymousStorageIfNeed()
         return storage.openDatabase()
+            .map { storage }
     }
     
     public func closeAnonymousStorage() -> Maybe<Void> {
@@ -103,6 +118,7 @@ extension DataModelStorageGatewayImple {
         if self.userStorage == nil {
             self.userStorage = self.makeUserStorage(userID)
         }
+        self.currentSelectedUserID = userID
         return self.userStorage
     }
     
@@ -117,5 +133,14 @@ extension DataModelStorageGatewayImple {
         guard let storage = self.userStorage else { return .just() }
         return storage.closeDatabase()
             .catchAndReturn(())
+    }
+    
+    public func checkHasAnonymousStorage() -> Bool {
+        return FileManager.default.fileExists(atPath: self.anonymousStoragePath)
+    }
+    
+    public func removeAnonymousStorage() {
+        let path = self.anonymousStoragePath
+        try? FileManager.default.removeItem(atPath: path)
     }
 }

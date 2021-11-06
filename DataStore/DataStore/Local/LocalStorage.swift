@@ -26,6 +26,10 @@ public protocol DataModelStorageSwitchable {
     func switchToAnonymousStorage() -> Maybe<Void>
     
     func switchToUserStorage(_ userID: String) -> Maybe<Void>
+    
+    func checkHasAnonymousStorage() -> Bool
+    
+    func removeAnonymousStorage() -> Maybe<Void>
 }
 
 public protocol AuthLocalStorage {
@@ -163,9 +167,16 @@ public protocol ReadLinkMemoLocalStorage {
     func deleteMemo(for linkItemID: String) -> Maybe<Void>
 }
 
+public protocol UserDataMigratableLocalStorage {
+    
+    func fetchFromAnonymousStorage<T>(_ type: T.Type, size: Int) -> Maybe<[T]>
+    func removeFromAnonymousStorage<T>(_ type: T.Type, in ids: [String]) -> Maybe<Void>
+    func saveToUserStorage<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage { }
+public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage { }
 
 
 // MARK: - LocalStorageImple
@@ -201,6 +212,14 @@ public final class LocalStorageImple: LocalStorage {
     
     public func switchToUserStorage(_ userID: String) -> Maybe<Void> {
         return self.dataModelGateway.switToUserStorage(userID)
+    }
+    
+    public func checkHasAnonymousStorage() -> Bool {
+        return self.dataModelGateway.checkHasAnonymousStorage()
+    }
+    
+    public func removeAnonymousStorage() -> Maybe<Void> {
+        return .just(self.dataModelGateway.removeAnonymousStorage())
     }
 }
 

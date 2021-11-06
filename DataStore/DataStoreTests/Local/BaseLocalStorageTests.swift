@@ -23,7 +23,7 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     var testEnvironmentStorage: EnvironmentStorage!
     var local: LocalStorageImple!
     
-    private func testDBPath(_ name: String) -> String {
+    func testDBPath(_ name: String) -> String {
         return try! FileManager.default
             .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             .appendingPathComponent("\(name).db")
@@ -41,8 +41,10 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         
         environmentStorageKeyPrefix = "test"
         self.testEnvironmentStorage = UserDefaults.standard
-        
-        let gateway = DataModelStorageGatewayImple(makeAnonymousStorage: {
+
+        let path = self.testDBPath("test1")
+        let gateway = DataModelStorageGatewayImple(anonymousStoragePath: path,
+                                                   makeAnonymousStorage: {
             DataModelStorageImple(dbPath: self.testDBPath("test1"), version: 0, closeWhenDeinit: false)
             
         }, makeUserStorage: { _ in

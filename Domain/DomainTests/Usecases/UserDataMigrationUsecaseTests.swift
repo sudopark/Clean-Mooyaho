@@ -50,13 +50,15 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
     private func makeUsecase(isMigrationNeed: Bool = true,
                              isEmptyCategories: Bool = false,
                              isEmptyReadItem: Bool = false,
-                             isEmptyMemo: Bool = false) -> UserDataMigrationUsecase {
+                             isEmptyMemo: Bool = false,
+                             shouldFail: Bool = false) -> UserDataMigrationUsecase {
         
         let scenario = StubUserDataMigrationRepository.Scenario()
             |> \.isMigrationNeed .~ .success(isMigrationNeed)
             |> \.migrationNeedItemCategoryChunks .~ (isEmptyCategories ? [] : self.dummyItemCategorisChunk)
             |> \.migrationNeedReadItemChunks .~ (isEmptyReadItem ? [] : self.dummyReadItemChunk)
             |> \.migrationNeedReadLinkMemoChunks .~ (isEmptyMemo ? [] : self.dummyReadLinkMemoChunk)
+            |> \.migrationError .~ (shouldFail ? ApplicationErrors.invalid as Error : nil)
         let repository = StubUserDataMigrationRepository(scenario: scenario)
         self.stubRepository = repository
         return UserDataMigrationUsecaseImple(migrationRepository: repository)
@@ -78,7 +80,8 @@ extension UserDataMigrationUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .finished])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
     }
     
     // 카테고리 아이템 없으면 바로 다음단계로
@@ -94,7 +97,8 @@ extension UserDataMigrationUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .finished])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
     }
     
     // 리드아이템 없으면 바로 다음단계로
@@ -110,7 +114,8 @@ extension UserDataMigrationUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .finished])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
     }
     
     // 메모 없으면 바로 다음 단계
@@ -126,7 +131,8 @@ extension UserDataMigrationUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .finished])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
     }
     
     // 아이템 업데이트 될때마다 아이템 마이그레이션됨 이벤트 방출
@@ -144,6 +150,23 @@ extension UserDataMigrationUsecaseTests {
         // then
         XCTAssertEqual(itemChunks.flatMap { $0 }.count, 99)
     }
+    
+    func testUsecase_migrationFail() {
+        // given
+        let expect = expectation(description: "마이그레이션 실패")
+        expect.expectedFulfillmentCount = 3
+        let usecase = self.makeUsecase(shouldFail: true)
+        
+        // when
+        let status = self.waitElements(expect, for: usecase.status) {
+            usecase.startDataMigration(for: "some")
+        }
+        
+        // then
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key },
+                       [Key.idle, Key.migrating, Key.fail(ApplicationErrors.invalid)].map { $0.key })
+    }
 }
 
 extension UserDataMigrationUsecaseTests {
@@ -160,7 +183,8 @@ extension UserDataMigrationUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .finished])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
     }
     
     // 할필요 없으면 마이그레이션 진행 x
@@ -175,7 +199,8 @@ extension UserDataMigrationUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(status, [.idle])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle].map { $0.key })
     }
     
     // 마이그레이션 중지시 작업만 중지하고 상태 아이들로 변경
@@ -187,13 +212,14 @@ extension UserDataMigrationUsecaseTests {
         
         // when
         let status = self.waitElements(expect, for: usecase.status) {
-            self.stubRepository.mockCopyMember = .init()
+            self.stubRepository.mockClearStorage = .init()
             usecase.resumeMigrationIfNeed(for: "some")
             usecase.pauseMigration()
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .idle])
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.idle].map { $0.key })
         XCTAssertEqual(self.stubRepository.didCleared, false)
     }
     
@@ -206,14 +232,14 @@ extension UserDataMigrationUsecaseTests {
         
         // when
         let status = self.waitElements(expect, for: usecase.status) {
-            self.stubRepository.mockCopyMember = .init()
+            self.stubRepository.mockClearStorage = .init()
             usecase.resumeMigrationIfNeed(for: "some")
             usecase.cancelMigration()
         }
         
         // then
-        XCTAssertEqual(status, [.idle, .migrating, .idle])
-        XCTAssertEqual(self.stubRepository.didCleared, true)
+        typealias Key = UserDataMigrationStatus
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.idle].map { $0.key })
     }
 }
 
@@ -227,5 +253,18 @@ private extension Range where Bound == Int {
             return subRange.map(making)
         }
         return sliceRanges.map(makeChunk)
+    }
+}
+
+
+private extension UserDataMigrationStatus {
+    
+    var key: String {
+        switch self {
+        case .idle: return "idle"
+        case .migrating: return "migrating"
+        case .finished: return "finished"
+        case .fail: return "fail"
+        }
     }
 }

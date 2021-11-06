@@ -12,6 +12,7 @@ import Foundation
 public struct ReadLinkMemo {
     
     public let linkItemID: String
+    public var ownerID: String?
     public var content: String?
     
     public init(itemID: String) {

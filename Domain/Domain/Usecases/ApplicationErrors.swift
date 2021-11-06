@@ -17,4 +17,5 @@ public enum ApplicationErrors: Error {
     case profileNotSetup
     case shouldWaitPublishHooray(until: TimeStamp)
     case notFound
+    case userDataMigrationFail(_ error: Error)
 }

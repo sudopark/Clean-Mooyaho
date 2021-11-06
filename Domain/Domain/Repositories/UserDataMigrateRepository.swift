@@ -15,13 +15,11 @@ public protocol UserDataMigrateRepository {
     
     func checkMigrationNeed() -> Maybe<Bool>
     
-    func requestMoveReadItemCategories(for userID: String) -> Infallible<[ItemCategory]>
+    func requestMoveReadItemCategories(for userID: String) -> Observable<[ItemCategory]>
     
-    func requestMoveReadItems(for userID: String) -> Infallible<[ReadItem]>
+    func requestMoveReadItems(for userID: String) -> Observable<[ReadItem]>
     
-    func requestMoveReadLinkMemos(for userID: String) -> Infallible<[ReadLinkMemo]>
-    
-    func copyMemberCache() -> Infallible<Void>
+    func requestMoveReadLinkMemos(for userID: String) -> Observable<[ReadLinkMemo]>
     
     func clearMigrationNeedData() -> Maybe<Void>
 }
