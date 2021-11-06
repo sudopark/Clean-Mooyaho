@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
         return .empty()
     }

@@ -210,4 +210,23 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
         return self.resolve(key: "requestDeleteMemo") ?? .empty()
     }
+    
+    // batch
+    var batchUploadMocking: ((Error?) -> Void)?
+    var didUploaded: [Any]?
+    func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void> {
+        return Maybe.create { callback in
+            
+            self.batchUploadMocking = { error in
+                if let error = error {
+                    callback(.error(error))
+                } else {
+                    self.didUploaded = data
+                    callback(.success(()))
+                }
+            }
+            
+            return Disposables.create { }
+        }
+    }
 }

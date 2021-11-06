@@ -37,15 +37,16 @@ final class DependencyInjector {
             let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
             encryptedStorage.setupSharedGroup(AppEnvironment.groupID)
             
+            let defaultPath = AppEnvironment.dataModelDBPath()
             let makeAnonymousStorage: () -> DataModelStorage = {
-                let path = AppEnvironment.dataModelDBPath()
-                return DataModelStorageImple(dbPath: path)
+                return DataModelStorageImple(dbPath: defaultPath)
             }
             let makeUserStorage: (String) -> DataModelStorage = {
                 let path = AppEnvironment.dataModelDBPath(for: $0)
                 return DataModelStorageImple(dbPath: path)
             }
-            let gateway = DataModelStorageGatewayImple(makeAnonymousStorage: makeAnonymousStorage,
+            let gateway = DataModelStorageGatewayImple(anonymousStoragePath: defaultPath,
+                                                       makeAnonymousStorage: makeAnonymousStorage,
                                                        makeUserStorage: makeUserStorage)
             
             let envStore: UserDefaults = UserDefaults(suiteName: AppEnvironment.groupID) ?? .standard

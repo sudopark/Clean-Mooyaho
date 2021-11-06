@@ -18,6 +18,10 @@ import Domain
 
 class MockLocal: LocalStorage, Mocking {
     
+    func checkHasAnonymousStorage() -> Bool {
+        return self.resolve(key: "checkHasAnonymousStorage") ?? false
+    }
+    
     func openStorage(for auth: Auth) -> Maybe<Void> {
         if auth.isSignIn {
             self.verify(key: "openStorage-\(auth.userID)")
@@ -222,6 +226,22 @@ class MockLocal: LocalStorage, Mocking {
     
     func deleteMemo(for linkItemID: String) -> Maybe<Void> {
         return self.resolve(key: "deleteMemo") ?? .empty()
+    }
+    
+    func fetchFromAnonymousStorage<T>(_ type: T.Type, size: Int) -> Maybe<[T]> {
+        return self.resolve(key: "fetchFromAnonymousStorage") ?? .empty()
+    }
+    
+    func removeFromAnonymousStorage<T>(_ type: T.Type, in ids: [String]) -> Maybe<Void> {
+        return self.resolve(key: "removeFromAnonymousStorage") ?? .empty()
+    }
+    
+    func saveToUserStorage<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void> {
+        return self.resolve(key: "saveToUserStorage") ?? .empty()
+    }
+    
+    func removeAnonymousStorage() -> Maybe<Void> {
+        return self.resolve(key: "removeAnonymousStorage") ?? .empty()
     }
 }
 

@@ -23,6 +23,8 @@ class StubUserDataMigrationRepository: UserDataMigrateRepository {
         var migrationNeedReadItemChunks: [[ReadItem]] = []
         
         var migrationNeedReadLinkMemoChunks: [[ReadLinkMemo]] = []
+        
+        var migrationError: Error?
     }
     
     private let scenario: Scenario
@@ -34,26 +36,29 @@ class StubUserDataMigrationRepository: UserDataMigrateRepository {
         return self.scenario.isMigrationNeed.asMaybe()
     }
     
-    func requestMoveReadItemCategories(for userID: String) -> Infallible<[ItemCategory]> {
+    func requestMoveReadItemCategories(for userID: String) -> Observable<[ItemCategory]> {
         return .from(self.scenario.migrationNeedItemCategoryChunks)
     }
     
-    func requestMoveReadItems(for userID: String) -> Infallible<[ReadItem]> {
+    func requestMoveReadItems(for userID: String) -> Observable<[ReadItem]> {
+        
+        if let error = self.scenario.migrationError {
+            return .error(error)
+        }
+        
         return .from(self.scenario.migrationNeedReadItemChunks)
     }
     
-    func requestMoveReadLinkMemos(for userID: String) -> Infallible<[ReadLinkMemo]> {
+    func requestMoveReadLinkMemos(for userID: String) -> Observable<[ReadLinkMemo]> {
         return .from(self.scenario.migrationNeedReadLinkMemoChunks)
     }
     
-    var mockCopyMember: PublishSubject<Void>?
-    func copyMemberCache() -> Infallible<Void> {
-        return self.mockCopyMember?.asInfallible(onErrorJustReturn: ()) ?? .just(())
-    }
-    
+    var mockClearStorage: PublishSubject<Void>?
     var didCleared = false
     func clearMigrationNeedData() -> Maybe<Void> {
-        self.didCleared = true
-        return .just()
+        return (self.mockClearStorage?.asMaybe() ?? .just())
+            .do(onNext: {
+                self.didCleared = true
+            })
     }
 }

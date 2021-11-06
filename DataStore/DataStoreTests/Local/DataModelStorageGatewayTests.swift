@@ -59,7 +59,9 @@ class DataModelStorageGatewayTests: BaseTestCase, WaitObservableEvents {
     
     private func makeGateway() -> DataModelStorageGateway {
         
-        return DataModelStorageGatewayImple(makeAnonymousStorage: self.makeAnonymousStorage,
+        let path = self.testDBPath("gateway-test")
+        return DataModelStorageGatewayImple(anonymousStoragePath: path,
+                                            makeAnonymousStorage: self.makeAnonymousStorage,
                                             makeUserStorage: self.makeUserStroage(_:))
     }
 }
