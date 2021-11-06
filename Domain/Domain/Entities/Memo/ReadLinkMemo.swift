@@ -15,6 +15,11 @@ public struct ReadLinkMemo {
     public var ownerID: String?
     public var content: String?
     
+    public var uuid: String {
+        let components = [self.linkItemID, self.ownerID]
+        return components.compactMap { $0 }.joined(separator: "-")
+    }
+    
     public init(itemID: String) {
         self.linkItemID = itemID
     }

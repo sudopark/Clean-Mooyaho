@@ -18,10 +18,11 @@ extension FirebaseServiceImple {
     private typealias Key = ReadLinkMemoMappingKey
     
     public func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
-        guard let _ = self.signInMemberID else {
+        guard let memberID = self.signInMemberID else {
             return .empty()
         }
-        return self.load(docuID: linkItemID, in: .linkMemo)
+        let docuID = ReadLinkMemo.uuid(for: memberID, with: linkItemID)
+        return self.load(docuID: docuID, in: .linkMemo)
     }
     
     public func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
@@ -32,10 +33,17 @@ extension FirebaseServiceImple {
     }
     
     public func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {
-        guard let _ = self.signInMemberID else {
+        guard let memberID = self.signInMemberID else {
             return .empty()
         }
-        return self.delete(linkItemID, at: .linkMemo)
+        let docuID = ReadLinkMemo.uuid(for: memberID, with: linkItemID)
+        return self.delete(docuID, at: .linkMemo)
     }
 }
 
+private extension ReadLinkMemo {
+    
+    static func uuid(for ownerID: String, with itemID: String) -> String {
+        return "\(itemID)-\(ownerID)"
+    }
+}
