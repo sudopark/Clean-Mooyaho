@@ -75,5 +75,12 @@ extension DataModelStorageImple {
         } catch {
             logger.print(level: .error, "fail to create ItemCategoriesTable")
         }
+        
+        do {
+            try database.createTableOrNot(ReadLinkMemoTable.self)
+            logger.print(level: .debug, "sqlite ReadLinkMemoTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ReadLinkMemoTable")
+        }
     }
 }

@@ -76,7 +76,7 @@ extension SignInView: Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 40)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -40)
             $0.topAnchor.constraint(equalTo: guideView.bottomAnchor, constant: 20)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -16-10)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         }
     }
     

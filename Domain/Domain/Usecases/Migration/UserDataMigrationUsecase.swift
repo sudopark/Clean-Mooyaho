@@ -81,15 +81,20 @@ extension UserDataMigrationUsecaseImple {
         }
         
         let updateStatus: () -> Void = { [weak self] in
+            logger.print(level: .goal, "user data migration finished!!")
             self?.subjects.status.accept(.finished)
         }
         
         let didFailMigration: (Error) -> Void = { [weak self] error in
+            
+            logger.print(level: .warning, "user data migration fail => \(error)")
+            
             let applicationError = ApplicationErrors.userDataMigrationFail(error)
             self?.subjects.status.accept(.fail(applicationError))
         }
         
         self.subjects.status.accept(.migrating)
+        logger.print(level: .info, "user data migration did start")
         migrateCategories
             .flatMap(thenMigrateReadItems)
             .flatMap(thenMigrateReadLinkMemo)
@@ -125,7 +130,7 @@ extension UserDataMigrationUsecaseImple {
     private func migrateReadItemCategoriesIfNeed(for userID: String) -> Maybe<Void> {
         return self.migrationRepository
             .requestMoveReadItemCategories(for: userID)
-            .asObservable()
+            .logMigrating("item category")
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
     }
@@ -137,8 +142,8 @@ extension UserDataMigrationUsecaseImple {
         }
         return self.migrationRepository
             .requestMoveReadItems(for: userID)
+            .logMigrating("read item")
             .do(onNext: readItemsMoved)
-            .asObservable()
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
     }
@@ -146,7 +151,7 @@ extension UserDataMigrationUsecaseImple {
     private func migrateReadLinkMemoIfNeed(for userID: String) -> Maybe<Void> {
         return self.migrationRepository
             .requestMoveReadLinkMemos(for: userID)
-            .asObservable()
+            .logMigrating("link memo")
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
     }
@@ -161,5 +166,31 @@ extension UserDataMigrationUsecaseImple {
     
     public var status: Observable<UserDataMigrationStatus> {
         return self.subjects.status.asObservable()
+    }
+}
+
+
+private extension Observable {
+    
+    func logMigrating(_ type: String) -> Observable<Element> {
+        
+        let onNext: (Element) -> Void = { _ in
+            logger.print(level: .debug, "user data migration: move \(type) chunk end")
+        }
+        
+        let onError: (Error) -> Void = { error in
+            logger.print(level: .error, "user data migration fail: \(type)")
+        }
+        
+        let onCompleted: () -> Void = {
+            logger.print(level: .debug, "user data migration: move all \(type) end")
+        }
+        
+        let onSubscribe: () -> Void = {
+            logger.print(level: .debug, "user data migration: start move \(type)")
+        }
+        
+        return self
+            .do(onNext: onNext, onError: onError, onCompleted: onCompleted, onSubscribe: onSubscribe)
     }
 }
