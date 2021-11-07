@@ -8,6 +8,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import DataStore
@@ -26,10 +28,11 @@ extension FirebaseServiceImple {
     }
     
     public func requestUpdateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
-        guard let _ = self.signInMemberID else {
+        guard let memberID = self.signInMemberID else {
             return .empty()
         }
-        return self.save(newValue, at: .linkMemo, merging: true)
+        let memo = newValue |> \.ownerID .~ memberID
+        return self.save(memo, at: .linkMemo, merging: true)
     }
     
     public func requestDeleteMemo(for linkItemID: String) -> Maybe<Void> {

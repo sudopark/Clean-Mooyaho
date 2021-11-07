@@ -23,10 +23,14 @@ extension FirebaseServiceImple {
         }
         
         let collectionRef = self.fireStoreDB.collection(.readCollection)
-        let collectionQuery = collectionRef.whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+        let collectionQuery = collectionRef
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+            .whereField(Key.parentID.rawValue, isEqualTo: "root")
         
         let linkRef = self.fireStoreDB.collection(.readLinks)
-        let linksQuery = linkRef.whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+        let linksQuery = linkRef
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+            .whereField(Key.parentID.rawValue, isEqualTo: "root")
         
         return self.requestLoadMatchingItems(collectionQuery, linksQuery)
     }
@@ -37,10 +41,12 @@ extension FirebaseServiceImple {
         }
         
         let collectionRef = self.fireStoreDB.collection(.readCollection)
-        let collectionQuery = collectionRef.whereField(FieldPath.documentID(), isEqualTo: collectionID)
+        let collectionQuery = collectionRef
+            .whereField(Key.parentID.rawValue, isEqualTo: collectionID)
         
         let linkRef = self.fireStoreDB.collection(.readLinks)
-        let linksQuery = linkRef.whereField(FieldPath.documentID(), isEqualTo: collectionID)
+        let linksQuery = linkRef
+            .whereField(Key.parentID.rawValue, isEqualTo: collectionID)
         
         
         return self.requestLoadMatchingItems(collectionQuery, linksQuery)
