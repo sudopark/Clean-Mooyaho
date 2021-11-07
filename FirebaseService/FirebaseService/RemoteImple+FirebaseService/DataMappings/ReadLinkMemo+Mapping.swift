@@ -25,6 +25,7 @@ extension ReadLinkMemo: DocumentMappable {
         guard let itemID = json[Key.itemID] as? String else { return nil }
         self.init(itemID: itemID)
         self.content = json[Key.content] as? String
+        self.ownerID = json[Key.ownerID] as? String
     }
     
     func asDocument() -> (String, JSON) {

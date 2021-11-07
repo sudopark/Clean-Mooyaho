@@ -47,7 +47,7 @@ extension ReadCollection: DocumentMappable {
 
         self.init(uid: docuID, name: name, createdAt: createdAt, lastUpdated: updatedAt)
         self.ownerID = json[Key.ownerID] as? String
-        self.parentID = json[Key.parentID] as? String
+        self.parentID = (json[Key.parentID] as? String)?.rootAsNil()
         self.priority = (json[Key.priority] as? Int).flatMap { ReadPriority(rawValue: $0) }
         self.categoryIDs = json[Key.categoryIDs] as? [String] ?? []
         self.remindTime = json[Key.remindTime] as? TimeStamp
@@ -60,7 +60,7 @@ extension ReadCollection: DocumentMappable {
         json[Key.createdAt.rawValue] = self.createdAt
         json[Key.lastUpdatedAt.rawValue] = self.lastUpdatedAt
         json[Key.ownerID.rawValue] = self.ownerID
-        json[Key.parentID.rawValue] = self.parentID
+        json[Key.parentID.rawValue] = self.parentID ?? "root"
         json[Key.priority.rawValue] = self.priority?.rawValue
         json[Key.categoryIDs.rawValue] = self.categoryIDs
         json[Key.remindTime.rawValue] = self.remindTime
@@ -80,7 +80,7 @@ extension ReadLink: DocumentMappable {
               let updatedAt = json[Key.lastUpdatedAt] as? TimeStamp else { return nil }
         self.init(uid: docuID, link: link, createAt: createdAt, lastUpdated: updatedAt)
         self.ownerID = json[Key.ownerID] as? String
-        self.parentID = json[Key.parentID] as? String
+        self.parentID = (json[Key.parentID] as? String)?.rootAsNil()
         self.customName = json[Key.customName] as? String
         self.priority = (json[Key.priority] as? Int).flatMap { ReadPriority(rawValue: $0) }
         self.categoryIDs = json[Key.categoryIDs] as? [String] ?? []
@@ -94,7 +94,7 @@ extension ReadLink: DocumentMappable {
         json[Key.createdAt.rawValue] = self.createdAt
         json[Key.lastUpdatedAt.rawValue] = self.lastUpdatedAt
         json[Key.ownerID.rawValue] = self.ownerID
-        json[Key.parentID.rawValue] = self.parentID
+        json[Key.parentID.rawValue] = self.parentID ?? "root"
         json[Key.customName.rawValue] = self.customName
         json[Key.priority.rawValue] = self.priority?.rawValue
         json[Key.categoryIDs.rawValue] = self.categoryIDs
@@ -126,5 +126,12 @@ struct CollectionCustomOrders: DocumentMappable {
             Key.customOrders.rawValue: self.itemIDs
         ]
         return (self.collectionID, json)
+    }
+}
+
+private extension String {
+    
+    func rootAsNil() -> String? {
+        return self == "root" ? nil : self
     }
 }
