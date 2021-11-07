@@ -75,7 +75,9 @@ extension BaseLocalStorageTests {
         
         func setupSharedGroup(_ identifier: String) { }
         
+        var didSavedValue: Any?
         func save<V>(_ key: String, value: V) -> Result<Void, Error> {
+            self.didSavedValue = value
             self.register(key: "fetch") { Result<V?, Error>.success(value) }
             return .success(())
         }
