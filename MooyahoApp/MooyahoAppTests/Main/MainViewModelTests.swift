@@ -69,6 +69,40 @@ extension MainViewModelTests {
         // then
         XCTAssertEqual(profileImages.count, 2)
     }
+    
+    func testViewMdoel_whenRequestOpenSlideMenuWithoutSignIn_requestSignIn() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(nil)
+        
+        // when
+        self.viewModel.requestOpenSlideMenu()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didSignInRequested, true)
+    }
+    
+    func testViewMdoel_whenRequestOpenSlideMenuWithSignIn_openSlideMenu() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(Member(uid: "some", nickName: nil, icon: nil))
+        
+        // when
+        self.viewModel.requestOpenSlideMenu()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didSlideMenuOpen, true)
+    }
+    
+    func testViewModel_whenAfterSignIn_startMigration() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(nil)
+        
+        // when
+        self.viewModel.requestOpenSlideMenu()
+        self.viewModel.signIn(didCompleted: Member(uid: "some", nickName: nil, icon: nil))
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
+    }
 }
 
 extension MainViewModelTests {
@@ -140,9 +174,9 @@ extension MainViewModelTests {
         
         var spyCollectionMainSceneInput: SpyReadCollectionMainInput?
         
-        func presentSignInScene() -> SignInScenePresenter? {
-            self.verify(key: "presentSignInScene")
-            return nil
+        var didSignInRequested = false
+        func presentSignInScene() {
+            self.didSignInRequested = true
         }
         
         func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
@@ -150,12 +184,14 @@ extension MainViewModelTests {
             return spyCollectionMainSceneInput
         }
         
-        func addSuggestPlaceScene() {
-            
+        var didPresentMigrationScene = false
+        func presentUserDataMigrationScene(_ userID: String) {
+            self.didPresentMigrationScene = true
         }
         
+        var didSlideMenuOpen = false
         func openSlideMenu() {
-            
+            self.didSlideMenuOpen = true
         }
         
         func presentEditProfileScene() -> EditProfileScenePresenter? {
@@ -169,10 +205,6 @@ extension MainViewModelTests {
         
         func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
             self.verify(key: "alertShouldWaitPublishNewHooray")
-        }
-        
-        func presentMakeNewHoorayScene() {
-            self.verify(key: "presentMakeNewHoorayScene")
         }
         
         var didAskNewItemType = false

@@ -34,11 +34,14 @@ public final class SignInViewModelImple: SignInViewModel {
         
     private let authUsecase: AuthUsecase
     private let router: SignInRouting
+    private weak var listener: SignInSceneListenable?
     
     public init(authUsecase: AuthUsecase,
-                router: SignInRouting) {
+                router: SignInRouting,
+                listener: SignInSceneListenable?) {
         self.authUsecase = authUsecase
         self.router = router
+        self.listener = listener
     }
     
     deinit {
@@ -48,7 +51,6 @@ public final class SignInViewModelImple: SignInViewModel {
     fileprivate final class Subjects {
         
         let isProcessing = BehaviorRelay<Bool>(value: false)
-        @AutoCompletable var signedIn = PublishSubject<Void>()
     }
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -78,9 +80,9 @@ extension SignInViewModelImple {
             logger.print(level: .warning, "signin fail.. reason: \(error)")
         }
         
-        let closeScene: (Member) -> Void = { [weak self] _ in
+        let closeScene: (Member) -> Void = { [weak self] member in
             self?.router.closeScene(animated: true) {
-                self?.subjects.signedIn.onNext()
+                self?.listener?.signIn(didCompleted: member)
             }
         }
         
@@ -102,9 +104,5 @@ extension SignInViewModelImple {
     
     public var supportingOAuthProviderTypes: [OAuthServiceProviderType] {
         return self.authUsecase.supportingOAuthServiceProviders
-    }
-    
-    public var signedIn: Observable<Void> {
-        return self.subjects.signedIn.asObservable()
     }
 }

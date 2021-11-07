@@ -10,22 +10,26 @@ import Foundation
 
 import RxSwift
 
+import Domain
+
 
 // MARK: - SignInScene
 
-public protocol SignInScenePresenter {
+public protocol SignInSceneInteractable { }
+
+public protocol SignInSceneListenable: AnyObject {
     
-    var signedIn: Observable<Void> { get }
+    func signIn(didCompleted member: Member)
 }
 
 public protocol SignInScene: Scenable, PangestureDismissableScene {
     
-    var presenter: SignInScenePresenter? { get }
+    var interactor: SignInSceneInteractable? { get }
 }
 
 public protocol SignInSceneBuilable {
     
-    func makeSignInScene() -> SignInScene
+    func makeSignInScene(_ listener: SignInSceneListenable?) -> SignInScene
 }
 
 

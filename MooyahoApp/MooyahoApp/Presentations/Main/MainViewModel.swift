@@ -21,7 +21,7 @@ public protocol MainViewModel: AnyObject {
 
     // interactor
     func setupSubScenes()
-    func openSlideMenu()
+    func requestOpenSlideMenu()
     func requestAddNewItem()
     func checkHasSomeSuggestAddItem()
     func requestAddNewItemUsingURLInClipBoard()
@@ -63,6 +63,7 @@ public final class MainViewModelImple: MainViewModel {
     fileprivate final class Subjects {
         let isReadItemShrinkModeOn = BehaviorRelay<Bool?>(value: nil)
         let suggestAddItemURL = BehaviorRelay<String?>(value: nil)
+        let currentMember = BehaviorRelay<Member?>(value: nil)
     }
     
     deinit {
@@ -70,6 +71,12 @@ public final class MainViewModelImple: MainViewModel {
     }
     
     private func internalBinding() {
+        
+        self.memberUsecase.currentMember
+            .subscribe(onNext: { [weak self] member in
+                self?.subjects.currentMember.accept(member)
+            })
+            .disposed(by: self.disposeBag)
         
         self.readItemOptionUsecase
             .isShrinkModeOn
@@ -89,8 +96,10 @@ extension MainViewModelImple {
         self.readCollectionMainSceneInteractor = self.router.addReadCollectionScene()
     }
     
-    public func openSlideMenu() {
-        self.router.openSlideMenu()
+    public func requestOpenSlideMenu() {
+        
+        let isSignIn = self.subjects.currentMember.value != nil
+        return isSignIn ? self.router.openSlideMenu() : self.router.presentSignInScene()
     }
     
     public func requestAddNewItem() {
@@ -137,13 +146,22 @@ extension MainViewModelImple {
     }
 }
 
+// MRAK: - MainViewModel + Interactable
+
+extension MainViewModelImple: MainSceneInteractable {
+    
+    public func signIn(didCompleted member: Member) {
+        self.router.presentUserDataMigrationScene(member.uid)
+    }
+}
+
 
 // MARK: - MainViewModelImple Presenter
 
 extension MainViewModelImple {
  
     public var currentMemberProfileImage: Observable<Thumbnail> {
-        return self.memberUsecase.currentMember
+        return self.subjects.currentMember
             .compactMap{ $0?.icon }
             .startWith(Member.memberDefaultEmoji)
     }
