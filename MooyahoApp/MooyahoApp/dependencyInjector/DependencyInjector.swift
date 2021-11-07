@@ -173,4 +173,8 @@ extension DependencyInjector {
     var memoUsecase: ReadLinkMemoUsecase {
         return ReadLinkMemoUsecaseImple(repository: self.appReposiotry)
     }
+    
+    var userDataMigrationUsecase: UserDataMigrationUsecase {
+        return UserDataMigrationUsecaseImple(migrationRepository: self.appReposiotry)
+    }
 }
