@@ -128,3 +128,15 @@ extension AppRepository: ReadLinkMemoRepository, ReadLinkMemoRepositoryDefImpleD
         return self.local
     }
 }
+
+
+extension AppRepository: UserDataMigrateRepository, UserDataMigrationRepositoryDefImpleDependency {
+    
+    public var migrateLocal: DataModelStorageSwitchable & UserDataMigratableLocalStorage {
+        return self.local
+    }
+    
+    public var migrateRemote: BatchUploadRemote {
+        return self.remote
+    }
+}
