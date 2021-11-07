@@ -29,7 +29,9 @@ public protocol MainRouting: Routing {
     
     func openSlideMenu()
     
-    func presentSignInScene() -> SignInScenePresenter?
+    func presentSignInScene()
+    
+    func presentUserDataMigrationScene(_ userID: String)
     
     func presentEditProfileScene() -> EditProfileScenePresenter?
     
@@ -42,6 +44,7 @@ public protocol MainRouting: Routing {
 public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & SignInSceneBuilable & EditProfileSceneBuilable
     & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
+    & WaitMigrationSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -51,6 +54,10 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
 
 
 extension MainRouter {
+    
+    private var currentInteractor: MainSceneInteractable? {
+        return (self.currentScene as? MainScene)?.interactor
+    }
     
     public func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
         
@@ -80,15 +87,27 @@ extension MainRouter {
         self.currentScene?.present(menuScene, animated: true, completion: nil)
     }
     
-    public func presentSignInScene() -> SignInScenePresenter? {
+    public func presentSignInScene() {
         
-        guard let scene = self.nextScenesBuilder?.makeSignInScene() else { return nil }
+        guard let scene = self.nextScenesBuilder?
+                .makeSignInScene(self.currentInteractor)
+        else { return }
         
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager
         self.currentScene?.present(scene, animated: true, completion: nil)
+    }
+    
+    public func presentUserDataMigrationScene(_ userID: String) {
         
-        return scene.presenter
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let next = self?.nextScenesBuilder?
+                    .makeWaitMigrationScene(userID: userID, listener: nil)
+            else { return }
+            
+            next.isModalInPresentation = true
+            self?.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func presentEditProfileScene() -> EditProfileScenePresenter? {

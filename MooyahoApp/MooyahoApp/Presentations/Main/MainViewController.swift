@@ -16,8 +16,13 @@ import CommonPresenting
 
 // MARK: - MainScene
 
+public protocol MainSceneInteractable: SignInSceneListenable {
+    
+}
+
 public protocol MainScene: Scenable {
     
+    var interactor: MainSceneInteractable? { get }
     var childContainerView: UIView { get }
     var childBottomSlideContainerView: UIView { get }
 }
@@ -29,6 +34,10 @@ public final class MainViewController: BaseViewController, MainScene {
     
     private let mainView = MainView()
     private let viewModel: MainViewModel
+    
+    public var interactor: MainSceneInteractable? {
+        return self.viewModel as? MainSceneInteractable
+    }
     
     public var childContainerView: UIView {
         return self.mainView.mainContainerView
@@ -75,7 +84,7 @@ extension MainViewController {
         self.mainView.profileImageView.rx
             .addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.openSlideMenu()
+                self?.viewModel.requestOpenSlideMenu()
             })
             .disposed(by: self.disposeBag)
         
