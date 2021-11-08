@@ -27,6 +27,8 @@ public protocol MainRouting: Routing {
 
     func addReadCollectionScene() -> ReadCollectionMainSceneInteractable?
     
+    func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable?
+    
     func openSlideMenu()
     
     func presentSignInScene()
@@ -66,13 +68,29 @@ extension MainRouter {
             return nil
         }
         
-        collectionMainScene.view.frame = CGRect(origin: .zero, size: mainScene.childContainerView.frame.size)
+        collectionMainScene.view.frame = CGRect(origin: .zero,
+                                                size: mainScene.childContainerView.frame.size)
         collectionMainScene.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mainScene.addChild(collectionMainScene)
         mainScene.childContainerView.addSubview(collectionMainScene.view)
         collectionMainScene.didMove(toParent: mainScene)
         
         return collectionMainScene.interactor
+    }
+    
+    public func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
+        
+        guard let mainScene = self.currentScene as? MainScene,
+              let presentingCollectionMain = mainScene.children
+                .compactMap ({ $0 as? ReadCollectionMainScene }).first
+        else {
+            return nil
+        }
+        presentingCollectionMain.willMove(toParent: nil)
+        presentingCollectionMain.removeFromParent()
+        presentingCollectionMain.view.removeFromSuperview()
+        
+        return self.addReadCollectionScene()
     }
     
     public func openSlideMenu() {

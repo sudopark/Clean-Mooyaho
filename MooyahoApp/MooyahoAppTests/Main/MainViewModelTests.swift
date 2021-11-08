@@ -92,7 +92,7 @@ extension MainViewModelTests {
         XCTAssertEqual(self.spyRouter.didSlideMenuOpen, true)
     }
     
-    func testViewModel_whenAfterSignIn_startMigration() {
+    func testViewModel_whenAfterSignIn_replaceReadCollectionMainAndStartMigration() {
         // given
         self.mockMemberUsecase.currentMemberSubject.onNext(nil)
         
@@ -101,6 +101,7 @@ extension MainViewModelTests {
         self.viewModel.signIn(didCompleted: Member(uid: "some", nickName: nil, icon: nil))
         
         // then
+        XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
         XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
     }
 }
@@ -182,6 +183,12 @@ extension MainViewModelTests {
         func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
             self.verify(key: "addReadCollectionScene")
             return spyCollectionMainSceneInput
+        }
+        
+        var didReadCollectionMainReplaced: Bool = false
+        func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
+            self.didReadCollectionMainReplaced = true
+            return self.spyCollectionMainSceneInput
         }
         
         var didPresentMigrationScene = false

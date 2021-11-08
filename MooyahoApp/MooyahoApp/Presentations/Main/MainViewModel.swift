@@ -151,6 +151,7 @@ extension MainViewModelImple {
 extension MainViewModelImple: MainSceneInteractable {
     
     public func signIn(didCompleted member: Member) {
+        self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
         self.router.presentUserDataMigrationScene(member.uid)
     }
 }
