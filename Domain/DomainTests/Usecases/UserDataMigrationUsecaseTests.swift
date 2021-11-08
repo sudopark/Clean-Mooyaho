@@ -47,6 +47,8 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
         return (0..<23).makeDummyChunks(50) { ReadLinkMemo.dummyID("\($0)") }
     }
     
+    let mockItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
+    
     private func makeUsecase(isMigrationNeed: Bool = true,
                              isEmptyCategories: Bool = false,
                              isEmptyReadItem: Bool = false,
@@ -61,7 +63,8 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.migrationError .~ (shouldFail ? ApplicationErrors.invalid as Error : nil)
         let repository = StubUserDataMigrationRepository(scenario: scenario)
         self.stubRepository = repository
-        return UserDataMigrationUsecaseImple(migrationRepository: repository)
+        return UserDataMigrationUsecaseImple(migrationRepository: repository,
+                                             readItemUpdateEventPublisher: self.mockItemUpdateSubject)
     }
 }
 
@@ -136,7 +139,7 @@ extension UserDataMigrationUsecaseTests {
     }
     
     // 아이템 업데이트 될때마다 아이템 마이그레이션됨 이벤트 방출
-    func testUsecase_whenMigrateReadItems_boardCaseItemsUpdated() {
+    func testUsecase_whenMigrateReadItems_broadCaseItemsUpdated() {
         // given
         let expect = expectation(description: "아이템 마이그레이션 진행중에는 아이템 업데이트")
         expect.expectedFulfillmentCount = 2
@@ -149,6 +152,25 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         XCTAssertEqual(itemChunks.flatMap { $0 }.count, 99)
+    }
+    
+    func testUsecase_whenMigrationReadItems_publishItemUpdatedEvent() {
+        // given
+        let expect = expectation(description: "아이템 마이그레이션 진행중에는 아이템 업데이트 이벤트 방출")
+        expect.assertForOverFulfill = false
+        let usecase = self.makeUsecase()
+        
+        // when
+        let event = self.waitFirstElement(expect, for: self.mockItemUpdateSubject, skip: 1) {
+            usecase.startDataMigration(for: "some")
+        }
+        
+        // then
+        if case .updated = event {
+            expect.fulfill()
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
     }
     
     func testUsecase_migrationFail() {

@@ -21,13 +21,16 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var spyRepository: SpyRepository!
     private var spyStore: SharedDataStoreService!
+    private var mockItemUpdateSubject: PublishSubject<ReadItemUpdateEvent>!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
+        self.mockItemUpdateSubject = .init()
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.mockItemUpdateSubject = nil
     }
     
     private var myID: String { "me" }
@@ -83,7 +86,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                                     optionsRespository: optionRepository,
                                     authInfoProvider: self.authProvider(signedIn),
                                     sharedStoreService: store,
-                                    clipBoardService: clipboardService)
+                                    clipBoardService: clipboardService,
+                                    readItemUpdateEventPublisher: self.mockItemUpdateSubject)
     }
 }
 

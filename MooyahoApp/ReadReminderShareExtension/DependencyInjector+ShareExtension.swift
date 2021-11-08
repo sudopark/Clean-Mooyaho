@@ -88,7 +88,8 @@ extension SharedDependencyInjecttor {
                                     optionsRespository: self.appReposiotry,
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
-                                    clipBoardService: UIPasteboard.general)
+                                    clipBoardService: UIPasteboard.general,
+                                    readItemUpdateEventPublisher: nil)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {

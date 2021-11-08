@@ -47,8 +47,13 @@ public protocol UserDataMigrationUsecase {
 public final class UserDataMigrationUsecaseImple: UserDataMigrationUsecase {
     
     private let migrationRepository: UserDataMigrateRepository
-    public init(migrationRepository: UserDataMigrateRepository) {
+    private weak var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?
+    
+    public init(migrationRepository: UserDataMigrateRepository,
+                readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?) {
+        
         self.migrationRepository = migrationRepository
+        self.readItemUpdateEventPublisher = readItemUpdateEventPublisher
     }
     
     private struct Subjects {
@@ -139,6 +144,9 @@ extension UserDataMigrationUsecaseImple {
         
         let readItemsMoved: ([ReadItem]) -> Void = { [weak self] items in
             self?.subjects.movedItemChunk.onNext(items)
+            items.forEach {
+                self?.readItemUpdateEventPublisher?.onNext(.updated($0))
+            }
         }
         return self.migrationRepository
             .requestMoveReadItems(for: userID)

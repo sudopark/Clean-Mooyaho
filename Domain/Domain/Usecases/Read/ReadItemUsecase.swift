@@ -36,6 +36,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
     private let authInfoProvider: AuthInfoProvider
     private let sharedStoreService: SharedDataStoreService
     private let clipBoardService: ClipboardServie
+    private weak var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?
     
     private let disposeBag = DisposeBag()
     
@@ -44,16 +45,16 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
                 optionsRespository: ReadItemOptionsRepository,
                 authInfoProvider: AuthInfoProvider,
                 sharedStoreService: SharedDataStoreService,
-                clipBoardService: ClipboardServie) {
+                clipBoardService: ClipboardServie,
+                readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?) {
         self.itemsRespoitory = itemsRespoitory
         self.previewRepository = previewRepository
         self.optionsRespository = optionsRespository
         self.authInfoProvider = authInfoProvider
         self.sharedStoreService = sharedStoreService
         self.clipBoardService = clipBoardService
+        self.readItemUpdateEventPublisher = readItemUpdateEventPublisher
     }
-    
-    private static let readItemUpdated = PublishSubject<ReadItemUpdateEvent>()
 }
 
 
@@ -142,7 +143,7 @@ extension ReadItemUsecaseImple {
     }
     
     private func broadCastItemUpdated(_ newItem: ReadItem) {
-        Self.readItemUpdated.onNext(.updated(newItem))
+        self.readItemUpdateEventPublisher?.onNext(.updated(newItem))
     }
 }
 
@@ -259,7 +260,7 @@ extension ReadItemUsecaseImple {
     }
     
     public var readItemUpdated: Observable<ReadItemUpdateEvent> {
-        return Self.readItemUpdated.asObservable()
+        return self.readItemUpdateEventPublisher?.asObservable() ?? .empty()
     }
 }
 
