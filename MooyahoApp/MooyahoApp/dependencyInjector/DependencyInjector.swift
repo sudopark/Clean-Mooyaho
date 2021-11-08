@@ -8,6 +8,8 @@
 
 import Foundation
 
+import RxSwift
+
 import Domain
 import CommonPresenting
 import DataStore
@@ -63,6 +65,8 @@ final class DependencyInjector {
         var authInfoManager: AuthInfoManger {
             return self.dataStoreImple
         }
+        
+        fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
     }
     
     let shared: Shared = Shared()
@@ -81,6 +85,10 @@ final class DependencyInjector {
     
     var readRemindMessagingService: ReadRemindMessagingService {
         return self.shared.firebaseServiceImple
+    }
+    
+    var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent> {
+        return self.shared.readItemUpdateSubject
     }
 }
 
@@ -151,7 +159,8 @@ extension DependencyInjector {
                                     optionsRespository: self.appReposiotry,
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
-                                    clipBoardService: UIPasteboard.general)
+                                    clipBoardService: UIPasteboard.general,
+                                    readItemUpdateEventPublisher: self.readItemUpdateEventPublisher)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {
@@ -175,6 +184,7 @@ extension DependencyInjector {
     }
     
     var userDataMigrationUsecase: UserDataMigrationUsecase {
-        return UserDataMigrationUsecaseImple(migrationRepository: self.appReposiotry)
+        return UserDataMigrationUsecaseImple(migrationRepository: self.appReposiotry,
+                                             readItemUpdateEventPublisher: self.readItemUpdateEventPublisher)
     }
 }
