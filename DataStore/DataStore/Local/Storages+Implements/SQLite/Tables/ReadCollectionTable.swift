@@ -24,7 +24,7 @@ struct ReadCollectionTable: Table {
     static func scalar(_ entity: Entity, for column: Columns) -> ScalarType? {
         switch column {
         case .uid: return entity.uid
-        case .ownerID: return entity.parentID
+        case .ownerID: return entity.ownerID
         case .parentID: return entity.parentID
         case .name: return entity.name
         case .description: return entity.collectionDescription
