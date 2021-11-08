@@ -54,10 +54,6 @@ extension LocalStorageTests_AuthAndMember {
         XCTAssertEqual(member.nickName, loadedMember?.nickName)
         XCTAssertEqual(member.introduction, loadedMember?.introduction)
         XCTAssertEqual(member.icon, loadedMember?.icon)
-        
-        let didSavedAuthData = self.mockEncrytedStorage.didSavedValue as? Data
-        let didSavedAuth = didSavedAuthData.flatMap { try? JSONDecoder().decode(Auth.self, from: $0) }
-        XCTAssertEqual(didSavedAuth?.isSignIn, true)
     }
     
     func testStorage_updateMember() {

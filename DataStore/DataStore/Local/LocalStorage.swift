@@ -201,9 +201,7 @@ public final class LocalStorageImple: LocalStorage {
     }
     
     public func openStorage(for auth: Auth) -> Maybe<Void> {
-        return auth.isSignIn
-            ? self.dataModelGateway.openUserStorage(auth.userID)
-            : self.dataModelGateway.openAnonymousStorage()
+        return self.dataModelGateway.openUserStorage(auth.userID)
     }
     
     public func switchToAnonymousStorage() -> Maybe<Void> {

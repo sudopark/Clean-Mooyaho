@@ -70,47 +70,10 @@ extension RepositoryTests_Auth {
         XCTAssertNotNil(account?.1)
     }
     
-    func testRepo_whenFetchLastSignInAccountInfoWithoutAuth_openAnonymousStorage() {
-        // given
-        let expect = expectation(description: "앱 최초 사용하는 경우 마지막 로그인정보 로드시 익명 스토리지 오픈")
-        self.registerLastAccountInfo(nil, nil)
-        self.mockRemote.register(key: "requestSignInAnonymously") { Maybe<Auth>.just(Auth(userID: "some" ))}
-        
-        self.mockLocal.called(key: "openStorage-anonymous") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.repository.fetchLastSignInAccountInfo()
-            .subscribe()
-            .disposed(by: self.disposeBag)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-    func testRepo_whenFetchLastSignInAccountInfoWithoutSignIn_openAnonymousStorage() {
-        // given
-        let expect = expectation(description: "로그아웃상태에서 마지막 로그인정보 로드시 익명 스토리지 오픈")
-        self.registerLastAccountInfo(Auth(userID: "some"), nil)
-        
-        self.mockLocal.called(key: "openStorage-anonymous") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.repository.fetchLastSignInAccountInfo()
-            .subscribe()
-            .disposed(by: self.disposeBag)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
     func testRepo_whenFetchLastSignInAccountInfoWithSignIn_openUserStorage() {
         // given
-        let expect = expectation(description: "로그인상태에서 마지막 로그인정보 로드시 익명 스토리지 오픈")
-        var auth = Auth(userID: "some"); auth.isSignIn = true
+        let expect = expectation(description: "로그인상태에서 마지막 로그인정보 로드시 유저 스토리지 오픈")
+        let auth = Auth(userID: "some")
         self.registerLastAccountInfo(auth, Member(uid: "some", nickName: nil, icon: nil))
         
         self.mockLocal.called(key: "openStorage-some") { _ in
@@ -128,13 +91,8 @@ extension RepositoryTests_Auth {
     
     func testRepo_whenFetchLastSignInAccountInfoWithSignInButNoMemberInfo_switchToAnonymousStorage() {
         // given
-        let expect = expectation(description: "로그인상태에서 마지막 로그인정보 로드시 멤버정보가 없으면 익명 스토리지 다시 오픈")
-        var auth = Auth(userID: "some"); auth.isSignIn = true
+        let auth = Auth(userID: "some")
         self.registerLastAccountInfo(auth, nil)
-        
-        self.mockLocal.called(key: "switchToAnonymousStorage") { _ in
-            expect.fulfill()
-        }
         
         // when
         self.repository.fetchLastSignInAccountInfo()
@@ -142,7 +100,7 @@ extension RepositoryTests_Auth {
             .disposed(by: self.disposeBag)
         
         // then
-        self.wait(for: [expect], timeout: self.timeout)
+        XCTAssertEqual(self.mockLocal.didSwitchToAnonymousStorage, true)
     }
     
     func testRepo_whenLastSignInMemberNotExists_signinAnonymously() {

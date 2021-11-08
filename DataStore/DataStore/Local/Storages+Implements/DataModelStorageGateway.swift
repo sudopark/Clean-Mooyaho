@@ -101,7 +101,7 @@ extension DataModelStorageGatewayImple {
     }
     
     public func openedAnonymousStorage() -> Maybe<DataModelStorage> {
-        logger.print(level: .info, "open anonymous storage")
+        logger.print(level: .info, "request open anonymous storage")
         let storage = self.makeAnonymousStorageIfNeed()
         return storage.openDatabase()
             .map { storage }
@@ -123,13 +123,14 @@ extension DataModelStorageGatewayImple {
     }
     
     public func openUserStorage(_ userID: String) -> Maybe<Void> {
-        logger.print(level: .info, "open user storage: \(userID)")
+        logger.print(level: .info, "request open user storage: \(userID)")
         let storage = self.makeUserStorageIfNeed(userID)
         return storage.openDatabase()
     }
     
     public func closeUserStorage() -> Maybe<Void> {
         logger.print(level: .info, "close user storage")
+        self.currentSelectedUserID = nil
         guard let storage = self.userStorage else { return .just() }
         return storage.closeDatabase()
             .catchAndReturn(())

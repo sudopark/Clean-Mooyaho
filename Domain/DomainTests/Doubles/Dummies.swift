@@ -16,9 +16,8 @@ import Optics
 
 extension SigninResult {
     
-    static func dummy(_ uuid: String, isSignIn: Bool = true) -> Self {
-        var auth = Auth(userID: uuid)
-        auth.isSignIn = isSignIn
+    static func dummy(_ uuid: String) -> Self {
+        let auth = Auth(userID: uuid)
         return .init(auth: auth, member: .init(uid: uuid))
     }
 }

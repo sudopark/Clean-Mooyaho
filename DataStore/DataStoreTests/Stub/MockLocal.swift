@@ -23,16 +23,13 @@ class MockLocal: LocalStorage, Mocking {
     }
     
     func openStorage(for auth: Auth) -> Maybe<Void> {
-        if auth.isSignIn {
-            self.verify(key: "openStorage-\(auth.userID)")
-        } else {
-            self.verify(key: "openStorage-anonymous")
-        }
+        self.verify(key: "openStorage-\(auth.userID)")
         return .just()
     }
     
+    var didSwitchToAnonymousStorage = false
     func switchToAnonymousStorage() -> Maybe<Void> {
-        self.verify(key: "switchToAnonymousStorage")
+        self.didSwitchToAnonymousStorage = true
         return .just()
     }
     

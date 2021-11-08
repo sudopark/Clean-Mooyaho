@@ -27,6 +27,7 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         
         let getLastAuth = self.authLocal.fetchCurrentAuth()
         let prepareAnonymousAuthIfNeed: (Auth?) -> Maybe<Auth> = { [weak self] auth in
+            logger.print(level: .debug, "last signin userID -> \(auth?.userID ?? "")")
             guard let self = self else { return .empty() }
             switch auth {
             case let .some(existing): return .just(existing)
@@ -50,8 +51,9 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         
         let switchStorageIfNeed: ((Auth, Member?)) -> Maybe<(Auth, Member?)> = { [weak self] pair in
             guard let self = self else { return .empty() }
-            let isSignedInBeforeButNoMember = pair.0.isSignIn && pair.1 == nil
+            let isSignedInBeforeButNoMember = pair.1 == nil
             guard isSignedInBeforeButNoMember else { return .just(pair) }
+            logger.print(level: .warning, "is Signed in before But No Member!! => switch to anonymousStorage")
             return self.authLocal.switchToAnonymousStorage()
                 .map { pair }
         }
