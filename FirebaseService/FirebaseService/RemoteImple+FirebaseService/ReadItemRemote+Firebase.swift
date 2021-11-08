@@ -54,12 +54,15 @@ extension FirebaseServiceImple {
     
     private func requestLoadMatchingItems(_ collectionQuery: Query,
                                           _ linksQuery: Query) -> Maybe<[ReadItem]> {
-        let collections: Maybe<[ReadCollection]> = self.load(query: collectionQuery).catchAndReturn([])
-        let links: Maybe<[ReadLink]> = self.load(query: linksQuery).catchAndReturn([])
-        let combine: ([ReadCollection], [ReadLink]) -> [ReadItem] = { $0 + $1 }
-        return Observable
-            .combineLatest(collections.asObservable(), links.asObservable(), resultSelector: combine)
-            .asMaybe()
+        let loadCollections: Maybe<[ReadCollection]> = self.load(query: collectionQuery).catchAndReturn([])
+        let thenLoadLinks: ([ReadCollection]) -> Maybe<[ReadItem]> = { [weak self] collections in
+            guard let self = self else { return .empty() }
+            let links: Maybe<[ReadLink]> = self.load(query: linksQuery).catchAndReturn([])
+            return links
+                .map { collections + $0 }
+        }
+
+        return loadCollections.flatMap(thenLoadLinks)
     }
     
     public func requestUpdateReadCollection(_ collection: ReadCollection) -> Maybe<Void> {

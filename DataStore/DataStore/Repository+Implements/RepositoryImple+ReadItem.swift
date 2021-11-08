@@ -25,13 +25,16 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
     public func requestLoadMyItems(for memberID: String?) -> Observable<[ReadItem]> {
         
         let itemsOnLocal = self.readItemLocal.fetchMyItems(memberID: memberID)
+        guard let memberID = memberID else {
+            return itemsOnLocal.asObservable()
+        }
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
             self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
         }
-        let itemsOnRemote = memberID
-            .map { self.readItemRemote.requestLoadMyItems(for: $0) } ?? .empty()
+
+        let itemsOnRemote = self.readItemRemote.requestLoadMyItems(for: memberID)
             .do(onNext: updateLocal)
         
         return itemsOnLocal.catchAndReturn([]).asObservable()
