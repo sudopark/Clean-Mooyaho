@@ -9,8 +9,6 @@
 import Foundation
 
 import RxSwift
-import Prelude
-import Optics
 
 import Domain
 
@@ -46,8 +44,6 @@ extension LocalStorageImple {
     public func saveSignedIn(auth: Auth) -> Maybe<Void> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            
-            let auth = auth |> \.isSignIn .~ true
             self.encryptedStorage.saveEncodable(EncrytedDataKeys.auth.rawValue, value: auth)
                 .runMaybeCallback(callback)
             

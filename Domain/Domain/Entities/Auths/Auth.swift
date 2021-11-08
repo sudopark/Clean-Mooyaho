@@ -8,6 +8,9 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 
 // MARK: - Auth
 
@@ -35,7 +38,7 @@ public struct SigninResult {
     public let member: Member
     
     public init(auth: Auth, member: Member) {
-        self.auth = auth
+        self.auth = auth |> \.isSignIn .~ true
         self.member = member
     }
 }

@@ -130,7 +130,7 @@ extension UserDataMigrationUsecaseImple {
     private func migrateReadItemCategoriesIfNeed(for userID: String) -> Maybe<Void> {
         return self.migrationRepository
             .requestMoveReadItemCategories(for: userID)
-            .logMigrating("item category")
+            .logMigrating("item category") { $0.count }
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
     }
@@ -142,7 +142,7 @@ extension UserDataMigrationUsecaseImple {
         }
         return self.migrationRepository
             .requestMoveReadItems(for: userID)
-            .logMigrating("read item")
+            .logMigrating("read item") { $0.count }
             .do(onNext: readItemsMoved)
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
@@ -151,7 +151,7 @@ extension UserDataMigrationUsecaseImple {
     private func migrateReadLinkMemoIfNeed(for userID: String) -> Maybe<Void> {
         return self.migrationRepository
             .requestMoveReadLinkMemos(for: userID)
-            .logMigrating("link memo")
+            .logMigrating("link memo") { $0.count }
             .reduce((), accumulator: { _, _ in () })
             .asMaybe()
     }
@@ -172,10 +172,12 @@ extension UserDataMigrationUsecaseImple {
 
 private extension Observable {
     
-    func logMigrating(_ type: String) -> Observable<Element> {
+    func logMigrating(_ type: String,
+                      _ counting: @escaping (Element) -> Int? = { _ in nil }) -> Observable<Element> {
         
-        let onNext: (Element) -> Void = { _ in
-            logger.print(level: .debug, "user data migration: move \(type) chunk end")
+        let onNext: (Element) -> Void = { element in
+            let countText = counting(element).map { "\($0)" } ?? "nil"
+            logger.print(level: .debug, "user data migration: move \(type) chunk end, count: \(countText)")
         }
         
         let onError: (Error) -> Void = { error in
