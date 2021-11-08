@@ -129,7 +129,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     }
     
     private func setupParentCollection() {
-        guard let parentID = self.editCase.parentID
+        guard let parentID = self.collectionID
         else {
             self.subjects.selectParentCollection.accept(.root)
             return
