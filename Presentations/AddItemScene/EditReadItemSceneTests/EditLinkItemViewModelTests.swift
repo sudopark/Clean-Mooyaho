@@ -70,6 +70,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
     }
     
     func makeViewModel(editCase: EditLinkItemCase,
+                       parentID: String? = nil,
                        loadPreviewMocking: Observable<LinkPreview>? = nil,
                        shouldFailSave: Bool = false) -> EditLinkItemViewModel {
         
@@ -81,8 +82,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
             |> \.previewMocking .~ loadPreviewMocking
         
         let stubCateUsecse = StubItemCategoryUsecase()
-        
-        let viewModel =  EditLinkItemViewModelImple(collectionID: "some",
+        let viewModel =  EditLinkItemViewModelImple(collectionID: parentID,
                                                     editCase: editCase,
                                                     readUsecase: usecaseStub,
                                                     categoryUsecase: stubCateUsecse,
@@ -487,8 +487,9 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
             |> \.parentID .~ "some"
     }
     
-    func makeViewModel() -> EditLinkItemViewModel {
-        return self.makeViewModel(editCase: .edit(item: self.dummyItem))
+    func makeViewModel(parentID: String? = nil) -> EditLinkItemViewModel {
+        return self.makeViewModel(editCase: .edit(item: self.dummyItem),
+                                  parentID: parentID)
     }
     
     func testViewModel_whenEditCase_confirmUpdate() {
@@ -524,7 +525,7 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
     func testViewModel_whenEditCase_showParentCollectionName() {
         // given
         let expect = expectation(description: "수정케이스에서는 페런트 콜렉션 이름 노출")
-        let viewModel = self.makeViewModel()
+        let viewModel = self.makeViewModel(parentID: "some")
         
         // when
         let name = self.waitFirstElement(expect, for: viewModel.selectedParentCollectionName)
