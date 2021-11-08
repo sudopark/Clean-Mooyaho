@@ -246,7 +246,6 @@ private extension Auth {
     
     static func signIn(_ id: String) -> Auth {
         var auth = Auth(userID: id)
-        auth.isSignIn = true
         return auth
     }
 }

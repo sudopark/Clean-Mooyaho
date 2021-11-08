@@ -26,7 +26,7 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
         
         let itemsOnLocal = self.readItemLocal.fetchMyItems(memberID: memberID)
         guard let memberID = memberID else {
-            return itemsOnLocal.asObservable()
+            return itemsOnLocal.catchAndReturn([]).asObservable()
         }
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
