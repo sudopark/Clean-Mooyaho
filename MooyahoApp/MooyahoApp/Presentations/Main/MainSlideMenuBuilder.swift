@@ -21,5 +21,5 @@ import CommonPresenting
 
 public protocol MainSlideMenuSceneBuilable {
     
-    func makeMainSlideMenuScene() -> MainSlideMenuScene
+    func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?) -> MainSlideMenuScene
 }

@@ -36,9 +36,11 @@ extension DependencyInjector: MainSceneBuilable {
 
 extension DependencyInjector: MainSlideMenuSceneBuilable {
     
-    public func makeMainSlideMenuScene() -> MainSlideMenuScene {
+    public func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?) -> MainSlideMenuScene {
         let router = MainSlideMenuRouter(nextSceneBuilders: self)
-        let viewModel = MainSlideMenuViewModelImple(router: router)
+        let viewModel = MainSlideMenuViewModelImple(memberUsecase: self.memberUsecase,
+                                                    router: router,
+                                                    listener: listener)
         let viewController = MainSlideMenuViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

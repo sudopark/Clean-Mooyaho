@@ -51,6 +51,7 @@
 		F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E726747AF3004FB42E /* KakaoSDKUser */; };
 		F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E926747AF3004FB42E /* KakaoSDKAuth */; };
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
+		F66B63ED273AD808005EBA52 /* MainSlideMenuViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
 		F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; };
@@ -220,6 +221,7 @@
 		F63FE0D62737CFD8006E879E /* WaitMigrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewModel.swift; sourceTree = "<group>"; };
 		F63FE0DC273800B2006E879E /* WaitMigrationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewModelTests.swift; sourceTree = "<group>"; };
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModelTests.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		F6851A20270B20640048197B /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -578,6 +580,7 @@
 			children = (
 				F6E8312C266009A000C91F3B /* MainViewModelTests.swift */,
 				F63FE0DC273800B2006E879E /* WaitMigrationViewModelTests.swift */,
+				F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -810,6 +813,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F66B63ED273AD808005EBA52 /* MainSlideMenuViewModelTests.swift in Sources */,
 				F63FE0DD273800B2006E879E /* WaitMigrationViewModelTests.swift in Sources */,
 				2B47B22D263D2FC5003F25D1 /* MockFirebaseService.swift in Sources */,
 				2BA4074926316F32000CC122 /* ApplicationViewModelTests.swift in Sources */,

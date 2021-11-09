@@ -95,7 +95,8 @@ extension MainRouter {
     
     public func openSlideMenu() {
         
-        guard let menuScene = self.nextScenesBuilder?.makeMainSlideMenuScene() else {
+        guard let menuScene = self.nextScenesBuilder?
+                .makeMainSlideMenuScene(listener: self.currentInteractor) else {
             return
         }
         

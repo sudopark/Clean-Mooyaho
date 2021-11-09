@@ -70,18 +70,7 @@ extension MainViewModelTests {
         XCTAssertEqual(profileImages.count, 2)
     }
     
-    func testViewMdoel_whenRequestOpenSlideMenuWithoutSignIn_requestSignIn() {
-        // given
-        self.mockMemberUsecase.currentMemberSubject.onNext(nil)
-        
-        // when
-        self.viewModel.requestOpenSlideMenu()
-        
-        // then
-        XCTAssertEqual(self.spyRouter.didSignInRequested, true)
-    }
-    
-    func testViewMdoel_whenRequestOpenSlideMenuWithSignIn_openSlideMenu() {
+    func testViewMdoel_whenRequestOpenSlideMenu_openSlideMenu() {
         // given
         self.mockMemberUsecase.currentMemberSubject.onNext(Member(uid: "some", nickName: nil, icon: nil))
         

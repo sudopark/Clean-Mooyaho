@@ -14,6 +14,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -22,6 +23,12 @@ import CommonPresenting
 public protocol MainSlideMenuRouting: Routing {
     
     func closeMenu()
+    
+    func setupDiscoveryScene()
+    
+    func editProfile()
+    
+    func startDiscover()
 }
 
 // MARK: - Routers
@@ -33,6 +40,18 @@ public final class MainSlideMenuRouter: Router<MainSlideMenuRouterBuildables>, M
     
     public func closeMenu() {
         self.currentScene?.dismiss(animated: true, completion: nil)
+    }
+    
+    public func setupDiscoveryScene() {
+        logger.todoImplement()
+    }
+    
+    public func editProfile() {
+        logger.todoImplement()
+    }
+    
+    public func startDiscover() {
+        logger.todoImplement()
     }
 }
 
