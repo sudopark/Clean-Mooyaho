@@ -49,6 +49,7 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
         super.viewDidLoad()
         self.bind()
         self.loadWebPage()
+        self.viewModel.prepareLinkData()
     }
 }
 
