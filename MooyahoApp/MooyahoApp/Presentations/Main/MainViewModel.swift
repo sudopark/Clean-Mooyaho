@@ -98,8 +98,7 @@ extension MainViewModelImple {
     
     public func requestOpenSlideMenu() {
         
-        let isSignIn = self.subjects.currentMember.value != nil
-        return isSignIn ? self.router.openSlideMenu() : self.router.presentSignInScene()
+        self.router.openSlideMenu()
     }
     
     public func requestAddNewItem() {
@@ -149,6 +148,10 @@ extension MainViewModelImple {
 // MRAK: - MainViewModel + Interactable
 
 extension MainViewModelImple: MainSceneInteractable {
+    
+    public func mainSlideMenuDidRequestSignIn() {
+        self.router.presentSignInScene()
+    }
     
     public func signIn(didCompleted member: Member) {
         self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
