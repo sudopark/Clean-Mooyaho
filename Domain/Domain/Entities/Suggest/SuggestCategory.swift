@@ -38,4 +38,8 @@ public struct SuggestCategoryCollection {
     public static func empty(_ query: String = "") -> Self {
         return .init(query: query, categories: [], cursor: nil)
     }
+    
+    public var isEmpty: Bool {
+        return self.categories.isEmpty
+    }
 }

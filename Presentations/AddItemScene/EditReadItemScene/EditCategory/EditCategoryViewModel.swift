@@ -297,8 +297,8 @@ extension EditCategoryViewModelImple {
         let asCellViewModels: (SuggestCategoryCollection, SelectedCellMap, String) -> [CVM]
         asCellViewModels = { collection, selectMap, colorCode in
             let cvms = collection.categories.map { $0.category }.asCellViewModel(without: selectMap)
-            guard cvms.isEmpty, collection.query.isNotEmpty else { return cvms }
-            return [SuggestMakeNewCategoryCellViewMdoel(collection.query, colorCode)]
+            guard collection.isNotFoundQueryMatchingItem() else { return cvms }
+            return [SuggestMakeNewCategoryCellViewMdoel(collection.query, colorCode)] + cvms
         }
         
         return Observable
@@ -407,5 +407,9 @@ private extension SuggestCategoryCollection {
     static func defaultList(_ categories: [ItemCategory], for query: String?) -> SuggestCategoryCollection {
         let suggestCategories = categories.map { SuggestCategory(ownerID: nil, category: $0, lastUpdated: 0) }
         return self.init(query: query ?? "", categories: suggestCategories, cursor: nil)
+    }
+    
+    func isNotFoundQueryMatchingItem() -> Bool {
+        return self.query.isNotEmpty && self.categories.filter { $0.category.name == self.query }.isEmpty
     }
 }

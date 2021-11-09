@@ -71,7 +71,7 @@ class EditCategoryViewModelTests: BaseTestCase, WaitObservableEvents, EditCatego
         
         let scenario = StubSuggestCategoryUsecase.Scenario()
             |> \.latestCategories .~ self.dummyLatests
-            |> \.suggestResultMap .~ ["q1": self.suggestResult1, "q2": self.suggestResult2]
+            |> \.suggestResultMap .~ ["q1": self.suggestResult1, "q2": self.suggestResult2, "q": self.suggestResult1]
         let stubUsecase = StubSuggestCategoryUsecase(scenario: scenario)
         
         let cateScenario = StubItemCategoryUsecase.Scenario()
@@ -363,9 +363,21 @@ extension EditCategoryViewModelTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
-    // TODO: request change category color
-    
-    // TODO: after color changed update
+    func testViewModel_whenNotFoundQueryMatchingItem_showCreateCell() {
+        // given
+        let expect = expectation(description: "키워드와 일치하는 아이템 찾기 실패시 생성셀 노출")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.skip(while: { $0.isEmpty }), skip: 1) {
+            viewModel.prepareCategoryList()
+            viewModel.suggest("q")
+        }
+        
+        // then
+        XCTAssert(cvms?.first is SuggestMakeNewCategoryCellViewMdoel)
+        XCTAssertEqual(cvms?.count, (self.suggestResult1.first?.categories.count ?? 0) + 1)
+    }
 }
 
 
