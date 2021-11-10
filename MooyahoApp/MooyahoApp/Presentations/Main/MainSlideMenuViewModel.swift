@@ -17,17 +17,14 @@ import CommonPresenting
 
 public enum SuggestingAction: Equatable {
     case signIn
-    case editProfile
-    case discover(userName: String)
+    case editProfile(userName: String?)
     
     init(_ member: Member?) {
         switch member {
         case .none:
             self = .signIn
-        case let .some(value) where value.nickName?.isNotEmpty != true:
-            self = .editProfile
         case let .some(value):
-            self = .discover(userName: value.nickName ?? "")
+            self = .editProfile(userName: value.nickName)
         }
     }
 }
@@ -112,9 +109,6 @@ extension MainSlideMenuViewModelImple {
              
         case .editProfile:
             self.router.editProfile()
-            
-        case .discover:
-            self.router.startDiscover()
         }
     }
     

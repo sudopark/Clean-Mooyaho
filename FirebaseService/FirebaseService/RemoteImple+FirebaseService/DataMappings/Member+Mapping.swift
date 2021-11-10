@@ -59,8 +59,9 @@ extension Thumbnail: JSONMappable {
         } else if let sourceJson = json[Key.source] as? JSON,
                   let source = ImageSource(json: sourceJson) {
             self = .imageSource(source)
+        } else {
+            return nil
         }
-        return nil
     }
     
     func asJSON() -> JSON {

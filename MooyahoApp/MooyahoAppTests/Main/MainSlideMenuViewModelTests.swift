@@ -48,11 +48,6 @@ class MainSlideMenuViewModelTests: BaseTestCase, WaitObservableEvents, MainSlide
         self.didRouteToEditProfile = true
     }
     
-    var didDiscoverStarted: Bool?
-    func startDiscover() {
-        self.didDiscoverStarted = true
-    }
-    
     override func setUpWithError() throws {
         self.disposeBag = .init()
     }
@@ -63,7 +58,6 @@ class MainSlideMenuViewModelTests: BaseTestCase, WaitObservableEvents, MainSlide
         self.didClose = nil
         self.didSetupDiscovertyScene = nil
         self.didRouteToEditProfile = nil
-        self.didDiscoverStarted = nil
     }
     
     private func makeViewModel(member: Member? = nil) -> MainSlideMenuViewModel {
@@ -158,9 +152,9 @@ extension MainSlideMenuViewModelTests {
         return Member(uid: "some", nickName: nickname, icon: nil)
     }
     
-    func testViewModel_whenSignInAndNoNickName_suggestActionIsEditProfile() {
+    func testViewModel_whenSignIn_suggestActionIsEditProfile() {
         // given
-        let expect = expectation(description: "로그인 + 닉네임이 지정 안된경우에는 프로필 수정으로 유도")
+        let expect = expectation(description: "로그인상태에서는 프로필 수정으로 유도")
         let viewModel = self.makeViewModel(member: self.member(with: nil))
         
         // when
@@ -170,21 +164,6 @@ extension MainSlideMenuViewModelTests {
         
         // then
         XCTAssertEqual(action?.isEditProfle, true)
-    }
-    
-    func testViewModel_whenSignInAndHasNickName_suggestActionIsEditProfile() {
-        // given
-        let expect = expectation(description: "로그인 + 닉네임이 있는경우에는 탐색으로 유도")
-        let viewModel = self.makeViewModel(member: self.member(with: "nick name"))
-        
-        // when
-        let action = self.waitFirstElement(expect, for: viewModel.suggestingAction) {
-            viewModel.refresh()
-        }
-        
-        // then
-        XCTAssertEqual(action?.isDiscover, true)
-        XCTAssertEqual(action?.presentingUserName, "nick name")
     }
     
     func testViewModel_whenSignIn_enableDiscovery() {
@@ -201,7 +180,7 @@ extension MainSlideMenuViewModelTests {
         XCTAssertEqual(isDiscovable, true)
     }
     
-    func testViewModel_whenRequestSuggestedActionWithSignInWithNoNickName_routeToEditProfile() {
+    func testViewModel_whenRequestSuggestedActionWithSignIn_routeToEditProfile() {
         // given
         let viewModel = self.makeViewModel(member: self.member(with: nil))
         
@@ -211,18 +190,6 @@ extension MainSlideMenuViewModelTests {
         
         // then
         XCTAssertEqual(self.didRouteToEditProfile, true)
-    }
-    
-    func testViewModel_whenRequestSuggestedActionWithSignInWithNickName_startDiscover() {
-        // given
-        let viewModel = self.makeViewModel(member: self.member(with: "nick name"))
-        
-        // when
-        viewModel.refresh()
-        viewModel.suggestingActionRequested()
-        
-        // then
-        XCTAssertEqual(self.didDiscoverStarted, true)
     }
 }
 
@@ -238,13 +205,8 @@ private extension SuggestingAction {
         return true
     }
     
-    var isDiscover: Bool {
-        guard case .discover = self else { return false }
-        return true
-    }
-    
     var presentingUserName: String? {
-        guard case let .discover(userName) = self else { return nil }
+        guard case let .editProfile(userName) = self else { return nil }
         return userName
     }
 }

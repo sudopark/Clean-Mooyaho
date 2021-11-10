@@ -241,15 +241,10 @@ class ActionSuggestView: BaseUIView {
             self.titleLabel.text = "Login is required".localized
             self.descriptionLabel.text = "Click to log in to the service.".localized
             
-        case .editProfile:
+        case let .editProfile(userName):
             self.statusView.alpha = 1.0
-            self.titleLabel.text = "No nickname".localized
+            self.titleLabel.text = userName ?? "No nickname".localized
             self.descriptionLabel.text = "Click to set up your profile.".localized
-            
-        case .discover(let userName):
-            self.statusView.alpha = 1.0
-            self.titleLabel.text = userName
-            self.descriptionLabel.text = "Explore the new Reading List!".localized
         }
     }
 }
