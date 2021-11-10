@@ -40,6 +40,8 @@
 		F637205D266511570089D0B3 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205C266511570089D0B3 /* String+Extension.swift */; };
 		F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */; };
 		F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372060266538EA0089D0B3 /* UITableView+Extension.swift */; };
+		F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */; };
+		F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */; };
 		F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6572690B52200E04D29 /* InfoSectionView.swift */; };
 		F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6592690BA8E00E04D29 /* Attribute.swift */; };
 		F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65D26934F5700E04D29 /* WordTokensView.swift */; };
@@ -158,6 +160,8 @@
 		F637205C266511570089D0B3 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		F637205E2665135B0089D0B3 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		F6372060266538EA0089D0B3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Setting.swift"; sourceTree = "<group>"; };
+		F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Setting.swift"; sourceTree = "<group>"; };
 		F645A6572690B52200E04D29 /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
 		F645A6592690BA8E00E04D29 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		F645A65D26934F5700E04D29 /* WordTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTokensView.swift; sourceTree = "<group>"; };
@@ -422,9 +426,11 @@
 				F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */,
 				F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */,
 				F6851A2E270B21120048197B /* Scenes+Viewer.swift */,
+				F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */,
 				F6BBF177270851A100420A49 /* Builders+ReadItem.swift */,
 				F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */,
 				F6851A30270B21200048197B /* Builders+Viewer.swift */,
+				F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -707,6 +713,7 @@
 				F645A66226936AA600E04D29 /* ConfrimButton.swift in Sources */,
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
+				F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */,
 				F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */,
@@ -728,6 +735,7 @@
 				F665A65026FB674C00E866B7 /* UICollectionView+Extension.swift in Sources */,
 				F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */,
 				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,
+				F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */,
 				F6851A2F270B21120048197B /* Scenes+Viewer.swift in Sources */,
 				F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */,
 				F65215862674A395000CAB4B /* TextInputScene.swift in Sources */,

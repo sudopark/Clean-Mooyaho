@@ -12,11 +12,12 @@ import RxSwift
 import Domain
 
 
-open class StubReadRemindUsecase: ReadRemindUsecase {
+open class StubReadRemindUsecase: ReadRemindUsecase, RemindOptionUsecase {
     
     public struct Scenario {
 
         public var hasPermission: Bool = true
+        public var defaultRemindtime: RemindTime = .default
         public init() { }
     }
     
@@ -39,6 +40,14 @@ open class StubReadRemindUsecase: ReadRemindUsecase {
     }
     
     public func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void> {
+        return .just()
+    }
+    
+    public func loadDefaultRemindTime() -> Maybe<RemindTime> {
+        return .just(self.scenario.defaultRemindtime)
+    }
+    
+    public func updateDefaultRemindTime(_ time: RemindTime) -> Maybe<Void> {
         return .just()
     }
 }
