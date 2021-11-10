@@ -31,6 +31,9 @@
       <FileRef
          location = "group:Presentations/PlaceScenes/PlaceScenes.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:Presentations/SettingScene/SettingScene.xcodeproj">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:Domain/Domain.xcodeproj">
