@@ -14,6 +14,7 @@ import MemberScenes
 import ReadItemScene
 import EditReadItemScene
 import ViewerScene
+import SettingScene
 
 
 // MARK: - Main Sceens
@@ -354,3 +355,18 @@ extension DependencyInjector: LinkMemoSceneBuilable {
         return viewController
     }
 }
+
+
+// MARK: - SettingScenes
+
+extension DependencyInjector: SettingMainSceneBuilable {
+    
+    public func makeSettingMainScene(listener: SettingMainSceneListenable?) -> SettingMainScene {
+        let router = SettingMainRouter(nextSceneBuilders: self)
+        let viewModel = SettingMainViewModelImple(router: router, listener: listener)
+        let viewController = SettingMainViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+

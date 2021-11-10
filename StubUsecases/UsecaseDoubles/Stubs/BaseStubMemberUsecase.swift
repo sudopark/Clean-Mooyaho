@@ -59,8 +59,10 @@ open class BaseStubMemberUsecase: MemberUsecase {
         return .empty()
     }
     
+    public let currentMemberMocking = PublishSubject<Member?>()
     public var currentMember: Observable<Member?> {
-        return .just(self.scenario.currentMember)
+        return self.currentMemberMocking
+            .startWith(self.scenario.currentMember)
     }
     
     public func members(for ids: [String]) -> Observable<[String : Member]> {
