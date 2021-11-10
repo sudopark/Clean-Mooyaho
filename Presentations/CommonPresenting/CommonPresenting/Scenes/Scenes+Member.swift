@@ -35,10 +35,7 @@ public protocol SignInSceneBuilable {
 
 // MARK: - EditProfileScene
 
-public protocol EditProfileScenePresenter {
-    
-    var editCompleted: Observable<Void> { get }
-}
+public protocol EditProfileScenePresenter { }
 
 public protocol EditProfileScene: Scenable {
     
