@@ -68,6 +68,8 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
         self.remindOptionUsecase = remindOptionUsecase
         self.router = router
         self.listener = listener
+        
+        self.bindCurrentMember()
     }
     
     deinit {
@@ -95,10 +97,20 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
     fileprivate final class Subjects {
         
         let defaultRemindTime = BehaviorRelay<RemindTime>(value: RemindTime.default)
+        let currentMember = BehaviorRelay<Member?>(value: nil)
     }
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    
+    private func bindCurrentMember() {
+        
+        self.memberUsecase.currentMember
+            .subscribe(onNext: { [weak self] member in
+                self?.subjects.currentMember.accept(member)
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
@@ -137,7 +149,8 @@ extension SettingMainViewModelImple {
             self.router.editItemsCategory()
             
         case Item.userDataMigration.identifier:
-            self.router.resumeUserDataMigration()
+            guard let member = self.subjects.currentMember.value else { return }
+            self.router.resumeUserDataMigration(for: member.uid)
             
         case Item.defaultRemidTime(RemindTime.default).identifier:
             self.router.changeDefaultRemindTime()

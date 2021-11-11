@@ -15,3 +15,12 @@ public protocol SettingMainSceneBuilable {
     func makeSettingMainScene(listener: SettingMainSceneListenable?) -> SettingMainScene
 }
 
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol WaitMigrationSceneBuilable {
+    
+    func makeWaitMigrationScene(userID: String,
+                                shouldResume: Bool,
+                                listener: WaitMigrationSceneListenable?) -> WaitMigrationScene
+}

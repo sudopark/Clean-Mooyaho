@@ -121,7 +121,7 @@ extension MainRouter {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let next = self?.nextScenesBuilder?
-                    .makeWaitMigrationScene(userID: userID, listener: nil)
+                    .makeWaitMigrationScene(userID: userID, shouldResume: false, listener: nil)
             else { return }
             
             next.isModalInPresentation = true

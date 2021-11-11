@@ -372,3 +372,20 @@ extension DependencyInjector: SettingMainSceneBuilable {
     }
 }
 
+
+extension DependencyInjector: WaitMigrationSceneBuilable {
+    
+    public func makeWaitMigrationScene(userID: String,
+                                       shouldResume: Bool,
+                                       listener: WaitMigrationSceneListenable?) -> WaitMigrationScene {
+        let router = WaitMigrationRouter(nextSceneBuilders: self)
+        let viewModel = WaitMigrationViewModelImple(userID: userID,
+                                                    shouldResume: shouldResume,
+                                                    migrationUsecase: self.userDataMigrationUsecase,
+                                                    router: router,
+                                                    listener: listener)
+        let viewController = WaitMigrationViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

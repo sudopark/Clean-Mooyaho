@@ -111,6 +111,12 @@ extension WaitMigrationViewController {
         case .fail:
             self.stopWaitAnimation()
             self.emojiLabel.text = "😓"
+            
+        case .finishWithNotStarted:
+            self.stopWaitAnimation()
+            self.emojiLabel.text = "👍"
+            self.laterButton.isHidden = true
+            self.confirmButton.isHidden = false
         }
     }
     

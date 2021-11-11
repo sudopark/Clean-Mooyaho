@@ -303,7 +303,7 @@ extension SettingMainViewModelTests {
         }
         
         var didMoveToUserDataMigration = false
-        func resumeUserDataMigration() {
+        func resumeUserDataMigration(for userID: String) {
             self.didMoveToUserDataMigration = true
         }
         

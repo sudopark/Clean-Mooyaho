@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6118D89273D61AE00E0489B /* WaitMigrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D84273D61AD00E0489B /* WaitMigrationViewController.swift */; };
+		F6118D8A273D61AE00E0489B /* WaitMigrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D85273D61AD00E0489B /* WaitMigrationViewModel.swift */; };
+		F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */; };
+		F6118D8D273D61AE00E0489B /* WaitMigrationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */; };
+		F6118D8F273D658A00E0489B /* WaitMigrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */; };
 		F62271CF273C720100AF76C1 /* SettingScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271C6273C720100AF76C1 /* SettingScene.framework */; };
 		F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62271D3273C720100AF76C1 /* SettingSceneTests.swift */; };
 		F62271D5273C720100AF76C1 /* SettingScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F62271C9273C720100AF76C1 /* SettingScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,6 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6118D84273D61AD00E0489B /* WaitMigrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewController.swift; sourceTree = "<group>"; };
+		F6118D85273D61AD00E0489B /* WaitMigrationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewModel.swift; sourceTree = "<group>"; };
+		F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationScene.swift; sourceTree = "<group>"; };
+		F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationRouter.swift; sourceTree = "<group>"; };
+		F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewModelTests.swift; sourceTree = "<group>"; };
 		F62271C6273C720100AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62271C9273C720100AF76C1 /* SettingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingScene.h; sourceTree = "<group>"; };
 		F62271CE273C720100AF76C1 /* SettingSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SettingSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +87,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F6118D83273D617400E0489B /* Migration */ = {
+			isa = PBXGroup;
+			children = (
+				F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */,
+				F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */,
+				F6118D84273D61AD00E0489B /* WaitMigrationViewController.swift */,
+				F6118D85273D61AD00E0489B /* WaitMigrationViewModel.swift */,
+			);
+			path = Migration;
+			sourceTree = "<group>";
+		};
 		F62271BC273C720100AF76C1 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				F638A5EE273C7378005A7EA9 /* Main */,
+				F6118D83273D617400E0489B /* Migration */,
 				F62271C9273C720100AF76C1 /* SettingScene.h */,
 			);
 			path = SettingScene;
@@ -110,6 +132,7 @@
 			children = (
 				F62271D3273C720100AF76C1 /* SettingSceneTests.swift */,
 				F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */,
+				F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */,
 			);
 			path = SettingSceneTests;
 			sourceTree = "<group>";
@@ -251,7 +274,11 @@
 				F638A5F5273C7388005A7EA9 /* SettingMainViewController.swift in Sources */,
 				F638A5F7273C7388005A7EA9 /* SettingMainScene.swift in Sources */,
 				F638A5F4273C7388005A7EA9 /* SettingMainRouter.swift in Sources */,
+				F6118D8D273D61AE00E0489B /* WaitMigrationRouter.swift in Sources */,
 				F638A5F8273C7388005A7EA9 /* SettingMainViewModel.swift in Sources */,
+				F6118D8A273D61AE00E0489B /* WaitMigrationViewModel.swift in Sources */,
+				F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */,
+				F6118D89273D61AE00E0489B /* WaitMigrationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6118D8F273D658A00E0489B /* WaitMigrationViewModelTests.swift in Sources */,
 				F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */,
 				F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */,
 			);
