@@ -48,6 +48,11 @@ class MainSlideMenuViewModelTests: BaseTestCase, WaitObservableEvents, MainSlide
         self.didRouteToEditProfile = true
     }
     
+    var didOpenSetting: Bool?
+    func openSetting() {
+        self.didOpenSetting = true
+    }
+    
     override func setUpWithError() throws {
         self.disposeBag = .init()
     }
@@ -58,6 +63,7 @@ class MainSlideMenuViewModelTests: BaseTestCase, WaitObservableEvents, MainSlide
         self.didClose = nil
         self.didSetupDiscovertyScene = nil
         self.didRouteToEditProfile = nil
+        self.didOpenSetting = nil
     }
     
     private func makeViewModel(member: Member? = nil) -> MainSlideMenuViewModel {
@@ -94,6 +100,17 @@ extension MainSlideMenuViewModelTests {
         
         // then
         XCTAssertEqual(self.didClose, true)
+    }
+    
+    func testViewModel_openSetting() {
+        // given
+        let viewModel = self.makeViewModel(member: nil)
+        
+        // when
+        viewModel.openSetting()
+        
+        // then
+        XCTAssertEqual(self.didOpenSetting, true)
     }
 }
 
