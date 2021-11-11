@@ -27,20 +27,23 @@ public protocol MainSlideMenuRouting: Routing {
     func setupDiscoveryScene()
     
     func editProfile()
+    
+    func openSetting()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainSlideMenuRouterBuildables = EditProfileSceneBuilable
+public typealias MainSlideMenuRouterBuildables = EditProfileSceneBuilable & SettingMainSceneBuilable
 
-public final class MainSlideMenuRouter: Router<MainSlideMenuRouterBuildables>, MainSlideMenuRouting {
-    
-    
-}
+public final class MainSlideMenuRouter: Router<MainSlideMenuRouterBuildables>, MainSlideMenuRouting { }
 
 
 extension MainSlideMenuRouter {
+    
+    private var currentInteractor: MainSlideMenuSceneInteractor? {
+        return (self.currentScene as? MainSlideMenuScene)?.interactor as? MainSlideMenuSceneInteractor
+    }
     
     // MainSlideMenuRouting implements
     public func closeMenu() {
@@ -53,6 +56,15 @@ extension MainSlideMenuRouter {
     
     public func editProfile() {
         guard let next = self.nextScenesBuilder?.makeEditProfileScene() else { return }
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func openSetting() {
+        guard let next = self.nextScenesBuilder?
+                .makeSettingMainScene(listener: self.currentInteractor)
+        else {
+            return
+        }
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

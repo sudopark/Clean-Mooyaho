@@ -36,7 +36,7 @@ public protocol MainSlideMenuViewModel: AnyObject {
     // interactor
     func refresh()
     func closeMenu()
-//    func openSetting()
+    func openSetting()
 //    func openAlert()
     func suggestingActionRequested()
     
@@ -97,6 +97,10 @@ extension MainSlideMenuViewModelImple {
     
     public func closeMenu() {
         self.router.closeMenu()
+    }
+    
+    public func openSetting() {
+        self.router.openSetting()
     }
     
     public func suggestingActionRequested() {

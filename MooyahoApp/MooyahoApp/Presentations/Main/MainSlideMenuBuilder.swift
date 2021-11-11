@@ -23,3 +23,5 @@ public protocol MainSlideMenuSceneBuilable {
     
     func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?) -> MainSlideMenuScene
 }
+
+extension MainSlideMenuViewModelImple: MainSlideMenuSceneInteractor { }

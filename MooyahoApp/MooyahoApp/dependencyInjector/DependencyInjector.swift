@@ -172,11 +172,19 @@ extension DependencyInjector {
         return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
     }
     
-    var remindUsecase: ReadRemindUsecase {
+    private var remindUsecaseImple: ReadRemindUsecaseImple {
         return ReadRemindUsecaseImple(authInfoProvider: self.shared.dataStore,
                                       sharedStore: self.shared.dataStore,
                                       readItemUsecase: self.readItemUsecase,
                                       messagingService: self.readRemindMessagingService)
+    }
+    
+    var remindUsecase: ReadRemindUsecase {
+        return self.remindUsecaseImple
+    }
+    
+    var remindOptionUsecase: RemindOptionUsecase {
+        return self.remindUsecaseImple
     }
     
     var memoUsecase: ReadLinkMemoUsecase {

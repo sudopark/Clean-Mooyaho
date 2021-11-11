@@ -16,12 +16,24 @@ import CommonPresenting
 
 // MARK: - MainSlideMenuScene
 
+public protocol MainSlideMenuSceneInteractor: SettingMainSceneListenable { }
+
 public protocol MainSlideMenuSceneListenable: AnyObject {
     
     func mainSlideMenuDidRequestSignIn()
 }
 
-public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene { }
+public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene {
+    
+    var interactor: MainSlideMenuSceneInteractor? { get }
+}
+
+extension MainSlideMenuViewController {
+    
+    public var interactor: MainSlideMenuSceneInteractor? {
+        return self.viewModel as? MainSlideMenuSceneInteractor
+    }
+}
 
 
 // MARK: - MainSlideMenuViewController
@@ -110,6 +122,12 @@ extension MainSlideMenuViewController {
         self.actionSuggestView.rx.addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.suggestingActionRequested()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.settingButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.openSetting()
             })
             .disposed(by: self.disposeBag)
     }

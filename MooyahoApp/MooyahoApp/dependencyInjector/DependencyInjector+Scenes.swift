@@ -363,7 +363,9 @@ extension DependencyInjector: SettingMainSceneBuilable {
     
     public func makeSettingMainScene(listener: SettingMainSceneListenable?) -> SettingMainScene {
         let router = SettingMainRouter(nextSceneBuilders: self)
-        let viewModel = SettingMainViewModelImple(router: router, listener: listener)
+        let viewModel = SettingMainViewModelImple(memberUsecase: self.memberUsecase,
+                                                  remindOptionUsecase: self.remindOptionUsecase,
+                                                  router: router, listener: listener)
         let viewController = SettingMainViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
