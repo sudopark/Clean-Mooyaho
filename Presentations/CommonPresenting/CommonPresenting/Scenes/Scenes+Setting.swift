@@ -24,3 +24,17 @@ public protocol SettingMainScene: Scenable {
     var interactor: SettingMainSceneInteractable? { get }
 }
 
+
+// MARK: - WaitMigrationScene Interactable & Listenable
+
+public protocol WaitMigrationSceneInteractable { }
+
+public protocol WaitMigrationSceneListenable: AnyObject { }
+
+
+// MARK: - WaitMigrationScene
+
+public protocol WaitMigrationScene: Scenable {
+    
+    var interactor: WaitMigrationSceneInteractable? { get }
+}

@@ -14,21 +14,6 @@ import RxCocoa
 import CommonPresenting
 
 
-// MARK: - WaitMigrationScene Interactable & Listenable
-
-public protocol WaitMigrationSceneInteractable { }
-
-public protocol WaitMigrationSceneListenable: AnyObject { }
-
-
-// MARK: - WaitMigrationScene
-
-public protocol WaitMigrationScene: Scenable {
-    
-    var interactor: WaitMigrationSceneInteractable? { get }
-}
-
-
 // MARK: - WaitMigrationViewModelImple conform WaitMigrationSceneInteractor
 
 extension WaitMigrationViewModelImple: WaitMigrationSceneInteractable {

@@ -21,11 +21,13 @@ public enum MigrationProcessAndResult {
     case migrating
     case finished
     case fail
+    case finishWithNotStarted
     
     init?(_ status: UserDataMigrationStatus) {
         switch status {
         case .migrating: self = .migrating
-        case .finished: self = .finished
+        case let .finished(notStarted):
+            self = notStarted ? .finishWithNotStarted : .finished
         case .fail: self = .fail
         default: return nil
         }
@@ -50,16 +52,19 @@ public protocol WaitMigrationViewModel: AnyObject {
 public final class WaitMigrationViewModelImple: WaitMigrationViewModel {
     
     private let userID: String
+    private let shouldResume: Bool
     private let migrationUsecase: UserDataMigrationUsecase
     private let router: WaitMigrationRouting
     private weak var listener: WaitMigrationSceneListenable?
     
     public init(userID: String,
+                shouldResume: Bool = false,
                 migrationUsecase: UserDataMigrationUsecase,
                 router: WaitMigrationRouting,
                 listener: WaitMigrationSceneListenable?) {
         
         self.userID = userID
+        self.shouldResume = shouldResume
         self.migrationUsecase = migrationUsecase
         self.router = router
         self.listener = listener
@@ -102,7 +107,11 @@ public final class WaitMigrationViewModelImple: WaitMigrationViewModel {
     }
     
     private func checkMigrationFinishedWithEmptyItems(_ status: UserDataMigrationStatus) {
-        guard case .finished = status, self.subjects.migratedItemCount.value == 0 else { return }
+        guard case let .finished(notStarted) = status, notStarted == false,
+              self.subjects.migratedItemCount.value == 0
+        else {
+            return
+        }
         self.router.closeScene(animated: true, completed: nil)
     }
 }
@@ -114,7 +123,9 @@ extension WaitMigrationViewModelImple {
     
     public func startMigration() {
         
-        self.migrationUsecase.startDataMigration(for: self.userID)
+        return self.shouldResume
+            ? self.migrationUsecase.resumeMigrationIfNeed(for: self.userID)
+            : self.migrationUsecase.startDataMigration(for: self.userID)
     }
     
     public func doMigrationLater() {
@@ -142,11 +153,18 @@ extension WaitMigrationViewModelImple {
         let asResultMessage: (UserDataMigrationStatus) -> (title: String, description: String)?
         asResultMessage = { status in
             switch status {
-            case .finished:
+            case let .finished(notStarted) where notStarted == false:
                 return (
                     "Migration complete".localized,
                     "All data uploads are complete!".localized
                 )
+                
+            case let .finished(notStarted) where notStarted == true:
+                return (
+                    "Migration finished".localized,
+                    "All data has already been migrated.".localized
+                )
+                
             case .fail:
                 return (
                     "Migration failed".localized,

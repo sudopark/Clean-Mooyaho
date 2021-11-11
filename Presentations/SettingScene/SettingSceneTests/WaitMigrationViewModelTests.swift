@@ -11,10 +11,11 @@ import XCTest
 import RxSwift
 
 import Domain
+import CommonPresenting
 import UnitTestHelpKit
 import UsecaseDoubles
 
-import MooyahoApp
+import SettingScene
 
 
 class WaitMigrationViewModelTests: BaseTestCase, WaitObservableEvents, WaitMigrationRouting {
@@ -32,10 +33,12 @@ class WaitMigrationViewModelTests: BaseTestCase, WaitObservableEvents, WaitMigra
         self.didClose = nil
     }
     
-    private func makeViewModel() -> WaitMigrationViewModel {
+    private func makeViewModel(isResume: Bool = false) -> WaitMigrationViewModel {
         
         self.mockUsecase = .init()
-        return WaitMigrationViewModelImple(userID: "some", migrationUsecase: self.mockUsecase,
+        return WaitMigrationViewModelImple(userID: "some",
+                                           shouldResume: isResume,
+                                           migrationUsecase: self.mockUsecase,
                                            router: self, listener: nil)
     }
     
@@ -58,7 +61,7 @@ extension WaitMigrationViewModelTests {
         // when
         let status = self.waitElements(expect, for: viewModel.migrationProcessAndResult) {
             viewModel.startMigration()
-            self.mockUsecase.statusMocking.onNext(.finished)
+            self.mockUsecase.statusMocking.onNext(.finished(notStarted: false))
         }
         
         // then
@@ -89,7 +92,7 @@ extension WaitMigrationViewModelTests {
         // when
         let message = self.waitFirstElement(expect, for: viewModel.message) {
             viewModel.startMigration()
-            self.mockUsecase.statusMocking.onNext(.finished)
+            self.mockUsecase.statusMocking.onNext(.finished(notStarted: false))
         }
         
         // then
@@ -167,7 +170,7 @@ extension WaitMigrationViewModelTests {
         // when
         viewModel.startMigration()
         self.mockUsecase.migratedItemMocking.onNext([ReadCollection.dummy(0)])
-        self.mockUsecase.statusMocking.onNext(.finished)
+        self.mockUsecase.statusMocking.onNext(.finished(notStarted: false))
         viewModel.confirmMigrationFinished()
         
         // then
@@ -187,9 +190,58 @@ extension WaitMigrationViewModelTests {
         // when
         viewModel.startMigration()
         self.mockUsecase.migratedItemMocking.onNext([])
-        self.mockUsecase.statusMocking.onNext(.finished)
+        self.mockUsecase.statusMocking.onNext(.finished(notStarted: false))
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testViewModel_resumeMigrationcase() {
+        // given
+        let expect = expectation(description: "마이그레이션 재시작")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel(isResume: true)
+        self.mockUsecase.needResume = true
+        
+        // when
+        let status = self.waitElements(expect, for: viewModel.migrationProcessAndResult) {
+            viewModel.startMigration()
+        }
+        
+        // then
+        XCTAssertEqual(status, [.migrating, .finished])
+    }
+    
+    func testViewModel_whenResumeCaseNoNeedToMigrate_notAutoClose() {
+        // given
+        let viewModel = self.makeViewModel(isResume: true)
+        var didClose = false
+        self.mockUsecase.needResume = false
+        
+        self.didClose = {
+            didClose = true
+        }
+        
+        // when
+        viewModel.startMigration()
+        
+        // then
+        XCTAssertEqual(didClose, false)
+    }
+    
+    func testViewModel_whenResumeAndFinishWitouutMigration_updateMessage() {
+        // given
+        let expect = expectation(description: "마이그레이션 실패 이후에 메세지 업데이트")
+        let viewModel = self.makeViewModel(isResume: true)
+        self.mockUsecase.needResume = false
+        
+        // when
+        let message = self.waitFirstElement(expect, for: viewModel.message) {
+            viewModel.startMigration()
+        }
+        
+        // then
+        XCTAssertEqual(message?.title, "Migration finished".localized)
+        XCTAssertEqual(message?.description, "All data has already been migrated.".localized)
     }
 }

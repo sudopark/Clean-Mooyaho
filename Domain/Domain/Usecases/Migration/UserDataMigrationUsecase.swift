@@ -19,7 +19,7 @@ import Optics
 public enum UserDataMigrationStatus {
     case idle
     case migrating
-    case finished
+    case finished(notStarted: Bool)
     case fail(Error)
 }
 
@@ -87,7 +87,7 @@ extension UserDataMigrationUsecaseImple {
         
         let updateStatus: () -> Void = { [weak self] in
             logger.print(level: .goal, "user data migration finished!!")
-            self?.subjects.status.accept(.finished)
+            self?.subjects.status.accept(.finished(notStarted: false))
         }
         
         let didFailMigration: (Error) -> Void = { [weak self] error in
@@ -111,7 +111,11 @@ extension UserDataMigrationUsecaseImple {
     public func resumeMigrationIfNeed(for userID: String) {
         
         let startIfNeed: (Bool) -> Void = { [weak self] isNeed in
-            guard isNeed else { return }
+            guard isNeed
+            else {
+                self?.subjects.status.accept(.finished(notStarted: true))
+                return
+            }
             self?.startDataMigration(for: userID)
         }
         self.migrationRepository

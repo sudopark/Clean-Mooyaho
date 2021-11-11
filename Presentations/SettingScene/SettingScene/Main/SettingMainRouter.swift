@@ -28,7 +28,7 @@ public protocol SettingMainRouting: Routing {
     
     func editItemsCategory()
     
-    func resumeUserDataMigration()
+    func resumeUserDataMigration(for userID: String)
     
     func changeDefaultRemindTime()
     
@@ -38,7 +38,7 @@ public protocol SettingMainRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SettingMainRouterBuildables = EditProfileSceneBuilable & SignInSceneBuilable
+public typealias SettingMainRouterBuildables = EditProfileSceneBuilable & SignInSceneBuilable & WaitMigrationSceneBuilable
 
 public final class SettingMainRouter: Router<SettingMainRouterBuildables>, SettingMainRouting { }
 
@@ -72,8 +72,13 @@ extension SettingMainRouter {
         
     }
     
-    public func resumeUserDataMigration() {
+    public func resumeUserDataMigration(for userID: String) {
+        guard let next = self.nextScenesBuilder?
+                .makeWaitMigrationScene(userID: userID, shouldResume: true, listener: nil)
+        else { return }
         
+        next.isModalInPresentation = true
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func changeDefaultRemindTime() {

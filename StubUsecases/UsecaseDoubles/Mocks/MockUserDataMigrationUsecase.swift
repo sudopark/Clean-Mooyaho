@@ -23,7 +23,15 @@ open class MockUserDataMigrationUsecase: UserDataMigrationUsecase {
         self.statusMocking.onNext(.migrating)
     }
     
-    public func resumeMigrationIfNeed(for userID: String) { }
+    public var needResume = false
+    public func resumeMigrationIfNeed(for userID: String) {
+        if needResume {
+            self.statusMocking.onNext(.migrating)
+            self.statusMocking.onNext(.finished(notStarted: false))
+        } else {
+            self.statusMocking.onNext(.finished(notStarted: true))
+        }
+    }
     
     public var didMigrationPaused = false
     public func pauseMigration() {

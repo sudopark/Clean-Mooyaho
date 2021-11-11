@@ -84,7 +84,7 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         typealias Key = UserDataMigrationStatus
-        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished(notStarted: false)].map { $0.key })
     }
     
     // 카테고리 아이템 없으면 바로 다음단계로
@@ -101,7 +101,7 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         typealias Key = UserDataMigrationStatus
-        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished(notStarted: false)].map { $0.key })
     }
     
     // 리드아이템 없으면 바로 다음단계로
@@ -118,7 +118,7 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         typealias Key = UserDataMigrationStatus
-        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished(notStarted: false)].map { $0.key })
     }
     
     // 메모 없으면 바로 다음 단계
@@ -135,7 +135,7 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         typealias Key = UserDataMigrationStatus
-        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished(notStarted: false)].map { $0.key })
     }
     
     // 아이템 업데이트 될때마다 아이템 마이그레이션됨 이벤트 방출
@@ -206,13 +206,14 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         typealias Key = UserDataMigrationStatus
-        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished].map { $0.key })
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.migrating, Key.finished(notStarted: false)].map { $0.key })
     }
     
     // 할필요 없으면 마이그레이션 진행 x
     func testUsecase_whenMigrationNotNeed_doNotRun() {
         // given
         let expect = expectation(description: "마이그레이션 진행할 필요없면 안함")
+        expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(isMigrationNeed: false)
         
         // when
@@ -222,7 +223,7 @@ extension UserDataMigrationUsecaseTests {
         
         // then
         typealias Key = UserDataMigrationStatus
-        XCTAssertEqual(status.map { $0.key } , [Key.idle].map { $0.key })
+        XCTAssertEqual(status.map { $0.key } , [Key.idle, Key.finished(notStarted: true)].map { $0.key })
     }
     
     // 마이그레이션 중지시 작업만 중지하고 상태 아이들로 변경
