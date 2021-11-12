@@ -240,30 +240,31 @@ extension DataModelStorageImple {
     }
     
     public func updateMember(_ member: Member) -> Maybe<Void> {
-        let members = MemberTable.self
-        let updateMemberQuery = members.update {
-            [ $0.nickName.equal(member.nickName), $0.intro.equal(member.introduction) ]
-        }
-        .where{ $0.uid == member.uid }
+        let memberEntity = MemberTable
+            .Entity(member.uid, nickName: member.nickName, intro: member.introduction)
+        let updateMember = self.sqliteService.rx
+            .run { try $0.insert(MemberTable.self, entities: [memberEntity]) }
         
-        let images = ThumbnailTable.self
-        let updateIconQuery = images.update { [
-            $0.isEmoji.equal(member.icon?.isEmoji),
-            $0.path.equal(member.icon?.source?.path),
-            $0.width.equal(member.icon?.source?.size?.width),
-            $0.height.equal(member.icon?.source?.size?.height),
-            $0.emoji.equal(member.icon?.emoji)
-        ] }
-        .where{ $0.ownerID == member.uid }
-        
-        let updateMember = self.sqliteService.rx.run{ try $0.update(members, query: updateMemberQuery) }
         let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.rx.run { try $0.update(images, query: updateIconQuery) }
-                .catchAndReturn(())
+            return member.icon.map { self.insertIcon($0, for: member.uid) }
+                ?? self.deleteIcon(for: member.uid)
         }
         return updateMember
             .flatMap(thenUpdateIcon)
+    }
+    
+    private func insertIcon(_ icon: Thumbnail, for memberID: String) -> Maybe<Void> {
+        let entity = ThumbnailTable.Entity(memberID, thumbnail: icon)
+        return self.sqliteService.rx.run { try $0.insert(ThumbnailTable.self, entities: [entity]) }
+            .catchAndReturn(())
+    }
+    
+    private func deleteIcon(for memberID: String) -> Maybe<Void> {
+        let query = ThumbnailTable.delete()
+            .where { $0.ownerID == memberID }
+        return self.sqliteService.rx.run { try $0.delete(ThumbnailTable.self, query: query) }
+            .catchAndReturn(())
     }
 }
 
