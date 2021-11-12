@@ -10,30 +10,37 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
 
 // MARK: - EditProfileViewModel
 
-public enum EditProfileCellType: String {
-    case nickName
-    case introduction
+public struct EditProfileCellViewModel: Equatable {
+    
+    public enum InputType {
+        case nickname
+        case intro
+    }
+    
+    let inputType: InputType
+    let value: String?
+    var isRequire = false
 }
 
 public protocol EditProfileViewModel: AnyObject {
 
     // interactor
-    func selectMemoji(_ data: Data, size: ImageSize)
-    func selectEmoji(_ emoji: String)
-    func inputTextChanges(type: EditProfileCellType, to newValue: String?)
+    func requestChangeThumbnail()
+    func requestChangeProperty(_ inputType: EditProfileCellViewModel.InputType)
     func saveChanges()
     func requestCloseScene()
     
     // presenter
     var profileImageSource: Observable<Thumbnail?> { get }
-    var cellTypes: Observable<[EditProfileCellType]> { get }
-    func previousInputValue(for cellType: EditProfileCellType) -> String?
+    var cellViewModels: Observable<[EditProfileCellViewModel]> { get }
     var isSavable: Observable<Bool> { get }
     var isSaveChanges: Observable<Bool> { get }
     var editCompleted: Observable<Void> { get }
@@ -43,11 +50,6 @@ public protocol EditProfileViewModel: AnyObject {
 // MARK: - EditProfileViewModelImple
 
 public final class EditProfileViewModelImple: EditProfileViewModel {
-    
-    enum PendinImageSource {
-        case memoji(_ data: Data, size: ImageSize)
-        case emoji(_ text: String)
-    }
     
     private let usecase: MemberUsecase
     private let router: EditProfileRouting
@@ -66,14 +68,20 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
     fileprivate final class Subjects {
         // define subjects
         let currentMember = BehaviorRelay<Member?>(value: nil)
-        let pendingImageSource = BehaviorRelay<PendinImageSource?>(value: nil)
-        let pendingInputs = BehaviorRelay<[EditProfileCellType: String]>(value: [:])
-        let cellViewModels = BehaviorRelay<[EditProfileCellType]>(value: [])
+        let pendingImageInfo = BehaviorRelay<(String, ImageSize)?>(value: nil)
+        let pendingNickName = BehaviorRelay<String?>(value: nil)
+        let pendingIntroduction = BehaviorRelay<String?>(value: nil)
         let isSaveChanges = BehaviorRelay<Bool>(value: false)
         @AutoCompletable var isSaveCompleted = PublishSubject<Void>()
     }
     private let disposeBag = DisposeBag()
     private let subjects = Subjects()
+    
+    private func internalBind() {
+        
+        let member = self.usecase.fetchCurrentMember()
+        self.subjects.currentMember.accept(member)
+    }
 }
 
 
@@ -81,19 +89,12 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
 
 extension EditProfileViewModelImple {
     
-    public func selectMemoji(_ data: Data, size: ImageSize) {
-        self.subjects.pendingImageSource.accept(.memoji(data, size: size))
+    public func requestChangeThumbnail() {
+        // TODO: ask image source(image or emoji)
     }
     
-    public func selectEmoji(_ emoji: String) {
-        self.subjects.pendingImageSource.accept(.emoji(emoji))
-    }
-    
-    public func inputTextChanges(type: EditProfileCellType, to newValue: String?) {
-        
-        var pendinMap = self.subjects.pendingInputs.value
-        pendinMap[type] = newValue
-        self.subjects.pendingInputs.accept(pendinMap)
+    public func requestChangeProperty(_ inputType: EditProfileCellViewModel.InputType) {
+        // TODO: open text edit
     }
     
     public func saveChanges() {
@@ -101,22 +102,25 @@ extension EditProfileViewModelImple {
         guard self.subjects.isSaveChanges.value == false,
               let memberID = self.subjects.currentMember.value?.uid else { return }
         
-        let pendingInputs = self.subjects.pendingInputs.value
-        let fields: [MemberUpdateField] = pendingInputs.compactMap{ .init(type: $0.key, value: $0.value) }
-        let imageInput = self.subjects.pendingImageSource.value?.asImageUploadReqParams()
+        let pendingNickname = self.subjects.pendingNickName.value?.emptyAsNil()
+            .map { MemberUpdateField.nickName($0) }
+        let pendingIntro = self.subjects.pendingIntroduction.value
+            .map { MemberUpdateField.introduction($0.emptyAsNil()) }
+        
+        let fields = [pendingNickname, pendingIntro].compactMap { $0 }
+        let imageInput = self.subjects.pendingImageInfo.value
+            .map { ImageUploadReqParams.file($0.0, needCopyTemp: true, size: $0.1) }
         
         let handleStatus: (UpdateMemberProfileStatus) -> Void = { [weak self] status in
             switch status {
             case .finished:
                 self?.subjects.isSaveChanges.accept(false)
-                self?.router.closeScene(animated: true) { [weak self] in
-                    self?.subjects.isSaveCompleted.onNext()
-                }
+                self?.router.closeScene(animated: true, completed: nil)
                 
             case let .finishedWithImageUploadFail(error):
+                logger.print(level: .error, error.localizedDescription)
                 self?.subjects.isSaveChanges.accept(false)
                 self?.router.showToast("프로필 사진 업로드에 실패했습니다. 다시 시도해보세요.".localized)
-                // TODO: record error
                 
             default: break
             }
@@ -158,39 +162,70 @@ extension EditProfileViewModelImple {
 
 extension EditProfileViewModelImple {
     
-    public var profileImageSource: Observable<Thumbnail?> {
-        return self.subjects.currentMember
-            .map{ $0?.icon ?? Member.memberDefaultEmoji }
+    public var profileImageSource: Observable<MemberThumbnail?> {
+        let selectThumbnail: (Member?, (String, ImageSize)?) -> MemberThumbnail?
+        selectThumbnail = { member, selectedInfo in
+            return selectedInfo.map { ImageSource(path: $0.0, size: $0.1) }.map { .imageSource($0) }
+                ?? member?.icon
+                
+        }
+        let bothNilThenDefaultImage: (MemberThumbnail?) -> MemberThumbnail
+        bothNilThenDefaultImage = {
+            return $0 ?? Member.memberDefaultEmoji
+        }
+        return Observable
+            .combineLatest(self.subjects.currentMember, self.subjects.pendingImageInfo,
+                           resultSelector: selectThumbnail)
+            .map(bothNilThenDefaultImage)
             .distinctUntilChanged()
     }
     
-    public var cellTypes: Observable<[EditProfileCellType]> {
-        return self.subjects.currentMember
-            .compactMap{ $0 }
-            .map { _ in
-                return [.nickName, .introduction]
+    private var nicknamecell: Observable<EditProfileCellViewModel> {
+        
+        let selectValue: (Member, String?) -> String? = { member, editedValue in
+            return editedValue?.emptyAsNil() ?? member.nickName
+        }
+        return Observable
+            .combineLatest(self.subjects.currentMember.compactMap { $0 },
+                           self.subjects.pendingNickName,
+                           resultSelector: selectValue)
+            .map {
+                return EditProfileCellViewModel(inputType: .nickname, value: $0)
+                    |> \.isRequire .~ true
             }
     }
     
-    public func previousInputValue(for cellType: EditProfileCellType) -> String? {
-        let pendings = self.subjects.pendingInputs.value
-        return pendings[cellType]
+    private var introCell: Observable<EditProfileCellViewModel> {
+        
+        let selectValue: (Member, String?) -> String? = { member, editedValue in
+            return editedValue?.emptyAsNil() ?? member.introduction
+        }
+        return Observable
+            .combineLatest(self.subjects.currentMember.compactMap { $0 },
+                           self.subjects.pendingIntroduction,
+                           resultSelector: selectValue)
+            .map {
+                return EditProfileCellViewModel(inputType: .intro, value: $0)
+            }
+    }
+    
+    public var cellViewModels: Observable<[EditProfileCellViewModel]> {
+        return Observable
+            .combineLatest(self.nicknamecell, self.introCell,
+                           resultSelector: { [$0, $1] })
     }
     
     public var isSavable: Observable<Bool> {
         
-        let checkHasChanged: (Member, PendinImageSource?, [EditProfileCellType: String]) -> Bool
-        checkHasChanged = { member, source, dict in
-            guard dict.isNickNameEntered else { return false }
-            let hasNewImageSource = source != nil
-            return hasNewImageSource || member.isChangeOccurs(dict)
+        let checkHasNickname: (Member, String?) -> Bool = { member, editedNickname in
+            let hasNickname = (editedNickname?.emptyAsNil() ?? member.nickName?.emptyAsNil()) != nil
+            return hasNickname
         }
         
         return Observable
             .combineLatest(self.subjects.currentMember.compactMap{ $0 },
-                           self.subjects.pendingImageSource,
-                           self.subjects.pendingInputs)
-            .map(checkHasChanged)
+                           self.subjects.pendingNickName)
+            .map(checkHasNickname)
             .distinctUntilChanged()
     }
     
@@ -201,61 +236,5 @@ extension EditProfileViewModelImple {
     
     public var editCompleted: Observable<Void> {
         return self.subjects.isSaveCompleted.asObservable()
-    }
-}
-
-
-// MARK: - private extensiosns
-
-private extension EditProfileViewModelImple {
-    
-    func internalBind() {
-        
-        let member = self.usecase.fetchCurrentMember()
-        var previousValueMap: [EditProfileCellType: String] = [:]
-        previousValueMap[.nickName] = member?.nickName
-        previousValueMap[.introduction] = member?.introduction
-            
-        self.subjects.pendingInputs.accept(previousValueMap)
-        self.subjects.currentMember.accept(member)
-    }
-}
-
-private extension Dictionary where Key == EditProfileCellType, Value == String {
-    
-    var isNickNameEntered: Bool {
-        return self[.nickName]?.isNotEmpty == true
-    }
-}
-
-private extension Member {
-    
-    func isChangeOccurs(_ dict: [EditProfileCellType: String]) -> Bool {
-        return self.nickName != dict[.nickName] || self.introduction != dict[.introduction]
-    }
-}
-
-
-extension MemberUpdateField {
-        
-    init?(type: EditProfileCellType, value: String) {
-        switch type {
-        case .nickName where value.isNotEmpty:
-            self = .nickName(value)
-            
-        case .introduction:
-            self = .introduction(value.isEmpty ? nil : value)
-        default: return nil
-        }
-    }
-}
-
-private extension EditProfileViewModelImple.PendinImageSource {
-    
-    func asImageUploadReqParams() -> ImageUploadReqParams {
-        switch self {
-        case let .emoji(text): return .emoji(text)
-        case let .memoji(data, size): return .data(data, extension: "png", size: size)
-        }
     }
 }
