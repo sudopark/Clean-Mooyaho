@@ -9,6 +9,8 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Prelude
+import Optics
 
 import CommonPresenting
 
@@ -17,25 +19,34 @@ final class EditProfileView: BaseUIView {
     
     final class ProfileImageHeaderView: BaseUIView, Presenting, UITextFieldDelegate {
         
+        let titleLabel = UILabel()
+        let descriptionLabel = UILabel()
+        
         let borderView = UIView()
         let imageView = IntegratedImageView()
-        let emojiInput = EmojiInputTextFiled()
         
         func setupLayout() {
+            
             self.addSubview(borderView)
             borderView.autoLayout.active(with: self) {
-                $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+                $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
                 $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-                $0.heightAnchor.constraint(equalToConstant: 150)
-                $0.widthAnchor.constraint(equalTo: $0.heightAnchor)
+                $0.heightAnchor.constraint(equalToConstant: 100)
+                $0.widthAnchor.constraint(equalToConstant: 100)
             }
             
-            self.borderView.addSubview(emojiInput)
-            emojiInput.autoLayout.active(with: self) {
-                $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
-                $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-                $0.widthAnchor.constraint(equalToConstant: 20)
-                $0.heightAnchor.constraint(equalToConstant: 20)
+            self.addSubview(titleLabel)
+            titleLabel.autoLayout.active(with: self) {
+                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+                $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
+                $0.trailingAnchor.constraint(lessThanOrEqualTo: borderView.leadingAnchor, constant: -8)
+            }
+            
+            self.addSubview(descriptionLabel)
+            descriptionLabel.autoLayout.active(with: self) {
+                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+                $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12)
+                $0.trailingAnchor.constraint(lessThanOrEqualTo: borderView.leadingAnchor, constant: -20)
             }
             
             self.borderView.addSubview(imageView)
@@ -47,45 +58,37 @@ final class EditProfileView: BaseUIView {
             
             self.backgroundColor = self.uiContext.colors.appBackground
             
+            _ = self.titleLabel
+                |> self.uiContext.decorating.listItemTitle(_:)
+                |> \.numberOfLines .~ 1
+                |> \.text .~ pure("Profile image".localized)
+            
+            _ = self.descriptionLabel
+                |> self.uiContext.decorating.listItemDescription
+                |> \.numberOfLines .~ 0
+                |> \.text .~ pure("You can choose a photo or emoji as a profile image.".localized)
+            
             self.imageView.setupStyling()
             self.imageView.backgroundColor = self.uiContext.colors.appBackground
-            self.imageView.layer.cornerRadius = 74
+            self.imageView.layer.cornerRadius = 49
             self.imageView.clipsToBounds = true
             
             self.borderView.backgroundColor = self.uiContext.colors.appSecondBackground
-            self.borderView.layer.cornerRadius = 75
+            self.borderView.layer.cornerRadius = 50
             self.borderView.clipsToBounds = true
-            
-            self.emojiInput.delegate = self
-            
-            self.emojiInput.allowsEditingTextAttributes = true
-            self.emojiInput.alpha = 0.01
-        }
-        
-        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            textField.text = ""
-            return true
         }
     }
     
     final class InputTextCell: BaseTableViewCell, Presenting {
         
-        let inputTextField: UITextField = .init()
-        weak var inputListener: PublishSubject<(EditProfileCellType, String)>?
+        let keyLabel = UILabel()
+        let valueLabel = UILabel()
+        let requireAccetLabel = UILabel()
         
-        func setupCell(_ type: EditProfileCellType,
-                       previousInput: String?,
-                       listener: PublishSubject<(EditProfileCellType, String)>?) {
-            self.inputListener = listener
-            
-            self.inputTextField.placeholder = type.placeHolder
-            self.inputTextField.text = previousInput
-            
-            self.inputTextField.rx.text.orEmpty
-                .subscribe(onNext: { [weak self] text in
-                    self?.inputListener?.onNext((type, text))
-                })
-                .disposed(by: self.disposeBag)
+        func setupCell(_ cellViewModel: EditProfileCellViewModel) {
+            self.keyLabel.text = cellViewModel.inputType.title
+            self.valueLabel.text = cellViewModel.value ?? cellViewModel.inputType.placeHolder
+            self.requireAccetLabel.isHidden = cellViewModel.isRequire == false
         }
         
         override func afterViewInit() {
@@ -95,21 +98,50 @@ final class EditProfileView: BaseUIView {
         }
         
         func setupLayout() {
-            self.contentView.addSubview(inputTextField)
-            inputTextField.autoLayout.active(with: self.contentView) {
-                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
-                $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 4)
-                $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -8)
-                $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -4)
+            
+            self.contentView.addSubview(keyLabel)
+            keyLabel.autoLayout.active(with: self.contentView) {
+                $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
+                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+            }
+            keyLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+            
+            self.contentView.addSubview(requireAccetLabel)
+            requireAccetLabel.autoLayout.active(with: self.contentView) {
+                $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -16)
+                $0.leadingAnchor.constraint(equalTo: keyLabel.trailingAnchor, constant: 2)
+                $0.topAnchor.constraint(equalTo: keyLabel.topAnchor, constant: 2)
+            }
+            keyLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+            
+            self.contentView.addSubview(valueLabel)
+            valueLabel.autoLayout.active(with: self.contentView) {
+                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
+                $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
+                $0.topAnchor.constraint(equalTo: keyLabel.bottomAnchor, constant: 4)
+                $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -6)
             }
         }
         
         func setupStyling() {
             self.backgroundColor = self.uiContext.colors.appSecondBackground
             
-            self.inputTextField.textColor = self.uiContext.colors.text
-            self.inputTextField.autocorrectionType = .no
-            self.inputTextField.autocapitalizationType = .none
+            _ = keyLabel
+                |> self.uiContext.decorating.listItemTitle(_:)
+                |> \.numberOfLines .~ 1
+            
+            _ = self.requireAccetLabel
+                |> \.font .~ self.uiContext.fonts.get(14, weight: .medium)
+                |> \.textColor .~ UIColor.systemRed
+                |> \.text .~ "*"
+                |> \.isHidden .~ true
+            
+            _ = valueLabel
+                |> self.uiContext.decorating.listItemTitle(_:)
+                |>  \.font .~ self.uiContext.fonts.get(15, weight: .regular)
+                |> \.numberOfLines .~ 1
+            
+            self.accessoryType = .disclosureIndicator
         }
     }
     
@@ -166,7 +198,7 @@ extension EditProfileView: Presenting {
             $0.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
             $0.widthAnchor.constraint(equalTo: tableView.widthAnchor)
             $0.topAnchor.constraint(equalTo: tableView.topAnchor)
-            $0.heightAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 0.6)
+            $0.heightAnchor.constraint(equalToConstant: 120)
         }
         profileHeaderView.setupLayout()
     }
@@ -185,7 +217,8 @@ extension EditProfileView: Presenting {
         self.backgroundColor = self.uiContext.colors.appBackground
         
         self.tableView.registerCell(InputTextCell.self)
-        self.tableView.estimatedRowHeight = 65
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 80
         self.tableView.separatorStyle = .none
         
         self.profileHeaderView.setupStyling()
@@ -193,12 +226,19 @@ extension EditProfileView: Presenting {
 }
 
 
-private extension EditProfileCellType {
+private extension EditProfileCellViewModel.InputType {
     
     var placeHolder: String {
         switch self {
-        case .nickName: return "nickname".localized
-        case .introduction: return "introduce".localized
+        case .nickname: return "Please set a nickname of 30 characters or less".localized
+        case .intro: return "Please introduce yourself in 300 characters or less.".localized
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .nickname: return "Nickname".localized
+        case .intro: return "Introduction".localized
         }
     }
 }

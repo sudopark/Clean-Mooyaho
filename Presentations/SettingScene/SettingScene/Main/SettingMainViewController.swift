@@ -199,8 +199,8 @@ extension SettingItemCell: Presenting {
     func setupStyling() {
         
         _ = self.titleLabel
-            |> \.textColor .~ self.uiContext.colors.title.withAlphaComponent(0.8)
-            |> \.font .~ self.uiContext.fonts.get(15, weight: .regular)
+            |> \.textColor .~ self.uiContext.colors.text
+            |> \.textAlignment .~ .center
             |> \.numberOfLines .~ 1
         
         _ = self.accentValueLabel

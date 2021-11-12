@@ -20,14 +20,13 @@ import CommonPresenting
 
 public final class EditProfileViewController: BaseViewController, EditProfileScene {
     
-    typealias Sections = SectionModel<String, EditProfileCellType>
+    typealias Sections = SectionModel<String, EditProfileCellViewModel>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Sections>
     
     let editView = EditProfileView()
     
     let viewModel: EditProfileViewModel
     private var dataSource: DataSource!
-    private let cellInputListener = PublishSubject<(EditProfileCellType, String)>()
     
     public init(viewModel: EditProfileViewModel) {
         self.viewModel = viewModel
@@ -64,7 +63,7 @@ extension EditProfileViewController {
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindTableView()
-                self?.bindEmojiInput()
+                self?.bindThumbnail()
             })
             .disposed(by: self.disposeBag)
         
@@ -84,12 +83,6 @@ extension EditProfileViewController {
         self.editView.saveButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.saveChanges()
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.cellInputListener
-            .subscribe(onNext: { [weak self] pair in
-                self?.viewModel.inputTextChanges(type: pair.0, to: pair.1)
             })
             .disposed(by: self.disposeBag)
     }
@@ -122,10 +115,9 @@ private extension EditProfileViewController {
     
     func makeDataSource() -> DataSource {
         
-        return .init { [weak self] _, tableView, indexPath, cellType in
+        return .init { _, tableView, indexPath, cellViewModel in
             let cell: EditProfileView.InputTextCell = tableView.dequeueCell()
-            cell.setupCell(cellType, previousInput: self?.viewModel.previousInputValue(for: cellType),
-                           listener: self?.cellInputListener)
+            cell.setupCell(cellViewModel)
             return cell
         }
     }
@@ -134,10 +126,16 @@ private extension EditProfileViewController {
         
         self.dataSource = self.makeDataSource()
         
-        self.viewModel.cellTypes
+        self.viewModel.cellViewModels
             .map{ [Sections(model: "inputs", items: $0)] }
             .asDriver(onErrorDriveWith: .never())
             .drive(self.editView.tableView.rx.items(dataSource: self.dataSource))
+            .disposed(by: self.disposeBag)
+        
+        self.editView.tableView.rx.modelSelected(EditProfileCellViewModel.self)
+            .subscribe(onNext: { [weak self] cellViewModel in
+                self?.viewModel.requestChangeProperty(cellViewModel.inputType)
+            })
             .disposed(by: self.disposeBag)
     }
 }
@@ -147,7 +145,7 @@ private extension EditProfileViewController {
 
 private extension EditProfileViewController {
     
-    func bindEmojiInput() {
+    func bindThumbnail() {
         
         self.viewModel.profileImageSource
             .asDriver(onErrorDriveWith: .never())
@@ -160,32 +158,9 @@ private extension EditProfileViewController {
             })
             .disposed(by: self.disposeBag)
         
-        
-        self.editView.profileHeaderView.emojiInput.newInputEmoji
-            .subscribe(onNext: { [weak self] emoji in
-                self?.editView.profileHeaderView.imageView.setupImage(using: .emoji(emoji))
-                self?.viewModel.selectEmoji(emoji)
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.editView.profileHeaderView.emojiInput.newInputMemoji
-            .subscribe(onNext: { [weak self] image in
-                guard let data = image.pngData() else { return }
-                let size = ImageSize(Double(image.size.width), Double(image.size.height))
-                self?.editView.profileHeaderView.imageView.drawImage(image)
-                self?.viewModel.selectMemoji(data, size: size)
-            })
-            .disposed(by: self.disposeBag)
-        
         self.editView.profileHeaderView.imageView.rx.addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
-                self?.editView.profileHeaderView.emojiInput.becomeFirstResponder()
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.view.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.view.endEditing(true)
+                self?.viewModel.requestChangeThumbnail()
             })
             .disposed(by: self.disposeBag)
     }
