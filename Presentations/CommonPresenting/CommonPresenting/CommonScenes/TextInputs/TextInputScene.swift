@@ -21,7 +21,7 @@ public protocol TextInputSceneListenable: AnyObject {
     func textInput(didEntered text: String?)
 }
 
-public class DefaultTextInputListener: NSObject, TextInputSceneListenable {
+public class DefaultTextInputListener: TextInputSceneListenable {
     
     private let didEnterText = PublishSubject<String?>()
     public func textInput(didEntered text: String?) {
@@ -31,6 +31,8 @@ public class DefaultTextInputListener: NSObject, TextInputSceneListenable {
     public var enteredText: Observable<String?> {
         return self.didEnterText
     }
+    
+    public init() { }
     
     deinit {
         self.didEnterText.onCompleted()
