@@ -43,7 +43,6 @@ public protocol EditProfileViewModel: AnyObject {
     var cellViewModels: Observable<[EditProfileCellViewModel]> { get }
     var isSavable: Observable<Bool> { get }
     var isSaveChanges: Observable<Bool> { get }
-    var editCompleted: Observable<Void> { get }
 }
 
 
@@ -133,14 +132,37 @@ extension EditProfileViewModelImple {
     }
 }
 
-
-// MARK: - EditProfileViewModelImple Interactor
+// MARK: - EditProfileViewModelImple Interactor + edit profile image
 
 extension EditProfileViewModelImple {
     
     public func requestChangeThumbnail() {
-        // TODO: ask image source(image or emoji)
+       
+        let emoji = ActionSheetForm.Action(text: "Emoji".localized) { [weak self] in
+            
+        }
+        let photo = ActionSheetForm.Action(text: "Photo".localized) { [weak self] in
+            self?.router.selectPhoto()
+        }
+        let cancel = ActionSheetForm.Action(text: "Cancel".localized, isCancel: true)
+        let form = ActionSheetForm(title: nil, message: "Choose profile image source".localized)
+        form.actions = [emoji, photo, cancel]
+        self.router.chooseProfileImageSource(form)
     }
+    
+    public func imagePicker(didSelect imagePath: String, imageSize: ImageSize) {
+        self.subjects.pendingImageInfo.accept((imagePath, imageSize))
+    }
+    
+    public func imagePicker(didFail selectError: Error) {
+        self.router.alertError(selectError)
+    }
+}
+
+
+// MARK: - EditProfileViewModelImple Interactor + save
+
+extension EditProfileViewModelImple {
     
     public func saveChanges() {
         
@@ -277,9 +299,5 @@ extension EditProfileViewModelImple {
     public var isSaveChanges: Observable<Bool> {
         return self.subjects.isSaveChanges
             .distinctUntilChanged()
-    }
-    
-    public var editCompleted: Observable<Void> {
-        return self.subjects.isSaveCompleted.asObservable()
     }
 }

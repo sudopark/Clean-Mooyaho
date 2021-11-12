@@ -21,12 +21,16 @@ import CommonPresenting
 public protocol EditProfileRouting: Routing {
     
     func editText(mode: TextInputMode, listener: TextInputSceneListenable)
+    
+    func chooseProfileImageSource(_ form: ActionSheetForm)
+    
+    func selectPhoto()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditProfileRouterBuildables = TextInputSceneBuilable
+public typealias EditProfileRouterBuildables = TextInputSceneBuilable & ImagePickerSceneBuilable
 
 public final class EditProfileRouter: Router<EditProfileRouterBuildables>, EditProfileRouting {
     
@@ -49,6 +53,19 @@ extension EditProfileRouter {
         next.modalPresentationStyle = .custom
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func chooseProfileImageSource(_ form: ActionSheetForm) {
+        self.alertActionSheet(form)
+    }
+    
+    public func selectPhoto() {
+        guard let next = self.nextScenesBuilder?
+                .makeImagePickerScene(isCamera: false, listener: self.currentInteractor)
+        else {
+            return
+        }
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

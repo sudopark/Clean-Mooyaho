@@ -35,7 +35,7 @@ public protocol SignInSceneBuilable {
 
 // MARK: - EditProfileScene
 
-public protocol EditProfileSceneInteractable { }
+public protocol EditProfileSceneInteractable: ImagePickerSceneListenable { }
 
 public protocol EditProfileScene: Scenable {
     

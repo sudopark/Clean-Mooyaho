@@ -18,5 +18,6 @@ import UIKit
 
 public protocol ImagePickerSceneBuilable {
     
-    func makeImagePickerScene(isCamera: Bool) -> ImagePickerScene
+    func makeImagePickerScene(isCamera: Bool,
+                              listener: ImagePickerSceneListenable?) -> ImagePickerScene
 }

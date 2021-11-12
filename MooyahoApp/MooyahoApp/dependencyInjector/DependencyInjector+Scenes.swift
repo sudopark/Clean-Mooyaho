@@ -78,10 +78,12 @@ extension DependencyInjector: SignInSceneBuilable, EditProfileSceneBuilable {
 
 extension DependencyInjector: ImagePickerSceneBuilable {
     
-    public func makeImagePickerScene(isCamera: Bool) -> ImagePickerScene {
+    public func makeImagePickerScene(isCamera: Bool,
+                                     listener: ImagePickerSceneListenable?) -> ImagePickerScene {
         let viewController = SimpleImagePickerViewController()
         viewController.sourceType = isCamera ? .camera : .photoLibrary
         viewController.allowsEditing = true
+        viewController.listener = listener
         return viewController
     }
 }

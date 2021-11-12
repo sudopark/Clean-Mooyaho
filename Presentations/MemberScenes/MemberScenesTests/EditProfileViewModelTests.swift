@@ -141,6 +141,38 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
+    func testViewModel_requestChooseImageSource() {
+        // given
+        // when
+        self.viewModel.requestChangeThumbnail()
+        
+        // then
+        XCTAssertNotNil(self.spyRouter.didRequestedChooseImageSourceForm)
+    }
+    
+    func testViewModel_selectProfilePhoto() {
+        // given
+        let expect = expectation(description: "이미지 선택")
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+            var member = Member(uid: "uid", nickName: "some", icon: nil)
+            member.introduction = "old"
+            return member
+        }
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        // when
+        let thumnail = self.waitFirstElement(expect, for: self.viewModel.profileImageSource, skip: 1) {
+            self.viewModel.requestChangeThumbnail()
+            self.viewModel.imagePicker(didSelect: "path", imageSize: .init(100, 100))
+        }
+        
+        // then
+        XCTAssertEqual(thumnail, .imageSource(.init(path: "path", size: .init(100, 100))))
+    }
+}
+
+extension EditProfileViewModelTests {
+    
     private func registerViewModelSavable() {
         self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
             var member = Member(uid: "uid", nickName: "some", icon: nil)
@@ -293,6 +325,16 @@ extension EditProfileViewModelTests {
         
         func alertForConfirm(_ form: AlertForm) {
             self.verify(key: "alertForConfirm")
+        }
+        
+        var didRequestedChooseImageSourceForm: ActionSheetForm?
+        func chooseProfileImageSource(_ form: ActionSheetForm) {
+            self.didRequestedChooseImageSourceForm = form
+        }
+        
+        var didRequestSeelctPhoto: Bool = false
+        func selectPhoto() {
+            self.didRequestSeelctPhoto = true
         }
     }
 }
