@@ -164,7 +164,11 @@ extension TextInputViewController: Presenting {
         self.titleLabel.text = inputMode.title
         
         self.inputTextView.maxCharCount = inputMode.maxCharCount
-        self.inputTextView.setupMultilineStyling(CGFloat(inputMode.defaultHeight ?? 200))
+        if inputMode.isSingleLine {
+            self.inputTextView.setupSingleLineStyling()
+        } else {
+            self.inputTextView.setupMultilineStyling(CGFloat(inputMode.defaultHeight ?? 200))
+        }
         self.inputTextView.placeHolderLabel.text = inputMode.placeHolder
         self.inputTextView.text = inputMode.startWith
         

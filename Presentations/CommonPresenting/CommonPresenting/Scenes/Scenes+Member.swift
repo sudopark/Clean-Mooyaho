@@ -35,11 +35,11 @@ public protocol SignInSceneBuilable {
 
 // MARK: - EditProfileScene
 
-public protocol EditProfileScenePresenter { }
+public protocol EditProfileSceneInteractable { }
 
 public protocol EditProfileScene: Scenable {
     
-    var presenrer: EditProfileScenePresenter? { get }
+    var interactor: EditProfileSceneInteractable? { get }
 }
 
 public protocol EditProfileSceneBuilable {

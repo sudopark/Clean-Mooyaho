@@ -88,53 +88,32 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-//    // 닉네임 입력 안되어있을때 입력하면 확인버튼 활성화
-//    func testViewModel_whenActiveSaveButton_nickNameIsNotNil() {
-//        // given
-//        let expect = expectation(description: "닉네임이 nil이 아닌 경우에만 저장버튼 활성화")
-//        expect.expectedFulfillmentCount = 3
-//        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-//            let member = Member(uid: "uid", nickName: nil, icon: .emoji("⛳️"))
-//            return member
-//        }
-//
-//        // when
-//        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
-//        let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
-//            self.viewModel.inputTextChanges(type: .introduction, to: "some")
-//            self.viewModel.inputTextChanges(type: .nickName, to: "")
-//            self.viewModel.inputTextChanges(type: .nickName, to: "nick")
-//            self.viewModel.inputTextChanges(type: .nickName, to: nil)
-//        }
-//
-//        // then
-//        XCTAssertEqual(isSavables, [false, true, false])
-//    }
-    
-//    func testViewModel_whenEditAndChangeOccurs_updateSavable() {
-//        // given
-//        let expect = expectation(description: "수정모드에서 수정내역이 발생 + 닉네임이 있을때만 저장버튼 활성화")
-//        expect.expectedFulfillmentCount = 4
-//
-//        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-//            var member = Member(uid: "uid", nickName: "some", icon: .emoji("⛳️"))
-//            member.introduction = "old"
-//            return member
-//        }
-//
-//        // when
-//        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
-//        let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
-//            self.viewModel.inputTextChanges(type: .introduction, to: "new")     // true
-//            self.viewModel.inputTextChanges(type: .nickName, to: nil)           // false
-//            self.viewModel.inputTextChanges(type: .introduction, to: "old")         // false -> ignored
-//            self.viewModel.inputTextChanges(type: .nickName, to: "some")            // false -> ignored
-//            self.viewModel.inputTextChanges(type: .introduction, to: "new")     // true
-//        }
-//
-//        // then
-//        XCTAssertEqual(isSavables, [false, true, false, true])
-//    }
+    // 닉네임 입력 안되어있을때 입력하면 확인버튼 활성화
+    func testViewModel_whenActiveSaveButton_nickNameIsNotNil() {
+        // given
+        let expect = expectation(description: "닉네임이 있는 경우에만 저장버튼 활성화")
+        expect.expectedFulfillmentCount = 3
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+            let member = Member(uid: "uid", nickName: nil, icon: .emoji("⛳️"))
+            return member
+        }
+
+        // when
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
+            self.viewModel.requestChangeProperty(.intro)
+            self.spyRouter.capturedListener?.textInput(didEntered: "some")
+            
+            self.viewModel.requestChangeProperty(.nickname)
+            self.spyRouter.capturedListener?.textInput(didEntered: "nick")
+            
+            self.viewModel.requestChangeProperty(.nickname)
+            self.spyRouter.capturedListener?.textInput(didEntered: "")
+        }
+
+        // then
+        XCTAssertEqual(isSavables, [false, true, false])
+    }
     
 //    func testViewModel_whenNewImageSourceEntered_updateSavable() {
 //        // given
@@ -169,7 +148,8 @@ extension EditProfileViewModelTests {
             return member
         }
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
-//        self.viewModel.inputTextChanges(type: .introduction, to: "new")
+        self.viewModel.requestChangeProperty(.intro)
+        self.spyRouter.capturedListener?.textInput(didEntered: "new")
     }
     
 //    func testViewModel_whenSaveChanges_showIsSaving() {
@@ -197,9 +177,9 @@ extension EditProfileViewModelTests {
 //        // given
 //        let expect = expectation(description: "저장 완료시에 화면 닫고 외부로 이벤트 전파")
 //        expect.expectedFulfillmentCount = 2
-//        
+//
 //        self.registerViewModelSavable()
-//        
+//
 //        self.spyRouter.called(key: "closeScene") { _ in
 //            expect.fulfill()
 //        }
@@ -207,11 +187,11 @@ extension EditProfileViewModelTests {
 //            expect.fulfill()
 //        })
 //        .disposed(by: self.disposeBag)
-//        
+//
 //        // when
 //        self.viewModel.saveChanges()
 //        self.mockMemberUsecase.updateStatus.onNext(.finished)
-//        
+//
 //        // then
 //        self.wait(for: [expect], timeout: self.timeout)
 //    }
@@ -292,6 +272,11 @@ extension EditProfileViewModelTests {
 extension EditProfileViewModelTests {
     
     class SpyRouter: EditProfileRouting, Mocking {
+        
+        var capturedListener: TextInputSceneListenable?
+        func editText(mode: TextInputMode, listener: TextInputSceneListenable) {
+            self.capturedListener = listener
+        }
         
         func showToast(_ message: String) {
             self.verify(key: "showToast")

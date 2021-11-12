@@ -99,10 +99,12 @@ extension DependencyInjector: SelectTagSceneBuilable {
 
 extension DependencyInjector: TextInputSceneBuilable {
     
-    public func makeTextInputScene(_ inputMode: TextInputMode) -> TextInputScene {
+    public func makeTextInputScene(_ inputMode: TextInputMode,
+                                   listener: TextInputSceneListenable?) -> TextInputScene {
         let router = TextInputRouter(nextSceneBuilders: self)
         let viewModel = TextInputViewModelImple(inputMode: inputMode,
-                                                router: router)
+                                                router: router,
+                                                listener: listener)
         let viewController = TextInputViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

@@ -53,6 +53,8 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
     
     private let usecase: MemberUsecase
     private let router: EditProfileRouting
+    private var nickNameInputListener: DefaultTextInputListener?
+    private var introInputListener: DefaultTextInputListener?
     
     public init(usecase: MemberUsecase,
                 router: EditProfileRouting) {
@@ -85,16 +87,59 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
 }
 
 
+// MARK: - EditProfileViewModelImple Interactor + edit property
+
+extension EditProfileViewModelImple {
+    
+    public func requestChangeProperty(_ inputType: EditProfileCellViewModel.InputType) {
+        return inputType == .nickname ? self.requestChangeNickname() : self.requestChangeIntroduction()
+    }
+    
+    private func requestChangeNickname() {
+        
+        let mode = TextInputMode(isSingleLine: true, title: "Nickname".localized)
+            |> \.placeHolder .~ "Enter a nickname".localized
+            |> \.startWith .~ (self.subjects.pendingNickName.value?.emptyAsNil() ?? self.subjects.currentMember.value?.nickName?.emptyAsNil())
+            |> \.maxCharCount .~ 30
+            |> \.shouldEnterSomething .~ true
+        let listener = DefaultTextInputListener()
+        listener.enteredText
+            .take(1)
+            .subscribe(onNext: { [weak self] text in
+                self?.subjects.pendingNickName.accept(text)
+            })
+            .disposed(by: self.disposeBag)
+        self.nickNameInputListener = listener
+        self.router.editText(mode: mode, listener: listener)
+    }
+    
+    private func requestChangeIntroduction() {
+        
+        let mode = TextInputMode(isSingleLine: false, title: "Introduction".localized)
+            |> \.placeHolder .~ "Hello world".localized
+            |> \.startWith .~ (self.subjects.pendingIntroduction.value ?? self.subjects.currentMember.value?.introduction)
+            |> \.maxCharCount .~ 300
+            |> \.shouldEnterSomething .~ false
+            |> \.defaultHeight .~ 80
+        let listener = DefaultTextInputListener()
+        listener.enteredText
+            .take(1)
+            .subscribe(onNext: { [weak self] text in
+                self?.subjects.pendingIntroduction.accept(text)
+            })
+            .disposed(by: self.disposeBag)
+        self.introInputListener = listener
+        self.router.editText(mode: mode, listener: listener)
+    }
+}
+
+
 // MARK: - EditProfileViewModelImple Interactor
 
 extension EditProfileViewModelImple {
     
     public func requestChangeThumbnail() {
         // TODO: ask image source(image or emoji)
-    }
-    
-    public func requestChangeProperty(_ inputType: EditProfileCellViewModel.InputType) {
-        // TODO: open text edit
     }
     
     public func saveChanges() {

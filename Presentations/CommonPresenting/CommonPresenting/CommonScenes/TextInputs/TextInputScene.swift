@@ -14,42 +14,50 @@ import RxCocoa
 
 // MARK: - TextInputScene Interactor & Presenter
 
-//public protocol TextInputSceneInteractor { }
-//
-public protocol TextInputSceneOutput {
-    var enteredText: Observable<String> { get }
+public protocol TextInputSceneInteractable { }
+
+public protocol TextInputSceneListenable: AnyObject {
+    
+    func textInput(didEntered text: String?)
 }
+
+public class DefaultTextInputListener: NSObject, TextInputSceneListenable {
+    
+    private let didEnterText = PublishSubject<String?>()
+    public func textInput(didEntered text: String?) {
+        return didEnterText.onNext(text)
+    }
+    
+    public var enteredText: Observable<String?> {
+        return self.didEnterText
+    }
+    
+    deinit {
+        self.didEnterText.onCompleted()
+    }
+}
+
 
 
 // MARK: - TextInputScene
 
 public protocol TextInputScene: Scenable, PangestureDismissableScene {
     
-//    var interactor: TextInputSceneInteractor? { get }
-//
-    var output: TextInputSceneOutput? { get }
+    var interactor: TextInputSceneInteractable? { get }
 }
 
 
 // MARK: - TextInputViewModelImple conform TextInputSceneInteractor or TextInputScenePresenter
 
-//extension TextInputViewModelImple: TextInputSceneInteractor {
-//
-//}
-//
-extension TextInputViewModelImple: TextInputSceneOutput {
+extension TextInputViewModelImple: TextInputSceneInteractable {
 
 }
 
-// MARK: - TextInputViewController provide TextInputSceneInteractor or TextInputScenePresenter
+// MARK: - TextInputViewController provide TextInputSceneInteractable
 
 extension TextInputViewController {
 
-//    public var interactor: TextInputSceneInteractor? {
-//        return self.viewModel as? TextInputSceneInteractor
-//    }
-//
-    public var output: TextInputSceneOutput? {
-        return self.viewModel as? TextInputSceneOutput
+    public var interactor: TextInputSceneInteractable? {
+        return self.viewModel as? TextInputSceneInteractable
     }
 }

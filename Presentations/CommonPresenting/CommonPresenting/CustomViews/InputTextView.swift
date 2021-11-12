@@ -66,7 +66,9 @@ extension InputTextView: Presenting {
         self.textInputView.backgroundColor = .clear
         
         self.singleLineTextField.autocorrectionType = .no
+        self.singleLineTextField.autocapitalizationType = .none
         self.textInputView.autocorrectionType = .no
+        self.textInputView.autocapitalizationType = .none
         
         self.singleLineTextField.delegate = self
         self.textInputView.delegate = self
