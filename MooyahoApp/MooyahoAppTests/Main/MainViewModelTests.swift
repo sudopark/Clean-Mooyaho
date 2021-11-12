@@ -190,9 +190,8 @@ extension MainViewModelTests {
             self.didSlideMenuOpen = true
         }
         
-        func presentEditProfileScene() -> EditProfileScenePresenter? {
+        func presentEditProfileScene() {
             self.verify(key: "presentEditProfileScene")
-            return nil
         }
         
         func alertForConfirm(_ form: AlertForm) {

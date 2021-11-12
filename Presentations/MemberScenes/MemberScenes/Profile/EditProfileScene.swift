@@ -12,12 +12,12 @@ import CommonPresenting
 
 // MARK: - EditProfileScene Implement
 
-extension EditProfileViewModelImple: EditProfileScenePresenter { }
+extension EditProfileViewModelImple: EditProfileSceneInteractable { }
 
 
 extension EditProfileViewController {
     
-    public var presenrer: EditProfileScenePresenter? {
-        return self.viewModel as? EditProfileScenePresenter
+    public var interactor: EditProfileSceneInteractable? {
+        return self.viewModel as? EditProfileSceneInteractable
     }
 }

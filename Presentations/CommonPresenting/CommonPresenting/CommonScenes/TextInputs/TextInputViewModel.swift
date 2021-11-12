@@ -18,11 +18,11 @@ public struct TextInputMode {
     
     public let isSingleLine: Bool
     public let title: String
-    public let placeHolder: String?
-    public let startWith: String?
-    public let maxCharCount: Int?
-    public let shouldEnterSomething: Bool
-    public let defaultHeight: Float?
+    public var placeHolder: String?
+    public var startWith: String?
+    public var maxCharCount: Int?
+    public var shouldEnterSomething: Bool
+    public var defaultHeight: Float?
     
     public init(isSingleLine: Bool,
                 title: String,
@@ -53,7 +53,6 @@ public protocol TextInputViewModel: AnyObject {
     // presenter
     var textInputMode: TextInputMode { get }
     var isConfirmable: Observable<Bool> { get }
-    var enteredText: Observable<String> { get }
 }
 
 
@@ -63,11 +62,14 @@ public final class TextInputViewModelImple: TextInputViewModel {
     
     private let inputMode: TextInputMode
     private let router: TextInputRouting
+    private weak var listener: TextInputSceneListenable?
     
     public init(inputMode: TextInputMode,
-                router: TextInputRouting) {
+                router: TextInputRouting,
+                listener: TextInputSceneListenable?) {
         self.inputMode = inputMode
         self.router = router
+        self.listener = listener
     }
     
     deinit {
@@ -76,7 +78,6 @@ public final class TextInputViewModelImple: TextInputViewModel {
     
     fileprivate final class Subjects {
         let text = BehaviorRelay<String>(value: "")
-        @AutoCompletable var confirmedText = PublishSubject<String>()
     }
     
     private let subjects = Subjects()
@@ -98,7 +99,9 @@ extension TextInputViewModelImple {
     
     public func confirm() {
         let text = self.subjects.text.value
-        self.subjects.confirmedText.onNext(text)
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.listener?.textInput(didEntered: text)
+        }
     }
 }
 
@@ -118,9 +121,5 @@ extension TextInputViewModelImple {
                 return shouldNotEmpty ? text.isNotEmpty : true
             }
             .distinctUntilChanged()
-    }
-    
-    public var enteredText: Observable<String> {
-        return self.subjects.confirmedText.asObservable()
     }
 }

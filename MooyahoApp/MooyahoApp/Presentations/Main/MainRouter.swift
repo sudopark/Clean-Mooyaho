@@ -35,7 +35,7 @@ public protocol MainRouting: Routing {
     
     func presentUserDataMigrationScene(_ userID: String)
     
-    func presentEditProfileScene() -> EditProfileScenePresenter?
+    func presentEditProfileScene()
     
     func askAddNewitemType(_ completed: @escaping (Bool) -> Void)
 }
@@ -129,11 +129,10 @@ extension MainRouter {
         }
     }
     
-    public func presentEditProfileScene() -> EditProfileScenePresenter? {
+    public func presentEditProfileScene() {
         
-        guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return nil }
+        guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return }
         self.currentScene?.present(scene, animated: true, completion: nil)
-        return scene.presenrer
     }
     
     public func askAddNewitemType(_ completed: @escaping (Bool) -> Void) {
