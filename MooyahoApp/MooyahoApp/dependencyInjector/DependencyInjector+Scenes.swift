@@ -127,6 +127,16 @@ extension DependencyInjector: ColorSelectSceneBuilable {
     }
 }
 
+extension DependencyInjector: SelectEmojiSceneBuilable {
+    
+    public func makeSelectEmojiScene(listener: SelectEmojiSceneListenable?) -> SelectEmojiScene {
+        let viewController = SelectEmojiViewController()
+        viewController.listener = listener
+        return viewController
+    }
+}
+
+
 
 // MARK: - ReadItemScene
 

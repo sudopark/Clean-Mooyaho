@@ -70,6 +70,7 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
         // define subjects
         let currentMember = BehaviorRelay<Member?>(value: nil)
         let pendingImageInfo = BehaviorRelay<(String, ImageSize)?>(value: nil)
+        let pendingEmoji = BehaviorRelay<String?>(value: nil)
         let pendingNickName = BehaviorRelay<String?>(value: nil)
         let pendingIntroduction = BehaviorRelay<String?>(value: nil)
         let isSaveChanges = BehaviorRelay<Bool>(value: false)
@@ -139,7 +140,7 @@ extension EditProfileViewModelImple {
     public func requestChangeThumbnail() {
        
         let emoji = ActionSheetForm.Action(text: "Emoji".localized) { [weak self] in
-            
+            self?.router.selectEmoji()
         }
         let photo = ActionSheetForm.Action(text: "Photo".localized) { [weak self] in
             self?.router.selectPhoto()
@@ -151,11 +152,17 @@ extension EditProfileViewModelImple {
     }
     
     public func imagePicker(didSelect imagePath: String, imageSize: ImageSize) {
+        self.subjects.pendingEmoji.accept(nil)
         self.subjects.pendingImageInfo.accept((imagePath, imageSize))
     }
     
     public func imagePicker(didFail selectError: Error) {
         self.router.alertError(selectError)
+    }
+    
+    public func selectEmoji(didSelect emoji: String) {
+        self.subjects.pendingImageInfo.accept(nil)
+        self.subjects.pendingEmoji.accept(emoji)
     }
 }
 
@@ -163,6 +170,13 @@ extension EditProfileViewModelImple {
 // MARK: - EditProfileViewModelImple Interactor + save
 
 extension EditProfileViewModelImple {
+    
+    private func pendingImageSourceParams() -> ImageUploadReqParams? {
+        let emoji = self.subjects.pendingEmoji.value
+        let image = self.subjects.pendingImageInfo.value
+        return image.map { ImageUploadReqParams.file($0.0, needCopyTemp: true, size: $0.1) }
+            ?? emoji.map { ImageUploadReqParams.emoji($0) }
+    }
     
     public func saveChanges() {
         
@@ -175,8 +189,7 @@ extension EditProfileViewModelImple {
             .map { MemberUpdateField.introduction($0.emptyAsNil()) }
         
         let fields = [pendingNickname, pendingIntro].compactMap { $0 }
-        let imageInput = self.subjects.pendingImageInfo.value
-            .map { ImageUploadReqParams.file($0.0, needCopyTemp: true, size: $0.1) }
+        let imageInput = self.pendingImageSourceParams()
         
         let handleStatus: (UpdateMemberProfileStatus) -> Void = { [weak self] status in
             switch status {
@@ -229,11 +242,22 @@ extension EditProfileViewModelImple {
 
 extension EditProfileViewModelImple {
     
+    private var selectedThumbnail: Observable<MemberThumbnail?> {
+        
+        let selectThumbnail: (String?, (String, ImageSize)?) -> MemberThumbnail?
+        selectThumbnail = { emoji, imageInfo in
+            return emoji.map { MemberThumbnail.emoji($0) }
+                ?? imageInfo.map { MemberThumbnail.imageSource(.init(path: $0.0, size: $0.1)) }
+        }
+        return Observable
+            .combineLatest(self.subjects.pendingEmoji, self.subjects.pendingImageInfo,
+                           resultSelector: selectThumbnail)
+    }
+    
     public var profileImageSource: Observable<MemberThumbnail?> {
-        let selectThumbnail: (Member?, (String, ImageSize)?) -> MemberThumbnail?
-        selectThumbnail = { member, selectedInfo in
-            return selectedInfo.map { ImageSource(path: $0.0, size: $0.1) }.map { .imageSource($0) }
-                ?? member?.icon
+        let selectThumbnail: (Member?, MemberThumbnail?) -> MemberThumbnail?
+        selectThumbnail = { member, selected in
+            return selected ?? member?.icon
                 
         }
         let bothNilThenDefaultImage: (MemberThumbnail?) -> MemberThumbnail
@@ -241,7 +265,7 @@ extension EditProfileViewModelImple {
             return $0 ?? Member.memberDefaultEmoji
         }
         return Observable
-            .combineLatest(self.subjects.currentMember, self.subjects.pendingImageInfo,
+            .combineLatest(self.subjects.currentMember, self.selectedThumbnail,
                            resultSelector: selectThumbnail)
             .map(bothNilThenDefaultImage)
             .distinctUntilChanged()
