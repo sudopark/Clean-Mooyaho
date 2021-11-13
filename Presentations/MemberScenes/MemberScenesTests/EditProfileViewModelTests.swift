@@ -8,6 +8,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -195,99 +197,174 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-    private func registerViewModelSavable() {
+    private func registerMember(_ member: Member) {
         self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            var member = Member(uid: "uid", nickName: "some", icon: nil)
-            member.introduction = "old"
             return member
         }
-        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
-        self.viewModel.requestChangeProperty(.intro)
-        self.spyRouter.capturedListener?.textInput(didEntered: "new")
     }
     
-//    func testViewModel_whenSaveChanges_showIsSaving() {
-//        // given
-//        let expect = expectation(description: "이미지 데이터와 함께 프로파일 변경정보 저장")
-//        expect.expectedFulfillmentCount = 3
-//
-//        self.registerViewModelSavable()
-//
-//        // when
-//        let isSavings = self.waitElements(expect, for: self.viewModel.isSaveChanges) {
-//            self.viewModel.selectMemoji(Data(), size: .init(10, 10))
-//            self.viewModel.saveChanges()
-//            self.mockMemberUsecase.updateStatus.onNext(.pending)
-//            self.mockMemberUsecase.updateStatus.onNext(.updating(0.1))
-//            self.mockMemberUsecase.updateStatus.onNext(.finished)
-//        }
-//
-//        // then
-//        XCTAssertEqual(isSavings, [false, true, false])
-//    }
+    func testViewModel_updateProfile_fromEmptyProperties() {
+        // given
+        let expect = expectation(description: "아무것도 입력 안했던 상태에서 프로필 업데이트")
+        let member = Member(uid: "some", nickName: nil, icon: nil)
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        self.viewModel.requestChangeProperty(.nickname)
+        self.spyRouter.capturedListener?.textInput(didEntered: "nick")
+        
+        self.viewModel.requestChangeProperty(.intro)
+        self.spyRouter.capturedListener?.textInput(didEntered: "intro")
+        
+        self.viewModel.requestChangeThumbnail()
+        self.viewModel.selectEmoji(didSelect: "🤑")
+        
+        var fields: [MemberUpdateField]?; var params: ImageUploadReqParams?
+        self.mockMemberUsecase.called(key: "updateCurrent") { any in
+            guard let pair = any as? ([MemberUpdateField], ImageUploadReqParams?) else { return }
+            fields = pair.0; params = pair.1
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(params, .emoji("🤑"))
+        XCTAssertEqual(fields, [.nickName("nick"), .introduction("intro")])
+    }
     
-//    // 저장 완료시 토스트 노출하고 화면 닫기
-//    func testViewModel_whenSaveFinished_closeAndEmitEvent() {
-//        // given
-//        let expect = expectation(description: "저장 완료시에 화면 닫고 외부로 이벤트 전파")
-//        expect.expectedFulfillmentCount = 2
-//
-//        self.registerViewModelSavable()
-//
-//        self.spyRouter.called(key: "closeScene") { _ in
-//            expect.fulfill()
-//        }
-//        self.viewModel.editCompleted.subscribe(onNext: {
-//            expect.fulfill()
-//        })
-//        .disposed(by: self.disposeBag)
-//
-//        // when
-//        self.viewModel.saveChanges()
-//        self.mockMemberUsecase.updateStatus.onNext(.finished)
-//
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
+    func testViewModel_updateProfile_onlyNiickName() {
+        // given
+        let expect = expectation(description: "닉네임만 프로필 업데이트")
+        let member = Member(uid: "some", nickName: "old", icon: nil)
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        self.viewModel.requestChangeProperty(.nickname)
+        self.spyRouter.capturedListener?.textInput(didEntered: "new")
+        
+        var fields: [MemberUpdateField]?; var params: ImageUploadReqParams?
+        self.mockMemberUsecase.called(key: "updateCurrent") { any in
+            guard let pair = any as? ([MemberUpdateField], ImageUploadReqParams?) else { return }
+            fields = pair.0; params = pair.1
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertNil(params)
+        XCTAssertEqual(fields, [.nickName("new")])
+    }
     
-    // 사진 업로드 실패했으면 프로필은 일단 저장하고 에러 토스트 -> 이미지에 오버레이로 실패 표시
-//    func testViewModel_whenFailOnlyUploadImage_showToastAndNotClose() {
-//        // given
-//        let expect = expectation(description: "사진 저장만 실패한 경우에는 토스트 노출하고 화면은 안닫음")
-//
-//        self.registerViewModelSavable()
-//
-//        self.spyRouter.called(key: "showToast") { _ in
-//            expect.fulfill()
-//        }
-//
-//        // when
-//        self.viewModel.selectMemoji(Data(), size: .init(10, 10))
-//        self.viewModel.saveChanges()
-//        self.mockMemberUsecase.updateStatus.onNext(.finishedWithImageUploadFail(ApplicationErrors.invalid))
-//
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
+    func testViewModel_updateProfile_onlyProfileAsPhoto() {
+        // given
+        let expect = expectation(description: "프사만 사진으로 업데이트")
+        let member = Member(uid: "some", nickName: "nick", icon: nil)
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        self.viewModel.requestChangeThumbnail()
+        self.viewModel.imagePicker(didSelect: "path", imageSize: .init(100, 100))
+        
+        var fields: [MemberUpdateField]?; var params: ImageUploadReqParams?
+        self.mockMemberUsecase.called(key: "updateCurrent") { any in
+            guard let pair = any as? ([MemberUpdateField], ImageUploadReqParams?) else { return }
+            fields = pair.0; params = pair.1
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(params, .file("path", needCopyTemp: true, size: .init(100, 100)))
+        XCTAssertEqual(fields, [])
+    }
     
-//    func testViewModel_whenFailUpdate_showError() {
-//        // given
-//        let expect = expectation(description: "프로필 업데이트에 실패한 경우에는 에러 알림")
-//
-//        self.registerViewModelSavable()
-//
-//        self.spyRouter.called(key: "alertError") { _ in
-//            expect.fulfill()
-//        }
-//
-//        // when
-//        self.viewModel.selectMemoji(Data(), size: .init(10, 10))
-//        self.viewModel.saveChanges()
-//        self.mockMemberUsecase.updateStatus.onError(ApplicationErrors.invalid)
-//
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
+    func testViewModel_updateProfile_onlyProfileAsEmoji() {
+        // given
+        let expect = expectation(description: "프사만 이모지로 업데이트")
+        let member = Member(uid: "some", nickName: "nick", icon: nil)
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        self.viewModel.requestChangeThumbnail()
+        self.viewModel.selectEmoji(didSelect: "🤑")
+        
+        var fields: [MemberUpdateField]?; var params: ImageUploadReqParams?
+        self.mockMemberUsecase.called(key: "updateCurrent") { any in
+            guard let pair = any as? ([MemberUpdateField], ImageUploadReqParams?) else { return }
+            fields = pair.0; params = pair.1
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(params, .emoji("🤑"))
+        XCTAssertEqual(fields, [])
+    }
+    
+    func testViewModel_updateProfile_onlyIntro() {
+        // given
+        let expect = expectation(description: "소개만 업데이트")
+        let member = Member(uid: "some", nickName: "old", icon: nil)
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        self.viewModel.requestChangeProperty(.intro)
+        self.spyRouter.capturedListener?.textInput(didEntered: "some")
+        
+        var fields: [MemberUpdateField]?; var params: ImageUploadReqParams?
+        self.mockMemberUsecase.called(key: "updateCurrent") { any in
+            guard let pair = any as? ([MemberUpdateField], ImageUploadReqParams?) else { return }
+            fields = pair.0; params = pair.1
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertNil(params)
+        XCTAssertEqual(fields, [.introduction("some")])
+    }
+    
+    func testViewModel_updateProfile_deleteIntro() {
+        // given
+        let expect = expectation(description: "소개만 업데이트 - 삭제")
+        let member = Member(uid: "some", nickName: "old", icon: nil) |> \.introduction .~ "some"
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        self.viewModel.requestChangeProperty(.intro)
+        self.spyRouter.capturedListener?.textInput(didEntered: "")
+        
+        var fields: [MemberUpdateField]?; var params: ImageUploadReqParams?
+        self.mockMemberUsecase.called(key: "updateCurrent") { any in
+            guard let pair = any as? ([MemberUpdateField], ImageUploadReqParams?) else { return }
+            fields = pair.0; params = pair.1
+            expect.fulfill()
+        }
+        
+        // when
+        self.viewModel.saveChanges()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertNil(params)
+        XCTAssertEqual(fields, [.introduction(nil)])
+    }
+    
     
     func testViewModel_closeScene() {
         // given
@@ -308,12 +385,16 @@ extension EditProfileViewModelTests {
         // given
         let expect = expectation(description: "프로필 저장중에 화면 닫으려할경우 컨펌알럿 노출 필요")
         
+        self.registerMember(Member(uid: "some", nickName: nil, icon: nil))
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        self.viewModel.requestChangeProperty(.nickname)
+        self.spyRouter.capturedListener?.textInput(didEntered: "nick")
+        
         self.spyRouter.called(key: "alertForConfirm") { _ in
             expect.fulfill()
         }
         
         // when
-        self.registerViewModelSavable()
         self.viewModel.saveChanges()
         self.viewModel.requestCloseScene()
         

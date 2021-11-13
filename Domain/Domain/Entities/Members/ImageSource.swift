@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - ImageSource
 
-public struct ImageSize {
+public struct ImageSize: Equatable {
     
     public let width: Double
     public let height: Double
@@ -43,7 +43,7 @@ extension ImageSource: Equatable {
 
 // MARK: - ImageSource upload req params
 
-public enum ImageUploadReqParams {
+public enum ImageUploadReqParams: Equatable {
     case data(_ value: Data, extension: String, size: ImageSize)
     case file(_ path: String, needCopyTemp: Bool, size: ImageSize)
     case emoji(_ value: String)
