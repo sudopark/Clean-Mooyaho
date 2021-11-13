@@ -116,6 +116,8 @@
 		F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959E266D26EA00CDF980 /* ImagePickerBuilder.swift */; };
 		F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */; };
 		F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */; };
+		F6F65639274049150069F253 /* Scenes+Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65638274049150069F253 /* Scenes+Discovery.swift */; };
+		F6F6563B274049420069F253 /* Builders+Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6563A274049420069F253 /* Builders+Discovery.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +243,8 @@
 		F6F2959F266D26EA00CDF980 /* ImagePickerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerScene.swift; sourceTree = "<group>"; };
 		F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBottomSlideMenuView.swift; sourceTree = "<group>"; };
 		F6F52ED126885329006D37F3 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6F65638274049150069F253 /* Scenes+Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Discovery.swift"; sourceTree = "<group>"; };
+		F6F6563A274049420069F253 /* Builders+Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Discovery.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,10 +441,12 @@
 				F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */,
 				F6851A2E270B21120048197B /* Scenes+Viewer.swift */,
 				F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */,
+				F6F65638274049150069F253 /* Scenes+Discovery.swift */,
 				F6BBF177270851A100420A49 /* Builders+ReadItem.swift */,
 				F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */,
 				F6851A30270B21200048197B /* Builders+Viewer.swift */,
 				F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */,
+				F6F6563A274049420069F253 /* Builders+Discovery.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -697,6 +703,7 @@
 				F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */,
 				2B39E27E26387BCB003EE954 /* EmptyBuilder.swift in Sources */,
 				F65215852674A395000CAB4B /* TextInputBuilder.swift in Sources */,
+				F6F6563B274049420069F253 /* Builders+Discovery.swift in Sources */,
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
 				F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
@@ -743,6 +750,7 @@
 				F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */,
+				F6F65639274049150069F253 /* Scenes+Discovery.swift in Sources */,
 				F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */,
 				F6CB434D2713560900F26508 /* ColorSelectViewModel.swift in Sources */,
 				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
