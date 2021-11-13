@@ -50,7 +50,7 @@ open class MockMemberUsecase: MemberUsecase, Mocking {
     
     public let updateStatus = PublishSubject<UpdateMemberProfileStatus>()
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
-        self.verify(key: "updateCurrent")
+        self.verify(key: "updateCurrent", with: (updateFields, profile))
         return self.updateStatus.asObservable()
     }
 }

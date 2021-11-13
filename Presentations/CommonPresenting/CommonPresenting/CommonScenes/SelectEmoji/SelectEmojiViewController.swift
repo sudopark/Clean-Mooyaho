@@ -106,8 +106,7 @@ extension SelectEmojiViewController: Presenting {
     
     public func setupStyling() {
         
-        self.fakeInputView.alpha = 1.0
-        self.fakeInputView.backgroundColor = .red
+        self.fakeInputView.alpha = 0.1
         
         self.emojiListView.setupStyling()
     }
