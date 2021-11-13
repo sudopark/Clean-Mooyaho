@@ -21,6 +21,7 @@ class RepositoryTests_Member: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var mockRemote: MockRemote!
     var mockLocal: MockLocal!
+    var mockFileService: MockFileService!
     var repository: DummyRepository!
     
     override func setUp() {
@@ -28,13 +29,15 @@ class RepositoryTests_Member: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.mockLocal = .init()
         self.mockRemote = .init()
-        self.repository = .init(remote: self.mockRemote, local: self.mockLocal)
+        self.mockFileService = .init()
+        self.repository = .init(remote: self.mockRemote, local: self.mockLocal, fileHandle: self.mockFileService)
     }
     
     override func tearDown() {
         self.disposeBag = nil
         self.mockRemote = nil
         self.mockLocal = nil
+        self.mockFileService = nil
         self.repository = nil
         super.tearDown()
     }
@@ -107,10 +110,44 @@ extension RepositoryTests_Member {
     }
     
     // 파일은 임시경로에 복사하고 업로드
-    
-    // 원래 없는파일 요청시에 에러
+    func testRepository_uploadUserImage_withCoping() {
+        // given
+        let expect = expectation(description: "file 임시경로로 복사하고 업로드")
+        expect.expectedFulfillmentCount = 2
+        
+        self.mockFileService.copyResultMocking = .success(())
+        
+        // when
+        let params = ImageUploadReqParams.file("some", needCopyTemp: true, size: .init(100, 100))
+        let uploading = self.repository.requestUploadMemberProfileImage("mid", source: params)
+        let status = self.waitElements(expect, for: uploading) {
+            self.mockRemote.uploadMemberProfileImageStatus.onNext(.uploading(0.5))
+            self.mockRemote.uploadMemberProfileImageStatus.onNext(.completed(.imageSource(.init(path: "some", size: .init(100, 100)))))
+        }
+        
+        // then
+        if case .uploading = status.first, case .completed = status.last {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
+    }
     
     // 임시경로 복사 실패시에 에러
+    func testRepository_whenCopyFailDuringUploadUserImage_uploadProcessIsFail() {
+        // given
+        let expect = expectation(description: "file 임시경로로 복사 실패시에 업로드 프로세스 실패")
+        
+        self.mockFileService.copyResultMocking = .failure(ApplicationErrors.invalid)
+        
+        // when
+        let params = ImageUploadReqParams.file("some", needCopyTemp: true, size: .init(100, 100))
+        let uploading = self.repository.requestUploadMemberProfileImage("mid", source: params)
+        let error = self.waitError(expect, for: uploading)
+        
+        // then
+        XCTAssertNotNil(error)
+    }
     
     // 필드 업데이트
     func testRepository_updateMemberFields() {
@@ -194,10 +231,20 @@ extension RepositoryTests_Member {
         let memberRemote: MemberRemote
         let memberLocal: MemberLocalStorage
         let disposeBag: DisposeBag = .init()
+        let fileHandleService: FileHandleService
         
-        init(remote: MemberRemote, local: MemberLocalStorage) {
+        init(remote: MemberRemote, local: MemberLocalStorage, fileHandle: FileHandleService) {
             self.memberRemote = remote
             self.memberLocal = local
+            self.fileHandleService = fileHandle
+        }
+    }
+    
+    class MockFileService: FileHandleService {
+        
+        var copyResultMocking: Result<Void, Error> = .success(())
+        func copy(source: FilePath, to: FilePath) -> Maybe<Void> {
+            return self.copyResultMocking.asMaybe()
         }
     }
 }

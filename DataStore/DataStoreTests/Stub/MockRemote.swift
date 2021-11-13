@@ -54,6 +54,12 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.uploadMemberProfileImageStatus.asObservable()
     }
     
+    func requestUploadMemberProfileImage(_ memberID: String,
+                                         filePath: String, ext: String,
+                                         size: ImageSize) -> Observable<MemberProfileUploadStatus> {
+        return self.uploadMemberProfileImageStatus.asObservable()
+    }
+    
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
                                           thumbnail: MemberThumbnail?) -> Maybe<Member> {

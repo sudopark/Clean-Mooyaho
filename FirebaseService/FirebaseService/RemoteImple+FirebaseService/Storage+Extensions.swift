@@ -61,20 +61,18 @@ enum FirebaseFileUploadEvents {
     case completed(_ url: URL)
 }
 
-extension StorageReference {
+extension Storage {
     
-    func uploadData(_ data: Data) -> Observable<FirebaseFileUploadEvents> {
-        return Observable.create { [weak self] observer in
-            guard let self = self else { return Disposables.create() }
+    func upload(_ ref: StorageReference, data: Data) -> Observable<FirebaseFileUploadEvents> {
+        return Observable.create { observer in
             var uploadTask: StorageUploadTask?
-            uploadTask = self.putData(data, metadata: nil) { [weak self] metaData, error in
-                guard let self = self else { return }
+            uploadTask = ref.putData(data, metadata: nil) { metaData, error in
                 guard error == nil, let _ = metaData else {
                     observer.onError(RemoteErrors.fileUploadFail(error))
                     return
                 }
                 
-                self.downloadURL { url, error in
+                ref.downloadURL { url, error in
                     guard error == nil, let url = url else {
                         observer.onError(RemoteErrors.fileUploadFail(error))
                         return
@@ -96,22 +94,18 @@ extension StorageReference {
         }
     }
     
-    func uploadLocalFile(_ filePath: String) -> Observable<FirebaseFileUploadEvents> {
-        
-        return Observable.create { [weak self] observer in
-            guard let self = self else { return Disposables.create() }
-            
+    func upload(_ ref: StorageReference, filePath: String) -> Observable<FirebaseFileUploadEvents> {
+        return Observable.create {  observer in
             let fileURL = URL(fileURLWithPath: filePath)
             
             var uploadTask: StorageUploadTask?
-            uploadTask = self.putFile(from: fileURL, metadata: nil) { [weak self] metaData, error in
-                guard let self = self else { return }
+            uploadTask = ref.putFile(from: fileURL, metadata: nil) { metaData, error in
                 guard error == nil, let _ = metaData else {
                     observer.onError(RemoteErrors.fileUploadFail(error))
                     return
                 }
                 
-                self.downloadURL { url, error in
+                ref.downloadURL { url, error in
                     guard error == nil, let url = url else {
                         observer.onError(RemoteErrors.fileUploadFail(error))
                         return
@@ -120,6 +114,7 @@ extension StorageReference {
                     observer.onNext(.completed(url))
                 }
             }
+            uploadTask?.resume()
             
             return Disposables.create {
                 uploadTask?.removeAllObservers()

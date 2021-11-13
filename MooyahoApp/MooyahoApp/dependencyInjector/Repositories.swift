@@ -48,6 +48,10 @@ extension AppRepository: MemberRepository, MemberRepositoryDefImpleDependency {
     public var memberLocal: MemberLocalStorage {
         return self.local
     }
+    
+    public var fileHandleService: FileHandleService {
+        return FileManager.default
+    }
 }
 
 extension AppRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {

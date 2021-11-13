@@ -76,6 +76,10 @@ public protocol MemberRemote {
                                          data: Data, ext: String,
                                          size: ImageSize) -> Observable<MemberProfileUploadStatus>
     
+    func requestUploadMemberProfileImage(_ memberID: String,
+                                         filePath: String, ext: String,
+                                         size: ImageSize) -> Observable<MemberProfileUploadStatus>
+    
     func requestUpdateMemberProfileFields(_ memberID: String,
                                           fields: [MemberUpdateField],
                                           thumbnail: MemberThumbnail?) -> Maybe<Member>

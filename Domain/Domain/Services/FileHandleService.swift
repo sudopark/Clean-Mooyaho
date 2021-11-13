@@ -18,12 +18,15 @@ public enum FilePath {
     
     public var fullPath: String {
         switch self {
-        case let .raw(value): return value
+        case let .raw(value):
+            return value
+                .relativePath()
             
         case let .temp(fileName):
             return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
                 .appendingPathComponent(fileName)
                 .path
+                .relativePath()
         }
     }
     
@@ -75,6 +78,7 @@ extension FileManager: FileHandleService {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
             do {
+                try? self.removeItem(atPath: to.fullPath)
                 try self.copyItem(atPath: source.fullPath, toPath: to.fullPath)
                 callback(.success(()))
             } catch let error {
@@ -108,5 +112,12 @@ extension FileManager: FileHandleService {
             }
             return Disposables.create()
         }
+    }
+}
+
+private extension String {
+    
+    func relativePath() -> String {
+        return URL(string: self)?.relativePath ?? self
     }
 }
