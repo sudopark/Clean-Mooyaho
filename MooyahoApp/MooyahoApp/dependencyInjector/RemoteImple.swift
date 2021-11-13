@@ -65,7 +65,15 @@ extension RemoteImple {
     func requestUploadMemberProfileImage(_ memberID: String,
                                          data: Data, ext: String,
                                          size: ImageSize) -> Observable<MemberProfileUploadStatus> {
-        return self.firebaseRemote.requestUploadMemberProfileImage(memberID, data: data, ext: ext, size: size)
+        return self.firebaseRemote
+            .requestUploadMemberProfileImage(memberID, data: data, ext: ext, size: size)
+    }
+    
+    func requestUploadMemberProfileImage(_ memberID: String,
+                                         filePath: String, ext: String,
+                                         size: ImageSize) -> Observable<MemberProfileUploadStatus> {
+        return self.firebaseRemote
+            .requestUploadMemberProfileImage(memberID, filePath: filePath, ext: ext, size: size)
     }
     
     func requestUpdateMemberProfileFields(_ memberID: String,

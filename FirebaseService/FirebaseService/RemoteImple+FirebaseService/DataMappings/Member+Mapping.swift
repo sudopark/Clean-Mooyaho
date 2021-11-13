@@ -45,6 +45,7 @@ extension ImageSource: JSONMappable {
 
 
 enum ThumbnailMappingKey: String, JSONMappingKeys {
+    case isEmoji
     case source
     case emoji
 }
@@ -54,7 +55,8 @@ extension Thumbnail: JSONMappable {
     private typealias Key = ThumbnailMappingKey
     
     init?(json: JSON) {
-        if let emoji = json[Key.emoji] as? String {
+        let isEmoji = json[Key.isEmoji] as? Bool ?? false
+        if isEmoji, let emoji = json[Key.emoji] as? String {
             self = .emoji(emoji)
         } else if let sourceJson = json[Key.source] as? JSON,
                   let source = ImageSource(json: sourceJson) {
@@ -67,9 +69,15 @@ extension Thumbnail: JSONMappable {
     func asJSON() -> JSON {
         switch self {
         case let .emoji(value):
-            return [Key.emoji.rawValue: value]
+            return [
+                Key.isEmoji.rawValue: true,
+                Key.emoji.rawValue: value
+            ]
         case let .imageSource(source):
-            return [Key.source.rawValue: source.asJSON()]
+            return [
+                Key.isEmoji.rawValue: false,
+                Key.source.rawValue: source.asJSON()
+            ]
         }
     }
 }

@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestUploadMemberProfileImage(_ memberID: String, filePath: String, ext: String, size: ImageSize) -> Observable<MemberProfileUploadStatus> {
+        return .empty()
+    }
+    
     func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void> {
         return .empty()
     }
