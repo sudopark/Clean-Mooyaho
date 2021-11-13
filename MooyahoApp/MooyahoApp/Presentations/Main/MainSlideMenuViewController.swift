@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - MainSlideMenuScene
 
-public protocol MainSlideMenuSceneInteractor: SettingMainSceneListenable { }
+public protocol MainSlideMenuSceneInteractor: SettingMainSceneListenable, DiscoveryMainSceneListenable { }
 
 public protocol MainSlideMenuSceneListenable: AnyObject {
     
@@ -26,6 +26,7 @@ public protocol MainSlideMenuSceneListenable: AnyObject {
 public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene {
     
     var interactor: MainSlideMenuSceneInteractor? { get }
+    var discoveryContainerView: UIView { get }
 }
 
 extension MainSlideMenuViewController {
@@ -46,7 +47,7 @@ public final class MainSlideMenuViewController: BaseViewController, MainSlideMen
     let settingButton = UIButton(type: .system)
     let alertButton = UIButton(type: .system)
     let alertBadgeView = UIView()
-    let discoveryContainerView = UIView()
+    public let discoveryContainerView = UIView()
     let actionSuggestView = ActionSuggestView()
     let discoveryBlockView = UIView()
     

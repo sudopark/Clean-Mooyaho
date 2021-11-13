@@ -34,7 +34,7 @@ public protocol MainSlideMenuRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainSlideMenuRouterBuildables = EditProfileSceneBuilable & SettingMainSceneBuilable
+public typealias MainSlideMenuRouterBuildables = EditProfileSceneBuilable & SettingMainSceneBuilable & DiscoveryMainSceneBuilable
 
 public final class MainSlideMenuRouter: Router<MainSlideMenuRouterBuildables>, MainSlideMenuRouting { }
 
@@ -51,7 +51,17 @@ extension MainSlideMenuRouter {
     }
     
     public func setupDiscoveryScene() {
-        logger.todoImplement()
+        guard let sliderScene = self.currentScene as? MainSlideMenuScene,
+              let next = self.nextScenesBuilder?.makeDiscoveryMainScene(listener: self.currentInteractor)
+        else {
+            return
+        }
+        next.view.frame = CGRect(origin: .zero,
+                                 size: sliderScene.discoveryContainerView.frame.size)
+        next.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        sliderScene.addChild(next)
+        sliderScene.discoveryContainerView.addSubview(next.view)
+        next.didMove(toParent: sliderScene)
     }
     
     public func editProfile() {

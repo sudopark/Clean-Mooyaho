@@ -16,6 +16,10 @@
 		F6624CD0273F8E3900A9B7AF /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CCF273F8E3900A9B7AF /* UnitTestHelpKit.framework */; };
 		F6624CD2273F8E3F00A9B7AF /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD1273F8E3F00A9B7AF /* UsecaseDoubles.framework */; };
 		F6624CD6273F8F5900A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F612E455273F8D9B000076AF /* DiscoveryScene.framework */; };
+		F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */; };
+		F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */; };
+		F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */; };
+		F6F65637274048CE0069F253 /* DiscoveryMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65632274048CE0069F253 /* DiscoveryMainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +43,10 @@
 		F6624CCD273F8E2E00A9B7AF /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CCF273F8E3900A9B7AF /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CD1273F8E3F00A9B7AF /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainRouter.swift; sourceTree = "<group>"; };
+		F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewController.swift; sourceTree = "<group>"; };
+		F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainScene.swift; sourceTree = "<group>"; };
+		F6F65632274048CE0069F253 /* DiscoveryMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +96,7 @@
 		F612E457273F8D9B000076AF /* Discovery */ = {
 			isa = PBXGroup;
 			children = (
+				F6F6562D274048B80069F253 /* Main */,
 				F612E458273F8D9B000076AF /* DiscoveryScene.h */,
 			);
 			path = Discovery;
@@ -112,6 +121,17 @@
 				F6624CC3273F8E1300A9B7AF /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6F6562D274048B80069F253 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */,
+				F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */,
+				F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */,
+				F6F65632274048CE0069F253 /* DiscoveryMainViewModel.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,6 +243,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */,
+				F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */,
+				F6F65637274048CE0069F253 /* DiscoveryMainViewModel.swift in Sources */,
+				F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +450,7 @@
 		F612E46B273F8D9B000076AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -447,6 +472,7 @@
 		F612E46C273F8D9B000076AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;

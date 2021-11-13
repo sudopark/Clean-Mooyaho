@@ -15,6 +15,7 @@ import ReadItemScene
 import EditReadItemScene
 import ViewerScene
 import SettingScene
+import DiscoveryScene
 
 
 // MARK: - Main Sceens
@@ -399,6 +400,21 @@ extension DependencyInjector: WaitMigrationSceneBuilable {
                                                     router: router,
                                                     listener: listener)
         let viewController = WaitMigrationViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
+// MARK: - DiscoveryScenes
+
+
+extension DependencyInjector: DiscoveryMainSceneBuilable {
+    
+    public func makeDiscoveryMainScene(listener: DiscoveryMainSceneListenable?) -> DiscoveryMainScene {
+        let router = DiscoveryMainRouter(nextSceneBuilders: self)
+        let viewModel = DiscoveryMainViewModelImple(router: router, listener: listener)
+        let viewController = DiscoveryMainViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
