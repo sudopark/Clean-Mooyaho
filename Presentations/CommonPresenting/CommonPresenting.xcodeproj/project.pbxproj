@@ -103,6 +103,11 @@
 		F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */; };
 		F6E30E1E270B4BBD0012A2A0 /* ReadPriority+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */; };
 		F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E25270B5A180012A2A0 /* EmptyListener.swift */; };
+		F6E51B6F273F628800CBE310 /* ISEmojiView in Frameworks */ = {isa = PBXBuildFile; productRef = F6E51B6E273F628800CBE310 /* ISEmojiView */; };
+		F6E51B77273F62B500CBE310 /* SelectEmojiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B72273F62B500CBE310 /* SelectEmojiViewController.swift */; };
+		F6E51B78273F62B500CBE310 /* SelectEmojiBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B73273F62B500CBE310 /* SelectEmojiBuilder.swift */; };
+		F6E51B79273F62B500CBE310 /* SelectEmojiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B74273F62B500CBE310 /* SelectEmojiScene.swift */; };
+		F6E51B7C273F637C00CBE310 /* EmojiListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B7B273F637C00CBE310 /* EmojiListView.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
@@ -223,6 +228,10 @@
 		F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+ReadItem.swift"; sourceTree = "<group>"; };
 		F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadPriority+Extensions.swift"; sourceTree = "<group>"; };
 		F6E30E25270B5A180012A2A0 /* EmptyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListener.swift; sourceTree = "<group>"; };
+		F6E51B72273F62B500CBE310 /* SelectEmojiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectEmojiViewController.swift; sourceTree = "<group>"; };
+		F6E51B73273F62B500CBE310 /* SelectEmojiBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectEmojiBuilder.swift; sourceTree = "<group>"; };
+		F6E51B74273F62B500CBE310 /* SelectEmojiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectEmojiScene.swift; sourceTree = "<group>"; };
+		F6E51B7B273F637C00CBE310 /* EmojiListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiListView.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundShadowView.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
@@ -241,6 +250,7 @@
 			files = (
 				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
+				F6E51B6F273F628800CBE310 /* ISEmojiView in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +465,7 @@
 				F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */,
 				F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */,
 				F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */,
+				F6E51B7B273F637C00CBE310 /* EmojiListView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -479,6 +490,7 @@
 				F65215732674A363000CAB4B /* TextInputs */,
 				F6CB4343271355EE00F26508 /* ColorSelect */,
 				F66E099F27187A020012B76E /* ReadItem */,
+				F6E51B70273F629500CBE310 /* SelectEmoji */,
 			);
 			path = CommonScenes;
 			sourceTree = "<group>";
@@ -524,6 +536,16 @@
 			path = ColorSelect;
 			sourceTree = "<group>";
 		};
+		F6E51B70273F629500CBE310 /* SelectEmoji */ = {
+			isa = PBXGroup;
+			children = (
+				F6E51B72273F62B500CBE310 /* SelectEmojiViewController.swift */,
+				F6E51B73273F62B500CBE310 /* SelectEmojiBuilder.swift */,
+				F6E51B74273F62B500CBE310 /* SelectEmojiScene.swift */,
+			);
+			path = SelectEmoji;
+			sourceTree = "<group>";
+		};
 		F6F295A6266D26F000CDF980 /* ImagePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -563,6 +585,7 @@
 			name = CommonPresenting;
 			packageProductDependencies = (
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
+				F6E51B6E273F628800CBE310 /* ISEmojiView */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -615,6 +638,7 @@
 			mainGroup = 2B39E24526387B6A003EE954;
 			packageReferences = (
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -662,6 +686,7 @@
 				F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
 				F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */,
+				F6E51B78273F62B500CBE310 /* SelectEmojiBuilder.swift in Sources */,
 				F61014762657211200D32E38 /* Theme.swift in Sources */,
 				2B39E27A26387BCB003EE954 /* Routable.swift in Sources */,
 				F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */,
@@ -679,6 +704,7 @@
 				F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */,
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
+				F6E51B77273F62B500CBE310 /* SelectEmojiViewController.swift in Sources */,
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
 				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,
@@ -697,6 +723,7 @@
 				F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */,
 				F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */,
 				F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */,
+				F6E51B79273F62B500CBE310 /* SelectEmojiScene.swift in Sources */,
 				F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */,
 				F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */,
 				F6851A31270B21200048197B /* Builders+Viewer.swift in Sources */,
@@ -724,6 +751,7 @@
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
 				F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */,
 				F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */,
+				F6E51B7C273F637C00CBE310 /* EmojiListView.swift in Sources */,
 				F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */,
 				F66B7D7126C5DD8C00D31FAC /* Time+Extension.swift in Sources */,
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
@@ -1017,6 +1045,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/isaced/ISEmojiView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1024,6 +1060,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		F6E51B6E273F628800CBE310 /* ISEmojiView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */;
+			productName = ISEmojiView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

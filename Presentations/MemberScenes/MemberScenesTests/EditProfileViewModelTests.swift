@@ -115,28 +115,30 @@ extension EditProfileViewModelTests {
         XCTAssertEqual(isSavables, [false, true, false])
     }
     
-//    func testViewModel_whenNewImageSourceEntered_updateSavable() {
-//        // given
-//        let expect = expectation(description: "이미지 입력시에는 저장가능여부 업데이트")
-//        expect.expectedFulfillmentCount = 2
-//
-//        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-//            var member = Member(uid: "uid", nickName: "some", icon: nil)
-//            member.introduction = "old"
-//            return member
-//        }
-//
-//        // when
-//        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
-//        let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
-//            self.viewModel.selectEmoji("😂")
-//            self.viewModel.inputTextChanges(type: .introduction, to: "new")
-//            self.viewModel.inputTextChanges(type: .introduction, to: "old")
-//        }
-//
-//        // then
-//        XCTAssertEqual(isSavables, [false, true])
-//    }
+    func testViewModel_whenNewImageSourceEntered_updateSavable() {
+        // given
+        let expect = expectation(description: "이미지 입력시에는 저장가능여부 업데이트")
+
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+            var member = Member(uid: "uid", nickName: "some", icon: nil)
+            member.introduction = "old"
+            return member
+        }
+
+        // when
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        let isSavables = self.waitElements(expect, for: self.viewModel.isSavable) {
+            self.viewModel.selectEmoji(didSelect: "🤑")
+            self.viewModel.requestChangeProperty(.intro)
+            self.spyRouter.capturedListener?.textInput(didEntered: "new")
+            
+            self.viewModel.requestChangeProperty(.intro)
+            self.spyRouter.capturedListener?.textInput(didEntered: "old")
+        }
+
+        // then
+        XCTAssertEqual(isSavables, [true])
+    }
 }
 
 extension EditProfileViewModelTests {
@@ -168,6 +170,26 @@ extension EditProfileViewModelTests {
         
         // then
         XCTAssertEqual(thumnail, .imageSource(.init(path: "path", size: .init(100, 100))))
+    }
+    
+    func testViewModel_selectEmoji() {
+        // given
+        let expect = expectation(description: "이미지 선택")
+        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
+            var member = Member(uid: "uid", nickName: "some", icon: nil)
+            member.introduction = "old"
+            return member
+        }
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        // when
+        let thumnail = self.waitFirstElement(expect, for: self.viewModel.profileImageSource, skip: 1) {
+            self.viewModel.requestChangeThumbnail()
+            self.viewModel.selectEmoji(didSelect: "😿")
+        }
+        
+        // then
+        XCTAssertEqual(thumnail, .emoji("😿"))
     }
 }
 
@@ -335,6 +357,11 @@ extension EditProfileViewModelTests {
         var didRequestSeelctPhoto: Bool = false
         func selectPhoto() {
             self.didRequestSeelctPhoto = true
+        }
+        
+        var didRequestSelectEmoji: Bool = false
+        func selectEmoji() {
+            self.didRequestSelectEmoji = true
         }
     }
 }

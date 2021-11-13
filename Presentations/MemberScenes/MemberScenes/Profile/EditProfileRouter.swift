@@ -24,13 +24,15 @@ public protocol EditProfileRouting: Routing {
     
     func chooseProfileImageSource(_ form: ActionSheetForm)
     
+    func selectEmoji()
+    
     func selectPhoto()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditProfileRouterBuildables = TextInputSceneBuilable & ImagePickerSceneBuilable
+public typealias EditProfileRouterBuildables = TextInputSceneBuilable & ImagePickerSceneBuilable & SelectEmojiSceneBuilable
 
 public final class EditProfileRouter: Router<EditProfileRouterBuildables>, EditProfileRouting {
     
@@ -58,6 +60,14 @@ extension EditProfileRouter {
     
     public func chooseProfileImageSource(_ form: ActionSheetForm) {
         self.alertActionSheet(form)
+    }
+    
+    public func selectEmoji() {
+        guard let next = self.nextScenesBuilder?.makeSelectEmojiScene(listener: self.currentInteractor)
+        else {
+            return
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func selectPhoto() {
