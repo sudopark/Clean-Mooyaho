@@ -47,6 +47,8 @@
 		F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E726747AF3004FB42E /* KakaoSDKUser */; };
 		F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E926747AF3004FB42E /* KakaoSDKAuth */; };
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
+		F6624CD4273F8E5600A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; };
+		F6624CD5273F8E5600A9B7AF /* DiscoveryScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F66B63ED273AD808005EBA52 /* MainSlideMenuViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
@@ -135,6 +137,7 @@
 				F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */,
 				F6BBF17B2708523000420A49 /* EditReadItemScene.framework in Embed Frameworks */,
 				2BE9786D263961EC0000C0C6 /* Domain.framework in Embed Frameworks */,
+				F6624CD5273F8E5600A9B7AF /* DiscoveryScene.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,6 +216,7 @@
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
 		F631DE7D27022DD1003948C2 /* Scenes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scenes.storyboard; sourceTree = "<group>"; };
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DiscoveryScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModelTests.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
@@ -276,6 +280,7 @@
 				F62271F4273C728D00AF76C1 /* SettingScene.framework in Frameworks */,
 				F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
+				F6624CD4273F8E5600A9B7AF /* DiscoveryScene.framework in Frameworks */,
 				F6ECE4DA26FAF8B3008D7ECA /* FirebaseService.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
 				F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */,
@@ -470,6 +475,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */,
 				F62271F3273C728D00AF76C1 /* SettingScene.framework */,
 				F68B731B27286C9200DD5456 /* EditReadItemScene.framework */,
 				F68B731827286C8600DD5456 /* ReadItemScene.framework */,
