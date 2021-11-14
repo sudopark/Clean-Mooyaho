@@ -18,4 +18,6 @@ public protocol ShareItemRepository {
     func requestStopShare(readCollection shareID: String) -> Maybe<Void>
     
     func requestLoadLatestsSharedCollections() -> Observable<[SharedReadCollection]>
+    
+    func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
 }

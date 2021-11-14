@@ -21,8 +21,12 @@ public struct SharedReadCollection: ReadItem {
     public var remindTime: TimeStamp? = nil
     public var categoryIDs: [String] = []
     
-    public var shareURL: String {
-        return ""
+    public static var shareHost: String { "share" }
+    
+    public static var sharePath: String { "collection" }
+    
+    public var fullSharePath: String {
+        return "\(Self.shareHost)/\(Self.sharePath)?id=\(uid)"
     }
     
     public init(collection: ReadCollection) {
