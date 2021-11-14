@@ -35,7 +35,8 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     }
     
     private func makeUsecase(shouldFailShare: Bool = false,
-                             shouldFailStopShare: Bool = false) -> ShareItemUsecaseImple {
+                             shouldFailStopShare: Bool = false,
+                             shouldFailLoadSharedItem: Bool = false) -> ShareItemUsecaseImple {
         
         let dataStore = SharedDataStoreServiceImple()
         dataStore.save(Member.self, key: .currentMember, Member(uid: "some", nickName: nil, icon: nil))
@@ -44,6 +45,7 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let repository = StubShareItemRepository()
             |> \.shareCollectionResult .~ (shouldFailShare ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
             |> \.stopShareItemResult %~ { shouldFailStopShare ? .failure(ApplicationErrors.invalid) : $0 }
+        |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
         return ShareItemUsecaseImple(shareRepository: repository,
                                      authInfoProvider: dataStore,
                                      sharedDataService: dataStore)
@@ -131,7 +133,89 @@ extension ShareItemUsecaseTests {
     
     func testUsecase_loadSharedCollectionByURL() {
         // given
+        let expect = expectation(description: "공유 url로 아이템 로드")
+        let usecase = self.makeUsecase()
+        
         // when
+        let url = "readminds://share/collection?id=some"
+        let loading = usecase.loadSharedCollection(by: URL(string: url)!)
+        let result = self.waitFirstElement(expect, for: loading.asObservable())
+        
         // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_whenInvalidShareItem_notLoadAndInvalidError() {
+        // given
+        let expect = expectation(description: "공유 url이 아닌경우 아무것도 안함")
+        expect.isInverted = true
+        let usecase = self.makeUsecase()
+        
+        // when
+        let url = "readminds://invalid/url/address?id=some"
+        let loading = usecase.loadSharedCollection(by: URL(string: url)!)
+        let result = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNil(result)
+    }
+    
+    func testUsecase_whenSharedURLIsValidButFailtoLoadItem() {
+        // given
+        let expect = expectation(description: "공유된 아이템 로드 실패")
+        let usecase = self.makeUsecase(shouldFailLoadSharedItem: true)
+        
+        // when
+        let url = "readminds://share/collection?id=some"
+        let loading = usecase.loadSharedCollection(by: URL(string: url)!)
+        let error = self.waitError(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
+    func testUsecase_whenLoadSharedCollection_insertToLastestList() {
+        // given
+        let expect = expectation(description: "공유된 아이템 아이템 조회시에 최근 공유받은 목록 업데이트")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let source = self.spySharedStore.observe([SharedReadCollection].self, key: SharedDataKeys.latestSharedCollections.rawValue)
+        let collections = self.waitFirstElement(expect, for: source) {
+            let url = "readminds://share/collection?id=some"
+            usecase.loadSharedCollection(by: URL(string: url)!)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(collections?.map { $0.uid }, [self.dummySharedCollection.uid])
+    }
+    
+    func testUsecase_whenLoadSharedCollectionAndAlreadyViewItem_updateToLastestList() {
+        // given
+        let expect = expectation(description: "이미 본적있는 공유된 아아템 url로 조회시에 공유받은 목록에서 최상위로 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase()
+        let oldList = [SharedReadCollection.dummy(1), self.dummySharedCollection]
+        self.spySharedStore.save([SharedReadCollection].self, key: .latestSharedCollections, oldList)
+        
+        // when
+        let source = self.spySharedStore.observe([SharedReadCollection].self, key: SharedDataKeys.latestSharedCollections.rawValue)
+            .compactMap{ $0 }
+        let collectionLists = self.waitElements(expect, for: source) {
+            let url = "readminds://share/collection?id=\(self.dummySharedCollection.uid)"
+            usecase.loadSharedCollection(by: URL(string: url)!)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        let ids = collectionLists.map { $0.map { $0.uid} }
+        XCTAssertEqual(ids, [
+            [SharedReadCollection.dummy(1).uid, self.dummySharedCollection.uid],
+            [self.dummySharedCollection.uid, SharedReadCollection.dummy(1).uid]
+            ]
+        )
     }
 }

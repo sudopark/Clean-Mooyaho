@@ -13,5 +13,5 @@ import RxSwift
 
 public protocol SharedReadCollectionHandleUsecase {
     
-    func loadSharedCollection(by sharedURL: String) -> Maybe<ShareReadCollectionUsecase>
+    func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection>
 }

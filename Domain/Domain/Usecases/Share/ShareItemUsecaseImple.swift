@@ -78,7 +78,55 @@ extension ShareItemUsecaseImple {
 extension ShareItemUsecaseImple {
     
     
-    public func loadSharedCollection(by sharedURL: String) -> Maybe<ShareReadCollectionUsecase> {
-        return .empty()
+    public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
+        guard let sharedCollectionID = self.parseSharedCollectionURL(sharedURL)
+        else {
+            return .empty()
+        }
+        
+        let updateLatestSharedCollection: (SharedReadCollection) -> Void = { [weak self] collection in
+            self?.updateLatestSharedCollectionList(collection)
+        }
+                                          
+        return self.shareRepository.requestLoadSharedCollection(sharedCollectionID)
+            .do(onNext: updateLatestSharedCollection)
+    }
+    
+    private func parseSharedCollectionURL(_ url: URL) -> String? {
+        guard let compomnents = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              let host = compomnents.host, host == SharedReadCollection.shareHost,
+              compomnents.path == "/\(SharedReadCollection.sharePath)",
+              let queries = compomnents.queryItems?.asQueryDict()
+        else {
+            return nil
+        }
+        return queries["id"]
+    }
+    
+    private func updateLatestSharedCollectionList(_ newCollection: SharedReadCollection) {
+        let datKey = SharedDataKeys.latestSharedCollections.rawValue
+        self.sharedDataService.update([SharedReadCollection].self, key: datKey) {
+            return ($0 ?? [])
+                |> { $0.removed(collectionID: newCollection.uid) }
+                |> { [newCollection] + $0 }
+        }
+    }
+}
+
+private extension Array where Element == URLQueryItem {
+    
+    func asQueryDict() -> [String: String] {
+        return self.reduce(into: [String: String]()) { acc, item in
+            acc[item.name] = item.value
+        }
+    }
+}
+
+private extension Array where Element == SharedReadCollection {
+    
+    func removed(collectionID: String) -> Array {
+        var sender = self
+        sender.removeAll(where: { $0.uid == collectionID })
+        return sender
     }
 }

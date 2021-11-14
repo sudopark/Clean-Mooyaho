@@ -29,4 +29,9 @@ class StubShareItemRepository: ShareItemRepository {
     func requestLoadLatestsSharedCollections() -> Observable<[SharedReadCollection]> {
         return latestSharedCollections.map { .just($0) } ?? .error(ApplicationErrors.notFound)
     }
+    
+    var loadSharedCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
+    func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        return self.loadSharedCollectionResult.asMaybe()
+    }
 }
