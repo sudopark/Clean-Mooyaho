@@ -43,7 +43,8 @@ public protocol AuthorizationNeed: AnyObject {
 public protocol Remote: AuthRemote, MemberRemote,
                         PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
                         ReadItemRemote, ReadItemOptionsRemote, LinkPreviewRemote, ItemCategoryRemote,
-                        ReadLinkMemoRemote, BatchUploadRemote { }
+                        ReadLinkMemoRemote, BatchUploadRemote,
+                        ShareItemRemote { }
 
 // MARK: - Auth remote
 
@@ -210,4 +211,18 @@ public protocol ItemCategoryRemote: AuthorizationNeed {
 public protocol BatchUploadRemote {
     
     func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void>
+}
+
+
+// MARK: - Item share
+
+public protocol ShareItemRemote {
+    
+    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection>
+    
+    func requestStopShare(collectionID: String) -> Maybe<Void>
+    
+    func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]>
+    
+    func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
 }

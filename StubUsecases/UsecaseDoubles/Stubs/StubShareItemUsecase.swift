@@ -12,7 +12,7 @@ import RxSwift
 import Domain
 
 
-open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedInboxUsecase {
+open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionHandleUsecase {
     
     public struct Scenario {
         
@@ -37,15 +37,15 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedInboxUsecase 
         return self.scenario.stopShareResult.asMaybe()
     }
     
-    public func loadLatestSharedCollections() -> Observable<[SharedReadCollection]> {
-        if let error = self.scenario.lastedCollectionLoadError {
-            return .error(error)
-        } else {
-            return .from(self.scenario.latestCollections)
-        }
+    public func refreshLatestSharedReadCollection() {
+        
     }
     
-    public func refreshSharedInbox() {
-        
+    public var lastestSharedReadCollections: Observable<[SharedReadCollection]> {
+        .empty()
+    }
+    
+    public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
+        return .empty()
     }
 }

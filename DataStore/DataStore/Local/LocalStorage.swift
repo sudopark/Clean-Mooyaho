@@ -174,9 +174,16 @@ public protocol UserDataMigratableLocalStorage {
     func saveToUserStorage<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void>
 }
 
+public protocol ShareItemLocalStorage {
+    
+    func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]>
+    
+    func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage { }
+public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage { }
 
 
 // MARK: - LocalStorageImple

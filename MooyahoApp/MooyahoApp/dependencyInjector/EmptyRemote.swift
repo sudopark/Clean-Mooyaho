@@ -16,6 +16,22 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
+        return .empty()
+    }
+    
+    func requestStopShare(collectionID: String) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
+        return .empty()
+    }
+    
+    func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        return .empty()
+    }
+    
     func requestUploadMemberProfileImage(_ memberID: String, filePath: String, ext: String, size: ImageSize) -> Observable<MemberProfileUploadStatus> {
         return .empty()
     }
