@@ -22,6 +22,7 @@ public enum SharedDataKeys: String {
     case readLinkPreviewMap
     case categoriesMap
     case addSuggestedURLSet
+    case latestSharedCollections
 }
 
 

@@ -151,3 +151,14 @@ extension ReadLinkMemo {
         return .init(itemID: id)
     }
 }
+
+
+extension SharedReadCollection {
+    
+    static func dummy(_ int: Int) -> SharedReadCollection {
+        return SharedReadCollection(uid: "sid:\(int)",
+                                    name: "share:\(int)",
+                                    createdAt: TimeInterval(int),
+                                    lastUpdated: TimeInterval(int))
+    }
+}
