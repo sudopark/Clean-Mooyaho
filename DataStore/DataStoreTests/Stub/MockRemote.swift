@@ -235,4 +235,21 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
             return Disposables.create { }
         }
     }
+    
+    // share item
+    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
+        return self.resolve(key: "requestShare") ?? .empty()
+    }
+    
+    func requestStopShare(collectionID: String) -> Maybe<Void> {
+        return self.resolve(key: "requestStopShare") ?? .empty()
+    }
+    
+    func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
+        return self.resolve(key: "requestLoadLatestSharedCollections") ?? .empty()
+    }
+    
+    func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        return self.resolve(key: "requestLoadSharedCollection") ?? .empty()
+    }
 }

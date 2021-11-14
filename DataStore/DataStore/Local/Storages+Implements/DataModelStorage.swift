@@ -85,6 +85,10 @@ public protocol DataModelStorage {
     func remove<T>(_ type: T.Type, in ids: [String]) -> Maybe<Void>
     
     func save<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void>
+    
+    func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]>
+    
+    func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
 }
 
 
@@ -614,6 +618,27 @@ extension DataModelStorageImple {
     public func deleteMemo(for linkItemID: String) -> Maybe<Void> {
         let query = ReadLinkMemoTable.delete().where { $0.itemID == linkItemID }
         return self.sqliteService.rx.run { try $0.delete(ReadLinkMemoTable.self, query: query) }
+    }
+}
+
+// MARK; - shared item
+
+extension DataModelStorageImple {
+    
+    public func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
+        let query = SharedReadCollectionTable.selectAll()
+            .orderBy(isAscending: false) { $0.lastOpened }
+            .limit(20)
+        let mapping: (CursorIterator) throws -> SharedReadCollection = { cursor in
+            return try SharedReadCollectionTable.Entity(cursor).asCollection()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
+        let entities = collections.compactMap { SharedReadCollectionTable.Entity(collection: $0) }
+        return self.sqliteService.rx.run
+            { try $0.insert(SharedReadCollectionTable.self, entities: entities, shouldReplace: true) }
     }
 }
 

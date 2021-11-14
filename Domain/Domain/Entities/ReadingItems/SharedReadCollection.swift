@@ -13,6 +13,7 @@ public struct SharedReadCollection: ReadItem {
     
     public let uid: String
     public let name: String
+    public var description: String?
     public var ownerID: String?
     public var parentID: String?
     public let createdAt: TimeStamp
@@ -20,6 +21,7 @@ public struct SharedReadCollection: ReadItem {
     public var priority: ReadPriority? = nil
     public var remindTime: TimeStamp? = nil
     public var categoryIDs: [String] = []
+    public var userLastOpenTime: TimeStamp?
     
     public static var shareHost: String { "share" }
     

@@ -244,4 +244,21 @@ extension RemoteImple {
     func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void> {
         return self.firebaseRemote.requestBatchUpload(type, data: data)
     }
+    
+    // share item
+    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
+        return self.firebaseRemote.requestShare(collection: collection)
+    }
+    
+    func requestStopShare(collectionID: String) -> Maybe<Void> {
+        return self.firebaseRemote.requestStopShare(collectionID: collectionID)
+    }
+    
+    func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
+        return self.firebaseRemote.requestLoadLatestSharedCollections()
+    }
+    
+    func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        return self.firebaseRemote.requestLoadSharedCollection(collectionID)
+    }
 }
