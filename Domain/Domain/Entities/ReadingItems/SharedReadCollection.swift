@@ -11,6 +11,7 @@ import Foundation
 
 public struct SharedReadCollection: ReadItem {
     
+    public let shareID: String
     public let uid: String
     public let name: String
     public var description: String?
@@ -21,19 +22,20 @@ public struct SharedReadCollection: ReadItem {
     public var priority: ReadPriority? = nil
     public var remindTime: TimeStamp? = nil
     public var categoryIDs: [String] = []
-    public var userLastOpenTime: TimeStamp?
     
     public static var shareHost: String { "share" }
     
     public static var sharePath: String { "collection" }
     
     public var fullSharePath: String {
-        return "\(Self.shareHost)/\(Self.sharePath)?id=\(uid)"
+        return "\(Self.shareHost)/\(Self.sharePath)?id=\(shareID)"
     }
     
-    public init(collection: ReadCollection) {
+    public init(shareID: String, collection: ReadCollection) {
+        self.shareID = shareID
         self.uid = collection.uid
         self.name = collection.name
+        self.description = collection.collectionDescription
         self.ownerID = collection.ownerID
         self.parentID = collection.parentID
         self.createdAt = collection.createdAt
@@ -41,8 +43,9 @@ public struct SharedReadCollection: ReadItem {
         self.categoryIDs = collection.categoryIDs
     }
     
-    public init(uid: String, name: String,
+    public init(shareID: String, uid: String, name: String,
                 createdAt: TimeStamp, lastUpdated: TimeStamp) {
+        self.shareID = shareID
         self.uid = uid
         self.name = name
         self.createdAt = createdAt

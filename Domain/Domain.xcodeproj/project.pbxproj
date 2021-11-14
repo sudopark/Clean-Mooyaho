@@ -52,8 +52,6 @@
 		F6118D80273C86AC00E0489B /* RemindOptionUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D7F273C86AC00E0489B /* RemindOptionUsecase.swift */; };
 		F6118D82273C86F100E0489B /* ReadRemindUsecaseImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D81273C86F100E0489B /* ReadRemindUsecaseImple.swift */; };
 		F612BDE02740664E0017FD77 /* SharedReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDDF2740664E0017FD77 /* SharedReadCollection.swift */; };
-		F612BDE32740689F0017FD77 /* SharedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDE22740689F0017FD77 /* SharedInbox.swift */; };
-		F612BDE527406A710017FD77 /* ItemLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDE427406A710017FD77 /* ItemLike.swift */; };
 		F612BDE827406B310017FD77 /* ShareReadCollectionUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDE727406B310017FD77 /* ShareReadCollectionUsecase.swift */; };
 		F612BDEA27406BDA0017FD77 /* ShareItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDE927406BDA0017FD77 /* ShareItemRepository.swift */; };
 		F612BDF027406EDB0017FD77 /* SharedReadCollectionLoadUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDEF27406EDB0017FD77 /* SharedReadCollectionLoadUsecase.swift */; };
@@ -218,8 +216,6 @@
 		F6118D7F273C86AC00E0489B /* RemindOptionUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindOptionUsecase.swift; sourceTree = "<group>"; };
 		F6118D81273C86F100E0489B /* ReadRemindUsecaseImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindUsecaseImple.swift; sourceTree = "<group>"; };
 		F612BDDF2740664E0017FD77 /* SharedReadCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedReadCollection.swift; sourceTree = "<group>"; };
-		F612BDE22740689F0017FD77 /* SharedInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedInbox.swift; sourceTree = "<group>"; };
-		F612BDE427406A710017FD77 /* ItemLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLike.swift; sourceTree = "<group>"; };
 		F612BDE727406B310017FD77 /* ShareReadCollectionUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReadCollectionUsecase.swift; sourceTree = "<group>"; };
 		F612BDE927406BDA0017FD77 /* ShareItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareItemRepository.swift; sourceTree = "<group>"; };
 		F612BDEF27406EDB0017FD77 /* SharedReadCollectionLoadUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedReadCollectionLoadUsecase.swift; sourceTree = "<group>"; };
@@ -409,7 +405,6 @@
 				F6C1C8D327255521007277A5 /* Memo */,
 				F6E279C726F6EA2900957AC4 /* Link */,
 				F6A8CE3A271174EA00CA6D3D /* Suggest */,
-				F612BDE12740685B0017FD77 /* Share */,
 				F6913EE826EC631B00C6E105 /* Deprecated */,
 			);
 			path = Entities;
@@ -635,15 +630,6 @@
 				F637206226653F960089D0B3 /* MemberTests.swift */,
 			);
 			path = Entities;
-			sourceTree = "<group>";
-		};
-		F612BDE12740685B0017FD77 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				F612BDE22740689F0017FD77 /* SharedInbox.swift */,
-				F612BDE427406A710017FD77 /* ItemLike.swift */,
-			);
-			path = Share;
 			sourceTree = "<group>";
 		};
 		F612BDE627406AD80017FD77 /* Share */ = {
@@ -956,7 +942,6 @@
 				F6152958264F0B0C003BCB59 /* ApplicationErrors.swift in Sources */,
 				2BA7B8512635019600FE5243 /* OwnerShips.swift in Sources */,
 				F6118D80273C86AC00E0489B /* RemindOptionUsecase.swift in Sources */,
-				F612BDE527406A710017FD77 /* ItemLike.swift in Sources */,
 				F615294F264EED6A003BCB59 /* SharedDataStoreService.swift in Sources */,
 				2B9F27872633E91100FEBCE3 /* AuthRepository.swift in Sources */,
 				F6A72A3526481D0C006BE4BD /* SuggestTagUsecase.swift in Sources */,
@@ -987,7 +972,6 @@
 				F6BD48032740DF5900D2B2C9 /* SharedReadCollectionHandle.swift in Sources */,
 				F66C2C23270908CF003D56B1 /* RxCocoa+Extensions.swift in Sources */,
 				F612BDE827406B310017FD77 /* ShareReadCollectionUsecase.swift in Sources */,
-				F612BDE32740689F0017FD77 /* SharedInbox.swift in Sources */,
 				F6A8CE3E2711756A00CA6D3D /* SuggestCategoryUsecase.swift in Sources */,
 				F6E279D526F71CD800957AC4 /* ReadItemOptionsRepository.swift in Sources */,
 				2BFF240D26406190008C52EB /* Place.swift in Sources */,

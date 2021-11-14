@@ -29,6 +29,8 @@ enum FireStoreCollectionType: String {
     case itemCategory
     case suggestIndexes
     case linkMemo
+    case sharedInbox = "shared_inboxes"
+    case sharingCollectionIndex = "sharing_collect_indexes"
 }
 
 
@@ -226,6 +228,7 @@ extension FirebaseServiceImple {
         return Maybe.create { [weak self] callback in
             guard let db = self?.fireStoreDB else { return Disposables.create() }
             let collectionRef = db.collection(collectionType)
+            
             collectionRef.document(docuID).delete { error in
                 if let error = error {
                     callback(.error(error))

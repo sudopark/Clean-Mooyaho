@@ -155,7 +155,8 @@ extension SuggestCategoryCollection {
 extension SharedReadCollection {
     
     public static func dummy(_ int: Int) -> SharedReadCollection {
-        return SharedReadCollection(uid: "sid:\(int)",
+        return SharedReadCollection(shareID: "s:\(int)",
+                                    uid: "c:\(int)",
                                     name: "share:\(int)",
                                     createdAt: TimeInterval(int),
                                     lastUpdated: TimeInterval(int))

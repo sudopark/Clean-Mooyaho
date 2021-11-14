@@ -70,6 +70,7 @@
 		F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */; };
 		F6A8CE4B271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */; };
 		F6BD480D2741050800D2B2C9 /* ShareItem+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */; };
+		F6BD480F2741065800D2B2C9 /* ShareItem+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */; };
 		F6C99B2A273031A000D42A90 /* ReadItem+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B29273031A000D42A90 /* ReadItem+Mapping.swift */; };
 		F6C99B2C2730356100D42A90 /* ItemCategory+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B2B2730356100D42A90 /* ItemCategory+Mapping.swift */; };
 		F6C99B2E273035EF00D42A90 /* ReadLinkMemo+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */; };
@@ -192,6 +193,7 @@
 		F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCategoryRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareItem+Firebase.swift"; sourceTree = "<group>"; };
+		F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareItem+Mapping.swift"; sourceTree = "<group>"; };
 		F6C99B29273031A000D42A90 /* ReadItem+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItem+Mapping.swift"; sourceTree = "<group>"; };
 		F6C99B2B2730356100D42A90 /* ItemCategory+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCategory+Mapping.swift"; sourceTree = "<group>"; };
 		F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadLinkMemo+Mapping.swift"; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 				F6C99B2B2730356100D42A90 /* ItemCategory+Mapping.swift */,
 				F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */,
 				F6C99B302730382600D42A90 /* SuggestIndexes.swift */,
+				F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */,
 			);
 			path = DataMappings;
 			sourceTree = "<group>";
@@ -662,6 +665,7 @@
 				F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */,
 				F68B209B26A5D2B200DB30CC /* FCM+Firebase.swift in Sources */,
 				F6684DFC2647CC1000820368 /* GFGeoQueryBounds.m in Sources */,
+				F6BD480F2741065800D2B2C9 /* ShareItem+Mapping.swift in Sources */,
 				F67848D526510B170074C344 /* HoorayRemote+Firebase.swift in Sources */,
 				F6684E042647E33400820368 /* Member+Mapping.swift in Sources */,
 				F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */,

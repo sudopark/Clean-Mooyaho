@@ -27,15 +27,15 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
         return self.shareItemRemote.requestShare(collection: collection)
     }
     
-    public func requestStopShare(readCollection collectionID: String) -> Maybe<Void> {
-        return self.shareItemRemote.requestStopShare(collectionID: collectionID)
+    public func requestStopShare(readCollection shareID: String) -> Maybe<Void> {
+        return self.shareItemRemote.requestStopShare(shareID: shareID)
     }
     
     public func requestLoadLatestsSharedCollections() -> Observable<[SharedReadCollection]> {
         let fetchCollectionsWithoutError = self.shareItemLocal.fetchLatestSharedCollections()
             .catchAndReturn([])
         let updateLocal: ([SharedReadCollection]) -> Void = { [weak self] collections in
-            self?.updateSharedCollections(collections)
+            self?.replaceSharedCollections(collections)
         }
         let collectionsInRemote = self.shareItemRemote.requestLoadLatestSharedCollections()
             .do(onNext: updateLocal)
@@ -44,20 +44,26 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
             .asObservable()
             .concat(collectionsInRemote)
     }
+    
+    private func replaceSharedCollections(_ collections: [SharedReadCollection]) {
+        self.shareItemLocal.replaceLastSharedCollections(collections)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
 
     
-    public func requestLoadSharedCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+    public func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection> {
         
         let updateLocal: (SharedReadCollection) -> Void = { [weak self] collection in
-            self?.updateSharedCollections([collection])
+            self?.saveSharedCollection(collection)
         }
         
-        return self.shareItemRemote.requestLoadSharedCollection(collectionID)
+        return self.shareItemRemote.requestLoadSharedCollection(by: shareID)
             .do(onNext: updateLocal)
     }
     
-    private func updateSharedCollections(_ collections: [SharedReadCollection]) {
-        self.shareItemLocal.updateLastSharedCollections(collections)
+    private func saveSharedCollection(_ collection: SharedReadCollection) {
+        self.shareItemLocal.saveSharedCollection(collection)
             .subscribe()
             .disposed(by: self.disposeBag)
     }

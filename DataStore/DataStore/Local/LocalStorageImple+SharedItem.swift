@@ -22,10 +22,17 @@ extension LocalStorageImple {
         return storage.fetchLatestSharedCollections()
     }
     
-    public func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
+    public func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
-        return storage.updateLastSharedCollections(collections)
+        return storage.replaceLastSharedCollections(collections)
+    }
+    
+    public func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.saveSharedCollection(collection)
     }
 }
