@@ -178,7 +178,9 @@ public protocol ShareItemLocalStorage {
     
     func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]>
     
-    func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
+    func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
+    
+    func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void>
 }
 
 // MARK: - LocalStorage

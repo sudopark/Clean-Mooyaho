@@ -45,7 +45,7 @@ extension RepositoryTests_ShareItem {
         // given
         let expect = expectation(description: "item share")
         self.mockRemote.register(key: "requestShare") {
-            Maybe<SharedReadCollection>.just(SharedReadCollection(uid: "some", name: "name", createdAt: .now(), lastUpdated: .now()))
+            Maybe<SharedReadCollection>.just(SharedReadCollection(shareID: "some", collection: .init(name: "name")))
         }
         
         // when
@@ -74,9 +74,9 @@ extension RepositoryTests_ShareItem {
         let expect = expectation(description: "최근 공유된 콜렉션 목록 로드")
         expect.expectedFulfillmentCount = 2
         self.mockLocal.register(key: "fetchLatestSharedCollections")
-            { Maybe<[SharedReadCollection]>.just([SharedReadCollection(collection: .init(name: "some"))]) }
+            { Maybe<[SharedReadCollection]>.just([SharedReadCollection(shareID: "some", collection: .init(name: "name"))]) }
         self.mockRemote.register(key: "requestLoadLatestSharedCollections")
-            { Maybe<[SharedReadCollection]>.just([SharedReadCollection(collection: .init(name: "some"))]) }
+            { Maybe<[SharedReadCollection]>.just([SharedReadCollection(shareID: "some", collection: .init(name: "name"))]) }
         
         // when
         let loading = self.repository.requestLoadLatestsSharedCollections()
@@ -93,7 +93,7 @@ extension RepositoryTests_ShareItem {
         let expect = expectation(description: "최근 공유된 콜렉션 목록 로드 중 캐시로드 실패는 무시")
         expect.expectedFulfillmentCount = 2
         self.mockLocal.register(key: "fetchLatestSharedCollections") { Maybe<[SharedReadCollection]>.error(ApplicationErrors.invalid) }
-        self.mockRemote.register(key: "requestLoadLatestSharedCollections") { Maybe<[SharedReadCollection]>.just([SharedReadCollection(collection: .init(name: "some"))]) }
+        self.mockRemote.register(key: "requestLoadLatestSharedCollections") { Maybe<[SharedReadCollection]>.just([SharedReadCollection(shareID: "some", collection: .init(name: "name"))]) }
         
         // when
         let loading = self.repository.requestLoadLatestsSharedCollections()
@@ -108,11 +108,11 @@ extension RepositoryTests_ShareItem {
     func testReposiroey_whenAfterLoadLatestSharedItem_updateLocal() {
         // given
         let expect = expectation(description: "최근 공유받은 목록 로드 이후에 캐시 업데이트")
-        self.mockLocal.called(key: "updateLastSharedCollections") { _ in
+        self.mockLocal.called(key: "replaceLastSharedCollections") { _ in
             expect.fulfill()
         }
         self.mockLocal.register(key: "fetchLatestSharedCollections") { Maybe<[SharedReadCollection]>.error(ApplicationErrors.invalid) }
-        self.mockRemote.register(key: "requestLoadLatestSharedCollections") { Maybe<[SharedReadCollection]>.just([SharedReadCollection(collection: .init(name: "some"))]) }
+        self.mockRemote.register(key: "requestLoadLatestSharedCollections") { Maybe<[SharedReadCollection]>.just([SharedReadCollection(shareID: "some", collection: .init(name: "name"))]) }
         
         // when
         self.repository.requestLoadLatestsSharedCollections()
@@ -141,11 +141,11 @@ extension RepositoryTests_ShareItem {
         // given
         let expect = expectation(description: "공유받은 콜렉션 로드")
         self.mockRemote.register(key: "requestLoadSharedCollection") {
-            Maybe<SharedReadCollection>.just(SharedReadCollection(uid: "some", name: "name", createdAt: .now(), lastUpdated: .now()))
+            Maybe<SharedReadCollection>.just(SharedReadCollection(shareID: "some", collection: .init(name: "name")))
         }
         
         // when
-        let loading = self.repository.requestLoadSharedCollection("some")
+        let loading = self.repository.requestLoadSharedCollection(by: "some")
         let collection = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
@@ -155,15 +155,15 @@ extension RepositoryTests_ShareItem {
     func testReposiroey_whenAfterLoadSharedItem_updateLocal() {
         // given
         let expect = expectation(description: "공유받은 콜렉션 로드 이후에 캐시 업데이트")
-        self.mockLocal.called(key: "updateLastSharedCollections") { _ in
+        self.mockLocal.called(key: "saveSharedCollection") { _ in
             expect.fulfill()
         }
         self.mockRemote.register(key: "requestLoadSharedCollection") {
-            Maybe<SharedReadCollection>.just(SharedReadCollection(uid: "some", name: "name", createdAt: .now(), lastUpdated: .now()))
+            Maybe<SharedReadCollection>.just(SharedReadCollection(shareID: "some", collection: .init(name: "name")))
         }
         
         // when
-        self.repository.requestLoadSharedCollection("some")
+        self.repository.requestLoadSharedCollection(by: "some")
             .subscribe()
             .disposed(by: self.disposeBag)
         

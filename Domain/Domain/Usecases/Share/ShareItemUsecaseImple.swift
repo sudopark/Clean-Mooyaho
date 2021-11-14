@@ -40,9 +40,9 @@ extension ShareItemUsecaseImple {
         return self.shareRepository.requestShareCollection(collection)
     }
     
-    public func stopShare(collection collecionID: String) -> Maybe<Void> {
+    public func stopShare(collection shareID: String) -> Maybe<Void> {
         
-        return self.shareRepository.requestStopShare(readCollection: collecionID)
+        return self.shareRepository.requestStopShare(readCollection: shareID)
     }
 }
 
@@ -53,14 +53,14 @@ extension ShareItemUsecaseImple {
     
     public func refreshLatestSharedReadCollection() {
         
-        let refreshStora: ([SharedReadCollection]) -> Void = { [weak self] collections in
+        let refreshStore: ([SharedReadCollection]) -> Void = { [weak self] collections in
             let datKey = SharedDataKeys.latestSharedCollections.rawValue
             self?.sharedDataService
                 .update([SharedReadCollection].self, key: datKey) { _ in collections }
         }
         
         self.shareRepository.requestLoadLatestsSharedCollections()
-            .subscribe(onNext: refreshStora)
+            .subscribe(onNext: refreshStore)
             .disposed(by: self.disposeBag)
     }
     
@@ -79,16 +79,13 @@ extension ShareItemUsecaseImple {
     
     
     public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
-        guard let sharedCollectionID = self.parseSharedCollectionURL(sharedURL)
-        else {
-            return .empty()
-        }
+        guard let shareID = self.parseSharedCollectionURL(sharedURL) else { return .empty() }
         
         let updateLatestSharedCollection: (SharedReadCollection) -> Void = { [weak self] collection in
             self?.updateLatestSharedCollectionList(collection)
         }
                                           
-        return self.shareRepository.requestLoadSharedCollection(sharedCollectionID)
+        return self.shareRepository.requestLoadSharedCollection(by: shareID)
             .do(onNext: updateLatestSharedCollection)
     }
     

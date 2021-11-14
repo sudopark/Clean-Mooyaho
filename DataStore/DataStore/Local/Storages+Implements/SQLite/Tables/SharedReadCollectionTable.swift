@@ -16,9 +16,10 @@ import Domain
 
 
 
-struct SharedReadCollectionTable: Table {
+struct SharedRootReadCollectionTable: Table {
     
     struct Entity: RowValueType {
+        let shareID: String
         let uid: String
         let name: String
         let description: String?
@@ -27,9 +28,10 @@ struct SharedReadCollectionTable: Table {
         let createdAt: TimeStamp
         let lastUpdatedAt: TimeStamp
         let categoryIDs: [String]
-        let lastOpened: TimeStamp?
+        let lastOpened: TimeStamp
         
         init(_ cursor: CursorIterator) throws {
+            self.shareID = try cursor.next().unwrap()
             self.uid = try cursor.next().unwrap()
             self.name = try cursor.next().unwrap()
             self.description = cursor.next()
@@ -39,11 +41,12 @@ struct SharedReadCollectionTable: Table {
             self.lastUpdatedAt = try cursor.next().unwrap()
             let idText: String = try cursor.next().unwrap()
             self.categoryIDs = try idText.toArray()
-            self.lastOpened = cursor.next()
+            self.lastOpened = try cursor.next().unwrap()
         }
         
         init?(collection: SharedReadCollection) {
             guard let ownerID = collection.ownerID else { return nil }
+            self.shareID = collection.shareID
             self.uid = collection.uid
             self.ownerID = ownerID
             self.parentID = collection.parentID
@@ -52,12 +55,13 @@ struct SharedReadCollectionTable: Table {
             self.createdAt = collection.createdAt
             self.lastUpdatedAt = collection.lastUpdatedAt
             self.categoryIDs = collection.categoryIDs
-            self.lastOpened = collection.userLastOpenTime
+            self.lastOpened = .now()
         }
     }
     
     
     enum Columns: String, TableColumn {
+        case shareID = "sid"
         case uid = "unq_id"
         case ownerID = "owner_id"
         case parentID = "parent_id"
@@ -70,7 +74,8 @@ struct SharedReadCollectionTable: Table {
         
         var dataType: ColumnDataType {
             switch self {
-            case .uid: return .text([.primaryKey(autoIncrement: false), .notNull])
+            case .shareID: return .text([.primaryKey(autoIncrement: false), .notNull])
+            case .uid: return .text([.notNull])
             case .ownerID: return .text([.notNull])
             case .parentID: return .text([])
             case .name: return .text([.notNull])
@@ -78,7 +83,7 @@ struct SharedReadCollectionTable: Table {
             case .createdAt: return .real([.notNull])
             case .lastUpdatedAt: return .real([.notNull])
             case .categoryIDs: return .text([])
-            case .lastOpened: return .real([])
+            case .lastOpened: return .real([.notNull])
             }
         }
     }
@@ -92,6 +97,7 @@ struct SharedReadCollectionTable: Table {
     
     static func scalar(_ entity: Entity, for column: Columns) -> ScalarType? {
         switch column {
+        case .shareID: return entity.shareID
         case .uid: return entity.uid
         case .ownerID: return entity.ownerID
         case .parentID: return entity.parentID
@@ -106,10 +112,11 @@ struct SharedReadCollectionTable: Table {
 }
 
 
-extension SharedReadCollectionTable.Entity {
+extension SharedRootReadCollectionTable.Entity {
     
     func asCollection() -> SharedReadCollection {
-        let collection = SharedReadCollection(uid: self.uid,
+        let collection = SharedReadCollection(shareID: self.shareID,
+                                              uid: self.uid,
                                               name: self.name,
                                               createdAt: self.createdAt,
                                               lastUpdated: self.lastUpdatedAt)
@@ -119,6 +126,5 @@ extension SharedReadCollectionTable.Entity {
             |> \.parentID .~ self.parentID
             |> \.description .~ self.description
             |> \.categoryIDs .~ self.categoryIDs
-            |> \.userLastOpenTime .~ self.lastOpened
     }
 }

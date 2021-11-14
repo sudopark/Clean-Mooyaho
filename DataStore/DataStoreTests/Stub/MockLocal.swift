@@ -245,9 +245,14 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "fetchLatestSharedCollections") ?? .empty()
     }
     
-    func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
-        self.verify(key: "updateLastSharedCollections", with: collections)
-        return self.resolve(key: "updateLastSharedCollections") ?? .empty()
+    func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
+        self.verify(key: "replaceLastSharedCollections", with: collections)
+        return self.resolve(key: "replaceLastSharedCollections") ?? .empty()
+    }
+    
+    func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void> {
+        self.verify(key: "saveSharedCollection", with: collection)
+        return self.resolve(key: "saveSharedCollection") ?? .empty()
     }
 }
 

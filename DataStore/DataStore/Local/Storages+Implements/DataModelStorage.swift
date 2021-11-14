@@ -88,7 +88,9 @@ public protocol DataModelStorage {
     
     func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]>
     
-    func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
+    func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
+    
+    func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void>
 }
 
 
@@ -626,19 +628,35 @@ extension DataModelStorageImple {
 extension DataModelStorageImple {
     
     public func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
-        let query = SharedReadCollectionTable.selectAll()
+        let query = SharedRootReadCollectionTable.selectAll()
             .orderBy(isAscending: false) { $0.lastOpened }
+            .orderBy("rowid", isAscending: false)
             .limit(20)
         let mapping: (CursorIterator) throws -> SharedReadCollection = { cursor in
-            return try SharedReadCollectionTable.Entity(cursor).asCollection()
+            return try SharedRootReadCollectionTable.Entity(cursor).asCollection()
         }
         return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
     }
     
-    public func updateLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
-        let entities = collections.compactMap { SharedReadCollectionTable.Entity(collection: $0) }
+    public func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
+        let entities = collections.compactMap { SharedRootReadCollectionTable.Entity(collection: $0) }
+        
+        let dropTable = self.sqliteService.rx.run { try $0.dropTable(SharedRootReadCollectionTable.self) }
+        let thenUpdateCollections: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.sqliteService.rx.run
+                { try $0.insert(SharedRootReadCollectionTable.self, entities: entities, shouldReplace: true) }
+        }
+        return dropTable
+            .flatMap(thenUpdateCollections)
+    }
+    
+    public func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void> {
+        guard let entity = SharedRootReadCollectionTable.Entity(collection: collection)else {
+            return .error(ApplicationErrors.invalid)
+        }
         return self.sqliteService.rx.run
-            { try $0.insert(SharedReadCollectionTable.self, entities: entities, shouldReplace: true) }
+            { try $0.insert(SharedRootReadCollectionTable.self, entities: [entity], shouldReplace: true) }
     }
 }
 
