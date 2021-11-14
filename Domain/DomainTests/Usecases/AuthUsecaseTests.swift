@@ -245,7 +245,6 @@ extension AuthUsecaseTests {
 private extension Auth {
     
     static func signIn(_ id: String) -> Auth {
-        var auth = Auth(userID: id)
-        return auth
+        return Auth(userID: id)
     }
 }
