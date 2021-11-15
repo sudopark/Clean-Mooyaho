@@ -16,7 +16,7 @@ import Domain
 class StubShareItemRepository: ShareItemRepository {
     
     var shareCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
-    func requestShareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    func requestShareCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
         return self.shareCollectionResult.asMaybe()
     }
     

@@ -156,6 +156,19 @@ extension MainViewController {
         self.mainView.sharedRootCollectionView
             .bindOwnerInfo(self.viewModel.currentSharedCollectionOwnerInfo)
             .disposed(by: self.disposeBag)
+        
+        self.viewModel.shareStatus
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] status in
+                self?.mainView.updateShareStatus(status)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.shareButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.toggleShareStatus()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindMemberProfileImage() {

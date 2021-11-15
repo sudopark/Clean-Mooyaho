@@ -19,13 +19,13 @@ extension FirebaseServiceImple {
     
     private typealias Key = ShareItemMappingKey
         
-    public func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    public func requestShare(collectionID: String) -> Maybe<SharedReadCollection> {
         
         guard let memberID = self.signInMemberID else {
             return .error(ApplicationErrors.sigInNeed)
         }
         
-        let makeIndex = self.makeSharingIndex(collection, for: memberID)
+        let makeIndex = self.makeSharingIndex(collectionID, for: memberID)
         let thenLoadCollection: (SharingCollectionIndex) -> Maybe<SharedReadCollection>
         thenLoadCollection = { [weak self] index in
             guard let self = self else { return .empty() }
@@ -41,9 +41,9 @@ extension FirebaseServiceImple {
             .do(onNext: thenUpdateInbox)
     }
     
-    private func makeSharingIndex(_ collection: ReadCollection,
+    private func makeSharingIndex(_ collectionID: String,
                                   for ownerID: String) -> Maybe<SharingCollectionIndex> {
-        let jsonPayload = SharingCollectionIndex(shareID: "temp", ownerID: ownerID, collectionID: collection.uid)
+        let jsonPayload = SharingCollectionIndex(shareID: "temp", ownerID: ownerID, collectionID: collectionID)
             .asDocument().1
         return self.saveNew(jsonPayload, at: .sharingCollectionIndex)
     }

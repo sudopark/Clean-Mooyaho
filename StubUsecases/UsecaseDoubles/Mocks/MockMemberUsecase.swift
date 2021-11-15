@@ -14,7 +14,9 @@ import UnitTestHelpKit
 
 
 open class MockMemberUsecase: MemberUsecase, Mocking {
-    public func refreshMembers(_ ids: [String]) { }
+    public func refreshMembers(_ ids: [String]) {
+        self.verify(key: "refreshMembers", with: ids)
+    }
     
     public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
         return self.resolve(key: "loadMembers") ?? .empty()

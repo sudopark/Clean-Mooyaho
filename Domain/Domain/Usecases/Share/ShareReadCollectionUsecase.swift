@@ -13,7 +13,7 @@ import RxSwift
 
 public protocol ShareReadCollectionUsecase {
     
-    func shareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection>
+    func shareCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
     
     func stopShare(collection collectionID: String) -> Maybe<Void>
     

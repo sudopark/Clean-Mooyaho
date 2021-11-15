@@ -13,7 +13,7 @@ import RxSwift
 
 public protocol ShareItemRepository {
     
-    func requestShareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection>
+    func requestShareCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
     
     func requestStopShare(readCollection collectionID: String) -> Maybe<Void>
     

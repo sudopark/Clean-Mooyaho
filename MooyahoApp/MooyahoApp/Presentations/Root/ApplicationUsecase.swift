@@ -32,11 +32,14 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
+    private let shareUsecase: ShareReadCollectionUsecase
     
     public init(authUsecase: AuthUsecase,
-                memberUsecase: MemberUsecase) {
+                memberUsecase: MemberUsecase,
+                shareUsecase: ShareReadCollectionUsecase) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
+        self.shareUsecase = shareUsecase
         
         self.bindApplicationStatus()
         self.bindPushTokenUpload()
@@ -61,16 +64,16 @@ extension ApplicationUsecaseImple {
     
     private func bindApplicationStatus() {
         
-//        let status = self.subjects.applicationStatus.distinctUntilChanged()
+        let status = self.subjects.applicationStatus.distinctUntilChanged()
 //
-//        let didLanched = status.filter{ $0 == .launched }.take(1).map{ _ in }
-//        let enterForeground = status.filter{ $0 == .forground }.map{ _ in true }
-//        let enterBackground = status.filter{ $0 == .background }.map{ _ in false }
-//        let terminated = status.filter{ $0 == .terminate }.map{ _ in false }
+        let didLanched = status.filter{ $0 == .launched }.take(1).map{ _ in }
+        let enterForeground = status.filter{ $0 == .forground }.map{ _ in true }
+        let enterBackground = status.filter{ $0 == .background }.map{ _ in false }
+        let terminated = status.filter{ $0 == .terminate }.map{ _ in false }
 //
-//        let isUserInUseApp = Observable
-//            .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
-//            .distinctUntilChanged()
+        let isUserInUseApp = Observable
+            .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
+            .distinctUntilChanged()
         
 //        isUserInUseApp
 //            .flatMapLatest{ [weak self] inUse in self?.waitForLocationUploadableAuth(inUse) ?? .empty()  }
@@ -84,12 +87,18 @@ extension ApplicationUsecaseImple {
 //            .disposed(by: self.disposeBag)
         
 //        let deviceID = AppEnvironment.deviceID
-//        let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
-//        Observable.combineLatest(preparedAuth, isUserInUseApp)
-//            .subscribe(onNext: { [weak self] auth, isUse in
-//                self?.memberUsecase.updateUserIsOnline(auth.userID, deviceID: deviceID, isOnline: isUse)
-//            })
-//            .disposed(by: self.disposeBag)
+        let signInMemberID = self.memberUsecase.currentMember.map { $0?.uid }.distinctUntilChanged()
+        Observable.combineLatest(signInMemberID, isUserInUseApp)
+            .subscribe(onNext: { [weak self] memberID, isUse in
+                guard let memberID = memberID, isUse == true else { return }
+                self?.refreshSignInMemberBaseDatas(for: memberID)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func refreshSignInMemberBaseDatas(for memberID: String) {
+        self.memberUsecase.refreshMembers([memberID])
+        self.shareUsecase.refreshMySharingColletionIDs()
     }
 }
 

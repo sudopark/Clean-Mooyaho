@@ -246,8 +246,8 @@ extension RemoteImple {
     }
     
     // share item
-    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
-        return self.firebaseRemote.requestShare(collection: collection)
+    func requestShare(collectionID: String) -> Maybe<SharedReadCollection> {
+        return self.firebaseRemote.requestShare(collectionID: collectionID)
     }
     
     func requestStopShare(collectionID: String) -> Maybe<Void> {

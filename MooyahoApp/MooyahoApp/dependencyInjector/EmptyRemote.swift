@@ -20,7 +20,7 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    func requestShare(collectionID: String) -> Maybe<SharedReadCollection> {
         return .empty()
     }
     

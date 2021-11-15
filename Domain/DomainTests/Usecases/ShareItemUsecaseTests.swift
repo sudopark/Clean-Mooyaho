@@ -66,7 +66,7 @@ extension ShareItemUsecaseTests {
         
         // when
         let dummy = ReadCollection.dummy(0, parent: nil)
-        let shared = self.waitFirstElement(expect, for: usecase.shareCollection(dummy).asObservable())
+        let shared = self.waitFirstElement(expect, for: usecase.shareCollection(dummy.uid).asObservable())
         
         // then
         XCTAssertNotNil(shared)
@@ -80,7 +80,7 @@ extension ShareItemUsecaseTests {
         // when
         let dummy = ReadCollection.dummy(0, parent: nil)
         let ids = self.waitFirstElement(expect, for: usecase.mySharingCollectionIDs) {
-            usecase.shareCollection(dummy)
+            usecase.shareCollection(dummy.uid)
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
@@ -96,7 +96,7 @@ extension ShareItemUsecaseTests {
         
         // when
         let dummy = ReadCollection.dummy(0, parent: nil)
-        let error = self.waitError(expect, for: usecase.shareCollection(dummy).asObservable())
+        let error = self.waitError(expect, for: usecase.shareCollection(dummy.uid).asObservable())
         
         // then
         XCTAssertNotNil(error)

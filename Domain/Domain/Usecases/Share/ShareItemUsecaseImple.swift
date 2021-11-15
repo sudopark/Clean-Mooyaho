@@ -35,15 +35,15 @@ public final class ShareItemUsecaseImple: ShareReadCollectionUsecase, SharedRead
 
 extension ShareItemUsecaseImple {
     
-    public func shareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    public func shareCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
      
         let updateSharingID: (SharedReadCollection) -> Void = { [weak self] _ in
             let datKey = SharedDataKeys.mySharingCollectionIDs.rawValue
             self?.sharedDataService.update([String].self, key: datKey) {
-                return ($0 ?? []) |> { $0.removed(collectionID: collection.uid) + [collection.uid] }
+                return ($0 ?? []).filter { $0 != collectionID } + [collectionID]
             }
         }
-        return self.shareRepository.requestShareCollection(collection)
+        return self.shareRepository.requestShareCollection(collectionID)
             .do(onNext: updateSharingID)
     }
     
@@ -52,7 +52,7 @@ extension ShareItemUsecaseImple {
         let updateSharingID: () -> Void = { [weak self] in
             let datKey = SharedDataKeys.mySharingCollectionIDs.rawValue
             self?.sharedDataService.update([String].self, key: datKey) {
-                return ($0 ?? []) |> { $0.removed(collectionID: collectionID) }
+                return ($0 ?? []).filter { $0 != collectionID }
             }
         }
         return self.shareRepository.requestStopShare(readCollection: collectionID)
@@ -61,7 +61,7 @@ extension ShareItemUsecaseImple {
     
     public func refreshMySharingColletionIDs() {
         
-        guard let memberID = self.authInfoProvider.signedInMemberID() else {
+        guard self.authInfoProvider.isSignedIn() else {
             return
         }
         

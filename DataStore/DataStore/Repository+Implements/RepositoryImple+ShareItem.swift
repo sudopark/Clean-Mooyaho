@@ -23,14 +23,14 @@ public protocol ShareItemReposiotryDefImpleDependency: AnyObject {
 
 extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency {
     
-    public func requestShareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    public func requestShareCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
         
         let updateCache: (SharedReadCollection) -> Void = { [weak self] shared in
             self?.updateSharingCollectionIDs { oldIDs in
-                return oldIDs.filter { $0 != collection.uid } + [collection.uid]
+                return oldIDs.filter { $0 != collectionID } + [collectionID]
             }
         }
-        return self.shareItemRemote.requestShare(collection: collection)
+        return self.shareItemRemote.requestShare(collectionID: collectionID)
             .do(onNext: updateCache)
     }
     
