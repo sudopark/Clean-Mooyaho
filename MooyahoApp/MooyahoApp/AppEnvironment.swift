@@ -53,6 +53,10 @@ struct AppEnvironment {
         return "group.sudo.park.clean-mooyaho"
     }
     
+    static var shareScheme: String {
+        return "readminds"
+    }
+    
     static var dbFileName: String {
         if self.isTestBuild {
             return "test_dummy"

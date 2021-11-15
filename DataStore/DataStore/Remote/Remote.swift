@@ -218,7 +218,7 @@ public protocol BatchUploadRemote {
 
 public protocol ShareItemRemote: AuthorizationNeed {
     
-    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection>
+    func requestShare(collectionID: String) -> Maybe<SharedReadCollection>
     
     func requestStopShare(collectionID: String) -> Maybe<Void>
     

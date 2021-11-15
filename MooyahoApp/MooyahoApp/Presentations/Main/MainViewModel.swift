@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - MainViewModel
 
-public enum ActivationStatus {
+public enum ActivationStatus: Equatable {
     case unavail
     case activable
     case activated
@@ -52,9 +52,15 @@ public protocol MainViewModel: AnyObject {
 
 public final class MainViewModelImple: MainViewModel {
     
+    enum CurrentSubCollectionID: Equatable {
+        case mine(String?)
+        case shared(String)
+    }
+    
     private let memberUsecase: MemberUsecase
     private let readItemOptionUsecase: ReadItemOptionsUsecase
     private let addItemSuggestUsecase: ReadLinkAddSuggestUsecase
+    private let shareCollectionUseCase: ShareReadCollectionUsecase
     private let router: MainRouting
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
@@ -64,11 +70,13 @@ public final class MainViewModelImple: MainViewModel {
     public init(memberUsecase: MemberUsecase,
                 readItemOptionUsecase: ReadItemOptionsUsecase,
                 addItemSuggestUsecase: ReadLinkAddSuggestUsecase,
+                shareCollectionUsecase: ShareReadCollectionUsecase,
                 router: MainRouting) {
         
         self.memberUsecase = memberUsecase
         self.readItemOptionUsecase = readItemOptionUsecase
         self.addItemSuggestUsecase = addItemSuggestUsecase
+        self.shareCollectionUseCase = shareCollectionUsecase
         self.router = router
         
         self.internalBinding()
@@ -79,6 +87,9 @@ public final class MainViewModelImple: MainViewModel {
         let suggestAddItemURL = BehaviorRelay<String?>(value: nil)
         let currentMember = BehaviorRelay<Member?>(value: nil)
         let currentCollectionRoot = BehaviorRelay<CollectionRoot>(value: .myCollections)
+        let currentSubCollectionID = BehaviorRelay<CurrentSubCollectionID?>(value: nil)
+        let sharingIDSets = BehaviorRelay<Set<String>>(value: [])
+        let isToggling = BehaviorRelay<Bool>(value: false)
     }
     
     deinit {
@@ -97,6 +108,15 @@ public final class MainViewModelImple: MainViewModel {
             .isShrinkModeOn
             .subscribe(onNext: { [weak self] isOn in
                 self?.subjects.isReadItemShrinkModeOn.accept(isOn)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.shareCollectionUseCase
+            .mySharingCollectionIDs
+            .map { Set($0) }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] ids in
+                self?.subjects.sharingIDSets.accept(ids)
             })
             .disposed(by: self.disposeBag)
     }
@@ -161,6 +181,63 @@ extension MainViewModelImple {
     
     public func toggleShareStatus() {
         // TODO
+        guard case let .mine(collectionID) = self.subjects.currentSubCollectionID.value,
+              let subCollectionID = collectionID,
+              self.subjects.isToggling.value == false else { return }
+        let shareIDSet = self.subjects.sharingIDSets.value
+        let isSharing = shareIDSet.contains(subCollectionID)
+        return isSharing ? self.askAndStopSharing(subCollectionID) : self.startShare(subCollectionID)
+    }
+    
+    private func askAndStopSharing(_ subcollectionID: String) {
+        
+        let confirmStop: () -> Void = { [weak self] in
+            self?.stopShare(subcollectionID)
+        }
+        
+        guard let form = AlertBuilder(base: .init())
+            .title("Stop sharing".localized)
+            .message("TBD message".localized)
+            .confirmed(confirmStop)
+            .build()
+        else {
+            return
+        }
+        self.router.alertForConfirm(form)
+    }
+    
+    private func startShare(_ subCollectionID: String) {
+        
+        let sharePrepared: (SharedReadCollection) -> Void = { [weak self] collection in
+            self?.subjects.isToggling.accept(false)
+            let url = "\(AppEnvironment.shareScheme)://\(collection.fullSharePath)"
+            self?.router.presentShareSheet(with: url)
+        }
+        
+        self.subjects.isToggling.accept(true)
+        self.shareCollectionUseCase.shareCollection(subCollectionID)
+            .subscribe(onSuccess: sharePrepared, onError: self.handleError())
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func stopShare(_ subCollectionID: String) {
+        
+        let showStoped: () -> Void = { [weak self] in
+            self?.subjects.isToggling.accept(false)
+            self?.router.showToast("tbd stopped".localized)
+        }
+        
+        self.subjects.isToggling.accept(true)
+        self.shareCollectionUseCase.stopShare(collection: subCollectionID)
+            .subscribe(onSuccess: showStoped, onError: self.handleError())
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func handleError() -> (Error) -> Void {
+        return { [weak self] error in
+            self?.subjects.isToggling.accept(false)
+            self?.router.alertError(error)
+        }
     }
     
     public func toggleSharedCollectionFavorite() {
@@ -196,10 +273,12 @@ extension MainViewModelImple: MainSceneInteractable {
     
     public func readCollection(didShowMy subCollectionID: String?) {
         logger.print(level: .debug, "did show shared subCollection: \(subCollectionID ?? "nil")")
+        self.subjects.currentSubCollectionID.accept(.mine(subCollectionID))
     }
     
     public func readCollection(didShowShared subCollectionID: String) {
         logger.print(level: .debug, "did show my sub collection: \(subCollectionID)")
+        self.subjects.currentSubCollectionID.accept(.shared(subCollectionID))
     }
 }
 
@@ -233,7 +312,19 @@ extension MainViewModelImple {
     }
     
     public var shareStatus: Observable<ActivationStatus> {
-        return .empty()
+        
+        let selectStatus: (CurrentSubCollectionID, Set<String>) -> ActivationStatus
+        selectStatus = { subCollection, sharedIDs in
+            guard case let .mine(collectionID) = subCollection,
+                  let subCollectionID = collectionID else { return .unavail }
+            return sharedIDs.contains(subCollectionID) ? .activated : .activable
+        }
+        
+        return Observable
+            .combineLatest(self.subjects.currentSubCollectionID.compactMap { $0 },
+                           self.subjects.sharingIDSets,
+                           resultSelector: selectStatus)
+            .distinctUntilChanged()
     }
     
     public var favoriteSharedCollectionStatus: Observable<ActivationStatus> {

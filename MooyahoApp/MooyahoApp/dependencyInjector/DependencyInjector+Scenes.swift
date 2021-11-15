@@ -29,6 +29,7 @@ extension DependencyInjector: MainSceneBuilable {
         let viewModel = MainViewModelImple(memberUsecase: self.memberUsecase,
                                            readItemOptionUsecase: itemUsecase,
                                            addItemSuggestUsecase: itemUsecase,
+                                           shareCollectionUsecase: self.shareItemUsecase,
                                            router: router)
         let viewController = MainViewController(viewModel: viewModel)
         router.currentScene = viewController

@@ -24,6 +24,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var mockMemberUsecase: MockMemberUsecase!
     var stubReadLinkAddSuggestUsecase: StubReadLinkAddSuggestUsecase!
+    var stubShareUsecase: StubShareItemUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
@@ -36,9 +37,13 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         
         self.stubReadLinkAddSuggestUsecase = .init()
         
+        self.stubShareUsecase = StubShareItemUsecase()
+        self.stubShareUsecase.scenario.mySharingCollectionIDs = [[]]
+        
         self.viewModel = .init(memberUsecase: self.mockMemberUsecase,
                                readItemOptionUsecase: fakeUsecase,
                                addItemSuggestUsecase: self.stubReadLinkAddSuggestUsecase,
+                               shareCollectionUsecase: self.stubShareUsecase,
                                router: self.spyRouter)
     }
     
@@ -46,6 +51,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
         self.mockMemberUsecase = nil
         self.stubReadLinkAddSuggestUsecase = nil
+        self.stubShareUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
     }
@@ -158,6 +164,85 @@ extension MainViewModelTests {
 }
 
 
+// MARK: - test share
+
+extension MainViewModelTests {
+    
+    func testViewModel_whenMyCollectionRoot_notSharable() {
+        // given
+        let expect = expectation(description: "낵 콜렉션 루트일때는 공유 불가")
+        
+        // when
+        let status = self.waitFirstElement(expect, for: viewModel.shareStatus) {
+            self.stubShareUsecase.refreshMySharingColletionIDs()
+            self.viewModel.readCollection(didChange: .myCollections)
+            self.viewModel.readCollection(didShowMy: nil)
+        }
+        
+        // then
+        XCTAssertEqual(status, .unavail)
+    }
+    
+    func testViewModel_whenShareCompleted_showShareActionSheet() {
+        // given
+        self.stubShareUsecase.refreshMySharingColletionIDs()
+        self.viewModel.readCollection(didChange: .myCollections)
+        self.viewModel.readCollection(didShowMy: "some")
+        
+        // when
+        self.viewModel.toggleShareStatus()
+        
+        // then
+        XCTAssertNotNil(self.spyRouter.didSharedURL)
+    }
+    
+    func testViewmOdel_whenShareFail_alertErorr() {
+        // given
+        self.stubShareUsecase.refreshMySharingColletionIDs()
+        self.viewModel.readCollection(didChange: .myCollections)
+        self.viewModel.readCollection(didShowMy: "some")
+        
+        // when
+        self.stubShareUsecase.scenario.shareCollectionResult = .failure(ApplicationErrors.invalid)
+        self.viewModel.toggleShareStatus()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didAlertError, true)
+    }
+    
+    func testViewModel_toggleSharingCollection_status() {
+        // given
+        let expect = expectation(description: "콜렉션 쉐어하고 공유하는 아이템 목록 업데이트됨")
+        expect.expectedFulfillmentCount = 2
+        self.stubShareUsecase.refreshMySharingColletionIDs()
+        self.viewModel.readCollection(didChange: .myCollections)
+        self.viewModel.readCollection(didShowMy: "some")
+        
+        // when
+        let status = self.waitElements(expect, for: viewModel.shareStatus) {
+            self.viewModel.toggleShareStatus()
+        }
+        
+        // then
+        XCTAssertEqual(status, [.activable, .activated])
+    }
+    
+    func testViewModel_whenRequestStopShare_askConfimr() {
+        // given
+        self.stubShareUsecase.refreshMySharingColletionIDs()
+        self.viewModel.readCollection(didChange: .myCollections)
+        self.viewModel.readCollection(didShowMy: "some")
+        self.viewModel.toggleShareStatus()
+        
+        // when
+        self.viewModel.toggleShareStatus()
+        
+        // then
+        XCTAssertNotNil(self.spyRouter.didAlertConfirm)
+    }
+}
+
+
 extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Mocking {
@@ -194,8 +279,10 @@ extension MainViewModelTests {
             self.verify(key: "presentEditProfileScene")
         }
         
+        var didAlertConfirm: AlertForm?
         func alertForConfirm(_ form: AlertForm) {
             self.verify(key: "alertForConfirm")
+            self.didAlertConfirm = form
         }
         
         func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
@@ -205,6 +292,16 @@ extension MainViewModelTests {
         var didAskNewItemType = false
         func askAddNewitemType(_ completed: @escaping (Bool) -> Void) {
             self.didAskNewItemType = true
+        }
+        
+        var didSharedURL: String?
+        func presentShareSheet(with url: String) {
+            self.didSharedURL = url
+        }
+        
+        var didAlertError = false
+        func alertError(_ error: Error) {
+            self.didAlertError = true
         }
     }
     

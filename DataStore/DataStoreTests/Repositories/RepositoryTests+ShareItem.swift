@@ -54,7 +54,7 @@ extension RepositoryTests_ShareItem {
         }
         
         // when
-        let sharing = self.repository.requestShareCollection(.init(name: "some"))
+        let sharing = self.repository.requestShareCollection("some")
         let result = self.waitFirstElement(expect, for: sharing.asObservable())
         
         // then

@@ -8,32 +8,43 @@
 import Foundation
 
 import RxSwift
+import RxRelay
 
 import Domain
+import UnitTestHelpKit
 
 
-open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionHandleUsecase {
+open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionHandleUsecase, Mocking {
     
     public struct Scenario {
         
         public var shareCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
         public var stopShareResult: Result<Void, Error> = .success(())
         public var latestCollections: [[SharedReadCollection]] = []
+        public var mySharingCollectionIDs: [[String]] = []
         
         public init() {}
     }
     
-    private var scenario: Scenario
+    public var scenario: Scenario
     public init(scenario: Scenario = .init()) {
         self.scenario = scenario
     }
     
-    public func shareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    public func shareCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
         return self.scenario.shareCollectionResult.asMaybe()
+            .do(onNext: { _ in
+                let newIDs = self.fakeSharingCollectionIDs.value.filter { $0 != collectionID } + [collectionID]
+                self.fakeSharingCollectionIDs.accept(newIDs)
+            })
     }
     
     public func stopShare(collection collectionID: String) -> Maybe<Void> {
         return self.scenario.stopShareResult.asMaybe()
+            .do(onNext: {
+                let newIDs = self.fakeSharingCollectionIDs.value.filter { $0 != collectionID }
+                self.fakeSharingCollectionIDs.accept(newIDs)
+            })
     }
     
     private let fakeLatestSharedCollections = PublishSubject<[SharedReadCollection]>()
@@ -53,10 +64,14 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
     }
     
     public func refreshMySharingColletionIDs() {
-        logger.todoImplement()
+        self.verify(key: "refreshMySharingColletionIDs")
+        guard self.scenario.mySharingCollectionIDs.isNotEmpty else { return }
+        let first = self.scenario.mySharingCollectionIDs.removeFirst()
+        self.fakeSharingCollectionIDs.accept(first)
     }
     
+    private let fakeSharingCollectionIDs = BehaviorRelay<[String]>(value: [])
     public var mySharingCollectionIDs: Observable<[String]> {
-        return .empty()
+        return self.fakeSharingCollectionIDs.asObservable()
     }
 }

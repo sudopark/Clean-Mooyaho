@@ -22,20 +22,24 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var mockAuthUsecase: MockAuthUsecase!
     var mockMemberUsecase: MockMemberUsecase!
+    var mockShareUsecase: StubShareItemUsecase!
     var usecase: ApplicationUsecaseImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
         self.mockAuthUsecase = .init()
         self.mockMemberUsecase = .init()
+        self.mockShareUsecase = .init()
         self.usecase = .init(authUsecase: self.mockAuthUsecase,
-                             memberUsecase: self.mockMemberUsecase)
+                             memberUsecase: self.mockMemberUsecase,
+                             shareUsecase: self.mockShareUsecase)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockAuthUsecase = nil
         self.mockMemberUsecase = nil
+        self.mockShareUsecase = nil
         self.usecase = nil
     }
 }
@@ -174,7 +178,7 @@ extension ApplicationUsecaseTests {
 //        // then
 //        XCTAssertEqual(isOnlineFlags, [true, false, true])
 //    }
-//
+    
     func testUsecase_whenFCMTokenIsUpdated_uploadToken() {
         // given
         let expect = expectation(description: "fcm 토큰 업데이트시에 업로드")
@@ -190,6 +194,115 @@ extension ApplicationUsecaseTests {
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    private func veritySignInMemberDataRefreshCalled(_ expect: XCTestExpectation,
+                                                     _ action: @escaping () -> Void) -> Bool {
+        var memberRefreshed: Bool = false
+        var sharingIDRefreshed: Bool = false
+        self.mockMemberUsecase.called(key: "refreshMembers") { _ in
+            memberRefreshed = true
+            expect.fulfill()
+        }
+        
+        self.mockShareUsecase.called(key: "refreshMySharingColletionIDs") { _ in
+            sharingIDRefreshed = true
+            expect.fulfill()
+        }
+        
+        action()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        return memberRefreshed && sharingIDRefreshed
+    }
+    
+    private func setupSignIn(_ isSignIn: Bool) {
+        self.mockMemberUsecase.currentMemberSubject
+            .onNext(isSignIn ? Member.init(uid: "some") : nil)
+    }
+    
+    func testUsecase_whenMemberSignInMemberStartApp_refreshSignInMemberData() {
+        // given
+        let expect = expectation(description: "로그인한 유저가 앱 시작하면 필요 데이터 갱신")
+        expect.expectedFulfillmentCount = 2
+        self.setupSignIn(true)
+        
+        // when
+        let refreshed = self.veritySignInMemberDataRefreshCalled(expect) {
+            self.usecase.updateApplicationActiveStatus(.launched)
+        }
+        
+        // then
+        XCTAssertEqual(refreshed, true)
+    }
+    
+    func testUsecase_whenMemberSignOutAndStartApp_notRefreshSignInMemberData() {
+        // given
+        let expect = expectation(description: "로그인한 유저가 앱 시작하면 필요 데이터 갱신")
+        expect.expectedFulfillmentCount = 2
+        expect.isInverted = true
+        self.setupSignIn(false)
+        
+        // when
+        let refreshed = self.veritySignInMemberDataRefreshCalled(expect) {
+            self.usecase.updateApplicationActiveStatus(.launched)
+        }
+        
+        // then
+        XCTAssertEqual(refreshed, false)
+    }
+    
+    func testUsecase_whenSignoutUserBecomeSignIn_refreshRequireDatas() {
+        // given
+        let expect = expectation(description: "로그아웃상태였던 유저가 로그인하면 필요 데이터 갱신")
+        expect.expectedFulfillmentCount = 2
+        self.setupSignIn(false)
+        
+        // when
+        let refreshed = self.veritySignInMemberDataRefreshCalled(expect) {
+            self.usecase.updateApplicationActiveStatus(.launched)
+            self.setupSignIn(true)
+        }
+        
+        // then
+        XCTAssertEqual(refreshed, true)
+    }
+    
+    func testUsecase_whenSignInMemberEnterForground_refreshRequireData() {
+        // given
+        let expect = expectation(description: "로그인한 유저가 백그라운드갔다 포그라운드 다시 올라오면 필요 데이터 갱신")
+        expect.expectedFulfillmentCount = 2
+        self.setupSignIn(true)
+        self.usecase.updateApplicationActiveStatus(.launched)
+        
+        
+        // when
+        let refreshed = self.veritySignInMemberDataRefreshCalled(expect) {
+            self.usecase.updateApplicationActiveStatus(.background)
+            self.usecase.updateApplicationActiveStatus(.forground)
+        }
+        
+        // then
+        XCTAssertEqual(refreshed, true)
+    }
+    
+    func testUsecase_whenSignOutMemberEnterForground_notRefreshRequireData() {
+        // given
+        let expect = expectation(description: "로그아웃 멤버는 백그라운드갔다 포그라운드 다시 올라와도 필요 데이터 갱신 안함")
+        expect.expectedFulfillmentCount = 2
+        expect.isInverted = true
+        self.setupSignIn(false)
+        self.usecase.updateApplicationActiveStatus(.launched)
+        
+        
+        // when
+        let refreshed = self.veritySignInMemberDataRefreshCalled(expect) {
+            self.usecase.updateApplicationActiveStatus(.background)
+            self.usecase.updateApplicationActiveStatus(.forground)
+        }
+        
+        // then
+        XCTAssertEqual(refreshed, false)
     }
 }
 

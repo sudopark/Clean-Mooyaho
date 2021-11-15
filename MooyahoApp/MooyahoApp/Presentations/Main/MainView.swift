@@ -180,6 +180,23 @@ final class MainView: BaseUIView {
             self.sharedRootCollectionView.setup(sharedCollection: sharedReadCollection)
         }
     }
+    
+    func updateShareStatus(_ newValue: ActivationStatus) {
+        switch newValue {
+        case .unavail:
+            self.shareButton.backgroundColor = self.uiContext.colors.raw.lightGray
+            self.shareButton.isEnabled = false
+             
+        case .activable:
+            self.shareButton.backgroundColor = self.uiContext.colors.raw.lightGray
+            self.shareButton.isEnabled = true
+            
+        case .activated:
+            self.shareButton.backgroundColor = UIColor.systemIndigo
+            self.shareButton.isEnabled = true
+            
+        }
+    }
 }
 
 

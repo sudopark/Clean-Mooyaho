@@ -38,6 +38,8 @@ public protocol MainRouting: Routing {
     func presentEditProfileScene()
     
     func askAddNewitemType(_ completed: @escaping (Bool) -> Void)
+    
+    func presentShareSheet(with url: String)
 }
 
 // MARK: - Routers
@@ -148,5 +150,11 @@ extension MainRouter {
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func presentShareSheet(with url: String) {
+        
+        let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        self.currentScene?.present(activity, animated: true, completion: nil)
     }
 }

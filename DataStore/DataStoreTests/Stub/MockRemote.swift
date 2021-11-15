@@ -237,7 +237,7 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     }
     
     // share item
-    func requestShare(collection: ReadCollection) -> Maybe<SharedReadCollection> {
+    func requestShare(collectionID: String) -> Maybe<SharedReadCollection> {
         return self.resolve(key: "requestShare") ?? .empty()
     }
     
