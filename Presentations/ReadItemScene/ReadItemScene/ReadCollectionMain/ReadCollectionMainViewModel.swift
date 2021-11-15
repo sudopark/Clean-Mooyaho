@@ -44,7 +44,7 @@ public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel
     }
     
     fileprivate final class Subjects {
-        
+        let currentCollectionRoot = BehaviorRelay<CollectionRoot>(value: .myCollections)
     }
     
     private let subjects = Subjects()
@@ -57,6 +57,7 @@ public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel
 extension ReadCollectionMainViewModelImple {
     
     public func setupSubCollections() {
+        self.subjects.currentCollectionRoot.accept(.myCollections)
         self.router.setupSubCollections()
     }
     
@@ -71,11 +72,18 @@ extension ReadCollectionMainViewModelImple {
     public func addNewReaedLinkItem(with url: String) {
         self.router.addNewReadLinkItem(using: url)
     }
-}
-
-
-// MARK: - ReadCollectionMainViewModelImple Presenter
-
-extension ReadCollectionMainViewModelImple {
     
+    public func switchToSharedCollection(_ collection: SharedReadCollection) {
+        self.subjects.currentCollectionRoot.accept(.sharedCollection(collection))
+        logger.todoImplement()
+    }
+    
+    public func switchToMyReadCollections() {
+        self.subjects.currentCollectionRoot.accept(.myCollections)
+        logger.todoImplement()
+    }
+    
+    public var rootType: CollectionRoot {
+        return self.subjects.currentCollectionRoot.value
+    }
 }

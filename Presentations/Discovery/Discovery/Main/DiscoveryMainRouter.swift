@@ -22,6 +22,10 @@ import CommonPresenting
 public protocol DiscoveryMainRouting: Routing {
     
     func viewAllSharedCollections()
+    
+    func routeToSharedCollection(_ collection: SharedReadCollection)
+    
+    func routeToMyReadCollection()
 }
 
 // MARK: - Routers
@@ -29,7 +33,10 @@ public protocol DiscoveryMainRouting: Routing {
 // TODO: compose next Scene Builders protocol
 public typealias DiscoveryMainRouterBuildables = EmptyBuilder
 
-public final class DiscoveryMainRouter: Router<DiscoveryMainRouterBuildables>, DiscoveryMainRouting { }
+public final class DiscoveryMainRouter: Router<DiscoveryMainRouterBuildables>, DiscoveryMainRouting {
+    
+    public weak var collectionMainInteractor: ReadCollectionMainSceneInteractable?
+}
 
 
 extension DiscoveryMainRouter {
@@ -41,5 +48,13 @@ extension DiscoveryMainRouter {
     
     public func viewAllSharedCollections() {
         logger.todoImplement()
+    }
+    
+    public func routeToSharedCollection(_ collection: SharedReadCollection) {
+        self.collectionMainInteractor?.switchToSharedCollection(collection)
+    }
+    
+    public func routeToMyReadCollection() {
+        self.collectionMainInteractor?.switchToMyReadCollections()
     }
 }

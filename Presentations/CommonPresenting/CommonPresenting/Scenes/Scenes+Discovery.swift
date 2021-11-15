@@ -16,9 +16,7 @@ public protocol DiscoveryMainSceneInteractable { }
 
 public protocol DiscoveryMainSceneListenable: AnyObject {
     
-    func switchToSharedCollectionDetail(_ collection: SharedReadCollection)
-    
-    func switchToMyReadCollections()
+    func switchCollectionRequested()
 }
 
 

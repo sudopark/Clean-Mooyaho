@@ -13,6 +13,11 @@ import Domain
 
 // MARK: - ReadCollectionMainScene Input & Output
 
+public enum CollectionRoot {
+    case myCollections
+    case sharedCollection(SharedReadCollection)
+}
+
 public protocol ReadCollectionMainSceneInteractable: AnyObject {
     
     func addNewCollectionItem()
@@ -20,6 +25,12 @@ public protocol ReadCollectionMainSceneInteractable: AnyObject {
     func addNewReadLinkItem()
     
     func addNewReaedLinkItem(with url: String)
+    
+    func switchToSharedCollection(_ collection: SharedReadCollection)
+    
+    func switchToMyReadCollections()
+    
+    var rootType: CollectionRoot { get }
 }
 
 public protocol ReadCollectionMainSceneListenable { }

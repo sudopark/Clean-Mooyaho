@@ -21,7 +21,8 @@ import CommonPresenting
 
 public protocol MainSlideMenuSceneBuilable {
     
-    func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?) -> MainSlideMenuScene
+    func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?,
+                                collectionMainInteractor: ReadCollectionMainSceneInteractable?) -> MainSlideMenuScene
 }
 
 extension MainSlideMenuViewModelImple: MainSlideMenuSceneInteractor { }

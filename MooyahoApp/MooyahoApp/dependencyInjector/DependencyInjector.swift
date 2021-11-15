@@ -195,4 +195,10 @@ extension DependencyInjector {
         return UserDataMigrationUsecaseImple(migrationRepository: self.appReposiotry,
                                              readItemUpdateEventPublisher: self.readItemUpdateEventPublisher)
     }
+    
+    var shareItemUsecase: ShareReadCollectionUsecase & SharedReadCollectionLoadUsecase & SharedReadCollectionHandleUsecase {
+        return ShareItemUsecaseImple(shareRepository: self.appReposiotry,
+                                     authInfoProvider: self.shared.authInfoManager,
+                                     sharedDataService: self.shared.dataStore)
+    }
 }

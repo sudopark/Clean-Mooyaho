@@ -52,6 +52,8 @@ public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
     private let pushSlideTransitionManager = PushslideTransitionAnimationManager()
     private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    
+    private weak var collectionMainInteractor: ReadCollectionMainSceneInteractable?
 }
 
 
@@ -75,6 +77,7 @@ extension MainRouter {
         mainScene.childContainerView.addSubview(collectionMainScene.view)
         collectionMainScene.didMove(toParent: mainScene)
         
+        self.collectionMainInteractor = collectionMainScene.interactor
         return collectionMainScene.interactor
     }
     
@@ -96,7 +99,9 @@ extension MainRouter {
     public func openSlideMenu() {
         
         guard let menuScene = self.nextScenesBuilder?
-                .makeMainSlideMenuScene(listener: self.currentInteractor) else {
+                .makeMainSlideMenuScene(listener: self.currentInteractor,
+                                        collectionMainInteractor: self.collectionMainInteractor)
+        else {
             return
         }
         

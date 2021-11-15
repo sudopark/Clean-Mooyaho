@@ -216,6 +216,9 @@ extension MainViewModelTests {
     }
     
     class SpyReadCollectionMainInput: ReadCollectionMainSceneInteractable  {
+        func switchToSharedCollection(_ collection: SharedReadCollection) { }
+        
+        var rootType: CollectionRoot { .myCollections }
         
         func addNewCollectionItem() {
             
@@ -228,6 +231,8 @@ extension MainViewModelTests {
         func addNewReaedLinkItem(with url: String) {
             
         }
+        
+        func switchToMyReadCollections() { }
     }
     
     class FakeReadItemOptionUsecase: StubReadItemUsecase {

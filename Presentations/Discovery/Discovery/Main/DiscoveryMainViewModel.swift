@@ -136,15 +136,17 @@ extension DiscoveryMainViewModelImple {
     public func selectCollection(_ shareID: String) {
         let collections = self.subjects.sharedCollections.value
         guard let collection = collections.first(where: { $0.shareID == shareID }) else { return }
-        self.listener?.switchToSharedCollectionDetail(collection)
+        self.router.routeToSharedCollection(collection)
+        self.listener?.switchCollectionRequested()
+    }
+    
+    public func switchToMyCollection() {
+        self.router.routeToMyReadCollection()
+        self.listener?.switchCollectionRequested()
     }
     
     public func viewAllSharedCollections() {
         self.router.viewAllSharedCollections()
-    }
-    
-    public func switchToMyCollection() {
-        self.listener?.switchToMyReadCollections()
     }
 }
 
