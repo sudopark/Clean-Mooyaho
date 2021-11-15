@@ -13,12 +13,16 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - Routing
 
-public protocol DiscoveryMainRouting: Routing { }
+public protocol DiscoveryMainRouting: Routing {
+    
+    func viewAllSharedCollections()
+}
 
 // MARK: - Routers
 
@@ -33,5 +37,9 @@ extension DiscoveryMainRouter {
     // DiscoveryMainRouting implements
     private var currentInteractor: DiscoveryMainSceneInteractable? {
         return (self.currentScene as? DiscoveryMainScene)?.interactor
+    }
+    
+    public func viewAllSharedCollections() {
+        logger.todoImplement()
     }
 }

@@ -19,12 +19,11 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         public var shareCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
         public var stopShareResult: Result<Void, Error> = .success(())
         public var latestCollections: [[SharedReadCollection]] = []
-        public var lastedCollectionLoadError: Error?
         
         public init() {}
     }
     
-    private let scenario: Scenario
+    private var scenario: Scenario
     public init(scenario: Scenario = .init()) {
         self.scenario = scenario
     }
@@ -37,12 +36,16 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         return self.scenario.stopShareResult.asMaybe()
     }
     
+    private let fakeLatestSharedCollections = PublishSubject<[SharedReadCollection]>()
     public func refreshLatestSharedReadCollection() {
-        
+        guard self.scenario.latestCollections.isNotEmpty else { return }
+        let first = scenario.latestCollections.removeFirst()
+        self.fakeLatestSharedCollections.onNext(first)
     }
     
     public var lastestSharedReadCollections: Observable<[SharedReadCollection]> {
-        .empty()
+        return self.fakeLatestSharedCollections
+            .asObservable()
     }
     
     public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
