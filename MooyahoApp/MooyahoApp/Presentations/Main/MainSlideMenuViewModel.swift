@@ -121,6 +121,10 @@ extension MainSlideMenuViewModelImple {
             self?.listener?.mainSlideMenuDidRequestSignIn()
         }
     }
+    
+    public func switchCollectionRequested() {
+        self.router.closeMenu()
+    }
 }
 
 

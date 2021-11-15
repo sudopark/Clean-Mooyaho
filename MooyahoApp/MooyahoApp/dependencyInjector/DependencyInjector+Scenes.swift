@@ -38,13 +38,15 @@ extension DependencyInjector: MainSceneBuilable {
 
 extension DependencyInjector: MainSlideMenuSceneBuilable {
     
-    public func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?) -> MainSlideMenuScene {
+    public func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?,
+                                       collectionMainInteractor: ReadCollectionMainSceneInteractable?) -> MainSlideMenuScene {
         let router = MainSlideMenuRouter(nextSceneBuilders: self)
         let viewModel = MainSlideMenuViewModelImple(memberUsecase: self.memberUsecase,
                                                     router: router,
                                                     listener: listener)
         let viewController = MainSlideMenuViewController(viewModel: viewModel)
         router.currentScene = viewController
+        router.collectionMainInteractor = collectionMainInteractor
         return viewController
     }
 }
@@ -411,11 +413,17 @@ extension DependencyInjector: WaitMigrationSceneBuilable {
 
 extension DependencyInjector: DiscoveryMainSceneBuilable {
     
-    public func makeDiscoveryMainScene(listener: DiscoveryMainSceneListenable?) -> DiscoveryMainScene {
+    public func makeDiscoveryMainScene(currentShareCollectionID: String?,
+                                       listener: DiscoveryMainSceneListenable?,
+                                       collectionMainInteractor: ReadCollectionMainSceneInteractable?) -> DiscoveryMainScene {
         let router = DiscoveryMainRouter(nextSceneBuilders: self)
-        let viewModel = DiscoveryMainViewModelImple(router: router, listener: listener)
+        let viewModel = DiscoveryMainViewModelImple(currentSharedCollectionShareID: currentShareCollectionID,
+                                                    sharedReadCollectionLoadUsecase: self.shareItemUsecase,
+                                                    memberUsecase: self.memberUsecase,
+                                                    router: router, listener: listener)
         let viewController = DiscoveryMainViewController(viewModel: viewModel)
         router.currentScene = viewController
+        router.collectionMainInteractor = collectionMainInteractor
         return viewController
     }
 }

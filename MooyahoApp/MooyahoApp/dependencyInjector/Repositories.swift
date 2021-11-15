@@ -144,3 +144,14 @@ extension AppRepository: UserDataMigrateRepository, UserDataMigrationRepositoryD
         return self.remote
     }
 }
+
+extension AppRepository: ShareItemRepository, ShareItemReposiotryDefImpleDependency {
+    
+    public var shareItemLocal: ShareItemLocalStorage {
+        return self.local
+    }
+    
+    public var shareItemRemote: ShareItemRemote {
+        return self.remote
+    }
+}

@@ -212,7 +212,7 @@ extension MainSlideMenuViewController: Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.bottomAnchor.constraint(equalTo: bottomBackgrounView.topAnchor, constant: -8)
+            $0.bottomAnchor.constraint(equalTo: bottomBackgrounView.topAnchor)
         }
         
         self.containerView.addSubview(discoveryBlockView)

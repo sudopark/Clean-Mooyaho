@@ -182,7 +182,8 @@ extension DiscoveryMainViewModelTests {
         viewModel.selectCollection(shareID)
         
         // then
-        XCTAssertEqual(self.spyListener.didRequestedSwitchToSharedCollection?.shareID, shareID)
+        XCTAssertEqual(self.spyRouter.didRequestedSwitchToSharedCollection?.shareID, shareID)
+        XCTAssertEqual(self.spyListener.didSwitchRequestedAlerted, true)
     }
     
     func testViewModel_requestSwitchToMyCollection() {
@@ -194,7 +195,8 @@ extension DiscoveryMainViewModelTests {
         
         // then
         XCTAssertEqual(viewModel.showSwitchToMyCollection, true)
-        XCTAssertEqual(self.spyListener.didRequestedSwitchToMyCollection, true)
+        XCTAssertEqual(self.spyRouter.didRequestedSwitchToMyCollection, true)
+        XCTAssertEqual(self.spyListener.didSwitchRequestedAlerted, true)
     }
     
     func testViewModel_requestViewAllSharedCollection() {
@@ -214,19 +216,24 @@ extension DiscoveryMainViewModelTests {
     
     class SpyRouterAndListener: DiscoveryMainRouting, DiscoveryMainSceneListenable {
         
-        var didRequestedSwitchToSharedCollection: SharedReadCollection?
-        func switchToSharedCollectionDetail(_ collection: SharedReadCollection) {
-            self.didRequestedSwitchToSharedCollection = collection
+        var didRequestedSwitchToMyCollection: Bool = false
+        func routeToMyReadCollection() {
+            self.didRequestedSwitchToMyCollection = true
         }
         
-        var didRequestedSwitchToMyCollection: Bool = false
-        func switchToMyReadCollections() {
-            self.didRequestedSwitchToMyCollection = true
+        var didRequestedSwitchToSharedCollection: SharedReadCollection?
+        func routeToSharedCollection(_ collection: SharedReadCollection) {
+            self.didRequestedSwitchToSharedCollection = collection
         }
         
         var didRequestViewAllSharedCollections = false
         func viewAllSharedCollections() {
             self.didRequestViewAllSharedCollections = true
+        }
+        
+        var didSwitchRequestedAlerted = false
+        func switchCollectionRequested() {
+            self.didSwitchRequestedAlerted = true
         }
     }
 }

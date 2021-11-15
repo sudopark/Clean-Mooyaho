@@ -12,5 +12,7 @@ import UIKit
 
 public protocol DiscoveryMainSceneBuilable {
     
-    func makeDiscoveryMainScene(listener: DiscoveryMainSceneListenable?) -> DiscoveryMainScene
+    func makeDiscoveryMainScene(currentShareCollectionID: String?,
+                                listener: DiscoveryMainSceneListenable?,
+                                collectionMainInteractor: ReadCollectionMainSceneInteractable?) -> DiscoveryMainScene
 }
