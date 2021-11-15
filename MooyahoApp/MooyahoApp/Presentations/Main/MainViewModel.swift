@@ -17,6 +17,12 @@ import CommonPresenting
 
 // MARK: - MainViewModel
 
+public enum ActivationStatus {
+    case unavail
+    case activable
+    case activated
+}
+
 public protocol MainViewModel: AnyObject {
 
     // interactor
@@ -26,11 +32,19 @@ public protocol MainViewModel: AnyObject {
     func checkHasSomeSuggestAddItem()
     func requestAddNewItemUsingURLInClipBoard()
     func toggleIsReadItemShrinkMode()
+    func toggleShareStatus()
+    func toggleSharedCollectionFavorite()
+    func showSharedCollectionDetail()
+    func returnToMyReadCollections()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
     var isReadItemShrinkModeOn: Observable<Bool> { get }
     var showAddItemInUsingURLInClipBoard: Observable<String> { get }
+    var currentCollectionRoot: Observable<CollectionRoot> { get }
+    var shareStatus: Observable<ActivationStatus> { get }
+    var favoriteSharedCollectionStatus: Observable<ActivationStatus> { get }
+    var currentSharedCollectionOwnerInfo: Observable<Member?> { get }
 }
 
 
@@ -64,6 +78,7 @@ public final class MainViewModelImple: MainViewModel {
         let isReadItemShrinkModeOn = BehaviorRelay<Bool?>(value: nil)
         let suggestAddItemURL = BehaviorRelay<String?>(value: nil)
         let currentMember = BehaviorRelay<Member?>(value: nil)
+        let currentCollectionRoot = BehaviorRelay<CollectionRoot>(value: .myCollections)
     }
     
     deinit {
@@ -143,6 +158,22 @@ extension MainViewModelImple {
             .subscribe(onError: handleError)
             .disposed(by: self.disposeBag)
     }
+    
+    public func toggleShareStatus() {
+        // TODO
+    }
+    
+    public func toggleSharedCollectionFavorite() {
+        // TODO
+    }
+    
+    public func showSharedCollectionDetail() {
+        // TODO
+    }
+    
+    public func returnToMyReadCollections() {
+        // TODO
+    }
 }
 
 // MRAK: - MainViewModel + Interactable
@@ -160,6 +191,7 @@ extension MainViewModelImple: MainSceneInteractable {
     
     public func readCollection(didChange root: CollectionRoot) {
         logger.print(level: .debug, "didChange to  my read collection root")
+        self.subjects.currentCollectionRoot.accept(root)
     }
     
     public func readCollection(didShowMy subCollectionID: String?) {
@@ -193,5 +225,22 @@ extension MainViewModelImple {
         return self.subjects
             .suggestAddItemURL
             .compactMap { $0 }
+    }
+    
+    public var currentCollectionRoot: Observable<CollectionRoot> {
+        return self.subjects.currentCollectionRoot
+            .asObservable()
+    }
+    
+    public var shareStatus: Observable<ActivationStatus> {
+        return .empty()
+    }
+    
+    public var favoriteSharedCollectionStatus: Observable<ActivationStatus> {
+        return .empty()
+    }
+    
+    public var currentSharedCollectionOwnerInfo: Observable<Member?> {
+        return .empty()
     }
 }

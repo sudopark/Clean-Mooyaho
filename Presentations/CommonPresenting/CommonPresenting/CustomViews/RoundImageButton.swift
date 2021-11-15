@@ -36,6 +36,13 @@ public final class RoundImageButton: BaseUIView {
     let imageView = UIImageView()
     let button = UIButton()
     
+    public var isEnabled = true {
+        didSet {
+            self.tintColor = self.tintColor.withAlphaComponent(isEnabled ? 1.0 : 0.4)
+            self.button.isEnabled = isEnabled
+        }
+    }
+    
     private var paddingTop: NSLayoutConstraint!
     private var paddingLeft: NSLayoutConstraint!
     private var paddingRight: NSLayoutConstraint!
