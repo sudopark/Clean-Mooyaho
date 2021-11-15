@@ -34,4 +34,11 @@ class StubShareItemRepository: ShareItemRepository {
     func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection> {
         return self.loadSharedCollectionResult.asMaybe()
     }
+    
+    var loadMySharingCollectionIDsResults: [[String]] = []
+    func requestLoadMySharingCollectionIDs() -> Observable<[String]> {
+        guard self.loadMySharingCollectionIDsResults.isNotEmpty else { return .empty() }
+        let first = self.loadMySharingCollectionIDsResults.removeFirst()
+        return .just(first)
+    }
 }

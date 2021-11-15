@@ -82,5 +82,19 @@ extension DataModelStorageImple {
         } catch {
             logger.print(level: .error, "fail to create ReadLinkMemoTable")
         }
+        
+        do {
+            try database.createTableOrNot(SharedRootReadCollectionTable.self)
+            logger.print(level: .debug, "sqlite SharedRootReadCollectionTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create SharedRootReadCollectionTable")
+        }
+        
+        do {
+            try database.createTableOrNot(SharingCollectionIDsTable.self)
+            logger.print(level: .debug, "sqlite SharingCollectionIDsTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create SharingCollectionIDsTable")
+        }
     }
 }

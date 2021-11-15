@@ -44,8 +44,13 @@ extension RepositoryTests_ShareItem {
     func testRepository_shareItem() {
         // given
         let expect = expectation(description: "item share")
+        expect.expectedFulfillmentCount = 2
         self.mockRemote.register(key: "requestShare") {
             Maybe<SharedReadCollection>.just(SharedReadCollection(shareID: "some", collection: .init(name: "name")))
+        }
+        self.mockLocal.register(key: "fetchMySharingItemIDs") { Maybe<[String]>.just([]) }
+        self.mockLocal.called(key: "updateMySharingItemIDs") { _ in
+            expect.fulfill()
         }
         
         // when
@@ -59,7 +64,12 @@ extension RepositoryTests_ShareItem {
     func testRepository_stopShareItem() {
         // given
         let expect = expectation(description: "stop item share")
+        expect.expectedFulfillmentCount = 2
         self.mockRemote.register(key: "requestStopShare") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "fetchMySharingItemIDs") { Maybe<[String]>.just([]) }
+        self.mockLocal.called(key: "updateMySharingItemIDs") { _ in
+            expect.fulfill()
+        }
         
         // when
         let stopSharing = self.repository.requestStopShare(readCollection: "some")
@@ -67,6 +77,24 @@ extension RepositoryTests_ShareItem {
         
         // then
         XCTAssertNotNil(result)
+    }
+    
+    func testRepository_loadMySharingItemIDs() {
+        // given
+        let expect = expectation(description: "내가 공유중인 콜렉션 아이디 목록 로드")
+        expect.expectedFulfillmentCount = 3
+        self.mockLocal.register(key: "fetchMySharingItemIDs") { Maybe<[String]>.just([]) }
+        self.mockRemote.register(key: "requestLoadMySharingCollectionIDs") { Maybe<[String]>.just([]) }
+        self.mockLocal.called(key: "updateMySharingItemIDs") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        let loading = self.repository.requestLoadMySharingCollectionIDs()
+        let ids = self.waitElements(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(ids.count, 2)
     }
     
     func testRepository_loadLatestSharedCollection_withCache() {

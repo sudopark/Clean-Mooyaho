@@ -250,8 +250,8 @@ extension RemoteImple {
         return self.firebaseRemote.requestShare(collection: collection)
     }
     
-    func requestStopShare(shareID: String) -> Maybe<Void> {
-        return self.firebaseRemote.requestStopShare(shareID: shareID)
+    func requestStopShare(collectionID: String) -> Maybe<Void> {
+        return self.firebaseRemote.requestStopShare(collectionID: collectionID)
     }
     
     func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
@@ -260,5 +260,9 @@ extension RemoteImple {
     
     func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection> {
         return self.firebaseRemote.requestLoadSharedCollection(by: shareID)
+    }
+    
+    func requestLoadMySharingCollectionIDs() -> Maybe<[String]> {
+        return self.firebaseRemote.requestLoadMySharingCollectionIDs()
     }
 }

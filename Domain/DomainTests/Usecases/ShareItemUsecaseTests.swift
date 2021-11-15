@@ -36,7 +36,8 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     private func makeUsecase(shouldFailShare: Bool = false,
                              shouldFailStopShare: Bool = false,
-                             shouldFailLoadSharedItem: Bool = false) -> ShareItemUsecaseImple {
+                             shouldFailLoadSharedItem: Bool = false,
+                             sharingCollectionIDs: [[String]] = []) -> ShareItemUsecaseImple {
         
         let dataStore = SharedDataStoreServiceImple()
         dataStore.save(Member.self, key: .currentMember, Member(uid: "some", nickName: nil, icon: nil))
@@ -45,7 +46,8 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let repository = StubShareItemRepository()
             |> \.shareCollectionResult .~ (shouldFailShare ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
             |> \.stopShareItemResult %~ { shouldFailStopShare ? .failure(ApplicationErrors.invalid) : $0 }
-        |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
+            |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
+            |> \.loadMySharingCollectionIDsResults .~ sharingCollectionIDs
         return ShareItemUsecaseImple(shareRepository: repository,
                                      authInfoProvider: dataStore,
                                      sharedDataService: dataStore)
@@ -68,6 +70,23 @@ extension ShareItemUsecaseTests {
         
         // then
         XCTAssertNotNil(shared)
+    }
+    
+    func testUsecase_whenAfterShareItem_updateSharingIDList() {
+        // given
+        let expect = expectation(description: "아이템 공유하면 공유중인 콜렉션 아이디 목록 업데이트됨")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let dummy = ReadCollection.dummy(0, parent: nil)
+        let ids = self.waitFirstElement(expect, for: usecase.mySharingCollectionIDs) {
+            usecase.shareCollection(dummy)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(ids, [dummy.uid])
     }
     
     func testUsecase_shareItemFail() {
@@ -96,6 +115,25 @@ extension ShareItemUsecaseTests {
         XCTAssertNotNil(result)
     }
     
+    func testUsecase_whenAfterStopShareItem_updateSharingIDList() {
+        // given
+        let expect = expectation(description: "아이템 공유 중지 이후에 공유중인 콜렉션 아이디 목록 업데이트됨")
+        expect.expectedFulfillmentCount = 2
+        let dummy = ReadCollection.dummy(0, parent: nil)
+        let usecase = self.makeUsecase(sharingCollectionIDs: [[dummy.uid]])
+        usecase.refreshMySharingColletionIDs()
+        
+        // when
+        let idLists = self.waitElements(expect, for: usecase.mySharingCollectionIDs) {
+            usecase.stopShare(collection: dummy.uid)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(idLists, [[dummy.uid], []])
+    }
+    
     func testUsecase_stopShareItemFail() {
         // given
         let expect = expectation(description: "아이템 공유 중지 실패")
@@ -107,6 +145,22 @@ extension ShareItemUsecaseTests {
         
         // then
         XCTAssertNotNil(error)
+    }
+    
+    func testUsecase_updateMySharingCollectionIDs() {
+        // given
+        let expect = expectation(description: "내가 공유중인 콜렉션 아이디 목록 로드")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase(sharingCollectionIDs: [["0"], ["0", "1"]])
+        
+        // when
+        let idLists = self.waitElements(expect, for: usecase.mySharingCollectionIDs) {
+            usecase.refreshMySharingColletionIDs()
+            usecase.refreshMySharingColletionIDs()
+        }
+        
+        // then
+        XCTAssertEqual(idLists, [["0"], ["0", "1"]])
     }
 }
 

@@ -34,7 +34,7 @@ struct SharingCollectionIndex {
 struct SharedInbox: Equatable {
     
     let ownerID: String
-    var sharingIDs: [String] = []
+    var sharingCollectionIDs: [String] = []
     var sharedIDs: [String] = []
     
     init(ownerID: String) {
@@ -43,18 +43,18 @@ struct SharedInbox: Equatable {
     
     func insertSharing(_ id: String) -> SharedInbox {
         return self
-            |> \.sharingIDs %~ { $0.removedAll(sharedID: id) }
-            |> \.sharingIDs %~ { [id] + $0 }
+            |> \.sharingCollectionIDs %~ { $0.removedAll(id: id) }
+            |> \.sharingCollectionIDs %~ { [id] + $0 }
     }
     
     func removedSharing(_ id: String) -> SharedInbox {
         return self
-            |> \.sharingIDs %~ { $0.removedAll(sharedID: id) }
+            |> \.sharingCollectionIDs %~ { $0.removedAll(id: id) }
     }
     
     func insertShared(_ id: String) -> SharedInbox {
         return self
-            |> \.sharedIDs %~ { $0.removedAll(sharedID: id) }
+            |> \.sharedIDs %~ { $0.removedAll(id: id) }
             |> \.sharedIDs %~ { [id] + $0 }
     }
 }
@@ -101,13 +101,13 @@ extension SharedInbox: DocumentMappable {
     
     init?(docuID: String, json: JSON) {
         self.init(ownerID: docuID)
-        self.sharingIDs = json[Key.sharing] as? [String] ?? []
+        self.sharingCollectionIDs = json[Key.sharing] as? [String] ?? []
         self.sharedIDs = json[Key.shared] as? [String] ?? []
     }
     
     func asDocument() -> (String, JSON) {
         let json: JSON = [
-            Key.sharing.rawValue: self.sharingIDs,
+            Key.sharing.rawValue: self.sharingCollectionIDs,
             Key.shared.rawValue: self.sharedIDs
         ]
         return (self.ownerID, json)
@@ -117,9 +117,9 @@ extension SharedInbox: DocumentMappable {
 
 private extension Array where Element == String {
     
-    func removedAll(sharedID: String) -> Array {
+    func removedAll(id: String) -> Array {
         var sender = self
-        sender.removeAll(where: { $0 == sharedID })
+        sender.removeAll(where: { $0 == id })
         return sender
     }
 }

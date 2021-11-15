@@ -32,7 +32,7 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         return self.scenario.shareCollectionResult.asMaybe()
     }
     
-    public func stopShare(collection shareID: String) -> Maybe<Void> {
+    public func stopShare(collection collectionID: String) -> Maybe<Void> {
         return self.scenario.stopShareResult.asMaybe()
     }
     
@@ -49,6 +49,14 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
     }
     
     public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
+        return .empty()
+    }
+    
+    public func refreshMySharingColletionIDs() {
+        logger.todoImplement()
+    }
+    
+    public var mySharingCollectionIDs: Observable<[String]> {
         return .empty()
     }
 }

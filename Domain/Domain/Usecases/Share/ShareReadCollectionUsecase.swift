@@ -15,5 +15,9 @@ public protocol ShareReadCollectionUsecase {
     
     func shareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection>
     
-    func stopShare(collection shareID: String) -> Maybe<Void>
+    func stopShare(collection collectionID: String) -> Maybe<Void>
+    
+    func refreshMySharingColletionIDs()
+    
+    var mySharingCollectionIDs: Observable<[String]> { get }
 }
