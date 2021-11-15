@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
@@ -137,14 +138,48 @@ final class MainView: BaseUIView {
     
     let mainContainerView = UIView()
     let bottomSlideContainerView = UIView()
-    let bottomSearchBarView = SingleLineInputView()
+    
     let profileImageView = IntegratedImageView()
     let bottomContentContainerView = UIView()
     let shrinkButton = RoundImageButton()
-    let addItemButton = RoundImageButton()
+    
     let floatingBottomButtonContainerView = FloatingButtonButtonView()
     var bottomSlideBottomOffsetConstraint: NSLayoutConstraint!
     var bottomSliderSearbarTrailingConstraint: NSLayoutConstraint!
+    
+    // toolview for my collections
+    let bottomSearchBarView = SingleLineInputView()
+    let addItemButton = RoundImageButton()
+    let shareButton = RoundImageButton()
+    
+    // toolview for shared collection
+    let sharedCoverView = UIView()
+    let sharedRootCollectionView = SharedRootCollectionInfoView()
+    let favoriteButton = RoundImageButton()
+    let exitButton = RoundImageButton()
+    
+    
+    private var searchBarShrinkTrailing: CGFloat {
+//        -16 - 36 - 12 - 32 - 10 - 10 - 32
+        let profileSpacing: CGFloat = 16 + 36 + 12
+        let buttonSpacing: CGFloat = 32 + 10
+        return profileSpacing + buttonSpacing * 3
+    }
+    
+    private var searchBarExpandTrailing: CGFloat {
+        return 16
+    }
+    
+    func updateBottomToolbar(by root: CollectionRoot) {
+        switch root {
+        case .myCollections:
+            self.sharedCoverView.isHidden = true
+            
+        case .sharedCollection(let sharedReadCollection):
+            self.sharedCoverView.isHidden = true
+            self.sharedRootCollectionView.setup(sharedCollection: sharedReadCollection)
+        }
+    }
 }
 
 
@@ -194,6 +229,15 @@ extension MainView: Presenting {
         }
         addItemButton.setupLayout()
         
+        self.bottomSlideContainerView.addSubview(favoriteButton)
+        favoriteButton.autoLayout.active(with: addItemButton) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+            $0.heightAnchor.constraint(equalTo: $1.heightAnchor)
+        }
+        favoriteButton.setupLayout()
+        
         self.bottomSlideContainerView.addSubview(shrinkButton)
         shrinkButton.autoLayout.active(with: addItemButton) {
             $0.widthAnchor.constraint(equalToConstant: 32)
@@ -202,8 +246,17 @@ extension MainView: Presenting {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
         shrinkButton.setupLayout()
+        
+        self.bottomSlideContainerView.addSubview(shareButton)
+        shareButton.autoLayout.active(with: shrinkButton) {
+            $0.widthAnchor.constraint(equalToConstant: 32)
+            $0.heightAnchor.constraint(equalToConstant: 32)
+            $0.trailingAnchor.constraint(equalTo: $1.leadingAnchor, constant: -10)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+        }
+        shareButton.setupLayout()
 
-        let defaultTrailing: CGFloat = -16 - 36 - 12 - 32 - 10 - 10 - 32
+        let defaultTrailing: CGFloat = -self.searchBarShrinkTrailing
         bottomSliderSearbarTrailingConstraint = bottomSearchBarView.trailingAnchor
             .constraint(equalTo: bottomSlideContainerView.trailingAnchor, constant: defaultTrailing)
         bottomSliderSearbarTrailingConstraint.isActive = true
@@ -223,6 +276,31 @@ extension MainView: Presenting {
             $0.widthAnchor.constraint(lessThanOrEqualTo: self.widthAnchor, multiplier: 0.7)
         }
         floatingBottomButtonContainerView.setupLayout()
+        
+        bottomSlideContainerView.addSubview(sharedCoverView)
+        sharedCoverView.autoLayout.active {
+            $0.leadingAnchor.constraint(equalTo: bottomSearchBarView.leadingAnchor)
+            $0.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor)
+            $0.trailingAnchor.constraint(equalTo: shrinkButton.leadingAnchor, constant: -10)
+        }
+        
+        sharedCoverView.addSubview(exitButton)
+        exitButton.autoLayout.active(with: sharedCoverView) {
+            $0.widthAnchor.constraint(equalToConstant: 32)
+            $0.heightAnchor.constraint(equalToConstant: 32)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+        }
+        exitButton.setupLayout()
+        
+        sharedCoverView.addSubview(sharedRootCollectionView)
+        sharedRootCollectionView.autoLayout.active(with: sharedCoverView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: -5)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.trailingAnchor.constraint(equalTo: exitButton.leadingAnchor, constant: -8)
+        }
+        sharedRootCollectionView.setupLayout()
     }
     
     
@@ -246,21 +324,135 @@ extension MainView: Presenting {
         self.profileImageView.layer.cornerRadius = 18
         self.profileImageView.clipsToBounds = true
         
-        self.addItemButton.backgroundColor = self.uiContext.colors.buttonBlue
-        self.addItemButton.edge = .init(top: 6, left: 6, bottom: 6, right: 6)
-        self.addItemButton.image = UIImage(systemName: "plus")
-        self.addItemButton.tintColor = .white
-        self.addItemButton.updateRadius(16)
-        self.addItemButton.setupStyling()
+        self.addItemButton.setupButton("plus", color: self.uiContext.colors.buttonBlue)
         
-        self.shrinkButton.backgroundColor = self.uiContext.colors.raw.lightGray
-        self.shrinkButton.edge = .init(top: 6, left: 6, bottom: 6, right: 6)
-        self.shrinkButton.image = UIImage(systemName: "arrow.down.forward.and.arrow.up.backward")
-        self.shrinkButton.tintColor = .white
-        self.shrinkButton.updateRadius(16)
-        self.shrinkButton.setupStyling()
+        self.favoriteButton.setupButton("star", color: self.uiContext.colors.raw.lightGray)
+        self.favoriteButton.isHidden = true
+        
+        self.shareButton.setupButton("square.and.arrow.up", color: self.uiContext.colors.raw.lightGray)
+        self.shareButton.isEnabled = false
+        
+        self.shrinkButton.setupButton("arrow.down.forward.and.arrow.up.backward",
+                                      color: self.uiContext.colors.raw.lightGray)
+        
+        
+        self.sharedCoverView.backgroundColor = self.uiContext.colors.appSecondBackground
+        self.sharedCoverView.isHidden = true
+        
+        self.exitButton.setupButton("arrow.uturn.backward", color: self.uiContext.colors.raw.lightGray)
+        
+        self.sharedRootCollectionView.setupStyling()
         
         self.floatingBottomButtonContainerView.setupStyling()
         self.floatingBottomButtonContainerView.isHidden = true
+    }
+}
+
+
+// MARK: - SharedRootCollectionInfoView
+
+final class SharedRootCollectionInfoView: BaseUIView, Presenting {
+    
+    let collectionNameLabel = UILabel()
+    let sharedLabel = UILabel()
+    let ownerProfileImageView = IntegratedImageView()
+    let ownerNameLabel = UILabel()
+    
+    func setup(sharedCollection: SharedReadCollection) {
+        self.updateOwnerInfo(nil)
+        self.collectionNameLabel.text = sharedCollection.name
+    }
+    
+    func bindOwnerInfo(_ source: Observable<Member?>) -> Disposable {
+        
+        return source
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] member in
+                self?.updateOwnerInfo(member)
+            })
+    }
+    
+    private func updateOwnerInfo(_ member: Member?) {
+        self.ownerNameLabel.text = member?.nickName ?? "Unknown".localized
+        self.ownerProfileImageView.cancelSetupImage()
+        guard let icon = member?.icon else { return }
+        self.ownerProfileImageView.setupImage(using: icon, resize: .init(width: 15, height: 15))
+    }
+}
+
+
+extension SharedRootCollectionInfoView {
+    
+    func setupLayout() {
+        self.addSubview(collectionNameLabel)
+        collectionNameLabel.autoLayout.active(with: self) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+        }
+        collectionNameLabel.setContentHuggingPriority(.required, for: .vertical)
+        
+        self.addSubview(ownerProfileImageView)
+        ownerProfileImageView.autoLayout.active(with: self) {
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -6)
+            $0.topAnchor.constraint(equalTo: collectionNameLabel.bottomAnchor, constant: 2)
+            $0.widthAnchor.constraint(equalToConstant: 15)
+            $0.heightAnchor.constraint(equalToConstant: 15)
+        }
+        ownerProfileImageView.setupLayout()
+        
+        self.addSubview(sharedLabel)
+        sharedLabel.autoLayout.active(with: ownerProfileImageView) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12)
+            $1.leadingAnchor.constraint(equalTo: $0.trailingAnchor, constant: 6)
+        }
+        sharedLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        self.addSubview(ownerNameLabel)
+        ownerNameLabel.autoLayout.active(with: ownerProfileImageView) {
+            $0.leadingAnchor.constraint(equalTo: $1.trailingAnchor, constant: 2)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -8)
+        }
+    }
+    
+    func setupStyling() {
+        
+        self.layer.borderColor = UIColor.systemTeal.cgColor
+        self.layer.borderWidth = 2
+        self.layer.cornerRadius = 12
+        self.clipsToBounds = true
+        self.backgroundColor = UIColor.from(hex: "#161B22")
+        
+        self.collectionNameLabel.font = self.uiContext.fonts.get(13.5, weight: .medium)
+        self.collectionNameLabel.numberOfLines = 1
+        self.collectionNameLabel.textColor = .white
+        
+        self.sharedLabel.font = self.uiContext.fonts.get(11, weight: .regular)
+        self.sharedLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+        self.sharedLabel.numberOfLines = 1
+        self.sharedLabel.text = "shared by".localized
+        
+        self.ownerProfileImageView.layer.cornerRadius = 7.5
+        self.ownerProfileImageView.clipsToBounds = true
+        self.ownerProfileImageView.setupStyling()
+        
+        self.ownerNameLabel.numberOfLines = 1
+        self.ownerNameLabel.font = self.uiContext.fonts.get(11.5, weight: .medium)
+        self.ownerNameLabel.textColor = UIColor.white
+    }
+}
+
+
+private extension RoundImageButton {
+    
+    func setupButton(_ image: String, color: UIColor, tintColor: UIColor = .white) {
+        self.backgroundColor = color
+        self.edge = .init(top: 6, left: 6, bottom: 6, right: 6)
+        self.image = UIImage(systemName: image)
+        self.tintColor = tintColor
+        self.updateRadius(16)
+        self.setupStyling()
     }
 }

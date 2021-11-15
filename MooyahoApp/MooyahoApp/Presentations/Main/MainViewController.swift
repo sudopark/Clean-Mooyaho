@@ -145,6 +145,17 @@ extension MainViewController {
                 self?.bindMemberProfileImage()
             })
             .disposed(by: self.disposeBag)
+        
+        self.viewModel.currentCollectionRoot
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] root in
+                self?.mainView.updateBottomToolbar(by: root)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.sharedRootCollectionView
+            .bindOwnerInfo(self.viewModel.currentSharedCollectionOwnerInfo)
+            .disposed(by: self.disposeBag)
     }
     
     private func bindMemberProfileImage() {
