@@ -20,5 +20,6 @@ import CommonPresenting
 
 public protocol ReadCollectionItemSceneBuilable {
     
-    func makeReadCollectionItemScene(collectionID: String?) -> ReadCollectionScene
+    func makeReadCollectionItemScene(collectionID: String?,
+                                     navigationListener: ReadCollectionNavigateListenable?) -> ReadCollectionScene
 }

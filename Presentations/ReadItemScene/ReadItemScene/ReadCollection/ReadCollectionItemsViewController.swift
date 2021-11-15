@@ -71,6 +71,12 @@ extension ReadCollectionItemsViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.rx.viewDidAppear
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.viewDidAppear()
+            })
+            .disposed(by: self.disposeBag)
+        
         self.viewModel.isEditable
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] isEditable in

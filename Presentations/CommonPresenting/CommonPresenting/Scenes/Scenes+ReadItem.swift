@@ -11,12 +11,33 @@ import RxSwift
 
 import Domain
 
-// MARK: - ReadCollectionMainScene Input & Output
+
+// MARK: - CollectionNavigating
 
 public enum CollectionRoot {
     case myCollections
     case sharedCollection(SharedReadCollection)
 }
+
+public protocol ReadCollectionNavigateListenable: AnyObject {
+    
+    func readCollection(didChange root: CollectionRoot)
+    
+    func readCollection(didShowMy subCollectionID: String?)
+    
+    func readCollection(didShowShared subCollectionID: String)
+}
+
+extension ReadCollectionNavigateListenable {
+    
+    public func readCollection(didChange root: CollectionRoot) { }
+ 
+    public func readCollection(didShowMy subCollectionID: String?) { }
+    
+    public func readCollection(didShowShared subCollectionID: String) { }
+}
+
+// MARK: - ReadCollectionMainScene Input & Output
 
 public protocol ReadCollectionMainSceneInteractable: AnyObject {
     

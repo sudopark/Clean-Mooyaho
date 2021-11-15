@@ -49,6 +49,7 @@ public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
     private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    public weak var navigationListener: ReadCollectionNavigateListenable?
 }
 
 
@@ -65,7 +66,10 @@ extension ReadCollectionItemsRouter {
     
     public func moveToSubCollection(collectionID: String) {
         
-        guard let next = self.nextScenesBuilder?.makeReadCollectionItemScene(collectionID: collectionID) else {
+        guard let next = self.nextScenesBuilder?
+                .makeReadCollectionItemScene(collectionID: collectionID,
+                                             navigationListener: self.navigationListener)
+        else {
             return
         }
         self.currentScene?.navigationController?.pushViewController(next, animated: true)

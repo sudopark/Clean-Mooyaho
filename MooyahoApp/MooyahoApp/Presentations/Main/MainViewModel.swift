@@ -157,6 +157,18 @@ extension MainViewModelImple: MainSceneInteractable {
         self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
         self.router.presentUserDataMigrationScene(member.uid)
     }
+    
+    public func readCollection(didChange root: CollectionRoot) {
+        logger.print(level: .debug, "didChange to  my read collection root")
+    }
+    
+    public func readCollection(didShowMy subCollectionID: String?) {
+        logger.print(level: .debug, "did show shared subCollection: \(subCollectionID ?? "nil")")
+    }
+    
+    public func readCollection(didShowShared subCollectionID: String) {
+        logger.print(level: .debug, "did show my sub collection: \(subCollectionID)")
+    }
 }
 
 
