@@ -53,6 +53,8 @@ extension ShareItemUsecaseImple {
     
     public func refreshLatestSharedReadCollection() {
         
+        guard self.authInfoProvider.isSignedIn() == true else { return }
+        
         let refreshStore: ([SharedReadCollection]) -> Void = { [weak self] collections in
             let datKey = SharedDataKeys.latestSharedCollections.rawValue
             self?.sharedDataService

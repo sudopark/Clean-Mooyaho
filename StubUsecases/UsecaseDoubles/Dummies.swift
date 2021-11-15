@@ -7,6 +7,9 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 import Domain
 
 
@@ -160,5 +163,6 @@ extension SharedReadCollection {
                                     name: "share:\(int)",
                                     createdAt: TimeInterval(int),
                                     lastUpdated: TimeInterval(int))
+            |> \.ownerID .~ "some:\(int)"
     }
 }

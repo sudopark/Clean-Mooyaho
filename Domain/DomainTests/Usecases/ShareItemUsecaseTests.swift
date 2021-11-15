@@ -131,6 +131,24 @@ extension ShareItemUsecaseTests {
         XCTAssertNotNil(collections)
     }
     
+    func testUsecase_whenSignout_notRefreshLatestSharedCollections() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서는 공유받은 콜렉션 리프레쉬 안함")
+        expect.isInverted = true
+        let usecase = self.makeUsecase()
+        
+        // when
+        self.spySharedStore.save(Member?.self, key: .currentMember, nil)
+        let datKey = SharedDataKeys.latestSharedCollections.rawValue
+        let source = self.spySharedStore.observe([SharedReadCollection].self, key: datKey)
+        let collections = self.waitFirstElement(expect, for: source) {
+            usecase.refreshLatestSharedReadCollection()
+        }
+        
+        // then
+        XCTAssertNil(collections)
+    }
+    
     func testUsecase_loadSharedCollectionByURL() {
         // given
         let expect = expectation(description: "공유 url로 아이템 로드")

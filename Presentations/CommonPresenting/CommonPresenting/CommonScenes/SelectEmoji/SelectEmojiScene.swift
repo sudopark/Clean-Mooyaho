@@ -11,8 +11,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-import CommonPresenting
-
 
 // MARK: - SelectEmojiScene Interactable & Listenable
 
