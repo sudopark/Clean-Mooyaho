@@ -51,6 +51,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     func handleContextAction(for item: ReadItemCellViewModel,
                              action: ReadCollectionItemSwipeContextAction)
     func editCollection()
+    func viewDidAppear()
     
     
     // presenter
@@ -73,17 +74,20 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     private let categoryUsecase: ReadItemCategoryUsecase
     private let remindUsecase: ReadRemindUsecase
     private let router: ReadCollectionRouting
+    private weak var navigationListener: ReadCollectionNavigateListenable?
     
     public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 categoryUsecase: ReadItemCategoryUsecase,
                 remindUsecase: ReadRemindUsecase,
-                router: ReadCollectionRouting) {
+                router: ReadCollectionRouting,
+                navigationListener: ReadCollectionNavigateListenable?) {
         self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
         self.categoryUsecase = categoryUsecase
         self.remindUsecase = remindUsecase
         self.router = router
+        self.navigationListener = navigationListener
         
         self.internalBinding()
     }
@@ -223,6 +227,11 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let newLinks = links.filter { $0.uid != link.uid }
         guard newLinks.count != links.count else { return }
         self.subjects.links.accept(newLinks)
+    }
+    
+    public func viewDidAppear() {
+        let subCollectionID = self.currentCollectionID
+        self.navigationListener?.readCollection(didShowMy: subCollectionID)
     }
 }
 

@@ -145,26 +145,30 @@ extension DependencyInjector: SelectEmojiSceneBuilable {
 
 extension DependencyInjector: ReadCollectionMainSceneBuilable {
     
-    public func makeReadCollectionMainScene() -> ReadCollectionMainScene {
+    public func makeReadCollectionMainScene(navigationListener: ReadCollectionNavigateListenable?) -> ReadCollectionMainScene {
         let router = ReadCollectionMainRouter(nextSceneBuilders: self)
-        let viewModel = ReadCollectionMainViewModelImple(router: router)
+        let viewModel = ReadCollectionMainViewModelImple(router: router, navigationListener: navigationListener)
         let viewController = ReadCollectionMainViewController(viewModel: viewModel)
         router.currentScene = viewController
+        router.navigationListener = navigationListener
         return viewController
     }
 }
 
 extension DependencyInjector: ReadCollectionItemSceneBuilable {
     
-    public func makeReadCollectionItemScene(collectionID: String?) -> ReadCollectionScene {
+    public func makeReadCollectionItemScene(collectionID: String?,
+                                            navigationListener: ReadCollectionNavigateListenable?) -> ReadCollectionScene {
         let router = ReadCollectionItemsRouter(nextSceneBuilders: self)
         let viewModel = ReadCollectionViewItemsModelImple(collectionID: collectionID,
                                                           readItemUsecase: self.readItemUsecase,
                                                           categoryUsecase: self.categoryUsecase,
                                                           remindUsecase: self.remindUsecase,
-                                                          router: router)
+                                                          router: router,
+                                                          navigationListener: navigationListener)
         let viewController = ReadCollectionItemsViewController(viewModel: viewModel)
         router.currentScene = viewController
+        router.navigationListener = navigationListener
         return viewController
     }
 }

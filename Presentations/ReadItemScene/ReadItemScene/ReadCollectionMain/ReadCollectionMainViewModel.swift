@@ -33,9 +33,12 @@ public protocol ReadCollectionMainViewModel: AnyObject {
 public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel {
     
     private let router: ReadCollectionMainRouting
+    private weak var navigationListener: ReadCollectionNavigateListenable?
     
-    public init(router: ReadCollectionMainRouting) {
+    public init(router: ReadCollectionMainRouting,
+                navigationListener: ReadCollectionNavigateListenable?) {
         self.router = router
+        self.navigationListener = navigationListener
     }
     
     deinit {
@@ -57,7 +60,7 @@ public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel
 extension ReadCollectionMainViewModelImple {
     
     public func setupSubCollections() {
-        self.subjects.currentCollectionRoot.accept(.myCollections)
+        self.notifyRootCollectionDidChanged(.myCollections)
         self.router.setupSubCollections()
     }
     
@@ -74,16 +77,21 @@ extension ReadCollectionMainViewModelImple {
     }
     
     public func switchToSharedCollection(_ collection: SharedReadCollection) {
-        self.subjects.currentCollectionRoot.accept(.sharedCollection(collection))
+        self.notifyRootCollectionDidChanged(.sharedCollection(collection))
         logger.todoImplement()
     }
     
     public func switchToMyReadCollections() {
-        self.subjects.currentCollectionRoot.accept(.myCollections)
+        self.notifyRootCollectionDidChanged(.myCollections)
         logger.todoImplement()
     }
     
     public var rootType: CollectionRoot {
         return self.subjects.currentCollectionRoot.value
+    }
+    
+    private func notifyRootCollectionDidChanged(_ root: CollectionRoot) {
+        self.subjects.currentCollectionRoot.accept(root)
+        self.navigationListener?.readCollection(didChange: root)
     }
 }

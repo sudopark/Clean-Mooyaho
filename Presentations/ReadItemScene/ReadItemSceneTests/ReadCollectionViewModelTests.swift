@@ -27,6 +27,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     private var spyItemsUsecase: StubReadItemUsecase!
     private var itemUpdateMocking: ((ReadItemUpdateEvent) -> Void)?
     private var isShrinkModeMocking: ((Bool) -> Void)?
+    private var spyNavigationListener: SpyNavigationListener!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -39,6 +40,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         self.spyItemsUsecase = nil
         self.isShrinkModeMocking = nil
         self.itemUpdateMocking = nil
+        self.spyNavigationListener = nil
     }
     
     private var dummySubCollections: [ReadCollection] {
@@ -99,11 +101,15 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         let router = FakeRouter()
         self.spyRouter = router
         
+        let spyListener = SpyNavigationListener()
+        self.spyNavigationListener = spyListener
+        
         let viewModel =  ReadCollectionViewItemsModelImple(collectionID: collectionID,
                                                            readItemUsecase: stubUsecase,
                                                            categoryUsecase: stubCategoryUsecase,
                                                            remindUsecase: stubRemindUsecase,
-                                                           router: router)
+                                                           router: router,
+                                                           navigationListener: spyListener)
         router.interactor = viewModel
         return viewModel
     }
@@ -867,6 +873,17 @@ extension ReadCollectionViewModelTests {
         let isIncludeDummyItem = linkCells.map { $0.contains(where: { $0.uid == dummyItem.uid }) }
         XCTAssertEqual(isIncludeDummyItem, [true, false])
     }
+    
+    func testViewModel_whenDidAppear_callListener() {
+        // given
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        
+        // when
+        viewModel.viewDidAppear()
+        
+        // then
+        XCTAssertNotNil(self.spyNavigationListener.didShowMyReadCollectionID)
+    }
 }
 
 
@@ -990,6 +1007,18 @@ private extension ReadPriority {
         case 6: return .onTheWaytoWork
         case 7: return .afterAWhile
         default: return nil
+        }
+    }
+}
+
+
+extension ReadCollectionViewModelTests {
+    
+    class SpyNavigationListener: ReadCollectionNavigateListenable {
+        
+        var didShowMyReadCollectionID: String?
+        func readCollection(didShowMy subCollectionID: String?) {
+            self.didShowMyReadCollectionID = subCollectionID
         }
     }
 }

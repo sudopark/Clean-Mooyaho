@@ -19,5 +19,5 @@ import CommonPresenting
 
 public protocol ReadCollectionMainSceneBuilable {
     
-    func makeReadCollectionMainScene() -> ReadCollectionMainScene
+    func makeReadCollectionMainScene(navigationListener: ReadCollectionNavigateListenable?) -> ReadCollectionMainScene
 }

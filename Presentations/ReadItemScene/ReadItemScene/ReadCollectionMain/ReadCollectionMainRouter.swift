@@ -34,7 +34,10 @@ public protocol ReadCollectionMainRouting: Routing {
 // TODO: compose next Scene Builders protocol
 public typealias ReadCollectionMainRouterBuildables = ReadCollectionItemSceneBuilable
 
-public final class ReadCollectionMainRouter: Router<ReadCollectionMainRouterBuildables>, ReadCollectionMainRouting  { }
+public final class ReadCollectionMainRouter: Router<ReadCollectionMainRouterBuildables>, ReadCollectionMainRouting  {
+    
+    public weak var navigationListener: ReadCollectionNavigateListenable?
+}
 
 
 extension ReadCollectionMainRouter {
@@ -42,7 +45,9 @@ extension ReadCollectionMainRouter {
     public func setupSubCollections() {
         
         guard let current = self.currentScene as? UINavigationController,
-              let nextScene = self.nextScenesBuilder?.makeReadCollectionItemScene(collectionID: nil) else {
+              let nextScene = self.nextScenesBuilder?
+                .makeReadCollectionItemScene(collectionID: nil, navigationListener: self.navigationListener)
+        else {
             return
         }
         

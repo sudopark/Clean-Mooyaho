@@ -26,7 +26,7 @@ class ReadCollectionMainViewModelTests: BaseTestCase {
     }
     
     private func makeViewModel() -> ReadCollectionMainViewModel {
-        return ReadCollectionMainViewModelImple(router: self)
+        return ReadCollectionMainViewModelImple(router: self, navigationListener: nil)
     }
 }
 

@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable {
+public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable {
     
 }
 

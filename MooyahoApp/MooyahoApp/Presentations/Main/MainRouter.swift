@@ -66,7 +66,9 @@ extension MainRouter {
     public func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
-              let collectionMainScene = self.nextScenesBuilder?.makeReadCollectionMainScene() else {
+              let collectionMainScene = self.nextScenesBuilder?
+                .makeReadCollectionMainScene(navigationListener: self.currentInteractor)
+        else {
             return nil
         }
         
