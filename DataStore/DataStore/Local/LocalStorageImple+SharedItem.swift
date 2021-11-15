@@ -35,4 +35,18 @@ extension LocalStorageImple {
         }
         return storage.saveSharedCollection(collection)
     }
+    
+    public func fetchMySharingItemIDs() -> Maybe<[String]> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchMySharingItemIDs()
+    }
+    
+    public func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.updateMySharingItemIDs(ids)
+    }
 }

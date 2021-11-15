@@ -51,6 +51,7 @@
 		F640619127365E6B00902787 /* RepositoryTests+UserDataMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640619027365E6B00902787 /* RepositoryTests+UserDataMigration.swift */; };
 		F640619327367F7700902787 /* LocalStorageTests+UserDataMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640619227367F7700902787 /* LocalStorageTests+UserDataMigration.swift */; };
 		F6419BF626822FB000C7919B /* LocalStorageTests+Auth&Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */; };
+		F64CCB072742A3A10015EE9B /* SharingCollectionIDsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB062742A3A10015EE9B /* SharingCollectionIDsTable.swift */; };
 		F660B8EF26747B1E004FB42E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EE26747B1E004FB42E /* Alamofire */; };
 		F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F66BB88E2684F64F00B46A99 /* KeychainSwift */; };
 		F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66BB8902686E7F400B46A99 /* BaseLocalStorageTests.swift */; };
@@ -156,6 +157,7 @@
 		F640619027365E6B00902787 /* RepositoryTests+UserDataMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+UserDataMigration.swift"; sourceTree = "<group>"; };
 		F640619227367F7700902787 /* LocalStorageTests+UserDataMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+UserDataMigration.swift"; sourceTree = "<group>"; };
 		F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Auth&Member.swift"; sourceTree = "<group>"; };
+		F64CCB062742A3A10015EE9B /* SharingCollectionIDsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingCollectionIDsTable.swift; sourceTree = "<group>"; };
 		F66BB8902686E7F400B46A99 /* BaseLocalStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLocalStorageTests.swift; sourceTree = "<group>"; };
 		F66BB8932686EF3E00B46A99 /* SQLiteStorage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SQLiteStorage+Extension.swift"; sourceTree = "<group>"; };
 		F66C133026E3AEBC00940CF3 /* MemberThumbnailTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberThumbnailTable.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 				F601725527000F9800E47B75 /* LinkPreviewTable.swift */,
 				F6C1C8E7272560D5007277A5 /* ReadLinkMemoTable.swift */,
 				F6BD48082740FB9D00D2B2C9 /* SharedReadCollectionTable.swift */,
+				F64CCB062742A3A10015EE9B /* SharingCollectionIDsTable.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -599,6 +602,7 @@
 				F6C1C8E0272557FB007277A5 /* RepositoryImple+ReadLinkMemo.swift in Sources */,
 				F6C1C8E8272560D5007277A5 /* ReadLinkMemoTable.swift in Sources */,
 				F6C1C8E227255878007277A5 /* LocalStorageImple+ReadLinkMemo.swift in Sources */,
+				F64CCB072742A3A10015EE9B /* SharingCollectionIDsTable.swift in Sources */,
 				F6BD48052740F63A00D2B2C9 /* LocalStorageImple+SharedItem.swift in Sources */,
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				F601725627000F9800E47B75 /* LinkPreviewTable.swift in Sources */,

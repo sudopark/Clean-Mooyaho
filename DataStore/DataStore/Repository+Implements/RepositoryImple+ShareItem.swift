@@ -24,11 +24,52 @@ public protocol ShareItemReposiotryDefImpleDependency: AnyObject {
 extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency {
     
     public func requestShareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection> {
+        
+        let updateCache: (SharedReadCollection) -> Void = { [weak self] shared in
+            self?.updateSharingCollectionIDs { oldIDs in
+                return oldIDs.filter { $0 != collection.uid } + [collection.uid]
+            }
+        }
         return self.shareItemRemote.requestShare(collection: collection)
+            .do(onNext: updateCache)
     }
     
-    public func requestStopShare(readCollection shareID: String) -> Maybe<Void> {
-        return self.shareItemRemote.requestStopShare(shareID: shareID)
+    public func requestStopShare(readCollection collectionID: String) -> Maybe<Void> {
+        
+        let updateCache: () -> Void = { [weak self]  in
+            self?.updateSharingCollectionIDs { oldIDs in
+                return oldIDs.filter { $0 != collectionID }
+            }
+        }
+        
+        return self.shareItemRemote.requestStopShare(collectionID: collectionID)
+            .do(onNext: updateCache)
+    }
+    
+    public func requestLoadMySharingCollectionIDs() -> Observable<[String]> {
+        let cachedIDsWithoutError = self.shareItemLocal.fetchMySharingItemIDs().catchAndReturn([])
+        
+        let updateCache: ([String]) -> Void = { [weak self] ids in
+            self?.updateSharingCollectionIDs { _ in ids }
+        }
+        let reloadIDs = self.shareItemRemote.requestLoadMySharingCollectionIDs()
+            .do(onNext: updateCache)
+        
+        return cachedIDsWithoutError.asObservable()
+            .concat(reloadIDs)
+    }
+    
+    private func updateSharingCollectionIDs(_ mutate: @escaping ([String]) -> [String]) {
+        
+        let loadCache = self.shareItemLocal.fetchMySharingItemIDs().catchAndReturn([])
+        let thenUpdateCache: ([String]) -> Maybe<Void> = { [weak self] cached in
+            let newIDs = mutate(cached)
+            return self?.shareItemLocal.updateMySharingItemIDs(newIDs) ?? .empty()
+        }
+        loadCache
+            .flatMap(thenUpdateCache)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
     
     public func requestLoadLatestsSharedCollections() -> Observable<[SharedReadCollection]> {

@@ -33,7 +33,7 @@ extension FirebaseServiceImple {
                 .map { SharedReadCollection(shareID: index.shareID, collection: $0) }
         }
         let thenUpdateInbox: (SharedReadCollection) -> Void = { [weak self] collection in
-            self?.updateInbox(for: memberID) { $0.insertSharing(collection.shareID) }
+            self?.updateInbox(for: memberID) { $0.insertSharing(collection.uid) }
         }
         
         return makeIndex
@@ -48,21 +48,38 @@ extension FirebaseServiceImple {
         return self.saveNew(jsonPayload, at: .sharingCollectionIndex)
     }
     
-    public func requestStopShare(shareID: String) -> Maybe<Void> {
+    public func requestStopShare(collectionID: String) -> Maybe<Void> {
         
         guard let memberID = self.signInMemberID else {
             return .error(ApplicationErrors.sigInNeed)
         }
         
-        let remove = self.delete(shareID, at: .sharingCollectionIndex)
-        let thenUpdateInbox: () -> Void = { [weak self] in
-            self?.updateInbox(for: memberID) { $0.removedSharing(shareID) }
+        let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
+        let query = collectionRef
+            .whereField(Key.collectionID.rawValue, isEqualTo: collectionID)
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+        let findIndex: Maybe<SharingCollectionIndex?> = self.load(query: query).map { $0.first }
+        let thenRemoveOrNot: (SharingCollectionIndex?) -> Maybe<Void>
+        thenRemoveOrNot = { [weak self] index in
+            guard let shareID = index?.shareID else { return .just() }
+            return self?.delete(shareID, at: .sharingCollectionIndex) ?? .empty()
         }
-        return remove
-            .do(onNext: thenUpdateInbox)
+        let updateInbox: () -> Void = { [weak self] in
+            self?.updateInbox(for: memberID) { $0.removedSharing(collectionID) }
+        }
+        return findIndex
+            .flatMap(thenRemoveOrNot)
+            .do(onNext: updateInbox)
     }
     
-    
+    public func requestLoadMySharingCollectionIDs() -> Maybe<[String]> {
+        
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        return self.loadMyInbox(for: memberID)
+            .map { $0?.sharingCollectionIDs ?? [] }
+    }
     
     public func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
         

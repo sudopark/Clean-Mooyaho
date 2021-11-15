@@ -36,13 +36,47 @@ public final class ShareItemUsecaseImple: ShareReadCollectionUsecase, SharedRead
 extension ShareItemUsecaseImple {
     
     public func shareCollection(_ collection: ReadCollection) -> Maybe<SharedReadCollection> {
-        
+     
+        let updateSharingID: (SharedReadCollection) -> Void = { [weak self] _ in
+            let datKey = SharedDataKeys.mySharingCollectionIDs.rawValue
+            self?.sharedDataService.update([String].self, key: datKey) {
+                return ($0 ?? []) |> { $0.removed(collectionID: collection.uid) + [collection.uid] }
+            }
+        }
         return self.shareRepository.requestShareCollection(collection)
+            .do(onNext: updateSharingID)
     }
     
-    public func stopShare(collection shareID: String) -> Maybe<Void> {
+    public func stopShare(collection collectionID: String) -> Maybe<Void> {
         
-        return self.shareRepository.requestStopShare(readCollection: shareID)
+        let updateSharingID: () -> Void = { [weak self] in
+            let datKey = SharedDataKeys.mySharingCollectionIDs.rawValue
+            self?.sharedDataService.update([String].self, key: datKey) {
+                return ($0 ?? []) |> { $0.removed(collectionID: collectionID) }
+            }
+        }
+        return self.shareRepository.requestStopShare(readCollection: collectionID)
+            .do(onNext: updateSharingID)
+    }
+    
+    public func refreshMySharingColletionIDs() {
+        
+        guard let memberID = self.authInfoProvider.signedInMemberID() else {
+            return
+        }
+        
+        let updateStore: ([String]) -> Void = { [weak self] ids in
+            self?.sharedDataService.save([String].self, key: .mySharingCollectionIDs, ids)
+        }
+        self.shareRepository.requestLoadMySharingCollectionIDs()
+            .subscribe(onNext: updateStore)
+            .disposed(by: self.disposeBag)
+    }
+    
+    public var mySharingCollectionIDs: Observable<[String]> {
+        return self.sharedDataService
+            .observeWithCache([String].self, key: SharedDataKeys.mySharingCollectionIDs.rawValue)
+            .compactMap { $0 }
     }
 }
 
@@ -126,6 +160,14 @@ private extension Array where Element == SharedReadCollection {
     func removed(collectionID: String) -> Array {
         var sender = self
         sender.removeAll(where: { $0.uid == collectionID })
+        return sender
+    }
+}
+
+private extension Array where Element == String {
+    func removed(collectionID: String) -> Array {
+        var sender = self
+        sender.removeAll(where: { $0 == collectionID })
         return sender
     }
 }

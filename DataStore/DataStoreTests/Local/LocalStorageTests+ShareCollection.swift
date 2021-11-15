@@ -67,4 +67,20 @@ extension LocalStorageTests_ShareCollection {
         let collectionIDs = updatedCollections?.map { $0.uid }
         XCTAssertEqual(collectionIDs, ["id:1", "id:2", "id:0"])
     }
+    
+    func testStorage_updateSharingItemIDs() {
+        // given
+        let expect = expectation(description: "저장된 공유 중 콜렉션 아이디 업데이트")
+        let oldIDs = (0..<10).map { "id:\($0)" }
+        
+        // when
+        let setup = self.local.updateMySharingItemIDs(oldIDs)
+        let update = self.local.updateMySharingItemIDs(["new"])
+        let load = self.local.fetchMySharingItemIDs()
+        let setupUpdateAndLoad = setup.flatMap { update }.flatMap { load }
+        let ids = self.waitFirstElement(expect, for: setupUpdateAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(ids, ["new"])
+    }
 }

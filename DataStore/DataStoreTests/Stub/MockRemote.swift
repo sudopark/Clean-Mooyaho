@@ -241,7 +241,7 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestShare") ?? .empty()
     }
     
-    func requestStopShare(shareID: String) -> Maybe<Void> {
+    func requestStopShare(collectionID: String) -> Maybe<Void> {
         return self.resolve(key: "requestStopShare") ?? .empty()
     }
     
@@ -251,5 +251,9 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     
     func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection> {
         return self.resolve(key: "requestLoadSharedCollection") ?? .empty()
+    }
+    
+    func requestLoadMySharingCollectionIDs() -> Maybe<[String]> {
+        return self.resolve(key: "requestLoadMySharingCollectionIDs") ?? .empty()
     }
 }

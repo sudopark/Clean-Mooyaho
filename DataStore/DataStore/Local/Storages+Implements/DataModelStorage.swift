@@ -91,6 +91,10 @@ public protocol DataModelStorage {
     func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
     
     func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void>
+    
+    func fetchMySharingItemIDs() -> Maybe<[String]>
+    
+    func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void>
 }
 
 
@@ -657,6 +661,26 @@ extension DataModelStorageImple {
         }
         return self.sqliteService.rx.run
             { try $0.insert(SharedRootReadCollectionTable.self, entities: [entity], shouldReplace: true) }
+    }
+    
+    public func fetchMySharingItemIDs() -> Maybe<[String]> {
+        let query = SharingCollectionIDsTable.selectAll()
+        let mapping: (CursorIterator) throws -> String = {
+            return try SharingCollectionIDsTable.Entity($0).collectionID
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void> {
+        
+        let dropTable = self.sqliteService.rx.run { try $0.dropTable(SharingCollectionIDsTable.self) }
+        let andUpdate: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let entities = ids.map { SharingCollectionIDsTable.Entity($0) }
+            return self.sqliteService.rx.run { try $0.insert(SharingCollectionIDsTable.self, entities: entities) }
+        }
+        return dropTable
+            .flatMap(andUpdate)
     }
 }
 
