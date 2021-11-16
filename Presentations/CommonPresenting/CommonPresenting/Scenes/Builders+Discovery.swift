@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Domain
+
 
 // MARK: - Builder + DependencyInjector Extension
 
@@ -31,5 +33,7 @@ public protocol StopShareCollectionSceneBuilable {
 
 public protocol SharedCollectionItemsSceneBuilable {
     
-    func makeSharedCollectionItemsScene(listener: SharedCollectionItemsSceneListenable?) -> SharedCollectionItemsScene
+    func makeSharedCollectionItemsScene(currentCollection: SharedReadCollection,
+                                        listener: SharedCollectionItemsSceneListenable?,
+                                        navigationListener: ReadCollectionNavigateListenable?) -> SharedCollectionItemsScene
 }

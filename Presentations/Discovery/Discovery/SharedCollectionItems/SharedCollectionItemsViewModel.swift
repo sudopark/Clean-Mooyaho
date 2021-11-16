@@ -163,7 +163,7 @@ public final class SharedCollectionItemsViewModelImple: SharedCollectionItemsVie
                 categoryUsecase: ReadItemCategoryUsecase,
                 router: SharedCollectionItemsRouting,
                 listener: SharedCollectionItemsSceneListenable?,
-                navigationListener: ReadCollectionNavigateListenable) {
+                navigationListener: ReadCollectionNavigateListenable?) {
         
         self.loadSharedCollectionUsecase = loadSharedCollectionUsecase
         self.linkPreviewLoadUsecase = linkPreviewLoadUsecase

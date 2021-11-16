@@ -78,12 +78,12 @@ extension ReadCollectionMainViewModelImple {
     
     public func switchToSharedCollection(_ collection: SharedReadCollection) {
         self.notifyRootCollectionDidChanged(.sharedCollection(collection))
-        logger.todoImplement()
+        self.router.switchToSharedCollection(root: collection)
     }
     
     public func switchToMyReadCollections() {
         self.notifyRootCollectionDidChanged(.myCollections)
-        logger.todoImplement()
+        self.router.switchToMyReadCollection()
     }
     
     public var rootType: CollectionRoot {

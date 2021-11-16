@@ -176,7 +176,7 @@ final class MainView: BaseUIView {
             self.sharedCoverView.isHidden = true
             
         case .sharedCollection(let sharedReadCollection):
-            self.sharedCoverView.isHidden = true
+            self.sharedCoverView.isHidden = false
             self.sharedRootCollectionView.setup(sharedCollection: sharedReadCollection)
         }
     }
