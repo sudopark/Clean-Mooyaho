@@ -519,18 +519,3 @@ extension ReadCollectionViewItemsModelImple {
         }
     }
 }
-
-
-private extension Array where Element: ReadItemCellViewModel {
-    
-    func asSectionIfNotEmpty(for type: ReadCollectionItemSectionType) -> ReadCollectionItemSection? {
-        guard self.isNotEmpty else { return nil }
-        return .init(type: type, cellViewModels: self)
-    }
-    
-    func updateIsShrinkMode(_ flag: Bool) -> Array where Element: ShrinkableCell {
-        return self.map {
-            return  $0 |> \.isShrink .~ flag
-        }
-    }
-}

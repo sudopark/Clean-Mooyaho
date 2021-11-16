@@ -13,12 +13,18 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - Routing
 
-public protocol SharedCollectionItemsRouting: Routing { }
+public protocol SharedCollectionItemsRouting: Routing {
+    
+    func moveToSubCollection(collection: SharedReadCollection)
+    
+    func showLinkDetail(_ link: SharedReadLink)
+}
 
 // MARK: - Routers
 
@@ -33,5 +39,13 @@ extension SharedCollectionItemsRouter {
     // SharedCollectionItemsRouting implements
     private var currentInteractor: SharedCollectionItemsSceneInteractable? {
         return (self.currentScene as? SharedCollectionItemsScene)?.interactor
+    }
+    
+    public func moveToSubCollection(collection: SharedReadCollection) {
+        logger.todoImplement()
+    }
+    
+    public func showLinkDetail(_ link: SharedReadLink) {
+        logger.todoImplement()
     }
 }

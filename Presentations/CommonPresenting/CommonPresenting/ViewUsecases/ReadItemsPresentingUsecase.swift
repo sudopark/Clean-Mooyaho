@@ -81,6 +81,8 @@ public protocol ReadItemCells: BaseTableViewCell {
 }
 
 
+// MARK: - extensions
+
 extension Array where Element: ReadItem {
     
     public func sort(by order: ReadCollectionItemSortOrder, with customOrder: [String]) -> Array {
@@ -130,5 +132,20 @@ extension Array where Element: ReadItem {
         }
         
         return self.compactMap(transform)
+    }
+}
+
+
+extension Array where Element: ReadItemCellViewModel {
+    
+    public func asSectionIfNotEmpty(for type: ReadCollectionItemSectionType) -> ReadCollectionItemSection? {
+        guard self.isNotEmpty else { return nil }
+        return .init(type: type, cellViewModels: self)
+    }
+    
+    public func updateIsShrinkMode(_ flag: Bool) -> Array where Element: ShrinkableCell {
+        return self.map {
+            return  $0 |> \.isShrink .~ flag
+        }
     }
 }

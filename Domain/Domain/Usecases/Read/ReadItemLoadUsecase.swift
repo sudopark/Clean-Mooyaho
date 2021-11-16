@@ -11,7 +11,13 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadItemLoadUsecase {
+public protocol ReadLinkPreviewLoadUsecase {
+    
+    func loadLinkPreview(_ url: String) -> Observable<LinkPreview>
+}
+
+
+public protocol ReadItemLoadUsecase: ReadLinkPreviewLoadUsecase {
     
     func loadMyItems() -> Observable<[ReadItem]>
     
@@ -19,5 +25,5 @@ public protocol ReadItemLoadUsecase {
     
     func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]>
     
-    func loadLinkPreview(_ url: String) -> Observable<LinkPreview>
+    
 }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import Prelude
 import Optics
 
@@ -73,5 +75,51 @@ extension ReadCollectionItemSectionType {
         let header = ReadCollectionSectionHeaderView()
         header.setupTitle(self.rawValue)
         return header
+    }
+}
+
+
+
+public protocol ReadCollectionTtileHeaderViewSupporting: BaseViewController {
+    
+    var titleHeaderView: ReadCollectionTtileHeaderView { get }
+    var titleHeaderViewRelatedScrollView: UIScrollView { get }
+}
+
+extension ReadCollectionTtileHeaderViewSupporting {
+    
+    private var isTitleHaderViewShowing: Observable<Bool> {
+        
+        let checkScrollAmount: (CGPoint) -> Bool? = { [weak self] point in
+            guard let self = self, self.titleHeaderView.frame.height > 0 else { return nil }
+            return point.y <= self.titleHeaderView.frame.height
+        }
+        return self.titleHeaderViewRelatedScrollView.rx.contentOffset
+            .compactMap(checkScrollAmount)
+            .distinctUntilChanged()
+    }
+    
+    public func bindUpdateTitleheaderViewByScroll(with titleSource: Observable<String>) {
+        
+        let selectTitle: (String, Bool) -> String? = { title, isHeaderShowing in
+            return isHeaderShowing ? nil : title
+        }
+        Observable
+            .combineLatest(titleSource,
+                           self.isTitleHaderViewShowing,
+                           resultSelector: selectTitle)
+            .startWith(nil)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] title in
+                self?.title = title
+            })
+            .disposed(by: self.disposeBag)
+        
+        titleSource
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.titleHeaderView.setupTitle(title)
+            })
+            .disposed(by: self.disposeBag)
     }
 }

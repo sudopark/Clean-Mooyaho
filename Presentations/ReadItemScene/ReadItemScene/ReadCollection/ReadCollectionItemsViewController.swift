@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - ReadCollectionViewController
 
-public final class ReadCollectionItemsViewController: BaseViewController, ReadCollectionScene {
+public final class ReadCollectionItemsViewController: BaseViewController, ReadCollectionScene, ReadCollectionTtileHeaderViewSupporting {
     
     typealias CVM = ReadItemCellViewModel
     typealias Section = SectionModel<String, CVM>
@@ -27,8 +27,9 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
     private var dataSource: DataSource!
     let viewModel: ReadCollectionItemsViewModel
     
-    let titleHeaderView = ReadCollectionTtileHeaderView()
+    public let titleHeaderView = ReadCollectionTtileHeaderView()
     let tableView = UITableView()
+    public var titleHeaderViewRelatedScrollView: UIScrollView { self.tableView }
     
     public init(viewModel: ReadCollectionItemsViewModel) {
         self.viewModel = viewModel
@@ -66,8 +67,9 @@ extension ReadCollectionItemsViewController {
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
-                self?.bindTableView()
-                self?.bindTitleView()
+                guard let self = self else { return }
+                self.bindTableView()
+                self.bindUpdateTitleheaderViewByScroll(with: self.viewModel.collectionTitle)
             })
             .disposed(by: self.disposeBag)
         
@@ -218,46 +220,6 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
         let configure = UISwipeActionsConfiguration(actions: contextActions)
         configure.performsFirstActionWithFullSwipe = false
         return configure
-    }
-}
-
-// MARK: - bind scroll and hide title
-
-extension ReadCollectionItemsViewController {
-    
-    private var isTitleHaderViewShowing: Observable<Bool> {
-        
-        let checkScrollAmount: (CGPoint) -> Bool? = { [weak self] point in
-            guard let self = self, self.titleHeaderView.frame.height > 0 else { return nil }
-            return point.y <= self.titleHeaderView.frame.height
-        }
-        return self.tableView.rx.contentOffset
-            .compactMap(checkScrollAmount)
-            .distinctUntilChanged()
-    }
-    
-    private func bindTitleView() {
-        
-        let selectTitle: (String, Bool) -> String? = { title, isHeaderShowing in
-            return isHeaderShowing ? nil : title
-        }
-        Observable
-            .combineLatest(self.viewModel.collectionTitle,
-                           self.isTitleHaderViewShowing,
-                           resultSelector: selectTitle)
-            .startWith(nil)
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] title in
-                self?.title = title
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.viewModel.collectionTitle
-            .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] title in
-                self?.titleHeaderView.setupTitle(title)
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 
