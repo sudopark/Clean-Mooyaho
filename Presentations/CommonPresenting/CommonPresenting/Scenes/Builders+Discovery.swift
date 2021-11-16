@@ -25,3 +25,11 @@ public protocol StopShareCollectionSceneBuilable {
     func makeStopShareCollectionScene(_ collectionID: String,
                                       listener: StopShareCollectionSceneListenable?) -> StopShareCollectionScene
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol SharedCollectionItemsSceneBuilable {
+    
+    func makeSharedCollectionItemsScene(listener: SharedCollectionItemsSceneListenable?) -> SharedCollectionItemsScene
+}

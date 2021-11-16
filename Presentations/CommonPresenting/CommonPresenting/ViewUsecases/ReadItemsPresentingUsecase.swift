@@ -5,7 +5,7 @@
 //  Created by sudo.park on 2021/10/15.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import Prelude
@@ -42,7 +42,43 @@ public protocol ReadItemCellViewModelFactory {
     init(item: Item)
 }
 
+public protocol ShrinkableCell {
+    var isShrink: Bool { get set }
+}
+
 public protocol ReadItemCellViewModelType: ReadItemCellViewModel, ReadItemCellViewModelFactory { }
+
+
+// MARK: - section
+
+public enum ReadCollectionItemSectionType: String {
+    case attribute
+    case collections
+    case links
+}
+
+public struct ReadCollectionItemSection {
+    
+    public let type: ReadCollectionItemSectionType
+    public let cellViewModels: [ReadItemCellViewModel]
+    
+    public init(type: ReadCollectionItemSectionType, cellViewModels: [ReadItemCellViewModel]) {
+        self.type = type
+        self.cellViewModels = cellViewModels
+    }
+}
+
+
+// MARK: - ReadItemCells
+
+public protocol ReadItemCells: BaseTableViewCell {
+    
+    associatedtype CellViewModel: ReadItemCellViewModel
+    
+    func setupCell(_ cellViewModel: CellViewModel)
+    
+    func updateCategories(_ categories: [ItemCategory])
+}
 
 
 extension Array where Element: ReadItem {

@@ -448,3 +448,15 @@ extension DependencyInjector: StopShareCollectionSceneBuilable {
         return viewController
     }
 }
+
+
+extension DependencyInjector: SharedCollectionItemsSceneBuilable {
+    
+    public func makeSharedCollectionItemsScene(listener: SharedCollectionItemsSceneListenable?) -> SharedCollectionItemsScene {
+        let router = SharedCollectionItemsRouter(nextSceneBuilders: self)
+        let viewModel = SharedCollectionItemsViewModelImple(router: router, listener: listener)
+        let viewController = SharedCollectionItemsViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

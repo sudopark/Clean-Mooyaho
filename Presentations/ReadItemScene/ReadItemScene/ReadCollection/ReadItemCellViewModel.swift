@@ -43,10 +43,6 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModelType {
 
 // MARK: - ReadCollectionCellViewModel
 
-protocol ShrinkableCell {
-    var isShrink: Bool { get set }
-}
-
 public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     
     public typealias Item = ReadCollection
@@ -56,7 +52,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, Shrinkable
     public var collectionDescription: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
-    var isShrink = false
+    public var isShrink = false
     public var remindTime: TimeStamp?
     
     public init(uid: String, name: String) {
@@ -97,7 +93,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     public var customName: String?
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
-    var isShrink = false
+    public var isShrink = false
     public var remindTime: TimeStamp?
     public var isRed: Bool = false
     
@@ -125,17 +121,6 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
         hasher.combine(self.isShrink)
         hasher.combine(self.remindTime)
         hasher.combine(self.isRed)
-        return hasher.finalize()
-    }
-}
-
-private extension ItemCategory {
-    
-    func presentingHashValue() -> Int {
-        var hasher = Hasher()
-        hasher.combine(self.uid)
-        hasher.combine(self.name)
-        hasher.combine(self.colorCode)
         return hasher.finalize()
     }
 }
