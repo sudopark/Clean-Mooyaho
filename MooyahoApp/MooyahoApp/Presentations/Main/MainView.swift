@@ -192,7 +192,7 @@ final class MainView: BaseUIView {
             self.shareButton.isEnabled = true
             
         case .activated:
-            self.shareButton.backgroundColor = UIColor.systemIndigo
+            self.shareButton.backgroundColor = UIColor.systemPink
             self.shareButton.isEnabled = true
             
         }

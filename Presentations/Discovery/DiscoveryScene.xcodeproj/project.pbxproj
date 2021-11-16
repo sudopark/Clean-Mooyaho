@@ -17,6 +17,11 @@
 		F6624CD2273F8E3F00A9B7AF /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD1273F8E3F00A9B7AF /* UsecaseDoubles.framework */; };
 		F6624CD6273F8F5900A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F612E455273F8D9B000076AF /* DiscoveryScene.framework */; };
 		F6ACA11F274222DF0015C632 /* DiscoveryMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ACA11E274222DF0015C632 /* DiscoveryMainViewModelTests.swift */; };
+		F6D8FBF6274358CB0096B186 /* StopShareCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF1274358CB0096B186 /* StopShareCollectionRouter.swift */; };
+		F6D8FBF7274358CB0096B186 /* StopShareCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF2274358CB0096B186 /* StopShareCollectionViewController.swift */; };
+		F6D8FBF9274358CB0096B186 /* StopShareCollectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF4274358CB0096B186 /* StopShareCollectionScene.swift */; };
+		F6D8FBFA274358CB0096B186 /* StopShareCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF5274358CB0096B186 /* StopShareCollectionViewModel.swift */; };
+		F6D8FBFE274366E40096B186 /* StopShareCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBFB274366BB0096B186 /* StopShareCollectionViewModelTests.swift */; };
 		F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */; };
 		F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */; };
 		F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */; };
@@ -45,6 +50,11 @@
 		F6624CCF273F8E3900A9B7AF /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CD1273F8E3F00A9B7AF /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6ACA11E274222DF0015C632 /* DiscoveryMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewModelTests.swift; sourceTree = "<group>"; };
+		F6D8FBF1274358CB0096B186 /* StopShareCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionRouter.swift; sourceTree = "<group>"; };
+		F6D8FBF2274358CB0096B186 /* StopShareCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionViewController.swift; sourceTree = "<group>"; };
+		F6D8FBF4274358CB0096B186 /* StopShareCollectionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionScene.swift; sourceTree = "<group>"; };
+		F6D8FBF5274358CB0096B186 /* StopShareCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionViewModel.swift; sourceTree = "<group>"; };
+		F6D8FBFB274366BB0096B186 /* StopShareCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainRouter.swift; sourceTree = "<group>"; };
 		F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewController.swift; sourceTree = "<group>"; };
 		F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainScene.swift; sourceTree = "<group>"; };
@@ -98,6 +108,7 @@
 		F612E457273F8D9B000076AF /* Discovery */ = {
 			isa = PBXGroup;
 			children = (
+				F6D8FBE6274357310096B186 /* SharedCollection */,
 				F6F6562D274048B80069F253 /* Main */,
 				F612E458273F8D9B000076AF /* DiscoveryScene.h */,
 			);
@@ -109,6 +120,7 @@
 			children = (
 				F612E462273F8D9B000076AF /* DiscoveryTests.swift */,
 				F6ACA11E274222DF0015C632 /* DiscoveryMainViewModelTests.swift */,
+				F6D8FBFB274366BB0096B186 /* StopShareCollectionViewModelTests.swift */,
 			);
 			path = DiscoveryTests;
 			sourceTree = "<group>";
@@ -124,6 +136,17 @@
 				F6624CC3273F8E1300A9B7AF /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6D8FBE6274357310096B186 /* SharedCollection */ = {
+			isa = PBXGroup;
+			children = (
+				F6D8FBF1274358CB0096B186 /* StopShareCollectionRouter.swift */,
+				F6D8FBF2274358CB0096B186 /* StopShareCollectionViewController.swift */,
+				F6D8FBF4274358CB0096B186 /* StopShareCollectionScene.swift */,
+				F6D8FBF5274358CB0096B186 /* StopShareCollectionViewModel.swift */,
+			);
+			path = SharedCollection;
 			sourceTree = "<group>";
 		};
 		F6F6562D274048B80069F253 /* Main */ = {
@@ -246,9 +269,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6D8FBF6274358CB0096B186 /* StopShareCollectionRouter.swift in Sources */,
+				F6D8FBFA274358CB0096B186 /* StopShareCollectionViewModel.swift in Sources */,
 				F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */,
 				F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */,
+				F6D8FBF9274358CB0096B186 /* StopShareCollectionScene.swift in Sources */,
 				F6F65637274048CE0069F253 /* DiscoveryMainViewModel.swift in Sources */,
+				F6D8FBF7274358CB0096B186 /* StopShareCollectionViewController.swift in Sources */,
 				F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +286,7 @@
 			files = (
 				F6ACA11F274222DF0015C632 /* DiscoveryMainViewModelTests.swift in Sources */,
 				F612E463273F8D9B000076AF /* DiscoveryTests.swift in Sources */,
+				F6D8FBFE274366E40096B186 /* StopShareCollectionViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

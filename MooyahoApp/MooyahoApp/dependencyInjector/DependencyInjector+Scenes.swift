@@ -432,3 +432,19 @@ extension DependencyInjector: DiscoveryMainSceneBuilable {
         return viewController
     }
 }
+
+
+extension DependencyInjector: StopShareCollectionSceneBuilable {
+    
+    public func makeStopShareCollectionScene(_ collectionID: String,
+                                             listener: StopShareCollectionSceneListenable?) -> StopShareCollectionScene {
+        let router = StopShareCollectionRouter(nextSceneBuilders: self)
+        let viewModel = StopShareCollectionViewModelImple(shareURLScheme: AppEnvironment.shareScheme,
+                                                          collectionID: collectionID,
+                                                          shareCollectionUsecase: self.shareItemUsecase,
+                                                          router: router, listener: nil)
+        let viewController = StopShareCollectionViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

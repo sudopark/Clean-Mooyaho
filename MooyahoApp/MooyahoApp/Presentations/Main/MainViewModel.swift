@@ -180,30 +180,14 @@ extension MainViewModelImple {
     }
     
     public func toggleShareStatus() {
-        // TODO
         guard case let .mine(collectionID) = self.subjects.currentSubCollectionID.value,
               let subCollectionID = collectionID,
               self.subjects.isToggling.value == false else { return }
         let shareIDSet = self.subjects.sharingIDSets.value
         let isSharing = shareIDSet.contains(subCollectionID)
-        return isSharing ? self.askAndStopSharing(subCollectionID) : self.startShare(subCollectionID)
-    }
-    
-    private func askAndStopSharing(_ subcollectionID: String) {
-        
-        let confirmStop: () -> Void = { [weak self] in
-            self?.stopShare(subcollectionID)
-        }
-        
-        guard let form = AlertBuilder(base: .init())
-            .title("Stop sharing".localized)
-            .message("TBD message".localized)
-            .confirmed(confirmStop)
-            .build()
-        else {
-            return
-        }
-        self.router.alertForConfirm(form)
+        return isSharing
+            ? self.router.showSharingCollectionInfo(subCollectionID)
+            : self.startShare(subCollectionID)
     }
     
     private func startShare(_ subCollectionID: String) {
@@ -217,19 +201,6 @@ extension MainViewModelImple {
         self.subjects.isToggling.accept(true)
         self.shareCollectionUseCase.shareCollection(subCollectionID)
             .subscribe(onSuccess: sharePrepared, onError: self.handleError())
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func stopShare(_ subCollectionID: String) {
-        
-        let showStoped: () -> Void = { [weak self] in
-            self?.subjects.isToggling.accept(false)
-            self?.router.showToast("tbd stopped".localized)
-        }
-        
-        self.subjects.isToggling.accept(true)
-        self.shareCollectionUseCase.stopShare(collection: subCollectionID)
-            .subscribe(onSuccess: showStoped, onError: self.handleError())
             .disposed(by: self.disposeBag)
     }
     
