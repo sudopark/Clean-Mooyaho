@@ -42,6 +42,8 @@ public protocol MainRouting: Routing {
     func presentShareSheet(with url: String)
     
     func showSharingCollectionInfo(_ collectionID: String)
+    
+    func showSharedCollection(_ collection: SharedReadCollection)
 }
 
 // MARK: - Routers
@@ -167,5 +169,12 @@ extension MainRouter {
             return
         }
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func showSharedCollection(_ collection: SharedReadCollection) {
+        
+        self.closeScene(animated: true) { [weak self] in
+            self?.collectionMainInteractor?.switchToSharedCollection(collection)
+        }
     }
 }

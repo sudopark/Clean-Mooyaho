@@ -187,10 +187,7 @@ private extension FirebaseServiceImple {
     }
     
     private func loadMyInbox(for ownerID: String) -> Maybe<SharedInbox?> {
-        let collectionRef = self.fireStoreDB.collection(.sharedInbox)
-        let query = collectionRef.whereField(Key.ownerID.rawValue, isEqualTo: ownerID)
-        return self.load(query: query)
-            .map { $0.first }
+        return self.load(docuID: ownerID, in: .sharedInbox)
     }
 }
 

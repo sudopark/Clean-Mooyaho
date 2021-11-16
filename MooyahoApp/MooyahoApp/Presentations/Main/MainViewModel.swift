@@ -237,8 +237,13 @@ extension MainViewModelImple: MainSceneInteractable {
         self.router.presentUserDataMigrationScene(member.uid)
     }
     
+    public func showSharedReadCollection(_ collection: SharedReadCollection) {
+        logger.print(level: .goal, "switch curent collection aclled from shared collection => \(collection.name)")
+        self.router.showSharedCollection(collection)
+    }
+    
     public func readCollection(didChange root: CollectionRoot) {
-        logger.print(level: .debug, "didChange to  my read collection root")
+        logger.print(level: .debug, "didChange to read collection root => \(root)")
         self.subjects.currentCollectionRoot.accept(root)
     }
     

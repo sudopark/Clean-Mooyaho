@@ -21,6 +21,7 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     
     var disposeBag: DisposeBag!
     var mockUsecase: MockApplicationUsecase!
+    var mockShareUsecase: StubShareItemUsecase!
     var spyRouter: SpyRouter!
     var mockFirebaseService: MockFirebaseService!
     var stubFCMService: StubFCMService!
@@ -31,11 +32,13 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         super.setUp()
         self.disposeBag = DisposeBag()
         self.mockUsecase = .init()
+        self.mockShareUsecase = .init()
         self.spyRouter = SpyRouter()
         self.mockFirebaseService = .init()
         self.stubFCMService = .init()
         self.mockKakaoService = .init()
         self.viewModel = ApplicationViewModelImple(applicationUsecase: self.mockUsecase,
+                                                   shareCollectionHandleUsecase: self.mockShareUsecase,
                                                    firebaseService: self.mockFirebaseService,
                                                    fcmService: self.stubFCMService,
                                                    kakaoService: self.mockKakaoService,
@@ -49,6 +52,7 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         self.stubFCMService = nil
         self.mockKakaoService = nil
         self.mockUsecase = nil
+        self.mockShareUsecase = nil
         self.viewModel = nil
         super.tearDown()
     }
@@ -56,6 +60,7 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     private func makeViewModel(_ isNotificationGranted: Bool = true) -> ApplicationViewModel {
         self.stubFCMService.isNotificationGrant = isNotificationGranted
         self.viewModel = ApplicationViewModelImple(applicationUsecase: self.mockUsecase,
+                                                   shareCollectionHandleUsecase: self.mockShareUsecase,
                                                    firebaseService: self.mockFirebaseService,
                                                    fcmService: self.stubFCMService,
                                                    kakaoService: self.mockKakaoService,
@@ -105,6 +110,17 @@ extension ApplicationViewModelTests {
         // then
         XCTAssertEqual(handled, true)
     }
+    
+    func testViewModel_handle_sharedCollectionURL() {
+        // given
+        let url = URL(string: "share_url")!
+        // when
+        let handled = self.viewModel.handleOpenURL(url: url, options: nil)
+        
+        // then
+        XCTAssertEqual(handled, true)
+        XCTAssertNotNil(self.spyRouter.didShowSharedCollection)
+    }
 }
 
 
@@ -118,6 +134,11 @@ extension ApplicationViewModelTests {
         
         func showNotificationAuthorizationNeedBanner() {
             self.verify(key: "showNotificationAuthorizationNeedBanner")
+        }
+        
+        var didShowSharedCollection: SharedReadCollection?
+        func showSharedReadCollection(_ collection: SharedReadCollection) {
+            self.didShowSharedCollection = collection
         }
     }
 }

@@ -23,6 +23,7 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         public var latestCollections: [[SharedReadCollection]] = []
         public var mySharingCollectionIDs: [[String]] = []
         public var mySharingCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
+        public var loadSharedColectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
         
         public init() {}
     }
@@ -60,8 +61,12 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
             .asObservable()
     }
     
+    public func canHandleURL(_ url: URL) -> Bool {
+        return true
+    }
+    
     public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
-        return .empty()
+        return self.scenario.loadSharedColectionResult.asMaybe()
     }
     
     public func refreshMySharingColletionIDs() {

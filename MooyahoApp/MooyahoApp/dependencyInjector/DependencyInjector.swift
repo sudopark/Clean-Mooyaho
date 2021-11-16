@@ -198,7 +198,8 @@ extension DependencyInjector {
     }
     
     var shareItemUsecase: ShareReadCollectionUsecase & SharedReadCollectionLoadUsecase & SharedReadCollectionHandleUsecase {
-        return ShareItemUsecaseImple(shareRepository: self.appReposiotry,
+        return ShareItemUsecaseImple(shareURLScheme: AppEnvironment.shareScheme,
+                                     shareRepository: self.appReposiotry,
                                      authInfoProvider: self.shared.authInfoManager,
                                      sharedDataService: self.shared.dataStore)
     }

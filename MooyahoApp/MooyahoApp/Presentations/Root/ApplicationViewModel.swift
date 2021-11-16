@@ -34,17 +34,20 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
     
     
     private let applicationUsecase: ApplicationUsecase
+    private let shareCollectionHandleUsecase: SharedReadCollectionHandleUsecase
     private let firebaseService: FirebaseService
     private let fcmService: FCMService
     private let kakaoService: KakaoService
     private let router: ApplicationRootRouting
     
     public init(applicationUsecase: ApplicationUsecase,
+                shareCollectionHandleUsecase: SharedReadCollectionHandleUsecase,
                 firebaseService: FirebaseService,
                 fcmService: FCMService,
                 kakaoService: KakaoService,
                 router: ApplicationRootRouting) {
         self.applicationUsecase = applicationUsecase
+        self.shareCollectionHandleUsecase = shareCollectionHandleUsecase
         self.firebaseService = firebaseService
         self.fcmService = fcmService
         self.kakaoService = kakaoService
@@ -109,6 +112,10 @@ extension ApplicationViewModelImple {
         if self.kakaoService.canHandleURL(url) {
             return self.kakaoService.handle(url: url)
         }
+        if self.shareCollectionHandleUsecase.canHandleURL(url) {
+            self.handleSharedCollection(url: url)
+            return true
+        }
         return false
     }
     
@@ -134,6 +141,21 @@ extension ApplicationViewModelImple {
     
     public func newPushMessageRecived(_ userInfo: [AnyHashable: Any]) {
         self.fcmService.didReceiveDataMessage(userInfo)
+    }
+    
+    private func handleSharedCollection(url: URL) {
+        
+        let handled: (SharedReadCollection) -> Void = { [weak self] collection in
+            self?.router.showSharedReadCollection(collection)
+        }
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        
+        self.shareCollectionHandleUsecase.loadSharedCollection(by: url)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: handled, onError: handleError)
+            .disposed(by: self.disposeBag)
     }
 }
 

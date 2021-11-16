@@ -17,6 +17,8 @@ public protocol ApplicationRootRouting: Routing {
     func routeMain(auth: Auth)
     
     func showNotificationAuthorizationNeedBanner()
+    
+    func showSharedReadCollection(_ collection: SharedReadCollection)
 }
 
 // MARK: - builders
@@ -28,6 +30,7 @@ public typealias ApplicationRootRouterBuildables = MainSceneBuilable
 public final class ApplicationRootRouter: Router<ApplicationRootRouterBuildables>, ApplicationRootRouting {
 
     private var window: UIWindow!
+    private weak var mainInteractor: MainSceneInteractable?
 }
 
 
@@ -39,9 +42,15 @@ extension ApplicationRootRouter {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window.rootViewController = main
         self.window.makeKeyAndVisible()
+        self.mainInteractor = main.interactor
     }
     
     public func showNotificationAuthorizationNeedBanner() {
         
+    }
+    
+    public func showSharedReadCollection(_ collection: SharedReadCollection) {
+        guard let interactor = self.mainInteractor else { return }
+        interactor.showSharedReadCollection(collection)
     }
 }
