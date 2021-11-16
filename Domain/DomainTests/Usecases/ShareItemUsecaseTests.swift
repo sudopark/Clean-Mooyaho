@@ -203,6 +203,25 @@ extension ShareItemUsecaseTests {
         XCTAssertNil(collections)
     }
     
+    func testUsecase_whenLoadMySharingItem_usePrefetched() {
+        // given
+        let expectWithoutCache = expectation(description: "캐시 없을때 로드")
+        let expectWithCache = expectation(description: "내기 공유하는 콜렉션 로드시에 이미 로드한 데이터 활용")
+        expectWithCache.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase()
+        
+        // when
+        let load = usecase.loadMyharingCollection(for: "some")
+        let collection1 = self.waitFirstElement(expectWithoutCache, for: load)
+        
+        let loadAgain = usecase.loadMyharingCollection(for: "some")
+        let collections = self.waitElements(expectWithCache, for: loadAgain)
+        
+        // then
+        XCTAssertNotNil(collection1)
+        XCTAssertEqual(collections.count, 2)
+    }
+    
     func testUsecase_loadSharedCollectionByURL() {
         // given
         let expect = expectation(description: "공유 url로 아이템 로드")

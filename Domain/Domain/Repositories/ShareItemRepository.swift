@@ -22,4 +22,6 @@ public protocol ShareItemRepository {
     func requestLoadLatestsSharedCollections() -> Observable<[SharedReadCollection]>
     
     func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection>
+    
+    func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
 }

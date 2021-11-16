@@ -108,4 +108,8 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
             .subscribe()
             .disposed(by: self.disposeBag)
     }
+    
+    public func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        return self.shareItemRemote.requestLoadMySharingCollection(collectionID)
+    }
 }
