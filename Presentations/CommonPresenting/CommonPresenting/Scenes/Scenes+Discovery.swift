@@ -41,3 +41,18 @@ public protocol StopShareCollectionScene: Scenable {
     
     var interactor: StopShareCollectionSceneInteractable? { get }
 }
+
+
+// MARK: - SharedCollectionItemsScene Interactable & Listenable
+
+public protocol SharedCollectionItemsSceneInteractable { }
+
+public protocol SharedCollectionItemsSceneListenable: AnyObject { }
+
+
+// MARK: - SharedCollectionItemsScene
+
+public protocol SharedCollectionItemsScene: Scenable {
+    
+    var interactor: SharedCollectionItemsSceneInteractable? { get }
+}

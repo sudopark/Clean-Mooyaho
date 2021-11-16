@@ -110,6 +110,9 @@
 		F6E51B7C273F637C00CBE310 /* EmojiListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B7B273F637C00CBE310 /* EmojiListView.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
 		F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */; };
+		F6ED41EF2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41EE2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift */; };
+		F6ED41F32743F71A0082DE18 /* ItemCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */; };
+		F6ED41F52743F9C20082DE18 /* ReadItemShrinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F42743F9C20082DE18 /* ReadItemShrinkCell.swift */; };
 		F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F249182655887C00AE7A8B /* BaseNavigationController.swift */; };
 		F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */; };
 		F6F29597266D1BB800CDF980 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F29596266D1BB800CDF980 /* Common3rdParty.framework */; };
@@ -236,6 +239,9 @@
 		F6E51B7B273F637C00CBE310 /* EmojiListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiListView.swift; sourceTree = "<group>"; };
 		F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundShadowView.swift; sourceTree = "<group>"; };
+		F6ED41EE2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadCollectionTtile+SectionHeaderView.swift"; sourceTree = "<group>"; };
+		F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCategory+Extensions.swift"; sourceTree = "<group>"; };
+		F6ED41F42743F9C20082DE18 /* ReadItemShrinkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemShrinkCell.swift; sourceTree = "<group>"; };
 		F6F249182655887C00AE7A8B /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickPermissionCheckService.swift; sourceTree = "<group>"; };
 		F6F29596266D1BB800CDF980 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -426,6 +432,7 @@
 				F665A64F26FB674C00E866B7 /* UICollectionView+Extension.swift */,
 				F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */,
 				F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */,
+				F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -518,6 +525,8 @@
 			children = (
 				F66E09A027187A410012B76E /* ReadItemContentView.swift */,
 				F620518D272771E9009CA975 /* SimpleReadItemCells.swift */,
+				F6ED41EE2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift */,
+				F6ED41F42743F9C20082DE18 /* ReadItemShrinkCell.swift */,
 			);
 			path = ReadItem;
 			sourceTree = "<group>";
@@ -698,6 +707,7 @@
 				F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */,
 				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
+				F6ED41EF2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift in Sources */,
 				F6E30E1E270B4BBD0012A2A0 /* ReadPriority+Extensions.swift in Sources */,
 				F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */,
 				F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */,
@@ -762,12 +772,14 @@
 				F6E51B7C273F637C00CBE310 /* EmojiListView.swift in Sources */,
 				F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */,
 				F66B7D7126C5DD8C00D31FAC /* Time+Extension.swift in Sources */,
+				F6ED41F52743F9C20082DE18 /* ReadItemShrinkCell.swift in Sources */,
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */,
 				F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
 				F65215832674A395000CAB4B /* TextInputRouter.swift in Sources */,
+				F6ED41F32743F71A0082DE18 /* ItemCategory+Extensions.swift in Sources */,
 				F665A65026FB674C00E866B7 /* UICollectionView+Extension.swift in Sources */,
 				F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */,
 				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,

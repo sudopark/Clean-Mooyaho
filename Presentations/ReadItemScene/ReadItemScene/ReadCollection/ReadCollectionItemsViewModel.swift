@@ -17,17 +17,6 @@ import Domain
 import CommonPresenting
 
 
-public enum ReadCollectionItemSectionType: String {
-    case attribute
-    case collections
-    case links
-}
-
-public struct ReadCollectionItemSection {
-    let type: ReadCollectionItemSectionType
-    let cellViewModels: [ReadItemCellViewModel]
-}
-
 public enum ReadCollectionItemSwipeContextAction: Equatable {
     case edit
     case delete

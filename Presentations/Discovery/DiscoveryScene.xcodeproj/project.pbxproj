@@ -22,6 +22,11 @@
 		F6D8FBF9274358CB0096B186 /* StopShareCollectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF4274358CB0096B186 /* StopShareCollectionScene.swift */; };
 		F6D8FBFA274358CB0096B186 /* StopShareCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF5274358CB0096B186 /* StopShareCollectionViewModel.swift */; };
 		F6D8FBFE274366E40096B186 /* StopShareCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBFB274366BB0096B186 /* StopShareCollectionViewModelTests.swift */; };
+		F6ED41E92743F40B0082DE18 /* SharedCollectionItemsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41E42743F40B0082DE18 /* SharedCollectionItemsRouter.swift */; };
+		F6ED41EA2743F40B0082DE18 /* SharedCollectionItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41E52743F40B0082DE18 /* SharedCollectionItemsViewController.swift */; };
+		F6ED41EC2743F40B0082DE18 /* SharedCollectionItemsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41E72743F40B0082DE18 /* SharedCollectionItemsScene.swift */; };
+		F6ED41ED2743F40B0082DE18 /* SharedCollectionItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41E82743F40B0082DE18 /* SharedCollectionItemsViewModel.swift */; };
+		F6ED41F12743F5870082DE18 /* SharedCollectionViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F02743F5870082DE18 /* SharedCollectionViews.swift */; };
 		F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */; };
 		F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */; };
 		F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */; };
@@ -55,6 +60,11 @@
 		F6D8FBF4274358CB0096B186 /* StopShareCollectionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionScene.swift; sourceTree = "<group>"; };
 		F6D8FBF5274358CB0096B186 /* StopShareCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionViewModel.swift; sourceTree = "<group>"; };
 		F6D8FBFB274366BB0096B186 /* StopShareCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		F6ED41E42743F40B0082DE18 /* SharedCollectionItemsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsRouter.swift; sourceTree = "<group>"; };
+		F6ED41E52743F40B0082DE18 /* SharedCollectionItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsViewController.swift; sourceTree = "<group>"; };
+		F6ED41E72743F40B0082DE18 /* SharedCollectionItemsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsScene.swift; sourceTree = "<group>"; };
+		F6ED41E82743F40B0082DE18 /* SharedCollectionItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsViewModel.swift; sourceTree = "<group>"; };
+		F6ED41F02743F5870082DE18 /* SharedCollectionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionViews.swift; sourceTree = "<group>"; };
 		F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainRouter.swift; sourceTree = "<group>"; };
 		F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewController.swift; sourceTree = "<group>"; };
 		F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainScene.swift; sourceTree = "<group>"; };
@@ -108,8 +118,9 @@
 		F612E457273F8D9B000076AF /* Discovery */ = {
 			isa = PBXGroup;
 			children = (
-				F6D8FBE6274357310096B186 /* SharedCollection */,
+				F6D8FBE6274357310096B186 /* StopShareCollection */,
 				F6F6562D274048B80069F253 /* Main */,
+				F6ED41E22743F3C90082DE18 /* SharedCollectionItems */,
 				F612E458273F8D9B000076AF /* DiscoveryScene.h */,
 			);
 			path = Discovery;
@@ -138,7 +149,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F6D8FBE6274357310096B186 /* SharedCollection */ = {
+		F6D8FBE6274357310096B186 /* StopShareCollection */ = {
 			isa = PBXGroup;
 			children = (
 				F6D8FBF1274358CB0096B186 /* StopShareCollectionRouter.swift */,
@@ -146,7 +157,19 @@
 				F6D8FBF4274358CB0096B186 /* StopShareCollectionScene.swift */,
 				F6D8FBF5274358CB0096B186 /* StopShareCollectionViewModel.swift */,
 			);
-			path = SharedCollection;
+			path = StopShareCollection;
+			sourceTree = "<group>";
+		};
+		F6ED41E22743F3C90082DE18 /* SharedCollectionItems */ = {
+			isa = PBXGroup;
+			children = (
+				F6ED41E42743F40B0082DE18 /* SharedCollectionItemsRouter.swift */,
+				F6ED41E52743F40B0082DE18 /* SharedCollectionItemsViewController.swift */,
+				F6ED41E72743F40B0082DE18 /* SharedCollectionItemsScene.swift */,
+				F6ED41E82743F40B0082DE18 /* SharedCollectionItemsViewModel.swift */,
+				F6ED41F02743F5870082DE18 /* SharedCollectionViews.swift */,
+			);
+			path = SharedCollectionItems;
 			sourceTree = "<group>";
 		};
 		F6F6562D274048B80069F253 /* Main */ = {
@@ -269,13 +292,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6ED41EC2743F40B0082DE18 /* SharedCollectionItemsScene.swift in Sources */,
 				F6D8FBF6274358CB0096B186 /* StopShareCollectionRouter.swift in Sources */,
 				F6D8FBFA274358CB0096B186 /* StopShareCollectionViewModel.swift in Sources */,
 				F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */,
 				F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */,
 				F6D8FBF9274358CB0096B186 /* StopShareCollectionScene.swift in Sources */,
+				F6ED41E92743F40B0082DE18 /* SharedCollectionItemsRouter.swift in Sources */,
 				F6F65637274048CE0069F253 /* DiscoveryMainViewModel.swift in Sources */,
+				F6ED41ED2743F40B0082DE18 /* SharedCollectionItemsViewModel.swift in Sources */,
 				F6D8FBF7274358CB0096B186 /* StopShareCollectionViewController.swift in Sources */,
+				F6ED41EA2743F40B0082DE18 /* SharedCollectionItemsViewController.swift in Sources */,
+				F6ED41F12743F5870082DE18 /* SharedCollectionViews.swift in Sources */,
 				F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

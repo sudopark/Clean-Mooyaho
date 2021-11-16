@@ -1,8 +1,8 @@
 //
-//  ReadItemCells.swift
-//  ReadItemScene
+//  SharedCollectionViews.swift
+//  DiscoveryScene
 //
-//  Created by sudo.park on 2021/09/22.
+//  Created by sudo.park on 2021/11/16.
 //
 
 import UIKit
@@ -11,40 +11,29 @@ import RxSwift
 import RxCocoa
 import Prelude
 import Optics
-import ValidationSemigroup
 
 import Domain
 import CommonPresenting
 
 
-// MARK: - section0: ReadCollectionAttrCell
+// MARK: - SharedCollectionAttrCell
 
-final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting {
+final class SharedCollectionAttrCell: BaseTableViewCell, ReadItemCells, Presenting {
     
-    typealias CellViewModel = ReadCollectionAttrCellViewModel
+    typealias CellViewModel = SharedCollectionAttrCellViewModel
     
     private let stackView = UIStackView()
     private let descriptionLabel = UILabel()
-    private let priorityView = KeyAndLabeledValueView()
     private let categoryView = KeyAndLabeledValueView()
-    private let remindView = KeyAndLabeledValueView()
     private let underLineView = UIView()
     
-    func setupCell(_ cellViewModel: ReadCollectionAttrCellViewModel) {
+    func setupCell(_ cellViewModel: SharedCollectionAttrCellViewModel) {
         
         let validDesription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
         self.descriptionLabel.isHidden = validDesription == nil
         self.descriptionLabel.text = validDesription
-        
-        let priotiry = cellViewModel.priority
-        self.priorityView.isHidden = priotiry == nil
-        priotiry.do <| priorityView.labelView.setupPriority
             
         self.updateCategories(cellViewModel.categories)
-            
-        let remindtime = cellViewModel.remindTime
-        self.remindView.isHidden = remindtime == nil
-        remindtime.do <| remindView.labelView.setupRemind(_:)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -58,30 +47,22 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.setupLayout()
         self.setupStyling()
     }
+}
+
+extension SharedCollectionAttrCell {
     
     func setupLayout() {
         self.contentView.addSubview(stackView)
         self.stackView.autoLayout.fill(self.contentView, edges: .init(top: 0, left: 14, bottom: 9, right: 14))
         self.stackView.addArrangedSubview(self.descriptionLabel)
-        self.stackView.addArrangedSubview(self.priorityView)
         self.stackView.addArrangedSubview(self.categoryView)
-        self.stackView.addArrangedSubview(self.remindView)
         self.descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        self.priorityView.autoLayout.active(with: self.stackView) {
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-        }
-        self.priorityView.setContentCompressionResistancePriority(.required, for: .vertical)
+        
         self.categoryView.autoLayout.active(with: self.stackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
-        self.remindView.setContentCompressionResistancePriority(.required, for: .vertical)
-        self.remindView.autoLayout.active(with: self.stackView) {
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-        }
         self.categoryView.setContentCompressionResistancePriority(.required, for: .vertical)
-        self.priorityView.setupLayout()
         self.categoryView.setupLayout()
-        self.remindView.setupLayout()
         
         self.contentView.addSubview(underLineView)
         underLineView.autoLayout.active(with: self.contentView) {
@@ -102,33 +83,23 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.descriptionLabel.textColor = self.uiContext.colors.descriptionText
         self.descriptionLabel.numberOfLines = 1
         
-        self.priorityView.setupStyling()
-        self.priorityView.iconView.image = UIImage(systemName: "arrow.up.arrow.down.square")
-        self.priorityView.keyLabel.text = "Priority".localized
-        
         self.categoryView.setupStyling()
         self.categoryView.iconView.image = UIImage(systemName: "line.horizontal.3.decrease.circle")
         self.categoryView.keyLabel.text = "Categories".localized
         
-        self.remindView.setupStyling()
-        self.remindView.iconView.image = UIImage(systemName: "alarm")
-        self.remindView.keyLabel.text = "Remind".localized
-        
         self.descriptionLabel.isHidden = true
-        self.priorityView.isHidden = true
         self.categoryView.isHidden = true
-        self.remindView.isHidden = true
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
     }
 }
 
 
-// MARK: - section1: ReadCollectionExpandCell
+// MARK: - SharedCollectionExpandCell
 
-final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
+final class SharedCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
-    typealias CellViewModel = ReadCollectionCellViewModel
+    typealias CellViewModel = SharedCollectionCellViewModel
     
     private let expandView = ReadItemExppandContentView()
     private let arrowImageView = UIImageView()
@@ -140,23 +111,15 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
         self.setupStyling()
     }
     
-    func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
+    func setupCell(_ cellViewModel: SharedCollectionCellViewModel) {
         
         self.expandView.nameLabel.text = cellViewModel.name
         
         let validDescription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.descriptionLabel.isHidden = validDescription == nil
         self.expandView.descriptionLabel.text = validDescription
-        
-        let priority = cellViewModel.priority
-        self.expandView.priorityLabel.isHidden = priority == nil
-        priority.do <| self.expandView.priorityLabel.setupPriority
-            
+           
         self.updateCategories(cellViewModel.categories)
-            
-        let remindtime = cellViewModel.remindTime
-        self.expandView.remindView.isHidden = remindtime == nil
-        remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -207,11 +170,12 @@ final class ReadCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presenti
     }
 }
 
-// MARK: - section2: ReadLinkExpandCell
 
-final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
+// MARK: - SharedLinkExpandCell
+
+final class SharedLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     
-    typealias CellViewModel = ReadLinkCellViewModel
+    typealias CellViewModel = SharedLinkCellViewModel
     
     private let expandView = ReadItemExppandContentView()
     private let thumbNailView = UIImageView()
@@ -230,30 +194,12 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
         self.thumbNailView.cancelSetupThumbnail()
     }
     
-    func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
+    func setupCell(_ cellViewModel: SharedLinkCellViewModel) {
         
         self.updateTitle(cellViewModel.customName)
-        self.updateIsRed(cellViewModel.isRed)
         self.expandView.addressLabel.text = cellViewModel.linkUrl
-        
-        let priority = cellViewModel.priority
-        self.expandView.priorityLabel.isHidden = priority == nil
-        priority.do <| self.expandView.priorityLabel.setupPriority
                 
         self.updateCategories(cellViewModel.categories)
-            
-        let remindtime = cellViewModel.remindTime
-        self.expandView.remindView.isHidden = remindtime == nil
-        remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
-    }
-    
-    func updateIsRed(_ isRed: Bool) {
-        let imageName = isRed ? "checkmark.circle.fill" : "folder"
-        let imagetintColor = isRed ? UIColor.systemGreen : self.uiContext.colors.secondaryTitle
-        self.expandView.iconImageView.image = UIImage(systemName: imageName)
-        self.expandView.iconImageView.tintColor = imagetintColor
-        
-        self.expandView.nameLabel.alpha = isRed ? 0.4 : 1.0
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
@@ -347,9 +293,9 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
 
 // MARK: - shrink
 
-final class ReadItemShrinkCollectionCell: ReadItemShrinkCell {
+final class SharedShrinkCollectionCell: ReadItemShrinkCell {
     
-    func setupCell(_ cellViewModel: ReadCollectionCellViewModel) {
+    func setupCell(_ cellViewModel: SharedCollectionCellViewModel) {
         
         self.shrinkView.nameLabel.text = cellViewModel.name
         
@@ -365,9 +311,9 @@ final class ReadItemShrinkCollectionCell: ReadItemShrinkCell {
     }
 }
 
-final class ReadItemShrinkLinkCell: ReadItemShrinkCell {
+final class SharedShrinkLinkCell: ReadItemShrinkCell {
     
-    func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
+    func setupCell(_ cellViewModel: SharedLinkCellViewModel) {
         self.updateTitle(cellViewModel.customName)
         
         self.shrinkView.addressLabel.text = cellViewModel.linkUrl
