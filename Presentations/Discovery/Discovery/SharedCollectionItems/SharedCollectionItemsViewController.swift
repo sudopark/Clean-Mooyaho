@@ -16,14 +16,15 @@ import CommonPresenting
 
 // MARK: - SharedCollectionItemsViewController
 
-public final class SharedCollectionItemsViewController: BaseViewController, SharedCollectionItemsScene {
+public final class SharedCollectionItemsViewController: BaseViewController, SharedCollectionItemsScene, ReadCollectionTtileHeaderViewSupporting {
     
     typealias CVM = ReadItemCellViewModel
     typealias Section = SectionModel<String, CVM>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
-    let titleHeaderView = ReadCollectionTtileHeaderView()
+    public let titleHeaderView = ReadCollectionTtileHeaderView()
     let tableView = UITableView()
+    public var titleHeaderViewRelatedScrollView: UIScrollView { self.tableView }
     
     let viewModel: SharedCollectionItemsViewModel
     private var dataSource: DataSource!
@@ -50,6 +51,8 @@ public final class SharedCollectionItemsViewController: BaseViewController, Shar
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        
+        self.viewModel.reloadCollectionSubItems()
     }
     
 }
@@ -60,6 +63,19 @@ extension SharedCollectionItemsViewController {
     
     private func bind() {
         
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.bindTableView()
+                self.bindUpdateTitleheaderViewByScroll(with: self.viewModel.collectionTitle)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.rx.viewDidAppear
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.viewDidAppear()
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -69,17 +85,17 @@ extension SharedCollectionItemsViewController: UITableViewDelegate {
         
         self.dataSource = self.makeCollectionViewDataSource()
         
-//        self.viewModel.sections
-//            .map { $0.map{ .init(model: $0.type.rawValue, items: $0.cellViewModels ) } }
-//            .asDriver(onErrorDriveWith: .never())
-//            .drive(self.tableView.rx.items(dataSource: self.dataSource))
-//            .disposed(by: self.disposeBag)
-//
-//        self.tableView.rx.modelSelected(CVM.self)
-//            .subscribe(onNext: { [weak self] model in
-//                self?.viewModel.openItem(model.uid)
-//            })
-//            .disposed(by: self.disposeBag)
+        self.viewModel.sections
+            .map { $0.map{ .init(model: $0.type.rawValue, items: $0.cellViewModels ) } }
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.tableView.rx.items(dataSource: self.dataSource))
+            .disposed(by: self.disposeBag)
+
+        self.tableView.rx.modelSelected(CVM.self)
+            .subscribe(onNext: { [weak self] model in
+                self?.viewModel.openItem(model.uid)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func makeCollectionViewDataSource() -> DataSource {
@@ -104,13 +120,13 @@ extension SharedCollectionItemsViewController: UITableViewDelegate {
             case let link as SharedLinkCellViewModel where link.isShrink == false:
                 let cell: SharedLinkExpandCell = tableView.dequeueCell()
                 cell.setupCell(link)
-//                cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid), customTitle: link.customName)
+                cell.bindPreview(self.viewModel.linkPreview(for: link.uid), customTitle: link.customName)
                 return cell
                 
             case let link as SharedLinkCellViewModel where link.isShrink == true:
                 let cell: SharedShrinkLinkCell = tableView.dequeueCell()
                 cell.setupCell(link)
-//                cell.bindPreview(self.viewModel.readLinkPreview(for: link.uid), customTitle: link.customName)
+                cell.bindPreview(self.viewModel.linkPreview(for: link.uid), customTitle: link.customName)
                 return cell
 
             default: return UITableViewCell()

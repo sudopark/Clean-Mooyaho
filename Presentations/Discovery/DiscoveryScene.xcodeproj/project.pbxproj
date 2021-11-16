@@ -27,6 +27,7 @@
 		F6ED41EC2743F40B0082DE18 /* SharedCollectionItemsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41E72743F40B0082DE18 /* SharedCollectionItemsScene.swift */; };
 		F6ED41ED2743F40B0082DE18 /* SharedCollectionItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41E82743F40B0082DE18 /* SharedCollectionItemsViewModel.swift */; };
 		F6ED41F12743F5870082DE18 /* SharedCollectionViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F02743F5870082DE18 /* SharedCollectionViews.swift */; };
+		F6ED41FA274415D80082DE18 /* SharedCollectionItemsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F8274415B40082DE18 /* SharedCollectionItemsViewModelTests.swift */; };
 		F6F65633274048CE0069F253 /* DiscoveryMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */; };
 		F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */; };
 		F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */; };
@@ -65,6 +66,7 @@
 		F6ED41E72743F40B0082DE18 /* SharedCollectionItemsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsScene.swift; sourceTree = "<group>"; };
 		F6ED41E82743F40B0082DE18 /* SharedCollectionItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsViewModel.swift; sourceTree = "<group>"; };
 		F6ED41F02743F5870082DE18 /* SharedCollectionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionViews.swift; sourceTree = "<group>"; };
+		F6ED41F8274415B40082DE18 /* SharedCollectionItemsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionItemsViewModelTests.swift; sourceTree = "<group>"; };
 		F6F6562E274048CE0069F253 /* DiscoveryMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainRouter.swift; sourceTree = "<group>"; };
 		F6F6562F274048CE0069F253 /* DiscoveryMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewController.swift; sourceTree = "<group>"; };
 		F6F65631274048CE0069F253 /* DiscoveryMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainScene.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				F612E462273F8D9B000076AF /* DiscoveryTests.swift */,
 				F6ACA11E274222DF0015C632 /* DiscoveryMainViewModelTests.swift */,
 				F6D8FBFB274366BB0096B186 /* StopShareCollectionViewModelTests.swift */,
+				F6ED41F8274415B40082DE18 /* SharedCollectionItemsViewModelTests.swift */,
 			);
 			path = DiscoveryTests;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6ED41FA274415D80082DE18 /* SharedCollectionItemsViewModelTests.swift in Sources */,
 				F6ACA11F274222DF0015C632 /* DiscoveryMainViewModelTests.swift in Sources */,
 				F612E463273F8D9B000076AF /* DiscoveryTests.swift in Sources */,
 				F6D8FBFE274366E40096B186 /* StopShareCollectionViewModelTests.swift in Sources */,
