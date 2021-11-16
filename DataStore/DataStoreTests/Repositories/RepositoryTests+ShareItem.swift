@@ -198,6 +198,21 @@ extension RepositoryTests_ShareItem {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testRepository_loadSharedCollectionSubItems() {
+        // given
+        let expect = expectation(description: "공유받은 콜렉션 서브 아이템 로드")
+        self.mockRemote.register(key: "requestLoadSharedCollectionSubItems") {
+            Maybe<[SharedReadItem]>.just([SharedReadCollection(shareID: "some", collection: .init(name: "name"))])
+        }
+        
+        // when
+        let loading = self.repository.requestLoadSharedCollectionSubItems(collectionID: "some")
+        let items = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.isNotEmpty, true)
+    }
 }
 
 

@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestLoadSharedCollectionSubItems(for collectionID: String) -> Maybe<[SharedReadItem]> {
+        return .empty()
+    }
+    
     func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
         return .empty()
     }

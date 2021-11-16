@@ -48,6 +48,7 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.stopShareItemResult %~ { shouldFailStopShare ? .failure(ApplicationErrors.invalid) : $0 }
             |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
             |> \.loadMySharingCollectionIDsResults .~ sharingCollectionIDs
+        
         return ShareItemUsecaseImple(shareURLScheme: "readminds",
                                      shareRepository: repository,
                                      authInfoProvider: dataStore,
@@ -309,5 +310,18 @@ extension ShareItemUsecaseTests {
             [self.dummySharedCollection.uid, SharedReadCollection.dummy(1).uid]
             ]
         )
+    }
+    
+    func testUsecase_loadSharedCollectionSubItems() {
+        // given
+        let expect = expectation(description: "공유받은 콜렉션 서브아이템 로드")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let loading = usecase.loadSharedCollectionSubItems(collectionID: "some")
+        let items = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.isNotEmpty, true)
     }
 }

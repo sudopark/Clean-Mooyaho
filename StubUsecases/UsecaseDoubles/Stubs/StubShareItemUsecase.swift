@@ -24,6 +24,9 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         public var mySharingCollectionIDs: [[String]] = []
         public var mySharingCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
         public var loadSharedColectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
+        public var loadSharedCollectionSubItemsResult: Result<[SharedReadItem], Error> = .success([
+            SharedReadCollection.dummySubCollection(0), SharedReadLink.dummy(1)
+        ])
         
         public init() {}
     }
@@ -83,5 +86,9 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
     
     public func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection> {
         return self.scenario.mySharingCollectionResult.asMaybe().asObservable()
+    }
+    
+    public func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]> {
+        return self.scenario.loadSharedCollectionSubItemsResult.asMaybe()
     }
 }

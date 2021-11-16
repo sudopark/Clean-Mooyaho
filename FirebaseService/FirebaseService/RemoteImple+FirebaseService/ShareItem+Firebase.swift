@@ -141,6 +141,15 @@ extension FirebaseServiceImple {
             .flatMap(thenLoadCollection)
     }
     
+    public func requestLoadSharedCollectionSubItems(for collectionID: String) -> Maybe<[SharedReadItem]> {
+        let loadItems: Maybe<[ReadItem]> = self.requestLoadCollectionItems(collectionID: collectionID)
+        let asSharedItems: ([ReadItem]) -> [SharedReadItem] = { items in
+            return items.compactMap { $0.asSharedSubItem() }
+        }
+        return loadItems
+            .map(asSharedItems)
+    }
+    
     private func loadMatchingSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
         guard shareIDs.isNotEmpty else { return .just([]) }
         let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
@@ -200,5 +209,20 @@ private extension Array where Element == ReadCollection {
             return .init(shareID: shareID, collection: collection)
         }
         return self.compactMap(transform)
+    }
+}
+
+private extension ReadItem {
+    
+    func asSharedSubItem() -> SharedReadItem? {
+        switch self {
+        case let collection as ReadCollection:
+            return SharedReadCollection(subCollection: collection)
+            
+        case let link as ReadLink:
+            return SharedReadLink(link: link)
+            
+        default: return nil
+        }
     }
 }
