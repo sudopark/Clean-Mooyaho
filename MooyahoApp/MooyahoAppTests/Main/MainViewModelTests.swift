@@ -302,6 +302,11 @@ extension MainViewModelTests {
         func alertError(_ error: Error) {
             self.didAlertError = true
         }
+        
+        var didShowSharedCollection: SharedReadCollection?
+        func showSharedCollection(_ collection: SharedReadCollection) {
+            self.didShowSharedCollection = collection
+        }
     }
     
     class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {

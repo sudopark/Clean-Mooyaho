@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
@@ -18,6 +19,7 @@ import CommonPresenting
 
 public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable {
     
+    func showSharedReadCollection(_ collection: SharedReadCollection)
 }
 
 public protocol MainScene: Scenable {

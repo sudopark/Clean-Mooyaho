@@ -15,13 +15,17 @@ import Optics
 
 public final class ShareItemUsecaseImple: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionHandleUsecase {
     
+    private let shareURLScheme: String
     private let shareRepository: ShareItemRepository
     private let authInfoProvider: AuthInfoProvider
     private let sharedDataService: SharedDataStoreService
     
-    public init(shareRepository: ShareItemRepository,
+    public init(shareURLScheme: String,
+                shareRepository: ShareItemRepository,
                 authInfoProvider: AuthInfoProvider,
                 sharedDataService: SharedDataStoreService) {
+        
+        self.shareURLScheme = shareURLScheme
         self.shareRepository = shareRepository
         self.authInfoProvider = authInfoProvider
         self.sharedDataService = sharedDataService
@@ -133,6 +137,10 @@ extension ShareItemUsecaseImple {
 
 extension ShareItemUsecaseImple {
     
+    public func canHandleURL(_ url: URL) -> Bool {
+        guard self.parseSharedCollectionURL(url) != nil else { return false }
+        return true
+    }
     
     public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {
         guard let shareID = self.parseSharedCollectionURL(sharedURL) else { return .empty() }
@@ -147,6 +155,7 @@ extension ShareItemUsecaseImple {
     
     private func parseSharedCollectionURL(_ url: URL) -> String? {
         guard let compomnents = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              compomnents.scheme == self.shareURLScheme,
               let host = compomnents.host, host == SharedReadCollection.shareHost,
               compomnents.path == "/\(SharedReadCollection.sharePath)",
               let queries = compomnents.queryItems?.asQueryDict()

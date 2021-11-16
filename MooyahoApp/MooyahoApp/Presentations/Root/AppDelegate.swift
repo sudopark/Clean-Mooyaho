@@ -26,7 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.dependencyInjector = DependencyInjector()
         let router = ApplicationRootRouter(nextSceneBuilders: self.dependencyInjector)
         let usecase = self.dependencyInjector.applicationUsecase
+        let shareUsecase = self.dependencyInjector.shareItemUsecase
         self.applicationViewModel = ApplicationViewModelImple(applicationUsecase: usecase,
+                                                              shareCollectionHandleUsecase: shareUsecase,
                                                               firebaseService: self.dependencyInjector.firebaseService,
                                                               fcmService: self.dependencyInjector.fcmService,
                                                               kakaoService: self.dependencyInjector.shared.kakaoService,

@@ -43,19 +43,17 @@ struct SharedInbox: Equatable {
     
     func insertSharing(_ id: String) -> SharedInbox {
         return self
-            |> \.sharingCollectionIDs %~ { $0.removedAll(id: id) }
-            |> \.sharingCollectionIDs %~ { [id] + $0 }
+            |> \.sharingCollectionIDs %~ { [id] + $0.filter { $0 != id } }
     }
     
     func removedSharing(_ id: String) -> SharedInbox {
         return self
-            |> \.sharingCollectionIDs %~ { $0.removedAll(id: id) }
+            |> \.sharingCollectionIDs %~ { $0.filter { $0 != id} }
     }
     
     func insertShared(_ id: String) -> SharedInbox {
         return self
-            |> \.sharedIDs %~ { $0.removedAll(id: id) }
-            |> \.sharedIDs %~ { [id] + $0 }
+            |> \.sharedIDs %~ { [id] + $0.filter { $0 != id } }
     }
 }
 
@@ -111,15 +109,5 @@ extension SharedInbox: DocumentMappable {
             Key.shared.rawValue: self.sharedIDs
         ]
         return (self.ownerID, json)
-    }
-}
-
-
-private extension Array where Element == String {
-    
-    func removedAll(id: String) -> Array {
-        var sender = self
-        sender.removeAll(where: { $0 == id })
-        return sender
     }
 }

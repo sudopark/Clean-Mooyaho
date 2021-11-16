@@ -48,7 +48,8 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.stopShareItemResult %~ { shouldFailStopShare ? .failure(ApplicationErrors.invalid) : $0 }
             |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
             |> \.loadMySharingCollectionIDsResults .~ sharingCollectionIDs
-        return ShareItemUsecaseImple(shareRepository: repository,
+        return ShareItemUsecaseImple(shareURLScheme: "readminds",
+                                     shareRepository: repository,
                                      authInfoProvider: dataStore,
                                      sharedDataService: dataStore)
     }
