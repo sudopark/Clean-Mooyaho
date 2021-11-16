@@ -112,9 +112,33 @@ extension FirebaseServiceImple {
             self?.updateInbox(for: memberID) { $0.insertShared(collection.shareID) }
         }
         
-        return self.loadMatchingSharedCollections(by: [memberID])
+        return self.loadMatchingSharedCollections(by: [shareID])
             .map(emptyThenError)
             .do(onNext: updateInbox)
+    }
+    
+    public func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        
+        let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
+        let query = collectionRef
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+            .whereField(Key.collectionID.rawValue, isEqualTo: collectionID)
+        let loadIndex: Maybe<[SharingCollectionIndex]> = self.load(query: query)
+        
+        let thenLoadCollection: (SharingCollectionIndex?) -> Maybe<SharedReadCollection> = { [weak self] index in
+            guard let self = self else { return .empty() }
+            guard let index = index else { return .error(ApplicationErrors.notFound) }
+            return self.requestLoadCollection(collectionID: collectionID)
+                .map { SharedReadCollection(shareID: index.shareID, collection: $0) }
+        }
+        
+        return loadIndex
+            .map { $0.first }
+            .flatMap(thenLoadCollection)
     }
     
     private func loadMatchingSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {

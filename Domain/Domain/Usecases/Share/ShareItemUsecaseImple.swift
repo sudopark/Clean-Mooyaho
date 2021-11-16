@@ -108,7 +108,23 @@ extension ShareItemUsecaseImple {
     }
     
     public func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection> {
-        return .empty()
+        
+        let datKey = SharedDataKeys.mySharingCollectionMap
+        let prefetched = self.sharedDataService.fetch([String: SharedReadCollection].self, key: datKey)?[collectionID]
+        
+        let updateStore: (SharedReadCollection) -> Void = { [weak self] collection in
+            self?.sharedDataService.update([String: SharedReadCollection].self, key: datKey.rawValue) {
+                ($0 ?? [:]) |> key(collectionID) .~ collection
+            }
+        }
+        
+        let refreshCollection = self.shareRepository.requestLoadMySharingCollection(collectionID)
+            .do(onNext: updateStore)
+            .mapAsOptional().asObservable()
+        
+        return refreshCollection
+            .startWith(prefetched)
+            .compactMap { $0 }
     }
 }
 

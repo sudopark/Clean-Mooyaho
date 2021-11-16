@@ -41,4 +41,8 @@ class StubShareItemRepository: ShareItemRepository {
         let first = self.loadMySharingCollectionIDsResults.removeFirst()
         return .just(first)
     }
+    
+    func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        return .just(.dummy(0))
+    }
 }

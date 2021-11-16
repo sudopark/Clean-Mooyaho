@@ -18,4 +18,8 @@ public protocol SharedReadCollectionLoadUsecase {
     var lastestSharedReadCollections: Observable<[SharedReadCollection]> { get }
     
     func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection>
+    
+//    func loadSharedCollection(shareID: String) -> Maybe<SharedReadCollection>
+    
+//    func loadSharedCollectionSubItems(collectionID: String) -> Ma
 }
