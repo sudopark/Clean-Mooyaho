@@ -45,4 +45,9 @@ class StubShareItemRepository: ShareItemRepository {
     func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
         return .just(.dummy(0))
     }
+    
+    var loadSharedSubCollectionItemsResult: Result<[SharedReadItem], Error> = .success([SharedReadCollection.dummy(0)])
+    func requestLoadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]> {
+        return loadSharedSubCollectionItemsResult.asMaybe()
+    }
 }

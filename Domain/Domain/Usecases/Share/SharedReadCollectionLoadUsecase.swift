@@ -21,5 +21,5 @@ public protocol SharedReadCollectionLoadUsecase {
     
 //    func loadSharedCollection(shareID: String) -> Maybe<SharedReadCollection>
     
-//    func loadSharedCollectionSubItems(collectionID: String) -> Ma
+    func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]>
 }

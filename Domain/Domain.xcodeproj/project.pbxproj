@@ -151,6 +151,7 @@
 		F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3F60626497C3000DD4986 /* RegisterNewPlaceUsecase.swift */; };
 		F6E3F6092649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3F6082649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift */; };
 		F6E3F60B264983E900DD4986 /* Location+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3F60A264983E900DD4986 /* Location+Extension.swift */; };
+		F6ED41F7274401D90082DE18 /* SharedReadLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F6274401D90082DE18 /* SharedReadLink.swift */; };
 		F6F29591266D136200CDF980 /* FileHandleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F29590266D136200CDF980 /* FileHandleService.swift */; };
 /* End PBXBuildFile section */
 
@@ -315,6 +316,7 @@
 		F6E3F60626497C3000DD4986 /* RegisterNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceUsecase.swift; sourceTree = "<group>"; };
 		F6E3F6082649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewPlaceUsecaseTests.swift; sourceTree = "<group>"; };
 		F6E3F60A264983E900DD4986 /* Location+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extension.swift"; sourceTree = "<group>"; };
+		F6ED41F6274401D90082DE18 /* SharedReadLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedReadLink.swift; sourceTree = "<group>"; };
 		F6F29590266D136200CDF980 /* FileHandleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -726,6 +728,7 @@
 				F6913EFC26EE54D500C6E105 /* ReadLink.swift */,
 				F6913EEC26EC637000C6E105 /* ReadCollection.swift */,
 				F612BDDF2740664E0017FD77 /* SharedReadCollection.swift */,
+				F6ED41F6274401D90082DE18 /* SharedReadLink.swift */,
 			);
 			path = ReadingItems;
 			sourceTree = "<group>";
@@ -927,6 +930,7 @@
 				F6C1C8D827255579007277A5 /* ReadLinkMemoUsecase.swift in Sources */,
 				F6152930264D9DB4003BCB59 /* Hooray.swift in Sources */,
 				2B4FD2382632946000A99624 /* Expression+Extensions.swift in Sources */,
+				F6ED41F7274401D90082DE18 /* SharedReadLink.swift in Sources */,
 				F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */,
 				2BFF240626405A78008C52EB /* SuggestPlaceUsecase.swift in Sources */,
 				F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */,

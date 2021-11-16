@@ -165,4 +165,15 @@ extension SharedReadCollection {
                                     lastUpdated: TimeInterval(int))
             |> \.ownerID .~ "some:\(int)"
     }
+    
+    public static func dummySubCollection(_ int: Int) -> SharedReadCollection {
+        return .init(subCollection: .dummy(int))
+    }
+}
+
+extension SharedReadLink {
+    
+    public static func dummy(_ int: Int) -> SharedReadLink {
+        return SharedReadLink(link: .dummy(int))
+    }
 }

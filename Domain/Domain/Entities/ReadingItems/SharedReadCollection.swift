@@ -8,8 +8,21 @@
 
 import Foundation
 
+public protocol SharedReadItem: ReadItem { }
 
-public struct SharedReadCollection: ReadItem {
+extension SharedReadItem {
+    
+    public var priority: ReadPriority? {
+        get { nil } set { }
+    }
+    
+    public var remindTime: TimeStamp? {
+        get { nil } set { }
+    }
+}
+
+
+public struct SharedReadCollection: SharedReadItem {
     
     public let shareID: String
     public let uid: String
@@ -19,8 +32,6 @@ public struct SharedReadCollection: ReadItem {
     public var parentID: String?
     public let createdAt: TimeStamp
     public var lastUpdatedAt: TimeStamp
-    public var priority: ReadPriority? = nil
-    public var remindTime: TimeStamp? = nil
     public var categoryIDs: [String] = []
     
     public static var shareHost: String { "share" }
@@ -41,6 +52,10 @@ public struct SharedReadCollection: ReadItem {
         self.createdAt = collection.createdAt
         self.lastUpdatedAt = collection.lastUpdatedAt
         self.categoryIDs = collection.categoryIDs
+    }
+    
+    public init(subCollection collection: ReadCollection) {
+        self.init(shareID: "", collection: collection)
     }
     
     public init(shareID: String, uid: String, name: String,

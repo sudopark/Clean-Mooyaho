@@ -130,6 +130,9 @@ extension ShareItemUsecaseImple {
             .startWith(prefetched)
             .compactMap { $0 }
     }
+    public func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]> {
+        return self.shareRepository.requestLoadSharedCollectionSubItems(collectionID: collectionID)
+    }
 }
 
 
