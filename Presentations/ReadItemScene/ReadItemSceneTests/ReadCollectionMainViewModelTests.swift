@@ -85,4 +85,8 @@ extension ReadCollectionMainViewModelTests: ReadCollectionMainRouting {
     func addNewReadLinkItemAtCurrentCollection() {
         self.didMoveToAddNewLink = true
     }
+    
+    func switchToMyReadCollection() { }
+    
+    func switchToSharedCollection(root: SharedReadCollection) { }
 }

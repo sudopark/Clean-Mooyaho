@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -27,12 +28,16 @@ public protocol ReadCollectionMainRouting: Routing {
     func addNewReadLinkItemAtCurrentCollection()
     
     func addNewReadLinkItem(using url: String)
+    
+    func switchToMyReadCollection()
+    
+    func switchToSharedCollection(root: SharedReadCollection)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ReadCollectionMainRouterBuildables = ReadCollectionItemSceneBuilable
+public typealias ReadCollectionMainRouterBuildables = ReadCollectionItemSceneBuilable & SharedCollectionItemsSceneBuilable
 
 public final class ReadCollectionMainRouter: Router<ReadCollectionMainRouterBuildables>, ReadCollectionMainRouting  {
     
@@ -52,6 +57,22 @@ extension ReadCollectionMainRouter {
         }
         
         current.viewControllers = [nextScene]
+    }
+    
+    public func switchToSharedCollection(root: SharedReadCollection) {
+        guard let current = self.currentScene as? UINavigationController,
+              let sharedRoot = self.nextScenesBuilder?
+                .makeSharedCollectionItemsScene(currentCollection: root,
+                                                listener: nil,
+                                                navigationListener: self.navigationListener)
+        else {
+            return
+        }
+        current.viewControllers = [sharedRoot]
+    }
+    
+    public func switchToMyReadCollection() {
+        self.setupSubCollections()
     }
     
     public func addNewColelctionAtCurrentCollection() {
