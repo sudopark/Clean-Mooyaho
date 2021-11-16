@@ -26,3 +26,18 @@ public protocol DiscoveryMainScene: Scenable {
     
     var interactor: DiscoveryMainSceneInteractable? { get }
 }
+
+
+// MARK: - StopShareCollectionScene Interactable & Listenable
+
+public protocol StopShareCollectionSceneInteractable { }
+
+public protocol StopShareCollectionSceneListenable: AnyObject { }
+
+
+// MARK: - StopShareCollectionScene
+
+public protocol StopShareCollectionScene: Scenable {
+    
+    var interactor: StopShareCollectionSceneInteractable? { get }
+}

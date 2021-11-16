@@ -22,6 +22,7 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         public var stopShareResult: Result<Void, Error> = .success(())
         public var latestCollections: [[SharedReadCollection]] = []
         public var mySharingCollectionIDs: [[String]] = []
+        public var mySharingCollectionResult: Result<SharedReadCollection, Error> = .success(.dummy(0))
         
         public init() {}
     }
@@ -73,5 +74,9 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
     private let fakeSharingCollectionIDs = BehaviorRelay<[String]>(value: [])
     public var mySharingCollectionIDs: Observable<[String]> {
         return self.fakeSharingCollectionIDs.asObservable()
+    }
+    
+    public func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection> {
+        return self.scenario.mySharingCollectionResult.asMaybe().asObservable()
     }
 }

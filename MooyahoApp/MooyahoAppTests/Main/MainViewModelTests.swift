@@ -227,7 +227,7 @@ extension MainViewModelTests {
         XCTAssertEqual(status, [.activable, .activated])
     }
     
-    func testViewModel_whenRequestStopShare_askConfimr() {
+    func testViewModel_whenSharingCollection_showCollectionInfo() {
         // given
         self.stubShareUsecase.refreshMySharingColletionIDs()
         self.viewModel.readCollection(didChange: .myCollections)
@@ -238,7 +238,7 @@ extension MainViewModelTests {
         self.viewModel.toggleShareStatus()
         
         // then
-        XCTAssertNotNil(self.spyRouter.didAlertConfirm)
+        XCTAssertNotNil(self.spyRouter.didShowSharingCollectionInfo)
     }
 }
 
@@ -279,12 +279,6 @@ extension MainViewModelTests {
             self.verify(key: "presentEditProfileScene")
         }
         
-        var didAlertConfirm: AlertForm?
-        func alertForConfirm(_ form: AlertForm) {
-            self.verify(key: "alertForConfirm")
-            self.didAlertConfirm = form
-        }
-        
         func alertShouldWaitPublishNewHooray(_ until: TimeStamp) {
             self.verify(key: "alertShouldWaitPublishNewHooray")
         }
@@ -297,6 +291,11 @@ extension MainViewModelTests {
         var didSharedURL: String?
         func presentShareSheet(with url: String) {
             self.didSharedURL = url
+        }
+        
+        var didShowSharingCollectionInfo = false
+        func showSharingCollectionInfo(_ collectionID: String) {
+            self.didShowSharingCollectionInfo = true
         }
         
         var didAlertError = false

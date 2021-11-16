@@ -106,6 +106,10 @@ extension ShareItemUsecaseImple {
             .observeWithCache([SharedReadCollection].self, key: datKey)
             .map { $0 ?? [] }
     }
+    
+    public func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection> {
+        return .empty()
+    }
 }
 
 

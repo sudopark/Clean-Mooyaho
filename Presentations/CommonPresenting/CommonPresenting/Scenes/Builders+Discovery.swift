@@ -16,3 +16,12 @@ public protocol DiscoveryMainSceneBuilable {
                                 listener: DiscoveryMainSceneListenable?,
                                 collectionMainInteractor: ReadCollectionMainSceneInteractable?) -> DiscoveryMainScene
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol StopShareCollectionSceneBuilable {
+    
+    func makeStopShareCollectionScene(_ collectionID: String,
+                                      listener: StopShareCollectionSceneListenable?) -> StopShareCollectionScene
+}

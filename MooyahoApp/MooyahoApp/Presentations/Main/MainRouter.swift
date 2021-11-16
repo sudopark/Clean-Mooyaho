@@ -40,6 +40,8 @@ public protocol MainRouting: Routing {
     func askAddNewitemType(_ completed: @escaping (Bool) -> Void)
     
     func presentShareSheet(with url: String)
+    
+    func showSharingCollectionInfo(_ collectionID: String)
 }
 
 // MARK: - Routers
@@ -48,7 +50,7 @@ public protocol MainRouting: Routing {
 public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & SignInSceneBuilable & EditProfileSceneBuilable
     & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
-    & WaitMigrationSceneBuilable
+    & WaitMigrationSceneBuilable & StopShareCollectionSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -153,8 +155,17 @@ extension MainRouter {
     }
     
     public func presentShareSheet(with url: String) {
-        
+        guard let url = URL(string: url) else { return }
         let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         self.currentScene?.present(activity, animated: true, completion: nil)
+    }
+    
+    public func showSharingCollectionInfo(_ collectionID: String) {
+        guard let next = self.nextScenesBuilder?
+                .makeStopShareCollectionScene(collectionID, listener: nil)
+        else {
+            return
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

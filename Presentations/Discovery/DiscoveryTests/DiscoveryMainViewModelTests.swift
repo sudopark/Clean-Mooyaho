@@ -46,8 +46,9 @@ class DiscoveryMainViewModelTests: BaseTestCase, WaitObservableEvents {
                                isEmptyList: Bool = false,
                                isSignIn: Bool = true) -> DiscoveryMainViewModel {
         
+        let dummies = self.dummyCollections
         let scenario = StubShareItemUsecase.Scenario()
-            |> \.latestCollections .~ (isEmptyList ? [] :  [self.dummyCollections])
+            |> \.latestCollections .~ (isEmptyList ? [] :  [dummies])
         let usecase = StubShareItemUsecase(scenario: scenario)
         
         let owners = dummyCollections.compactMap { $0.ownerID }
