@@ -135,7 +135,16 @@ extension ShareItemUsecaseImple {
     }
     
     public func removeFromSharedList(shareID: String) -> Maybe<Void> {
-        return .empty()
+        
+        let removeFromSharedLatestsCollection: () -> Void = { [weak self] in
+            let datKey = SharedDataKeys.latestSharedCollections.rawValue
+            self?.sharedDataService.update([SharedReadCollection].self, key: datKey) {
+                return ($0 ?? []).filter { $0.shareID != shareID }
+            }
+        }
+        // remove
+        return self.shareRepository.requestRemoveFromSharedList(shareID)
+            .do(onNext: removeFromSharedLatestsCollection)
     }
 }
 

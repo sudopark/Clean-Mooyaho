@@ -264,4 +264,8 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     func requestLoadSharedCollectionSubItems(for collectionID: String) -> Maybe<[SharedReadItem]> {
         return self.resolve(key: "requestLoadSharedCollectionSubItems") ?? .empty()
     }
+    
+    func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
+        return self.resolve(key: "requestLoadSharedCollectionSubItems") ?? .empty()
+    }
 }

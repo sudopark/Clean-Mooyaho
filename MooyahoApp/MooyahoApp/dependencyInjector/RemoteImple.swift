@@ -273,4 +273,8 @@ extension RemoteImple {
     func requestLoadSharedCollectionSubItems(for collectionID: String) -> Maybe<[SharedReadItem]> {
         return self.firebaseRemote.requestLoadSharedCollectionSubItems(for: collectionID)
     }
+    
+    func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
+        return self.firebaseRemote.requestRemoveSharedCollection(shareID: shareID)
+    }
 }

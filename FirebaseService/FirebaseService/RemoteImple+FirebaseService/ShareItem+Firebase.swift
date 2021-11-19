@@ -174,6 +174,13 @@ extension FirebaseServiceImple {
         let collections: Maybe<[ReadCollection]> = self.load(query: query)
         return collections.map { $0.asSharedCollection(with: collectionIDIndexMap) }
     }
+    
+    public func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        return self.updateInboxAction(for: memberID) { $0.removedShared(shareID) }
+    }
 }
 
 
@@ -183,16 +190,21 @@ private extension FirebaseServiceImple {
 
     private func updateInbox(for ownerID: String, _ mutating: @escaping (SharedInbox) -> SharedInbox) {
         
+        self.updateInboxAction(for: ownerID, mutating)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateInboxAction(for ownerID: String,
+                                   _ mutating: @escaping (SharedInbox) -> SharedInbox) -> Maybe<Void> {
         let loadOrMakeInbox = self.loadMyInbox(for: ownerID).map { $0 ?? SharedInbox(ownerID: ownerID) }
         let thenUpdateInbox: (SharedInbox) -> Maybe<Void> = { [weak self] inbox in
             guard let self = self else { return .empty() }
             let newInbox = mutating(inbox)
             return self.save(newInbox, at: .sharedInbox)
         }
-        loadOrMakeInbox
+        return loadOrMakeInbox
             .flatMap(thenUpdateInbox)
-            .subscribe()
-            .disposed(by: self.disposeBag)
     }
     
     private func loadMyInbox(for ownerID: String) -> Maybe<SharedInbox?> {

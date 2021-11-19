@@ -263,5 +263,10 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "updateMySharingItemIDs", with: ids)
         return .just()
     }
+    
+    func removeSharedCollection(shareID: String) -> Maybe<Void> {
+        self.verify(key: "removeSharedCollection")
+        return .just()
+    }
 }
 

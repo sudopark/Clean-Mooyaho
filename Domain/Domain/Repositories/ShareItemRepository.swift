@@ -26,4 +26,6 @@ public protocol ShareItemRepository {
     func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
     
     func requestLoadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]>
+    
+    func requestRemoveFromSharedList(_ sharedID: String) -> Maybe<Void>
 }

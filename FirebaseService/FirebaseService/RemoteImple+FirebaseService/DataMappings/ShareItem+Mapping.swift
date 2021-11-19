@@ -55,6 +55,11 @@ struct SharedInbox: Equatable {
         return self
             |> \.sharedIDs %~ { [id] + $0.filter { $0 != id } }
     }
+    
+    func removedShared(_ id: String) -> SharedInbox {
+        return self
+            |> \.sharedIDs %~ { $0.filter { $0 != id } }
+    }
 }
 
 
