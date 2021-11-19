@@ -95,6 +95,8 @@ public protocol DataModelStorage {
     func fetchMySharingItemIDs() -> Maybe<[String]>
     
     func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void>
+    
+    func removeSharedCollection(shareID: String) -> Maybe<Void>
 }
 
 
@@ -681,6 +683,12 @@ extension DataModelStorageImple {
         }
         return dropTable
             .flatMap(andUpdate)
+    }
+    
+    public func removeSharedCollection(shareID: String) -> Maybe<Void> {
+        let collections = SharedRootReadCollectionTable.self
+        let query = collections.delete().where { $0.shareID == shareID }
+        return self.sqliteService.rx.run { try $0.delete(collections, query: query) }
     }
 }
 

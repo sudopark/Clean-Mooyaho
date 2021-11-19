@@ -180,6 +180,8 @@ public protocol ShareItemLocalStorage {
     
     func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
     
+    func removeSharedCollection(shareID: String) -> Maybe<Void>
+    
     func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void>
     
     func fetchMySharingItemIDs() -> Maybe<[String]>

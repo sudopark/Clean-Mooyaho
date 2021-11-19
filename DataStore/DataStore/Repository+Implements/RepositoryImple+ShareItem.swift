@@ -116,4 +116,16 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
     public func requestLoadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]> {
         return self.shareItemRemote.requestLoadSharedCollectionSubItems(for: collectionID)
     }
+    
+    public func requestRemoveFromSharedList(_ sharedID: String) -> Maybe<Void> {
+        
+        let thenRemoveFromLatestSharedCollectionCacheWithoutCache: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.shareItemLocal.removeSharedCollection(shareID: sharedID)
+                .catchAndReturn(())
+        }
+        
+        return self.shareItemRemote.requestRemoveSharedCollection(shareID: sharedID)
+            .flatMap(thenRemoveFromLatestSharedCollectionCacheWithoutCache)
+    }
 }

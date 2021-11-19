@@ -49,4 +49,11 @@ extension LocalStorageImple {
         }
         return storage.updateMySharingItemIDs(ids)
     }
+    
+    public func removeSharedCollection(shareID: String) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.removeSharedCollection(shareID: shareID)
+    }
 }

@@ -50,4 +50,9 @@ class StubShareItemRepository: ShareItemRepository {
     func requestLoadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]> {
         return loadSharedSubCollectionItemsResult.asMaybe()
     }
+    
+    var removeFromSharedListResult: Result<Void, Error> = .success(())
+    func requestRemoveFromSharedList(_ sharedID: String) -> Maybe<Void> {
+        return self.removeFromSharedListResult.asMaybe()
+    }
 }

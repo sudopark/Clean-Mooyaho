@@ -83,4 +83,23 @@ extension LocalStorageTests_ShareCollection {
         // then
         XCTAssertEqual(ids, ["new"])
     }
+    
+    func testStorage_removeLatestSharedCollection() {
+        // given
+        let expect = expectation(description: "공유받은 콜렉션 목록에서 아이템 삭제")
+        let dummies = [self.dummyCollection(for: 1), self.dummyCollection(for: 2), self.dummyCollection(for: 3)]
+        let target = dummies[1]
+        
+        // when
+        let save = self.local.replaceLastSharedCollections(dummies)
+        let remove = self.local.removeSharedCollection(shareID: target.shareID)
+        let load = self.local.fetchLatestSharedCollections()
+        let saveRemoveAndLoad = save.flatMap { remove }.flatMap { load }
+        let collections = self.waitFirstElement(expect, for: saveRemoveAndLoad.asObservable())
+        
+        // then
+        let isRemoved = collections?.contains(where: { $0.shareID == target.shareID }) == false
+        XCTAssertEqual(collections?.count, 2)
+        XCTAssertEqual(isRemoved, true)
+    }
 }

@@ -218,6 +218,40 @@ extension RepositoryTests_ShareItem {
 
 extension RepositoryTests_ShareItem {
     
+    func testRepository_removeSharedCollectionFromList() {
+        // given
+        let expect = expectation(description: "공유받은 콜렉션 목록에서 제거")
+        self.mockRemote.register(key: "requestLoadSharedCollectionSubItems") { Maybe<Void>.just() }
+        
+        // when
+        let removing = self.repository.requestRemoveFromSharedList("some")
+        let result: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepository_whenRemoveSharedCollection_alsoRemoveFromCache() {
+        let expect = expectation(description: "공유받은 콜렉션 목록에서 제거시에 케시에서도 삭제")
+        self.mockRemote.register(key: "requestLoadSharedCollectionSubItems") { Maybe<Void>.just() }
+
+        self.mockLocal.called(key: "removeSharedCollection") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestRemoveFromSharedList("some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
+
+extension RepositoryTests_ShareItem {
+    
     class Repository: ShareItemRepository, ShareItemReposiotryDefImpleDependency {
         
         let disposeBag: DisposeBag = .init()

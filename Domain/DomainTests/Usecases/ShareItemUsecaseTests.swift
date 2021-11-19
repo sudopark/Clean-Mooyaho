@@ -37,7 +37,8 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     private func makeUsecase(shouldFailShare: Bool = false,
                              shouldFailStopShare: Bool = false,
                              shouldFailLoadSharedItem: Bool = false,
-                             sharingCollectionIDs: [[String]] = []) -> ShareItemUsecaseImple {
+                             sharingCollectionIDs: [[String]] = [],
+                             latestSharedCollections: [SharedReadCollection] = []) -> ShareItemUsecaseImple {
         
         let dataStore = SharedDataStoreServiceImple()
         dataStore.save(Member.self, key: .currentMember, Member(uid: "some", nickName: nil, icon: nil))
@@ -48,6 +49,7 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.stopShareItemResult %~ { shouldFailStopShare ? .failure(ApplicationErrors.invalid) : $0 }
             |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
             |> \.loadMySharingCollectionIDsResults .~ sharingCollectionIDs
+            |> \.latestSharedCollections .~ pure(latestSharedCollections)
         
         return ShareItemUsecaseImple(shareURLScheme: "readminds",
                                      shareRepository: repository,
@@ -323,5 +325,40 @@ extension ShareItemUsecaseTests {
         
         // then
         XCTAssertEqual(items?.isNotEmpty, true)
+    }
+    
+    func testUsecase_removeFromSharedList() {
+        // given
+        let expect = expectation(description: "공유받은 목록에서 제거")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let removing = usecase.removeFromSharedList(shareID: "some")
+        let result: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_whenAfterRemoveFromSharedList_alsoRemoveFromLatestSharedList() {
+        // given
+        let expect = expectation(description: "공유받은 목록에서 제거시 최근 로드목록 에서도 제거")
+        expect.expectedFulfillmentCount = 2
+        let dummy = SharedReadCollection.dummy(0)
+        let usecase = self.makeUsecase(latestSharedCollections: [dummy])
+        // when
+        let datKey = SharedDataKeys.latestSharedCollections.rawValue
+        let source = self.spySharedStore.observe([SharedReadCollection].self, key: datKey).compactMap { $0 }
+        let collectionLists = self.waitElements(expect, for: source) {
+            usecase.refreshLatestSharedReadCollection()
+            usecase.removeFromSharedList(shareID: dummy.shareID)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        let (oldCollections, newCollections) = (collectionLists.first, collectionLists.last)
+        XCTAssertEqual(oldCollections?.contains(where: { $0.shareID == dummy.shareID }), true)
+        XCTAssertEqual(newCollections?.contains(where: { $0.shareID == dummy.shareID }), false)
     }
 }
