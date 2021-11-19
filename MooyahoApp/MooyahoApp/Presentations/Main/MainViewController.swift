@@ -155,6 +155,11 @@ extension MainViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.isAvailToAddItem
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.mainView.addItemButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+        
         self.mainView.sharedRootCollectionView
             .bindOwnerInfo(self.viewModel.currentSharedCollectionOwnerInfo)
             .disposed(by: self.disposeBag)
@@ -171,6 +176,12 @@ extension MainViewController {
                 self?.viewModel.toggleShareStatus()
             })
             .disposed(by: self.disposeBag)
+        
+        self.mainView.exitButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindMemberProfileImage() {
@@ -184,7 +195,7 @@ extension MainViewController {
     
     private func updateIsShrinkModeOn(_ newValue: Bool) {
         self.mainView.shrinkButton.backgroundColor = newValue
-            ? self.uiContext.colors.secondaryAccentColor
+            ? self.uiContext.colors.accentColor
             : self.uiContext.colors.raw.lightGray
     }
 }

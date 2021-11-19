@@ -155,7 +155,6 @@ final class MainView: BaseUIView {
     // toolview for shared collection
     let sharedCoverView = UIView()
     let sharedRootCollectionView = SharedRootCollectionInfoView()
-    let favoriteButton = RoundImageButton()
     let exitButton = RoundImageButton()
     
     
@@ -192,9 +191,8 @@ final class MainView: BaseUIView {
             self.shareButton.isEnabled = true
             
         case .activated:
-            self.shareButton.backgroundColor = UIColor.systemPink
+            self.shareButton.backgroundColor = self.uiContext.colors.accentColor
             self.shareButton.isEnabled = true
-            
         }
     }
 }
@@ -245,15 +243,6 @@ extension MainView: Presenting {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
         addItemButton.setupLayout()
-        
-        self.bottomSlideContainerView.addSubview(favoriteButton)
-        favoriteButton.autoLayout.active(with: addItemButton) {
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
-            $0.heightAnchor.constraint(equalTo: $1.heightAnchor)
-        }
-        favoriteButton.setupLayout()
         
         self.bottomSlideContainerView.addSubview(shrinkButton)
         shrinkButton.autoLayout.active(with: addItemButton) {
@@ -342,9 +331,6 @@ extension MainView: Presenting {
         self.profileImageView.clipsToBounds = true
         
         self.addItemButton.setupButton("plus", color: self.uiContext.colors.buttonBlue)
-        
-        self.favoriteButton.setupButton("star", color: self.uiContext.colors.raw.lightGray)
-        self.favoriteButton.isHidden = true
         
         self.shareButton.setupButton("square.and.arrow.up", color: self.uiContext.colors.raw.lightGray)
         self.shareButton.isEnabled = false
