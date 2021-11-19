@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -242,12 +244,75 @@ extension MainViewModelTests {
     }
 }
 
+extension MainViewModelTests {
+    
+    func testViewModel_whenShowSharedCollection_unavailToAddItem() {
+        // given
+        let expect = expectation(description: "공유받은 아이템 조회시에는 아이템 추가 불가")
+        expect.expectedFulfillmentCount = 3
+        
+        // when
+        let isAvails = self.waitElements(expect, for: viewModel.isAvailToAddItem) {
+            self.viewModel.readCollection(didChange: .sharedCollection(.dummy(0)))
+            self.viewModel.readCollection(didChange: .myCollections)
+        }
+        
+        // then
+        XCTAssertEqual(isAvails, [true, false, true])
+    }
+    
+    func testViewModel_whenShowSharedCollection_provideShareOwnerInfo() {
+        // given
+        let expect = expectation(description: "공유받은 콜렉션 조회시에 공유자 정보 제공")
+        expect.expectedFulfillmentCount = 2
+        let dummy = SharedReadCollection.dummy(0) |> \.ownerID .~ "owner"
+        self.mockMemberUsecase.register(key: "members:for") {
+            return Observable<[String: Member]>.just(["owner": Member(uid: "owner", nickName: nil, icon: nil)])
+        }
+        
+        // when
+        let infos = self.waitElements(expect, for: self.viewModel.currentSharedCollectionOwnerInfo) {
+            self.viewModel.readCollection(didChange: .sharedCollection(dummy))
+        }
+        
+        // then
+        XCTAssertNil(infos.first ?? nil)
+        XCTAssertNotNil(infos.last ?? nil)
+    }
+    
+    func testViiewModel_returnToMyReadCollection() {
+        // given
+        let spyMainSceneInteractor = SpyReadCollectionMainInteractor()
+        self.spyRouter.spyCollectionMainSceneInput = spyMainSceneInteractor
+        self.viewModel.setupSubScenes()
+        self.viewModel.readCollection(didChange: .sharedCollection(.dummy(0)))
+        
+        // when
+        self.viewModel.returnToMyReadCollections()
+        
+        // then
+        XCTAssertEqual(spyMainSceneInteractor.didSwitchToMyCollectionRequested, true)
+    }
+    
+    func testViewModel_showSharedCollectionInfo() {
+        // given
+        self.viewModel.setupSubScenes()
+        self.viewModel.readCollection(didChange: .sharedCollection(.dummy(0)))
+        
+        // when
+        self.viewModel.showSharedCollectionDetail()
+        
+        // then
+        XCTAssertNotNil(self.spyRouter.didShowSharedCollection)
+    }
+}
+
 
 extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Mocking {
         
-        var spyCollectionMainSceneInput: SpyReadCollectionMainInput?
+        var spyCollectionMainSceneInput: SpyReadCollectionMainInteractor?
         
         var didSignInRequested = false
         func presentSignInScene() {
@@ -316,7 +381,7 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyReadCollectionMainInput: ReadCollectionMainSceneInteractable  {
+    class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable  {
         func switchToSharedCollection(_ collection: SharedReadCollection) { }
         
         var rootType: CollectionRoot { .myCollections }
@@ -333,7 +398,10 @@ extension MainViewModelTests {
             
         }
         
-        func switchToMyReadCollections() { }
+        var didSwitchToMyCollectionRequested = false
+        func switchToMyReadCollections() {
+            self.didSwitchToMyCollectionRequested = true
+        }
     }
     
     class FakeReadItemOptionUsecase: StubReadItemUsecase {

@@ -38,7 +38,7 @@ public final class RoundImageButton: BaseUIView {
     
     public var isEnabled = true {
         didSet {
-            self.tintColor = self.tintColor.withAlphaComponent(isEnabled ? 1.0 : 0.4)
+            self.backgroundColor = self.backgroundColor?.withAlphaComponent(isEnabled ? 1.0 : 0.4)
             self.button.isEnabled = isEnabled
         }
     }

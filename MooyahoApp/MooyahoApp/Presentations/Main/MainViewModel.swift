@@ -33,17 +33,16 @@ public protocol MainViewModel: AnyObject {
     func requestAddNewItemUsingURLInClipBoard()
     func toggleIsReadItemShrinkMode()
     func toggleShareStatus()
-    func toggleSharedCollectionFavorite()
     func showSharedCollectionDetail()
     func returnToMyReadCollections()
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
     var isReadItemShrinkModeOn: Observable<Bool> { get }
+    var isAvailToAddItem: Observable<Bool> { get }
     var showAddItemInUsingURLInClipBoard: Observable<String> { get }
     var currentCollectionRoot: Observable<CollectionRoot> { get }
     var shareStatus: Observable<ActivationStatus> { get }
-    var favoriteSharedCollectionStatus: Observable<ActivationStatus> { get }
     var currentSharedCollectionOwnerInfo: Observable<Member?> { get }
 }
 
@@ -211,16 +210,15 @@ extension MainViewModelImple {
         }
     }
     
-    public func toggleSharedCollectionFavorite() {
-        // TODO
-    }
-    
     public func showSharedCollectionDetail() {
-        // TODO
+        guard let collection = self.subjects.currentCollectionRoot.value.sharedCollection else {
+            return
+        }
+        self.router.showSharedCollection(collection)
     }
     
     public func returnToMyReadCollections() {
-        // TODO
+        self.readCollectionMainSceneInteractor?.switchToMyReadCollections()
     }
 }
 
@@ -282,6 +280,12 @@ extension MainViewModelImple {
             .compactMap { $0 }
     }
     
+    public var isAvailToAddItem: Observable<Bool> {
+        return self.subjects.currentCollectionRoot
+            .map { $0.isMyCollections }
+            .distinctUntilChanged()
+    }
+    
     public var currentCollectionRoot: Observable<CollectionRoot> {
         return self.subjects.currentCollectionRoot
             .asObservable()
@@ -303,11 +307,39 @@ extension MainViewModelImple {
             .distinctUntilChanged()
     }
     
-    public var favoriteSharedCollectionStatus: Observable<ActivationStatus> {
-        return .empty()
+    public var currentSharedCollectionOwnerInfo: Observable<Member?> {
+        
+        let loadSharedOwnerInfoIfNeed: (SharedReadCollection?) -> Observable<Member?>
+        loadSharedOwnerInfoIfNeed = { [weak self] collection in
+            guard let self = self else { return .empty() }
+            guard let ownerID = collection?.ownerID else { return .just(nil) }
+            return self.memberUsecase.members(for: [ownerID]).map { $0[ownerID] }
+        }
+        
+        return self.subjects.currentCollectionRoot
+            .map { $0.sharedCollection }
+            .flatMap(loadSharedOwnerInfoIfNeed)
+            .distinctUntilChanged(Member.compareNameAndThumbnail)
+    }
+}
+
+
+extension CollectionRoot {
+    
+    var isMyCollections: Bool {
+        guard case .myCollections = self else { return false}
+        return true
     }
     
-    public var currentSharedCollectionOwnerInfo: Observable<Member?> {
-        return .empty()
+    var sharedCollection: SharedReadCollection? {
+        guard case let .sharedCollection(collection) = self else { return nil }
+        return collection
+    }
+}
+
+private extension Member {
+    
+    static func compareNameAndThumbnail(_ lhs: Self?, _ rhs: Self?) -> Bool {
+        return lhs?.uid == rhs?.uid && lhs?.nickName == rhs?.nickName && lhs?.icon == rhs?.icon
     }
 }
