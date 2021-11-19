@@ -57,7 +57,8 @@ extension SharedCollectionItemsRouter {
     
     public func showLinkDetail(_ link: SharedReadLink) {
         
-//        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(link: link) else { return }
-//        self.currentScene?.present(next, animated: true, completion: nil)
+        guard let next = self.nextScenesBuilder?
+                .makeInnerWebViewScene(link: link.asReadLink(), isEditable: false) else { return }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

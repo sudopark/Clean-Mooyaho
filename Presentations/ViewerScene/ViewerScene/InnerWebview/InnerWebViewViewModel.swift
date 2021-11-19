@@ -29,6 +29,7 @@ public protocol InnerWebViewViewModel: AnyObject {
     func toggleMarkAsRed()
     
     // presenter
+    var isEditable: Bool { get }
     var loadURL: String { get }
     var urlPageTitle: Observable<String> { get }
     var isRed: Observable<Bool> { get }
@@ -41,16 +42,19 @@ public protocol InnerWebViewViewModel: AnyObject {
 public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     
     private let link: ReadLink
+    public let isEditable: Bool
     private let readItemUsecase: ReadItemUsecase
     private let memoUsecase: ReadLinkMemoUsecase
     private let router: InnerWebViewRouting
     
     public init(link: ReadLink,
+                isEditable: Bool = true,
                 readItemUsecase: ReadItemUsecase,
                 memoUsecase: ReadLinkMemoUsecase,
                 router: InnerWebViewRouting) {
         
         self.link = link
+        self.isEditable = isEditable
         self.readItemUsecase = readItemUsecase
         self.memoUsecase = memoUsecase
         self.router = router
@@ -84,7 +88,9 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
 extension InnerWebViewViewModelImple {
     
     public func prepareLinkData() {
-        guard let item = self.subjects.item.value else { return }
+        guard self.isEditable,
+              let item = self.subjects.item.value else { return }
+        
         self.memoUsecase.loadMemo(for: item.uid)
             .subscribe(onNext: { [weak self] memo in
                 self?.subjects.memo.accept(memo)
@@ -93,7 +99,8 @@ extension InnerWebViewViewModelImple {
     }
     
     public func toggleMarkAsRed() {
-        guard let link = self.subjects.item.value,
+        guard self.isEditable == true,
+              let link = self.subjects.item.value,
               self.subjects.isToggling.value == false else { return }
         
         let isToRed = link.isRed.invert()
@@ -120,6 +127,7 @@ extension InnerWebViewViewModelImple {
     }
     
     public func editReadLink() {
+        guard self.isEditable else { return }
         self.router.editReadLink(self.link)
     }
 }
@@ -130,7 +138,8 @@ extension InnerWebViewViewModelImple {
 extension InnerWebViewViewModelImple {
     
     public func editMemo() {
-        guard let item = self.subjects.item.value else { return }
+        guard self.isEditable,
+                let item = self.subjects.item.value else { return }
         let memo = self.subjects.memo.value ?? ReadLinkMemo(itemID: item.uid)
         self.router.editMemo(memo)
     }
