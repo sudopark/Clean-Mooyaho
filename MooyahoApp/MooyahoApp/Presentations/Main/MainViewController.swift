@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable {
+public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable {
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
 }
@@ -179,7 +179,13 @@ extension MainViewController {
         
         self.mainView.exitButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
-                
+                self?.viewModel.returnToMyReadCollections()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.sharedRootCollectionView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.showSharedCollectionDetail()
             })
             .disposed(by: self.disposeBag)
     }

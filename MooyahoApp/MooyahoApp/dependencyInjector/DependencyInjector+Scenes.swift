@@ -434,7 +434,6 @@ extension DependencyInjector: DiscoveryMainSceneBuilable {
     }
 }
 
-
 extension DependencyInjector: StopShareCollectionSceneBuilable {
     
     public func makeStopShareCollectionScene(_ collectionID: String,
@@ -449,7 +448,6 @@ extension DependencyInjector: StopShareCollectionSceneBuilable {
         return viewController
     }
 }
-
 
 extension DependencyInjector: SharedCollectionItemsSceneBuilable {
     
@@ -469,6 +467,21 @@ extension DependencyInjector: SharedCollectionItemsSceneBuilable {
                                                             listener: nil,
                                                             navigationListener: navigationListener)
         let viewController = SharedCollectionItemsViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+extension DependencyInjector: SharedCollectionInfoDialogSceneBuilable {
+    
+    public func makeSharedCollectionInfoDialogScene(collection: SharedReadCollection,
+                                                    listener: SharedCollectionInfoDialogSceneListenable?) -> SharedCollectionInfoDialogScene {
+        let router = SharedCollectionInfoDialogRouter(nextSceneBuilders: self)
+        let viewModel = SharedCollectionInfoDialogViewModelImple(collection: collection,
+                                                                 shareItemsUsecase: self.shareItemUsecase,
+                                                                 router: router,
+                                                                 listener: listener)
+        let viewController = SharedCollectionInfoDialogViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }
