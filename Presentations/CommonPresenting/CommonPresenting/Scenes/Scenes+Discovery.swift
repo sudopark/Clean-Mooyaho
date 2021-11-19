@@ -56,3 +56,20 @@ public protocol SharedCollectionItemsScene: Scenable {
     
     var interactor: SharedCollectionItemsSceneInteractable? { get }
 }
+
+
+// MARK: - SharedCollectionInfoDialogScene Interactable & Listenable
+
+public protocol SharedCollectionInfoDialogSceneInteractable { }
+
+public protocol SharedCollectionInfoDialogSceneListenable: AnyObject {
+    
+    func sharedCollectionDidRemoved(_ sharedID: String)
+}
+
+// MARK: - SharedCollectionInfoDialogScene
+
+public protocol SharedCollectionInfoDialogScene: Scenable {
+    
+    var interactor: SharedCollectionInfoDialogSceneInteractable? { get }
+}

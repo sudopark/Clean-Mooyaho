@@ -362,7 +362,6 @@ final class SharedRootCollectionInfoView: BaseUIView, Presenting {
     let ownerNameLabel = UILabel()
     
     func setup(sharedCollection: SharedReadCollection) {
-        self.updateOwnerInfo(nil)
         self.collectionNameLabel.text = sharedCollection.name
     }
     

@@ -214,11 +214,27 @@ extension MainViewModelImple {
         guard let collection = self.subjects.currentCollectionRoot.value.sharedCollection else {
             return
         }
-        self.router.showSharedCollection(collection)
+        self.router.showSharedCollectionDialog(for: collection)
+    }
+    
+    public func sharedCollectionDidRemoved(_ sharedID: String) {
+        self.readCollectionMainSceneInteractor?.switchToMyReadCollections()
     }
     
     public func returnToMyReadCollections() {
-        self.readCollectionMainSceneInteractor?.switchToMyReadCollections()
+        
+        let confirmed: () -> Void = { [weak self] in
+            self?.readCollectionMainSceneInteractor?.switchToMyReadCollections()
+        }
+        
+        guard let form = AlertBuilder(base: .init())
+                .message("Return to my read collection?".localized)
+                .confirmed(confirmed)
+                .build()
+        else {
+            return
+        }
+        self.router.alertForConfirm(form)
     }
 }
 

@@ -37,3 +37,12 @@ public protocol SharedCollectionItemsSceneBuilable {
                                         listener: SharedCollectionItemsSceneListenable?,
                                         navigationListener: ReadCollectionNavigateListenable?) -> SharedCollectionItemsScene
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol SharedCollectionInfoDialogSceneBuilable {
+    
+    func makeSharedCollectionInfoDialogScene(collection: SharedReadCollection,
+                                             listener: SharedCollectionInfoDialogSceneListenable?) -> SharedCollectionInfoDialogScene
+}

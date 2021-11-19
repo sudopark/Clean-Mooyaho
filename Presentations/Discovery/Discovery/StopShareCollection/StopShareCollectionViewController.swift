@@ -168,6 +168,7 @@ extension StopShareCollectionViewController: Presenting {
             |> \.text .~ pure("Sharing Reading List".localized)
         
         self.collectionInfoView.setupStyling()
+        self.collectionInfoView.actionButton.setImage(UIImage(systemName: "square.and.arrow.up.fill"), for: .normal)
         
         _ = self.findLabel
             |> self.uiContext.decorating.listItemAccentText(_:)
@@ -187,10 +188,10 @@ extension StopShareCollectionViewController: Presenting {
 
 // MARK: - CollectionInfoView
 
-fileprivate final class CollectionInfoView: BaseUIView, Presenting {
+final class CollectionInfoView: BaseUIView, Presenting {
     
     let collectionNameLabel = UILabel()
-    let shareButton = UIButton(type: .system)
+    let actionButton = UIButton(type: .system)
     
     func setupView(_ title: String) {
         self.collectionNameLabel.text = title
@@ -203,7 +204,7 @@ extension Reactive where Base == CollectionInfoView {
         let viewtap = base.rx.addTapgestureRecognizer()
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .map { _ in }
-        return Observable.merge(viewtap, base.shareButton.rx.throttleTap())
+        return Observable.merge(viewtap, base.actionButton.rx.throttleTap())
     }
 }
 
@@ -217,12 +218,12 @@ extension CollectionInfoView {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
         }
         
-        self.addSubview(shareButton)
-        shareButton.autoLayout.active(with: self) {
+        self.addSubview(actionButton)
+        actionButton.autoLayout.active(with: self) {
             $0.widthAnchor.constraint(equalToConstant: 15)
             $0.heightAnchor.constraint(equalToConstant: 20)
             $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor)
-            collectionNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: shareButton.leadingAnchor, constant: -4)
+            collectionNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: actionButton.leadingAnchor, constant: -4)
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
     }
@@ -234,8 +235,7 @@ extension CollectionInfoView {
             |> \.font .~ self.uiContext.fonts.get(15, weight: .medium)
             |> \.numberOfLines .~ 1
         
-        self.shareButton.setImage(UIImage(systemName: "square.and.arrow.up.fill"), for: .normal)
-        self.shareButton.tintColor = self.uiContext.colors.buttonBlue
-        self.shareButton.contentMode = .scaleAspectFit
+        self.actionButton.tintColor = self.uiContext.colors.buttonBlue
+        self.actionButton.contentMode = .scaleAspectFit
     }
 }

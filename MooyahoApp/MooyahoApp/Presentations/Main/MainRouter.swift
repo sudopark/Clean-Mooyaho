@@ -44,6 +44,8 @@ public protocol MainRouting: Routing {
     func showSharingCollectionInfo(_ collectionID: String)
     
     func showSharedCollection(_ collection: SharedReadCollection)
+    
+    func showSharedCollectionDialog(for collection: SharedReadCollection)
 }
 
 // MARK: - Routers
@@ -53,6 +55,7 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & SignInSceneBuilable & EditProfileSceneBuilable
     & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
     & WaitMigrationSceneBuilable & StopShareCollectionSceneBuilable
+    & SharedCollectionInfoDialogSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -176,5 +179,15 @@ extension MainRouter {
         self.closeScene(animated: true) { [weak self] in
             self?.collectionMainInteractor?.switchToSharedCollection(collection)
         }
+    }
+    
+    public func showSharedCollectionDialog(for collection: SharedReadCollection) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeSharedCollectionInfoDialogScene(collection: collection, listener: self.currentInteractor)
+        else {
+            return
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

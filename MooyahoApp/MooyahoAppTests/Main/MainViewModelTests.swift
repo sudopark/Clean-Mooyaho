@@ -289,6 +289,8 @@ extension MainViewModelTests {
         
         // when
         self.viewModel.returnToMyReadCollections()
+        let form = self.spyRouter.didAlertConfirmForm
+        form?.confirmed?()
         
         // then
         XCTAssertEqual(spyMainSceneInteractor.didSwitchToMyCollectionRequested, true)
@@ -303,7 +305,21 @@ extension MainViewModelTests {
         self.viewModel.showSharedCollectionDetail()
         
         // then
-        XCTAssertNotNil(self.spyRouter.didShowSharedCollection)
+        XCTAssertNotNil(self.spyRouter.didShowSharedCollectionDialog)
+    }
+    
+    func testViewModel_switchToMyReadCollection_afterRemoveSharedCollectionFromList() {
+        // given
+        let spyMainSceneInteractor = SpyReadCollectionMainInteractor()
+        self.spyRouter.spyCollectionMainSceneInput = spyMainSceneInteractor
+        self.viewModel.setupSubScenes()
+        self.viewModel.readCollection(didChange: .sharedCollection(.dummy(0)))
+        
+        // when
+        self.viewModel.sharedCollectionDidRemoved("some")
+        
+        // then
+        XCTAssertEqual(spyMainSceneInteractor.didSwitchToMyCollectionRequested, true)
     }
 }
 
@@ -371,6 +387,16 @@ extension MainViewModelTests {
         var didShowSharedCollection: SharedReadCollection?
         func showSharedCollection(_ collection: SharedReadCollection) {
             self.didShowSharedCollection = collection
+        }
+        
+        var didShowSharedCollectionDialog = false
+        func showSharedCollectionDialog(for collection: SharedReadCollection) {
+            self.didShowSharedCollectionDialog = true
+        }
+        
+        var didAlertConfirmForm: AlertForm?
+        func alertForConfirm(_ form: AlertForm) {
+            self.didAlertConfirmForm = form
         }
     }
     

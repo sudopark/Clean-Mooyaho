@@ -133,6 +133,10 @@ extension ShareItemUsecaseImple {
     public func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]> {
         return self.shareRepository.requestLoadSharedCollectionSubItems(collectionID: collectionID)
     }
+    
+    public func removeFromSharedList(shareID: String) -> Maybe<Void> {
+        return .empty()
+    }
 }
 
 
