@@ -458,6 +458,7 @@ extension DependencyInjector: SharedCollectionItemsSceneBuilable {
         
         let itemsUsecase = self.readItemUsecase
         let router = SharedCollectionItemsRouter(nextSceneBuilders: self)
+        router.navigationListener = navigationListener
         let viewModel = SharedCollectionItemsViewModelImple(currentCollection: currentCollection,
                                                             loadSharedCollectionUsecase: self.shareItemUsecase,
                                                             linkPreviewLoadUsecase: itemsUsecase,

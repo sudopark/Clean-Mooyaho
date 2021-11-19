@@ -29,9 +29,12 @@ public protocol SharedCollectionItemsRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SharedCollectionItemsRouterBuildables = EmptyBuilder
+public typealias SharedCollectionItemsRouterBuildables = SharedCollectionItemsSceneBuilable & InnerWebViewSceneBuilable
 
-public final class SharedCollectionItemsRouter: Router<SharedCollectionItemsRouterBuildables>, SharedCollectionItemsRouting { }
+public final class SharedCollectionItemsRouter: Router<SharedCollectionItemsRouterBuildables>, SharedCollectionItemsRouting {
+    
+    public weak var navigationListener: ReadCollectionNavigateListenable?
+}
 
 
 extension SharedCollectionItemsRouter {
@@ -42,10 +45,19 @@ extension SharedCollectionItemsRouter {
     }
     
     public func moveToSubCollection(collection: SharedReadCollection) {
-        logger.todoImplement()
+        guard let next = self.nextScenesBuilder?
+                .makeSharedCollectionItemsScene(currentCollection: collection,
+                                                 listener: nil,
+                                                 navigationListener: self.navigationListener)
+        else {
+            return
+        }
+        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func showLinkDetail(_ link: SharedReadLink) {
-        logger.todoImplement()
+        
+//        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(link: link) else { return }
+//        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }
