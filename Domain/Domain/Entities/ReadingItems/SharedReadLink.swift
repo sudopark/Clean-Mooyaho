@@ -8,6 +8,9 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 
 public struct SharedReadLink: SharedReadItem {
     
@@ -37,5 +40,17 @@ public struct SharedReadLink: SharedReadItem {
         self.link = link
         self.createdAt = createdAt
         self.lastUpdatedAt = lastUpdated
+    }
+}
+
+
+extension SharedReadLink {
+    
+    public func asReadLink() -> ReadLink {
+        return ReadLink(uid: self.uid, link: self.link,
+                        createAt: self.createdAt, lastUpdated: self.lastUpdatedAt)
+            |> \.parentID .~ self.parentID
+            |> \.customName .~ self.customName
+            |> \.categoryIDs .~ self.categoryIDs
     }
 }

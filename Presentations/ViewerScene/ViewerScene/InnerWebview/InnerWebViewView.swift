@@ -44,6 +44,14 @@ final class InnerWebViewBottomToolBar: BaseUIView {
     let safariButton = UIButton()
     
     weak var bottomOffsetConstraint: NSLayoutConstraint?
+    
+    func hideEditingViews() {
+        let buttons = [self.memoButton, self.readMarkButton, self.editButton]
+        buttons.forEach {
+            $0.alpha = 0
+            $0.isEnabled = false
+        }
+    }
 }
 
 

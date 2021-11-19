@@ -70,6 +70,19 @@ extension InnerWebViewViewController {
             .drive(self.toolBar.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
         
+        self.bindWebView()
+        
+        self.toolBar.safariButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.openPageInSafari()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isEditable ? self.bindEditing() : self.toolBar.hideEditingViews()
+    }
+    
+    private func bindEditing() {
+        
         self.viewModel.isRed
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] isRed in
@@ -83,14 +96,6 @@ extension InnerWebViewViewController {
             .drive(onNext: { [weak self] has in
                 let imageName = has ? "note.text" : "note.text.badge.plus"
                 self?.toolBar.memoButton.setImage(UIImage(systemName: imageName), for: .normal)
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.bindWebView()
-        
-        self.toolBar.safariButton.rx.throttleTap()
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.openPageInSafari()
             })
             .disposed(by: self.disposeBag)
         

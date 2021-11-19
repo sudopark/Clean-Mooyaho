@@ -353,9 +353,10 @@ extension DependencyInjector: EditReadRemindSceneBuilable {
 
 extension DependencyInjector: InnerWebViewSceneBuilable {
     
-    public func makeInnerWebViewScene(link: ReadLink) -> InnerWebViewScene {
+    public func makeInnerWebViewScene(link: ReadLink, isEditable: Bool) -> InnerWebViewScene {
         let router = InnerWebViewRouter(nextSceneBuilders: self)
         let viewModel = InnerWebViewViewModelImple(link: link,
+                                                   isEditable: isEditable,
                                                    readItemUsecase: self.readItemUsecase,
                                                    memoUsecase: self.memoUsecase,
                                                    router: router)

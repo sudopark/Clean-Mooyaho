@@ -77,7 +77,9 @@ extension ReadCollectionItemsRouter {
     
     public func showLinkDetail(_ link: ReadLink) {
         
-        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(link: link) else {
+        guard let next = self.nextScenesBuilder?
+                .makeInnerWebViewScene(link: link, isEditable: true)
+        else {
             return
         }
         self.currentScene?.present(next, animated: true)
