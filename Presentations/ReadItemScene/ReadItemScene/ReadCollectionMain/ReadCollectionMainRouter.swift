@@ -32,6 +32,8 @@ public protocol ReadCollectionMainRouting: Routing {
     func switchToMyReadCollection()
     
     func switchToSharedCollection(root: SharedReadCollection)
+    
+    func jumpToCollection(_ collectionID: String)
 }
 
 // MARK: - Routers
@@ -42,6 +44,8 @@ public typealias ReadCollectionMainRouterBuildables = ReadCollectionItemSceneBui
 public final class ReadCollectionMainRouter: Router<ReadCollectionMainRouterBuildables>, ReadCollectionMainRouting  {
     
     public weak var navigationListener: ReadCollectionNavigateListenable?
+    
+    private var collectionInverseNavigationCoordinator: CollectionInverseNavigationCoordinator?
 }
 
 
@@ -96,5 +100,38 @@ extension ReadCollectionMainRouter {
     public func addNewReadLinkItem(using url: String) {
         guard let currentCollection = self.findCurrentCollectionScene() else { return }
         currentCollection.interactor?.addNewReadLinkItem(using: url)
+    }
+    
+    public func jumpToCollection(_ collectionID: String) {
+        
+        self.prepareInverseCoordinatorIfNotExists()
+        
+        guard let navigationController = self.currentScene as? UINavigationController,
+              let root = self.nextScenesBuilder?
+                .makeReadCollectionItemScene(collectionID: nil, navigationListener: self.navigationListener),
+              let dest = self.nextScenesBuilder?
+                .makeReadCollectionItemScene(collectionID: collectionID,
+                                             navigationListener: self.navigationListener,
+                                             withInverse: self.collectionInverseNavigationCoordinator)
+        else {
+            return
+        }
+        
+        navigationController.viewControllers = [root, dest]
+    }
+    
+    private func prepareInverseCoordinatorIfNotExists() {
+        guard self.collectionInverseNavigationCoordinator == nil else { return }
+        let makeParent: (String) -> UIViewController? = { [weak self] collectionID in
+            let parent = self?.nextScenesBuilder?
+                .makeReadCollectionItemScene(collectionID: collectionID,
+                                             navigationListener: self?.navigationListener,
+                                             withInverse: self?.collectionInverseNavigationCoordinator)
+            return parent
+        }
+
+        let navigation = self.currentScene as? UINavigationController
+        self.collectionInverseNavigationCoordinator = .init(navigationController: navigation,
+                                                            makeParent: makeParent)
     }
 }

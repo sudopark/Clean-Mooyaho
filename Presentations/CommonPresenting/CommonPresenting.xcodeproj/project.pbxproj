@@ -32,6 +32,7 @@
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
 		F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518D272771E9009CA975 /* SimpleReadItemCells.swift */; };
 		F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202BD269972FE00B26B50 /* MapCameramovement.swift */; };
+		F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */; };
 		F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */; };
 		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
 		F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* ThumbnailImageView.swift */; };
@@ -163,6 +164,7 @@
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		F620518D272771E9009CA975 /* SimpleReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleReadItemCells.swift; sourceTree = "<group>"; };
 		F62202BD269972FE00B26B50 /* MapCameramovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCameramovement.swift; sourceTree = "<group>"; };
+		F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionInverseNavigationCoordinator.swift; sourceTree = "<group>"; };
 		F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputView.swift; sourceTree = "<group>"; };
 		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
 		F637205526650B440089D0B3 /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 				F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */,
 				F62202BD269972FE00B26B50 /* MapCameramovement.swift */,
 				F667E28E26E1367D0046B9FB /* MemberInfo.swift */,
+				F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -783,6 +786,7 @@
 				F665A65026FB674C00E866B7 /* UICollectionView+Extension.swift in Sources */,
 				F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */,
 				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,
+				F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */,
 				F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */,
 				F6851A2F270B21120048197B /* Scenes+Viewer.swift in Sources */,
 				F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */,
