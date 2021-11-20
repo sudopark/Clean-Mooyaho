@@ -47,7 +47,7 @@ extension FirebaseServiceImple {
                 docuRef.setData(json, merge: true)
             }
         }
-        self.batch(.suggestIndexes, write: updating)
+        self.batch(.suggestCategoryIndexes, write: updating)
             .subscribe()
             .disposed(by: self.disposeBag)
     }
@@ -68,7 +68,7 @@ extension FirebaseServiceImple {
         guard let memberID = self.signInMemberID else {
             return .empty()
         }
-        let collectionRef = self.fireStoreDB.collection(.suggestIndexes)
+        let collectionRef = self.fireStoreDB.collection(.suggestCategoryIndexes)
         let endText = "\(name)\u{F8FF}"
         let query = collectionRef
             .whereField(SuggestKey.ownerID.rawValue, isEqualTo: memberID)
@@ -87,7 +87,7 @@ extension FirebaseServiceImple {
         guard let memberID = self.signInMemberID else {
             return .empty()
         }
-        let collectionRef = self.fireStoreDB.collection(.suggestIndexes)
+        let collectionRef = self.fireStoreDB.collection(.suggestCategoryIndexes)
         let query = collectionRef
             .whereField(SuggestKey.ownerID.rawValue, isEqualTo: memberID)
             .order(by: SuggestKey.lastUpdated.rawValue, descending: true)

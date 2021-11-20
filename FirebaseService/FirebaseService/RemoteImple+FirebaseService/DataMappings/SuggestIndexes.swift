@@ -7,10 +7,15 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 import Domain
 
 enum IndexType: String {
-    case category
+    case category = "cate"
+    case link = "lnk"
+    case collection = "clc"
 }
 
 
@@ -74,7 +79,7 @@ struct SuggestIndex: DocumentMappable {
 }
 
 
-// MARK: - ItemCategory -> Index / Index -> SuggestCategory
+// MARK: - ItemCategory -> SuggestIndex / SuggestIndex -> SuggestCategory
 
 extension ItemCategory {
     
@@ -92,5 +97,93 @@ extension SuggestIndex {
         guard let code = self.additionalValue else { return nil }
         let category = ItemCategory(uid: self.indexID, name: self.keyword, colorCode: code)
         return .init(ownerID: self.ownerID, category: category, lastUpdated: self.lastUpdated)
+    }
+}
+
+
+// MARK: - Readitem -> SuggestIndex
+
+extension ReadCollection {
+    
+    func asIndex() -> SuggestIndex {
+
+        let additionValue = ReadItemIndexAdditionalValue()
+            |> \.categoryIDs .~ self.categoryIDs
+            |> \.description .~ self.collectionDescription
+        
+        return .init(indexID: self.uid, keyword: self.name, type: .collection,
+                     ownerID: self.ownerID, lastUpdated: .now(),
+                     additionalValue: additionValue.asEncodedString())
+    }
+}
+
+extension ReadLink {
+    
+    func asIndexWithCustomTitle() -> SuggestIndex? {
+        guard let name = self.customName else { return nil }
+        return self.asIndex(with: name)
+    }
+    
+    func asIndex(with name: String) -> SuggestIndex {
+        let additionValue = ReadItemIndexAdditionalValue()
+            |> \.categoryIDs .~ self.categoryIDs
+        
+        return .init(indexID: self.uid, keyword: name, type: .link,
+                     ownerID: self.ownerID, lastUpdated: .now(),
+                     additionalValue: additionValue.asEncodedString())
+    }
+}
+
+
+// MARK: - SuggestIndex -> SuggestReadItemIndex
+
+extension SuggestIndex {
+    
+    func asReadItemIndex() -> SuggestReadItemIndex? {
+        guard self.type != .category else { return nil }
+        let value = ReadItemIndexAdditionalValue(additionValue: self.additionalValue)
+        return .init(itemID: self.indexID,
+                     isCollection: self.type == .collection,
+                     displayName: self.keyword)
+            |> \.categoryIDs .~ (value?.categoryIDs ?? [])
+            |> \.description .~ value?.description
+    }
+}
+
+
+struct ReadItemIndexAdditionalValue: Codable {
+    
+    var categoryIDs: [String]?
+    var description: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case categoryIDs = "cates"
+        case description = "desc"
+    }
+    
+    init() {}
+    
+    init?(additionValue: String?) {
+        guard let data = additionValue?.data(using: .utf8),
+              let value = try? JSONDecoder().decode(ReadItemIndexAdditionalValue.self, from: data)
+        else { return nil }
+        self = value
+    }
+    
+    func asEncodedString() -> String? {
+        let data = try? JSONEncoder().encode(self)
+        return data.flatMap { String(data: $0, encoding: .utf8) }
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.categoryIDs = try? container.decode([String].self, forKey: .categoryIDs)
+        self.description = try? container.decode(String.self, forKey: .description)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try? container.encode(self.categoryIDs, forKey: .categoryIDs)
+        try? container.encode(self.description, forKey: .description)
     }
 }
