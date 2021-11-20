@@ -70,6 +70,7 @@ extension FirebaseServiceImple {
             return .empty()
         }
         return self.save(collection, at: .readCollection, merging: true)
+            .do(onNext: self.updateIndex(collection))
     }
     
     public func requestUpdateReadLink(_ link: ReadLink) -> Maybe<Void> {
@@ -77,6 +78,7 @@ extension FirebaseServiceImple {
             return .empty()
         }
         return self.save(link, at: .readLinks, merging: true)
+            .do(onNext: self.updateIndex(link))
     }
     
     public func requestLoadCollection(collectionID: String) -> Maybe<ReadCollection> {
@@ -137,5 +139,65 @@ extension FirebaseServiceImple {
         }
         
         return self.delete(item.uid, at: collectionType)
+            .do(onNext: { [weak self] in
+                self?.removeIndex(item)
+            })
+    }
+}
+
+
+private extension FirebaseServiceImple {
+    
+    func updateIndex(_ item: ReadItem) -> () -> Void {
+        return { [weak self] in
+
+            switch item {
+            case let collection as ReadCollection:
+                self?.updateCollectionIndex(collection)
+                
+            case let link as ReadLink:
+                self?.updateLinkIndex(link)
+                
+            default: return
+            }
+        }
+    }
+    
+    private func updateCollectionIndex(_ collection: ReadCollection) {
+        
+        let index = collection.asIndex()
+        self.save(index, at: .suggestReadItemIndexes)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateLinkIndex(_ link: ReadLink) {
+    
+        let prepareIndex = link.asIndexWithCustomTitle().map { .just($0) }
+            ?? self.prepareIndexWithPreviewTitle(link)
+        let thenUpdateIndex: (SuggestIndex) -> Maybe<Void> = { [weak self] index in
+            return self?.save(index, at: .suggestReadItemIndexes) ?? .empty()
+        }
+        prepareIndex
+            .flatMap(thenUpdateIndex)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func prepareIndexWithPreviewTitle(_ link: ReadLink) -> Maybe<SuggestIndex> {
+        let indexWithpreview = self.linkPreviewRemote.requestLoadPreview(link.link)
+            .timeout(.seconds(10), scheduler: MainScheduler.instance)
+            .map { preview throws -> SuggestIndex in
+                guard let title = preview.title else { throw RemoteErrors.notFound("preview", reason: nil) }
+                return link.asIndex(with: title)
+            }
+        return indexWithpreview
+    }
+    
+    func removeIndex(_ item: ReadItem) {
+        
+        self.delete(item.uid, at: .suggestReadItemIndexes)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
 }

@@ -32,7 +32,8 @@ final class DependencyInjector {
         }
         
         let firebaseServiceImple = FirebaseServiceImple(httpAPI: HttpAPIImple(),
-                                                        serverKey: AppEnvironment.firebaseServiceKey ?? "")
+                                                        serverKey: AppEnvironment.firebaseServiceKey ?? "",
+                                                        previewRemote: LinkPreviewRemoteImple())
         let kakaoService: KakaoService = KakaoServiceImple(remote: kakaoOAuthRemote)
         
         let localStorage: LocalStorage = {

@@ -25,10 +25,12 @@ public final class FirebaseServiceImple: NSObject, FirebaseService {
     let serverKey: String
     let disposeBag = DisposeBag()
     public var signInMemberID: String?
+    let linkPreviewRemote: LinkPreviewRemote
     
-    public init(httpAPI: HttpAPI, serverKey: String) {
+    public init(httpAPI: HttpAPI, serverKey: String, previewRemote: LinkPreviewRemote) {
         self.httpAPI = httpAPI
         self.serverKey = serverKey
+        self.linkPreviewRemote = previewRemote
     }
     
     public func setupService() {

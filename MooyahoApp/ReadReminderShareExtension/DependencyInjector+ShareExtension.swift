@@ -28,7 +28,8 @@ final class SharedDependencyInjecttor: EmptyBuilder {
         }
         
         let firebaseServiceImple = FirebaseServiceImple(httpAPI: HttpAPIImple(),
-                                                        serverKey: ShareExtensionEnvironment.firebaseServiceKey ?? "")
+                                                        serverKey: ShareExtensionEnvironment.firebaseServiceKey ?? "",
+                                                        previewRemote: LinkPreviewRemoteImple())
         
         let localStorage: LocalStorage = {
             let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")

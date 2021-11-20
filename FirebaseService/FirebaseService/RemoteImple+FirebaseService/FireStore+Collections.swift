@@ -27,7 +27,8 @@ enum FireStoreCollectionType: String {
     case readLinks
     case readCollectionCustomOrders
     case itemCategory
-    case suggestIndexes
+    case suggestCategoryIndexes
+    case suggestReadItemIndexes
     case linkMemo
     case sharedInbox = "shared_inboxes"
     case sharingCollectionIndex = "sharing_collect_indexes"
