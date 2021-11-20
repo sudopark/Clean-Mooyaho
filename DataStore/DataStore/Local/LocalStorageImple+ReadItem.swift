@@ -71,4 +71,11 @@ extension LocalStorageImple {
         }
         return storage.findLinkItem(using: url)
     }
+    
+    public func removeItem(_ item: ReadItem) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.removeReadItem(item)
+    }
 }

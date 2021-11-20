@@ -160,6 +160,10 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "findLinkItem") ?? .empty()
     }
     
+    func removeItem(_ item: ReadItem) -> Maybe<Void> {
+        return self.resolve(key: "removeItem") ?? .empty()
+    }
+    
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         return self.resolve(key: "fetchReadItemIsShrinkMode") ?? .empty()
     }

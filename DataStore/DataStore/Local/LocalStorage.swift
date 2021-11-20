@@ -121,6 +121,8 @@ public protocol ReadItemLocalStorage {
     func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     
     func findLinkItem(using url: String) -> Maybe<ReadLink?>
+    
+    func removeItem(_ item: ReadItem) -> Maybe<Void>
 }
 
 

@@ -120,30 +120,35 @@ extension ReadItemUsecaseImple {
         let memberID = self.authInfoProvider.signedInMemberID()
         let newCollection = newCollection |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateCollection(newCollection)
-            .do(onNext: { [weak self] in
-                self?.broadCastItemUpdated(newCollection)
-            })
+            .do(onNext: self.broadCastItemUpdated(newCollection))
     }
     
     public func updateLink(_ link: ReadLink) -> Maybe<Void> {
         let memberID = self.authInfoProvider.signedInMemberID()
         let link = link |> \.ownerID .~ memberID
         return self.itemsRespoitory.requestUpdateLink(link)
-            .do(onNext: { [weak self] in
-                self?.broadCastItemUpdated(link)
-            })
+            .do(onNext: self.broadCastItemUpdated(link))
     }
     
     public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return self.itemsRespoitory.requestUpdateItem(params)
-            .do(onNext: { [weak self] in
-                let newItem = params.applyChanges()
-                self?.broadCastItemUpdated(newItem)
-            })
+            .do(onNext: self.broadCastItemUpdated(params.applyChanges()))
     }
     
-    private func broadCastItemUpdated(_ newItem: ReadItem) {
-        self.readItemUpdateEventPublisher?.onNext(.updated(newItem))
+    private func broadCastItemUpdated(_ newItem: ReadItem) -> () -> Void {
+        return { [weak self] in
+            self?.readItemUpdateEventPublisher?.onNext(.updated(newItem))
+        }
+    }
+    
+    public func removeItem(_ item: ReadItem) -> Maybe<Void> {
+        
+        let broadCastItemRemoved: () -> Void = { [weak self] in
+            let event: ReadItemUpdateEvent = .removed(itemID: item.uid, parent: item.parentID)
+            self?.readItemUpdateEventPublisher?.onNext(event)
+        }
+        return self.itemsRespoitory.requestRemove(item: item)
+            .do(onNext: broadCastItemRemoved)
     }
 }
 

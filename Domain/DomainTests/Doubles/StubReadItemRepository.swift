@@ -68,4 +68,8 @@ class StubReadItemRepository: ReadItemRepository {
         let item = self.scenario.ulrAndLinkItemMap[url]
         return .just(item)
     }
+    
+    func requestRemove(item: ReadItem) -> Maybe<Void> {
+        return .just()
+    }
 }

@@ -423,6 +423,42 @@ extension ReadItemUsecaseTests {
         // then
         XCTAssertNotNil(preview)
     }
+
+    func testUsecase_removeItem() {
+        // given
+        let expect = expectation(description: "아이템 삭제")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let removing = usecase.removeItem(ReadCollection.dummy(9, parent: nil))
+        let result: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_whenAfterRemoveItem_broadcastRemoved() {
+        // given
+        let expect = expectation(description: "아이템 삭제 이후에 삭제되었음을 이벤트 전파")
+        let usecase = self.makeUsecase()
+        let dummy = ReadCollection.dummy(0, parent: 100)
+        
+        // when
+        let eventSource = self.mockItemUpdateSubject ?? .empty()
+        let updateEvent = self.waitFirstElement(expect, for: eventSource.asObservable()) {
+            usecase.removeItem(dummy)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        if case let .removed(itemID, parent) = updateEvent {
+            XCTAssertEqual(itemID, dummy.uid)
+            XCTAssertEqual(parent, dummy.parentID)
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
+    }
 }
 
 extension ReadItemUsecaseTests {

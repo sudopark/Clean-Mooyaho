@@ -26,4 +26,6 @@ public protocol ReadItemRepository {
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     
     func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
+    
+    func requestRemove(item: ReadItem) -> Maybe<Void>
 }

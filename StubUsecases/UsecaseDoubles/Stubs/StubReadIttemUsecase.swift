@@ -108,4 +108,8 @@ open class StubReadItemUsecase: ReadItemUsecase {
     public var readItemUpdated: Observable<ReadItemUpdateEvent> {
         return self.readItemUpdateMocking.asObservable()
     }
+    
+    public func removeItem(_ item: ReadItem) -> Maybe<Void> {
+        return .just()
+    }
 }

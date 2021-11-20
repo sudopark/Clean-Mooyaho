@@ -121,4 +121,21 @@ extension FirebaseServiceImple {
         let query = linkRef.whereField(Key.link.rawValue, isEqualTo: url)
         return self.load(query: query).map { $0.first }
     }
+    
+    public func requestRemoveItem(_ item: ReadItem) -> Maybe<Void> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
+        }
+        let collectionType: FireStoreCollectionType
+        switch item {
+        case is ReadCollection:
+            collectionType = .readCollection
+        case is ReadLink:
+            collectionType = .readLinks
+            
+        default: return .error(RemoteErrors.invalidRequest("attempt to remove not a collection or link"))
+        }
+        
+        return self.delete(item.uid, at: collectionType)
+    }
 }

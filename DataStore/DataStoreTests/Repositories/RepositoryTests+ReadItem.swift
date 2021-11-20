@@ -203,6 +203,32 @@ extension RepositoryTests_ReadItem {
         // then
         XCTAssertNotNil(error)
     }
+    
+    func testRepository_removeItem_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 아이템 삭제")
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.just() }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadCollection(name: "some"))
+        let result: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepository_removeItemFail_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 아이템 삭제 실패")
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadCollection(name: "some"))
+        let error = self.waitError(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
+    }
 }
 
 
@@ -377,6 +403,77 @@ extension RepositoryTests_ReadItem {
         // then
         XCTAssertEqual(colletions.count, 1)
     }
+    
+    func testRepository_removeItem_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 삭제")
+        self.mockRemote.register(key: "requestRemoveItem") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.just() }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadCollection(name: "some"))
+        let result: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testReposisoty_whenSignInAndRemoveItemFailOnLocal_ignore() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 삭제시에 로컬에러는 무시")
+        self.mockRemote.register(key: "requestRemoveItem") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadCollection(name: "some"))
+        let result: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepository_removeItemFail_whenSignIn() {
+        // given
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 삭제 실패")
+        self.mockRemote.register(key: "requestRemoveItem") { Maybe<Void>.error(ApplicationErrors.invalid) }
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.just() }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadCollection(name: "some"))
+        let error = self.waitError(expect, for: removing.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
+    func testRepository_whenAfterRemoveLinkItem_removeMemo() {
+        // given
+        let expect = expectation(description: "링크 아이템 삭제 이후에 메모도 같이 삭제")
+        self.mockRemote.register(key: "requestRemoveItem") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.just() }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadLink(link: "some"))
+        let _: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+            
+        // then
+        XCTAssertEqual(self.dummyRepository.didRemoveMemoRequested, true)
+    }
+    
+    func testReposisotry_whenAfterRemoveCollectionItem_notRequestRemoveMemo() {
+        // given
+        let expect = expectation(description: "코렉션 아이템 삭제 이후에 메모도 같이 삭제 안함")
+        self.mockRemote.register(key: "requestRemoveItem") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "removeItem") { Maybe<Void>.just() }
+        
+        // when
+        let removing = self.dummyRepository.requestRemove(item: ReadCollection(name: "some"))
+        let _: Void? = self.waitFirstElement(expect, for: removing.asObservable())
+            
+        // then
+        XCTAssertEqual(self.dummyRepository.didRemoveMemoRequested, false)
+    }
 }
 
 // MARK: - test sign in case: update case
@@ -543,15 +640,37 @@ extension RepositoryTests_ReadItem {
 
 extension RepositoryTests_ReadItem {
     
-    class DummyRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency {
+    class DummyRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency, ReadLinkMemoRepository, ReadLinkMemoRepositoryDefImpleDependency {
         
-        let readItemRemote: ReadItemRemote
-        let readItemLocal: ReadItemLocalStorage
+        let mockLocal: MockLocal
+        let mockRemote: MockRemote
+        
+        var memoRemote: ReadLinkMemoRemote {
+            return self.mockRemote
+        }
+        
+        var memoLocal: ReadLinkMemoLocalStorage {
+            return self.mockLocal
+        }
+        
+        var readItemRemote: ReadItemRemote {
+            return self.mockRemote
+        }
+        var readItemLocal: ReadItemLocalStorage {
+            return self.mockLocal
+        }
+        
         let disposeBag: DisposeBag = .init()
         
-        init(remote: ReadItemRemote, local: ReadItemLocalStorage) {
-            self.readItemRemote = remote
-            self.readItemLocal = local
+        init(remote: MockRemote, local: MockLocal) {
+            self.mockRemote = remote
+            self.mockLocal = local
+        }
+        
+        var didRemoveMemoRequested: Bool = false
+        func requestRemoveMemo(for linkItemID: String) -> Maybe<Void> {
+            self.didRemoveMemoRequested = true
+            return .just()
         }
     }
 }
