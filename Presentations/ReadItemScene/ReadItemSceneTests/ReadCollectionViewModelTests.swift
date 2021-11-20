@@ -78,6 +78,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             |> \.collectionItems .~ reloadResult
             |> \.sortOption .~ [sortOrder]
             |> \.customOrder .~ .success(customOrder)
+            |> \.collectionInfo .~ .success(ReadCollection(uid: "some", name: "name", createdAt: 0, lastUpdated: 0))
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
         self.spyItemsUsecase = stubUsecase
         
@@ -887,6 +888,66 @@ extension ReadCollectionViewModelTests {
 }
 
 
+// MARK: - remove item
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_whenAfterRemoveCurrentCollection_returnToParent() {
+        // given
+        let viewModel = self.makeViewModel(isRootCollection: false)
+        viewModel.reloadCollectionItems()
+        
+        // when
+        self.spyRouter.mockSelectActionTitle = "Delete".localized
+        viewModel.editCollection()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didReturnToParent, true)
+    }
+    
+    func testViewModel_whenAfterRemoveSubCollection_removeFromList() {
+        // given
+        let expect = expectation(description: "서브 콜렉션 삭제 이후 리스트 업데이트")
+        let viewModel = self.makeViewModel()
+        
+        let dummyCell = ReadCollectionCellViewModel(item: self.dummySubCollections.randomElement()!)
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            self.itemUpdateMocking?(.removed(itemID: dummyCell.uid, parent: "some"))
+        }
+        
+        // then
+        let collectCell = cvms?
+            .compactMap { $0 as? ReadCollectionCellViewModel }
+            .filter { $0.uid == dummyCell.uid }
+        XCTAssertEqual(cvms?.isNotEmpty, true)
+        XCTAssertEqual(collectCell?.isEmpty, true)
+    }
+    
+    func testViewModel_whenAfterRemoveSubLink_removeFromList() {
+        // given
+        let expect = expectation(description: "서브 링크 삭제 이후 리스트 업데이트")
+        let viewModel = self.makeViewModel()
+        
+        let dummyCell = ReadLinkCellViewModel(item: self.dummySubLinks.randomElement()!)
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.reloadCollectionItems()
+            self.itemUpdateMocking?(.removed(itemID: dummyCell.uid, parent: "some"))
+        }
+        
+        // then
+        let linkCell = cvms?
+            .compactMap { $0 as? ReadLinkCellViewModel }
+            .filter { $0.uid == dummyCell.uid }
+        XCTAssertEqual(cvms?.isNotEmpty, true)
+        XCTAssertEqual(linkCell?.isEmpty, true)
+    }
+}
+
 extension ReadCollectionViewModelTests {
     
     class FakeRouter: ReadCollectionRouting, Mocking {
@@ -957,6 +1018,11 @@ extension ReadCollectionViewModelTests {
         
         func alertForConfirm(_ form: AlertForm) {
             form.confirmed?()
+        }
+        
+        var didReturnToParent: Bool = false
+        func returnToParent() {
+            self.didReturnToParent = true
         }
     }
 }

@@ -179,6 +179,9 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             case let .updated(newItem) where newItem.parentID != self.currentCollectionID:
                 self.checkSubLinkItemParentChanged(newItem)
                 
+            case let .removed(itemID, parent) where parent == self.currentCollectionID:
+                self.removeItemFromTheListIfNeed(itemID)
+                
             default: break
             }
         }
@@ -216,6 +219,25 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let newLinks = links.filter { $0.uid != link.uid }
         guard newLinks.count != links.count else { return }
         self.subjects.links.accept(newLinks)
+    }
+    
+    private func removeItemFromTheListIfNeed(_ itemID: String) {
+        
+        func removeFromCollectionsIfNeed() -> Void? {
+            let collections = self.subjects.collections.value ?? []
+            let newCollections = collections.filter { $0.uid != itemID }
+            guard collections.count != newCollections.count else { return nil }
+            return self.subjects.collections.accept(newCollections)
+        }
+        
+        func removeFromLinksIfNeed() {
+            let links = self.subjects.links.value ?? []
+            let newLinks = links.filter { $0.uid != itemID }
+            guard newLinks.count != links.count else { return }
+            self.subjects.links.accept(newLinks)
+        }
+        
+        return removeFromCollectionsIfNeed() ?? removeFromLinksIfNeed()
     }
     
     public func viewDidAppear() {
@@ -294,6 +316,10 @@ extension ReadCollectionViewItemsModelImple {
         case let link as ReadLinkCellViewModel where action == .markAsRead(isRed: false):
             self.toggleReadLinkIsRedMark(link.uid, isRedNow: false)
             
+        case _ where action == .delete:
+            guard let readItem = self.item(for: item.uid) else { return }
+            self.requestRemoveReadItem(readItem)
+            
         default: break
         }
     }
@@ -309,7 +335,8 @@ extension ReadCollectionViewItemsModelImple {
             self.router.roueToEditCustomOrder(for: self.currentCollectionID)
         }
         let delete = ActionSheetForm.Action(text: "Delete".localized) { [weak self] in
-            // TODO: delete this collection
+            guard let collection = try? self?.subjects.currentCollection.value() else { return }
+            self?.requestRemoveReadItem(collection)
         }
         let cancel = ActionSheetForm.Action(text: "Cancel".localized, isCancel: true)
         
@@ -324,7 +351,6 @@ extension ReadCollectionViewItemsModelImple {
         let isToRed = isRedNow.invert()
         var params = ReadItemUpdateParams(item: item)
         params.updatePropertyParams = [.isRed(isToRed)]
-//        let params = ReadItemUpdateParams(item: item) |> \.updatePropertyParams .~ [.isRed(isToRed)]
         
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
@@ -421,6 +447,47 @@ extension ReadCollectionViewItemsModelImple {
         self.remindUsecase.cancelRemind(for: item)
             .subscribe(onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+}
+
+
+// MARK: - ReadCollectionViewModelImple Interactor + remove case
+
+extension ReadCollectionViewItemsModelImple {
+    
+    private func requestRemoveReadItem(_ item: ReadItem) {
+        
+        let confirmed: () -> Void = { [weak self] in
+            self?.removeItem(item)
+        }
+        
+        guard let form = AlertBuilder(base: .init())
+                .title("Delete item")
+                .message("TBD confirm message")
+                .confirmed(confirmed).build()
+        else {
+            return
+        }
+        self.router.alertForConfirm(form)
+    }
+    
+    private func removeItem(_ item: ReadItem) {
+        let handleRemoved: () -> Void = { [weak self] in
+            self?.closeSceneIfCurrentCollectionRemoved(item)
+        }
+        
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        
+        self.readItemUsecase.removeItem(item)
+            .subscribe(onSuccess: handleRemoved, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func closeSceneIfCurrentCollectionRemoved(_ item: ReadItem) {
+        guard item.uid == self.currentCollectionID else { return }
+        self.router.returnToParent()
     }
 }
 
