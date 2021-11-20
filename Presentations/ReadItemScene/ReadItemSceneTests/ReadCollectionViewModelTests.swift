@@ -66,10 +66,15 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     func makeViewModel(isRootCollection: Bool = false,
                        shouldFailReload: Bool = false,
                        sortOrder: ReadCollectionItemSortOrder = .default,
-                       customOrder: [String] = []) -> ReadCollectionViewItemsModelImple {
+                       customOrder: [String] = [],
+                       hasParent: Bool = false,
+                       inverseNavigation: CollectionInverseNavigationCoordinating? = nil) -> ReadCollectionViewItemsModelImple {
         
         let collectionID = isRootCollection ? nil : "some"
         let dummies = self.dummyCollectionItems.map { $0 |> \.parentID .~ collectionID }
+        
+        let collection = ReadCollection(uid: "some", name: "name", createdAt: 0, lastUpdated: 0)
+            |> \.parentID .~ (hasParent ? "parent" : nil)
         
         let reloadResult: Result<[ReadItem], Error> = shouldFailReload
             ? .failure(ApplicationErrors.invalid)
@@ -78,7 +83,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             |> \.collectionItems .~ reloadResult
             |> \.sortOption .~ [sortOrder]
             |> \.customOrder .~ .success(customOrder)
-            |> \.collectionInfo .~ .success(ReadCollection(uid: "some", name: "name", createdAt: 0, lastUpdated: 0))
+            |> \.collectionInfo .~ .success(collection)
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
         self.spyItemsUsecase = stubUsecase
         
@@ -110,7 +115,8 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
                                                            categoryUsecase: stubCategoryUsecase,
                                                            remindUsecase: stubRemindUsecase,
                                                            router: router,
-                                                           navigationListener: spyListener)
+                                                           navigationListener: spyListener,
+                                                           inverseNavigationCoordinating: inverseNavigation)
         router.interactor = viewModel
         return viewModel
     }
@@ -948,6 +954,39 @@ extension ReadCollectionViewModelTests {
     }
 }
 
+// MARK: - inverse navigation
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_whenJumpToTheSubCollectionAndCurrentCollectionLoaded_requestPrepareParent() {
+        // given
+        let spyCoordinator = SpyInverseNavigationCoorditator()
+        let viewModel = self.makeViewModel(isRootCollection: false,
+                                           hasParent: true,
+                                           inverseNavigation: spyCoordinator)
+        
+        // when
+        viewModel.requestPrepareParentIfNeed()
+        
+        // then
+        XCTAssertEqual(spyCoordinator.didPrepareParentRequested, true)
+    }
+    
+    func testViewModel_whenJumpToTheSubCollectionAndCurrentCollectionLoadedButParentIsRoot_notRequestPrepareParent() {
+        // given
+        let spyCoordinator = SpyInverseNavigationCoorditator()
+        let viewModel = self.makeViewModel(isRootCollection: false,
+                                           hasParent: false,
+                                           inverseNavigation: spyCoordinator)
+        
+        // when
+        viewModel.requestPrepareParentIfNeed()
+        
+        // then
+        XCTAssertEqual(spyCoordinator.didPrepareParentRequested, false)
+    }
+}
+
 extension ReadCollectionViewModelTests {
     
     class FakeRouter: ReadCollectionRouting, Mocking {
@@ -1023,6 +1062,14 @@ extension ReadCollectionViewModelTests {
         var didReturnToParent: Bool = false
         func returnToParent() {
             self.didReturnToParent = true
+        }
+    }
+    
+    class SpyInverseNavigationCoorditator: CollectionInverseNavigationCoordinating {
+        
+        var didPrepareParentRequested: Bool = false
+        func inverseNavigating(prepareParent collectionID: String) {
+            self.didPrepareParentRequested = true
         }
     }
 }

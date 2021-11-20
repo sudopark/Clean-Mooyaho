@@ -262,12 +262,12 @@ extension MainViewModelImple: MainSceneInteractable {
     }
     
     public func readCollection(didShowMy subCollectionID: String?) {
-        logger.print(level: .debug, "did show shared subCollection: \(subCollectionID ?? "nil")")
+        logger.print(level: .debug, "did show my subCollection: \(subCollectionID ?? "nil")")
         self.subjects.currentSubCollectionID.accept(.mine(subCollectionID))
     }
     
     public func readCollection(didShowShared subCollectionID: String) {
-        logger.print(level: .debug, "did show my sub collection: \(subCollectionID)")
+        logger.print(level: .debug, "did show shared sub collection: \(subCollectionID)")
         self.subjects.currentSubCollectionID.accept(.shared(subCollectionID))
     }
 }

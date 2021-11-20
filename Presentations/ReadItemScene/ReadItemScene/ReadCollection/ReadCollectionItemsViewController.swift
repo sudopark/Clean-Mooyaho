@@ -55,6 +55,7 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
         self.bind()
         
         self.viewModel.reloadCollectionItems()
+        self.viewModel.requestPrepareParentIfNeed()
     }
     
 }

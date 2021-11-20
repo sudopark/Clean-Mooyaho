@@ -33,6 +33,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
 
     // interactor
     func reloadCollectionItems()
+    func requestPrepareParentIfNeed()
     func requestChangeOrder()
     func openItem(_ itemID: String)
     func addNewCollectionItem()
@@ -64,19 +65,22 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     private let remindUsecase: ReadRemindUsecase
     private let router: ReadCollectionRouting
     private weak var navigationListener: ReadCollectionNavigateListenable?
+    private weak var inverseNavigationCoordinating: CollectionInverseNavigationCoordinating?
     
     public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 categoryUsecase: ReadItemCategoryUsecase,
                 remindUsecase: ReadRemindUsecase,
                 router: ReadCollectionRouting,
-                navigationListener: ReadCollectionNavigateListenable?) {
+                navigationListener: ReadCollectionNavigateListenable?,
+                inverseNavigationCoordinating: CollectionInverseNavigationCoordinating? = nil) {
         self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
         self.categoryUsecase = categoryUsecase
         self.remindUsecase = remindUsecase
         self.router = router
         self.navigationListener = navigationListener
+        self.inverseNavigationCoordinating = inverseNavigationCoordinating
         
         self.internalBinding()
     }
@@ -267,6 +271,21 @@ extension ReadCollectionViewItemsModelImple {
             
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func requestPrepareParentIfNeed() {
+        guard self.isRootCollection == false else { return }
+        let waitUntilCurrentCollectionLoadedFirstTime = self.subjects.currentCollection
+            .compactMap { $0 }
+            .take(1)
+        let requestPrepareOrNot: (ReadCollection) -> Void = { [weak self] collection in
+            guard let parentID = collection.parentID else { return }
+            self?.inverseNavigationCoordinating?.inverseNavigating(prepareParent: parentID)
+        }
+        waitUntilCurrentCollectionLoadedFirstTime
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: requestPrepareOrNot)
             .disposed(by: self.disposeBag)
     }
     
