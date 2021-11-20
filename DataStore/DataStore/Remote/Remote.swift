@@ -168,6 +168,8 @@ public protocol ReadItemRemote: AuthorizationNeed {
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     
     func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
+    
+    func requestRemoveItem(_ item: ReadItem) -> Maybe<Void>
 }
 
 public protocol ReadItemOptionsRemote: AuthorizationNeed {

@@ -62,6 +62,8 @@ public protocol DataModelStorage {
     
     func findLinkItem(using url: String) -> Maybe<ReadLink?>
     
+    func removeReadItem(_ item: ReadItem) -> Maybe<Void>
+    
     func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
     
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
@@ -555,6 +557,20 @@ extension DataModelStorageImple {
             return try ReadLinkTable.Entity(cursor).asLinkItem()
         }
         return self.sqliteService.rx.run { try $0.loadOne(query, mapping: mapping) }
+    }
+    
+    public func removeReadItem(_ item: ReadItem) -> Maybe<Void> {
+        switch item {
+        case is ReadCollection:
+            let query = ReadCollectionTable.delete().where { $0.uid == item.uid }
+            return self.sqliteService.rx.run { try $0.delete(ReadCollectionTable.self, query: query) }
+            
+        case is ReadLink:
+            let query = ReadLinkTable.delete().where { $0.uid == item.uid }
+            return self.sqliteService.rx.run { try $0.delete(ReadLinkTable.self, query: query) }
+            
+        default: return .error(LocalErrors.invalidData("not a collection or link"))
+        }
     }
 }
 

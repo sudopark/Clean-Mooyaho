@@ -20,7 +20,7 @@ public protocol ReadItemRepositryDefImpleDependency: AnyObject {
     var readItemLocal: ReadItemLocalStorage { get }
 }
 
-extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
+extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Self: ReadLinkMemoRepository {
     
     public func requestLoadMyItems(for memberID: String?) -> Observable<[ReadItem]> {
         
@@ -124,4 +124,25 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency {
             .do(onNext: updateLocalIfPossible)
     }
     
+    public func requestRemove(item: ReadItem) -> Maybe<Void> {
+        
+        let removeFromRemote = self.readItemRemote.requestRemoveItem(item)
+        let removeFromLocal: () -> Maybe<Void> = { [weak self] in
+            return self?.readItemLocal.removeItem(item) ?? .empty()
+        }
+        
+        let thenRemoveLinkMemoIfNeed: () -> Void = { [weak self] in
+            self?.removeLinkMemoIfIsLinkItem(item)
+        }
+        
+        return removeFromRemote.switchOr(append: removeFromLocal, witoutError: ())
+            .do(onNext: thenRemoveLinkMemoIfNeed)
+    }
+    
+    private func removeLinkMemoIfIsLinkItem(_ item: ReadItem) {
+        guard item is ReadLink else { return }
+        self.requestRemoveMemo(for: item.uid)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
 }

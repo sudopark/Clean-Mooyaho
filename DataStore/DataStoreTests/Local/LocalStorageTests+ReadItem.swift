@@ -254,6 +254,30 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual(finded?.link, self.dummyURL1)
     }
     
+    func testStorage_saveAndRemoveItems() {
+        // given
+        let expect = expectation(description: "read item 저장이후에 삭제")
+        let collections = [ReadCollection(name: "c1"), ReadCollection(name: "c2")]
+        let links: [ReadItem] = [ ReadLink(link: "l1"), ReadLink(link: "l2") ]
+        let targetCollection = collections.first!
+        let targetLink = links.last!
+        
+        // when
+        let save = self.local.updateReadItems(collections + links)
+        let removeCollection = self.local.removeItem(targetCollection)
+        let removeLink = self.local.removeItem(targetLink)
+        let load = self.local.fetchMyItems(memberID: nil)
+        let saveRemoveAndLoad = save.flatMap { removeCollection }.flatMap { removeLink }.flatMap { load }
+        let items = self.waitFirstElement(expect, for: saveRemoveAndLoad.asObservable())
+        
+        // then
+        let isCollectionRemoved = items?.contains(where:  { $0.uid == targetCollection.uid }) == false
+        let isLinkRemoved = items?.contains(where: { $0.uid == targetLink.uid }) == false
+        XCTAssertEqual(items?.isNotEmpty, true)
+        XCTAssertEqual(isCollectionRemoved, true)
+        XCTAssertEqual(isLinkRemoved, true)
+    }
+    
     private var dummyURL1: String {
         return """
         https://www.google.co.kr/search?q=swift+cg+animation&newwindow=1&bih=895&biw=1530&hl=ko&sxsrf=AOaemvLLuvpHGCDsyor5jBU4_d6NjW-1Og%3A1635659653056&ei=hS9-YYHXAs22mAWfqriQDg&oq=swift+cg+animation&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoECAAQQzoHCAAQgAQQCjoICAAQgAQQsQM6BwgAELEDEEM6CggAEIAEEIcCEBQ6BQgAEIAEOgcIIxCxAhAnOgQIABAKOgcIIRAKEKABOgQIIRAVSgQIQRgBUOf6J1iiiihgqowoaANwAHgAgAGZAYgB9xCSAQQwLjE4mAEAoAEBwAEB&sclient=gws-wiz&ved=0ahUKEwjBrd-E-_PzAhVNG6YKHR8VDuIQ4dUDCA4&uact=5
