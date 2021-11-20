@@ -39,6 +39,8 @@ public protocol ReadCollectionRouting: Routing {
     func roueToEditCustomOrder(for collectionID: String?)
     
     func routeToSetupRemind(for item: ReadItem)
+    
+    func returnToParent()
 }
 
 // MARK: - Routers
@@ -157,5 +159,11 @@ extension ReadCollectionItemsRouter {
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func returnToParent() {
+        DispatchQueue.main.async {
+            self.currentScene?.navigationController?.popViewController(animated: true)
+        }
     }
 }
