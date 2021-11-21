@@ -198,6 +198,10 @@ extension RemoteImple {
         return self.firebaseRemote.requestRemoveItem(item)
     }
     
+    func requestSearchItem(_ name: String) -> Maybe<[SearchReadItemIndex]> {
+        return self.firebaseRemote.requestSearchItem(name)
+    }
+    
     // read item option
     func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
         return self.firebaseRemote.requestLoadReadItemCustomOrder(for: collectionID)

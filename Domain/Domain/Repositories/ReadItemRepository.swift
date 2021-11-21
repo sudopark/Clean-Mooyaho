@@ -28,4 +28,6 @@ public protocol ReadItemRepository {
     func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
     
     func requestRemove(item: ReadItem) -> Maybe<Void>
+    
+    func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]>
 }

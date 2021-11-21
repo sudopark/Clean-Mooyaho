@@ -84,7 +84,8 @@
 		F61529672650171A003BCB59 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61529662650171A003BCB59 /* Auth.swift */; };
 		F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152968265017E5003BCB59 /* AuthInfoProvider.swift */; };
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
-		F61FECE1274947B10044A2F7 /* SuggestReadItemIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FECE0274947B10044A2F7 /* SuggestReadItemIndex.swift */; };
+		F61FC98A274A091500E82D16 /* SearchReadItemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */; };
+		F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */; };
 		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
 		F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */; };
 		F631986B272E71D500E66417 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631986A272E71D500E66417 /* ClipboardService.swift */; };
@@ -250,7 +251,8 @@
 		F61529662650171A003BCB59 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		F6152968265017E5003BCB59 /* AuthInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProvider.swift; sourceTree = "<group>"; };
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
-		F61FECE0274947B10044A2F7 /* SuggestReadItemIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestReadItemIndex.swift; sourceTree = "<group>"; };
+		F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemUsecase.swift; sourceTree = "<group>"; };
+		F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemIndex.swift; sourceTree = "<group>"; };
 		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
 		F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkAddSuggestUsecase.swift; sourceTree = "<group>"; };
 		F631986A272E71D500E66417 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
@@ -611,6 +613,7 @@
 				F6CFA5742646340300F9A049 /* SearchNewPlaceUsecase.swift */,
 				F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */,
 				F6A8CE3D2711756A00CA6D3D /* SuggestCategoryUsecase.swift */,
+				F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */,
 			);
 			path = "Suggest+Search";
 			sourceTree = "<group>";
@@ -770,7 +773,7 @@
 			isa = PBXGroup;
 			children = (
 				F6A8CE3B271174F900CA6D3D /* SuggestCategory.swift */,
-				F61FECE0274947B10044A2F7 /* SuggestReadItemIndex.swift */,
+				F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */,
 			);
 			path = Suggest;
 			sourceTree = "<group>";
@@ -936,8 +939,9 @@
 				F6ED41F7274401D90082DE18 /* SharedReadLink.swift in Sources */,
 				F6A72A372648217A006BE4BD /* TagRepository.swift in Sources */,
 				2BFF240626405A78008C52EB /* SuggestPlaceUsecase.swift in Sources */,
-				F61FECE1274947B10044A2F7 /* SuggestReadItemIndex.swift in Sources */,
+				F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */,
 				F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */,
+				F61FC98A274A091500E82D16 /* SearchReadItemUsecase.swift in Sources */,
 				F612BDEA27406BDA0017FD77 /* ShareItemRepository.swift in Sources */,
 				2BFF240926405B7C008C52EB /* Tags.swift in Sources */,
 				F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */,

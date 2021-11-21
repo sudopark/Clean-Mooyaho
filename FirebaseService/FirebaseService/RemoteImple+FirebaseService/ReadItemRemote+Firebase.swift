@@ -143,6 +143,23 @@ extension FirebaseServiceImple {
                 self?.removeIndex(item)
             })
     }
+    
+    public func requestSearchItem(_ name: String) -> Maybe<[SearchReadItemIndex]> {
+        typealias SuggestKey = SuggestIndexKeys
+        guard let memberID = self.signInMemberID else { return .empty() }
+        
+        let collectionRef = self.fireStoreDB.collection(.suggestReadItemIndexes)
+        let endText = "\(name)\u{F8FF}"
+        let query = collectionRef
+            .whereField(SuggestKey.ownerID.rawValue, isEqualTo: memberID)
+            .order(by: SuggestKey.keyword.rawValue)
+            .whereField(SuggestKey.keyword.rawValue, isGreaterThanOrEqualTo: name)
+            .whereField(SuggestKey.keyword.rawValue, isLessThanOrEqualTo: endText)
+        let indexes: Maybe<[SuggestIndex]> = self.load(query: query)
+        return indexes.map {
+            $0.compactMap { $0.asReadItemIndex() }
+        }
+    }
 }
 
 

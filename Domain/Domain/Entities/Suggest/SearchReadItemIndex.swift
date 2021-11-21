@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct SuggestReadItemIndex {
+public struct SearchReadItemIndex {
     
     public let itemID: String
     public let isCollection: Bool

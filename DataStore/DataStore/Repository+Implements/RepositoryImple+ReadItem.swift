@@ -145,4 +145,10 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
             .subscribe()
             .disposed(by: self.disposeBag)
     }
+    
+    public func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]> {
+        let suggestOnRemote = self.readItemRemote.requestSearchItem(keyword)
+        let suggestOnLocal = self.readItemLocal.searchReadItems(keyword)
+        return suggestOnRemote.ifEmpty(switchTo: suggestOnLocal)
+    }
 }

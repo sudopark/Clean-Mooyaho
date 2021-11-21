@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestSearchItem(_ name: String) -> Maybe<[SearchReadItemIndex]> {
+        return .empty()
+    }
+    
     func requestRemoveItem(_ item: ReadItem) -> Maybe<Void> {
         return .empty()
     }
