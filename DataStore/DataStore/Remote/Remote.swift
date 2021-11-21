@@ -170,6 +170,8 @@ public protocol ReadItemRemote: AuthorizationNeed {
     func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
     
     func requestRemoveItem(_ item: ReadItem) -> Maybe<Void>
+    
+    func requestSearchItem(_ name: String) -> Maybe<[SearchReadItemIndex]>
 }
 
 public protocol ReadItemOptionsRemote: AuthorizationNeed {

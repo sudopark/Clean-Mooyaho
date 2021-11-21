@@ -64,6 +64,8 @@ public protocol DataModelStorage {
     
     func removeReadItem(_ item: ReadItem) -> Maybe<Void>
     
+    func fetchReadItem(like name: String) -> Maybe<[SearchReadItemIndex]>
+    
     func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
     
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
@@ -572,6 +574,73 @@ extension DataModelStorageImple {
         default: return .error(LocalErrors.invalidData("not a collection or link"))
         }
     }
+    
+    public func fetchReadItem(like name: String) -> Maybe<[SearchReadItemIndex]> {
+        
+        let collections = self.findCollection(like: name).catchAndReturn([])
+        let links = self.findReadLink(like: name).catchAndReturn([])
+        
+        let asIndexes: ([ReadCollection], [ReadLink]) -> [SearchReadItemIndex]
+        asIndexes = { collections, links in
+            let items: [ReadItem] = collections + links
+            return items.compactMap { SearchReadItemIndex(item: $0) }
+        }
+        return Observable
+            .combineLatest( collections.asObservable(), links.asObservable(),
+                            resultSelector: asIndexes)
+            .asMaybe()
+    }
+    
+    private func findCollection(like name: String) -> Maybe<[ReadCollection]> {
+        let query = ReadCollectionTable.selectAll { $0.name.like( "\(name)%" ) }
+        let mappging: (CursorIterator) throws -> ReadCollection = { cursor in
+            return try ReadCollectionTable.Entity(cursor).asCollection()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mappging) }
+    }
+    
+    private func findReadLink(like name: String) -> Maybe<[ReadLink]> {
+        let removeDuplicated: ([ReadLink], [ReadLink]) -> [ReadLink] = { customs, previews in
+            let customMap = customs.reduce(into: [String: ReadLink]()) { $0[$1.uid] = $1 }
+            return customs + previews.filter { customMap[$0.uid] == nil }
+        }
+        return Observable
+            .combineLatest(self.findReadLinkByCustomName(like: name).asObservable(),
+                           self.findReadLinkByPreviewTitle(like: name).asObservable(),
+                           resultSelector: removeDuplicated)
+            .asMaybe()
+    }
+    
+    private func findReadLinkByCustomName(like name: String) -> Maybe<[ReadLink]> {
+        let query = ReadLinkTable.selectAll { $0.customName.like("\(name)%") }
+        let mapping: (CursorIterator) throws -> ReadLink = { cursor in
+            return try ReadLinkTable.Entity(cursor).asLinkItem()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    private func findReadLinkByPreviewTitle(like name: String) -> Maybe<[ReadLink]> {
+        typealias PreviewEntity = LinkPreviewTable.Entity
+        let previewQuery = LinkPreviewTable.selectAll { $0.title.like("\(name)%") }
+        let loadPreviews: Maybe<[PreviewEntity]> = self.sqliteService.rx.run { try $0.load(previewQuery) }
+        
+        let thenLoadMatchLinks: ([PreviewEntity]) -> Maybe<[ReadLink]> = { [weak self] previews in
+            guard let self = self else { return .empty() }
+            let urls = previews.map { $0.url }
+            let previewMap = previews.reduce(into: [String: LinkPreview]()) { $0[$1.url] = $1.preview }
+            
+            let query = ReadLinkTable.selectAll { $0.link.in(urls) }
+            let mapping: (CursorIterator) throws -> ReadLink = { try ReadLinkTable.Entity($0).asLinkItem() }
+            let linkItems: Maybe<[ReadLink]> = self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+            let applyTitle: ([ReadLink]) -> [ReadLink] = { links in
+                return links.map { $0 |> \.customName .~ previewMap[$0.link]?.title }
+            }
+            return linkItems.map(applyTitle)
+        }
+        
+        return loadPreviews
+            .flatMap(thenLoadMatchLinks)
+    }
 }
 
 
@@ -821,6 +890,26 @@ private extension ReadItemUpdateParams {
             case let .parentID(id):
                 return columType.parentID == id
             }
+        }
+    }
+}
+
+
+private extension SearchReadItemIndex {
+    
+    init?(item: ReadItem) {
+        switch item {
+        case let collection as ReadCollection:
+            self.init(itemID: collection.uid, isCollection: true, displayName: collection.name)
+            self.categoryIDs = collection.categoryIDs
+            self.description = collection.collectionDescription
+            
+        case let link as ReadLink:
+            guard let name = link.customName else { return nil }
+            self.init(itemID: link.uid, isCollection: false, displayName: name)
+            self.categoryIDs = link.categoryIDs
+            
+        default: return nil
         }
     }
 }

@@ -123,6 +123,8 @@ public protocol ReadItemLocalStorage {
     func findLinkItem(using url: String) -> Maybe<ReadLink?>
     
     func removeItem(_ item: ReadItem) -> Maybe<Void>
+    
+    func searchReadItems(_ name: String) -> Maybe<[SearchReadItemIndex]>
 }
 
 

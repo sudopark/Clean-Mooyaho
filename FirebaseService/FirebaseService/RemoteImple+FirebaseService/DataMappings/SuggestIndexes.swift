@@ -139,7 +139,7 @@ extension ReadLink {
 
 extension SuggestIndex {
     
-    func asReadItemIndex() -> SuggestReadItemIndex? {
+    func asReadItemIndex() -> SearchReadItemIndex? {
         guard self.type != .category else { return nil }
         let value = ReadItemIndexAdditionalValue(additionValue: self.additionalValue)
         return .init(itemID: self.indexID,

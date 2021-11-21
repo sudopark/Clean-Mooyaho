@@ -78,4 +78,11 @@ extension LocalStorageImple {
         }
         return storage.removeReadItem(item)
     }
+    
+    public func searchReadItems(_ name: String) -> Maybe<[SearchReadItemIndex]> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchReadItem(like: name)
+    }
 }

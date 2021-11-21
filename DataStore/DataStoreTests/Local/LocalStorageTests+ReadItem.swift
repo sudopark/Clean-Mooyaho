@@ -290,3 +290,26 @@ extension LocalStorageTests_ReadItem {
         """
     }
 }
+
+
+extension LocalStorageTests_ReadItem {
+    
+    func testStorage_suggestReadItems() {
+        // given
+        let expect = expectation(description: "readitem 탐색")
+        let collection = ReadCollection(name: "target")
+        let linkWithCustomName = ReadLink(link: self.dummyURL2) |> \.customName .~ "tar_custom"
+        let linkWithoutCustomName = ReadLink(link: self.dummyURL1)
+        let preview = LinkPreview(title: "tar_preview", description: nil, mainImageURL: nil, iconURL: nil)
+        
+        // when
+        let saveItems = self.local.updateReadItems([collection, linkWithCustomName, linkWithoutCustomName])
+        let savePreview = self.local.saveLinkPreview(for: self.dummyURL1, preview: preview)
+        let find = self.local.searchReadItems("ta")
+        let saveAndFind = saveItems.flatMap { savePreview }.flatMap { find }
+        let indexes = self.waitFirstElement(expect, for: saveAndFind.asObservable())
+        
+        // then
+        XCTAssertEqual(indexes?.count, 3)
+    }
+}

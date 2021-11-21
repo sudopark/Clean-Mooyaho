@@ -72,4 +72,8 @@ class StubReadItemRepository: ReadItemRepository {
     func requestRemove(item: ReadItem) -> Maybe<Void> {
         return .just()
     }
+    
+    func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]> {
+        return .empty()
+    }
 }
