@@ -83,6 +83,8 @@
 		F6851A2F270B21120048197B /* Scenes+Viewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A2E270B21120048197B /* Scenes+Viewer.swift */; };
 		F6851A31270B21200048197B /* Builders+Viewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A30270B21200048197B /* Builders+Viewer.swift */; };
 		F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */; };
+		F68A8809274BFAAC004DADE4 /* Scenes+Suggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A8808274BFAAC004DADE4 /* Scenes+Suggest.swift */; };
+		F68A880B274BFACC004DADE4 /* Builders+Suggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A880A274BFACC004DADE4 /* Builders+Suggest.swift */; };
 		F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */; };
 		F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */; };
 		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
@@ -214,6 +216,8 @@
 		F6851A2E270B21120048197B /* Scenes+Viewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Viewer.swift"; sourceTree = "<group>"; };
 		F6851A30270B21200048197B /* Builders+Viewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Viewer.swift"; sourceTree = "<group>"; };
 		F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompletable.swift; sourceTree = "<group>"; };
+		F68A8808274BFAAC004DADE4 /* Scenes+Suggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Suggest.swift"; sourceTree = "<group>"; };
+		F68A880A274BFACC004DADE4 /* Builders+Suggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Suggest.swift"; sourceTree = "<group>"; };
 		F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideViewSupporatble.swift; sourceTree = "<group>"; };
 		F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
@@ -452,11 +456,13 @@
 				F6851A2E270B21120048197B /* Scenes+Viewer.swift */,
 				F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */,
 				F6F65638274049150069F253 /* Scenes+Discovery.swift */,
+				F68A8808274BFAAC004DADE4 /* Scenes+Suggest.swift */,
 				F6BBF177270851A100420A49 /* Builders+ReadItem.swift */,
 				F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */,
 				F6851A30270B21200048197B /* Builders+Viewer.swift */,
 				F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */,
 				F6F6563A274049420069F253 /* Builders+Discovery.swift */,
+				F68A880A274BFACC004DADE4 /* Builders+Suggest.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -730,6 +736,7 @@
 				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,
 				F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F68A880B274BFACC004DADE4 /* Builders+Suggest.swift in Sources */,
 				F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */,
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
 				F65215842674A395000CAB4B /* TextInputViewController.swift in Sources */,
@@ -767,6 +774,7 @@
 				F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */,
 				F6CB434D2713560900F26508 /* ColorSelectViewModel.swift in Sources */,
 				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
+				F68A8809274BFAAC004DADE4 /* Scenes+Suggest.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
 				F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */,
 				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,

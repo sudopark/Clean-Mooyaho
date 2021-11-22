@@ -418,7 +418,6 @@ extension DependencyInjector: WaitMigrationSceneBuilable {
 
 // MARK: - DiscoveryScenes
 
-
 extension DependencyInjector: DiscoveryMainSceneBuilable {
     
     public func makeDiscoveryMainScene(currentShareCollectionID: String?,
@@ -484,6 +483,20 @@ extension DependencyInjector: SharedCollectionInfoDialogSceneBuilable {
                                                                  router: router,
                                                                  listener: listener)
         let viewController = SharedCollectionInfoDialogViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
+// MARK: - suggest
+
+extension DependencyInjector: IntegratedSearchSceneBuilable {
+    
+    public func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?) -> IntegratedSearchScene {
+        let router = IntegratedSearchRouter(nextSceneBuilders: self)
+        let viewModel = IntegratedSearchViewModelImple(router: router, listener: listener)
+        let viewController = IntegratedSearchViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
     }

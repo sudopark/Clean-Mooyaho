@@ -54,6 +54,8 @@
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
 		F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; };
 		F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F68A87FB274BFA61004DADE4 /* SuggestScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A87FA274BFA61004DADE4 /* SuggestScene.framework */; };
+		F68A87FC274BFA61004DADE4 /* SuggestScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68A87FA274BFA61004DADE4 /* SuggestScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B7307272863DC00DD5456 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7304272863DC00DD5456 /* Common3rdParty.framework */; };
 		F68B7308272863DC00DD5456 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7304272863DC00DD5456 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B7309272863DC00DD5456 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7305272863DC00DD5456 /* CommonPresenting.framework */; };
@@ -129,6 +131,7 @@
 			files = (
 				2BE97870263961F10000C0C6 /* DataStore.framework in Embed Frameworks */,
 				2BE97876263961FF0000C0C6 /* CommonPresenting.framework in Embed Frameworks */,
+				F68A87FC274BFA61004DADE4 /* SuggestScene.framework in Embed Frameworks */,
 				F62271F5273C728D00AF76C1 /* SettingScene.framework in Embed Frameworks */,
 				F6ECE4DB26FAF8B3008D7ECA /* FirebaseService.framework in Embed Frameworks */,
 				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
@@ -221,6 +224,7 @@
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
 		F6851A20270B20640048197B /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F68A87FA274BFA61004DADE4 /* SuggestScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SuggestScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68B7304272863DC00DD5456 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68B7305272863DC00DD5456 /* CommonPresenting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CommonPresenting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68B7306272863DC00DD5456 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,6 +290,7 @@
 				F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */,
 				F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */,
 				F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */,
+				F68A87FB274BFA61004DADE4 /* SuggestScene.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +480,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F68A87FA274BFA61004DADE4 /* SuggestScene.framework */,
 				F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */,
 				F62271F3273C728D00AF76C1 /* SettingScene.framework */,
 				F68B731B27286C9200DD5456 /* EditReadItemScene.framework */,
