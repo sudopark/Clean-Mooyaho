@@ -85,6 +85,10 @@
 		F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152968265017E5003BCB59 /* AuthInfoProvider.swift */; };
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
 		F61FC98A274A091500E82D16 /* SearchReadItemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */; };
+		F61FC98C274A14E800E82D16 /* SearchableQueryTokenStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98B274A14E800E82D16 /* SearchableQueryTokenStoreService.swift */; };
+		F61FC98E274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98D274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift */; };
+		F61FC990274A2B2300E82D16 /* IntegratedSearchReposiotry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */; };
+		F61FC992274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */; };
 		F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */; };
 		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
 		F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */; };
@@ -252,6 +256,10 @@
 		F6152968265017E5003BCB59 /* AuthInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProvider.swift; sourceTree = "<group>"; };
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
 		F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemUsecase.swift; sourceTree = "<group>"; };
+		F61FC98B274A14E800E82D16 /* SearchableQueryTokenStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableQueryTokenStoreService.swift; sourceTree = "<group>"; };
+		F61FC98D274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableQueryTokenStoreServiceTests.swift; sourceTree = "<group>"; };
+		F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchReposiotry.swift; sourceTree = "<group>"; };
+		F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestReadItemUsecaseTests.swift; sourceTree = "<group>"; };
 		F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemIndex.swift; sourceTree = "<group>"; };
 		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
 		F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkAddSuggestUsecase.swift; sourceTree = "<group>"; };
@@ -356,6 +364,7 @@
 				F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */,
 				F6F29590266D136200CDF980 /* FileHandleService.swift */,
 				F631986A272E71D500E66417 /* ClipboardService.swift */,
+				F61FC98B274A14E800E82D16 /* SearchableQueryTokenStoreService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -446,6 +455,7 @@
 				F6C1C8D927255601007277A5 /* ReadLinkMemoRepository.swift */,
 				F64061802735B15E00902787 /* UserDataMigrateRepository.swift */,
 				F612BDE927406BDA0017FD77 /* ShareItemRepository.swift */,
+				F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */,
 				F6913F0926F38AB100C6E105 /* Deprecated */,
 			);
 			path = Repositories;
@@ -521,6 +531,7 @@
 				F6C1C8DD27255711007277A5 /* ReadLinkMemoUsecaseTests.swift */,
 				F64061862735B7E200902787 /* UserDataMigrationUsecaseTests.swift */,
 				F612BDF52740C3EF0017FD77 /* ShareItemUsecaseTests.swift */,
+				F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -674,6 +685,7 @@
 			isa = PBXGroup;
 			children = (
 				F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */,
+				F61FC98D274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -992,6 +1004,7 @@
 				F6646F422690700D00E5A53B /* Policy.swift in Sources */,
 				F6913EFB26EE4D6900C6E105 /* ReadItemUsecase.swift in Sources */,
 				2B9F27AE2633F33400FEBCE3 /* ImageSource.swift in Sources */,
+				F61FC990274A2B2300E82D16 /* IntegratedSearchReposiotry.swift in Sources */,
 				F6152939264DA35A003BCB59 /* MessagingService.swift in Sources */,
 				F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */,
 				F6B6B4152710733B000652E0 /* ItemCategoryRepository.swift in Sources */,
@@ -1004,6 +1017,7 @@
 				F63AB5D126B06A1E00115A25 /* Coordinate.swift in Sources */,
 				F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */,
 				F6152935264DA313003BCB59 /* HoorayReceiveUsecase.swift in Sources */,
+				F61FC98C274A14E800E82D16 /* SearchableQueryTokenStoreService.swift in Sources */,
 				2B9F27A92633F1CB00FEBCE3 /* Manager.swift in Sources */,
 				F615293D264DA999003BCB59 /* HoorayAck+Reaction.swift in Sources */,
 				F6AED2712700B85900A1DCCC /* String+Extensions.swift in Sources */,
@@ -1023,6 +1037,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F61FC992274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift in Sources */,
 				2BA9377B263B1C1800276876 /* MockOAuthService.swift in Sources */,
 				2B40BF81263F08EA0031C7A6 /* UserLocationUsecaseTests.swift in Sources */,
 				F615294B264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift in Sources */,
@@ -1039,6 +1054,7 @@
 				F615296526500945003BCB59 /* HoorayReceiveUsecaseTests.swift in Sources */,
 				F64061872735B7E200902787 /* UserDataMigrationUsecaseTests.swift in Sources */,
 				F615296326500091003BCB59 /* StubMessagingService.swift in Sources */,
+				F61FC98E274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift in Sources */,
 				F66B7D7A26C78AF400D31FAC /* StubPlaceRepository.swift in Sources */,
 				F6E3F6092649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift in Sources */,
 				F6152954264F0057003BCB59 /* SharedDataStoreServiceTests.swift in Sources */,
