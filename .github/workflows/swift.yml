@@ -121,6 +121,18 @@ jobs:
         env: 
           destination: ${{ matrix.destination }}
 
+      - name: Suggest Scenes Unit Tests
+        id: test_suggest_scenes
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme SuggestScene \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
       - name: Domain Unit Tests
         id: test_domain
         run: |
@@ -190,6 +202,11 @@ jobs:
 
       - name: Check Tests Setting Scenes
         if: steps.test_setting_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Suggest Scenes
+        if: steps.test_suggest_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       

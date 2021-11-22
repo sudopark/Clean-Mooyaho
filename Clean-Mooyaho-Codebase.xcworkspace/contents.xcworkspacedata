@@ -37,6 +37,9 @@
       <FileRef
          location = "group:Presentations/SettingScene/SettingScene.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:Presentations/SuggestScene/SuggestScene.xcodeproj">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:Domain/Domain.xcodeproj">
