@@ -16,6 +16,7 @@ import EditReadItemScene
 import ViewerScene
 import SettingScene
 import DiscoveryScene
+import SuggestScene
 
 
 // MARK: - Main Sceens

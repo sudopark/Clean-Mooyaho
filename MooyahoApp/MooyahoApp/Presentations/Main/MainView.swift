@@ -138,6 +138,7 @@ final class MainView: BaseUIView {
     
     let mainContainerView = UIView()
     let bottomSlideContainerView = UIView()
+    let bottomSlideEmbedView = UIView()
     
     let profileImageView = IntegratedImageView()
     let bottomContentContainerView = UIView()
@@ -149,6 +150,7 @@ final class MainView: BaseUIView {
     
     // toolview for my collections
     let bottomSearchBarView = SingleLineInputView()
+    let cancelSearchButton = UIButton(type: .system)
     let addItemButton = RoundImageButton()
     let shareButton = RoundImageButton()
     
@@ -166,7 +168,7 @@ final class MainView: BaseUIView {
     }
     
     private var searchBarExpandTrailing: CGFloat {
-        return 16
+        return 16 + 70
     }
     
     func updateBottomToolbar(by root: CollectionRoot) {
@@ -224,6 +226,21 @@ extension MainView: Presenting {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
         }
         bottomSearchBarView.setupLayout()
+        
+        self.bottomSlideContainerView.addSubview(bottomSlideEmbedView)
+        bottomSlideEmbedView.autoLayout.active(with: bottomSlideContainerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+            $0.topAnchor.constraint(equalTo: self.bottomSearchBarView.bottomAnchor, constant: 12)
+        }
+        
+        self.bottomSlideContainerView.addSubview(cancelSearchButton)
+        cancelSearchButton.autoLayout.active(with: bottomSlideContainerView) {
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -8)
+            $0.centerYAnchor.constraint(equalTo: bottomSearchBarView.centerYAnchor)
+            $0.widthAnchor.constraint(equalToConstant: 70)
+        }
         
         self.bottomSlideContainerView.addSubview(profileImageView)
         profileImageView.autoLayout.active(with: bottomSlideContainerView) {
@@ -323,7 +340,15 @@ extension MainView: Presenting {
         self.bottomSearchBarView.setupStyling()
         self.bottomSearchBarView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         self.bottomSearchBarView.iconImageView.tintColor = UIColor.black.withAlphaComponent(0.1)
-        self.bottomSearchBarView.placeHolderLabel.text = "Search collection or link"
+        self.bottomSearchBarView.placeHolderLabel.text = "Search item"
+        self.bottomSearchBarView.textField.returnKeyType = .search
+        
+        self.bottomSlideEmbedView.backgroundColor = .clear
+        
+        self.cancelSearchButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .regular)
+        self.cancelSearchButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
+        self.cancelSearchButton.setTitle("Cancel".localized, for: .normal)
+        self.cancelSearchButton.isHidden = true
         
         self.profileImageView.setupStyling()
         self.profileImageView.backgroundColor = self.uiContext.colors.hintText
@@ -456,5 +481,48 @@ private extension RoundImageButton {
         self.tintColor = tintColor
         self.updateRadius(16)
         self.setupStyling()
+    }
+}
+
+
+// MARK: - start search
+
+extension MainView {
+    
+    private var toolButtonViews: [UIView] {
+        return [self.shareButton, self.shrinkButton, self.addItemButton, self.profileImageView]
+    }
+    
+    func expandBottomViewForSearchWithAnimation() {
+        
+        let animate: () -> Void = { [weak self] in
+            self?.layoutIfNeeded()
+            self?.toolButtonViews.forEach { $0.isHidden = true }
+            self?.cancelSearchButton.alpha = 1.0
+        }
+        
+        if self.cancelSearchButton.isHidden {
+            self.cancelSearchButton.isHidden = false
+            self.cancelSearchButton.alpha = 0.0
+        }
+        self.bottomSliderSearbarTrailingConstraint.constant = -self.searchBarExpandTrailing
+        UIView.animate(withDuration: 0.5, animations: animate)
+    }
+    
+    func shrinkBottomViewWithAnimation() {
+        
+        let animate: () -> Void = { [weak self] in
+            self?.cancelSearchButton.isHidden = true
+            self?.toolButtonViews.forEach { $0.alpha = 1.0 }
+            self?.layoutIfNeeded()
+        }
+        
+        let completed: (Bool) -> Void = { [weak self] _ in
+            self?.cancelSearchButton.isHidden = true
+        }
+        
+        self.toolButtonViews.forEach { $0.isHidden = false; $0.alpha = 0.0 }
+        self.bottomSliderSearbarTrailingConstraint.constant = -self.searchBarShrinkTrailing
+        UIView.animate(withDuration: 0.5, animations: animate, completion: completed)
     }
 }

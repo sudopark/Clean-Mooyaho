@@ -65,5 +65,6 @@ extension IntegratedSearchViewController: Presenting {
     
     public func setupStyling() {
         
+        self.view.backgroundColor = .red
     }
 }

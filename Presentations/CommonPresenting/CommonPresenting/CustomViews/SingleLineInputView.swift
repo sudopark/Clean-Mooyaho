@@ -49,8 +49,22 @@ extension Reactive where Base == SingleLineInputView {
             .do(onNext: updateViews)
     }
     
-    public var clear: ControlEvent<Void> {
+    public var clear: Observable<Void> {
         return base.cleaerButton.rx.tap
+            .do(onNext: { [weak base] in
+                base?.textField.text = nil
+                base?.cleaerButton.isHidden = true
+            })
+    }
+    
+    public var didEditBegin: Observable<Void> {
+        return base.textField.rx.controlEvent(.editingDidBegin)
+            .asObservable()
+    }
+    
+    public var didEnterEnd: Observable<Void> {
+        return base.textField.rx.controlEvent(.editingDidEndOnExit)
+            .asObservable()
     }
 }
 
