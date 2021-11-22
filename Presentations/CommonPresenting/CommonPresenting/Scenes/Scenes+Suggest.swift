@@ -10,7 +10,12 @@ import Foundation
 
 // MARK: - IntegratedSearchScene Interactable & Listenable
 
-public protocol IntegratedSearchSceneInteractable { }
+public protocol IntegratedSearchSceneInteractable: AnyObject {
+    
+    func requestSuggest(with text: String)
+    
+    func requestSearchItems(with text: String)
+}
 
 public protocol IntegratedSearchSceneListenable: AnyObject { }
 

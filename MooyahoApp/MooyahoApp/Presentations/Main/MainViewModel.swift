@@ -35,6 +35,9 @@ public protocol MainViewModel: AnyObject {
     func toggleShareStatus()
     func showSharedCollectionDetail()
     func returnToMyReadCollections()
+    func didUpdateBottomSearchAreaShowing(isShow: Bool)
+    func didUpdateSearchText(_ text: String)
+    func didRequestSearch(with text: String)
     
     // presenter
     var currentMemberProfileImage: Observable<Thumbnail> { get }
@@ -65,6 +68,7 @@ public final class MainViewModelImple: MainViewModel {
     private let disposeBag = DisposeBag()
     
     private weak var readCollectionMainSceneInteractor: ReadCollectionMainSceneInteractable?
+    private weak var integratedSearchSceneInteractor: IntegratedSearchSceneInteractable?
     
     public init(memberUsecase: MemberUsecase,
                 readItemOptionUsecase: ReadItemOptionsUsecase,
@@ -269,6 +273,35 @@ extension MainViewModelImple: MainSceneInteractable {
     public func readCollection(didShowShared subCollectionID: String) {
         logger.print(level: .debug, "did show shared sub collection: \(subCollectionID)")
         self.subjects.currentSubCollectionID.accept(.shared(subCollectionID))
+    }
+}
+
+
+// MARK: - MainViewModelImple + search
+
+extension MainViewModelImple {
+    
+    public func didUpdateBottomSearchAreaShowing(isShow: Bool) {
+        
+        func addSearch() {
+            guard self.integratedSearchSceneInteractor == nil else { return }
+            self.integratedSearchSceneInteractor = self.router.addSaerchScene()
+        }
+        
+        func removeSearch() {
+            self.router.removeSearchScene()
+            self.integratedSearchSceneInteractor = nil
+        }
+        
+        return isShow ? addSearch() : removeSearch()
+    }
+    
+    public func didUpdateSearchText(_ text: String) {
+        self.integratedSearchSceneInteractor?.requestSuggest(with: text)
+    }
+    
+    public func didRequestSearch(with text: String) {
+        self.integratedSearchSceneInteractor?.requestSearchItems(with: text)
     }
 }
 

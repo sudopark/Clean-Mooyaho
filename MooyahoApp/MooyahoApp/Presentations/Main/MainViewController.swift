@@ -46,7 +46,7 @@ public final class MainViewController: BaseViewController, MainScene {
     }
     
     public var childBottomSlideContainerView: UIView {
-        return self.mainView.bottomSlideContainerView
+        return self.mainView.bottomSlideEmbedView
     }
     
     public init(viewModel: MainViewModel) {
@@ -188,6 +188,41 @@ extension MainViewController {
                 self?.viewModel.showSharedCollectionDetail()
             })
             .disposed(by: self.disposeBag)
+        
+        self.mainView.bottomSearchBarView.rx.didEditBegin
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.mainView.expandBottomViewForSearchWithAnimation()
+                self.updateBottomSlideOffsetIfNeed(show: true)
+                self.viewModel.didUpdateBottomSearchAreaShowing(isShow: true)
+            })
+            .disposed(by: self.disposeBag)
+
+        let inputText = Observable.merge(self.mainView.bottomSearchBarView.rx.text,
+                                         self.mainView.bottomSearchBarView.rx.clear.map { "" })
+        inputText
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.didUpdateSearchText(text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.bottomSearchBarView.rx.didEnterEnd
+            .subscribe(onNext: { [weak self] in
+                guard let text = self?.mainView.bottomSearchBarView.textField.text else { return }
+                self?.viewModel.didRequestSearch(with: text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.cancelSearchButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.mainView.shrinkBottomViewWithAnimation()
+                self.mainView.bottomSearchBarView.textField.resignFirstResponder()
+                self.updateBottomSlideOffsetIfNeed(show: false)
+                self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindMemberProfileImage() {
@@ -225,6 +260,9 @@ extension MainViewController {
                 guard let self = self else { return nil }
                 return (-self.mainView.bottomSlideBottomOffsetConstraint.constant - dy, nil)
             }
+            .do(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
     }
     
     private func newOffsetByPangestureEnd(_ pangesture: UIPanGestureRecognizer) -> Observable<UpdateBottomOffsetParam> {
@@ -260,14 +298,28 @@ extension MainViewController {
             .disposed(by: self.disposeBag)
     }
     
-    private func updateBottomSlideOffset(_ invertedNewOffset: CGFloat, withAnimation duration: TimeInterval? = nil) {
+    private func updateBottomSlideOffsetIfNeed(show: Bool) {
+        guard show else {
+            self.updateBottomSlideOffset(self.bottomSlideMinOffset, withAnimation: 0.55, withBounce: false)
+            return
+        }
+        let threshold = self.bottomSlideMaxOffset * 3 / 5
+        guard -self.mainView.bottomSlideBottomOffsetConstraint.constant <= threshold else { return }
+        self.updateBottomSlideOffset(self.bottomSlideMaxOffset, withAnimation: 0.7, withBounce: false)
+    }
+    
+    private func updateBottomSlideOffset(_ invertedNewOffset: CGFloat,
+                                         withAnimation duration: TimeInterval? = nil,
+                                         withBounce: Bool = true) {
         let newOffset = -min(self.bottomSlideMaxOffset, max(self.bottomSlideMinOffset, invertedNewOffset))
         self.mainView.bottomSlideBottomOffsetConstraint.constant = newOffset
-        
+
         guard let duration = duration else { return }
+        
+        let damping: Double = withBounce ? 0.7 : 1.0
         UIView.animate(withDuration: duration,
                        delay: 0,
-                       usingSpringWithDamping: 0.7,
+                       usingSpringWithDamping: damping,
                        initialSpringVelocity: 0,
                        options: .curveEaseInOut,
                        animations: { [weak self] in

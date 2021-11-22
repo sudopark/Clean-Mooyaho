@@ -46,6 +46,10 @@ public protocol MainRouting: Routing {
     func showSharedCollection(_ collection: SharedReadCollection)
     
     func showSharedCollectionDialog(for collection: SharedReadCollection)
+    
+    func addSaerchScene() -> IntegratedSearchSceneInteractable?
+    
+    func removeSearchScene()
 }
 
 // MARK: - Routers
@@ -55,7 +59,7 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & SignInSceneBuilable & EditProfileSceneBuilable
     & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
     & WaitMigrationSceneBuilable & StopShareCollectionSceneBuilable
-    & SharedCollectionInfoDialogSceneBuilable
+    & SharedCollectionInfoDialogSceneBuilable & IntegratedSearchSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -189,5 +193,36 @@ extension MainRouter {
             return
         }
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func addSaerchScene() -> IntegratedSearchSceneInteractable? {
+        
+        guard let mainScene = self.currentScene as? MainScene,
+              let next = self.nextScenesBuilder?
+                .makeIntegratedSearchScene(listener: nil)
+        else {
+            return nil
+        }
+        
+        next.view.frame = CGRect(origin: .zero, size: mainScene.childBottomSlideContainerView.frame.size)
+        next.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mainScene.addChild(next)
+        mainScene.childBottomSlideContainerView.addSubview(next.view)
+        next.didMove(toParent: mainScene)
+        
+        return next.interactor
+    }
+    
+    public func removeSearchScene() {
+        
+        guard let mainScene = self.currentScene as? MainScene,
+              let presentingSearchScene = mainScene.children
+                .compactMap ({ $0 as? IntegratedSearchScene }).first
+        else {
+            return
+        }
+        presentingSearchScene.willMove(toParent: nil)
+        presentingSearchScene.removeFromParent()
+        presentingSearchScene.view.removeFromSuperview()
     }
 }

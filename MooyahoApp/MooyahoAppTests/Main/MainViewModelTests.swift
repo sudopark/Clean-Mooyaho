@@ -323,12 +323,39 @@ extension MainViewModelTests {
     }
 }
 
+extension MainViewModelTests {
+    
+    func testViewModel_startSearch() {
+        // given
+        // when
+        self.viewModel.didUpdateBottomSearchAreaShowing(isShow: true)
+        self.viewModel.didUpdateSearchText("some")
+        self.viewModel.didRequestSearch(with: "search")
+        
+        // then
+        XCTAssertEqual(self.spyRouter.spySearchInteractor?.didSuggestRequested, true)
+        XCTAssertEqual(self.spyRouter.spySearchInteractor?.didSearchRequested, true)
+    }
+    
+    func testViewModel_finishSearch() {
+        // given
+        // when
+        self.viewModel.didUpdateBottomSearchAreaShowing(isShow: true)
+        self.viewModel.didUpdateSearchText("some")
+        self.viewModel.didRequestSearch(with: "search")
+        self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
+        
+        // then
+        XCTAssertNil(self.spyRouter.spySearchInteractor)
+    }
+}
 
 extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Mocking {
         
         var spyCollectionMainSceneInput: SpyReadCollectionMainInteractor?
+        var spySearchInteractor: SpyIntegratedSearchInteractor?
         
         var didSignInRequested = false
         func presentSignInScene() {
@@ -398,6 +425,15 @@ extension MainViewModelTests {
         func alertForConfirm(_ form: AlertForm) {
             self.didAlertConfirmForm = form
         }
+        
+        func addSaerchScene() -> IntegratedSearchSceneInteractable? {
+            self.spySearchInteractor = SpyIntegratedSearchInteractor()
+            return self.spySearchInteractor
+        }
+        
+        func removeSearchScene() {
+            self.spySearchInteractor = nil
+        }
     }
     
     class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {
@@ -440,6 +476,19 @@ extension MainViewModelTests {
         override func updateLatestIsShrinkModeIsOn(_ newvalue: Bool) -> Maybe<Void> {
             self.fakeIsShrinkModeOn.onNext(newvalue)
             return .just()
+        }
+    }
+    
+    class SpyIntegratedSearchInteractor: IntegratedSearchSceneInteractable {
+        
+        var didSuggestRequested: Bool?
+        func requestSuggest(with text: String) {
+            self.didSuggestRequested = true
+        }
+        
+        var didSearchRequested: Bool?
+        func requestSearchItems(with text: String) {
+            self.didSearchRequested = true
         }
     }
 }

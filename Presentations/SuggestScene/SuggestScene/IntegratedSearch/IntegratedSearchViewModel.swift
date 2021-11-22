@@ -20,6 +20,8 @@ import CommonPresenting
 public protocol IntegratedSearchViewModel: AnyObject {
 
     // interactor
+    func requestSuggest(with text: String)
+    func requestSearchItems(with text: String)
     
     // presenter
 }
@@ -56,6 +58,13 @@ public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
 
 extension IntegratedSearchViewModelImple {
     
+    public func requestSuggest(with text: String) {
+        
+    }
+    
+    public func requestSearchItems(with text: String) {
+        
+    }
 }
 
 
