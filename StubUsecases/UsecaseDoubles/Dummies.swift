@@ -177,3 +177,11 @@ extension SharedReadLink {
         return SharedReadLink(link: .dummy(int))
     }
 }
+
+
+extension SearchReadItemIndex {
+    
+    public static func dummy(_ index: Int) -> SearchReadItemIndex {
+        return .init(itemID: "id:\(index)", displayName: "name:\(index)")
+    }
+}
