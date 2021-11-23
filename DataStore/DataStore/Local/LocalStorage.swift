@@ -193,9 +193,18 @@ public protocol ShareItemLocalStorage {
     func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void>
 }
 
+public protocol SearchLocalStorage {
+    
+    func fetchLatestSearchedQueries() -> Maybe<[LatestSearchedQuery]>
+    
+    func insertLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
+}
+
 // MARK: - LocalStorage
 
-public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage { }
+public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage, SearchLocalStorage { }
 
 
 // MARK: - LocalStorageImple

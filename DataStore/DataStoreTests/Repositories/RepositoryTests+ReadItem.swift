@@ -229,21 +229,6 @@ extension RepositoryTests_ReadItem {
         // then
         XCTAssertNotNil(error)
     }
-    
-    func testRepository_suggestReadItem_withoutSignIn() {
-        // given
-        let expect = expectation(description: "로그아웃 상태에서 리드아이템 서제스트")
-        self.mockLocal.register(key: "suggestReadItems") {
-            Maybe<[SearchReadItemIndex]>.just([SearchReadItemIndex(itemID: "some", displayName: "name")])
-        }
-        
-        // when
-        let suggesting = self.dummyRepository.requestSearchReadItem(by: "some")
-        let indexes = self.waitFirstElement(expect, for: suggesting.asObservable())
-        
-        // then
-        XCTAssertEqual(indexes?.count, 1)
-    }
 }
 
 
@@ -488,21 +473,6 @@ extension RepositoryTests_ReadItem {
             
         // then
         XCTAssertEqual(self.dummyRepository.didRemoveMemoRequested, false)
-    }
-    
-    func testRepository_suggestReadItem_withSignIn() {
-        // given
-        let expect = expectation(description: "로그인 상태에서 리드아이템 서제스트")
-        self.mockRemote.register(key: "requestSuggestItem") {
-            Maybe<[SearchReadItemIndex]>.just([SearchReadItemIndex(itemID: "some", displayName: "name")])
-        }
-        
-        // when
-        let suggesting = self.dummyRepository.requestSearchReadItem(by: "some")
-        let indexes = self.waitFirstElement(expect, for: suggesting.asObservable())
-        
-        // then
-        XCTAssertEqual(indexes?.count, 1)
     }
 }
 

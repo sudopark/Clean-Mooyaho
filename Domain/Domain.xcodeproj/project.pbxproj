@@ -90,6 +90,7 @@
 		F61FC990274A2B2300E82D16 /* IntegratedSearchReposiotry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */; };
 		F61FC992274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */; };
 		F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */; };
+		F6260913274D3789003C9577 /* SuggestQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260912274D3789003C9577 /* SuggestQuery.swift */; };
 		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
 		F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */; };
 		F631986B272E71D500E66417 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631986A272E71D500E66417 /* ClipboardService.swift */; };
@@ -261,6 +262,7 @@
 		F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchReposiotry.swift; sourceTree = "<group>"; };
 		F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestReadItemUsecaseTests.swift; sourceTree = "<group>"; };
 		F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemIndex.swift; sourceTree = "<group>"; };
+		F6260912274D3789003C9577 /* SuggestQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQuery.swift; sourceTree = "<group>"; };
 		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
 		F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkAddSuggestUsecase.swift; sourceTree = "<group>"; };
 		F631986A272E71D500E66417 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
@@ -785,6 +787,7 @@
 			isa = PBXGroup;
 			children = (
 				F6A8CE3B271174F900CA6D3D /* SuggestCategory.swift */,
+				F6260912274D3789003C9577 /* SuggestQuery.swift */,
 				F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */,
 			);
 			path = Suggest;
@@ -931,6 +934,7 @@
 				F6391C6D271DBD350000F927 /* ReadRemindMessage.swift in Sources */,
 				F6913F0326EE5CA300C6E105 /* ReadItemRepository.swift in Sources */,
 				2B40BF8F263F0FD70031C7A6 /* PlaceRepository.swift in Sources */,
+				F6260913274D3789003C9577 /* SuggestQuery.swift in Sources */,
 				F64061812735B15E00902787 /* UserDataMigrateRepository.swift in Sources */,
 				F6152961264F1A8B003BCB59 /* HoorayMessages.swift in Sources */,
 				F612BDF027406EDB0017FD77 /* SharedReadCollectionLoadUsecase.swift in Sources */,

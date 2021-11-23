@@ -41,6 +41,11 @@
 		F625EDCB26821E63000C87F0 /* LocalStorageImple+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDCA26821E63000C87F0 /* LocalStorageImple+Place.swift */; };
 		F625EDCD26821E75000C87F0 /* LocalStorageImple+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDCC26821E75000C87F0 /* LocalStorageImple+Hooray.swift */; };
 		F625EDCF26821F9D000C87F0 /* DataModelStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625EDCE26821F9D000C87F0 /* DataModelStorage.swift */; };
+		F6260915274D3C15003C9577 /* RepositoryImple+IntegratedSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260914274D3C15003C9577 /* RepositoryImple+IntegratedSearch.swift */; };
+		F6260917274D3D11003C9577 /* LocalStorageImple+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260916274D3D11003C9577 /* LocalStorageImple+Search.swift */; };
+		F6260919274D3DE5003C9577 /* RepositoryTests+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260918274D3DE5003C9577 /* RepositoryTests+Search.swift */; };
+		F626091B274D4027003C9577 /* LatestSearchQueryTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */; };
+		F626091D274D420E003C9577 /* LocalStorageTests+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */; };
 		F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212626557873000D7456 /* RepositoryImple+Member.swift */; };
 		F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212826557924000D7456 /* RepositoryTests+Member.swift */; };
 		F63D29F8269AE7DD007580E2 /* PlaceInfoTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63D29F7269AE7DD007580E2 /* PlaceInfoTable.swift */; };
@@ -147,6 +152,11 @@
 		F625EDCA26821E63000C87F0 /* LocalStorageImple+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Place.swift"; sourceTree = "<group>"; };
 		F625EDCC26821E75000C87F0 /* LocalStorageImple+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Hooray.swift"; sourceTree = "<group>"; };
 		F625EDCE26821F9D000C87F0 /* DataModelStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelStorage.swift; sourceTree = "<group>"; };
+		F6260914274D3C15003C9577 /* RepositoryImple+IntegratedSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+IntegratedSearch.swift"; sourceTree = "<group>"; };
+		F6260916274D3D11003C9577 /* LocalStorageImple+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+Search.swift"; sourceTree = "<group>"; };
+		F6260918274D3DE5003C9577 /* RepositoryTests+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Search.swift"; sourceTree = "<group>"; };
+		F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestSearchQueryTable.swift; sourceTree = "<group>"; };
+		F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Search.swift"; sourceTree = "<group>"; };
 		F633212626557873000D7456 /* RepositoryImple+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Member.swift"; sourceTree = "<group>"; };
 		F633212826557924000D7456 /* RepositoryTests+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Member.swift"; sourceTree = "<group>"; };
 		F63D29F7269AE7DD007580E2 /* PlaceInfoTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoTable.swift; sourceTree = "<group>"; };
@@ -260,6 +270,7 @@
 				F6B6B420271163D9000652E0 /* LocalStorageImple+ItemCategory.swift */,
 				F6C1C8E127255878007277A5 /* LocalStorageImple+ReadLinkMemo.swift */,
 				F6BD48042740F63A00D2B2C9 /* LocalStorageImple+SharedItem.swift */,
+				F6260916274D3D11003C9577 /* LocalStorageImple+Search.swift */,
 				F640618A2735CF8F00902787 /* UserDataMigratableLocalStorage.swift */,
 				2B9F27772633E79800FEBCE3 /* Storages+Implements */,
 			);
@@ -306,6 +317,7 @@
 				F6C1C8DF272557FB007277A5 /* RepositoryImple+ReadLinkMemo.swift */,
 				F64061882735C64E00902787 /* RepositoryImple+UserDataMigration.swift */,
 				F6BD48002740DA8C00D2B2C9 /* RepositoryImple+ShareItem.swift */,
+				F6260914274D3C15003C9577 /* RepositoryImple+IntegratedSearch.swift */,
 				F6913F0826F38AA400C6E105 /* Deprecated */,
 			);
 			path = "Repository+Implements";
@@ -336,6 +348,7 @@
 				F6C1C8E327255AFB007277A5 /* RepositoryTests+ReadLinkMemo.swift */,
 				F640619027365E6B00902787 /* RepositoryTests+UserDataMigration.swift */,
 				F6BD48062740F73300D2B2C9 /* RepositoryTests+ShareItem.swift */,
+				F6260918274D3DE5003C9577 /* RepositoryTests+Search.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -374,9 +387,9 @@
 		2BF00BEC262B7E1300E235C0 /* DataStoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				2BD54F73263DB502004B3EB0 /* Repositories */,
 				F6419BF426822F9B00C7919B /* Local */,
 				2BD54F72263DB4FD004B3EB0 /* Stub */,
-				2BD54F73263DB502004B3EB0 /* Repositories */,
 				2BF00BED262B7E1300E235C0 /* DataStoreTests.swift */,
 				2BF00BEF262B7E1300E235C0 /* Info.plist */,
 			);
@@ -416,6 +429,7 @@
 				F6C99B362731A35A00D42A90 /* DataModelStorageGatewayTests.swift */,
 				F640619227367F7700902787 /* LocalStorageTests+UserDataMigration.swift */,
 				F6BD480A2741035700D2B2C9 /* LocalStorageTests+ShareCollection.swift */,
+				F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -456,6 +470,7 @@
 				F6C1C8E7272560D5007277A5 /* ReadLinkMemoTable.swift */,
 				F6BD48082740FB9D00D2B2C9 /* SharedReadCollectionTable.swift */,
 				F64CCB062742A3A10015EE9B /* SharingCollectionIDsTable.swift */,
+				F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -597,6 +612,7 @@
 				F63D29FA269C906D007580E2 /* TagTable.swift in Sources */,
 				F6CF34B226D7E55C003B52CD /* HoorayTable.swift in Sources */,
 				F6B6B41D271160B4000652E0 /* RepositoryImple+ItemCategory.swift in Sources */,
+				F6260915274D3C15003C9577 /* RepositoryImple+IntegratedSearch.swift in Sources */,
 				F6CEF8B926F4F0A800061097 /* ReadLinkTable.swift in Sources */,
 				F63D29F8269AE7DD007580E2 /* PlaceInfoTable.swift in Sources */,
 				F6C1C8E0272557FB007277A5 /* RepositoryImple+ReadLinkMemo.swift in Sources */,
@@ -607,6 +623,7 @@
 				2BD54F6C263D4C67004B3EB0 /* RepositoryImple+Auth.swift in Sources */,
 				F601725627000F9800E47B75 /* LinkPreviewTable.swift in Sources */,
 				F625EDC926821E4E000C87F0 /* LocalStorageImple+Tag.swift in Sources */,
+				F6260917274D3D11003C9577 /* LocalStorageImple+Search.swift in Sources */,
 				F640618F27364B0E00902787 /* DataModelStorage+UserDataMigration.swift in Sources */,
 				F601725026FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift in Sources */,
 				F6E279DB26F856BA00957AC4 /* LocalStorageImple+ReadItemOptions.swift in Sources */,
@@ -618,6 +635,7 @@
 				F6A8CE422711F5BE00CA6D3D /* DataModelStorage+Migration.swift in Sources */,
 				2B074A8A2642AD5D00C94E71 /* HttpAPI.swift in Sources */,
 				F6CF34B626D7E576003B52CD /* HoorayReactionsTable.swift in Sources */,
+				F626091B274D4027003C9577 /* LatestSearchQueryTable.swift in Sources */,
 				2B9F27722633E77900FEBCE3 /* LocalStorage.swift in Sources */,
 				F625EDC726821E3B000C87F0 /* LocalStorageImple+Member.swift in Sources */,
 				F6913F0B26F38AE400C6E105 /* RepositoryImple+ReadItem.swift in Sources */,
@@ -642,6 +660,7 @@
 			files = (
 				F6913F0D26F38C1600C6E105 /* RepositoryTests+ReadItem.swift in Sources */,
 				F6CEF8BF26F508FD00061097 /* LocalStorageTests+ReadItem.swift in Sources */,
+				F6260919274D3DE5003C9577 /* RepositoryTests+Search.swift in Sources */,
 				F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */,
 				F6A72A3F26485FAD006BE4BD /* RepositoryTests+Tag.swift in Sources */,
 				F60172582700145500E47B75 /* LocalStorageTests+LinkPreview.swift in Sources */,
@@ -651,6 +670,7 @@
 				F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */,
 				F601725226FEFABA00E47B75 /* RepositoryTests+LinkPreview.swift in Sources */,
 				F640619127365E6B00902787 /* RepositoryTests+UserDataMigration.swift in Sources */,
+				F626091D274D420E003C9577 /* LocalStorageTests+Search.swift in Sources */,
 				F6E279DD26F857E200957AC4 /* LocalStorageTests+ReadItemOptions.swift in Sources */,
 				F6B6B42327116AB4000652E0 /* LocalStorageTests+ItemCategory.swift in Sources */,
 				2BD54F7D263DB826004B3EB0 /* Dummies.swift in Sources */,
