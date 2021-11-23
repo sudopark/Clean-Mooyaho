@@ -1,5 +1,5 @@
 //
-//  SearchReadItemUsecase.swift
+//  IntegratedSearchUsecase.swift
 //  Domain
 //
 //  Created by sudo.park on 2021/11/21.
@@ -14,19 +14,25 @@ import Prelude
 import Optics
 
 
-public protocol SuggestReadItemUsecase {
+public protocol SuggestQueryUsecase {
     
     func startSuggest(query: String)
     
     var suggestingQuery: Observable<[SuggestQuery]> { get }
     
-    func search(query: String) -> Maybe<[SearchReadItemIndex]>
-    
     func removeLatestSearchedQuery(_ query: String)
 }
 
 
-public final class SuggestReadItemUsecaseImple: SuggestReadItemUsecase {
+public protocol SearchReadItemUsecase {
+    
+    func search(query: String) -> Maybe<[SearchReadItemIndex]>
+}
+
+
+public protocol IntegratedSearchUsecase: SuggestQueryUsecase, SearchReadItemUsecase { }
+
+public final class IntegratedSearchUsecaseImple: IntegratedSearchUsecase {
     
     private let searchQueryStoraService: SearchableQueryTokenStoreService
     private let searchRepository: IntegratedSearchReposiotry
@@ -56,7 +62,7 @@ public final class SuggestReadItemUsecaseImple: SuggestReadItemUsecase {
 }
 
 
-extension SuggestReadItemUsecaseImple {
+extension IntegratedSearchUsecaseImple {
     
     public func startSuggest(query: String) {
         self.searchingKeyword.onNext(query)
@@ -64,7 +70,7 @@ extension SuggestReadItemUsecaseImple {
 }
 
 
-extension SuggestReadItemUsecaseImple {
+extension IntegratedSearchUsecaseImple {
     
     public var suggestingQuery: Observable<[SuggestQuery]> {
         

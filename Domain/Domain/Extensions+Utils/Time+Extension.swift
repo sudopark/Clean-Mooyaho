@@ -17,4 +17,11 @@ extension TimeStamp {
         form.dateFormat = "MMM d, yyyy, H:mm".localized
         return form.string(from: Date(timeIntervalSince1970: self))
     }
+    
+    public func dateText() -> String {
+        
+        let form = DateFormatter()
+        form.dateFormat = "MM.d"
+        return form.string(from: Date(timeIntervalSince1970: self))
+    }
 }

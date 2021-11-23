@@ -96,5 +96,12 @@ extension DataModelStorageImple {
         } catch {
             logger.print(level: .error, "fail to create SharingCollectionIDsTable")
         }
+        
+        do {
+            try database.createTableOrNot(LatestSearchQueryTable.self)
+            logger.print(level: .debug, "sqlite LatestSearchQueryTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create LatestSearchQueryTable")
+        }
     }
 }
