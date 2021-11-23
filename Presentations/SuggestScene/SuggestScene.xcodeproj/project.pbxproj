@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F626090B274D2E59003C9577 /* SuggestQueryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260906274D2E59003C9577 /* SuggestQueryRouter.swift */; };
+		F626090C274D2E59003C9577 /* SuggestQueryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260907274D2E59003C9577 /* SuggestQueryViewController.swift */; };
+		F626090D274D2E59003C9577 /* SuggestQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260908274D2E59003C9577 /* SuggestQueryBuilder.swift */; };
+		F626090E274D2E59003C9577 /* SuggestQueryScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260909274D2E59003C9577 /* SuggestQueryScene.swift */; };
+		F626090F274D2E59003C9577 /* SuggestQueryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626090A274D2E59003C9577 /* SuggestQueryViewModel.swift */; };
+		F6260911274D367F003C9577 /* SuggestQueryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260910274D367F003C9577 /* SuggestQueryViewModelTests.swift */; };
 		F65CC284274BF95F005B819E /* SuggestScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65CC27B274BF95F005B819E /* SuggestScene.framework */; };
 		F65CC289274BF95F005B819E /* SuggestSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65CC288274BF95F005B819E /* SuggestSceneTests.swift */; };
 		F65CC28A274BF95F005B819E /* SuggestScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F65CC27E274BF95F005B819E /* SuggestScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -33,6 +39,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6260906274D2E59003C9577 /* SuggestQueryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryRouter.swift; sourceTree = "<group>"; };
+		F6260907274D2E59003C9577 /* SuggestQueryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryViewController.swift; sourceTree = "<group>"; };
+		F6260908274D2E59003C9577 /* SuggestQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryBuilder.swift; sourceTree = "<group>"; };
+		F6260909274D2E59003C9577 /* SuggestQueryScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryScene.swift; sourceTree = "<group>"; };
+		F626090A274D2E59003C9577 /* SuggestQueryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryViewModel.swift; sourceTree = "<group>"; };
+		F6260910274D367F003C9577 /* SuggestQueryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryViewModelTests.swift; sourceTree = "<group>"; };
 		F65CC27B274BF95F005B819E /* SuggestScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SuggestScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F65CC27E274BF95F005B819E /* SuggestScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuggestScene.h; sourceTree = "<group>"; };
 		F65CC283274BF95F005B819E /* SuggestSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuggestSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +86,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F6260905274D2E40003C9577 /* SuggestQuery */ = {
+			isa = PBXGroup;
+			children = (
+				F6260906274D2E59003C9577 /* SuggestQueryRouter.swift */,
+				F6260907274D2E59003C9577 /* SuggestQueryViewController.swift */,
+				F6260908274D2E59003C9577 /* SuggestQueryBuilder.swift */,
+				F6260909274D2E59003C9577 /* SuggestQueryScene.swift */,
+				F626090A274D2E59003C9577 /* SuggestQueryViewModel.swift */,
+			);
+			path = SuggestQuery;
+			sourceTree = "<group>";
+		};
 		F65CC271274BF95F005B819E = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +120,7 @@
 		F65CC27D274BF95F005B819E /* SuggestScene */ = {
 			isa = PBXGroup;
 			children = (
+				F6260905274D2E40003C9577 /* SuggestQuery */,
 				F68A87FD274BFA6E004DADE4 /* IntegratedSearch */,
 				F65CC27E274BF95F005B819E /* SuggestScene.h */,
 			);
@@ -106,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				F65CC288274BF95F005B819E /* SuggestSceneTests.swift */,
+				F6260910274D367F003C9577 /* SuggestQueryViewModelTests.swift */,
 			);
 			path = SuggestSceneTests;
 			sourceTree = "<group>";
@@ -243,10 +269,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F626090E274D2E59003C9577 /* SuggestQueryScene.swift in Sources */,
+				F626090C274D2E59003C9577 /* SuggestQueryViewController.swift in Sources */,
 				F68A8807274BFA97004DADE4 /* IntegratedSearchViewModel.swift in Sources */,
 				F68A8803274BFA97004DADE4 /* IntegratedSearchRouter.swift in Sources */,
+				F626090D274D2E59003C9577 /* SuggestQueryBuilder.swift in Sources */,
 				F68A8806274BFA97004DADE4 /* IntegratedSearchScene.swift in Sources */,
 				F68A8804274BFA97004DADE4 /* IntegratedSearchViewController.swift in Sources */,
+				F626090F274D2E59003C9577 /* SuggestQueryViewModel.swift in Sources */,
+				F626090B274D2E59003C9577 /* SuggestQueryRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6260911274D367F003C9577 /* SuggestQueryViewModelTests.swift in Sources */,
 				F65CC289274BF95F005B819E /* SuggestSceneTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

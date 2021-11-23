@@ -1,5 +1,5 @@
 //
-//  SuggestReadItemUsecaseTests.swift
+//  IntegratedSearchUsecaseTests.swift
 //  DomainTests
 //
 //  Created by sudo.park on 2021/11/21.
@@ -16,7 +16,7 @@ import UnitTestHelpKit
 import Domain
 
 
-class SuggestReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
+class IntegratedSearchUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var spySuggestQueryService: StubSearchQueryStoreService!
@@ -32,7 +32,7 @@ class SuggestReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     private func makeUsecase(latestQueries: [String] = [],
                              searchables: [String] = [],
-                             shouldFailSearch: Bool = false) -> SuggestReadItemUsecaseImple {
+                             shouldFailSearch: Bool = false) -> IntegratedSearchUsecase {
         
         let service = StubSearchQueryStoreService()
             |> \.queries .~ searchables
@@ -46,12 +46,12 @@ class SuggestReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.lastestQueries .~ queries
             |> \.searchResult .~ (shouldFailSearch ? .failure(ApplicationErrors.invalid) : .success(dummies))
         
-        return SuggestReadItemUsecaseImple(searchQueryStoraService: service,
-                                           searchRepository: repository)
+        return IntegratedSearchUsecaseImple(searchQueryStoraService: service,
+                                            searchRepository: repository)
     }
 }
 
-extension SuggestReadItemUsecaseTests {
+extension IntegratedSearchUsecaseTests {
     
     func testUsecase_whenStartQueryWithEmptyQuery_showLatestSearchQueries() {
         // given
@@ -87,7 +87,7 @@ extension SuggestReadItemUsecaseTests {
     }
 }
 
-extension SuggestReadItemUsecaseTests {
+extension IntegratedSearchUsecaseTests {
     
     func testUsecase_search() {
         // given
@@ -159,7 +159,7 @@ extension SuggestReadItemUsecaseTests {
 }
 
 
-extension SuggestReadItemUsecaseTests {
+extension IntegratedSearchUsecaseTests {
     
     class StubSearchQueryStoreService: SearchableQueryTokenStoreService {
         

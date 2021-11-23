@@ -490,5 +490,7 @@ extension MainViewModelTests {
         func requestSearchItems(with text: String) {
             self.didSearchRequested = true
         }
+        
+        func suggestQuery(didSelect searchQuery: String) { }
     }
 }

@@ -84,11 +84,11 @@
 		F61529672650171A003BCB59 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61529662650171A003BCB59 /* Auth.swift */; };
 		F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6152968265017E5003BCB59 /* AuthInfoProvider.swift */; };
 		F615296B26503D13003BCB59 /* BaseHoorayUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */; };
-		F61FC98A274A091500E82D16 /* SearchReadItemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */; };
+		F61FC98A274A091500E82D16 /* IntegratedSearchUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC989274A091500E82D16 /* IntegratedSearchUsecase.swift */; };
 		F61FC98C274A14E800E82D16 /* SearchableQueryTokenStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98B274A14E800E82D16 /* SearchableQueryTokenStoreService.swift */; };
 		F61FC98E274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98D274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift */; };
 		F61FC990274A2B2300E82D16 /* IntegratedSearchReposiotry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */; };
-		F61FC992274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */; };
+		F61FC992274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FC991274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift */; };
 		F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */; };
 		F6260913274D3789003C9577 /* SuggestQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260912274D3789003C9577 /* SuggestQuery.swift */; };
 		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
@@ -256,11 +256,11 @@
 		F61529662650171A003BCB59 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		F6152968265017E5003BCB59 /* AuthInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProvider.swift; sourceTree = "<group>"; };
 		F615296A26503D13003BCB59 /* BaseHoorayUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHoorayUsecaseTests.swift; sourceTree = "<group>"; };
-		F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemUsecase.swift; sourceTree = "<group>"; };
+		F61FC989274A091500E82D16 /* IntegratedSearchUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchUsecase.swift; sourceTree = "<group>"; };
 		F61FC98B274A14E800E82D16 /* SearchableQueryTokenStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableQueryTokenStoreService.swift; sourceTree = "<group>"; };
 		F61FC98D274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableQueryTokenStoreServiceTests.swift; sourceTree = "<group>"; };
 		F61FC98F274A2B2300E82D16 /* IntegratedSearchReposiotry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchReposiotry.swift; sourceTree = "<group>"; };
-		F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestReadItemUsecaseTests.swift; sourceTree = "<group>"; };
+		F61FC991274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchUsecaseTests.swift; sourceTree = "<group>"; };
 		F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemIndex.swift; sourceTree = "<group>"; };
 		F6260912274D3789003C9577 /* SuggestQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQuery.swift; sourceTree = "<group>"; };
 		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
@@ -533,7 +533,7 @@
 				F6C1C8DD27255711007277A5 /* ReadLinkMemoUsecaseTests.swift */,
 				F64061862735B7E200902787 /* UserDataMigrationUsecaseTests.swift */,
 				F612BDF52740C3EF0017FD77 /* ShareItemUsecaseTests.swift */,
-				F61FC991274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift */,
+				F61FC991274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -626,7 +626,7 @@
 				F6CFA5742646340300F9A049 /* SearchNewPlaceUsecase.swift */,
 				F6A72A3426481D0C006BE4BD /* SuggestTagUsecase.swift */,
 				F6A8CE3D2711756A00CA6D3D /* SuggestCategoryUsecase.swift */,
-				F61FC989274A091500E82D16 /* SearchReadItemUsecase.swift */,
+				F61FC989274A091500E82D16 /* IntegratedSearchUsecase.swift */,
 			);
 			path = "Suggest+Search";
 			sourceTree = "<group>";
@@ -957,7 +957,7 @@
 				2BFF240626405A78008C52EB /* SuggestPlaceUsecase.swift in Sources */,
 				F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */,
 				F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */,
-				F61FC98A274A091500E82D16 /* SearchReadItemUsecase.swift in Sources */,
+				F61FC98A274A091500E82D16 /* IntegratedSearchUsecase.swift in Sources */,
 				F612BDEA27406BDA0017FD77 /* ShareItemRepository.swift in Sources */,
 				2BFF240926405B7C008C52EB /* Tags.swift in Sources */,
 				F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */,
@@ -1041,7 +1041,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F61FC992274A2CAD00E82D16 /* SuggestReadItemUsecaseTests.swift in Sources */,
+				F61FC992274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift in Sources */,
 				2BA9377B263B1C1800276876 /* MockOAuthService.swift in Sources */,
 				2B40BF81263F08EA0031C7A6 /* UserLocationUsecaseTests.swift in Sources */,
 				F615294B264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift in Sources */,

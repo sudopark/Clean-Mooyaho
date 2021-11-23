@@ -5,12 +5,12 @@
 //  Created by sudo.park on 2021/11/23.
 //
 
-import Foundation
+import UIKit
 
 
 // MARK: - IntegratedSearchScene Interactable & Listenable
 
-public protocol IntegratedSearchSceneInteractable: AnyObject {
+public protocol IntegratedSearchSceneInteractable: SuggestQuerySceneListenable {
     
     func requestSuggest(with text: String)
     
@@ -25,4 +25,27 @@ public protocol IntegratedSearchSceneListenable: AnyObject { }
 public protocol IntegratedSearchScene: Scenable {
     
     var interactor: IntegratedSearchSceneInteractable? { get }
+    
+    var suggestSceneContainer: UIView { get }
+}
+
+
+// MARK: - SuggestQueryScene Interactable & Listenable
+
+public protocol SuggestQuerySceneInteractable: AnyObject {
+    
+    func suggest(with text: String)
+}
+
+public protocol SuggestQuerySceneListenable: AnyObject {
+    
+    func suggestQuery(didSelect searchQuery: String)
+}
+
+
+// MARK: - SuggestQueryScene
+
+public protocol SuggestQueryScene: Scenable {
+    
+    var interactor: SuggestQuerySceneInteractable? { get }
 }

@@ -502,3 +502,17 @@ extension DependencyInjector: IntegratedSearchSceneBuilable {
         return viewController
     }
 }
+
+
+extension DependencyInjector: SuggestQuerySceneBuilable {
+    
+    public func makeSuggestQueryScene(listener: SuggestQuerySceneListenable?) -> SuggestQueryScene {
+        let router = SuggestQueryRouter(nextSceneBuilders: self)
+        let viewModel = SuggestQueryViewModelImple(suggestQueryUsecase: self.searchUsecase,
+                                                   router: router,
+                                                   listener: listener)
+        let viewController = SuggestQueryViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

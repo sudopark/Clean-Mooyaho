@@ -67,6 +67,10 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
+        var searchQueryStoreService: SearchableQueryTokenStoreService {
+            return SearchableQueryTokenStoreServiceImple()
+        }
+        
         fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
     }
     
@@ -203,5 +207,11 @@ extension DependencyInjector {
                                      shareRepository: self.appReposiotry,
                                      authInfoProvider: self.shared.authInfoManager,
                                      sharedDataService: self.shared.dataStore)
+    }
+    
+    var searchUsecase: IntegratedSearchUsecase {
+        
+        return IntegratedSearchUsecaseImple(searchQueryStoraService: self.shared.searchQueryStoreService,
+                                            searchRepository: self.appReposiotry)
     }
 }

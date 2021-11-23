@@ -17,6 +17,9 @@ import CommonPresenting
 
 public final class IntegratedSearchViewController: BaseViewController, IntegratedSearchScene {
     
+    private let tableView = UITableView()
+    public let suggestSceneContainer: UIView = UIView()
+    
     let viewModel: IntegratedSearchViewModel
     
     public init(viewModel: IntegratedSearchViewModel) {
@@ -41,6 +44,7 @@ public final class IntegratedSearchViewController: BaseViewController, Integrate
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        self.viewModel.setupSubScene()
     }
     
 }
@@ -61,6 +65,11 @@ extension IntegratedSearchViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(tableView)
+        tableView.autoLayout.fill(self.view)
+        
+        self.view.addSubview(suggestSceneContainer)
+        suggestSceneContainer.autoLayout.fill(self.view)
     }
     
     public func setupStyling() {

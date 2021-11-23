@@ -155,3 +155,10 @@ extension AppRepository: ShareItemRepository, ShareItemReposiotryDefImpleDepende
         return self.remote
     }
 }
+
+extension AppRepository: IntegratedSearchReposiotry, IntegratedSearchReposiotryDefImpleDependency {
+    
+    public var searchLocal: SearchLocalStorage {
+        return self.local
+    }
+}
