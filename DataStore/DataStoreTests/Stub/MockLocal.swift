@@ -276,5 +276,18 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "removeSharedCollection")
         return .just()
     }
+    
+    func fetchLatestSearchedQueries() -> Maybe<[LatestSearchedQuery]> {
+        return self.resolve(key: "fetchLatestSearchedQueries") ?? .empty()
+    }
+    
+    func insertLatestSearchQuery(_ query: String) -> Maybe<Void> {
+        self.verify(key: "insertLatestSearchQuery")
+        return .just()
+    }
+    
+    func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
+        return .just()
+    }
 }
 

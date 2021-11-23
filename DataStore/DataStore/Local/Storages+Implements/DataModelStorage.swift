@@ -101,6 +101,12 @@ public protocol DataModelStorage {
     func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void>
     
     func removeSharedCollection(shareID: String) -> Maybe<Void>
+    
+    func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]>
+    
+    func insertLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
 }
 
 
@@ -774,6 +780,32 @@ extension DataModelStorageImple {
         let collections = SharedRootReadCollectionTable.self
         let query = collections.delete().where { $0.shareID == shareID }
         return self.sqliteService.rx.run { try $0.delete(collections, query: query) }
+    }
+}
+
+
+// MARK: - search query
+
+extension DataModelStorageImple {
+    
+    public func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]> {
+        let query = LatestSearchQueryTable
+            .selectAll()
+            .orderBy(isAscending: false) { $0.time }
+            .limit(50)
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func insertLatestSearchQuery(_ query: String) -> Maybe<Void> {
+        let entity = LatestSearchedQuery(text: query, time: .now())
+        return self.sqliteService.rx.run {
+            return try $0.insert(LatestSearchQueryTable.self, entities: [entity], shouldReplace: true)
+        }
+    }
+    
+    public func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
+        let query = LatestSearchQueryTable.delete().where { $0.query == query }
+        return self.sqliteService.rx.run { try $0.delete(LatestSearchQueryTable.self, query: query) }
     }
 }
 

@@ -19,6 +19,8 @@ public protocol SearchableQueryTokenStoreService {
     
     func insertTokens(_ text: String)
     
+    func removeToken(_ text: String)
+    
     func suggestSearchQuery(by keyword: String) -> Maybe<[String]>
     
     func clearAll()
@@ -27,7 +29,7 @@ public protocol SearchableQueryTokenStoreService {
 
 public final class SearchableQueryTokenStoreServiceImple: SearchableQueryTokenStoreService {
     
-    private let workSceheduleer: SerialDispatchQueueScheduler = .init(qos: .userInteractive)
+    private let workName = "manage.search.queries"
     private var tokens: Set<String> = []
     
     public init() {}
@@ -36,8 +38,20 @@ public final class SearchableQueryTokenStoreServiceImple: SearchableQueryTokenSt
 
 extension SearchableQueryTokenStoreServiceImple {
     
+    private var accessQueue: DispatchQueue {
+        return DispatchQueue(label: self.workName)
+    }
+    
     public func insertTokens(_ text: String) {
-        self.tokens.insert(text)
+        _ = self.accessQueue.sync {
+            self.tokens.insert(text)
+        }
+    }
+    
+    public func removeToken(_ text: String) {
+        _ = self.accessQueue.sync {
+            self.tokens.remove(text)
+        }
     }
     
     public func suggestSearchQuery(by keyword: String) -> Maybe<[String]> {
@@ -46,8 +60,9 @@ extension SearchableQueryTokenStoreServiceImple {
             callback(.success(self.findingAction(keyword)))
             return Disposables.create()
         }
+        let workSceheduleer: ConcurrentDispatchQueueScheduler = .init(queue: self.accessQueue)
         return caculating
-            .subscribe(on: self.workSceheduleer)
+            .subscribe(on: workSceheduleer)
     }
     
     private func findingAction(_ keyword: String) -> [String] {

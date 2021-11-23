@@ -39,9 +39,11 @@ class SuggestReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         
         self.spySuggestQueryService = service
         
+        let queries = latestQueries.map { LatestSearchedQuery(text: $0, time: .now()) }
+        
         let dummies = (0..<10).map { SearchReadItemIndex(itemID: "some:\($0)", displayName: "name:\($0)") }
         let repository = StubSearchRepository()
-            |> \.lastestQueries .~ latestQueries
+            |> \.lastestQueries .~ queries
             |> \.searchResult .~ (shouldFailSearch ? .failure(ApplicationErrors.invalid) : .success(dummies))
         
         return SuggestReadItemUsecaseImple(searchQueryStoraService: service,
@@ -62,7 +64,7 @@ extension SuggestReadItemUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(queries, ["1", "2"])
+        XCTAssertEqual(queries.map { $0.map { $0.text } }, ["1", "2"])
     }
     
     func testUsecase_whenQueryIsNotEmpty_showSearchableQueries() {
@@ -78,7 +80,7 @@ extension SuggestReadItemUsecaseTests {
         }
         
         // then
-        XCTAssertEqual(queryLists, [
+        XCTAssertEqual(queryLists.map { $0.map { $0.text } }, [
             ["1", "2"],
             ["119", "112"]
         ])
@@ -100,6 +102,29 @@ extension SuggestReadItemUsecaseTests {
         XCTAssertEqual(result?.isNotEmpty, true)
     }
     
+    func testUsecase_whenAfterSearch_showAtLatestQueryList() {
+        // given
+        let expect = expectation(description: "검색한 이후에 최근 검색한 목록에 노출")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase(latestQueries: ["one", "two"])
+        
+        // when
+        let queryLists = self.waitElements(expect, for: usecase.suggestingQuery) {
+            usecase.startSuggest(query: "")
+            usecase.search(query: "new")
+                .subscribe(onSuccess: { _ in
+                    usecase.startSuggest(query: "")
+                })
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(queryLists.map { $0.map { $0.text } }, [
+            ["one", "two"],
+            ["new", "one", "two"]
+        ])
+    }
+    
     func testUsecase_whenAfterSearch_updateSearchableQueries() {
         // given
         let expect = expectation(description: "검색 이후에 해당 검색어 검색어 추천에 노출")
@@ -112,6 +137,25 @@ extension SuggestReadItemUsecaseTests {
         // then
         XCTAssertEqual(self.spySuggestQueryService.didInsetedToken, "some")
     }
+    
+    func testUsecase_removeLatestSearchQuery() {
+        // given
+        let expect = expectation(description: "검색어 기록 삭제")
+        expect.expectedFulfillmentCount = 2
+        let usecase = self.makeUsecase(latestQueries: ["1", "target", "2"])
+        
+        // when
+        let queryLists = self.waitElements(expect, for: usecase.suggestingQuery) {
+            usecase.startSuggest(query: "")
+            usecase.removeLatestSearchedQuery("target")
+        }
+        
+        // then
+        XCTAssertEqual(queryLists.map { $0.map { $0.text } }, [
+            ["1", "target", "2"],
+            ["1", "2"]
+        ])
+    }
 }
 
 
@@ -122,6 +166,10 @@ extension SuggestReadItemUsecaseTests {
         var didInsetedToken: String?
         func insertTokens(_ text: String) {
             self.didInsetedToken = text
+        }
+        
+        func removeToken(_ text: String) {
+            self.queries = self.queries.filter { $0 != text }
         }
         
         var queries = [String]()
@@ -139,9 +187,13 @@ extension SuggestReadItemUsecaseTests {
             return searchResult.asMaybe()
         }
         
-        var lastestQueries: [String] = []
-        func fetchLatestSearchQueries() -> Maybe<[String]> {
+        var lastestQueries: [LatestSearchedQuery] = []
+        func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]> {
             return .just(self.lastestQueries)
+        }
+        
+        func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
+            return .just()
         }
     }
 }

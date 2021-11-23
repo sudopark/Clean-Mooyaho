@@ -15,5 +15,7 @@ public protocol IntegratedSearchReposiotry {
     
     func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]>
     
-    func fetchLatestSearchQueries() -> Maybe<[String]>
+    func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]>
+    
+    func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
 }
