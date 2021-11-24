@@ -373,6 +373,9 @@ extension MainView: Presenting {
         
         self.floatingBottomButtonContainerView.setupStyling()
         self.floatingBottomButtonContainerView.isHidden = true
+        
+        // TODO: 수정필요 -> 검색영역 보일때는 가려야함
+        self.bottomContentContainerView.isHidden = true
     }
 }
 

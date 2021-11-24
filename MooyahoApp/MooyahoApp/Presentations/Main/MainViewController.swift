@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable {
+public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable {
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
 }
@@ -83,12 +83,35 @@ extension MainViewController {
     
     private func bind() {
         
+        self.bindProfileSection()
+        self.bindAddItem()
+        self.bindBottomBarToolButtons()
+        self.bindShareCollectionRootSwitching()
+        self.bindSearch()
+        
+        self.rx.viewDidLayoutSubviews.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindBottomSlideScroll()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindProfileSection() {
+        
         self.mainView.profileImageView.rx
             .addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.requestOpenSlideMenu()
             })
             .disposed(by: self.disposeBag)
+        self.rx.viewDidAppear.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.bindMemberProfileImage()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindAddItem() {
         
         self.mainView.addItemButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
@@ -109,12 +132,6 @@ extension MainViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.mainView.shrinkButton.rx.throttleTap()
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.toggleIsReadItemShrinkMode()
-            })
-            .disposed(by: self.disposeBag)
-        
         UIContext.currentAppStatus
             .subscribe(onNext: { [weak self] state in
                 guard state == .forground else { return }
@@ -128,6 +145,15 @@ extension MainViewController {
                 self?.mainView.floatingBottomButtonContainerView.showButton(with: url)
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func bindBottomBarToolButtons() {
+        
+        self.mainView.shrinkButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.toggleIsReadItemShrinkMode()
+            })
+            .disposed(by: self.disposeBag)
         
         self.viewModel.isReadItemShrinkModeOn
             .asDriver(onErrorDriveWith: .never())
@@ -135,19 +161,9 @@ extension MainViewController {
                 self?.updateIsShrinkModeOn(isOn)
             })
             .disposed(by: self.disposeBag)
-        
-        self.rx.viewDidLayoutSubviews.take(1)
-            .subscribe(onNext: { [weak self] _ in
-                self?.bindBottomSlideScroll()
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.rx.viewDidAppear.take(1)
-            .subscribe(onNext: { [weak self] _ in
-                self?.bindMemberProfileImage()
-            })
-            .disposed(by: self.disposeBag)
-        
+    }
+    
+    private func bindShareCollectionRootSwitching() {
         self.viewModel.currentCollectionRoot
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] root in
@@ -188,7 +204,9 @@ extension MainViewController {
                 self?.viewModel.showSharedCollectionDetail()
             })
             .disposed(by: self.disposeBag)
-        
+    }
+    
+    private func bindSearch() {
         self.mainView.bottomSearchBarView.rx.didEditBegin
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
@@ -210,6 +228,7 @@ extension MainViewController {
         self.mainView.bottomSearchBarView.rx.didEnterEnd
             .subscribe(onNext: { [weak self] in
                 guard let text = self?.mainView.bottomSearchBarView.textField.text else { return }
+                self?.view.endEditing(true)
                 self?.viewModel.didRequestSearch(with: text)
             })
             .disposed(by: self.disposeBag)
@@ -221,6 +240,13 @@ extension MainViewController {
                 self.mainView.bottomSearchBarView.textField.resignFirstResponder()
                 self.updateBottomSlideOffsetIfNeed(show: false)
                 self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isIntegratedSearching
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isSearching in
+                self?.mainView.bottomSearchBarView.updateIsLoading(isSearching)
             })
             .disposed(by: self.disposeBag)
     }

@@ -47,6 +47,7 @@ public protocol MainViewModel: AnyObject {
     var currentCollectionRoot: Observable<CollectionRoot> { get }
     var shareStatus: Observable<ActivationStatus> { get }
     var currentSharedCollectionOwnerInfo: Observable<Member?> { get }
+    var isIntegratedSearching: Observable<Bool> { get}
 }
 
 
@@ -93,6 +94,7 @@ public final class MainViewModelImple: MainViewModel {
         let currentSubCollectionID = BehaviorRelay<CurrentSubCollectionID?>(value: nil)
         let sharingIDSets = BehaviorRelay<Set<String>>(value: [])
         let isToggling = BehaviorRelay<Bool>(value: false)
+        let isIntegratedSearching = BehaviorRelay<Bool>(value: false)
     }
     
     deinit {
@@ -303,6 +305,10 @@ extension MainViewModelImple {
     public func didRequestSearch(with text: String) {
         self.integratedSearchSceneInteractor?.requestSearchItems(with: text)
     }
+    
+    public func integratedSearch(didUpdateSearching: Bool) {
+        self.subjects.isIntegratedSearching.accept(didUpdateSearching)
+    }
 }
 
 
@@ -369,6 +375,11 @@ extension MainViewModelImple {
             .map { $0.sharedCollection }
             .flatMap(loadSharedOwnerInfoIfNeed)
             .distinctUntilChanged(Member.compareNameAndThumbnail)
+    }
+    
+    public var isIntegratedSearching: Observable<Bool> {
+        return self.subjects.isIntegratedSearching
+            .distinctUntilChanged()
     }
 }
 

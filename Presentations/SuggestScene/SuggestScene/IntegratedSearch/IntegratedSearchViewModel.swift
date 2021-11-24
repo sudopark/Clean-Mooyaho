@@ -139,6 +139,7 @@ public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
     
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
+    private var searchingJob: Disposable?
     
     private weak var suggestInteractor: SuggestQuerySceneInteractable?
     
@@ -174,11 +175,14 @@ extension IntegratedSearchViewModelImple {
     
     public func requestSuggest(with text: String) {
         guard let interactor = self.suggestInteractor else { return }
+        self.searchingJob?.dispose()
         interactor.suggest(with: text)
         self.subjects.isSuggestSceneShowing.accept(true)
     }
     
     public func requestSearchItems(with text: String) {
+        
+        guard text.isNotEmpty else { return }
         
         let handleResult: ([SearchReadItemIndex]) -> Void = { [weak self] results in
             self?.subjects.isSuggestSceneShowing.accept(false)
@@ -191,10 +195,10 @@ extension IntegratedSearchViewModelImple {
             self?.router.alertError(error)
         }
         
+        self.searchingJob?.dispose()
         self.listener?.integratedSearch(didUpdateSearching: true)
-        self.searchUsecase.search(query: text)
+        self.searchingJob = self.searchUsecase.search(query: text)
             .subscribe(onSuccess: handleResult, onError: handleError)
-            .disposed(by: self.disposeBag)
     }
     
     public func showSearchResultDetail(_ identifier: String) {
@@ -249,7 +253,9 @@ extension IntegratedSearchViewModelImple {
     }
     
     public var resultIsEmpty: Observable<Bool> {
-        return .empty()
+        return self.subjects.searchedIndexes
+            .compactMap { $0?.isEmpty }
+            .distinctUntilChanged()
     }
 }
 

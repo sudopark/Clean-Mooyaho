@@ -233,6 +233,7 @@ extension IntegratedSearchViewModelTests {
         
         // when
         let result = self.waitFirstElement(expect, for: viewModel.searchResultSections) {
+            viewModel.setupSubScene()
             viewModel.requestSearchItems(with: "some")
             viewModel.requestSuggest(with: "some")
             self.resultMocking?.onNext(self.dummyCollectionIndexes)

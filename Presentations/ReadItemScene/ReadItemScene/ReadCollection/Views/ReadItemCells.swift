@@ -248,7 +248,7 @@ final class ReadLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     }
     
     func updateIsRed(_ isRed: Bool) {
-        let imageName = isRed ? "checkmark.circle.fill" : "folder"
+        let imageName = isRed ? "checkmark.circle.fill" : "doc.text"
         let imagetintColor = isRed ? UIColor.systemGreen : self.uiContext.colors.secondaryTitle
         self.expandView.iconImageView.image = UIImage(systemName: imageName)
         self.expandView.iconImageView.tintColor = imagetintColor
