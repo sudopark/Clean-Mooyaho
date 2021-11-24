@@ -89,7 +89,7 @@ extension SuggestQueryViewController {
         
         self.tableView.rx.modelSelected(CVM.self)
             .subscribe(onNext: { [weak self] cellViewModel in
-                self?.view.endEditing(true)
+                // TODO: 선택했을때 입력포커스 지워야함
                 self?.viewModel.selectQuery(cellViewModel.queryText)
             })
             .disposed(by: self.disposeBag)

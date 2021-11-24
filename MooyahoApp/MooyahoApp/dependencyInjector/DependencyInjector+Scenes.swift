@@ -496,7 +496,9 @@ extension DependencyInjector: IntegratedSearchSceneBuilable {
     
     public func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?) -> IntegratedSearchScene {
         let router = IntegratedSearchRouter(nextSceneBuilders: self)
-        let viewModel = IntegratedSearchViewModelImple(router: router, listener: listener)
+        let viewModel = IntegratedSearchViewModelImple(searchUsecase: self.searchUsecase,
+                                                       categoryUsecase: self.categoryUsecase,
+                                                       router: router, listener: listener)
         let viewController = IntegratedSearchViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
