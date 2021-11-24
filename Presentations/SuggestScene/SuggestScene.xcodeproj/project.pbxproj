@@ -26,6 +26,7 @@
 		F68A8804274BFA97004DADE4 /* IntegratedSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A87FF274BFA97004DADE4 /* IntegratedSearchViewController.swift */; };
 		F68A8806274BFA97004DADE4 /* IntegratedSearchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A8801274BFA97004DADE4 /* IntegratedSearchScene.swift */; };
 		F68A8807274BFA97004DADE4 /* IntegratedSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A8802274BFA97004DADE4 /* IntegratedSearchViewModel.swift */; };
+		F6B1DC62274E840500334FB6 /* IntegratedSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B1DC61274E840500334FB6 /* IntegratedSearchViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		F68A87FF274BFA97004DADE4 /* IntegratedSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchViewController.swift; sourceTree = "<group>"; };
 		F68A8801274BFA97004DADE4 /* IntegratedSearchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchScene.swift; sourceTree = "<group>"; };
 		F68A8802274BFA97004DADE4 /* IntegratedSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchViewModel.swift; sourceTree = "<group>"; };
+		F6B1DC61274E840500334FB6 /* IntegratedSearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegratedSearchViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 			children = (
 				F65CC288274BF95F005B819E /* SuggestSceneTests.swift */,
 				F6260910274D367F003C9577 /* SuggestQueryViewModelTests.swift */,
+				F6B1DC61274E840500334FB6 /* IntegratedSearchViewModelTests.swift */,
 			);
 			path = SuggestSceneTests;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			files = (
 				F6260911274D367F003C9577 /* SuggestQueryViewModelTests.swift in Sources */,
 				F65CC289274BF95F005B819E /* SuggestSceneTests.swift in Sources */,
+				F6B1DC62274E840500334FB6 /* IntegratedSearchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
