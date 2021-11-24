@@ -17,7 +17,10 @@ public protocol IntegratedSearchSceneInteractable: SuggestQuerySceneListenable {
     func requestSearchItems(with text: String)
 }
 
-public protocol IntegratedSearchSceneListenable: AnyObject { }
+public protocol IntegratedSearchSceneListenable: AnyObject {
+    
+    func integratedSearch(didUpdateSearching: Bool)
+}
 
 
 // MARK: - IntegratedSearchScene

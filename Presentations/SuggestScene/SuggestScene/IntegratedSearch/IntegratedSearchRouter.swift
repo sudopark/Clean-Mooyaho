@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -21,6 +22,8 @@ import CommonPresenting
 public protocol IntegratedSearchRouting: Routing {
     
     func setupSuggestScene() -> SuggestQuerySceneInteractable?
+    
+    func showReadItemSnapshot(_ index: SearchReadItemIndex)
 }
 
 // MARK: - Routers
@@ -53,5 +56,9 @@ extension IntegratedSearchRouter {
         next.didMove(toParent: searchScene)
         
         return next.interactor
+    }
+    
+    public func showReadItemSnapshot(_ index: SearchReadItemIndex) {
+        logger.todoImplement()
     }
 }

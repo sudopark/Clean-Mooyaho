@@ -41,9 +41,14 @@ open class StubIntegratedSearchUsecase: IntegratedSearchUsecase {
         self.latestsQueries.removeAll(where:  { $0.text == query })
     }
     
-    
+    public var searchResultMocking: PublishSubject<[SearchReadItemIndex]>?
     public var searchReadItemResult: Result<[SearchReadItemIndex], Error> = .success([])
     public func search(query: String) -> Maybe<[SearchReadItemIndex]> {
+        
+        if let mocking = self.searchResultMocking {
+            return mocking.asMaybe()
+        }
+        
         return self.searchReadItemResult.asMaybe()
     }
 }
