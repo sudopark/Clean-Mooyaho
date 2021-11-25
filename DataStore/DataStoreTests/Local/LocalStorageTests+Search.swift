@@ -79,4 +79,18 @@ extension LocalStorageTests_Search {
         // then
         XCTAssertEqual(queries?.isEmpty, true)
     }
+    
+    func testStorage_insertAndFetchAllSuggestableQueries() {
+        // given
+        let expect = expectation(description: "검색가능단어 저장하고 모두 로드")
+        
+        // when
+        let insert = self.local.insertSuggestableQueries(["q1", "q2"])
+        let fetch = self.local.fetchAllSuggestableQueries()
+        let insertAndFetch = insert.flatMap { fetch }
+        let queries = self.waitFirstElement(expect, for: insertAndFetch.asObservable())
+        
+        // then
+        XCTAssertEqual(queries?.count, 2)
+    }
 }

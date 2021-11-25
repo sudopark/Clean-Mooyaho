@@ -107,6 +107,10 @@ public protocol DataModelStorage {
     func insertLatestSearchQuery(_ query: String) -> Maybe<Void>
     
     func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func fetchAllSuggestableQueries() -> Maybe<[String]>
+    
+    func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void>
 }
 
 
@@ -806,6 +810,18 @@ extension DataModelStorageImple {
     public func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
         let query = LatestSearchQueryTable.delete().where { $0.query == query }
         return self.sqliteService.rx.run { try $0.delete(LatestSearchQueryTable.self, query: query) }
+    }
+    
+    public func fetchAllSuggestableQueries() -> Maybe<[String]> {
+        let query = SuggestableQueryTable.selectAll()
+        let mapping: (CursorIterator) throws -> String = { try SuggestableQueryTable.Entity($0).text }
+        return sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void> {
+        let entities = queries.map { SuggestableQueryTable.Entity($0) }
+        return self.sqliteService.rx
+            .run { try $0.insert(SuggestableQueryTable.self, entities: entities, shouldReplace: true) }
     }
 }
 

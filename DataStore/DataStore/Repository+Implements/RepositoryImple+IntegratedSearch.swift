@@ -49,4 +49,25 @@ extension IntegratedSearchReposiotry where Self: IntegratedSearchReposiotryDefIm
     public func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
         return self.searchLocal.removeLatestSearchQuery(query)
     }
+    
+    public func downloadAllSuggestableQueries() -> Maybe<Void> {
+        
+        let updateLocal: ([String]) -> Void = { [weak self] queries in
+            guard let self = self else { return }
+            self.insertSuggetableQueries(queries)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        return self.readItemRemote.requestLoadAllSearchableReadItemTexts()
+            .do(onNext: updateLocal)
+            .map { _ in }
+    }
+    
+    public func fetchAllSuggestableQueries() -> Maybe<[String]> {
+        return self.searchLocal.fetchAllSuggestableQueries()
+    }
+    
+    public func insertSuggetableQueries(_ queries: [String]) -> Maybe<Void> {
+        return self.searchLocal.insertSuggestableQueries(queries)
+    }
 }

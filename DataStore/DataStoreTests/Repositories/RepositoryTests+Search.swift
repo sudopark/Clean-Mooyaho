@@ -115,6 +115,65 @@ extension RepositoryTests_Search {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testRepository_downloadSuggestableQueries() {
+        // given
+        let expect = expectation(description: "검색가능한 리드아이템 단어 다운로드")
+        self.mockRemote.register(key: "requestLoadAllSearchableReadItemTexts") { Maybe<[String]>.just(["some"]) }
+        
+        // when
+        let loading = self.repository.downloadAllSuggestableQueries()
+        let result: Void? = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepositoty_whenDownloadSuggestableQueries_updateLocal() {
+        // given
+        let expect = expectation(description: "검색가능한 리드아이템 단어 다운로드시에 로컬 업데이트")
+        self.mockRemote.register(key: "requestLoadAllSearchableReadItemTexts") { Maybe<[String]>.just(["some"]) }
+        self.mockLocal.called(key: "insertSuggestableQueries") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.downloadAllSuggestableQueries()
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRespoitory_fetchAllSuggestableQueries() {
+        // given
+        let expect = expectation(description: "저장된 검색가능단어 모두 로드")
+        self.mockLocal.register(key: "fetchAllSuggestableQueries") { Maybe<[String]>.just(["some"]) }
+        
+        // when
+        let loading = self.repository.fetchAllSuggestableQueries()
+        let queries = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(queries?.isNotEmpty, true)
+    }
+    
+    func testRespoitory_insertSuggestableQueries() {
+        // given
+        let expect = expectation(description: "저장된 검색가능단어 추가")
+        self.mockLocal.called(key: "insertSuggestableQueries") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.insertSuggetableQueries(["some"])
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 extension RepositoryTests_Search {
