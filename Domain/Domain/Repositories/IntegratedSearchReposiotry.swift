@@ -18,4 +18,10 @@ public protocol IntegratedSearchReposiotry {
     func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]>
     
     func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func downnloadAllSuggestableQueries() -> Maybe<Void>
+    
+    func fetchAllSuggestableQueries() -> Maybe<[String]>
+    
+    func insertSuggetableQueries(_ queries: [String]) -> Maybe<Void>
 }

@@ -14,15 +14,7 @@ import Prelude
 import Optics
 
 
-public protocol SuggestQueryUsecase {
-    
-    func startSuggest(query: String)
-    
-    var suggestingQuery: Observable<[SuggestQuery]> { get }
-    
-    func removeLatestSearchedQuery(_ query: String)
-}
-
+// MARK: - SearchReadItemUsecase
 
 public protocol SearchReadItemUsecase {
     
@@ -30,99 +22,37 @@ public protocol SearchReadItemUsecase {
 }
 
 
-public protocol IntegratedSearchUsecase: SuggestQueryUsecase, SearchReadItemUsecase { }
+// MARK: - IntegratedSearchUsecase
+
+public protocol IntegratedSearchUsecase: SearchReadItemUsecase { }
 
 public final class IntegratedSearchUsecaseImple: IntegratedSearchUsecase {
     
-    private let searchQueryStoraService: SearchableQueryTokenStoreService
+    private let suggestQuerySyncUsecase: SuggestableQuerySyncUsecase
     private let searchRepository: IntegratedSearchReposiotry
     
-    public init(searchQueryStoraService: SearchableQueryTokenStoreService,
+    public init(suggestQuerySyncUsecase: SuggestableQuerySyncUsecase,
                 searchRepository: IntegratedSearchReposiotry) {
         
-        self.searchQueryStoraService = searchQueryStoraService
+        self.suggestQuerySyncUsecase = suggestQuerySyncUsecase
         self.searchRepository = searchRepository
-        
-        self.prepareLatestSearchKeyword()
-    }
-    
-    private let dipsoseBag: DisposeBag = .init()
-    private let searchingKeyword = BehaviorSubject<String?>(value: nil)
-    private let latestSearchedQueries = BehaviorRelay<[LatestSearchedQuery]?>(value: nil)
-    
-    private func prepareLatestSearchKeyword() {
-        
-        let update: ([LatestSearchedQuery]) -> Void = { [weak self] queries in
-            self?.latestSearchedQueries.accept(queries)
-        }
-        self.searchRepository.fetchLatestSearchQueries()
-            .subscribe(onSuccess: update)
-            .disposed(by: self.dipsoseBag)
     }
 }
 
 
-extension IntegratedSearchUsecaseImple {
-    
-    public func startSuggest(query: String) {
-        self.searchingKeyword.onNext(query)
-    }
-}
-
+// MARK: - search
 
 extension IntegratedSearchUsecaseImple {
-    
-    public var suggestingQuery: Observable<[SuggestQuery]> {
-        
-        let switchSource: (String) -> Observable<[SuggestQuery]> = { [weak self] keyword in
-            guard let self = self else { return .empty() }
-            return keyword.isEmpty
-                ? self.latestSearchedQueries.compactMap { $0 }
-                : self.suggestQueries(by: keyword).asObservable()
-        }
-        
-        return self.searchingKeyword
-            .compactMap { $0 }
-            .flatMapLatest(switchSource)
-            .distinctUntilChanged { $0.map { $0.customCompareKey } }
-    }
-    
-    private func suggestQueries(by keyword: String) -> Maybe<[SuggestQuery]> {
-        return self.searchQueryStoraService.suggestSearchQuery(by: keyword)
-            .catchAndReturn([])
-            .map { $0.map { MayBeSearchableQuery(text: $0) } }
-    }
     
     public func search(query: String) -> Maybe<[SearchReadItemIndex]> {
         
-        let updateToken: ([SearchReadItemIndex]) -> Void = { [weak self] _ in
-            self?.searchQueryStoraService.insertTokens(query)
-            self?.insertAtLatestSearch(query: query)
+        let updateSuggestableQueries: ([SearchReadItemIndex]) -> Void = { [weak self] result in
+            guard let self = self, result.isNotEmpty else { return }
+            let queries = [query] + result.map { $0.displayName }
+            self.suggestQuerySyncUsecase.insertSuggestableQueries(queries)
         }
         
         return self.searchRepository.requestSearchReadItem(by: query)
-            .do(onNext: updateToken)
-    }
-    
-    private func insertAtLatestSearch(query: String) {
-        let new = LatestSearchedQuery(text: query, time: .now())
-        let queries = [new] + (self.latestSearchedQueries.value?.filter { $0.text != query } ?? [])
-        self.latestSearchedQueries.accept(queries)
-    }
-    
-    public func removeLatestSearchedQuery(_ query: String) {
-
-        let updateLatestList: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            let newQueries = self.latestSearchedQueries.value?.filter { $0.text != query }
-            self.latestSearchedQueries.accept(newQueries)
-            
-            self.searchQueryStoraService.removeToken(query)
-        }
-        
-        self.searchRepository.removeLatestSearchQuery(query)
-            .catchAndReturn(())
-            .subscribe(onSuccess: updateLatestList)
-            .disposed(by: self.dipsoseBag)
+            .do(onNext: updateSuggestableQueries)
     }
 }
