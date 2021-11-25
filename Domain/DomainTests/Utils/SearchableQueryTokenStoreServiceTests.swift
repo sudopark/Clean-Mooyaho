@@ -36,7 +36,7 @@ extension SearchableQueryTokenStoreServiceTests {
     func testService_suggestQuery() {
         // given
         let expect = expectation(description: "검색어 추천")
-        self.service.insertTokens(["test token"])
+        self.service.insertTokens(["sfsf af as"])
         self.service.insertTokens(["hello world"])
         self.service.insertTokens(["some world hello "])
         self.service.insertTokens(["hell world"])
@@ -70,6 +70,7 @@ extension SearchableQueryTokenStoreServiceTests {
         XCTAssertEqual(suggested, [
             "검색어 추천 받을 타이틀",
             "검색어 추천 받기는 할껀데",
+            "검색어 추천 받기는 할꺼야 근에",
             "검갣어 춴"
         ])
     }
