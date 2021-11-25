@@ -30,7 +30,7 @@ class StubSearchRepository: IntegratedSearchReposiotry {
     }
     
     var didDownloaded: Bool = false
-    func downloadAllSuggestableQueries() -> Maybe<Void> {
+    func downloadAllSuggestableQueries(memberID: String) -> Maybe<Void> {
         self.didDownloaded = true
         return .just()
     }

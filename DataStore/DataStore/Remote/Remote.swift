@@ -173,7 +173,7 @@ public protocol ReadItemRemote: AuthorizationNeed {
     
     func requestSearchItem(_ name: String) -> Maybe<[SearchReadItemIndex]>
     
-    func requestLoadAllSearchableReadItemTexts() -> Maybe<[String]>
+    func requestLoadAllSearchableReadItemTexts(memberID: String) -> Maybe<[String]>
 }
 
 public protocol ReadItemOptionsRemote: AuthorizationNeed {

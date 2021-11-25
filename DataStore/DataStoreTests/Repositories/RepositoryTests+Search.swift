@@ -122,7 +122,7 @@ extension RepositoryTests_Search {
         self.mockRemote.register(key: "requestLoadAllSearchableReadItemTexts") { Maybe<[String]>.just(["some"]) }
         
         // when
-        let loading = self.repository.downloadAllSuggestableQueries()
+        let loading = self.repository.downloadAllSuggestableQueries(memberID: "some")
         let result: Void? = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
@@ -138,7 +138,7 @@ extension RepositoryTests_Search {
         }
         
         // when
-        self.repository.downloadAllSuggestableQueries()
+        self.repository.downloadAllSuggestableQueries(memberID: "some")
             .subscribe()
             .disposed(by: self.disposeBag)
         

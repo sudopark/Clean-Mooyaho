@@ -161,9 +161,8 @@ extension FirebaseServiceImple {
         }
     }
     
-    public func requestLoadAllSearchableReadItemTexts() -> Maybe<[String]> {
+    public func requestLoadAllSearchableReadItemTexts(memberID: String) -> Maybe<[String]> {
         typealias SuggestKey = SuggestIndexKeys
-        guard let memberID = self.signInMemberID else { return .empty() }
         
         let collectionRef = self.fireStoreDB.collection(.suggestReadItemIndexes)
         let query = collectionRef.whereField(SuggestKey.ownerID.rawValue, isEqualTo: memberID)

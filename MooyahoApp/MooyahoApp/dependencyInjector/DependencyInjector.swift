@@ -136,10 +136,12 @@ extension DependencyInjector {
     
     var authUsecase: AuthUsecase {
         
-        return AuthUsecaseImple(authRepository: self.appReposiotry,
+        let respository = self.appReposiotry
+        return AuthUsecaseImple(authRepository: respository,
                                 oathServiceProviders: self.supportingOAuthServiceProviders,
                                 authInfoManager: self.shared.authInfoManager,
-                                sharedDataStroeService: self.shared.dataStore)
+                                sharedDataStroeService: self.shared.dataStore,
+                                searchReposiotry: respository)
     }
     
     var memberUsecase: MemberUsecase {
@@ -160,9 +162,10 @@ extension DependencyInjector {
     }
     
     var readItemUsecaseImple: ReadItemUsecaseImple {
-        return ReadItemUsecaseImple(itemsRespoitory: self.appReposiotry,
-                                    previewRepository: self.appReposiotry,
-                                    optionsRespository: self.appReposiotry,
+        let respository = self.appReposiotry
+        return ReadItemUsecaseImple(itemsRespoitory: respository,
+                                    previewRepository: respository,
+                                    optionsRespository: respository,
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
