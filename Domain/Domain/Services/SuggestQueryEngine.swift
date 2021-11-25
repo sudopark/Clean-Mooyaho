@@ -15,9 +15,9 @@ import Optics
 
 // MARK: - SearchableQueryTokenStoreService
 
-public protocol SearchableQueryTokenStoreService {
+public protocol SuggestQueryEngine {
     
-    func insertTokens(_ text: String)
+    func insertTokens(_ texts: [String])
     
     func removeToken(_ text: String)
     
@@ -27,7 +27,7 @@ public protocol SearchableQueryTokenStoreService {
 }
 
 
-public final class SearchableQueryTokenStoreServiceImple: SearchableQueryTokenStoreService {
+public final class SuggestQueryEngineImple: SuggestQueryEngine {
     
     private let workName = "manage.search.queries"
     private var tokens: Set<String> = []
@@ -36,21 +36,21 @@ public final class SearchableQueryTokenStoreServiceImple: SearchableQueryTokenSt
 }
 
 
-extension SearchableQueryTokenStoreServiceImple {
+extension SuggestQueryEngineImple {
     
     private var accessQueue: DispatchQueue {
         return DispatchQueue(label: self.workName)
     }
     
-    public func insertTokens(_ text: String) {
-        _ = self.accessQueue.sync {
-            self.tokens.insert(text)
+    public func insertTokens(_ texts: [String]) {
+        self.accessQueue.sync {
+            self.tokens = self.tokens.union(texts)
         }
     }
     
     public func removeToken(_ text: String) {
-        _ = self.accessQueue.sync {
-            self.tokens.remove(text)
+        self.accessQueue.sync {
+            _ = self.tokens.remove(text)
         }
     }
     

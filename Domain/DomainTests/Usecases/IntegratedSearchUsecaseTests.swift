@@ -17,184 +17,85 @@ import Domain
 
 
 class IntegratedSearchUsecaseTests: BaseTestCase, WaitObservableEvents {
-    
+
     var disposeBag: DisposeBag!
-    var spySuggestQueryService: StubSearchQueryStoreService!
-    
+    var spySyncUsecase: SpySyncUsecase!
+
     override func setUpWithError() throws {
         self.disposeBag = .init()
     }
-    
+
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.spySuggestQueryService = nil
+        self.spySyncUsecase = nil
     }
-    
-    private func makeUsecase(latestQueries: [String] = [],
-                             searchables: [String] = [],
-                             shouldFailSearch: Bool = false) -> IntegratedSearchUsecase {
-        
-        let service = StubSearchQueryStoreService()
-            |> \.queries .~ searchables
-        
-        self.spySuggestQueryService = service
-        
-        let queries = latestQueries.map { LatestSearchedQuery(text: $0, time: .now()) }
-        
-        let dummies = (0..<10).map { SearchReadItemIndex(itemID: "some:\($0)", displayName: "name:\($0)") }
+
+    private func makeUsecase(resultIsEmpty: Bool = false) -> IntegratedSearchUsecase {
+
+        let size = resultIsEmpty ? 0 : 10
+        let dummies = (0..<size).map { SearchReadItemIndex(itemID: "some:\($0)", displayName: "name:\($0)") }
         let repository = StubSearchRepository()
-            |> \.lastestQueries .~ queries
-            |> \.searchResult .~ (shouldFailSearch ? .failure(ApplicationErrors.invalid) : .success(dummies))
+            |> \.searchResult .~ .success(dummies)
         
-        return IntegratedSearchUsecaseImple(searchQueryStoraService: service,
+        self.spySyncUsecase = .init()
+
+        return IntegratedSearchUsecaseImple(suggestQuerySyncUsecase: self.spySyncUsecase,
                                             searchRepository: repository)
     }
 }
 
-extension IntegratedSearchUsecaseTests {
-    
-    func testUsecase_whenStartQueryWithEmptyQuery_showLatestSearchQueries() {
-        // given
-        let expect = expectation(description: "검색어 비어있을경우에는 이전에 검색한 기록 노출")
-        let usecase = self.makeUsecase(latestQueries: ["1", "2"])
-        
-        // when
-        let queries = self.waitFirstElement(expect, for: usecase.suggestingQuery) {
-            usecase.startSuggest(query: "")
-        }
-        
-        // then
-        XCTAssertEqual(queries.map { $0.map { $0.text } }, ["1", "2"])
-    }
-    
-    func testUsecase_whenQueryIsNotEmpty_showSearchableQueries() {
-        // given
-        let expect = expectation(description: "검색어 압력한 경우에는 검색가능한 단어 추천")
-        expect.expectedFulfillmentCount = 2
-        let usecase = self.makeUsecase(latestQueries: ["1", "2"], searchables: ["119", "112"])
-        
-        // when
-        let queryLists = self.waitElements(expect, for: usecase.suggestingQuery) {
-            usecase.startSuggest(query: "")
-            usecase.startSuggest(query: "1")
-        }
-        
-        // then
-        XCTAssertEqual(queryLists.map { $0.map { $0.text } }, [
-            ["1", "2"],
-            ["119", "112"]
-        ])
-    }
-}
 
 extension IntegratedSearchUsecaseTests {
-    
+
     func testUsecase_search() {
         // given
         let expect = expectation(description: "검색")
         let usecase = self.makeUsecase()
-        
+
         // when
         let searching = usecase.search(query: "some")
         let result = self.waitFirstElement(expect, for: searching.asObservable())
-        
+
         // then
         XCTAssertEqual(result?.isNotEmpty, true)
     }
     
-    func testUsecase_whenAfterSearch_showAtLatestQueryList() {
+    func testUsecase_whenAfterSearch_updateSuggestableQueries() {
         // given
-        let expect = expectation(description: "검색한 이후에 최근 검색한 목록에 노출")
-        expect.expectedFulfillmentCount = 2
-        let usecase = self.makeUsecase(latestQueries: ["one", "two"])
-        
-        // when
-        let queryLists = self.waitElements(expect, for: usecase.suggestingQuery) {
-            usecase.startSuggest(query: "")
-            usecase.search(query: "new")
-                .subscribe(onSuccess: { _ in
-                    usecase.startSuggest(query: "")
-                })
-                .disposed(by: self.disposeBag)
-        }
-        
-        // then
-        XCTAssertEqual(queryLists.map { $0.map { $0.text } }, [
-            ["one", "two"],
-            ["new", "one", "two"]
-        ])
-    }
-    
-    func testUsecase_whenAfterSearch_updateSearchableQueries() {
-        // given
-        let expect = expectation(description: "검색 이후에 해당 검색어 검색어 추천에 노출")
+        let expect = expectation(description: "검색 이후에 검색가능단어 업데이트")
         let usecase = self.makeUsecase()
         
         // when
-        let searching = usecase.search(query: "some")
-        let _ = self.waitFirstElement(expect, for: searching.asObservable())
+        let searching = usecase.search(query: "serched query")
+        let result = self.waitFirstElement(expect, for: searching.asObservable())
         
         // then
-        XCTAssertEqual(self.spySuggestQueryService.didInsetedToken, "some")
+        let resultDisplayNames = result?.map { $0.displayName } ?? []
+        XCTAssertEqual(self.spySyncUsecase.didInsertedQueries, ["serched query"] + resultDisplayNames)
     }
     
-    func testUsecase_removeLatestSearchQuery() {
+    func testUsecase_whenAfterSearchAndResultIsEmpty_notInsertSearchableQuery() {
         // given
-        let expect = expectation(description: "검색어 기록 삭제")
-        expect.expectedFulfillmentCount = 2
-        let usecase = self.makeUsecase(latestQueries: ["1", "target", "2"])
+        let expect = expectation(description: "검색결과가 없으면 검색가능한 단어에 추가 안함")
+        let usecase = self.makeUsecase(resultIsEmpty: true)
         
         // when
-        let queryLists = self.waitElements(expect, for: usecase.suggestingQuery) {
-            usecase.startSuggest(query: "")
-            usecase.removeLatestSearchedQuery("target")
-        }
+        let searching = usecase.search(query: "serched query")
+        let result = self.waitFirstElement(expect, for: searching.asObservable())
         
         // then
-        XCTAssertEqual(queryLists.map { $0.map { $0.text } }, [
-            ["1", "target", "2"],
-            ["1", "2"]
-        ])
+        XCTAssertEqual(result?.isEmpty, true)
+        XCTAssertEqual(self.spySyncUsecase.didInsertedQueries, nil)
     }
 }
-
 
 extension IntegratedSearchUsecaseTests {
     
-    class StubSearchQueryStoreService: SearchableQueryTokenStoreService {
+    class SpySyncUsecase: SuggestableQuerySyncUsecase {
         
-        var didInsetedToken: String?
-        func insertTokens(_ text: String) {
-            self.didInsetedToken = text
-        }
-        
-        func removeToken(_ text: String) {
-            self.queries = self.queries.filter { $0 != text }
-        }
-        
-        var queries = [String]()
-        func suggestSearchQuery(by keyword: String) -> Maybe<[String]> {
-            return .just(self.queries)
-        }
-        
-        func clearAll() { }
-    }
-    
-    class StubSearchRepository: IntegratedSearchReposiotry {
-        
-        var searchResult: Result<[SearchReadItemIndex], Error> = .success([])
-        func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]> {
-            return searchResult.asMaybe()
-        }
-        
-        var lastestQueries: [LatestSearchedQuery] = []
-        func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]> {
-            return .just(self.lastestQueries)
-        }
-        
-        func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
-            return .just()
+        var didInsertedQueries: [String]?
+        func insertSuggestableQueries(_ queries: [String]) {
+            self.didInsertedQueries = queries
         }
     }
 }
-

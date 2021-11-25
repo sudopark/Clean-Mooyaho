@@ -99,6 +99,7 @@ extension ApplicationUsecaseImple {
     private func refreshSignInMemberBaseDatas(for memberID: String) {
         self.memberUsecase.refreshMembers([memberID])
         self.shareUsecase.refreshMySharingColletionIDs()
+        // TODO: 검색 가능한 단어 전부다 추출
     }
 }
 

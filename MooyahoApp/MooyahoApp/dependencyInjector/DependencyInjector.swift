@@ -67,8 +67,8 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
-        var searchQueryStoreService: SearchableQueryTokenStoreService {
-            return SearchableQueryTokenStoreServiceImple()
+        var searchQueryStoreService: SuggestQueryEngine {
+            return SuggestQueryEngineImple()
         }
         
         fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
