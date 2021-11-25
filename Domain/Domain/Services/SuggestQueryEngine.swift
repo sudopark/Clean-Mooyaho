@@ -73,7 +73,7 @@ extension SuggestQueryEngineImple {
             let difference = Float(diffCount) / Float(token.count)
             return MatchResult(diffCount, difference, token)
         }
-        let exculudeMatchingBySimilarity: (MatchResult) -> Bool = { $0.difference < 0.8 }
+        let exculudeMatchingBySimilarity: (MatchResult) -> Bool = { $0.difference < 0.9 }
         
         let ordering: (MatchResult, MatchResult) -> Bool = { lhs, rhs in
             
