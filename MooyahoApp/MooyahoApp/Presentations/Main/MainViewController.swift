@@ -236,10 +236,7 @@ extension MainViewController {
         self.mainView.cancelSearchButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.mainView.shrinkBottomViewWithAnimation()
-                self.mainView.bottomSearchBarView.textField.resignFirstResponder()
-                self.updateBottomSlideOffsetIfNeed(show: false)
-                self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
+                self.finishSearchInput()
             })
             .disposed(by: self.disposeBag)
         
@@ -249,6 +246,14 @@ extension MainViewController {
                 self?.mainView.bottomSearchBarView.updateIsLoading(isSearching)
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func finishSearchInput() {
+        self.mainView.shrinkBottomViewWithAnimation()
+        self.mainView.bottomSearchBarView.textField.text = nil
+        self.mainView.bottomSearchBarView.textField.resignFirstResponder()
+        self.updateBottomSlideOffsetIfNeed(show: false)
+        self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
     }
     
     private func bindMemberProfileImage() {

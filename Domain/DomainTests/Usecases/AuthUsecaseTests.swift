@@ -21,6 +21,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     private var mockAuthRepo: MockAuthRepository!
     private var mockOAuth2Repo: MockOAuthService!
     private var store: SharedDataStoreServiceImple!
+    private var spySearchReposiotry: StubSearchRepository!
     private var usecase: AuthUsecaseImple!
     
     override func setUp() {
@@ -29,10 +30,12 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockAuthRepo = .init()
         self.mockOAuth2Repo = .init()
         self.store = .init()
+        self.spySearchReposiotry = .init()
         self.usecase = AuthUsecaseImple(authRepository: self.mockAuthRepo,
                                         oathServiceProviders: [self.mockOAuth2Repo],
                                         authInfoManager: self.store,
-                                        sharedDataStroeService: self.store)
+                                        sharedDataStroeService: self.store,
+                                        searchReposiotry: self.spySearchReposiotry)
     }
     
     override func tearDown() {
@@ -40,6 +43,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockAuthRepo = nil
         self.mockOAuth2Repo = nil
         self.store = nil
+        self.spySearchReposiotry = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -122,6 +126,23 @@ extension AuthUsecaseTests {
         }
     }
     
+    func testUsecase_whenAfterEmailBaseLogin_downloadSuggestableQueries() {
+        // given
+        let expect = expectation(description: "이메일로 로그인 이후에 서제스트가능한 쿼리 다운로드")
+        self.mockAuthRepo.register(key: "requestSignIn:secret") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when + then
+        self.assertAuthAndMemberInfoUpdatedOnStore(expect) {
+            let secret = EmailBaseSecret(email: "email@com", password: "password")
+            self.usecase.requestSignIn(emailBaseSecret: secret)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        XCTAssertEqual(self.spySearchReposiotry.didDownloaded, true)
+    }
+    
     func testUsecase_oauth2SignIn() {
         // given
         let expect = expectation(description: "소셜 로그인 요청 이후에 서비스 로그인 성공시 새로운 멤버 정보 반환")
@@ -157,6 +178,25 @@ extension AuthUsecaseTests {
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
+    }
+    
+    func testUsecase_whenAfterSocialLogin_downloadSuggestableQueries() {
+        // given
+        let expect = expectation(description: "소셜 로그인 이후에 서제스트가능한 쿼리 다운로드")
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
+            return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
+        }
+        self.mockAuthRepo.register(key: "requestSignIn:credential") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when + then
+        self.assertAuthAndMemberInfoUpdatedOnStore(expect) {
+            self.usecase.requestSocialSignIn(DummyOAuthType())
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        XCTAssertEqual(self.spySearchReposiotry.didDownloaded, true)
     }
     
     // 로그인 성공시 공유되는 현제 멤버정보 방출

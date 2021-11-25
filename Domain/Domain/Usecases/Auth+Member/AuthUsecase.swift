@@ -32,15 +32,22 @@ public final class AuthUsecaseImple: AuthUsecase {
     private let oathServiceProviders: [OAuthServiceProvider]
     private let authInfoManager: AuthInfoManger
     private let sharedDataStroeService: SharedDataStoreService
+    private let searchReposiotry: IntegratedSearchReposiotry
     
     public init(authRepository: AuthRepository,
                 oathServiceProviders: [OAuthServiceProvider],
-                authInfoManager: AuthInfoManger, sharedDataStroeService: SharedDataStoreService) {
+                authInfoManager: AuthInfoManger,
+                sharedDataStroeService: SharedDataStoreService,
+                searchReposiotry: IntegratedSearchReposiotry) {
+        
         self.authRepository = authRepository
         self.oathServiceProviders = oathServiceProviders
         self.authInfoManager = authInfoManager
         self.sharedDataStroeService = sharedDataStroeService
+        self.searchReposiotry = searchReposiotry
     }
+    
+    private let disposeBag = DisposeBag()
 }
 
 
@@ -66,6 +73,7 @@ extension AuthUsecaseImple {
         return self.authRepository.requestSignIn(using: secret)
             .do(onNext: updateByResult)
             .map{ $0.member }
+            .do(afterNext: self.postSignInAction())
     }
     
     public func requestSocialSignIn(_ providerType: OAuthServiceProviderType) -> Maybe<Member> {
@@ -89,6 +97,7 @@ extension AuthUsecaseImple {
             .flatMap(thenSignInService)
             .do(onNext: updateByResult)
             .map{ $0.member }
+            .do(afterNext: self.postSignInAction())
     }
     
     
@@ -102,6 +111,22 @@ extension AuthUsecaseImple {
             .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
                 return (dict ?? [:]).merging([me.uid: me], uniquingKeysWith: { $1 })
             }
+    }
+    
+    private func postSignInAction() -> (Member) -> Void {
+        return { [weak self] member in
+            guard let self = self else { return }
+            self.downloadSuggestableQueries(memberID: member.uid)
+        }
+    }
+    
+    private func downloadSuggestableQueries(memberID: String) {
+        
+        searchReposiotry.downloadAllSuggestableQueries(memberID: memberID)
+            .subscribe(onSuccess: {
+                logger.print(level: .goal, "all suggestable queries downloaded")
+            })
+            .disposed(by: self.disposeBag)
     }
     
     public var currentAuth: Observable<Auth?> {

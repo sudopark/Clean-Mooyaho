@@ -50,7 +50,7 @@ extension IntegratedSearchReposiotry where Self: IntegratedSearchReposiotryDefIm
         return self.searchLocal.removeLatestSearchQuery(query)
     }
     
-    public func downloadAllSuggestableQueries() -> Maybe<Void> {
+    public func downloadAllSuggestableQueries(memberID: String) -> Maybe<Void> {
         
         let updateLocal: ([String]) -> Void = { [weak self] queries in
             guard let self = self else { return }
@@ -58,7 +58,7 @@ extension IntegratedSearchReposiotry where Self: IntegratedSearchReposiotryDefIm
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
-        return self.readItemRemote.requestLoadAllSearchableReadItemTexts()
+        return self.readItemRemote.requestLoadAllSearchableReadItemTexts(memberID: memberID)
             .do(onNext: updateLocal)
             .map { _ in }
     }
