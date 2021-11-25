@@ -104,7 +104,7 @@ extension SuggestQueryViewModelImple {
     }
     
     public func removeLatestSearchQuery(_ query: String) {
-        self.suggestQueryUsecase.removeLatestSearchedQuery(query)
+        self.suggestQueryUsecase.removeSearchedQuery(query)
     }
 }
 

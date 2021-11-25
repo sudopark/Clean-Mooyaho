@@ -494,9 +494,20 @@ extension DependencyInjector: SharedCollectionInfoDialogSceneBuilable {
 
 extension DependencyInjector: IntegratedSearchSceneBuilable {
     
+    private var suggestQueryUSecase: SuggestQueryUsecase & SuggestableQuerySyncUsecase {
+        return SuggestQueryUsecaseImple(suggestQueryEngine: self.suggestQueryEngine,
+                                        searchRepository: self.appReposiotry)
+    }
+    
     public func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?) -> IntegratedSearchScene {
         let router = IntegratedSearchRouter(nextSceneBuilders: self)
-        let viewModel = IntegratedSearchViewModelImple(searchUsecase: self.searchUsecase,
+        
+        let suggestUsecase = self.suggestQueryUSecase
+        router.suggestQueryUsecase = suggestUsecase
+        
+        let searchUsecase = IntegratedSearchUsecaseImple(suggestQuerySyncUsecase: suggestUsecase,
+                                                         searchRepository: self.appReposiotry)
+        let viewModel = IntegratedSearchViewModelImple(searchUsecase: searchUsecase,
                                                        categoryUsecase: self.categoryUsecase,
                                                        router: router, listener: listener)
         let viewController = IntegratedSearchViewController(viewModel: viewModel)
@@ -508,9 +519,10 @@ extension DependencyInjector: IntegratedSearchSceneBuilable {
 
 extension DependencyInjector: SuggestQuerySceneBuilable {
     
-    public func makeSuggestQueryScene(listener: SuggestQuerySceneListenable?) -> SuggestQueryScene {
+    public func makeSuggestQueryScene(suggestQueryUsecase: SuggestQueryUsecase,
+                                      listener: SuggestQuerySceneListenable?) -> SuggestQueryScene {
         let router = SuggestQueryRouter(nextSceneBuilders: self)
-        let viewModel = SuggestQueryViewModelImple(suggestQueryUsecase: self.searchUsecase,
+        let viewModel = SuggestQueryViewModelImple(suggestQueryUsecase: suggestQueryUsecase,
                                                    router: router,
                                                    listener: listener)
         let viewController = SuggestQueryViewController(viewModel: viewModel)

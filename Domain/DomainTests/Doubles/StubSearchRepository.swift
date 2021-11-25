@@ -14,7 +14,7 @@ import Domain
 
 
 class StubSearchRepository: IntegratedSearchReposiotry {
-
+    
     var searchResult: Result<[SearchReadItemIndex], Error> = .success([])
     func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]> {
         return searchResult.asMaybe()
@@ -30,7 +30,7 @@ class StubSearchRepository: IntegratedSearchReposiotry {
     }
     
     var didDownloaded: Bool = false
-    func downnloadAllSuggestableQueries() -> Maybe<Void> {
+    func downloadAllSuggestableQueries() -> Maybe<Void> {
         self.didDownloaded = true
         return .just()
     }

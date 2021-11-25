@@ -67,10 +67,6 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
-        var searchQueryStoreService: SuggestQueryEngine {
-            return SuggestQueryEngineImple()
-        }
-        
         fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
     }
     
@@ -94,6 +90,10 @@ final class DependencyInjector {
     
     var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent> {
         return self.shared.readItemUpdateSubject
+    }
+    
+    var suggestQueryEngine: SuggestQueryEngine {
+        return  SuggestQueryEngineImple()
     }
 }
 
@@ -207,11 +207,5 @@ extension DependencyInjector {
                                      shareRepository: self.appReposiotry,
                                      authInfoProvider: self.shared.authInfoManager,
                                      sharedDataService: self.shared.dataStore)
-    }
-    
-    var searchUsecase: IntegratedSearchUsecase {
-        
-        return IntegratedSearchUsecaseImple(searchQueryStoraService: self.shared.searchQueryStoreService,
-                                            searchRepository: self.appReposiotry)
     }
 }

@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -20,5 +21,6 @@ import CommonPresenting
 
 public protocol SuggestQuerySceneBuilable {
     
-    func makeSuggestQueryScene(listener: SuggestQuerySceneListenable?) -> SuggestQueryScene
+    func makeSuggestQueryScene(suggestQueryUsecase: SuggestQueryUsecase,
+                               listener: SuggestQuerySceneListenable?) -> SuggestQueryScene
 }

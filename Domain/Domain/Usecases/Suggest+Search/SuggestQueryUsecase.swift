@@ -14,7 +14,7 @@ import RxRelay
 
 // MARK: - SuggestQueryUsecase
 
-public protocol SuggestQueryUsecase {
+public protocol SuggestQueryUsecase: AnyObject {
     
     func startSuggest(query: String)
     
@@ -29,6 +29,8 @@ public protocol SuggestQueryUsecase {
 public protocol SuggestableQuerySyncUsecase {
 
     func insertSuggestableQueries(_ queries: [String])
+    
+    func insertLatestSearchQuery(_ query: String)
 }
 
 
@@ -133,5 +135,12 @@ extension SuggestQueryUsecaseImple {
         self.searchRepository.insertSuggetableQueries(queries)
             .subscribe(onSuccess: updateEngine)
             .disposed(by: self.disposeBag)
+    }
+    
+    public func insertLatestSearchQuery(_ query: String) {
+        let newLatestQueries = self.latestSearchedQueries.value ?? []
+        guard newLatestQueries.contains(where: { $0.text == query }) == false else { return }
+        let query = LatestSearchedQuery(text: query, time: .now())
+        self.latestSearchedQueries.accept([query] + newLatestQueries)
     }
 }
