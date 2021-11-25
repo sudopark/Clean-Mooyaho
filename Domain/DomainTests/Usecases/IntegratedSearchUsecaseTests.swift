@@ -72,6 +72,7 @@ extension IntegratedSearchUsecaseTests {
         // then
         let resultDisplayNames = result?.map { $0.displayName } ?? []
         XCTAssertEqual(self.spySyncUsecase.didInsertedQueries, ["serched query"] + resultDisplayNames)
+        XCTAssertEqual(self.spySyncUsecase.didInsertedLatestQuery, "serched query")
     }
     
     func testUsecase_whenAfterSearchAndResultIsEmpty_notInsertSearchableQuery() {
@@ -96,6 +97,11 @@ extension IntegratedSearchUsecaseTests {
         var didInsertedQueries: [String]?
         func insertSuggestableQueries(_ queries: [String]) {
             self.didInsertedQueries = queries
+        }
+        
+        var didInsertedLatestQuery: String?
+        func insertLatestSearchQuery(_ query: String) {
+            self.didInsertedLatestQuery = query
         }
     }
 }

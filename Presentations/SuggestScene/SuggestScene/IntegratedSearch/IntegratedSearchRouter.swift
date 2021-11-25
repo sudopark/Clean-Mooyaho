@@ -31,7 +31,10 @@ public protocol IntegratedSearchRouting: Routing {
 // TODO: compose next Scene Builders protocol
 public typealias IntegratedSearchRouterBuildables = SuggestQuerySceneBuilable
 
-public final class IntegratedSearchRouter: Router<IntegratedSearchRouterBuildables>, IntegratedSearchRouting { }
+public final class IntegratedSearchRouter: Router<IntegratedSearchRouterBuildables>, IntegratedSearchRouting {
+    
+    public weak var suggestQueryUsecase: SuggestQueryUsecase?
+}
 
 
 extension IntegratedSearchRouter {
@@ -44,7 +47,10 @@ extension IntegratedSearchRouter {
     public func setupSuggestScene() -> SuggestQuerySceneInteractable? {
         
         guard let searchScene = self.currentScene as? IntegratedSearchScene,
-              let next = self.nextScenesBuilder?.makeSuggestQueryScene(listener: self.currentInteractor)
+              let usecase = self.suggestQueryUsecase,
+              let next = self.nextScenesBuilder?
+                .makeSuggestQueryScene(suggestQueryUsecase:usecase,
+                                       listener: self.currentInteractor)
         else {
             return nil
         }

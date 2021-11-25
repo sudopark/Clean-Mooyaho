@@ -14,7 +14,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubIntegratedSearchUsecase: IntegratedSearchUsecase {
+open class StubIntegratedSearchUsecase: IntegratedSearchUsecase, SuggestQueryUsecase, SuggestableQuerySyncUsecase {
     
     public init() { } 
     
@@ -37,7 +37,7 @@ open class StubIntegratedSearchUsecase: IntegratedSearchUsecase {
             .asObservable()
     }
     
-    public func removeLatestSearchedQuery(_ query: String) {
+    public func removeSearchedQuery(_ query: String) {
         self.latestsQueries.removeAll(where:  { $0.text == query })
     }
     
@@ -50,5 +50,13 @@ open class StubIntegratedSearchUsecase: IntegratedSearchUsecase {
         }
         
         return self.searchReadItemResult.asMaybe()
+    }
+    
+    public func insertSuggestableQueries(_ queries: [String]) {
+        
+    }
+    
+    public func insertLatestSearchQuery(_ query: String) {
+        
     }
 }
