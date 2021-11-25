@@ -160,6 +160,18 @@ extension FirebaseServiceImple {
             $0.compactMap { $0.asReadItemIndex() }
         }
     }
+    
+    public func requestLoadAllSearchableReadItemTexts() -> Maybe<[String]> {
+        typealias SuggestKey = SuggestIndexKeys
+        guard let memberID = self.signInMemberID else { return .empty() }
+        
+        let collectionRef = self.fireStoreDB.collection(.suggestReadItemIndexes)
+        let query = collectionRef.whereField(SuggestKey.ownerID.rawValue, isEqualTo: memberID)
+        let indexes: Maybe<[SuggestIndex]> = self.load(query: query)
+        return indexes.map {
+            $0.map { $0.keyword }
+        }
+    }
 }
 
 

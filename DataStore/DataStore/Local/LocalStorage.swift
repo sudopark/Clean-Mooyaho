@@ -200,6 +200,10 @@ public protocol SearchLocalStorage {
     func insertLatestSearchQuery(_ query: String) -> Maybe<Void>
     
     func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func fetchAllSuggestableQueries() -> Maybe<[String]>
+    
+    func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void>
 }
 
 // MARK: - LocalStorage

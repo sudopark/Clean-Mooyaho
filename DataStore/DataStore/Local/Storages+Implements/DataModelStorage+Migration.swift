@@ -103,5 +103,12 @@ extension DataModelStorageImple {
         } catch {
             logger.print(level: .error, "fail to create LatestSearchQueryTable")
         }
+        
+        do {
+            try database.createTableOrNot(SuggestableQueryTable.self)
+            logger.print(level: .debug, "sqlite SuggestableQueryTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create SuggestableQueryTable")
+        }
     }
 }

@@ -181,6 +181,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestSuggestItem") ?? .empty()
     }
     
+    func requestLoadAllSearchableReadItemTexts() -> Maybe<[String]> {
+        return self.resolve(key: "requestLoadAllSearchableReadItemTexts") ?? .empty()
+    }
+    
     // options
     func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
         return self.resolve(key: "requestLoadReadItemCustomOrder") ?? .empty()

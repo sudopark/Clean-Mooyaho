@@ -35,4 +35,18 @@ extension LocalStorageImple {
         }
         return storage.removeLatestSearchQuery(query)
     }
+    
+    public func fetchAllSuggestableQueries() -> Maybe<[String]> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchAllSuggestableQueries()
+    }
+    
+    public func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.insertSuggestableQueries(queries)
+    }
 }

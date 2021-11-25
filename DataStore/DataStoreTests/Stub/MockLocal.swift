@@ -289,5 +289,14 @@ class MockLocal: LocalStorage, Mocking {
     func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
         return .just()
     }
+    
+    func fetchAllSuggestableQueries() -> Maybe<[String]> {
+        return self.resolve(key: "fetchAllSuggestableQueries") ?? .empty()
+    }
+    
+    func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void> {
+        self.verify(key: "insertSuggestableQueries")
+        return .just()
+    }
 }
 

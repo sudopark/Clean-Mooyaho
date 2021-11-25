@@ -64,6 +64,7 @@
 		F66C133126E3AEBC00940CF3 /* MemberThumbnailTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C133026E3AEBC00940CF3 /* MemberThumbnailTable.swift */; };
 		F67848D12650F2420074C344 /* RepositoryImple+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */; };
 		F67848D32650F4980074C344 /* RepositoryTests+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */; };
+		F6907F1E274FEE86007805EA /* SuggestableQueryTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F1D274FEE86007805EA /* SuggestableQueryTable.swift */; };
 		F6913F0B26F38AE400C6E105 /* RepositoryImple+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0A26F38AE400C6E105 /* RepositoryImple+ReadItem.swift */; };
 		F6913F0D26F38C1600C6E105 /* RepositoryTests+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0C26F38C1600C6E105 /* RepositoryTests+ReadItem.swift */; };
 		F6913F0F26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0E26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift */; };
@@ -173,6 +174,7 @@
 		F66C133026E3AEBC00940CF3 /* MemberThumbnailTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberThumbnailTable.swift; sourceTree = "<group>"; };
 		F67848D02650F2420074C344 /* RepositoryImple+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Hooray.swift"; sourceTree = "<group>"; };
 		F67848D22650F4980074C344 /* RepositoryTests+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Hooray.swift"; sourceTree = "<group>"; };
+		F6907F1D274FEE86007805EA /* SuggestableQueryTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestableQueryTable.swift; sourceTree = "<group>"; };
 		F6913F0A26F38AE400C6E105 /* RepositoryImple+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+ReadItem.swift"; sourceTree = "<group>"; };
 		F6913F0C26F38C1600C6E105 /* RepositoryTests+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+ReadItem.swift"; sourceTree = "<group>"; };
 		F6913F0E26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageImple+ReadItem.swift"; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				F6BD48082740FB9D00D2B2C9 /* SharedReadCollectionTable.swift */,
 				F64CCB062742A3A10015EE9B /* SharingCollectionIDsTable.swift */,
 				F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */,
+				F6907F1D274FEE86007805EA /* SuggestableQueryTable.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -643,6 +646,7 @@
 				F625EDC526821DB4000C87F0 /* LocalStorageImple+Auth.swift in Sources */,
 				2B9F276C2633E69200FEBCE3 /* Remote.swift in Sources */,
 				F6E279D926F84F6F00957AC4 /* RepositoryImple+ReadItemOptions.swift in Sources */,
+				F6907F1E274FEE86007805EA /* SuggestableQueryTable.swift in Sources */,
 				F66BB8942686EF3E00B46A99 /* SQLiteStorage+Extension.swift in Sources */,
 				F6C99B33273195AD00D42A90 /* DataModelStorageGateway.swift in Sources */,
 				F66C133126E3AEBC00940CF3 /* MemberThumbnailTable.swift in Sources */,
