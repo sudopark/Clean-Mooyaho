@@ -54,6 +54,8 @@ public protocol DataModelStorage {
     
     func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
     
+    func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?>
+    
     func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void>
     
     func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void>
@@ -496,6 +498,12 @@ extension DataModelStorageImple {
     public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
         let query = ReadCollectionTable.selectAll { $0.uid == collectionID }
         return self.fetchReadCollections(query)
+            .map { $0.first }
+    }
+    
+    public func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?> {
+        let query = ReadLinkTable.selectAll { $0.uid == linkID }
+        return self.fetchReadLinks(query)
             .map { $0.first }
     }
     

@@ -31,6 +31,8 @@ class StubReadItemRepository: ReadItemRepository {
         var updateWithParamsResult: Result<Void, Error> = .success(())
         
         var ulrAndLinkItemMap = [String: ReadLink]()
+        
+        var loadReadLinkResult: Result<ReadLink, Error> = .success(.dummy(0, parent: 0))
     }
     
     private let scenario: Scenario
@@ -58,6 +60,10 @@ class StubReadItemRepository: ReadItemRepository {
     func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection> {
         return self.collectionMocking.map { .just($0) }
             ?? self.scenario.collection.asMaybe().asObservable()
+    }
+    
+    func requestLoadReadLinkItem(_ itemID: String) -> Observable<ReadLink> {
+        return self.scenario.loadReadLinkResult.asMaybe().asObservable()
     }
     
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {

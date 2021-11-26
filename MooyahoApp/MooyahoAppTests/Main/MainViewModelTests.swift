@@ -470,6 +470,7 @@ extension MainViewModelTests {
     }
     
     class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable  {
+        
         func switchToSharedCollection(_ collection: SharedReadCollection) { }
         
         var rootType: CollectionRoot { .myCollections }
@@ -492,7 +493,7 @@ extension MainViewModelTests {
         }
         
         var didJumpRequested: Bool?
-        func jumpToCollection(_ collectionID: String) {
+        func jumpToCollection(_ collectionID: String?) {
             self.didJumpRequested = true
         }
     }
@@ -523,5 +524,7 @@ extension MainViewModelTests {
         }
         
         func suggestQuery(didSelect searchQuery: String) { }
+        
+        func innerWebView(reqeustJumpTo collectionID: String?) { }
     }
 }

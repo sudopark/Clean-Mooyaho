@@ -85,15 +85,16 @@ extension FirebaseServiceImple {
         guard let _ = self.signInMemberID else {
             return .empty()
         }
-        let throwWhenNotExists: (ReadCollection?) throws -> ReadCollection
-        throwWhenNotExists = { collection in
-            guard let collection = collection else {
-                throw RemoteErrors.notFound("ReadCollection", reason: nil)
-            }
-            return collection
+        let loading: Maybe<ReadCollection?> = self.load(docuID: collectionID, in: .readCollection)
+        return loading.map { try $0.unwrap() }
+    }
+    
+    public func requestLoadReadLink(linkID: String) -> Maybe<ReadLink> {
+        guard let _ = self.signInMemberID else {
+            return .empty()
         }
-        return self.load(docuID: collectionID, in: .readCollection)
-            .map(throwWhenNotExists)
+        let loading: Maybe<ReadLink?> = self.load(docuID: linkID, in: .readLinks)
+        return loading.map { try $0.unwrap() }
     }
     
     public func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {

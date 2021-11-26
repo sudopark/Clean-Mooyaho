@@ -174,6 +174,19 @@ extension RepositoryTests_ReadItem {
         XCTAssertNotNil(collection)
     }
     
+    func testRepository_fetchReadLink() {
+        // given
+        let expect = expectation(description: "read link 패칭")
+        self.mockLocal.register(key: "fetchReadLink") { Maybe<ReadLink?>.just(.init(link: "url")) }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadReadLinkItem("some")
+        let link = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(link)
+    }
+    
     func testReposiotry_updateItem() {
         // given
         let expect = expectation(description: "아이템 업데이트")
@@ -402,6 +415,54 @@ extension RepositoryTests_ReadItem {
         
         // then
         XCTAssertEqual(colletions.count, 1)
+    }
+    
+    func testRepository_loadReadLinkWithSignedIn() {
+        // given
+        let expect = expectation(description: "로그인상태에서 read link 로드")
+        expect.expectedFulfillmentCount = 2
+        self.mockLocal.register(key: "fetchReadLink") { Maybe<ReadLink?>.just(.init(link: "url")) }
+        self.mockRemote.register(key: "requestLoadReadLink") { Maybe<ReadLink>.just(.init(link: "url")) }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadReadLinkItem("some")
+        let links = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(links.count, 2)
+    }
+    
+    func testRepository_loadReadLinkWithSignedIn_ignoreLocalError() {
+        // given
+        let expect = expectation(description: "로그인상태에서 read link 로드시에 로컬에러는 무시")
+        self.mockLocal.register(key: "fetchReadLink") { Maybe<ReadLink?>.error(ApplicationErrors.invalid) }
+        self.mockRemote.register(key: "requestLoadReadLink") { Maybe<ReadLink>.just(.init(link: "url")) }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadReadLinkItem("some")
+        let links = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(links.count, 1)
+    }
+    
+    func testRepository_whenAfterLoadReadLinkFromRemote_updateLocal() {
+        // given
+        let expect = expectation(description: "remote에서 read link 로드시에 로컬 업데이트")
+        expect.expectedFulfillmentCount = 2
+        self.mockLocal.register(key: "fetchReadLink") { Maybe<ReadLink?>.just(nil) }
+        self.mockRemote.register(key: "requestLoadReadLink") { Maybe<ReadLink>.just(.init(link: "url")) }
+        
+        self.mockLocal.called(key: "updateReadItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadReadLinkItem("some")
+        let links = self.waitElements(expect, for: loading)
+        
+        // then
+        XCTAssertEqual(links.count, 1)
     }
     
     func testRepository_removeItem_withSignIn() {
