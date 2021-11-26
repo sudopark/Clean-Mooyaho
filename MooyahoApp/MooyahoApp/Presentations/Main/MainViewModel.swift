@@ -48,6 +48,7 @@ public protocol MainViewModel: AnyObject {
     var shareStatus: Observable<ActivationStatus> { get }
     var currentSharedCollectionOwnerInfo: Observable<Member?> { get }
     var isIntegratedSearching: Observable<Bool> { get}
+    var isSearchFinished: Observable<Void> { get }
 }
 
 
@@ -95,6 +96,7 @@ public final class MainViewModelImple: MainViewModel {
         let sharingIDSets = BehaviorRelay<Set<String>>(value: [])
         let isToggling = BehaviorRelay<Bool>(value: false)
         let isIntegratedSearching = BehaviorRelay<Bool>(value: false)
+        let finishSearch = PublishSubject<Void>()
     }
     
     deinit {
@@ -309,6 +311,13 @@ extension MainViewModelImple {
     public func integratedSearch(didUpdateSearching: Bool) {
         self.subjects.isIntegratedSearching.accept(didUpdateSearching)
     }
+    
+    public func finishIntegratedSearch(_ completed: @escaping () -> Void) {
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.subjects.finishSearch.onNext()
+            completed()
+        }
+    }
 }
 
 
@@ -380,6 +389,10 @@ extension MainViewModelImple {
     public var isIntegratedSearching: Observable<Bool> {
         return self.subjects.isIntegratedSearching
             .distinctUntilChanged()
+    }
+    
+    public var isSearchFinished: Observable<Void> {
+        return self.subjects.finishSearch
     }
 }
 

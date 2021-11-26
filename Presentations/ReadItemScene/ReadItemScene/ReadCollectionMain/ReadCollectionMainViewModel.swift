@@ -95,7 +95,11 @@ extension ReadCollectionMainViewModelImple {
         self.navigationListener?.readCollection(didChange: root)
     }
     
-    public func jumpToCollection(_ collectionID: String) {
-        self.router.jumpToCollection(collectionID)
+    public func jumpToCollection(_ collectionID: String?) {
+        if let subCollectionID = collectionID {
+            self.router.jumpToCollection(subCollectionID)
+        } else {
+            self.router.moveToRootCollection()
+        }
     }
 }

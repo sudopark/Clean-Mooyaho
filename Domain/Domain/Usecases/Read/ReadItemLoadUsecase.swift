@@ -25,5 +25,5 @@ public protocol ReadItemLoadUsecase: ReadLinkPreviewLoadUsecase {
     
     func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]>
     
-    
+    func loadReadLink(_ linkID: String) -> Observable<ReadLink>
 }

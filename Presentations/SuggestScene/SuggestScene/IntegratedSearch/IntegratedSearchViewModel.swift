@@ -240,6 +240,12 @@ extension IntegratedSearchViewModelImple {
     private func showLinkItemDetail(_ itemID: String) {
         self.router.showLinkDetail(itemID)
     }
+    
+    public func innerWebView(reqeustJumpTo collectionID: String?) {
+        self.listener?.finishIntegratedSearch { [weak self] in
+            self?.readCollectionMainInteractor?.jumpToCollection(collectionID)
+        }
+    }
 }
 
 

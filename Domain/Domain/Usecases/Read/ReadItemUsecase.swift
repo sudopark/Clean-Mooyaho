@@ -76,7 +76,7 @@ extension ReadItemUsecaseImple {
     public func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
         return self.itemsRespoitory
             .requestLoadCollectionItems(collectionID: collectionID)
-            .map {$0.removeAlreadyPassedRemind() }
+            .map { $0.removeAlreadyPassedRemind() }
     }
     
     public func loadLinkPreview(_ url: String) -> Observable<LinkPreview> {
@@ -110,6 +110,10 @@ extension ReadItemUsecaseImple {
         self.previewRepository.loadLinkPreview(url)
             .subscribe(onSuccess: updateStore)
             .disposed(by: self.disposeBag)
+    }
+    
+    public func loadReadLink(_ linkID: String) -> Observable<ReadLink> {
+        return .empty()
     }
 }
 

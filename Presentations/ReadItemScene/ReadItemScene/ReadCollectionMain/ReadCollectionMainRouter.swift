@@ -33,6 +33,8 @@ public protocol ReadCollectionMainRouting: Routing {
     
     func switchToSharedCollection(root: SharedReadCollection)
     
+    func moveToRootCollection()
+    
     func jumpToCollection(_ collectionID: String)
 }
 
@@ -100,6 +102,10 @@ extension ReadCollectionMainRouter {
     public func addNewReadLinkItem(using url: String) {
         guard let currentCollection = self.findCurrentCollectionScene() else { return }
         currentCollection.interactor?.addNewReadLinkItem(using: url)
+    }
+    
+    public func moveToRootCollection() {
+        self.currentScene?.navigationController?.popToRootViewController(animated: true)
     }
     
     public func jumpToCollection(_ collectionID: String) {

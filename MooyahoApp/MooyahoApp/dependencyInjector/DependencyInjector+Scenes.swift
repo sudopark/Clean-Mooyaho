@@ -356,13 +356,33 @@ extension DependencyInjector: EditReadRemindSceneBuilable {
 
 extension DependencyInjector: InnerWebViewSceneBuilable {
     
-    public func makeInnerWebViewScene(link: ReadLink, isEditable: Bool) -> InnerWebViewScene {
+    public func makeInnerWebViewScene(link: ReadLink,
+                                      isEditable: Bool,
+                                      listener: InnerWebViewSceneListenable?) -> InnerWebViewScene {
         let router = InnerWebViewRouter(nextSceneBuilders: self)
-        let viewModel = InnerWebViewViewModelImple(link: link,
+        let viewModel = InnerWebViewViewModelImple(itemSource: .item(link),
                                                    isEditable: isEditable,
                                                    readItemUsecase: self.readItemUsecase,
                                                    memoUsecase: self.memoUsecase,
-                                                   router: router)
+                                                   router: router,
+                                                   listener: listener)
+        let viewController = InnerWebViewViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+    
+    func makeInnerWebViewScene(linkID: String,
+                               isEditable: Bool,
+                               isJumpable: Bool,
+                               listener: InnerWebViewSceneListenable?) -> InnerWebViewScene {
+        let router = InnerWebViewRouter(nextSceneBuilders: self)
+        let viewModel = InnerWebViewViewModelImple(itemSource: .itemID(linkID),
+                                                   isEditable: isEditable,
+                                                   isJumpable: isJumpable,
+                                                   readItemUsecase: self.readItemUsecase,
+                                                   memoUsecase: self.memoUsecase,
+                                                   router: router,
+                                                   listener: listener)
         let viewController = InnerWebViewViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController
@@ -499,7 +519,8 @@ extension DependencyInjector: IntegratedSearchSceneBuilable {
                                         searchRepository: self.appReposiotry)
     }
     
-    public func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?) -> IntegratedSearchScene {
+    public func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?,
+                                          readCollectionMainInteractor: ReadCollectionMainSceneInteractable?) -> IntegratedSearchScene {
         let router = IntegratedSearchRouter(nextSceneBuilders: self)
         
         let suggestUsecase = self.suggestQueryUSecase
@@ -509,7 +530,9 @@ extension DependencyInjector: IntegratedSearchSceneBuilable {
                                                          searchRepository: self.appReposiotry)
         let viewModel = IntegratedSearchViewModelImple(searchUsecase: searchUsecase,
                                                        categoryUsecase: self.categoryUsecase,
-                                                       router: router, listener: listener)
+                                                       router: router,
+                                                       listener: listener,
+                                                       readCollectionMainInteractor: readCollectionMainInteractor)
         let viewController = IntegratedSearchViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

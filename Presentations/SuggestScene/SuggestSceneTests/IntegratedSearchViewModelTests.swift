@@ -344,7 +344,7 @@ extension IntegratedSearchViewModelTests {
         func switchToMyReadCollections() { }
         
         var didJumpRequested: Bool?
-        func jumpToCollection(_ collectionID: String) {
+        func jumpToCollection(_ collectionID: String?) {
             self.didJumpRequested = true
         }
         

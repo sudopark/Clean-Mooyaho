@@ -348,6 +348,28 @@ extension MainViewModelTests {
         // then
         XCTAssertNil(self.spyRouter.spySearchInteractor)
     }
+    
+    func testViewMdoel_finishSearch_fromOutside() {
+        // given
+        let expect = expectation(description: "외부에서 들어온 검색종료 요청 처리")
+        expect.expectedFulfillmentCount = 2
+        self.viewModel.didUpdateBottomSearchAreaShowing(isShow: true)
+        self.viewModel.didUpdateSearchText("some")
+        
+        self.viewModel.isSearchFinished
+            .subscribe(onNext: {
+                expect.fulfill()
+            })
+            .disposed(by: self.disposeBag)
+        
+        // when
+        self.viewModel.finishIntegratedSearch {
+            expect.fulfill()
+        }
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 extension MainViewModelTests {
@@ -434,6 +456,10 @@ extension MainViewModelTests {
         func removeSearchScene() {
             self.spySearchInteractor = nil
         }
+        
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            completed?()
+        }
     }
     
     class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {
@@ -463,6 +489,11 @@ extension MainViewModelTests {
         var didSwitchToMyCollectionRequested = false
         func switchToMyReadCollections() {
             self.didSwitchToMyCollectionRequested = true
+        }
+        
+        var didJumpRequested: Bool?
+        func jumpToCollection(_ collectionID: String) {
+            self.didJumpRequested = true
         }
     }
     

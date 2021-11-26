@@ -233,13 +233,15 @@ extension MainViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.mainView.cancelSearchButton.rx.throttleTap()
+        let cancelByButton = self.mainView.cancelSearchButton.rx.throttleTap()
+        let cancelByOuterTrigger = self.viewModel.isSearchFinished
+        Observable.merge(cancelByButton, cancelByOuterTrigger)
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.finishSearchInput()
             })
             .disposed(by: self.disposeBag)
-        
+
         self.viewModel.isIntegratedSearching
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] isSearching in
@@ -250,7 +252,7 @@ extension MainViewController {
     
     private func finishSearchInput() {
         self.mainView.shrinkBottomViewWithAnimation()
-        self.mainView.bottomSearchBarView.textField.text = nil
+        self.mainView.bottomSearchBarView.clearInput()
         self.mainView.bottomSearchBarView.textField.resignFirstResponder()
         self.updateBottomSlideOffsetIfNeed(show: false)
         self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
