@@ -23,13 +23,13 @@ public protocol IntegratedSearchRouting: Routing {
     
     func setupSuggestScene() -> SuggestQuerySceneInteractable?
     
-    func showReadItemSnapshot(_ index: SearchReadItemIndex)
+    func showLinkDetail(_ linkID: String)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias IntegratedSearchRouterBuildables = SuggestQuerySceneBuilable
+public typealias IntegratedSearchRouterBuildables = SuggestQuerySceneBuilable & InnerWebViewSceneBuilable
 
 public final class IntegratedSearchRouter: Router<IntegratedSearchRouterBuildables>, IntegratedSearchRouting {
     
@@ -64,7 +64,8 @@ extension IntegratedSearchRouter {
         return next.interactor
     }
     
-    public func showReadItemSnapshot(_ index: SearchReadItemIndex) {
-        logger.todoImplement()
+    public func showLinkDetail(_ linkID: String) {
+        
+        // TOOD:
     }
 }

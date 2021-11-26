@@ -25,6 +25,7 @@ class IntegratedSearchViewModelTests: BaseTestCase, WaitObservableEvents {
     var spyRouter: SpyRouterAndListener!
     var spyListener: SpyRouterAndListener!
     var resultMocking: PublishSubject<[SearchReadItemIndex]>?
+    var spyReadcollectionInteractor: SpyReadCollectionMainInteractor!
         
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -35,6 +36,7 @@ class IntegratedSearchViewModelTests: BaseTestCase, WaitObservableEvents {
         self.resultMocking = nil
         self.spyRouter = nil
         self.spyListener = nil
+        self.spyReadcollectionInteractor = nil
     }
     
     private var dummyCollectionIndexes: [SearchReadItemIndex] {
@@ -72,10 +74,13 @@ class IntegratedSearchViewModelTests: BaseTestCase, WaitObservableEvents {
         self.spyRouter = routerAndListener
         self.spyListener = routerAndListener
         
+        self.spyReadcollectionInteractor = .init()
+        
         return IntegratedSearchViewModelImple(searchUsecase: usecase,
                                               categoryUsecase: categoryUsecase,
                                               router: spyRouter,
-                                              listener: spyListener)
+                                              listener: spyListener,
+                                              readCollectionMainInteractor: self.spyReadcollectionInteractor)
     }
 }
 
@@ -248,21 +253,37 @@ extension IntegratedSearchViewModelTests {
 
 extension IntegratedSearchViewModelTests {
     
-    // 검색결과 선택한경우 스냅샷으로 이동
-    func testViewModel_whenSelectReadItemSearchResult_routeToSnapshot() {
+    func testViewModel_whenSelectReadLinkSearchResult_routeToSnapshot() {
         // given
-        let expect = expectation(description: "읽기 아이템 검색결과 선택한 경우에는 스냅샷 노출")
+        let expect = expectation(description: "읽기 아이템 검색결과 선택한 경우에는 웹뷰화면 노출")
         let viewModel = self.makeViewModel()
         
         // when
         let sections = self.waitFirstElement(expect, for: viewModel.searchResultSections) {
             viewModel.requestSearchItems(with: "some")
         }
-        let cell = sections?.first?.cellViewModels.randomElement()
+        let cell = sections?.last?.cellViewModels.first
         viewModel.showSearchResultDetail(cell?.identifier ?? "")
         
         // then
-        XCTAssertEqual(self.spyRouter.didShowSnapshotRequested, true)
+        XCTAssertEqual(self.spyRouter.didShowLinkDetail, true)
+    }
+    
+    func testViewModel_whenSelectCollectionSearchResult_finishSearchAndJumpToColleciton() {
+        // given
+        let expect = expectation(description: "검색결과로 콜렉션 선택한 경우에는 검색 종료하고 콜렉션 화면으로 점프해서 이동")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let sections = self.waitFirstElement(expect, for: viewModel.searchResultSections) {
+            viewModel.requestSearchItems(with: "some")
+        }
+        let cell = sections?.first?.cellViewModels.first
+        viewModel.showSearchResultDetail(cell?.identifier ?? "")
+        
+        // then
+        XCTAssertEqual(self.spyListener.didFinishSearch, true)
+        XCTAssertEqual(self.spyReadcollectionInteractor.didJumpRequested, true)
     }
 }
 
@@ -290,9 +311,15 @@ extension IntegratedSearchViewModelTests {
             self.didAlertError = true
         }
         
-        var didShowSnapshotRequested: Bool?
-        func showReadItemSnapshot(_ index: SearchReadItemIndex) {
-            self.didShowSnapshotRequested = true
+        var didShowLinkDetail: Bool?
+        func showLinkDetail(_ linkID: String) {
+            self.didShowLinkDetail = true
+        }
+        
+        var didFinishSearch: Bool?
+        func finishIntegratedSearch(_ completed: @escaping () -> Void) {
+            self.didFinishSearch = true
+            completed()
         }
     }
     
@@ -302,5 +329,25 @@ extension IntegratedSearchViewModelTests {
         func suggest(with text: String) {
             self.didSuggestRequestedText = text
         }
+    }
+    
+    class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable {
+        
+        func addNewCollectionItem() { }
+        
+        func addNewReadLinkItem() { }
+        
+        func addNewReaedLinkItem(with url: String) { }
+        
+        func switchToSharedCollection(_ collection: SharedReadCollection) { }
+        
+        func switchToMyReadCollections() { }
+        
+        var didJumpRequested: Bool?
+        func jumpToCollection(_ collectionID: String) {
+            self.didJumpRequested = true
+        }
+        
+        var rootType: CollectionRoot = .myCollections
     }
 }
