@@ -112,16 +112,19 @@ public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
     private let categoryUsecase: ReadItemCategoryUsecase
     private let router: IntegratedSearchRouting
     private weak var listener: IntegratedSearchSceneListenable?
+    private weak var readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
     
     public init(searchUsecase: IntegratedSearchUsecase,
                 categoryUsecase: ReadItemCategoryUsecase,
                 router: IntegratedSearchRouting,
-                listener: IntegratedSearchSceneListenable?) {
+                listener: IntegratedSearchSceneListenable?,
+                readCollectionMainInteractor: ReadCollectionMainSceneInteractable?) {
         
         self.searchUsecase = searchUsecase
         self.categoryUsecase = categoryUsecase
         self.router = router
         self.listener = listener
+        self.readCollectionMainInteractor = readCollectionMainInteractor
         
         self.bindCategories()
     }
@@ -200,15 +203,6 @@ extension IntegratedSearchViewModelImple {
         self.searchingJob = self.searchUsecase.search(query: text)
             .subscribe(onSuccess: handleResult, onError: handleError)
     }
-    
-    public func showSearchResultDetail(_ identifier: String) {
-        guard let indexes = self.subjects.searchedIndexes.value,
-              let index = indexes.first(where: { $0.itemID == identifier })
-        else {
-            return
-        }
-        self.router.showReadItemSnapshot(index)
-    }
 }
 
 // MARK: - IntegratedSearchViewModelImple Interactor + select suggest
@@ -217,6 +211,34 @@ extension IntegratedSearchViewModelImple {
     
     public func suggestQuery(didSelect searchQuery: String) {
         self.requestSearchItems(with: searchQuery)
+    }
+}
+
+
+// MARK: - IntegratedSearchViewModelImple Interactor + move to detail
+
+extension IntegratedSearchViewModelImple {
+    
+    public func showSearchResultDetail(_ identifier: String) {
+        guard let indexes = self.subjects.searchedIndexes.value,
+              let index = indexes.first(where: { $0.itemID == identifier })
+        else {
+            return
+        }
+
+        return index.isCollection
+            ? self.finsishSearchAndJumpToCollection(index.itemID)
+            : self.showLinkItemDetail(index.itemID)
+    }
+    
+    private func finsishSearchAndJumpToCollection(_ collectionID: String) {
+        self.listener?.finishIntegratedSearch { [weak self] in
+            self?.readCollectionMainInteractor?.jumpToCollection(collectionID)
+        }
+    }
+    
+    private func showLinkItemDetail(_ itemID: String) {
+        self.router.showLinkDetail(itemID)
     }
 }
 

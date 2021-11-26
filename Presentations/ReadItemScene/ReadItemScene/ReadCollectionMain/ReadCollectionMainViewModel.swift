@@ -94,4 +94,8 @@ extension ReadCollectionMainViewModelImple {
         self.subjects.currentCollectionRoot.accept(root)
         self.navigationListener?.readCollection(didChange: root)
     }
+    
+    public func jumpToCollection(_ collectionID: String) {
+        self.router.jumpToCollection(collectionID)
+    }
 }

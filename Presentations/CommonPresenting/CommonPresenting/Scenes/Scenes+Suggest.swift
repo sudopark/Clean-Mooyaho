@@ -20,6 +20,8 @@ public protocol IntegratedSearchSceneInteractable: SuggestQuerySceneListenable {
 public protocol IntegratedSearchSceneListenable: AnyObject {
     
     func integratedSearch(didUpdateSearching: Bool)
+    
+    func finishIntegratedSearch(_ completed: @escaping () -> Void)
 }
 
 
