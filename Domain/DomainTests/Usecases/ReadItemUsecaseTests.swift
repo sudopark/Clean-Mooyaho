@@ -231,6 +231,19 @@ extension ReadItemUsecaseTests {
         XCTAssertEqual(remindTime1 ?? nil, nil)
         XCTAssertEqual(remindTime2, collection2.remindTime)
     }
+    
+    func testUsecase_loadReadLinkItem() {
+        // given
+        let expect = expectation(description: "link item 로드")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let loading = usecase.loadReadLink("some")
+        let link = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(link)
+    }
 }
 
 

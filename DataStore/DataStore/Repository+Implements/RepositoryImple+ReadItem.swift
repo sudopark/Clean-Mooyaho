@@ -74,10 +74,7 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
     public func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection> {
         
         let thenUdateLocal: (ReadCollection) -> Void = { [weak self] collection in
-            guard let self = self else { return }
-            self.readItemLocal.updateReadItems([collection])
-                .subscribe()
-                .disposed(by: self.disposeBag)
+            self?.updateItemsOnLocal([collection])
         }
         
         let collectionOnLocal = self.readItemLocal.fetchCollection(collectionID)
@@ -88,6 +85,26 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
                 
         return collectionOnLocal.catchAndReturn(nil).compactMap { $0 }.asObservable()
             .concat(collectionOnRemote)
+    }
+    
+    public func requestLoadReadLinkItem(_ itemID: String) -> Observable<ReadLink> {
+        
+        let linkOnLocal = self.readItemLocal.fetchReadLink(itemID)
+        
+        let thenUpdateLocal: (ReadLink) -> Void = { [weak self] link in
+            self?.updateItemsOnLocal([link])
+        }
+        let linkOnRemote = self.readItemRemote.requestLoadReadLink(linkID: itemID)
+            .do(onNext: thenUpdateLocal)
+                
+        return linkOnLocal.catchAndReturn(nil).compactMap { $0 }.asObservable()
+            .concat(linkOnRemote)
+    }
+    
+    private func updateItemsOnLocal(_ items: [ReadItem]) {
+        self.readItemLocal.updateReadItems(items)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
     
     public func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {

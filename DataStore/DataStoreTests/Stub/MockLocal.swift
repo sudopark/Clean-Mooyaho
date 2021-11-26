@@ -146,6 +146,10 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "fetchCollectionItems") ?? .empty()
     }
     
+    func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?> {
+        return self.resolve(key: "fetchReadLink") ?? .empty()
+    }
+    
      func updateReadItems(_ items: [ReadItem]) -> Maybe<Void> {
         self.verify(key: "updateReadItems")
         return self.resolve(key: "updateReadItems") ?? .empty()

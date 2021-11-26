@@ -16,12 +16,14 @@ public protocol ReadItemRepository {
     func requestLoadMyItems(for memberID: String?) -> Observable<[ReadItem]>
     
     func requestLoadCollectionItems(collectionID: String) -> Observable<[ReadItem]>
-
+    
     func requestUpdateCollection(_ collection: ReadCollection) -> Maybe<Void>
         
     func requestUpdateLink(_ link: ReadLink) -> Maybe<Void>
     
     func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection>
+    
+    func requestLoadReadLinkItem(_ itemID: String) -> Observable<ReadLink>
     
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     

@@ -186,6 +186,10 @@ extension RemoteImple {
         return self.firebaseRemote.requestLoadCollection(collectionID: collectionID)
     }
     
+    func requestLoadReadLink(linkID: String) -> Maybe<ReadLink> {
+        return self.firebaseRemote.requestLoadReadLink(linkID: linkID)
+    }
+    
     func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         return self.firebaseRemote.requestUpdateItem(params)
     }

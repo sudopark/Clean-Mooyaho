@@ -154,6 +154,22 @@ extension LocalStorageTests_ReadItem {
         XCTAssertNotNil(collection)
     }
     
+    func testStorage_loadReadLink() {
+        // given
+        let expect = expectation(description: "저장된 특정 read link 로드")
+        
+        let dummy = ReadLink(link: "some")
+        
+        // when
+        let save = self.local.updateReadItems([dummy])
+        let load = self.local.fetchReadLink(dummy.uid)
+        let saveAndLoad = save.flatMap{ _ in load }
+        let link = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        
+        // then
+        XCTAssertNotNil(link)
+    }
+    
     func testStorage_updateCollection_withParams() {
         // given
         let expect = expectation(description: "파라미터로 콜렉션 업데이트")

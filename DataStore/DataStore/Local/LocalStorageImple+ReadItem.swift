@@ -58,6 +58,13 @@ extension LocalStorageImple {
         return storage.fetchCollection(collectionID)
     }
     
+    public func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchReadLink(linkID)
+    }
+    
     public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)

@@ -118,6 +118,8 @@ public protocol ReadItemLocalStorage {
     
     func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
     
+    func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?>
+    
     func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     
     func findLinkItem(using url: String) -> Maybe<ReadLink?>
