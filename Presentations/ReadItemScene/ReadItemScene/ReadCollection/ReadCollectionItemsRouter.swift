@@ -80,7 +80,7 @@ extension ReadCollectionItemsRouter {
     public func showLinkDetail(_ link: ReadLink) {
         
         guard let next = self.nextScenesBuilder?
-                .makeInnerWebViewScene(link: link, isEditable: true)
+                .makeInnerWebViewScene(link: link, isEditable: true, listener: nil)
         else {
             return
         }

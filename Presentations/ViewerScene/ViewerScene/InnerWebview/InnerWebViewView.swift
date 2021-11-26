@@ -41,6 +41,7 @@ final class InnerWebViewBottomToolBar: BaseUIView {
     let nextButton = UIButton()
     let memoButton = UIButton()
     let readMarkButton = UIButton()
+    let jumpFolderButton = UIButton()
     let safariButton = UIButton()
     
     weak var bottomOffsetConstraint: NSLayoutConstraint?
@@ -51,6 +52,10 @@ final class InnerWebViewBottomToolBar: BaseUIView {
             $0.alpha = 0
             $0.isEnabled = false
         }
+    }
+    
+    func hideJumping() {
+        self.jumpFolderButton.isHidden = true
     }
 }
 
@@ -182,7 +187,7 @@ extension InnerWebViewBottomToolBar: Presenting {
         stackView.alignment = .center
         
         let buttons = [
-            self.backButton, self.nextButton, self.readMarkButton, self.memoButton, self.safariButton
+            self.backButton, self.nextButton, self.readMarkButton, self.memoButton, self.jumpFolderButton, self.safariButton
         ]
         
         buttons.forEach {
@@ -228,6 +233,9 @@ extension InnerWebViewBottomToolBar: Presenting {
         self.memoButton.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
         
         self.readMarkButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+        
+        self.jumpFolderButton.setImage(UIImage(systemName: "folder"), for: .normal)
+        self.jumpFolderButton.isHidden = true
         
         self.safariButton.setImage(UIImage(systemName: "safari"), for: .normal)
         

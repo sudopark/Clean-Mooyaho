@@ -12,5 +12,6 @@ import Foundation
 
 public protocol IntegratedSearchSceneBuilable {
     
-    func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?) -> IntegratedSearchScene
+    func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?,
+                                   readCollectionMainInteractor: ReadCollectionMainSceneInteractable?) -> IntegratedSearchScene
 }

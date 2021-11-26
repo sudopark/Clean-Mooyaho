@@ -14,7 +14,10 @@ import Domain
 
 public protocol InnerWebViewSceneInteractable: LinkMemoSceneListenable { }
 
-public protocol InnerWebViewSceneListenable { }
+public protocol InnerWebViewSceneListenable: AnyObject {
+    
+    func innerWebView(reqeustJumpTo collectionID: String?)
+}
 
 
 // MARK: - InnerWebViewScene

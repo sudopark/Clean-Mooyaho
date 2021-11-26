@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - IntegratedSearchScene Interactable & Listenable
 
-public protocol IntegratedSearchSceneInteractable: SuggestQuerySceneListenable {
+public protocol IntegratedSearchSceneInteractable: SuggestQuerySceneListenable, InnerWebViewSceneListenable {
     
     func requestSuggest(with text: String)
     

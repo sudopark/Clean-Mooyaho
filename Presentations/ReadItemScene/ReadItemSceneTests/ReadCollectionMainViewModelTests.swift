@@ -91,4 +91,6 @@ extension ReadCollectionMainViewModelTests: ReadCollectionMainRouting {
     func switchToSharedCollection(root: SharedReadCollection) { }
     
     func jumpToCollection(_ collectionID: String) { }
+    
+    func moveToRootCollection() { }
 }

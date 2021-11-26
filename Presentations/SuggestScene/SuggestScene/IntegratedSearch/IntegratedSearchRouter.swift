@@ -40,6 +40,7 @@ public final class IntegratedSearchRouter: Router<IntegratedSearchRouterBuildabl
 extension IntegratedSearchRouter {
     
     // IntegratedSearchRouting implements
+    
     private var currentInteractor: IntegratedSearchSceneInteractable? {
         return (self.currentScene as? IntegratedSearchScene)?.interactor
     }
@@ -66,6 +67,14 @@ extension IntegratedSearchRouter {
     
     public func showLinkDetail(_ linkID: String) {
         
-        // TOOD:
+        guard let next = self.nextScenesBuilder?
+                .makeInnerWebViewScene(linkID: linkID,
+                                       isEditable: true,
+                                       isJumpable: true,
+                                       listener: self.currentInteractor)
+        else {
+            return
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

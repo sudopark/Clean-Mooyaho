@@ -14,5 +14,12 @@ import Domain
 
 public protocol InnerWebViewSceneBuilable {
     
-    func makeInnerWebViewScene(link: ReadLink, isEditable: Bool) -> InnerWebViewScene
+    func makeInnerWebViewScene(link: ReadLink,
+                               isEditable: Bool,
+                               listener: InnerWebViewSceneListenable?) -> InnerWebViewScene
+    
+    func makeInnerWebViewScene(linkID: String,
+                               isEditable: Bool,
+                               isJumpable: Bool,
+                               listener: InnerWebViewSceneListenable?) -> InnerWebViewScene
 }

@@ -199,7 +199,8 @@ extension MainRouter {
         
         guard let mainScene = self.currentScene as? MainScene,
               let next = self.nextScenesBuilder?
-                .makeIntegratedSearchScene(listener: self.currentInteractor)
+                .makeIntegratedSearchScene(listener: self.currentInteractor,
+                                           readCollectionMainInteractor: self.collectionMainInteractor)
         else {
             return nil
         }

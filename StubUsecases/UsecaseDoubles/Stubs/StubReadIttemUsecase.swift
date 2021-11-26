@@ -25,6 +25,7 @@ open class StubReadItemUsecase: ReadItemUsecase {
         public var shrinkModeIsOn: Bool = false
         public var preview: Result<LinkPreview, Error> = .success(.dummy(0))
         public var sortOption: [ReadCollectionItemSortOrder] = [.default]
+        public var loadReadLinkResult: Result<ReadLink, Error> = .success(.dummy(0))
         
         public init() {}
     }
@@ -43,6 +44,10 @@ open class StubReadItemUsecase: ReadItemUsecase {
     
     open func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
         return self.scenario.collectionItems.asMaybe().asObservable()
+    }
+    
+    public func loadReadLink(_ linkID: String) -> Observable<ReadLink> {
+        return self.scenario.loadReadLinkResult.asMaybe().asObservable()
     }
     
     open func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void> {

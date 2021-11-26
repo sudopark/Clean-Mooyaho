@@ -51,6 +51,8 @@ public protocol ReadCollectionMainSceneInteractable: AnyObject {
     
     func switchToMyReadCollections()
     
+    func jumpToCollection(_ collectionID: String?)
+    
     var rootType: CollectionRoot { get }
 }
 

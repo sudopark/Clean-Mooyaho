@@ -48,7 +48,6 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
-        self.loadWebPage()
         self.viewModel.prepareLinkData()
     }
 }
@@ -58,6 +57,13 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
 extension InnerWebViewViewController {
     
     private func bind() {
+        
+        self.viewModel.startLoadWebPage
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] url in
+                self?.loadWebPage(address: url)
+            })
+            .disposed(by: self.disposeBag)
      
         self.rx.viewDidAppear.take(1)
             .subscribe(onNext: { [weak self] _ in
@@ -79,6 +85,7 @@ extension InnerWebViewViewController {
             .disposed(by: self.disposeBag)
         
         self.viewModel.isEditable ? self.bindEditing() : self.toolBar.hideEditingViews()
+        self.viewModel.isJumpable ? self.bindJumpping() : self.toolBar.hideJumping()
     }
     
     private func bindEditing() {
@@ -119,9 +126,17 @@ extension InnerWebViewViewController {
             .disposed(by: self.disposeBag)
     }
     
-    private func loadWebPage() {
-        
-        guard let url = URL(string: self.viewModel.loadURL) else { return }
+    private func bindJumpping() {
+        self.toolBar.jumpFolderButton.isHidden = false
+        self.toolBar.jumpFolderButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.jumpToCollection()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func loadWebPage(address: String) {
+        guard let url = URL(string: address) else { return }
         let urlRequest = URLRequest(url: url)
         self.webView.load(urlRequest)
     }

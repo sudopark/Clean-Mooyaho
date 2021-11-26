@@ -19,6 +19,23 @@ import CommonPresenting
 
 // MARK: - InnerWebViewViewModel
 
+public enum LinkItemSource {
+    case item(ReadLink)
+    case itemID(String)
+    
+    var item: ReadLink? {
+        guard case let .item(link) = self else { return nil }
+        return link
+    }
+    
+    var itemID: String {
+        switch self {
+        case let .item(link): return link.uid
+        case let .itemID(id): return id
+        }
+    }
+}
+
 public protocol InnerWebViewViewModel: AnyObject {
 
     // interactor
@@ -27,10 +44,12 @@ public protocol InnerWebViewViewModel: AnyObject {
     func editReadLink()
     func editMemo()
     func toggleMarkAsRed()
+    func jumpToCollection()
     
     // presenter
     var isEditable: Bool { get }
-    var loadURL: String { get }
+    var isJumpable: Bool { get }
+    var startLoadWebPage: Observable<String> { get }
     var urlPageTitle: Observable<String> { get }
     var isRed: Observable<Bool> { get }
     var hasMemo: Observable<Bool> { get }
@@ -41,25 +60,31 @@ public protocol InnerWebViewViewModel: AnyObject {
 
 public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     
-    private let link: ReadLink
+    private let itemSource: LinkItemSource
     public let isEditable: Bool
+    public let isJumpable: Bool
     private let readItemUsecase: ReadItemUsecase
     private let memoUsecase: ReadLinkMemoUsecase
     private let router: InnerWebViewRouting
+    private weak var listener: InnerWebViewSceneListenable?
     
-    public init(link: ReadLink,
+    public init(itemSource: LinkItemSource,
                 isEditable: Bool = true,
+                isJumpable: Bool = false,
                 readItemUsecase: ReadItemUsecase,
                 memoUsecase: ReadLinkMemoUsecase,
-                router: InnerWebViewRouting) {
+                router: InnerWebViewRouting,
+                listener: InnerWebViewSceneListenable?) {
         
-        self.link = link
+        self.itemSource = itemSource
         self.isEditable = isEditable
+        self.isJumpable = isJumpable
         self.readItemUsecase = readItemUsecase
         self.memoUsecase = memoUsecase
         self.router = router
+        self.listener = listener
         
-        self.bindLinkItem(startWith: link)
+        self.bindLinkItem()
     }
     
     deinit {
@@ -76,9 +101,20 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     private let subjects = Subjects()
     private let disposeBag = DisposeBag()
     
-    private func bindLinkItem(startWith: ReadLink?) {
+    private func bindLinkItem() {
+        let itemID = self.itemSource.itemID
+        let prepareItem = self.itemSource.item.map { Observable.just($0) }
+            ?? self.readItemUsecase.loadReadLink(itemID)
         
-        self.subjects.item.accept(startWith)
+        let updateItem: (ReadLink) -> Void = { [weak self] item in
+            self?.subjects.item.accept(item)
+        }
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        prepareItem
+            .subscribe(onNext: updateItem, onError: handleError)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -88,10 +124,10 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
 extension InnerWebViewViewModelImple {
     
     public func prepareLinkData() {
-        guard self.isEditable,
-              let item = self.subjects.item.value else { return }
+        guard self.isEditable else { return }
+        let itemID = self.itemSource.itemID
         
-        self.memoUsecase.loadMemo(for: item.uid)
+        self.memoUsecase.loadMemo(for: itemID)
             .subscribe(onNext: { [weak self] memo in
                 self?.subjects.memo.accept(memo)
             })
@@ -123,12 +159,18 @@ extension InnerWebViewViewModelImple {
     }
     
     public func openPageInSafari() {
-        self.router.openSafariBrowser(self.link.link)
+        guard let item = self.subjects.item.value else { return }
+        self.router.openSafariBrowser(item.link)
     }
     
     public func editReadLink() {
-        guard self.isEditable else { return }
-        self.router.editReadLink(self.link)
+        guard self.isEditable, let item = self.subjects.item.value else { return }
+        self.router.editReadLink(item)
+    }
+    
+    public func jumpToCollection() {
+        guard let item = self.subjects.item.value else { return }
+        self.listener?.innerWebView(reqeustJumpTo: item.parentID)
     }
 }
 
@@ -160,8 +202,10 @@ extension InnerWebViewViewModelImple {
 
 extension InnerWebViewViewModelImple {
     
-    public var loadURL: String {
-        return self.link.link
+    public var startLoadWebPage: Observable<String> {
+        return self.subjects.item
+            .compactMap { $0?.link }
+            .take(1)
     }
     
     public var urlPageTitle: Observable<String> {

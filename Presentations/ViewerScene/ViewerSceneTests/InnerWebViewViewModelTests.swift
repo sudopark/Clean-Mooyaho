@@ -55,18 +55,23 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     }
     
     private func makeViewModel(_ item: ReadLink,
+                               itemSourceID: String? = nil,
                                preview: LinkPreview? = nil) -> InnerWebViewViewModelImple {
         
         let preview = preview ?? LinkPreview.dummy(0)
         let scenario = StubReadItemUsecase.Scenario()
             |> \.preview .~ .success(preview)
+            |> \.loadReadLinkResult .~ .success(item)
         let usecase = StubReadItemUsecase(scenario: scenario)
         
         let memoUsecase = StubMemoUsecase()
-        return InnerWebViewViewModelImple(link: item,
+        
+        let itemSource: LinkItemSource = itemSourceID.map { .itemID($0) } ?? .item(item)
+        return InnerWebViewViewModelImple(itemSource: itemSource,
                                           readItemUsecase: usecase,
                                           memoUsecase: memoUsecase,
-                                          router: self)
+                                          router: self,
+                                          listener: nil)
     }
 }
 
@@ -200,5 +205,23 @@ extension InnerWebViewViewModelTests {
         // then
         XCTAssertEqual(self.didEditRequestedMemo?.linkItemID, dummy.uid)
         XCTAssertEqual(self.didEditRequestedMemo?.content, nil)
+    }
+}
+
+
+extension InnerWebViewViewModelTests {
+    
+    func testViewModel_whenStartWithItemSourceWithID_loadItemInfo() {
+        // given
+        let expect = expectation(description: "아이템 아이디를 전달받아 해당 화면이 시작한 경우에는 아이템 조회해서 세팅")
+        let viewMdoel = self.makeViewModel(self.dummyItem, itemSourceID: "some", preview: nil)
+        
+        // when
+        let url = self.waitFirstElement(expect, for: viewMdoel.startLoadWebPage) {
+            viewMdoel.prepareLinkData()
+        }
+        
+        // then
+        XCTAssertNotNil(url)
     }
 }
