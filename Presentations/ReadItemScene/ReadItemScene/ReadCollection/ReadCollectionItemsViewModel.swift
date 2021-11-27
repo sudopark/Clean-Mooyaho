@@ -138,34 +138,21 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
             .disposed(by: self.disposeBag)
     }
     
-    private func totalItemSomeIDSet(_ extracting: @escaping ([ReadItem]) -> [String]) -> Observable<Set<String>> {
-        let totalItems: Observable<[ReadItem]> = Observable.merge(
+    private func bindRequireCategories() {
+        
+        let itemSources: [Observable<[ItemCategoryPresentable]>] = [
             self.subjects.collections.compactMap { $0 },
             self.subjects.links.compactMap { $0 },
             self.subjects.currentCollection.compactMap { $0 }.map { [$0] }
-        )
-        let foldAsSet: (Set<String>, [ReadItem]) -> Set<String> = { acc, items in
-            let newIDs = extracting(items)
-            return acc.union(newIDs)
+        ]
+        
+        let updateSubject: ([String: ItemCategory]) -> Void = { [weak self] cateMap in
+            self?.subjects.categoryMap.onNext(cateMap)
         }
-        return totalItems.scan(Set<String>(), accumulator: foldAsSet)
-    }
-    
-    private func bindRequireCategories() {
-
-        let categoryIDSet = self.totalItemSomeIDSet { $0.flatMap { $0.categoryIDs } }
-        let loadCategories: (Set<String>) -> Observable<[ItemCategory]> = { [weak self] idSet in
-            guard let self = self else { return .empty() }
-            return self.categoryUsecase.categories(for: Array(idSet))
-        }
-        categoryIDSet
-            .distinctUntilChanged()
-            .flatMapLatest(loadCategories)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] categories in
-                let dict = categories.reduce(into: [String: ItemCategory]()) { $0[$1.uid] = $1 }
-                self?.subjects.categoryMap.onNext(dict)
-            })
+        
+        self.categoryUsecase
+            .requireCategoryMap(from: itemSources)
+            .subscribe(onNext: updateSubject)
             .disposed(by: self.disposeBag)
     }
     
