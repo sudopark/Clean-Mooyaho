@@ -87,6 +87,8 @@
 		F68A880B274BFACC004DADE4 /* Builders+Suggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A880A274BFACC004DADE4 /* Builders+Suggest.swift */; };
 		F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */; };
 		F6A3A0AD275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A3A0AC275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift */; };
+		F6A3A0BA27521D2A00336E4F /* ReadItemCellViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A3A0B927521D2A00336E4F /* ReadItemCellViewModels.swift */; };
+		F6A3A0BC27521D8F00336E4F /* ReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A3A0BB27521D8F00336E4F /* ReadItemCells.swift */; };
 		F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */; };
 		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
 		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
@@ -221,6 +223,8 @@
 		F68A880A274BFACC004DADE4 /* Builders+Suggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Suggest.swift"; sourceTree = "<group>"; };
 		F68B670C2707EB45004A255A /* BottomSlideViewSupporatble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSlideViewSupporatble.swift; sourceTree = "<group>"; };
 		F6A3A0AC275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItemCategoryUsecase+Extension.swift"; sourceTree = "<group>"; };
+		F6A3A0B927521D2A00336E4F /* ReadItemCellViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCellViewModels.swift; sourceTree = "<group>"; };
+		F6A3A0BB27521D8F00336E4F /* ReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCells.swift; sourceTree = "<group>"; };
 		F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
@@ -546,6 +550,8 @@
 			isa = PBXGroup;
 			children = (
 				F67D65302718871400D8E9A5 /* ReadItemsPresentingUsecase.swift */,
+				F6A3A0B927521D2A00336E4F /* ReadItemCellViewModels.swift */,
+				F6A3A0BB27521D8F00336E4F /* ReadItemCells.swift */,
 				F6A3A0AC275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift */,
 			);
 			path = ViewUsecases;
@@ -705,6 +711,7 @@
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
 				F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */,
+				F6A3A0BA27521D2A00336E4F /* ReadItemCellViewModels.swift in Sources */,
 				F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
 				F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */,
@@ -790,6 +797,7 @@
 				F6ED41F52743F9C20082DE18 /* ReadItemShrinkCell.swift in Sources */,
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
+				F6A3A0BC27521D8F00336E4F /* ReadItemCells.swift in Sources */,
 				F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */,
 				F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,
