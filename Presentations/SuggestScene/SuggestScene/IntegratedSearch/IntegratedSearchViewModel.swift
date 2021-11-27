@@ -148,20 +148,15 @@ public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
     
     private func bindCategories() {
         
-        let requeireCategoryIDs = self.subjects.searchedIndexes
-            .compactMap { $0 }
-            .map { $0.flatMap { $0.categoryIDs } }
-            .map { Array(Set($0)) }
-        let loadCategories: ([String]) -> Observable<[ItemCategory]> = { [weak self] ids in
-            guard let self = self else { return .empty() }
-            return self.categoryUsecase.categories(for: ids)
+        let itemSource: [Observable<[ItemCategoryPresentable]>] = [
+            self.subjects.searchedIndexes.compactMap { $0 }
+        ]
+        let updateSubject: ([String: ItemCategory]) -> Void = { [weak self] cateMap in
+            self?.subjects.categoriesMap.accept(cateMap)
         }
-        requeireCategoryIDs
-            .flatMapLatest(loadCategories)
-            .subscribe(onNext: { [weak self] categories in
-                let dict = categories.reduce(into: [String: ItemCategory]()) { $0[$1.uid] = $1 }
-                self?.subjects.categoriesMap.accept(dict)
-            })
+        self.categoryUsecase
+            .requireCategoryMap(from: itemSource)
+            .subscribe(onNext: updateSubject)
             .disposed(by: self.disposeBag)
     }
 }

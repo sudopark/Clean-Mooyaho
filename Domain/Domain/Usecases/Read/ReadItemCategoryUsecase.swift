@@ -15,7 +15,7 @@ import Optics
 
 // MARK: - ReadItemCategoryUsecase
 
-public protocol ReadItemCategoryUsecase {
+public protocol ReadItemCategoryUsecase: AnyObject {
     
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
     
