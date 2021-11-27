@@ -71,6 +71,7 @@ public final class MainViewModelImple: MainViewModel {
     
     private weak var readCollectionMainSceneInteractor: ReadCollectionMainSceneInteractable?
     private weak var integratedSearchSceneInteractor: IntegratedSearchSceneInteractable?
+    private weak var suggestReadSceneInteractor: SuggestReadSceneInteractable?
     
     public init(memberUsecase: MemberUsecase,
                 readItemOptionUsecase: ReadItemOptionsUsecase,
@@ -136,6 +137,7 @@ extension MainViewModelImple {
     
     public func setupSubScenes() {
         self.readCollectionMainSceneInteractor = self.router.addReadCollectionScene()
+        self.suggestReadSceneInteractor = self.router.addSuggestReadScene()
     }
     
     public func requestOpenSlideMenu() {
