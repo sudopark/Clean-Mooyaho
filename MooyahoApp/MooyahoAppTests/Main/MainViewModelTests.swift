@@ -389,6 +389,10 @@ extension MainViewModelTests {
             return spyCollectionMainSceneInput
         }
         
+        func addSuggestReadScene() -> SuggestReadSceneInteractable? {
+            return nil
+        }
+        
         var didReadCollectionMainReplaced: Bool = false
         func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
             self.didReadCollectionMainReplaced = true

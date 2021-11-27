@@ -54,3 +54,18 @@ public protocol SuggestQueryScene: Scenable {
     
     var interactor: SuggestQuerySceneInteractable? { get }
 }
+
+
+// MARK: - SuggestReadScene Interactable & Listenable
+
+public protocol SuggestReadSceneInteractable: AnyObject { }
+
+public protocol SuggestReadSceneListenable: AnyObject { }
+
+
+// MARK: - SuggestReadScene
+
+public protocol SuggestReadScene: Scenable {
+    
+    var interactor: SuggestReadSceneInteractable? { get }
+}

@@ -47,6 +47,8 @@ public protocol MainRouting: Routing {
     
     func showSharedCollectionDialog(for collection: SharedReadCollection)
     
+    func addSuggestReadScene() -> SuggestReadSceneInteractable?
+    
     func addSaerchScene() -> IntegratedSearchSceneInteractable?
     
     func removeSearchScene()
@@ -60,6 +62,7 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
     & WaitMigrationSceneBuilable & StopShareCollectionSceneBuilable
     & SharedCollectionInfoDialogSceneBuilable & IntegratedSearchSceneBuilable
+    & SuggestReadSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -193,6 +196,23 @@ extension MainRouter {
             return
         }
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func addSuggestReadScene() -> SuggestReadSceneInteractable? {
+        
+        guard let mainScene = self.currentScene as? MainScene,
+              let next = self.nextScenesBuilder?.makeSuggestReadScene(listener: nil)
+        else {
+            return nil
+        }
+        
+        next.view.frame = CGRect(origin: .zero, size: mainScene.childBottomSlideContainerView.frame.size)
+        next.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mainScene.addChild(next)
+        mainScene.childBottomSlideContainerView.addSubview(next.view)
+        next.didMove(toParent: mainScene)
+        
+        return next.interactor
     }
     
     public func addSaerchScene() -> IntegratedSearchSceneInteractable? {

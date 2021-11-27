@@ -8,10 +8,17 @@
 import Foundation
 
 
-// MARK: - Builder + DependencyInjector Extension
+// MARK: - IntegratedSearchSceneBuilable
 
 public protocol IntegratedSearchSceneBuilable {
     
     func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?,
                                    readCollectionMainInteractor: ReadCollectionMainSceneInteractable?) -> IntegratedSearchScene
+}
+
+// MARK: - SuggestReadSceneBuilable
+
+public protocol SuggestReadSceneBuilable {
+    
+    func makeSuggestReadScene(listener: SuggestReadSceneListenable?) -> SuggestReadScene
 }

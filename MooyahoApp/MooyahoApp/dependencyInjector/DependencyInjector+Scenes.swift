@@ -553,3 +553,15 @@ extension DependencyInjector: SuggestQuerySceneBuilable {
         return viewController
     }
 }
+
+
+extension DependencyInjector: SuggestReadSceneBuilable {
+    
+    public func makeSuggestReadScene(listener: SuggestReadSceneListenable?) -> SuggestReadScene {
+        let router = SuggestReadRouter(nextSceneBuilders: self)
+        let viewModel = SuggestReadViewModelImple(router: router, listener: listener)
+        let viewController = SuggestReadViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
