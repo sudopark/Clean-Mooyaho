@@ -1,14 +1,13 @@
 //
-//  ReadItemCellViewModel.swift
-//  ReadItemScene
+//  ReadItemCellViewModels.swift
+//  CommonPresenting
 //
-//  Created by sudo.park on 2021/09/19.
+//  Created by sudo.park on 2021/11/27.
 //
 
 import Foundation
 
 import Domain
-import CommonPresenting
 
 
 // MARK: - ReadCollectionSectionCellViewModel
