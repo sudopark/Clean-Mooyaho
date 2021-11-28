@@ -172,6 +172,38 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "suggestReadItems") ?? .empty()
     }
     
+    func suggestNextReadItems(size: Int) -> Maybe<[ReadItem]> {
+        return self.resolve(key: "suggestNextReadItems") ?? .empty()
+    }
+    
+    func fetchMathingItems(_ ids: [String]) -> Maybe<[ReadItem]> {
+        return self.resolve(key: "fetchMathingItems") ?? .empty()
+    }
+    
+    func updateLinkItemIsReading(id: String, isReading: Bool) {
+        self.verify(key: "updateLinkItemIsReading", with: isReading)
+    }
+    
+    func readingLinkItemIDs() -> [String] {
+        return self.resolve(key: "readingLinkItemIDs") ?? []
+    }
+    
+    func fetchFavoriteItemIDs() -> Maybe<[String]> {
+        return self.resolve(key: "fetchFavoriteItemIDs") ?? .empty()
+    }
+    
+    func replaceFavoriteItemIDs(_ newValue: [String]) -> Maybe<Void> {
+        self.verify(key: "replaceFavoriteItemIDs")
+        return .just()
+    }
+    
+    func toggleItemIsFavorite(_ id: String, isOn: Bool) -> Maybe<Void> {
+        return .just()
+            .do(onNext: {
+                self.verify(key: "toggleItemIsFavorite")
+            })
+    }
+    
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         return self.resolve(key: "fetchReadItemIsShrinkMode") ?? .empty()
     }

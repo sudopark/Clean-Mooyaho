@@ -150,14 +150,14 @@ open class StubReadItemUsecase: ReadItemUsecase {
     private let fakeFavoriteItemIDs = BehaviorSubject<[String]>(value: [])
     public func refreshSharedFavoriteIDs() {
         self.refreshFavoriteIDs()
-            .subscribe(onSuccess: {
+            .subscribe(onNext: {
                 self.fakeFavoriteItemIDs.onNext($0)
             })
             .disposed(by: self.disposeBag)
     }
     
-    public func refreshFavoriteIDs() -> Maybe<[String]> {
-        return self.scenario.loadFavoriteIDsResult.asMaybe()
+    public func refreshFavoriteIDs() -> Observable<[String]> {
+        return self.scenario.loadFavoriteIDsResult.asMaybe().asObservable()
     }
     
     public func toggleFavorite(itemID: String, toOn: Bool) -> Maybe<Void> {

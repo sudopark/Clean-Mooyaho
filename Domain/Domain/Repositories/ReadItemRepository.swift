@@ -37,7 +37,7 @@ public protocol ReadItemRepository {
     
     func fetchUserReadingLinks() -> Maybe<[ReadLink]>
     
-    func requestRefreshFavoriteItemIDs() -> Maybe<[String]>
+    func requestRefreshFavoriteItemIDs() -> Observable<[String]>
     
     func toggleItemIsFavorite(_ id: String, toOn: Bool) -> Maybe<Void>
     

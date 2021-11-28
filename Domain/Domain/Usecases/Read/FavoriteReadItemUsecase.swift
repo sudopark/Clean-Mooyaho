@@ -13,7 +13,7 @@ import RxSwift
 
 public protocol FavoriteReadItemUsecas {
     
-    func refreshFavoriteIDs() -> Maybe<[String]>
+    func refreshFavoriteIDs() -> Observable<[String]>
     
     func refreshSharedFavoriteIDs()
     

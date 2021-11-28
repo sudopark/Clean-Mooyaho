@@ -68,7 +68,14 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
     public func requestUpdateLink(_ link: ReadLink) -> Maybe<Void> {
         let updateOnLocal = { [weak self] in self?.readItemLocal.updateReadItems([link]) ?? .empty() }
         let updateOnRemote = self.readItemRemote.requestUpdateReadLink(link)
+        
+        let removeFromCurentReading: () -> Void = { [weak self] in
+            guard let self = self, link.isRed else { return }
+            self.readItemLocal.updateLinkItemIsReading(id: link.uid, isReading: false)
+        }
+        
         return updateOnRemote.switchOr(append: updateOnLocal, witoutError: ())
+            .do(onNext: removeFromCurentReading)
     }
    
     public func requestLoadCollection(_ collectionID: String) -> Observable<ReadCollection> {
@@ -161,5 +168,67 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         self.requestRemoveMemo(for: item.uid)
             .subscribe()
             .disposed(by: self.disposeBag)
+    }
+    
+    public func requestSuggestNextReadItems(for memberID: String?, size: Int) -> Maybe<[ReadItem]> {
+        return memberID
+            .map { self.readItemRemote.requestSuggestNextReadItems(for: $0, size: size) }
+            ?? self.readItemLocal.suggestNextReadItems(size: size)
+    }
+    
+    public func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        
+        let fetchFromLocal = self.readItemLocal.fetchMathingItems(ids)
+        let thenLoadFromRemoteIfNeed: ([ReadItem]) -> Maybe<[ReadItem]> = { [weak self] items in
+            return self?.loadItemsFromRemote(ids, alreadyLoad: items) ?? .empty()
+        }
+        return  fetchFromLocal
+            .flatMap(thenLoadFromRemoteIfNeed)
+    }
+    
+    private func loadItemsFromRemote(_ ids: [String], alreadyLoad: [ReadItem]) -> Maybe<[ReadItem]> {
+        let localItemsSet = Set(alreadyLoad.map { $0.uid })
+        let refreshNeedIDs = ids.filter { localItemsSet.contains($0) == false }
+        let refreshItems = refreshNeedIDs.isNotEmpty
+            ? self.readItemRemote.requestLoadItems(ids: refreshNeedIDs) : .empty()
+        let mergeItems: ([ReadItem]) -> [ReadItem] = { newItems in
+            let totalItemsMap = (alreadyLoad + newItems).reduce(into: [String: ReadItem]()) { $0[$1.uid] = $1 }
+            return ids.compactMap { totalItemsMap[$0] }
+        }
+        return refreshItems.ifEmpty(switchTo: .just([]))
+            .map(mergeItems)
+    }
+    
+    public func fetchUserReadingLinks() -> Maybe<[ReadLink]> {
+        let readingItemIDs = self.readItemLocal.readingLinkItemIDs()
+        return self.readItemLocal.fetchMathingItems(readingItemIDs)
+            .map { $0.compactMap { $0 as? ReadLink } }
+    }
+    
+    public func updateLinkItemIsReading(_ id: String) {
+        self.readItemLocal.updateLinkItemIsReading(id: id, isReading: true)
+    }
+    
+    public func requestRefreshFavoriteItemIDs() -> Observable<[String]> {
+        let idsOnLocal = self.readItemLocal.fetchFavoriteItemIDs().catchAndReturn([])
+        let updateLocal: ([String]) -> Void = { [weak self] ids in
+            guard let self = self else { return }
+            self.readItemLocal.replaceFavoriteItemIDs(ids)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        let idsOnRemote = self.readItemRemote.requestLoadFavoriteItemIDs()
+            .do(onNext: updateLocal)
+        
+        return idsOnLocal.asObservable()
+            .concat(idsOnRemote)
+    }
+    
+    public func toggleItemIsFavorite(_ id: String, toOn: Bool) -> Maybe<Void> {
+        let toggleOnLocal: () -> Maybe<Void> = { [weak self] in
+            return self?.readItemLocal.toggleItemIsFavorite(id, isOn: toOn) ?? .empty()
+        }
+        let toggleOnRemote = self.readItemRemote.requestToggleFavoriteItemID(id, isOn: toOn)
+        return toggleOnRemote.switchOr(append: toggleOnLocal, witoutError: ())
     }
 }

@@ -92,4 +92,47 @@ extension LocalStorageImple {
         }
         return storage.fetchReadItem(like: name)
     }
+    
+    public func suggestNextReadItems(size: Int) -> Maybe<[ReadItem]> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return .empty()
+    }
+    
+    public func fetchMathingItems(_ ids: [String]) -> Maybe<[ReadItem]> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return .empty()
+    }
+    
+    public func updateLinkItemIsReading(id: String, isReading: Bool) {
+        
+    }
+    
+    public func readingLinkItemIDs() -> [String] {
+        return []
+    }
+    
+    public func fetchFavoriteItemIDs() -> Maybe<[String]> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return .empty()
+    }
+    
+    public func replaceFavoriteItemIDs(_ newValue: [String]) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return .empty()
+    }
+    
+    public func toggleItemIsFavorite(_ id: String, isOn: Bool) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return .empty()
+    }
 }
