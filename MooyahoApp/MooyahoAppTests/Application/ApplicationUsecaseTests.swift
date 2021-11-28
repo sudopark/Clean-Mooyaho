@@ -32,6 +32,7 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockShareUsecase = .init()
         self.usecase = .init(authUsecase: self.mockAuthUsecase,
                              memberUsecase: self.mockMemberUsecase,
+                             favoriteItemsUsecase: StubReadItemUsecase(),
                              shareUsecase: self.mockShareUsecase)
     }
     

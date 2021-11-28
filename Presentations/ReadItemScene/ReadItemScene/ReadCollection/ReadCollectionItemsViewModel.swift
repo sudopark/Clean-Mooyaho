@@ -22,6 +22,7 @@ public enum ReadCollectionItemSwipeContextAction: Equatable {
     case delete
     case remind(isOn: Bool)
     case markAsRead(isRed: Bool)
+    case favorite(isFavorite: Bool)
 }
 
 
@@ -61,6 +62,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     
     public let currentCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
+    private let favoriteUsecase: FavoriteReadItemUsecas
     private let categoryUsecase: ReadItemCategoryUsecase
     private let remindUsecase: ReadRemindUsecase
     private let router: ReadCollectionRouting
@@ -69,6 +71,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     
     public init(collectionID: String?,
                 readItemUsecase: ReadItemUsecase,
+                favoriteUsecase: FavoriteReadItemUsecas,
                 categoryUsecase: ReadItemCategoryUsecase,
                 remindUsecase: ReadRemindUsecase,
                 router: ReadCollectionRouting,
@@ -76,6 +79,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
                 inverseNavigationCoordinating: CollectionInverseNavigationCoordinating? = nil) {
         self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
+        self.favoriteUsecase = favoriteUsecase
         self.categoryUsecase = categoryUsecase
         self.remindUsecase = remindUsecase
         self.router = router
@@ -104,6 +108,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
         let categoryMap = BehaviorSubject<[String: ItemCategory]>(value: [:])
+        let favoriteIDSet = BehaviorRelay<Set<String>>(value: [])
     }
     
     private let subjects = Subjects()
@@ -114,6 +119,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.loadCurrentCollectionInfoIfNeed()
         self.bindRequireCategories()
         self.bindSubItemUpdated()
+        self.bindFavoriteItems()
     }
     
     private func bindCurrentSortOrder() {
@@ -152,6 +158,17 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         
         self.categoryUsecase
             .requireCategoryMap(from: itemSources)
+            .subscribe(onNext: updateSubject)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindFavoriteItems() {
+        
+        let updateSubject: ([String]) -> Void = { [weak self] ids in
+            let idsSet = Set(ids)
+            self?.subjects.favoriteIDSet.accept(idsSet)
+        }
+        self.favoriteUsecase.sharedFavoriteItemIDs
             .subscribe(onNext: updateSubject)
             .disposed(by: self.disposeBag)
     }
@@ -326,6 +343,12 @@ extension ReadCollectionViewItemsModelImple {
             guard let readItem = self.item(for: item.uid) else { return }
             self.requestRemoveReadItem(readItem)
             
+        case _ where action == .favorite(isFavorite: true):
+            self.toggleIsFavorite(item.uid, isFavorite: true)
+            
+        case _ where action == .favorite(isFavorite: false):
+            self.toggleIsFavorite(item.uid, isFavorite: false)
+            
         default: break
         }
     }
@@ -355,12 +378,23 @@ extension ReadCollectionViewItemsModelImple {
     private func toggleReadLinkIsRedMark(_ itemID: String, isRedNow: Bool) {
         guard let item = self.item(for: itemID) as? ReadLink else { return }
         let isToRed = isRedNow.invert()
-        let handleError: (Error) -> Void = { [weak self] error in
+        self.readItemUsecase.updateLinkItemMark(item, asRead: isToRed)
+            .subscribe(onError: self.handleError())
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func toggleIsFavorite(_ itemID: String, isFavorite: Bool) {
+        let toIsOn = isFavorite.invert()
+        self.readItemUsecase
+            .toggleFavorite(itemID: itemID, toOn: toIsOn)
+            .subscribe(onError: self.handleError())
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func handleError() -> (Error) -> Void {
+        return { [weak self] error in
             self?.router.alertError(error)
         }
-        self.readItemUsecase.updateLinkItemMark(item, asRead: isToRed)
-            .subscribe(onError: handleError)
-            .disposed(by: self.disposeBag)
     }
 }
 
@@ -515,24 +549,28 @@ extension ReadCollectionViewItemsModelImple {
         
         let asSections: (
             ReadCollection?, [ReadCollection], [ReadLink], ReadCollectionItemSortOrder,
-            [String: ItemCategory], [String], Bool
+            [String: ItemCategory], [String], Bool, Set<String>
         ) ->  [ReadCollectionItemSection]
-        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode in
+        asSections = { currentCollection, collections, links, order, cateMap, customOrder, isShrinkMode, favorites in
             
             let attributeCell = currentCollection
                 .map { ReadCollectionAttrCellViewModel(item: $0)
                     |> \.categories .~ $0.categoryIDs.compactMap{ cateMap[$0] }
                 }
                 .map { [$0] } ?? []
+                .applyIsFavorite(favorites)
+            
             let collectionCells: [ReadCollectionCellViewModel] = collections
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
                 .updateIsShrinkMode(isShrinkMode)
+                .applyIsFavorite(favorites)
             
             let linkCells: [ReadLinkCellViewModel] = links
                 .sort(by: order, with: customOrder)
                 .asCellViewModels(with: cateMap)
                 .updateIsShrinkMode(isShrinkMode)
+                .applyIsFavorite(favorites)
             
             let sections: [ReadCollectionItemSection?] =  [
                 attributeCell.asSectionIfNotEmpty(for: .attribute),
@@ -550,6 +588,7 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.categoryMap,
             self.readItemUsecase.customOrder(for: self.substituteCollectionID),
             self.readItemUsecase.isShrinkModeOn,
+            self.subjects.favoriteIDSet,
             resultSelector: asSections
         )
     }
@@ -575,17 +614,34 @@ extension ReadCollectionViewItemsModelImple {
     
     public func contextAction(for item: ReadItemCellViewModel,
                               isLeading: Bool) -> [ReadCollectionItemSwipeContextAction]? {
+        let favoritesSet = self.subjects.favoriteIDSet.value
         switch item {
         case _ where isLeading == false:
             return [.delete, .edit]
             
         case let collection as ReadCollectionCellViewModel:
-            return [.remind(isOn: collection.remindTime != nil)]
+            return [
+                .remind(isOn: collection.remindTime != nil),
+                .favorite(isFavorite: favoritesSet.contains(item.uid))
+            ]
             
         case let link as ReadLinkCellViewModel:
-            return [.markAsRead(isRed: link.isRed), .remind(isOn: link.remindTime != nil)]
+            return [
+                .markAsRead(isRed: link.isRed),
+                .remind(isOn: link.remindTime != nil),
+                .favorite(isFavorite: favoritesSet.contains(item.uid))
+            ]
             
         default: return nil
+        }
+    }
+}
+
+extension Array where Element: ReadItemCellViewModel {
+    
+    func applyIsFavorite(_ favorites: Set<String>) -> Array {
+        return self.map { cvm in
+            return cvm |> \.isFavorite .~ favorites.contains(cvm.uid)
         }
     }
 }

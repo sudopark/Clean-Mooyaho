@@ -25,12 +25,14 @@ public struct ReadCollectionAttrCellViewModel: ReadItemCellViewModelType {
         hasher.combine(self.priority?.rawValue)
         hasher.combine(self.categories.map { $0.presentingHashValue() })
         hasher.combine(self.remindTime)
+        hasher.combine(self.isFavorite)
         return hasher.finalize()
     }
     
     public var priority: ReadPriority?
     public var categories: [ItemCategory] = []
     public var remindTime: TimeStamp?
+    public var isFavorite: Bool = false
     
     public init(item: ReadCollection) {
         self.priority = item.priority
@@ -53,6 +55,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, Shrinkable
     public var categories: [ItemCategory] = []
     public var isShrink = false
     public var remindTime: TimeStamp?
+    public var isFavorite: Bool = false
     
     public init(uid: String, name: String) {
         self.uid = uid
@@ -76,6 +79,7 @@ public struct ReadCollectionCellViewModel: ReadItemCellViewModelType, Shrinkable
         hasher.combine(self.collectionDescription)
         hasher.combine(self.isShrink)
         hasher.combine(self.remindTime)
+        hasher.combine(self.isFavorite)
         return hasher.finalize()
     }
 }
@@ -95,6 +99,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
     public var isShrink = false
     public var remindTime: TimeStamp?
     public var isRed: Bool = false
+    public var isFavorite: Bool = false
     
     public init(uid: String, linkUrl: String) {
         self.uid = uid
@@ -120,6 +125,7 @@ public struct ReadLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell {
         hasher.combine(self.isShrink)
         hasher.combine(self.remindTime)
         hasher.combine(self.isRed)
+        hasher.combine(self.isFavorite)
         return hasher.finalize()
     }
 }

@@ -154,6 +154,7 @@ extension DependencyInjector {
         
         return ApplicationUsecaseImple(authUsecase: self.authUsecase,
                                        memberUsecase: self.memberUsecase,
+                                       favoriteItemsUsecase: self.readItemUsecase,
                                        shareUsecase: self.shareItemUsecase)
     }
     

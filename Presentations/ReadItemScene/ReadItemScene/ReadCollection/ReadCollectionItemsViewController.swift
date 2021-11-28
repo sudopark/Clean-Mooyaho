@@ -284,6 +284,8 @@ private extension ReadCollectionItemSwipeContextAction {
         case .remind(false): return UIImage(systemName: "alarm")
         case .markAsRead(isRed: true): return UIImage(systemName: "checkmark.circle.fill")
         case .markAsRead(isRed: false): return UIImage(systemName: "checkmark.circle")
+        case .favorite(isFavorite: true): return UIImage(systemName: "star.fill")
+        case .favorite(isFavorite: false): return UIImage(systemName: "star")
         }
     }
     
@@ -299,6 +301,8 @@ private extension ReadCollectionItemSwipeContextAction {
         case .remind(true): return UIColor.from(hex: "#00695c")
         case .markAsRead(isRed: false): return UIColor.from(hex: "#26c6da")
         case .markAsRead(isRed: true): return UIColor.from(hex: "#00838f")
+        case .favorite(isFavorite: true): return UIColor.systemYellow
+        case .favorite(isFavorite: false): return UIColor.systemYellow.withAlphaComponent(0.6)
         }
     }
     
