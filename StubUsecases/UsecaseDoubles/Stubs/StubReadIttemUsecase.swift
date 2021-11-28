@@ -114,6 +114,17 @@ open class StubReadItemUsecase: ReadItemUsecase {
         })
     }
     
+    public var didMarkIsReadingLink: ReadLink?
+    public func updateLinkIsReading(_ link: ReadLink) {
+        self.didMarkIsReadingLink = link
+    }
+    
+    public func updateLinkItemMark(_ link: ReadLink, asRead: Bool) -> Maybe<Void> {
+        var params = ReadItemUpdateParams(item: link)
+        params.updatePropertyParams = [.isRed(asRead)]
+        return self.updateItem(params)
+    }
+    
     public let readItemUpdateMocking = PublishSubject<ReadItemUpdateEvent>()
     public var readItemUpdated: Observable<ReadItemUpdateEvent> {
         return self.readItemUpdateMocking.asObservable()

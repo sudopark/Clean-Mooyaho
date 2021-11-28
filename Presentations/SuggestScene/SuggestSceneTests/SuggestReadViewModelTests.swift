@@ -155,18 +155,6 @@ extension SuggestReadViewModelTests {
         XCTAssertEqual(self.spyRouter.didShowLinkDetail, true)
     }
     
-    // 읽을목록으로 이동
-    func testViewModel_viewAllYodoRead() {
-        // given
-        let viewModel = self.makeViewModel()
-        
-        // when
-        viewModel.viewAllTodoRead()
-        
-        // then
-        XCTAssertEqual(self.spyRouter.didShowAllTodoRead, true)
-    }
-    
     // 즐겨찾는 목록으로 이동
     func testViewModel_viewAllFavorites() {
         // given
@@ -177,18 +165,6 @@ extension SuggestReadViewModelTests {
         
         // then
         XCTAssertEqual(self.spyRouter.didShowAllFavorite, true)
-    }
-    
-    // 최근 읽은 항목으로 이동
-    func testViewModel_viewAllLatestRead() {
-        // given
-        let viewModel = self.makeViewModel()
-        
-        // when
-        viewModel.viewAllLatestRead()
-        
-        // then
-        XCTAssertEqual(self.spyRouter.didShowAllLatest, true)
     }
 }
 

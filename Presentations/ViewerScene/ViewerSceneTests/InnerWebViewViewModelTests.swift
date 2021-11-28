@@ -25,6 +25,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     var didSafariOpen: Bool?
     var didEditRequested: Bool?
     var didEditRequestedMemo: ReadLinkMemo?
+    var spyReadItemUsecase: StubReadItemUsecase!
 
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -36,6 +37,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.didSafariOpen = nil
         self.didEditRequested = nil
         self.didEditRequestedMemo = nil
+        self.spyReadItemUsecase = nil
     }
     
     private var dummyItem: ReadLink {
@@ -63,6 +65,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
             |> \.preview .~ .success(preview)
             |> \.loadReadLinkResult .~ .success(item)
         let usecase = StubReadItemUsecase(scenario: scenario)
+        self.spyReadItemUsecase = usecase
         
         let memoUsecase = StubMemoUsecase()
         
@@ -77,6 +80,15 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
 
 
 extension InnerWebViewViewModelTests {
+    
+    func testViewModel_whenSceneStart_markIsReading() {
+        // given
+        // when
+        let _ = self.makeViewModel(self.dummyItem, preview: nil)
+        
+        // then
+        XCTAssertEqual(self.spyReadItemUsecase.didMarkIsReadingLink?.uid, self.dummyItem.uid)
+    }
     
     func testViewModel_whenCustomNameNotExists_showURLAddress() {
         // given

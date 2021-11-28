@@ -33,9 +33,13 @@ class StubReadItemRepository: ReadItemRepository {
         var ulrAndLinkItemMap = [String: ReadLink]()
         
         var loadReadLinkResult: Result<ReadLink, Error> = .success(.dummy(0, parent: 0))
+        
+        var sugegstNextReadResult: Result<[ReadItem], Error> = .success([ReadCollection.dummy(0, parent: nil)])
+        var fetchCurrentReadingLinkResult: Result<[ReadLink], Error> = .success([ReadLink.dummy(0, parent: nil)])
+        var favoriteItemIDs: [[String]] = [["some"], ["some", "new"]]
     }
     
-    private let scenario: Scenario
+    private var scenario: Scenario
     init(scenario: Scenario = .init()) {
         self.scenario = scenario
     }
@@ -82,4 +86,29 @@ class StubReadItemRepository: ReadItemRepository {
     func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]> {
         return .empty()
     }
+    
+    func requestSuggestNextReadItems(for memberID: String?, size: Int) -> Maybe<[ReadItem]> {
+        return self.scenario.sugegstNextReadResult.asMaybe()
+    }
+    
+    func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        let items = ids.map { ReadLink(uid: $0, link: "link-\($0)", createAt: .now(), lastUpdated: .now()) }
+        return .just(items)
+    }
+    
+    func fetchUserReadingLinks() -> Maybe<[ReadLink]> {
+        return self.scenario.fetchCurrentReadingLinkResult.asMaybe()
+    }
+    
+    func requestRefreshFavoriteItemIDs() -> Maybe<[String]> {
+        guard self.scenario.favoriteItemIDs.isNotEmpty else { return .empty() }
+        let first = self.scenario.favoriteItemIDs.removeFirst()
+        return .just(first)
+    }
+    
+    func toggleItemIsFavorite(_ id: String, toOn: Bool) -> Maybe<Void> {
+        return .just()
+    }
+    
+    func updateLinkItemIsReading(_ id: String) { }
 }

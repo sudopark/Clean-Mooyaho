@@ -61,6 +61,10 @@ public protocol ReadItemUpdateUsecase {
     
     func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
     
+    func updateLinkItemMark(_ link: ReadLink, asRead: Bool) -> Maybe<Void>
+    
+    func updateLinkIsReading(_ link: ReadLink)
+    
     func removeItem(_ item: ReadItem) -> Maybe<Void>
 }
 

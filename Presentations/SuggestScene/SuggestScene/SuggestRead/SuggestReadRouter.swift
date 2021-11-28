@@ -23,11 +23,7 @@ public protocol SuggestReadRouting: Routing {
     
     func showLinkDetail(_ linkID: String)
     
-    func showAllTodoReadItems()
-    
     func showAllFavoriteItemList()
-    
-    func showAllLatestReadItems()
 }
 
 // MARK: - Routers
@@ -49,15 +45,7 @@ extension SuggestReadRouter {
         logger.todoImplement()
     }
     
-    public func showAllTodoReadItems() {
-        logger.todoImplement()
-    }
-    
     public func showAllFavoriteItemList() {
-        logger.todoImplement()
-    }
-    
-    public func showAllLatestReadItems() {
         logger.todoImplement()
     }
 }

@@ -435,9 +435,6 @@
 				2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */,
 				2BD54F70263DB37D004B3EB0 /* AuthRemote+Firebase.swift */,
 				F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */,
-				F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */,
-				F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */,
-				F67848D426510B170074C344 /* HoorayRemote+Firebase.swift */,
 				F66E81402655328000682625 /* MessagingRemote+Firebase.swift */,
 				F6CEF8B226F4E8B300061097 /* ReadItemRemote+Firebase.swift */,
 				F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */,
@@ -445,8 +442,19 @@
 				F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */,
 				F640618C2735DB4100902787 /* BatchUpload+Firebase.swift */,
 				F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */,
+				F62DEFC727535F6E008D50D1 /* Deprecated */,
 			);
 			path = "RemoteImple+FirebaseService";
+			sourceTree = "<group>";
+		};
+		F62DEFC727535F6E008D50D1 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */,
+				F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */,
+				F67848D426510B170074C344 /* HoorayRemote+Firebase.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		F6684DED2647CBFA00820368 /* GeoFire+Utils */ = {

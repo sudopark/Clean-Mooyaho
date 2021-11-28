@@ -119,15 +119,32 @@ extension ReadItemUsecaseImple {
     }
     
     public func suggestNextReadItem(size: Int) -> Maybe<[ReadItem]> {
-        return .empty()
+        let currentMemberID = self.authInfoProvider.signedInMemberID()
+        return self.itemsRespoitory.requestSuggestNextReadItems(for: currentMemberID, size: size)
     }
     
     public func continueReadingLinks() -> Observable<[ReadLink]> {
-        return .empty()
+        let datKey = SharedDataKeys.currentReadingItems.rawValue
+        return self.sharedStoreService
+            .observeWithCache([ReadLink].self, key: datKey)
+            .map { $0 ?? [] }
+            .do(onSubscribed: { [weak self] in
+                self?.fetchCurrentReadingItems()
+            })
+    }
+    
+    private func fetchCurrentReadingItems() {
+        let datKey = SharedDataKeys.currentReadingItems.rawValue
+        let updateStore: ([ReadLink]) -> Void = { [weak self] links in
+            self?.sharedStoreService.update([ReadLink].self, key: datKey, value: links)
+        }
+        self.itemsRespoitory.fetchUserReadingLinks()
+            .subscribe(onSuccess: updateStore)
+            .disposed(by: self.disposeBag)
     }
     
     public func loadReadItems(for itemIDs: [String]) -> Maybe<[ReadItem]> {
-        return .empty()
+        return self.itemsRespoitory.requestLoadItems(ids: itemIDs)
     }
 }
 
@@ -137,19 +154,39 @@ extension ReadItemUsecaseImple {
 extension ReadItemUsecaseImple: FavoriteReadItemUsecas {
     
     public func refreshSharedFavoriteIDs() {
-        
+        self.refreshFavoriteIDs()
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
     
     public func refreshFavoriteIDs() -> Maybe<[String]> {
-        return .empty()
+        let updateStore: ([String]) -> Void = { [weak self] ids in
+            let datKey = SharedDataKeys.favoriteItemIDs.rawValue
+            self?.sharedStoreService.update([String].self, key: datKey, value: ids)
+        }
+        return self.itemsRespoitory.requestRefreshFavoriteItemIDs()
+            .do(onNext: updateStore)
     }
     
     public func toggleFavorite(itemID: String, toOn: Bool) -> Maybe<Void> {
-        return .empty()
+        
+        let updateStore: () -> Void = { [weak self] in
+            let datKey = SharedDataKeys.favoriteItemIDs.rawValue
+            self?.sharedStoreService.update([String].self, key: datKey) {
+                let filteredIDs = ($0 ?? []).filter { $0 != itemID }
+                return toOn ? filteredIDs + [itemID] : filteredIDs
+            }
+        }
+        
+        return self.itemsRespoitory.toggleItemIsFavorite(itemID, toOn: toOn)
+            .do(onNext: updateStore)
     }
     
     public var sharedFavoriteItemIDs: Observable<[String]> {
-        return .empty()
+        let datKey = SharedDataKeys.favoriteItemIDs.rawValue
+        return self.sharedStoreService
+            .observeWithCache([String].self, key: datKey)
+            .map { $0 ?? [] }
     }
 }
 
@@ -177,6 +214,25 @@ extension ReadItemUsecaseImple {
             .do(onNext: self.broadCastItemUpdated(params.applyChanges()))
     }
     
+    public func updateLinkItemMark(_ link: ReadLink, asRead: Bool) -> Maybe<Void> {
+        let removeFromContinueReadingListIfNeed: () -> Void = { [weak self] in
+            guard asRead else { return }
+            self?.removeFromContinueReadingLinks(id: link.uid)
+        }
+        
+        var params = ReadItemUpdateParams(item: link)
+        params.updatePropertyParams = [.isRed(asRead)]
+        return self.updateItem(params)
+            .do(onNext: removeFromContinueReadingListIfNeed)
+    }
+    
+    private func removeFromContinueReadingLinks(id: String) {
+        let datKey = SharedDataKeys.currentReadingItems.rawValue
+        self.sharedStoreService.update([ReadLink].self, key: datKey) {
+            return ($0 ?? []).filter { $0.uid != id }
+        }
+    }
+    
     private func broadCastItemUpdated(_ newItem: ReadItem) -> () -> Void {
         return { [weak self] in
             self?.readItemUpdateEventPublisher?.onNext(.updated(newItem))
@@ -188,9 +244,20 @@ extension ReadItemUsecaseImple {
         let broadCastItemRemoved: () -> Void = { [weak self] in
             let event: ReadItemUpdateEvent = .removed(itemID: item.uid, parent: item.parentID)
             self?.readItemUpdateEventPublisher?.onNext(event)
+            if item is ReadLink {
+                self?.removeFromContinueReadingLinks(id: item.uid)
+            }
         }
         return self.itemsRespoitory.requestRemove(item: item)
             .do(onNext: broadCastItemRemoved)
+    }
+    
+    public func updateLinkIsReading(_ link: ReadLink) {
+        self.itemsRespoitory.updateLinkItemIsReading(link.uid)
+        let datKey = SharedDataKeys.currentReadingItems.rawValue
+        self.sharedStoreService.update([ReadLink].self, key: datKey) {
+            return ($0 ?? []).filter { $0.uid != link.uid } + [link]
+        }
     }
 }
 

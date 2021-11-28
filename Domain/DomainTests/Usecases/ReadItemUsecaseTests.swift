@@ -33,7 +33,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockItemUpdateSubject = nil
     }
     
-    private var myID: String { "me" }
+    var myID: String { "me" }
     
     private func authProvider(_ signedIn: Bool = true) -> AuthInfoProvider {
         let sharedStore = SharedDataStoreServiceImple()
@@ -46,14 +46,14 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         return sharedStore
     }
     
-    private func makeUsecase(signedIn: Bool = true,
-                             shouldfailLoadMyCollections: Bool = false,
-                             shouldFailLoadCollection: Bool = false,
-                             isShrinkModeOn: Bool? = true,
-                             sortOrder: ReadCollectionItemSortOrder? = .default,
-                             collectionMocking: ReadCollection? = nil,
-                             customSortOrder: [String] = [],
-                             copiedText: String? = nil) -> ReadItemUsecaseImple {
+    func makeUsecase(signedIn: Bool = true,
+                     shouldfailLoadMyCollections: Bool = false,
+                     shouldFailLoadCollection: Bool = false,
+                     isShrinkModeOn: Bool? = true,
+                     sortOrder: ReadCollectionItemSortOrder? = .default,
+                     collectionMocking: ReadCollection? = nil,
+                     customSortOrder: [String] = [],
+                     copiedText: String? = nil) -> ReadItemUsecaseImple {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
         shouldfailLoadMyCollections.then {
@@ -710,7 +710,7 @@ extension ReadItemUsecaseTests {
 }
 
 
-private extension ReadItemUsecaseTests {
+extension ReadItemUsecaseTests {
     
     final class SpyRepository: StubReadItemRepository {
         
@@ -729,7 +729,7 @@ private extension ReadItemUsecaseTests {
     }
 }
 
-private extension ReadItemUpdateEvent {
+extension ReadItemUpdateEvent {
     
     var remindTime: TimeStamp? {
         guard case let .updated(item) = self else { return nil }
