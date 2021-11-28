@@ -100,7 +100,7 @@ class StubReadItemRepository: ReadItemRepository {
         return self.scenario.fetchCurrentReadingLinkResult.asMaybe()
     }
     
-    func requestRefreshFavoriteItemIDs() -> Maybe<[String]> {
+    func requestRefreshFavoriteItemIDs() -> Observable<[String]> {
         guard self.scenario.favoriteItemIDs.isNotEmpty else { return .empty() }
         let first = self.scenario.favoriteItemIDs.removeFirst()
         return .just(first)

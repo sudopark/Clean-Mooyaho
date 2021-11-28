@@ -242,6 +242,115 @@ extension RepositoryTests_ReadItem {
         // then
         XCTAssertNotNil(error)
     }
+    
+    func testRepository_suggesNextReadItemWithoutSignIn() {
+        // given
+        let expect = expectation(description: "로그인 안한상태에서 다음 읽을아이템 추천")
+        self.mockLocal.register(key: "suggestNextReadItems") {
+            Maybe<[ReadItem]>.just([ReadCollection(name: "some")])
+        }
+        
+        // when
+        let suggesting = self.dummyRepository.requestSuggestNextReadItems(for: nil, size: 10)
+        let items = self.waitFirstElement(expect, for: suggesting.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 1)
+    }
+    
+    func testReposiotry_requestLoadItemsWithIDs_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그인 안한상태에서 아이템 아이디로 아이템 로드")
+        self.mockLocal.register(key: "fetchMathingItems") {
+            Maybe<[ReadItem]>.just([ReadCollection(uid: "s", name: "n", createdAt: .now(), lastUpdated: .now())])
+        }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadItems(ids: ["s"])
+        let items = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 1)
+    }
+    
+    func testReposiotry_refreshFavoriteItemIDs_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃상태에서 즐겨찾는 아이템 목록 로드")
+        self.mockLocal.register(key: "fetchFavoriteItemIDs") {
+            Maybe<[String]>.just(["some"])
+        }
+        
+        // when
+        let refreshing = self.dummyRepository.requestRefreshFavoriteItemIDs()
+        let ids = self.waitFirstElement(expect, for: refreshing.asObservable())
+        
+        // then
+        XCTAssertEqual(ids?.count, 1)
+    }
+    
+    func testRespository_toggleFavoriteIDs_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그인 안한상태에서 즐겨찾는 목록 토글링")
+        
+        // when
+        let toggling = self.dummyRepository.toggleItemIsFavorite("some", toOn: true)
+        let result: Void? = self.waitFirstElement(expect, for: toggling.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testReposiotry_loadCurrentReadingLinks() {
+        // given
+        let expect = expectation(description: "현재 읽고있는 링트 로드")
+        self.mockLocal.register(key: "readingLinkItemIDs") {
+            return ["some"]
+        }
+        self.mockLocal.register(key: "fetchMathingItems") {
+            Maybe<[ReadItem]>.just([ReadLink(link: "some")])
+        }
+        
+        // when
+        let fethcing = self.dummyRepository.fetchUserReadingLinks()
+        let items = self.waitFirstElement(expect, for: fethcing.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 1)
+    }
+    
+    func testResposiotry_updateIsReading() {
+        // given
+        let expect = expectation(description: "현재 읽고있음 업데이트")
+        self.mockLocal.called(key: "updateLinkItemIsReading") { any in
+            guard let isReading = any as? Bool, isReading else { return }
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.updateLinkItemIsReading("some")
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepository_whenUpdateReadlinkAndIsRed_removeFromCurrentReadingList() {
+        // given
+        let expect = expectation(description: "현재 읽고있음 업데이트")
+        self.mockLocal.register(key: "updateReadItems") { Maybe<Void>.just() }
+        self.mockLocal.called(key: "updateLinkItemIsReading") { any in
+            guard let isReading = any as? Bool, isReading == false else { return }
+            expect.fulfill()
+        }
+        
+        // when
+        let item = ReadLink(link: "some") |> \.isRed .~ true
+        self.dummyRepository.requestUpdateLink(item)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 
@@ -692,6 +801,89 @@ extension RepositoryTests_ReadItem {
             .subscribe()
             .disposed(by: self.disposeBag)
         
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepository_suggesNextReadItemWithSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 다음 읽을아이템 추천")
+        self.mockRemote.register(key: "requestSuggestNextReadItems") {
+            Maybe<[ReadItem]>.just([ReadCollection(name: "some")])
+        }
+        
+        // when
+        let suggesting = self.dummyRepository.requestSuggestNextReadItems(for: "some", size: 10)
+        let items = self.waitFirstElement(expect, for: suggesting.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 1)
+    }
+    
+    func testReposiotry_requestLoadItemsWithIDs_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 아이템 아이디로 아이템 로드시에 로컬에 없는것만 리모트에서 불러옴")
+        self.mockLocal.register(key: "fetchMathingItems") {
+            Maybe<[ReadItem]>.just([ReadCollection(uid: "1", name: "nn1", createdAt: .now(), lastUpdated: .now())])
+        }
+        self.mockRemote.register(key: "requestLoadItems") {
+            Maybe<[ReadItem]>.just([ReadCollection(uid: "2", name: "nn2", createdAt: .now(), lastUpdated: .now())])
+        }
+        
+        // when
+        let loading = self.dummyRepository.requestLoadItems(ids: ["1", "2"])
+        let items = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 2)
+    }
+    
+    func testReposiotry_refreshFavoriteItemIDs_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 즐겨찾는 아이템 목록 로드")
+        expect.expectedFulfillmentCount = 3
+        self.mockLocal.register(key: "fetchFavoriteItemIDs") {
+            Maybe<[String]>.just(["some"])
+        }
+        self.mockRemote.register(key: "requestLoadFavoriteItemIDs") {
+            Maybe<[String]>.just(["some"])
+        }
+        self.mockLocal.called(key: "replaceFavoriteItemIDs") { _ in expect.fulfill() }
+        
+        // when
+        let refreshing = self.dummyRepository.requestRefreshFavoriteItemIDs()
+        let idLists = self.waitElements(expect, for: refreshing)
+        
+        // then
+        XCTAssertEqual(idLists.count, 2)
+    }
+    
+    func testRespository_toggleFavoriteIDs_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 즐겨찾는 목록 토글링")
+        self.mockRemote.register(key: "requestToggleFavoriteItemID") { Maybe<Void>.just() }
+        
+        // when
+        let toggling = self.dummyRepository.toggleItemIsFavorite("some", toOn: true)
+        let result: Void? = self.waitFirstElement(expect, for: toggling.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRespository_whenToggleFavoriteIDsWithSignIn_updateLocal() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 즐겨찾는 목록 토글링시에 로컬도 업데이트")
+        self.mockRemote.register(key: "requestToggleFavoriteItemID") { Maybe<Void>.just() }
+        self.mockLocal.called(key: "toggleItemIsFavorite") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.toggleItemIsFavorite("some", toOn: true)
+            .subscribe()
+            .disposed(by: self.disposeBag)
         
         // then
         self.wait(for: [expect], timeout: self.timeout)

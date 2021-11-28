@@ -189,6 +189,22 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestLoadReadLink") ?? .empty()
     }
     
+    func requestSuggestNextReadItems(for memberID: String, size: Int) -> Maybe<[ReadItem]> {
+        return self.resolve(key: "requestSuggestNextReadItems") ?? .empty()
+    }
+    
+    func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        return self.resolve(key: "requestLoadItems") ?? .empty()
+    }
+    
+    func requestLoadFavoriteItemIDs() -> Maybe<[String]> {
+        return self.resolve(key: "requestLoadFavoriteItemIDs") ?? .empty()
+    }
+    
+    func requestToggleFavoriteItemID(_ id: String, isOn: Bool) -> Maybe<Void> {
+        return self.resolve(key: "requestToggleFavoriteItemID") ?? .empty()
+    }
+    
     // options
     func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
         return self.resolve(key: "requestLoadReadItemCustomOrder") ?? .empty()

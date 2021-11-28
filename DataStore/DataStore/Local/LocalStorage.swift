@@ -127,6 +127,20 @@ public protocol ReadItemLocalStorage {
     func removeItem(_ item: ReadItem) -> Maybe<Void>
     
     func searchReadItems(_ name: String) -> Maybe<[SearchReadItemIndex]>
+    
+    func suggestNextReadItems(size: Int) -> Maybe<[ReadItem]>
+    
+    func fetchMathingItems(_ ids: [String]) -> Maybe<[ReadItem]>
+    
+    func updateLinkItemIsReading(id: String, isReading: Bool)
+    
+    func readingLinkItemIDs() -> [String]
+    
+    func fetchFavoriteItemIDs() -> Maybe<[String]>
+    
+    func replaceFavoriteItemIDs(_ newValue: [String]) -> Maybe<Void>
+    
+    func toggleItemIsFavorite(_ id: String, isOn: Bool) -> Maybe<Void>
 }
 
 

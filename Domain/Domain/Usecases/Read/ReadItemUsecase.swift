@@ -159,7 +159,7 @@ extension ReadItemUsecaseImple: FavoriteReadItemUsecas {
             .disposed(by: self.disposeBag)
     }
     
-    public func refreshFavoriteIDs() -> Maybe<[String]> {
+    public func refreshFavoriteIDs() -> Observable<[String]> {
         let updateStore: ([String]) -> Void = { [weak self] ids in
             let datKey = SharedDataKeys.favoriteItemIDs.rawValue
             self?.sharedStoreService.update([String].self, key: datKey, value: ids)
