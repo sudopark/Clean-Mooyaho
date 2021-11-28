@@ -140,6 +140,8 @@ final class ReadItemShrinkCollectionCell: ReadItemShrinkCell {
         
         self.shrinkView.nameLabel.text = cellViewModel.name
         
+        self.shrinkView.updateFavoriteView(cellViewModel.isFavorite)
+        
         let validDescription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
         self.shrinkView.descriptionLabel.isHidden = validDescription == nil
         self.shrinkView.descriptionLabel.text = validDescription
@@ -156,7 +158,7 @@ final class ReadItemShrinkLinkCell: ReadItemShrinkCell {
     
     func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
         self.updateTitle(cellViewModel.customName)
-        
+        self.shrinkView.updateFavoriteView(cellViewModel.isFavorite)
         self.shrinkView.addressLabel.text = cellViewModel.linkUrl
     }
     

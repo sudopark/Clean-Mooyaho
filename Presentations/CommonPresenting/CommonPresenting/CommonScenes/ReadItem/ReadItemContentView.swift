@@ -16,11 +16,13 @@ import Optics
 public class ReadItemShrinkContentView: BaseUIView, Presenting {
     
     public let contentStackView = UIStackView()
-    public let titleAreaStackView = UIStackView()
+    public let titleAreaView = UIView()
+    public let favoriteImageVIew = UIImageView()
     public let iconImageView = UIImageView()
     public let nameLabel = UILabel()
     public let addressLabel = UILabel()
     public let descriptionLabel = UILabel()
+    private var nameLabelTrailing: NSLayoutConstraint!
     
     public init() {
         super.init(frame: .zero)
@@ -28,6 +30,11 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func updateFavoriteView(_ isFavorite: Bool) {
+        self.favoriteImageVIew.isHidden = isFavorite == false
+        self.nameLabelTrailing.constant = -(isFavorite ? 21 : 0)
     }
     
     public func setupLayout() {
@@ -38,21 +45,36 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         contentStackView.spacing = 4
         contentStackView.setContentHuggingPriority(.init(rawValue: 250), for: .vertical)
         
-        contentStackView.addArrangedSubview(titleAreaStackView)
-        titleAreaStackView.axis = .horizontal
-        titleAreaStackView.alignment = .center
-        titleAreaStackView.spacing = 6
+        contentStackView.addArrangedSubview(titleAreaView)
+        titleAreaView.autoLayout.active {
+            $0.heightAnchor.constraint(equalToConstant: 22)
+        }
         
-        titleAreaStackView.addArrangedSubview(iconImageView)
-        iconImageView.autoLayout.active {
+        titleAreaView.addSubview(iconImageView)
+        iconImageView.autoLayout.active(with: titleAreaView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.widthAnchor.constraint(equalToConstant: 15)
             $0.heightAnchor.constraint(equalToConstant: 15)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
         
         nameLabel.numberOfLines = 1
-        titleAreaStackView.addArrangedSubview(nameLabel)
-        nameLabel.autoLayout.active {
-            $0.heightAnchor.constraint(equalToConstant: 22)
+        titleAreaView.addSubview(nameLabel)
+        nameLabel.autoLayout.active(with: titleAreaView) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 6)
+        }
+        self.nameLabelTrailing = self.nameLabel.trailingAnchor
+            .constraint(lessThanOrEqualTo: titleAreaView.trailingAnchor)
+        self.nameLabelTrailing.isActive = true
+        
+        titleAreaView.addSubview(favoriteImageVIew)
+        favoriteImageVIew.autoLayout.active(with: titleAreaView) {
+            $0.widthAnchor.constraint(equalToConstant: 15)
+            $0.heightAnchor.constraint(equalToConstant: 15)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 6)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor)
         }
         
         addressLabel.numberOfLines = 1
@@ -77,6 +99,10 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         
         _ = nameLabel
             |> self.uiContext.decorating.listItemTitle(_:)
+        
+        self.favoriteImageVIew.image = UIImage(systemName: "star.fill")
+        self.favoriteImageVIew.tintColor = UIColor.systemYellow
+        self.favoriteImageVIew.isHidden = true
         
         _ = addressLabel
             |> self.uiContext.decorating.listItemSubDescription(_:)

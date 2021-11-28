@@ -112,6 +112,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         
         let viewModel =  ReadCollectionViewItemsModelImple(collectionID: collectionID,
                                                            readItemUsecase: stubUsecase,
+                                                           favoriteUsecase: stubUsecase,
                                                            categoryUsecase: stubCategoryUsecase,
                                                            remindUsecase: stubRemindUsecase,
                                                            router: router,
@@ -566,10 +567,10 @@ extension ReadCollectionViewModelTests {
         let linkLeadingWithoutRemind = viewModel.contextAction(for: linkNotRemindCell!, isLeading: true)
         
         // then
-        XCTAssertEqual(collectionLeading, [.remind(isOn: true)])
-        XCTAssertEqual(collectionLeadingWithoutRemind, [.remind(isOn: false)])
-        XCTAssertEqual(linkLeading, [.markAsRead(isRed: false), .remind(isOn: true)])
-        XCTAssertEqual(linkLeadingWithoutRemind, [.markAsRead(isRed: false), .remind(isOn: false)])
+        XCTAssertEqual(collectionLeading, [.remind(isOn: true), .favorite(isFavorite: false)])
+        XCTAssertEqual(collectionLeadingWithoutRemind, [.remind(isOn: false), .favorite(isFavorite: false)])
+        XCTAssertEqual(linkLeading, [.markAsRead(isRed: false), .remind(isOn: true), .favorite(isFavorite: false)])
+        XCTAssertEqual(linkLeadingWithoutRemind, [.markAsRead(isRed: false), .remind(isOn: false), .favorite(isFavorite: false)])
     }
     
     func testViewModel_editCollectionItem() {
@@ -951,6 +952,67 @@ extension ReadCollectionViewModelTests {
             .filter { $0.uid == dummyCell.uid }
         XCTAssertEqual(cvms?.isNotEmpty, true)
         XCTAssertEqual(linkCell?.isEmpty, true)
+    }
+}
+
+// MARK: - update favorite
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_toggleReadCollectionIsFavorites() {
+        // given
+        let expect = expectation(description: "콜렉션 아이템 즐겨찾기 여부 업데이트")
+        expect.expectedFulfillmentCount = 4
+        let viewModel = self.makeViewModel()
+        
+        let dummy1 = self.dummySubCollections.first!
+        let cvm1 = ReadCollectionCellViewModel(item: dummy1)
+        let dummy2 = self.dummySubCollections.last!
+        let cvm2 = ReadCollectionCellViewModel(item: dummy2)
+        
+        // when
+        let favoriteIDSource = viewModel.cellViewModels.withoutAttrCell()
+            .map { $0.filter { $0.isFavorite == true } }
+            .map { $0.map { $0.uid } }
+        let favoriteIDs = self.waitElements(expect, for: favoriteIDSource) {
+            viewModel.reloadCollectionItems()
+            viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: false))
+            viewModel.handleContextAction(for: cvm2, action: .favorite(isFavorite: false))
+            viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: true))
+        }
+        
+        // then
+        XCTAssertEqual(favoriteIDs, [
+            [], [dummy1.uid], [dummy2.uid, dummy1.uid], [dummy2.uid]
+        ])
+    }
+    
+    func testViewModel_toggleReadLinkIsFavorites() {
+        // given
+        let expect = expectation(description: "링크 아이템 즐겨찾기 여부 업데이트")
+        expect.expectedFulfillmentCount = 4
+        let viewModel = self.makeViewModel()
+        
+        let dummy1 = self.dummySubLinks.first!
+        let cvm1 = ReadLinkCellViewModel(item: dummy1)
+        let dummy2 = self.dummySubLinks.last!
+        let cvm2 = ReadLinkCellViewModel(item: dummy2)
+        
+        // when
+        let favoriteIDSource = viewModel.cellViewModels.withoutAttrCell()
+            .map { $0.filter { $0.isFavorite == true } }
+            .map { $0.map { $0.uid } }
+        let favoriteIDs = self.waitElements(expect, for: favoriteIDSource) {
+            viewModel.reloadCollectionItems()
+            viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: false))
+            viewModel.handleContextAction(for: cvm2, action: .favorite(isFavorite: false))
+            viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: true))
+        }
+        
+        // then
+        XCTAssertEqual(favoriteIDs, [
+            [], [dummy1.uid], [dummy2.uid, dummy1.uid], [dummy2.uid]
+        ])
     }
 }
 

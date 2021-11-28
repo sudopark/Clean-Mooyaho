@@ -22,6 +22,15 @@ public protocol ReadItemCellViewModel {
     var presetingID: Int { get }
     var categories: [ItemCategory] { get set }
     var remindTime: TimeStamp? { get set }
+    var isFavorite: Bool { get set }
+}
+
+extension ReadItemCellViewModel {
+    
+    public var isFavorite: Bool {
+        get { false }
+        set { }
+    }
 }
 
 extension ReadItemCellViewModel {
@@ -134,7 +143,6 @@ extension Array where Element: ReadItem {
         return self.compactMap(transform)
     }
 }
-
 
 extension Array where Element: ReadItemCellViewModel {
     

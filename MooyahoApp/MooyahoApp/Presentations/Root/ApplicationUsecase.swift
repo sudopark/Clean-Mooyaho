@@ -32,13 +32,16 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
+    private let favoriteItemsUsecase: FavoriteReadItemUsecas
     private let shareUsecase: ShareReadCollectionUsecase
     
     public init(authUsecase: AuthUsecase,
                 memberUsecase: MemberUsecase,
+                favoriteItemsUsecase: FavoriteReadItemUsecas,
                 shareUsecase: ShareReadCollectionUsecase) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
+        self.favoriteItemsUsecase = favoriteItemsUsecase
         self.shareUsecase = shareUsecase
         
         self.bindApplicationStatus()
@@ -87,13 +90,23 @@ extension ApplicationUsecaseImple {
 //            .disposed(by: self.disposeBag)
         
 //        let deviceID = AppEnvironment.deviceID
-        let signInMemberID = self.memberUsecase.currentMember.map { $0?.uid }.distinctUntilChanged()
-        Observable.combineLatest(signInMemberID, isUserInUseApp)
+        
+        let memberChanges = self.memberUsecase.currentMember.map { $0?.uid }.distinctUntilChanged().share()
+        Observable.combineLatest(memberChanges, isUserInUseApp)
             .subscribe(onNext: { [weak self] memberID, isUse in
                 guard let memberID = memberID, isUse == true else { return }
                 self?.refreshSignInMemberBaseDatas(for: memberID)
             })
             .disposed(by: self.disposeBag)
+        memberChanges
+            .subscribe(onNext: { [weak self] _ in
+                self?.refreshBaseSharedDatas()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func refreshBaseSharedDatas() {
+        self.favoriteItemsUsecase.refreshSharedFavoriteIDs()
     }
     
     private func refreshSignInMemberBaseDatas(for memberID: String) {

@@ -163,8 +163,10 @@ extension DependencyInjector: ReadCollectionItemSceneBuilable {
                                             navigationListener: ReadCollectionNavigateListenable?,
                                             withInverse coordinator: CollectionInverseNavigationCoordinating?) -> ReadCollectionScene {
         let router = ReadCollectionItemsRouter(nextSceneBuilders: self)
+        let usecase = self.readItemUsecase
         let viewModel = ReadCollectionViewItemsModelImple(collectionID: collectionID,
-                                                          readItemUsecase: self.readItemUsecase,
+                                                          readItemUsecase: usecase,
+                                                          favoriteUsecase: usecase,
                                                           categoryUsecase: self.categoryUsecase,
                                                           remindUsecase: self.remindUsecase,
                                                           router: router,

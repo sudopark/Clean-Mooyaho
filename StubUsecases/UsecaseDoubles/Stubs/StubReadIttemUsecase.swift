@@ -161,7 +161,12 @@ open class StubReadItemUsecase: ReadItemUsecase {
     }
     
     public func toggleFavorite(itemID: String, toOn: Bool) -> Maybe<Void> {
-        return .empty()
+        return .just()
+            .do(onNext: {
+                let ids = (try? self.fakeFavoriteItemIDs.value()) ?? []
+                let newIDs = ids.filter { $0 != itemID } + (toOn ? [itemID] : [])
+                self.fakeFavoriteItemIDs.onNext(newIDs)
+            })
     }
     
     public var sharedFavoriteItemIDs: Observable<[String]> {

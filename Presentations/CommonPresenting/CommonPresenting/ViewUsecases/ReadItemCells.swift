@@ -36,6 +36,8 @@ public final class DefaultReadCollectionCell: BaseTableViewCell, ReadItemCells, 
         
         self.expandView.nameLabel.text = cellViewModel.name
         
+        self.expandView.updateFavoriteView(cellViewModel.isFavorite)
+        
         let validDescription = cellViewModel.collectionDescription.flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.descriptionLabel.isHidden = validDescription == nil
         self.expandView.descriptionLabel.text = validDescription
@@ -127,6 +129,7 @@ public final class DefaultReadLinkCell: BaseTableViewCell, ReadItemCells, Presen
         
         self.updateTitle(cellViewModel.customName)
         self.updateIsRed(cellViewModel.isRed)
+        self.expandView.updateFavoriteView(cellViewModel.isFavorite)
         self.expandView.addressLabel.text = cellViewModel.linkUrl
         
         let priority = cellViewModel.priority
