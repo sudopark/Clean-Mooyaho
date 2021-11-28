@@ -153,8 +153,9 @@ extension FirebaseServiceImple {
     private func loadMatchingSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
         guard shareIDs.isNotEmpty else { return .just([]) }
         let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
-        let query = collectionRef.whereField(FieldPath.documentID(), in: shareIDs)
-        let loadIndexes: Maybe<[SharingCollectionIndex]> = self.load(query: query)
+        let idChunks = shareIDs.slice(by: 10)
+        let queries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
+        let loadIndexes: Maybe<[SharingCollectionIndex]> = self.loadAll(queries: queries).asMaybe()
         
         let thenLoadCollections: ([SharingCollectionIndex]) -> Maybe<[SharedReadCollection]>
         thenLoadCollections = { [weak self] indexes in
@@ -170,8 +171,9 @@ extension FirebaseServiceImple {
         
         guard colletionIDs.isNotEmpty else { return .just([]) }
         let collectionRef = self.fireStoreDB.collection(.readCollection)
-        let query = collectionRef.whereField(FieldPath.documentID(), in: colletionIDs)
-        let collections: Maybe<[ReadCollection]> = self.load(query: query)
+        let idChunks = colletionIDs.slice(by: 10)
+        let quries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
+        let collections: Maybe<[ReadCollection]> = self.loadAll(queries: quries).asMaybe()
         return collections.map { $0.asSharedCollection(with: collectionIDIndexMap) }
     }
     

@@ -57,8 +57,10 @@ extension FirebaseServiceImple {
             return .empty()
         }
         let collectionRef = self.fireStoreDB.collection(.itemCategory)
-        let query = collectionRef.whereField(FieldPath.documentID(), in: ids)
-        return self.load(query: query)
+        let idChunks = ids.slice(by: 10)
+        let queries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
+        return self.loadAll(queries: queries)
+            .asMaybe()
     }
     
     private typealias SuggestKey = SuggestIndexKeys

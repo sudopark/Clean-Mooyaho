@@ -98,8 +98,11 @@ extension FirebaseServiceImple {
         typealias Key = MemberMappingKey
         
         let collectionRef = self.fireStoreDB.collection(.member)
-        let query = collectionRef.whereField(FieldPath.documentID(), in: ids)
-        return self.load(query: query)
+        
+        let idChunks = ids.slice(by: 10)
+        let queries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
+        return self.loadAll(queries: queries)
+            .asMaybe()
     }
 }
 
