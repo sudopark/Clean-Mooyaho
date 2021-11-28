@@ -29,6 +29,7 @@ public final class SuggestReadViewController: BaseViewController, SuggestReadSce
     
     let viewModel: SuggestReadViewModel
     private var dataSource: DataSource!
+    private let headerTapSubject = PublishSubject<SuggestReadSection.SuggestType>()
     
     public init(viewModel: SuggestReadViewModel) {
         self.viewModel = viewModel
@@ -93,6 +94,13 @@ extension SuggestReadViewController {
                 }
             })
             .disposed(by: self.disposeBag)
+        
+        self.headerTapSubject
+            .subscribe(onNext: { [weak self] type in
+                guard let self = self, type == .favotire else { return }
+                self.viewModel.viewAllFavoriteRead()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func makeDataSource() -> DataSource {
@@ -150,7 +158,9 @@ extension SuggestReadViewController: Presenting, UITableViewDelegate {
               let sectionType = SuggestReadSection.SuggestType(rawValue: section.model) else {
             return nil
         }
-        return sectionType.makeHeaderView()
+        let header = sectionType.makeHeaderView()
+        header.bindTap(for: sectionType, self.headerTapSubject)
+        return header
     }
     
     public func tableView(_ tableView: UITableView,
@@ -165,6 +175,14 @@ extension SuggestReadViewController: Presenting, UITableViewDelegate {
 final class SuggestReadSectionHeaderView: ReadCollectionSectionHeaderView {
     
     let arrowImageView = UIImageView()
+    weak var subject: PublishSubject<SuggestReadSection.SuggestType>?
+    var disposeBag: DisposeBag! = DisposeBag()
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.disposeBag = nil
+        self.disposeBag = .init()
+    }
     
     override func setupLayout() {
         super.setupLayout()
@@ -183,6 +201,18 @@ final class SuggestReadSectionHeaderView: ReadCollectionSectionHeaderView {
         self.arrowImageView.contentMode = .scaleAspectFit
         self.arrowImageView.tintColor = self.uiContext.colors.buttonBlue
     }
+    
+    func bindTap(for type: SuggestReadSection.SuggestType,
+                 _ subject: PublishSubject<SuggestReadSection.SuggestType>) {
+        
+        self.subject = subject
+        
+        self.contentView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.subject?.onNext(type)
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 private extension SuggestReadSection.SuggestType {
@@ -198,6 +228,7 @@ private extension SuggestReadSection.SuggestType {
     func makeHeaderView() -> SuggestReadSectionHeaderView {
         let header = SuggestReadSectionHeaderView()
         header.setupTitle(self.title)
+        header.arrowImageView.isHidden = self != .favotire
         return header
     }
 }

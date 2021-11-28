@@ -35,6 +35,10 @@ public protocol EnvironmentStorage {
     
     func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
     
+    func fetchRaedingLinkIDs() -> [String]
+    
+    func replaceReadiingLinkIDs(_ values: [String])
+    
     func clearAll()
 }
 
@@ -48,6 +52,7 @@ enum EnvironmentStorageKeys {
     case readItemIsShrinkMode
     case readItemLatestSortOrder
     case readitemCustomOrder(_ collectionID: String)
+    case readingLinkIDs
     
     var keyvalue: String {
         let prefix = environmentStorageKeyPrefix
@@ -63,6 +68,9 @@ enum EnvironmentStorageKeys {
             
         case let .readitemCustomOrder(collectionID):
             return "readitemCustomOrder:\(collectionID)".insertPrefixOrNot(prefix)
+            
+        case .readingLinkIDs:
+            return "readingLinkIDs".insertPrefixOrNot(prefix)
         }
     }
     
@@ -72,7 +80,8 @@ enum EnvironmentStorageKeys {
             "pendingPlaceInfo".insertPrefixOrNot(prefix),
             "readItemIsShrinkMode".insertPrefixOrNot(prefix),
             "readItemLatestSortOrder".insertPrefixOrNot(prefix),
-            "readitemCustomOrder".insertPrefixOrNot(prefix)
+            "readitemCustomOrder".insertPrefixOrNot(prefix),
+            "readingLinkIDs".insertPrefixOrNot(prefix)
         ]
     }
 }
@@ -80,36 +89,56 @@ enum EnvironmentStorageKeys {
 
 extension UserDefaults: EnvironmentStorage {
     
+    func get<T: Decodable>(_ key: String) -> Result<T?, Error> {
+        do {
+            let model = try self.string(forKey: key)
+                .flatMap{ $0.data(using: .utf8) }
+                .flatMap {
+                    try JSONDecoder().decode(T.self, from: $0)
+                }
+            return .success(model)
+        } catch let error {
+            return .failure(error)
+        }
+    }
+    
     private func load<T: Decodable>(_ key: String) -> Maybe<T?> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            do {
-                let model = try self.string(forKey: key)
-                    .flatMap{ $0.data(using: .utf8) }
-                    .flatMap {
-                        try JSONDecoder().decode(T.self, from: $0)
-                    }
+            let result: Result<T?, Error> = self.get(key)
+            switch result {
+            case let .success(model):
                 callback(.success(model))
-            } catch let error {
+            case let .failure(error):
                 callback(.error(error))
             }
             return Disposables.create()
         }
     }
     
+    private func write<T: Encodable>(_ key: String, value: T) -> Result<Void, Error> {
+        do {
+            
+            let data = try JSONEncoder().encode(value)
+            guard let stringValue = String(data: data, encoding: .utf8) else {
+                throw LocalErrors.invalidData("save \(String(describing: T.self))")
+            }
+            self.setValue(stringValue, forKey: key)
+            return .success(())
+            
+        } catch let error {
+            return .failure(error)
+        }
+    }
+    
     private func save<T: Encodable>(_ key: String, value: T) -> Maybe<Void> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            do {
-                
-                let data = try JSONEncoder().encode(value)
-                guard let stringValue = String(data: data, encoding: .utf8) else {
-                    throw LocalErrors.invalidData("save \(String(describing: T.self))")
-                }
-                self.setValue(stringValue, forKey: key)
+            let result = self.write(key, value: value)
+            switch result {
+            case .success:
                 callback(.success(()))
-                
-            } catch let error {
+            case let .failure(error):
                 callback(.error(error))
             }
             return Disposables.create()
@@ -201,6 +230,17 @@ extension UserDefaults {
     public func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
         let key = EnvironmentStorageKeys.readitemCustomOrder(collectionID)
         return self.save(key.keyvalue, value: itemIDs)
+    }
+    
+    public func fetchRaedingLinkIDs() -> [String] {
+        let key = EnvironmentStorageKeys.readingLinkIDs
+        let ids: Result<[String]?, Error> = self.get(key.keyvalue)
+        return (try? ids.get()) ?? []
+    }
+    
+    public func replaceReadiingLinkIDs(_ values: [String]) {
+        let key = EnvironmentStorageKeys.readingLinkIDs
+        _ = self.write(key.keyvalue, value: values)
     }
 }
 

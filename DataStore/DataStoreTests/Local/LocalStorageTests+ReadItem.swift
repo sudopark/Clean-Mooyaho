@@ -294,6 +294,103 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual(isLinkRemoved, true)
     }
     
+    private var dummyCollections: [ReadCollection] {
+        let items1: [ReadCollection] = (0..<5).map {
+            ReadCollection(name: "some:\($0)") |> \.remindTime .~ (.now() + 100 - TimeStamp($0))
+        }
+        let items2: [ReadCollection] = (5..<10).map { ReadCollection(name: "some:\($0)") }
+        return items1 + items2
+    }
+    
+    private var dummyLinks: [ReadLink] {
+        let items1: [ReadLink] = (10..<15).map {
+            ReadLink(link: "some:\($0)") |> \.remindTime .~ (.now() + 100 - TimeStamp($0))
+        }
+        let items2: [ReadLink] = (15..<20).map { ReadLink(link: "some:\($0)") }
+        return items1 + items2
+    }
+    
+    func testStorage_suggestNextItem() {
+        // given
+        let expect = expectation(description: "다음 읽음목록 로드(리마인더 존재)")
+        let totalItems: [ReadItem] = self.dummyCollections + self.dummyLinks
+        
+        // when
+        let update = self.local.updateReadItems(totalItems)
+        let suggesting = self.local.suggestNextReadItems(size: 10)
+        let updateAndSugeest = update.flatMap { suggesting }
+        let items = self.waitFirstElement(expect, for: updateAndSugeest.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 10)
+    }
+    
+    func testStorage_fetchMatchingItemsByIDs() {
+        // given
+        let expect = expectation(description: "아이디 목록에 해당하는 아이템 로드")
+        let collections = self.dummyCollections; let links = self.dummyLinks
+        let totalItems: [ReadItem] = collections + links
+        let targetIDs = [collections.randomElement()!.uid, links.randomElement()!.uid]
+        
+        // when
+        let update = self.local.updateReadItems(totalItems)
+        let load = self.local.fetchMathingItems(targetIDs)
+        let updateAndLoad = update.flatMap { load }
+        let items = self.waitFirstElement(expect, for: updateAndLoad.asObservable())
+        
+        // then
+        let ids = items?.map { $0.uid }
+        XCTAssertEqual(ids, targetIDs)
+    }
+    
+    func testStorage_loadReadingItems() {
+        // given
+        let links = self.dummyLinks
+        let target = links.randomElement()!
+        
+        // when
+        self.local.updateLinkItemIsReading(id: target.uid, isReading: true)
+        self.local.updateLinkItemIsReading(id: "dummy", isReading: true)
+        let idsOn = self.local.readingLinkItemIDs()
+        self.local.updateLinkItemIsReading(id: target.uid, isReading: false)
+        let idsOff = self.local.readingLinkItemIDs()
+        
+        // then
+        XCTAssertEqual(idsOn, [target.uid, "dummy"])
+        XCTAssertEqual(idsOff, ["dummy"])
+    }
+    
+    func testStorage_saveAndLoadFavoriteIDs() {
+        // given
+        let expect = expectation(description: "즐겨찾는 아이디 저정하고 로드")
+        let dummies = (0..<10).map { "id:\($0)" }
+        
+        // when
+        let saveAndLoad = self.local.replaceFavoriteItemIDs(dummies).flatMap {
+            self.local.fetchFavoriteItemIDs()
+        }
+        let ids = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(ids, dummies)
+    }
+    
+    func testStorage_saveandToggleUpdateFavoriteIDs() {
+        // given
+        let expect = expectation(description: "즐겨찾는 아이디 저정하고 로드")
+        let dummies = (0..<10).map { "id:\($0)" }
+        
+        // when
+        let saveToggleAndLoad = self.local.replaceFavoriteItemIDs(dummies)
+            .flatMap { self.local.toggleItemIsFavorite("id:3", isOn: false) }
+            .flatMap { self.local.toggleItemIsFavorite("new", isOn: true) }
+            .flatMap { self.local.fetchFavoriteItemIDs() }
+        let ids = self.waitFirstElement(expect, for: saveToggleAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(ids, dummies.filter { $0 != "id:3" } + ["new"])
+    }
+    
     private var dummyURL1: String {
         return """
         https://www.google.co.kr/search?q=swift+cg+animation&newwindow=1&bih=895&biw=1530&hl=ko&sxsrf=AOaemvLLuvpHGCDsyor5jBU4_d6NjW-1Og%3A1635659653056&ei=hS9-YYHXAs22mAWfqriQDg&oq=swift+cg+animation&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoECAAQQzoHCAAQgAQQCjoICAAQgAQQsQM6BwgAELEDEEM6CggAEIAEEIcCEBQ6BQgAEIAEOgcIIxCxAhAnOgQIABAKOgcIIRAKEKABOgQIIRAVSgQIQRgBUOf6J1iiiihgqowoaANwAHgAgAGZAYgB9xCSAQQwLjE4mAEAoAEBwAEB&sclient=gws-wiz&ved=0ahUKEwjBrd-E-_PzAhVNG6YKHR8VDuIQ4dUDCA4&uact=5

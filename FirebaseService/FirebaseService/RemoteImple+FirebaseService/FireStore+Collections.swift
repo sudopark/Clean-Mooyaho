@@ -32,6 +32,7 @@ enum FireStoreCollectionType: String {
     case linkMemo
     case sharedInbox = "shared_inboxes"
     case sharingCollectionIndex = "sharing_collect_indexes"
+    case memberFavoriteItems
 }
 
 

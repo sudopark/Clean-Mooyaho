@@ -16,7 +16,7 @@ import FirebaseService
  
 
 final class RemoteImple: Remote {
-
+    
     private let firebaseRemote: FirebaseRemote
     private let linkPreviewRemote: LinkPreviewRemote
     
@@ -204,6 +204,22 @@ extension RemoteImple {
     
     func requestSearchItem(_ name: String) -> Maybe<[SearchReadItemIndex]> {
         return self.firebaseRemote.requestSearchItem(name)
+    }
+    
+    func requestSuggestNextReadItems(for memberID: String, size: Int) -> Maybe<[ReadItem]> {
+        return self.firebaseRemote.requestSuggestNextReadItems(for: memberID, size: size)
+    }
+    
+    func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        return self.firebaseRemote.requestLoadItems(ids: ids)
+    }
+    
+    func requestLoadFavoriteItemIDs() -> Maybe<[String]> {
+        return self.firebaseRemote.requestLoadFavoriteItemIDs()
+    }
+    
+    func requestToggleFavoriteItemID(_ id: String, isOn: Bool) -> Maybe<Void> {
+        return self.firebaseRemote.requestToggleFavoriteItemID(id, isOn: isOn)
     }
     
     // read item option

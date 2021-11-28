@@ -68,6 +68,14 @@ public protocol DataModelStorage {
     
     func fetchReadItem(like name: String) -> Maybe<[SearchReadItemIndex]>
     
+    func fetchUpcommingItems() -> Maybe<[ReadItem]>
+    
+    func fetchMatchingItems(in ids: [String]) -> Maybe<[ReadItem]>
+    
+    func fetchFavoritemItemIDs() -> Maybe<[String]>
+    
+    func replaceFavoriteItemIDs(_ ids: [String]) -> Maybe<Void>
+    
     func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
     
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
@@ -658,6 +666,48 @@ extension DataModelStorageImple {
         
         return loadPreviews
             .flatMap(thenLoadMatchLinks)
+    }
+    
+    public func fetchUpcommingItems() -> Maybe<[ReadItem]> {
+        let now: TimeStamp = .now()
+        let collectionQuery = ReadCollectionTable.selectAll { $0.remindTime > now }
+        let linkQuery = ReadLinkTable.selectAll { $0.remindTime > now && $0.isRed == false }
+        
+        let orderItems: ([ReadItem]) -> [ReadItem] = { items in
+            return items.sorted(by: { ($0.remindTime ?? 0) < ($1.remindTime ?? 0) })
+        }
+        
+        return fetchMatchingItems(linkQuery, collectionQuery)
+            .map(orderItems)
+    }
+    
+    public func fetchMatchingItems(in ids: [String]) -> Maybe<[ReadItem]> {
+        let collectionQuery = ReadCollectionTable.selectAll { $0.uid.in(ids) }
+        let linkQuery = ReadLinkTable.selectAll { $0.uid.in(ids) }
+        let orderItems: ([ReadItem]) -> [ReadItem] = { items in
+            let itemsMap = items.reduce(into: [String: ReadItem]()) { $0[$1.uid] = $1 }
+            return ids.compactMap { itemsMap[$0] }
+        }
+        return fetchMatchingItems(linkQuery, collectionQuery)
+            .map(orderItems)
+    }
+    
+    public func fetchFavoritemItemIDs() -> Maybe<[String]> {
+        let query = FavoriteItemIDTable.selectAll()
+        let mapping: (CursorIterator) throws -> String = {
+            return try $0.next().unwrap()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func replaceFavoriteItemIDs(_ ids: [String]) -> Maybe<Void> {
+        let drop = self.sqliteService.rx.run { try $0.dropTable(FavoriteItemIDTable.self) }
+        let thenSave: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let entities = ids.map { FavoriteItemIDTable.Entity(id: $0) }
+            return self.sqliteService.rx.run { try $0.insert(FavoriteItemIDTable.self, entities: entities) }
+        }
+        return drop.flatMap(thenSave)
     }
 }
 

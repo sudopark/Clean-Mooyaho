@@ -172,6 +172,80 @@ extension FirebaseServiceImple {
             $0.map { $0.keyword }
         }
     }
+    
+    public func requestSuggestNextReadItems(for memberID: String, size: Int) -> Maybe<[ReadItem]> {
+        let now: TimeStamp = .now()
+        let collectionsQuery = self.fireStoreDB.collection(.readCollection)
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+            .whereField(Key.remindTime.rawValue, isGreaterThan: now)
+            .order(by: Key.remindTime.rawValue, descending: false)
+            .limit(to: size/2)
+        let loadCollections: Maybe<[ReadCollection]> = self.load(query: collectionsQuery)
+        
+        let thenLoadLinks: ([ReadCollection]) -> Maybe<[ReadItem]> = { [weak self] collections in
+            guard let self = self else { return .empty() }
+            let linksQuery = self.fireStoreDB.collection(.readLinks)
+                .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+                .whereField(Key.isRed.rawValue, isEqualTo: false)
+                .whereField(Key.remindTime.rawValue, isGreaterThan: now)
+                .order(by: Key.remindTime.rawValue, descending: false)
+                .limit(to: size/2)
+            let links: Maybe<[ReadLink]> = self.load(query: linksQuery)
+            return links.map { $0 + collections }
+        }
+        
+        let orderItems: ([ReadItem]) -> [ReadItem] = { items in
+            return items.sorted(by: { ($0.remindTime ?? 0) < ($1.remindTime ?? 0) })
+        }
+        return loadCollections
+            .flatMap(thenLoadLinks)
+            .map(orderItems)
+    }
+    
+    public func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        
+        guard self.signInMemberID != nil else { return .empty() }
+        
+        let collectionQuery = self.fireStoreDB.collection(.readCollection)
+            .whereField(FieldPath.documentID(), in: ids)
+        let loadCollections: Maybe<[ReadCollection]> = self.load(query: collectionQuery)
+        
+        let thenLoadLinks: ([ReadCollection]) -> Maybe<[ReadItem]> = { [weak self] collections in
+            guard let self = self else { return .empty() }
+            let collectionIDs = Set(collections.map { $0.uid })
+            let restIDs = ids.filter { collectionIDs.contains($0) == false }
+            let linksQuery = self.fireStoreDB.collection(.readLinks)
+                .whereField(FieldPath.documentID(), in: restIDs)
+            let links: Maybe<[ReadLink]> = self.load(query: linksQuery)
+            return links.map { $0 + collections }
+        }
+        
+        let orderItems: ([ReadItem]) -> [ReadItem] = { items in
+            let itemsMap = items.reduce(into: [String: ReadItem]()) { $0[$1.uid] = $1 }
+            return ids.compactMap { itemsMap[$0] }
+        }
+        return loadCollections
+            .flatMap(thenLoadLinks)
+            .map(orderItems)
+    }
+    
+    
+    private typealias FavoriteMappingKey = MemberFavoriteItemIDs.MappingKeys
+    
+    public func requestLoadFavoriteItemIDs() -> Maybe<[String]> {
+        guard let memberID = self.signInMemberID else { return .empty() }
+        let loadIDs: Maybe<MemberFavoriteItemIDs?> = self.load(docuID: memberID, in: .memberFavoriteItems)
+        return loadIDs
+            .map { $0?.ids ?? [] }
+    }
+    
+    public func requestToggleFavoriteItemID(_ id: String, isOn: Bool) -> Maybe<Void> {
+        guard let memberID = self.signInMemberID else { return .empty() }
+        let newFields: [String: Any] = [
+            FavoriteMappingKey.ids.rawValue: (isOn ? FieldValue.arrayUnion([id]) : FieldValue.arrayRemove([id]))
+        ]
+        return self.update(docuID: memberID, newFields: newFields, at: .memberFavoriteItems)
+    }
 }
 
 
