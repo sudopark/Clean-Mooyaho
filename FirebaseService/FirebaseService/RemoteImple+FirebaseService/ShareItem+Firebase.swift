@@ -88,7 +88,7 @@ extension FirebaseServiceImple {
         }
         
         let loadSharedIDs = self.loadMyInbox(for: memberID).map { $0?.sharedIDs ?? [] }
-            .map { Array($0.prefix(20)) }
+            .map { Array($0.prefix(10)) }
         let thenLoadMatchingCollections: ([String]) -> Maybe<[SharedReadCollection]> = { [weak self] ids in
             return self?.loadMatchingSharedCollections(by: ids) ?? .empty()
         }

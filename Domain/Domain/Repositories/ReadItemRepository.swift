@@ -30,4 +30,16 @@ public protocol ReadItemRepository {
     func requestFindLinkItem(using url: String) -> Maybe<ReadLink?>
     
     func requestRemove(item: ReadItem) -> Maybe<Void>
+    
+    func requestSuggestNextReadItems(for memberID: String?, size: Int) -> Maybe<[ReadItem]>
+    
+    func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]>
+    
+    func fetchUserReadingLinks() -> Maybe<[ReadLink]>
+    
+    func requestRefreshFavoriteItemIDs() -> Maybe<[String]>
+    
+    func toggleItemIsFavorite(_ id: String, toOn: Bool) -> Maybe<Void>
+    
+    func updateLinkItemIsReading(_ id: String)
 }

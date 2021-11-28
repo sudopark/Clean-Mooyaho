@@ -353,15 +353,12 @@ extension ReadCollectionViewItemsModelImple {
     }
     
     private func toggleReadLinkIsRedMark(_ itemID: String, isRedNow: Bool) {
-        guard let item = self.item(for: itemID) else { return }
+        guard let item = self.item(for: itemID) as? ReadLink else { return }
         let isToRed = isRedNow.invert()
-        var params = ReadItemUpdateParams(item: item)
-        params.updatePropertyParams = [.isRed(isToRed)]
-        
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
-        self.readItemUsecase.updateItem(params)
+        self.readItemUsecase.updateLinkItemMark(item, asRead: isToRed)
             .subscribe(onError: handleError)
             .disposed(by: self.disposeBag)
     }

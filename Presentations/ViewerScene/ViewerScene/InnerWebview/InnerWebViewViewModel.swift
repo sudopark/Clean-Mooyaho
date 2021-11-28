@@ -108,6 +108,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
         
         let updateItem: (ReadLink) -> Void = { [weak self] item in
             self?.subjects.item.accept(item)
+            self?.readItemUsecase.updateLinkIsReading(item)
         }
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
@@ -140,8 +141,6 @@ extension InnerWebViewViewModelImple {
               self.subjects.isToggling.value == false else { return }
         
         let isToRed = link.isRed.invert()
-        let params = ReadItemUpdateParams(item: link)
-            |> \.updatePropertyParams .~ [.isRed(isToRed)]
             
         let updated: () -> Void = { [weak self] in
             self?.subjects.isToggling.accept(false)
@@ -153,7 +152,7 @@ extension InnerWebViewViewModelImple {
             self?.router.alertError(error)
         }
         self.subjects.isToggling.accept(true)
-        self.readItemUsecase.updateItem(params)
+        self.readItemUsecase.updateLinkItemMark(link, asRead: isToRed)
             .subscribe(onSuccess: updated, onError: updateFail)
             .disposed(by: self.disposeBag)
     }

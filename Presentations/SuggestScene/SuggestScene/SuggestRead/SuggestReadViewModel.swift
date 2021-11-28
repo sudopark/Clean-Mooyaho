@@ -57,9 +57,7 @@ public protocol SuggestReadViewModel: AnyObject {
     func refresh()
     func selectCollection(_ itemID: String)
     func selectReadLink(_ itemID: String)
-    func viewAllTodoRead()
     func viewAllFavoriteRead()
-    func viewAllLatestRead()
     
     // presenter
     var sections: Observable<[SuggestReadSection]> { get }
@@ -138,7 +136,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         self.readItemLoadUsecase
             .continueReadingLinks()
             .do(onNext: updateMap)
-            .map { $0.suffix(5) }
+            .map { $0.suffix(10).reversed() }
             .subscribe(onNext: updateContinueReadLinks)
             .disposed(by: self.disposeBag)
     }
@@ -151,7 +149,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
             self?.subjects.favoriteItemIDs.accept(ids)
         }
         self.favoriteItemUsecase.sharedFavoriteItemIDs
-            .map { $0.suffix(5) }
+            .map { $0.suffix(10).reversed() }
             .do(onNext: startReloadRequreItems)
             .subscribe(onNext: updateIDs)
             .disposed(by: self.disposeBag)
@@ -189,7 +187,7 @@ extension SuggestReadViewModelImple {
             self?.subjects.todoReadItems.accept(items)
         }
         self.readItemLoadUsecase
-            .suggestNextReadItem(size: 5)
+            .suggestNextReadItem(size: 10)
             .catchAndReturn([])
             .do(onNext: updateItemsMap)
             .subscribe(onSuccess: updateTodoItems)
@@ -218,16 +216,8 @@ extension SuggestReadViewModelImple {
 
 extension SuggestReadViewModelImple {
     
-    public func viewAllTodoRead() {
-        self.router.showAllTodoReadItems()
-    }
-    
     public func viewAllFavoriteRead() {
         self.router.showAllFavoriteItemList()
-    }
-    
-    public func viewAllLatestRead() {
-        self.router.showAllLatestReadItems()
     }
 }
 

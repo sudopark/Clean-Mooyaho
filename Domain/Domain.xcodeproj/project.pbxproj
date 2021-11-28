@@ -92,6 +92,7 @@
 		F61FECE1274947B10044A2F7 /* SearchReadItemIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */; };
 		F6260913274D3789003C9577 /* SuggestQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260912274D3789003C9577 /* SuggestQuery.swift */; };
 		F62AA2962723EA9700E395CB /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62AA2952723EA9700E395CB /* Time+Extension.swift */; };
+		F62DEFC927536828008D50D1 /* ReadItemUsecaseTests+SuggestRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DEFC827536828008D50D1 /* ReadItemUsecaseTests+SuggestRead.swift */; };
 		F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */; };
 		F631986B272E71D500E66417 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631986A272E71D500E66417 /* ClipboardService.swift */; };
 		F631986D272E725500E66417 /* StubClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631986C272E725500E66417 /* StubClipboardService.swift */; };
@@ -268,6 +269,7 @@
 		F61FECE0274947B10044A2F7 /* SearchReadItemIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReadItemIndex.swift; sourceTree = "<group>"; };
 		F6260912274D3789003C9577 /* SuggestQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQuery.swift; sourceTree = "<group>"; };
 		F62AA2952723EA9700E395CB /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
+		F62DEFC827536828008D50D1 /* ReadItemUsecaseTests+SuggestRead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItemUsecaseTests+SuggestRead.swift"; sourceTree = "<group>"; };
 		F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkAddSuggestUsecase.swift; sourceTree = "<group>"; };
 		F631986A272E71D500E66417 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
 		F631986C272E725500E66417 /* StubClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubClipboardService.swift; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				F66B7D7726C789BD00D31FAC /* PlaceUsecaseTests.swift */,
 				F6CF34AB26D7DA19003B52CD /* HoorayUsecaseTests.swift */,
 				F6913F0626EE637300C6E105 /* ReadItemUsecaseTests.swift */,
+				F62DEFC827536828008D50D1 /* ReadItemUsecaseTests+SuggestRead.swift */,
 				F6B6B418271074C5000652E0 /* ItemCategoryUsecaseTests.swift */,
 				F6A8CE3F27117F2D00CA6D3D /* SuggestCategoryUsecaseTests.swift */,
 				F6391C76271DCB860000F927 /* ReadRemindUsecaseTests.swift */,
@@ -1056,6 +1059,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F61FC992274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift in Sources */,
+				F62DEFC927536828008D50D1 /* ReadItemUsecaseTests+SuggestRead.swift in Sources */,
 				2BA9377B263B1C1800276876 /* MockOAuthService.swift in Sources */,
 				2B40BF81263F08EA0031C7A6 /* UserLocationUsecaseTests.swift in Sources */,
 				F615294B264EE737003BCB59 /* HoorayPublisherUsecaseTests.swift in Sources */,
