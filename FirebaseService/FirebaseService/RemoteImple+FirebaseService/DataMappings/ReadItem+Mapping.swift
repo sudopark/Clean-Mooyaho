@@ -135,3 +135,28 @@ private extension String {
         return self == "root" ? nil : self
     }
 }
+
+
+// MARK: - MemberFavoriteItemIDs
+
+struct MemberFavoriteItemIDs: DocumentMappable {
+    
+    enum MappingKeys: String, JSONMappingKeys {
+        case ids
+    }
+    
+    let ownerID: String
+    let ids: [String]
+    
+    init?(docuID: String, json: JSON) {
+        self.ownerID = docuID
+        self.ids = (json[MappingKeys.ids] as? [String]) ?? []
+    }
+    
+    func asDocument() -> (String, JSON) {
+        let json: JSON = [
+            MappingKeys.ids.rawValue: self.ids
+        ]
+        return (self.ownerID, json)
+    }
+}

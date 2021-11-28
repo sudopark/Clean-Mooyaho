@@ -16,6 +16,22 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestSuggestNextReadItems(for memberID: String, size: Int) -> Maybe<[ReadItem]> {
+        return .empty()
+    }
+    
+    func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        return .empty()
+    }
+    
+    func requestLoadFavoriteItemIDs() -> Maybe<[String]> {
+        return .empty()
+    }
+    
+    func requestToggleFavoriteItemID(_ id: String, isOn: Bool) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestLoadReadLink(linkID: String) -> Maybe<ReadLink> {
         return .empty()
     }

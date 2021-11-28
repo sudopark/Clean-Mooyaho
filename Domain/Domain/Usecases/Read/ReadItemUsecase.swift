@@ -253,6 +253,7 @@ extension ReadItemUsecaseImple {
     }
     
     public func updateLinkIsReading(_ link: ReadLink) {
+        guard link.isRed == false else { return }
         self.itemsRespoitory.updateLinkItemIsReading(link.uid)
         let datKey = SharedDataKeys.currentReadingItems.rawValue
         self.sharedStoreService.update([ReadLink].self, key: datKey) {

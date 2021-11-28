@@ -42,4 +42,9 @@ public struct ReadCollection: ReadItem {
         self.createdAt = createdAt
         self.lastUpdatedAt = lastUpdated
     }
+    
+    
+    public static func isCollectionID(_ id: String) -> Bool {
+        return id.starts(with: "\(uidPrefix):")
+    }
 }

@@ -97,42 +97,52 @@ extension LocalStorageImple {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
-        return .empty()
+        return storage.fetchUpcommingItems()
     }
     
     public func fetchMathingItems(_ ids: [String]) -> Maybe<[ReadItem]> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
-        return .empty()
+        return storage.fetchMatchingItems(in: ids)
     }
     
     public func updateLinkItemIsReading(id: String, isReading: Bool) {
-        
+        let ids = self.readingLinkItemIDs()
+        let newIDs = ids.filter { $0 != id } + (isReading ? [id] : [])
+        self.environmentStorage.replaceReadiingLinkIDs(newIDs)
     }
     
     public func readingLinkItemIDs() -> [String] {
-        return []
+        return self.environmentStorage.fetchRaedingLinkIDs()
     }
     
     public func fetchFavoriteItemIDs() -> Maybe<[String]> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
-        return .empty()
+        return storage.fetchFavoritemItemIDs()
     }
     
     public func replaceFavoriteItemIDs(_ newValue: [String]) -> Maybe<Void> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
-        return .empty()
+        return storage.replaceFavoriteItemIDs(newValue)
     }
     
     public func toggleItemIsFavorite(_ id: String, isOn: Bool) -> Maybe<Void> {
-        guard let storage = self.dataModelStorage else {
-            return .error(LocalErrors.localStorageNotReady)
+        
+        let fetchFavoriteIDs = self.fetchFavoriteItemIDs()
+        let toggleIDs: ([String]) -> [String] = { ids in
+            return ids.filter { $0 != id } + (isOn ? [id] : [] )
         }
-        return .empty()
+        let thenReplace: ([String]) -> Maybe<Void> = { [weak self] newIDs in
+            return self?.replaceFavoriteItemIDs(newIDs) ?? .empty()
+        }
+        
+        return fetchFavoriteIDs
+            .map(toggleIDs)
+            .flatMap(thenReplace)
     }
 }
