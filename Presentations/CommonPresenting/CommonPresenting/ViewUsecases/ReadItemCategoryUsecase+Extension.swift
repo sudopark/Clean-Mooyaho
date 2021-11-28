@@ -35,13 +35,28 @@ extension ReadItemCategoryUsecase {
     ) -> Observable<[String: ItemCategory]> {
     
         let requeireIDsSet = sources.totalCategoryIDsSet()
+        return self.loadCategories(from: requeireIDsSet)
+    }
+    
+    public func requireCategoryMap(
+        from sourceIDs: Observable<[String]>
+    ) -> Observable<[String: ItemCategory]> {
+        
+        let idsSet = sourceIDs.map { Set($0) }
+        return self.loadCategories(from: idsSet)
+    }
+    
+    private func loadCategories(
+        from idsSetSource: Observable<Set<String>>
+    ) -> Observable<[String: ItemCategory]> {
+        
         let loadCategories: (Set<String>) -> Observable<[ItemCategory]> = { [weak self] idsSet in
             return self?.categories(for: Array(idsSet)) ?? .empty()
         }
         let asDictionary: ([ItemCategory]) -> [String: ItemCategory] = { categories in
             return categories.reduce(into: [String: ItemCategory]()) { $0[$1.uid] = $1 }
         }
-        return requeireIDsSet
+        return idsSetSource
             .distinctUntilChanged()
             .flatMapLatest(loadCategories)
             .map(asDictionary)

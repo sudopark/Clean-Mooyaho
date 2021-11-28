@@ -27,9 +27,14 @@ open class StubReadItemUsecase: ReadItemUsecase {
         public var sortOption: [ReadCollectionItemSortOrder] = [.default]
         public var loadReadLinkResult: Result<ReadLink, Error> = .success(.dummy(0))
         
+        public var suggestNextResult: Result<[ReadItem], Error> = .success([])
+        public var loadContinueLinks: Result<[ReadLink], Error> = .success([])
+        public var loadFavoriteIDsResult: Result<[String], Error> = .success([])
+        
         public init() {}
     }
     private var scenario: Scenario
+    private let disposeBag = DisposeBag()
     public init(scenario: Scenario = Scenario()) {
         self.scenario = scenario
     }
@@ -116,5 +121,40 @@ open class StubReadItemUsecase: ReadItemUsecase {
     
     public func removeItem(_ item: ReadItem) -> Maybe<Void> {
         return .just()
+    }
+    
+    public func suggestNextReadItem(size: Int) -> Maybe<[ReadItem]> {
+        return self.scenario.suggestNextResult.asMaybe()
+    }
+    
+    public func continueReadingLinks() -> Observable<[ReadLink]> {
+        return self.scenario.loadContinueLinks.asMaybe().asObservable()
+    }
+    
+    public func loadReadItems(for itemIDs: [String]) -> Maybe<[ReadItem]> {
+        let items = itemIDs.map { ReadCollection(uid: $0, name: "name", createdAt: .now(), lastUpdated: .now())}
+        return .just(items)
+    }
+    
+    private let fakeFavoriteItemIDs = BehaviorSubject<[String]>(value: [])
+    public func refreshSharedFavoriteIDs() {
+        self.refreshFavoriteIDs()
+            .subscribe(onSuccess: {
+                self.fakeFavoriteItemIDs.onNext($0)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func refreshFavoriteIDs() -> Maybe<[String]> {
+        return self.scenario.loadFavoriteIDsResult.asMaybe()
+    }
+    
+    public func toggleFavorite(itemID: String, toOn: Bool) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    public var sharedFavoriteItemIDs: Observable<[String]> {
+        return self.fakeFavoriteItemIDs
+            .asObservable()
     }
 }

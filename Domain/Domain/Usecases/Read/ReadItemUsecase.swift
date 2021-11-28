@@ -20,7 +20,7 @@ public enum ReadItemUpdateEvent {
 
 // MARK: - ReadItemUsecase
 
-public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, ReadItemOptionsUsecase {
+public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, ReadItemOptionsUsecase, FavoriteReadItemUsecas {
     
     var readItemUpdated: Observable<ReadItemUpdateEvent> { get }
 }
@@ -117,8 +117,44 @@ extension ReadItemUsecaseImple {
             .subscribe(onSuccess: updateStore)
             .disposed(by: self.disposeBag)
     }
+    
+    public func suggestNextReadItem(size: Int) -> Maybe<[ReadItem]> {
+        return .empty()
+    }
+    
+    public func continueReadingLinks() -> Observable<[ReadLink]> {
+        return .empty()
+    }
+    
+    public func loadReadItems(for itemIDs: [String]) -> Maybe<[ReadItem]> {
+        return .empty()
+    }
 }
 
+
+// MARK: - FavoriteReadItemUsecas
+
+extension ReadItemUsecaseImple: FavoriteReadItemUsecas {
+    
+    public func refreshSharedFavoriteIDs() {
+        
+    }
+    
+    public func refreshFavoriteIDs() -> Maybe<[String]> {
+        return .empty()
+    }
+    
+    public func toggleFavorite(itemID: String, toOn: Bool) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    public var sharedFavoriteItemIDs: Observable<[String]> {
+        return .empty()
+    }
+}
+
+
+// MARK: - update item
 
 extension ReadItemUsecaseImple {
     
@@ -159,7 +195,7 @@ extension ReadItemUsecaseImple {
 }
 
 
-// MARKK: - ReadItemOptionsUsecase
+// MARK: - ReadItemOptionsUsecase
 
 extension ReadItemUsecaseImple {
     

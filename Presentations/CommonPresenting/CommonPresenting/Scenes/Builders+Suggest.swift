@@ -20,5 +20,8 @@ public protocol IntegratedSearchSceneBuilable {
 
 public protocol SuggestReadSceneBuilable {
     
-    func makeSuggestReadScene(listener: SuggestReadSceneListenable?) -> SuggestReadScene
+    func makeSuggestReadScene(
+        listener: SuggestReadSceneListenable?,
+        readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
+    ) -> SuggestReadScene
 }

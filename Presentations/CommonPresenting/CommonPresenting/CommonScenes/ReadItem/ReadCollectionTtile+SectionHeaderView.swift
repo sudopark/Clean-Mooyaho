@@ -40,11 +40,11 @@ public final class ReadCollectionTtileHeaderView: BaseUIView, Presenting {
 
 // MARK: - ReadCollectionSectionHeaderView
 
-public final class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFooterView, Presenting {
+open class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFooterView, Presenting {
     
     private let titleLabel = UILabel()
     
-    public override func afterViewInit() {
+    open override func afterViewInit() {
         super.afterViewInit()
         self.setupLayout()
         self.setupStyling()
@@ -54,7 +54,7 @@ public final class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFo
         self.titleLabel.text = title
     }
     
-    public func setupLayout() {
+    open func setupLayout() {
         self.contentView.addSubview(titleLabel)
         titleLabel.autoLayout.active(with: self.contentView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
@@ -62,7 +62,7 @@ public final class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFo
         }
     }
     
-    public func setupStyling() {
+    open func setupStyling() {
         _ = self.titleLabel |> self.uiContext.decorating.listSectionTitle(_:)
     }
 }
