@@ -557,9 +557,21 @@ extension DependencyInjector: SuggestQuerySceneBuilable {
 
 extension DependencyInjector: SuggestReadSceneBuilable {
     
-    public func makeSuggestReadScene(listener: SuggestReadSceneListenable?) -> SuggestReadScene {
+    public func makeSuggestReadScene(
+        listener: SuggestReadSceneListenable?,
+        readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
+    ) -> SuggestReadScene {
         let router = SuggestReadRouter(nextSceneBuilders: self)
-        let viewModel = SuggestReadViewModelImple(router: router, listener: listener)
+        
+        let readUsecase = self.readItemUsecase
+        let viewModel = SuggestReadViewModelImple (
+            readItemLoadUsecase: readUsecase,
+            favoriteItemUsecase: readUsecase,
+            categoriesUsecase: self.categoryUsecase,
+            router: router,
+            listener: listener,
+            readCollectionMainInteractor: readCollectionMainInteractor
+        )
         let viewController = SuggestReadViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

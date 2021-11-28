@@ -201,7 +201,10 @@ extension MainRouter {
     public func addSuggestReadScene() -> SuggestReadSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
-              let next = self.nextScenesBuilder?.makeSuggestReadScene(listener: nil)
+              let next = self.nextScenesBuilder?.makeSuggestReadScene(
+                listener: self.currentInteractor,
+                readCollectionMainInteractor: self.collectionMainInteractor
+              )
         else {
             return nil
         }
