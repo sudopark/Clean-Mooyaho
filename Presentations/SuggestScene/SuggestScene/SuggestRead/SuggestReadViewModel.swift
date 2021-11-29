@@ -62,6 +62,7 @@ public protocol SuggestReadViewModel: AnyObject {
     // presenter
     var sections: Observable<[SuggestReadSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
+    var isRefreshing: Observable<Bool> { get }
 }
 
 
@@ -104,6 +105,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         let continueReadLinks = BehaviorRelay<[ReadLink]?>(value: nil)
         let itemsMap = BehaviorRelay<[String: ReadItem]>(value: [:])
         let categoriesMap = BehaviorRelay<[String: ItemCategory]>(value: [:])
+        let isRefreshing = BehaviorRelay<Bool>(value: false)
     }
     
     private let subjects = Subjects()
@@ -217,12 +219,17 @@ extension SuggestReadViewModelImple {
     }
     
     private func reloadTodoReadItems() {
+        guard self.subjects.isRefreshing.value == false else { return }
+        
         let updateItemsMap: ([ReadItem]) -> Void = { [weak self] items in
+            self?.subjects.isRefreshing.accept(false)
             self?.subjects.itemsMap.accept(withAppend: items)
         }
         let updateTodoItems: ([ReadItem]) -> Void = { [weak self] items in
+            self?.subjects.isRefreshing.accept(false)
             self?.subjects.todoReadItems.accept(items)
         }
+        self.subjects.isRefreshing.accept(true)
         self.readItemUsecase
             .suggestNextReadItem(size: 10)
             .catchAndReturn([])
@@ -307,6 +314,11 @@ extension SuggestReadViewModelImple {
     
     private var continueReadLinks: Observable<[ReadItem]> {
         return self.subjects.continueReadLinks.compactMap { $0 }
+    }
+    
+    public var isRefreshing: Observable<Bool> {
+        return self.subjects.isRefreshing
+            .distinctUntilChanged()
     }
 }
 

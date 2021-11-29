@@ -28,6 +28,7 @@ public final class SuggestReadViewController: BaseViewController, SuggestReadSce
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let refreshControl = UIRefreshControl()
     
     let viewModel: SuggestReadViewModel
     private var dataSource: DataSource!
@@ -71,6 +72,27 @@ extension SuggestReadViewController {
                 self?.bindTableView()
             })
             .disposed(by: self.disposeBag)
+        
+        self.refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.refresh()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isRefreshing
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isRefreshing in
+                self?.updateIsRefreshControl(isRefreshing)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateIsRefreshControl(_ isRefershing: Bool) {
+        if isRefershing {
+            self.tableView.refreshControl?.beginRefreshing()
+        } else {
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
     
     private func bindTableView() {
@@ -158,6 +180,10 @@ extension SuggestReadViewController: Presenting, UITableViewDelegate {
         self.tableView.registerCell(ReadCollectionCell.self)
         self.tableView.registerCell(ReadLinkCell.self)
         self.tableView.registerCell(SuggestReadEmptyCell.self)
+        
+        self.refreshControl.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        self.tableView.refreshControl = self.refreshControl
+        self.refreshControl.layer.zPosition = -1
     }
     
     public func tableView(_ tableView: UITableView,
