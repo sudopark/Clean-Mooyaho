@@ -125,9 +125,14 @@ extension ReadItemUsecaseImple {
     
     public func continueReadingLinks() -> Observable<[ReadLink]> {
         let datKey = SharedDataKeys.currentReadingItems.rawValue
+        
+        let filterAlreadyRed: ([ReadLink]) -> [ReadLink] = { items in
+            return items.filter { $0.isRed == false }
+        }
         return self.sharedStoreService
             .observeWithCache([ReadLink].self, key: datKey)
             .map { $0 ?? [] }
+            .map(filterAlreadyRed)
             .do(onSubscribed: { [weak self] in
                 self?.fetchCurrentReadingItems()
             })

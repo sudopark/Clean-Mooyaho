@@ -236,11 +236,12 @@ extension SuggestReadViewModelImple {
             let favoriteCells = favoriteItems.asCellViewModels(with: categoryMaps)
             let continueReadingCells = continueReadings.asCellViewModels(with: categoryMaps)
             
-            return [
-                todoReadCells.asSection(type: .todoRead),
+            let sections: [SuggestReadSection?] = [
+                todoReadCells.asSection(type: .todoRead, emptyThenNil: true),
                 favoriteCells.asSection(type: .favotire),
                 continueReadingCells.asSection(type: .continueRead)
             ]
+            return sections.compactMap { $0 }
         }
         
         return Observable.combineLatest(
@@ -295,11 +296,15 @@ private extension Array where Element == ReadItem {
 
 private extension Array where Element == ReadItemCellViewModel {
     
-    func asSection(type: SuggestReadSection.SuggestType) -> SuggestReadSection {
-        guard self.isNotEmpty else {
+    func asSection(type: SuggestReadSection.SuggestType, emptyThenNil: Bool = false) -> SuggestReadSection? {
+        switch self.isNotEmpty {
+        case true:
+            return .init(type: type, cellViewModels: self)
+        case false where emptyThenNil:
+            return nil
+        case false:
             return .init(type: type, cellViewModels: [SuggestEmptyCellViewModel(type: type)])
         }
-        return .init(type: type, cellViewModels: self)
     }
 }
 
