@@ -11,6 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import Prelude
+import Optics
 
 import CommonPresenting
 
@@ -119,6 +121,11 @@ extension SuggestReadViewController {
                                  customTitle: link.customName)
                 return cell
                 
+            case let empty as SuggestEmptyCellViewModel:
+                let cell: SuggestReadEmptyCell = tableView.dequeueCell()
+                cell.setupCell(empty.sectionType)
+                return cell
+                
             default: return UITableViewCell()
             }
         }
@@ -150,6 +157,7 @@ extension SuggestReadViewController: Presenting, UITableViewDelegate {
         
         self.tableView.registerCell(ReadCollectionCell.self)
         self.tableView.registerCell(ReadLinkCell.self)
+        self.tableView.registerCell(SuggestReadEmptyCell.self)
     }
     
     public func tableView(_ tableView: UITableView,
@@ -166,6 +174,14 @@ extension SuggestReadViewController: Presenting, UITableViewDelegate {
     public func tableView(_ tableView: UITableView,
                           heightForHeaderInSection section: Int) -> CGFloat {
         return 60
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellViewModel = self.dataSource[indexPath]
+        guard cellViewModel is SuggestEmptyCellViewModel else {
+            return UITableView.automaticDimension
+        }
+        return 150
     }
 }
 
@@ -215,13 +231,83 @@ final class SuggestReadSectionHeaderView: ReadCollectionSectionHeaderView {
     }
 }
 
+// MARK: - suggest read empty cell
+
+final class SuggestReadEmptyCell: BaseTableViewCell, Presenting {
+    
+    let emojiView = UILabel()
+    let messageLabel = UILabel()
+    
+    override func afterViewInit() {
+        super.afterViewInit()
+        self.setupLayout()
+        self.setupStyling()
+    }
+    
+    func setupCell(_ type: SuggestReadSection.SuggestType) {
+        self.emojiView.text = type.emptyEmoji
+        self.messageLabel.text = type.emptyDescription
+    }
+}
+
+extension SuggestReadEmptyCell {
+    
+    func setupLayout() {
+        
+        self.contentView.addSubview(emojiView)
+        emojiView.autoLayout.active(with: self.contentView) {
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: -12)
+            $0.heightAnchor.constraint(equalToConstant: 22)
+        }
+        
+        self.contentView.addSubview(messageLabel)
+        messageLabel.autoLayout.active(with: self.contentView) {
+            $0.topAnchor.constraint(equalTo: emojiView.bottomAnchor, constant: 12)
+            $0.leadingAnchor.constraint(greaterThanOrEqualTo: $1.leadingAnchor, constant: 16)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -16)
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+        }
+    }
+    
+    func setupStyling() {
+        
+        _ = self.emojiView
+            |> self.uiContext.decorating.header
+            |> \.numberOfLines .~ 1
+        
+        _ = self.messageLabel
+            |> self.uiContext.decorating.listItemTitle(_:)
+            |> \.numberOfLines .~ 0
+            |> \.textAlignment .~ .center
+            |> \.textColor .~ self.uiContext.colors.descriptionText
+    }
+}
+
+
 private extension SuggestReadSection.SuggestType {
     
     private var title: String {
         switch self {
         case .todoRead: return "📚 To read".localized
-        case .favotire: return "👍 My Favorites".localized
+        case .favotire: return "⛳️ My Favorites".localized
         case .continueRead: return "🏃‍♂️ Continue red".localized
+        }
+    }
+    
+    var emptyEmoji: String? {
+        switch self {
+        case .favotire: return "⭐️..🧐"
+        case .continueRead: return "🔥🔥 🏃‍♂️ 🔥🔥"
+        default: return nil
+        }
+    }
+    
+    var emptyDescription: String? {
+        switch self {
+        case .favotire: return "There are no favorite reading items.\nLet's add a new favorite.".localized
+        case .continueRead: return "Continue reading and marking as read.".localized
+        default: return nil
         }
     }
     

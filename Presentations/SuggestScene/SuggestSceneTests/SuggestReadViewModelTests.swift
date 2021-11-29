@@ -116,16 +116,13 @@ extension SuggestReadViewModelTests {
         }
         
         // then
-        XCTAssertEqual(sections?.count, 3)
-        XCTAssertEqual(sections?[safe: 0]?.type, .todoRead)
+        XCTAssertEqual(sections?.count, 2)
+        XCTAssertEqual(sections?[safe: 0]?.type, .favotire)
         XCTAssertEqual(sections?[safe: 0]?.cellViewModels.count, 1)
         XCTAssertEqual(sections?[safe: 0]?.cellViewModels.first is SuggestEmptyCellViewModel, true)
-        XCTAssertEqual(sections?[safe: 1]?.type, .favotire)
+        XCTAssertEqual(sections?[safe: 1]?.type, .continueRead)
         XCTAssertEqual(sections?[safe: 1]?.cellViewModels.count, 1)
         XCTAssertEqual(sections?[safe: 1]?.cellViewModels.first is SuggestEmptyCellViewModel, true)
-        XCTAssertEqual(sections?[safe: 2]?.type, .continueRead)
-        XCTAssertEqual(sections?[safe: 2]?.cellViewModels.count, 1)
-        XCTAssertEqual(sections?[safe: 2]?.cellViewModels.first is SuggestEmptyCellViewModel, true)
     }
 }
 
