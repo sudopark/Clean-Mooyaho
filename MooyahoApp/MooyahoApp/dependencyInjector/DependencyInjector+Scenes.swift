@@ -565,10 +565,8 @@ extension DependencyInjector: SuggestReadSceneBuilable {
     ) -> SuggestReadScene {
         let router = SuggestReadRouter(nextSceneBuilders: self)
         
-        let readUsecase = self.readItemUsecase
         let viewModel = SuggestReadViewModelImple (
-            readItemLoadUsecase: readUsecase,
-            favoriteItemUsecase: readUsecase,
+            readItemUsecase: self.readItemUsecase,
             categoriesUsecase: self.categoryUsecase,
             router: router,
             listener: listener,

@@ -69,22 +69,19 @@ public protocol SuggestReadViewModel: AnyObject {
 
 public final class SuggestReadViewModelImple: SuggestReadViewModel {
     
-    private let readItemLoadUsecase: ReadItemLoadUsecase
-    private let favoriteItemUsecase: FavoriteReadItemUsecas
+    private let readItemUsecase: ReadItemUsecase
     private let categoriesUsecase: ReadItemCategoryUsecase
     private let router: SuggestReadRouting
     private weak var listener: SuggestReadSceneListenable?
     private weak var readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
     
-    public init(readItemLoadUsecase: ReadItemLoadUsecase,
-                favoriteItemUsecase: FavoriteReadItemUsecas,
+    public init(readItemUsecase: ReadItemUsecase,
                 categoriesUsecase: ReadItemCategoryUsecase,
                 router: SuggestReadRouting,
                 listener: SuggestReadSceneListenable?,
                 readCollectionMainInteractor: ReadCollectionMainSceneInteractable?) {
         
-        self.readItemLoadUsecase = readItemLoadUsecase
-        self.favoriteItemUsecase = favoriteItemUsecase
+        self.readItemUsecase = readItemUsecase
         self.categoriesUsecase = categoriesUsecase
         self.router = router
         self.listener = listener
@@ -93,6 +90,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         self.bindRequireCategories()
         self.bindContinueReadingLinks()
         self.bindFavoriteItems()
+        self.bindItemUpdateOrRemoved()
     }
     
     deinit {
@@ -133,7 +131,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         let updateContinueReadLinks: ([ReadLink]) -> Void = { [weak self] links in
             self?.subjects.continueReadLinks.accept(links)
         }
-        self.readItemLoadUsecase
+        self.readItemUsecase
             .continueReadingLinks()
             .do(onNext: updateMap)
             .map { $0.suffix(10).reversed() }
@@ -148,7 +146,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         let updateIDs: ([String]) -> Void = { [weak self] ids in
             self?.subjects.favoriteItemIDs.accept(ids)
         }
-        self.favoriteItemUsecase.sharedFavoriteItemIDs
+        self.readItemUsecase.sharedFavoriteItemIDs
             .map { $0.suffix(10).reversed() }
             .do(onNext: startReloadRequreItems)
             .subscribe(onNext: updateIDs)
@@ -159,13 +157,52 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         let itemsMap = self.subjects.itemsMap.value
         let notExistingIDs = ids.filter { itemsMap[$0] == nil }
         
-        let loadNotExisingItems = self.readItemLoadUsecase.loadReadItems(for: notExistingIDs)
+        let loadNotExisingItems = self.readItemUsecase.loadReadItems(for: notExistingIDs)
         let updateItemsMap: ([ReadItem]) -> Void = { [weak self] items in
             self?.subjects.itemsMap.accept(withAppend: items)
         }
         loadNotExisingItems
             .subscribe(onSuccess: updateItemsMap)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func bindItemUpdateOrRemoved() {
+        
+        self.readItemUsecase.readItemUpdated
+            .subscribe(onNext: { [weak self] event in
+                self?.handleReadItemUpdated(event)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func handleReadItemUpdated(_ event: ReadItemUpdateEvent) {
+        switch event {
+        case let .updated(item) where (item as? ReadLink)?.isRed == true:
+            self.removeReadItem(item.uid)
+        case let .removed(itemID, _):
+            self.removeDeletedItem(itemID)
+        default: return
+        }
+    }
+    
+    private func removeReadItem(_ itemID: String) {
+        let (todoItems, continueItems) = (self.subjects.todoReadItems.value, self.subjects.continueReadLinks.value)
+        let newTodoItems = todoItems.map { $0.filter { $0.uid != itemID } }
+        let newContinueLinks = continueItems.map { $0.filter { $0.uid != itemID } }
+        (newTodoItems?.count != todoItems?.count).then {
+            self.subjects.todoReadItems.accept(newTodoItems)
+        }
+        (newContinueLinks?.count != continueItems?.count).then {
+            self.subjects.continueReadLinks.accept(newContinueLinks)
+        }
+    }
+    
+    private func removeDeletedItem(_ itemID: String) {
+        self.removeReadItem(itemID)
+        let favoriteIDs = self.subjects.favoriteItemIDs.value
+        let newFavorite = favoriteIDs.map { $0.filter { $0 != itemID } }
+        guard favoriteIDs?.count != newFavorite?.count else { return }
+        self.subjects.favoriteItemIDs.accept(newFavorite)
     }
 }
 
@@ -186,7 +223,7 @@ extension SuggestReadViewModelImple {
         let updateTodoItems: ([ReadItem]) -> Void = { [weak self] items in
             self?.subjects.todoReadItems.accept(items)
         }
-        self.readItemLoadUsecase
+        self.readItemUsecase
             .suggestNextReadItem(size: 10)
             .catchAndReturn([])
             .do(onNext: updateItemsMap)
@@ -195,7 +232,7 @@ extension SuggestReadViewModelImple {
     }
     
     private func reloadFavoriteItemIDs() {
-        self.favoriteItemUsecase.refreshSharedFavoriteIDs()
+        self.readItemUsecase.refreshSharedFavoriteIDs()
     }
 }
 
@@ -256,7 +293,7 @@ extension SuggestReadViewModelImple {
     
     public func readLinkPreview(for linkID: String) -> Observable<LinkPreview> {
         guard let item = self.subjects.itemsMap.value[linkID] as? ReadLink else { return .empty() }
-        return self.readItemLoadUsecase.loadLinkPreview(item.link)
+        return self.readItemUsecase.loadLinkPreview(item.link)
     }
     
     private var favoriteItems: Observable<[ReadItem]> {

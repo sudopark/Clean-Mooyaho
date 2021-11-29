@@ -22,6 +22,7 @@ import UsecaseDoubles
 class SuggestReadViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var stubReadUsecase: StubReadItemUsecase!
     var spyRouter: SpyRouter!
     var spyReadCollectionMainInteractor: SpyReadCollectionMainInteractor!
     
@@ -56,6 +57,8 @@ class SuggestReadViewModelTests: BaseTestCase, WaitObservableEvents {
             |> \.loadFavoriteIDsResult .~ (.success(isAllEmpty ? [] : self.dumnyFavoriteIDs))
             |> \.loadContinueLinks .~ (.success(isAllEmpty ? [] : self.dummyLatestLinks))
         let readUsecase = StubReadItemUsecase(scenario: scenario)
+        self.stubReadUsecase = readUsecase
+        
         let categoryUsecase = StubItemCategoryUsecase()
         
         let router = SpyRouter()
@@ -64,8 +67,7 @@ class SuggestReadViewModelTests: BaseTestCase, WaitObservableEvents {
         let collectionInteractor = SpyReadCollectionMainInteractor()
         self.spyReadCollectionMainInteractor = collectionInteractor
         
-        return SuggestReadViewModelImple(readItemLoadUsecase: readUsecase,
-                                         favoriteItemUsecase: readUsecase,
+        return SuggestReadViewModelImple(readItemUsecase: readUsecase,
                                          categoriesUsecase: categoryUsecase,
                                          router: router,
                                          listener: nil,
@@ -162,6 +164,72 @@ extension SuggestReadViewModelTests {
         
         // then
         XCTAssertEqual(self.spyRouter.didShowAllFavorite, true)
+    }
+}
+
+extension SuggestReadViewModelTests {
+    
+    func testViewModel_whenItemChangeToRead_removeFromTodoAndContibueReadingList() {
+        // given
+        let expect = expectation(description: "아이템이 읽기로 전환되었을때 읽을, 읽는중 목록에서 제거")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        
+        let dummyTodo = self.dummyTodoRead.compactMap { $0 as? ReadLink }.last!
+        let dummyContinue = self.dummyLatestLinks.randomElement()!
+        
+        // when
+        let source = viewModel.sections.skip(while: { $0.count < 3 })
+        let sections = self.waitElements(expect, for: source, skip: 2) {
+            viewModel.refresh()
+            let redItem1 = dummyTodo |> \.isRed .~ true
+            self.stubReadUsecase.readItemUpdateMocking.onNext(.updated(redItem1))
+            
+            let redItem2 = dummyContinue |> \.isRed .~ true
+            self.stubReadUsecase.readItemUpdateMocking.onNext(.updated(redItem2))
+        }
+        
+        // then
+        let cells1 = sections.first?.first?.cellViewModels
+        XCTAssertEqual(cells1?.contains(where: { $0.uid == dummyTodo.uid }), false)
+        let cells2 = sections.last?.last?.cellViewModels
+        XCTAssertEqual(cells2?.contains(where: { $0.uid == dummyContinue.uid }), false)
+    }
+    
+    func testViewModel_whenItemRemoved_removeFromSuggestList() {
+        // given
+        let expect = expectation(description: "아이템이 삭제되면 전체 리스트에서 제거")
+        expect.expectedFulfillmentCount = 3
+        let viewModel = self.makeViewModel()
+        
+        let dummyTodo = self.dummyTodoRead.randomElement()!
+        let dummyFavoriteID = self.dumnyFavoriteIDs.randomElement()!
+        let dummyContinue = self.dummyLatestLinks.randomElement()!
+        
+        // when
+        let source = viewModel.sections.skip(while: { $0.count < 3 })
+        let sections = self.waitElements(expect, for: source, skip: 2) {
+            viewModel.refresh()
+            self.stubReadUsecase.readItemUpdateMocking.onNext(.removed(itemID: dummyTodo.uid, parent: dummyTodo.parentID))
+            self.stubReadUsecase.readItemUpdateMocking.onNext(.removed(itemID: dummyFavoriteID, parent: nil))
+            self.stubReadUsecase.readItemUpdateMocking.onNext(.removed(itemID: dummyContinue.uid, parent: dummyContinue.parentID))
+        }
+        
+        // then
+        let totalCellLists = sections.map { $0.flatMap { $0.cellViewModels } }
+        XCTAssertEqual(totalCellLists.count, 3)
+        
+        XCTAssertEqual(totalCellLists[safe: 0]?.contains(where: { $0.uid == dummyTodo.uid }), false)
+        XCTAssertEqual(totalCellLists[safe: 0]?.contains(where: { $0.uid == dummyFavoriteID }), true)
+        XCTAssertEqual(totalCellLists[safe: 0]?.contains(where: { $0.uid == dummyContinue.uid }), true)
+        
+        XCTAssertEqual(totalCellLists[safe: 1]?.contains(where: { $0.uid == dummyTodo.uid }), false)
+        XCTAssertEqual(totalCellLists[safe: 1]?.contains(where: { $0.uid == dummyFavoriteID }), false)
+        XCTAssertEqual(totalCellLists[safe: 1]?.contains(where: { $0.uid == dummyContinue.uid }), true)
+        
+        XCTAssertEqual(totalCellLists[safe: 2]?.contains(where: { $0.uid == dummyTodo.uid }), false)
+        XCTAssertEqual(totalCellLists[safe: 2]?.contains(where: { $0.uid == dummyFavoriteID }), false)
+        XCTAssertEqual(totalCellLists[safe: 2]?.contains(where: { $0.uid == dummyContinue.uid }), false)
     }
 }
 
