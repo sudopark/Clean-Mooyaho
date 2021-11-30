@@ -143,6 +143,7 @@
 				F68B670E2707F0A9004A255A /* ReadCollectionMain */,
 				F6E279B726F6E6B800957AC4 /* ReadCollection */,
 				F620518227276DF4009CA975 /* NavigateCollection */,
+				F680E48F275668D100B69E8B /* FavoriteItems */,
 				F64EE40326F5219200CFA357 /* ReadItemScene.h */,
 				F64EE40426F5219200CFA357 /* Info.plist */,
 			);
@@ -180,6 +181,13 @@
 				F665A64B26FB667400E866B7 /* ReadItemCells.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F680E48F275668D100B69E8B /* FavoriteItems */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FavoriteItems;
 			sourceTree = "<group>";
 		};
 		F68B670E2707F0A9004A255A /* ReadCollectionMain */ = {
