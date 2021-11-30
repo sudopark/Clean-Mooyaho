@@ -88,11 +88,9 @@ extension SuggestReadViewController {
     }
     
     private func updateIsRefreshControl(_ isRefershing: Bool) {
-        if isRefershing {
-            self.tableView.refreshControl?.beginRefreshing()
-        } else {
-            self.tableView.refreshControl?.endRefreshing()
-        }
+        isRefershing
+            ? self.tableView.refreshControl?.beginRefreshing()
+            : self.tableView.refreshControl?.endRefreshing()
     }
     
     private func bindTableView() {

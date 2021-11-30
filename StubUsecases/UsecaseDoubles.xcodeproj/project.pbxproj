@@ -25,6 +25,7 @@
 		F66CD92C266FCB800031EEC5 /* MockSuggestPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD92B266FCB800031EEC5 /* MockSuggestPlaceUsecase.swift */; };
 		F66CD94F2673B1B10031EEC5 /* MockSearchNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD94E2673B1B10031EEC5 /* MockSearchNewPlaceUsecase.swift */; };
 		F66CD9612673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9602673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift */; };
+		F680E49F27568A7E00B69E8B /* StubFavoritePagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E49E27568A7E00B69E8B /* StubFavoritePagingUsecase.swift */; };
 		F6A00BE1274D4AF8006CFAB3 /* StubIntegratedSearchUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A00BE0274D4AF8006CFAB3 /* StubIntegratedSearchUsecase.swift */; };
 		F6AD56A226B2FBF600F93508 /* BaseStubHoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AD56A126B2FBF600F93508 /* BaseStubHoorayUsecase.swift */; };
 		F6B6B42527116C13000652E0 /* StubItemCategoryUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B6B42427116C13000652E0 /* StubItemCategoryUsecase.swift */; };
@@ -58,6 +59,7 @@
 		F66CD92B266FCB800031EEC5 /* MockSuggestPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSuggestPlaceUsecase.swift; sourceTree = "<group>"; };
 		F66CD94E2673B1B10031EEC5 /* MockSearchNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchNewPlaceUsecase.swift; sourceTree = "<group>"; };
 		F66CD9602673DAFC0031EEC5 /* MockRegisterNewPlaceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRegisterNewPlaceUsecase.swift; sourceTree = "<group>"; };
+		F680E49E27568A7E00B69E8B /* StubFavoritePagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFavoritePagingUsecase.swift; sourceTree = "<group>"; };
 		F6A00BE0274D4AF8006CFAB3 /* StubIntegratedSearchUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubIntegratedSearchUsecase.swift; sourceTree = "<group>"; };
 		F6AD56A126B2FBF600F93508 /* BaseStubHoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseStubHoorayUsecase.swift; sourceTree = "<group>"; };
 		F6B6B42427116C13000652E0 /* StubItemCategoryUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubItemCategoryUsecase.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				F631986E272E785600E66417 /* StubReadLinkAddSuggestUsecase.swift */,
 				F6BD47FE2740D97700D2B2C9 /* StubShareItemUsecase.swift */,
 				F6A00BE0274D4AF8006CFAB3 /* StubIntegratedSearchUsecase.swift */,
+				F680E49E27568A7E00B69E8B /* StubFavoritePagingUsecase.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				F631986F272E785600E66417 /* StubReadLinkAddSuggestUsecase.swift in Sources */,
 				F66CD92C266FCB800031EEC5 /* MockSuggestPlaceUsecase.swift in Sources */,
 				F650680F2721D7130071111B /* StubReadRemindUsecase.swift in Sources */,
+				F680E49F27568A7E00B69E8B /* StubFavoritePagingUsecase.swift in Sources */,
 				F6E279CD26F711C200957AC4 /* StubReadIttemUsecase.swift in Sources */,
 				F6BD47FF2740D97700D2B2C9 /* StubShareItemUsecase.swift in Sources */,
 				F6AD56A226B2FBF600F93508 /* BaseStubHoorayUsecase.swift in Sources */,

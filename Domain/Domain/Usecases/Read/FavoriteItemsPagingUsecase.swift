@@ -23,6 +23,7 @@ public protocol FavoriteItemsPagingUsecase {
     func loadMoreItems()
     
     var items: Observable<[ReadItem]> { get }
+    var isRefreshing: Observable<Bool> { get }
 }
 
 
@@ -132,7 +133,10 @@ extension FavoriteItemsPagingUsecaseImple {
         let chunkSize = 10
         let reloadFavoriteIDs = self.favoriteItemsUsecase.refreshFavoriteIDs()
             .takeLast(1)
-            .catchErrorAsEmpty()
+            .catch { [weak self] _ in
+                self?.isPrepareReloading.accept(false)
+                return .empty()
+            }
         let reverseOrder: ([String]) -> [String] = { $0.reversed() }
         let asPagingParameter: ([String]) -> FavoriteItemsPagingParameter = { totalIDs in
             return .init(totalItemIDs: totalIDs, chunkSize: chunkSize)
@@ -143,6 +147,7 @@ extension FavoriteItemsPagingUsecaseImple {
             self.internalPagingUsecase.startSuggest(params)
         }
         
+        self.isPrepareReloading.accept(true)
         reloadFavoriteIDs
             .map(reverseOrder)
             .map(asPagingParameter)
@@ -161,5 +166,10 @@ extension FavoriteItemsPagingUsecaseImple {
     public var items: Observable<[ReadItem]> {
         return self.internalPagingUsecase.suggestResult
             .map { $0?.items ?? [] }
+    }
+    
+    public var isRefreshing: Observable<Bool> {
+        return self.isPrepareReloading
+            .distinctUntilChanged()
     }
 }

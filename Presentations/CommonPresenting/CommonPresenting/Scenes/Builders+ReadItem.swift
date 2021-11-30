@@ -17,3 +17,14 @@ public protocol NavigateCollectionSceneBuilable {
     func makeNavigateCollectionScene(collection: ReadCollection?,
                                      listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene
 }
+
+
+// MARK: - Builder + DependencyInjector Extension
+
+public protocol FavoriteItemsSceneBuilable {
+    
+    func makeFavoriteItemsScene(
+        listener: FavoriteItemsSceneListenable?,
+        readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
+    ) -> FavoriteItemsScene
+}
