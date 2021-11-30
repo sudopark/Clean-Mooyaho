@@ -206,6 +206,32 @@ extension DependencyInjector: NavigateCollectionSceneBuilable {
     }
 }
 
+extension DependencyInjector: FavoriteItemsSceneBuilable {
+    
+    public func makeFavoriteItemsScene(
+        listener: FavoriteItemsSceneListenable?,
+        readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
+    ) -> FavoriteItemsScene {
+        
+        let router = FavoriteItemsRouter(nextSceneBuilders: self)
+        
+        let readUsecase = self.readItemUsecase
+        let pagingUsecase = FavoriteItemsPagingUsecaseImple(favoriteItemsUsecase: readUsecase,
+                                                            itemsLoadUsecase: readUsecase)
+        
+        let viewModel = FavoriteItemsViewModelImple(
+            pagingUsecase: pagingUsecase,
+            previewLoadUsecase: readUsecase,
+            categoryUsecase: self.categoryUsecase,
+            router: router,
+            listener: listener,
+            readCollectionMainInteractor: readCollectionMainInteractor
+        )
+        let viewController = FavoriteItemsViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
 
 
 // MARK: - EditReadItemScene

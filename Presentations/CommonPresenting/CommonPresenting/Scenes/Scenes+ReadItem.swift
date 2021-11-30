@@ -124,3 +124,18 @@ public protocol NavigateCollectionScene: Scenable {
     
     var interactor: NavigateCollectionSceneInteractable? { get }
 }
+
+
+// MARK: - FavoriteItemsScene Interactable & Listenable
+
+public protocol FavoriteItemsSceneInteractable { }
+
+public protocol FavoriteItemsSceneListenable: AnyObject { }
+
+
+// MARK: - FavoriteItemsScene
+
+public protocol FavoriteItemsScene: Scenable {
+    
+    var interactor: FavoriteItemsSceneInteractable? { get }
+}

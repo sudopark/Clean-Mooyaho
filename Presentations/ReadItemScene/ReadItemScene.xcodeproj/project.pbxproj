@@ -21,6 +21,11 @@
 		F64EE42826F521FA00CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE42726F521FA00CFA357 /* Common3rdParty.framework */; };
 		F64EE42A26F5220200CFA357 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */; };
 		F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64B26FB667400E866B7 /* ReadItemCells.swift */; };
+		F680E4992756860300B69E8B /* FavoriteItemsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E4942756860300B69E8B /* FavoriteItemsRouter.swift */; };
+		F680E49A2756860300B69E8B /* FavoriteItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E4952756860300B69E8B /* FavoriteItemsViewController.swift */; };
+		F680E49C2756860300B69E8B /* FavoriteItemsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E4972756860300B69E8B /* FavoriteItemsScene.swift */; };
+		F680E49D2756860300B69E8B /* FavoriteItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E4982756860300B69E8B /* FavoriteItemsViewModel.swift */; };
+		F680E4A127568C5A00B69E8B /* FavoriteItemsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E4A027568C5A00B69E8B /* FavoriteItemsViewModelTests.swift */; };
 		F68B67142707F0EE004A255A /* ReadCollectionMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B670F2707F0EE004A255A /* ReadCollectionMainRouter.swift */; };
 		F68B67152707F0EE004A255A /* ReadCollectionMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67102707F0EE004A255A /* ReadCollectionMainViewController.swift */; };
 		F68B67162707F0EE004A255A /* ReadCollectionMainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B67112707F0EE004A255A /* ReadCollectionMainBuilder.swift */; };
@@ -65,6 +70,11 @@
 		F64EE42726F521FA00CFA357 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F665A64B26FB667400E866B7 /* ReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemCells.swift; sourceTree = "<group>"; };
+		F680E4942756860300B69E8B /* FavoriteItemsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsRouter.swift; sourceTree = "<group>"; };
+		F680E4952756860300B69E8B /* FavoriteItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsViewController.swift; sourceTree = "<group>"; };
+		F680E4972756860300B69E8B /* FavoriteItemsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsScene.swift; sourceTree = "<group>"; };
+		F680E4982756860300B69E8B /* FavoriteItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsViewModel.swift; sourceTree = "<group>"; };
+		F680E4A027568C5A00B69E8B /* FavoriteItemsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsViewModelTests.swift; sourceTree = "<group>"; };
 		F68B670F2707F0EE004A255A /* ReadCollectionMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainRouter.swift; sourceTree = "<group>"; };
 		F68B67102707F0EE004A255A /* ReadCollectionMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainViewController.swift; sourceTree = "<group>"; };
 		F68B67112707F0EE004A255A /* ReadCollectionMainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCollectionMainBuilder.swift; sourceTree = "<group>"; };
@@ -157,6 +167,7 @@
 				F6E279CE26F7130C00957AC4 /* ReadCollectionViewModelTests.swift */,
 				F68B67192707F877004A255A /* ReadCollectionMainViewModelTests.swift */,
 				F620518F27277D75009CA975 /* NavigateCollectionViewModelTests.swift */,
+				F680E4A027568C5A00B69E8B /* FavoriteItemsViewModelTests.swift */,
 			);
 			path = ReadItemSceneTests;
 			sourceTree = "<group>";
@@ -186,6 +197,10 @@
 		F680E48F275668D100B69E8B /* FavoriteItems */ = {
 			isa = PBXGroup;
 			children = (
+				F680E4942756860300B69E8B /* FavoriteItemsRouter.swift */,
+				F680E4952756860300B69E8B /* FavoriteItemsViewController.swift */,
+				F680E4972756860300B69E8B /* FavoriteItemsScene.swift */,
+				F680E4982756860300B69E8B /* FavoriteItemsViewModel.swift */,
 			);
 			path = FavoriteItems;
 			sourceTree = "<group>";
@@ -332,13 +347,17 @@
 				F6E279C126F6E71700957AC4 /* ReadCollectionItemsViewModel.swift in Sources */,
 				F620518B27276E1F009CA975 /* NavigateCollectionScene.swift in Sources */,
 				F665A64C26FB667400E866B7 /* ReadItemCells.swift in Sources */,
+				F680E49C2756860300B69E8B /* FavoriteItemsScene.swift in Sources */,
 				F6E279BE26F6E71700957AC4 /* ReadCollectionItemsViewController.swift in Sources */,
 				F68B67142707F0EE004A255A /* ReadCollectionMainRouter.swift in Sources */,
 				F68B67162707F0EE004A255A /* ReadCollectionMainBuilder.swift in Sources */,
 				F620518827276E1F009CA975 /* NavigateCollectionRouter.swift in Sources */,
 				F6E279C026F6E71700957AC4 /* ReadCollectionItemsScene.swift in Sources */,
+				F680E49A2756860300B69E8B /* FavoriteItemsViewController.swift in Sources */,
 				F620518927276E1F009CA975 /* NavigateCollectionViewController.swift in Sources */,
+				F680E4992756860300B69E8B /* FavoriteItemsRouter.swift in Sources */,
 				F6E279BD26F6E71700957AC4 /* ReadCollectionItemsRouter.swift in Sources */,
+				F680E49D2756860300B69E8B /* FavoriteItemsViewModel.swift in Sources */,
 				F6ECE4DD26FAFD4B008D7ECA /* ReadCollectionView+SwiftUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,6 +369,7 @@
 				F6E279CF26F7130C00957AC4 /* ReadCollectionViewModelTests.swift in Sources */,
 				F68B671A2707F877004A255A /* ReadCollectionMainViewModelTests.swift in Sources */,
 				F620519027277D75009CA975 /* NavigateCollectionViewModelTests.swift in Sources */,
+				F680E4A127568C5A00B69E8B /* FavoriteItemsViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
