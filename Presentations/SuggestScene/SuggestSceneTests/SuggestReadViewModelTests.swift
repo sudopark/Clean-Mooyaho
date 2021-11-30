@@ -24,6 +24,7 @@ class SuggestReadViewModelTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     var stubReadUsecase: StubReadItemUsecase!
     var spyRouter: SpyRouter!
+    var dummyListener: DummyListener!
     var spyReadCollectionMainInteractor: SpyReadCollectionMainInteractor!
     
     override func setUpWithError() throws {
@@ -67,10 +68,12 @@ class SuggestReadViewModelTests: BaseTestCase, WaitObservableEvents {
         let collectionInteractor = SpyReadCollectionMainInteractor()
         self.spyReadCollectionMainInteractor = collectionInteractor
         
+        self.dummyListener = DummyListener()
+        
         return SuggestReadViewModelImple(readItemUsecase: readUsecase,
                                          categoriesUsecase: categoryUsecase,
                                          router: router,
-                                         listener: nil,
+                                         listener: self.dummyListener,
                                          readCollectionMainInteractor: collectionInteractor)
     }
 }
@@ -277,5 +280,12 @@ extension SuggestReadViewModelTests {
         }
         
         var rootType: CollectionRoot = .myCollections
+    }
+    
+    class DummyListener: SuggestReadSceneListenable {
+        
+        func finishSuggesting(_ completed: @escaping () -> Void) {
+            completed()
+        }
     }
 }

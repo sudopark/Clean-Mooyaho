@@ -58,9 +58,12 @@ public protocol SuggestQueryScene: Scenable {
 
 // MARK: - SuggestReadScene Interactable & Listenable
 
-public protocol SuggestReadSceneInteractable: AnyObject { }
+public protocol SuggestReadSceneInteractable: InnerWebViewSceneListenable & FavoriteItemsSceneListenable { }
 
-public protocol SuggestReadSceneListenable: AnyObject { }
+public protocol SuggestReadSceneListenable: AnyObject {
+    
+    func finishSuggesting(_ completed: @escaping () -> Void)
+}
 
 
 // MARK: - SuggestReadScene

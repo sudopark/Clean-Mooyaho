@@ -320,6 +320,13 @@ extension MainViewModelImple {
             completed()
         }
     }
+    
+    public func finishSuggesting(_ completed: @escaping () -> Void) {
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.subjects.finishSearch.onNext()
+            completed()
+        }
+    }
 }
 
 

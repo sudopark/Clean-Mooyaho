@@ -23,8 +23,5 @@ public protocol NavigateCollectionSceneBuilable {
 
 public protocol FavoriteItemsSceneBuilable {
     
-    func makeFavoriteItemsScene(
-        listener: FavoriteItemsSceneListenable?,
-        readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
-    ) -> FavoriteItemsScene
+    func makeFavoriteItemsScene(listener: FavoriteItemsSceneListenable?) -> FavoriteItemsScene
 }
