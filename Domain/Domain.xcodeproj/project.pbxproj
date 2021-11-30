@@ -117,6 +117,8 @@
 		F66B7D7A26C78AF400D31FAC /* StubPlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7926C78AF400D31FAC /* StubPlaceRepository.swift */; };
 		F66C2C23270908CF003D56B1 /* RxCocoa+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */; };
 		F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */; };
+		F680E49127566A3300B69E8B /* FavoriteItemsPagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */; };
+		F680E493275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */; };
 		F6907F18274FD657007805EA /* SuggestQueryUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */; };
 		F6907F1A274FDDDB007805EA /* SuggestQueryUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F19274FDDDB007805EA /* SuggestQueryUsecaseTests.swift */; };
 		F6907F1C274FDE35007805EA /* StubSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F1B274FDE35007805EA /* StubSearchRepository.swift */; };
@@ -294,6 +296,8 @@
 		F66B7D7926C78AF400D31FAC /* StubPlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlaceRepository.swift; sourceTree = "<group>"; };
 		F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxCocoa+Extensions.swift"; sourceTree = "<group>"; };
 		F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProvider.swift; sourceTree = "<group>"; };
+		F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsPagingUsecase.swift; sourceTree = "<group>"; };
+		F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsPagingUsecaseTests.swift; sourceTree = "<group>"; };
 		F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryUsecase.swift; sourceTree = "<group>"; };
 		F6907F19274FDDDB007805EA /* SuggestQueryUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryUsecaseTests.swift; sourceTree = "<group>"; };
 		F6907F1B274FDE35007805EA /* StubSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSearchRepository.swift; sourceTree = "<group>"; };
@@ -547,6 +551,7 @@
 				F612BDF52740C3EF0017FD77 /* ShareItemUsecaseTests.swift */,
 				F61FC991274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift */,
 				F6907F19274FDDDB007805EA /* SuggestQueryUsecaseTests.swift */,
+				F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -785,6 +790,7 @@
 				F6B6B412271071EB000652E0 /* ReadItemCategoryUsecase.swift */,
 				F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */,
 				F6A3A0BF2752A3FF00336E4F /* FavoriteReadItemUsecase.swift */,
+				F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -974,6 +980,7 @@
 				F615292B264D9BC6003BCB59 /* MemberUsecase.swift in Sources */,
 				F61FC98A274A091500E82D16 /* IntegratedSearchUsecase.swift in Sources */,
 				F612BDEA27406BDA0017FD77 /* ShareItemRepository.swift in Sources */,
+				F680E49127566A3300B69E8B /* FavoriteItemsPagingUsecase.swift in Sources */,
 				2BFF240926405B7C008C52EB /* Tags.swift in Sources */,
 				F6E3F60726497C3000DD4986 /* RegisterNewPlaceUsecase.swift in Sources */,
 				F612BDF227406FD90017FD77 /* ShareItemUsecaseImple.swift in Sources */,
@@ -1087,6 +1094,7 @@
 				F6152943264EDA9E003BCB59 /* MemberUsecaseTests.swift in Sources */,
 				F615294D264EE7BC003BCB59 /* MockHoorayRepository.swift in Sources */,
 				F6A8CE4027117F2D00CA6D3D /* SuggestCategoryUsecaseTests.swift in Sources */,
+				F680E493275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift in Sources */,
 				F6391C77271DCB860000F927 /* ReadRemindUsecaseTests.swift in Sources */,
 				F6A72A3B2648247B006BE4BD /* MockTagRepository.swift in Sources */,
 				F6CFA57726463B3600F9A049 /* SearchNewPlaceUsecaseTests.swift in Sources */,

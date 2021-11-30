@@ -91,7 +91,11 @@ class StubReadItemRepository: ReadItemRepository {
         return self.scenario.sugegstNextReadResult.asMaybe()
     }
     
+    var loadItemsByIDsErrorMocking: Error?
     func requestLoadItems(ids: [String]) -> Maybe<[ReadItem]> {
+        if let error = self.loadItemsByIDsErrorMocking {
+            return .error(error)
+        }
         let items = ids.map { ReadLink(uid: $0, link: "link-\($0)", createAt: .now(), lastUpdated: .now()) }
         return .just(items)
     }
