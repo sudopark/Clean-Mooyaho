@@ -208,10 +208,7 @@ extension DependencyInjector: NavigateCollectionSceneBuilable {
 
 extension DependencyInjector: FavoriteItemsSceneBuilable {
     
-    public func makeFavoriteItemsScene(
-        listener: FavoriteItemsSceneListenable?,
-        readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
-    ) -> FavoriteItemsScene {
+    public func makeFavoriteItemsScene(listener: FavoriteItemsSceneListenable?) -> FavoriteItemsScene {
         
         let router = FavoriteItemsRouter(nextSceneBuilders: self)
         
@@ -224,8 +221,7 @@ extension DependencyInjector: FavoriteItemsSceneBuilable {
             previewLoadUsecase: readUsecase,
             categoryUsecase: self.categoryUsecase,
             router: router,
-            listener: listener,
-            readCollectionMainInteractor: readCollectionMainInteractor
+            listener: listener
         )
         let viewController = FavoriteItemsViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -386,10 +382,12 @@ extension DependencyInjector: InnerWebViewSceneBuilable {
     
     public func makeInnerWebViewScene(link: ReadLink,
                                       isEditable: Bool,
+                                      isJumpable: Bool,
                                       listener: InnerWebViewSceneListenable?) -> InnerWebViewScene {
         let router = InnerWebViewRouter(nextSceneBuilders: self)
         let viewModel = InnerWebViewViewModelImple(itemSource: .item(link),
                                                    isEditable: isEditable,
+                                                   isJumpable: isJumpable,
                                                    readItemUsecase: self.readItemUsecase,
                                                    memoUsecase: self.memoUsecase,
                                                    router: router,

@@ -1,3 +1,4 @@
+
 //
 //  
 //  SuggestReadRouter.swift
@@ -29,7 +30,7 @@ public protocol SuggestReadRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SuggestReadRouterBuildables = EmptyBuilder
+public typealias SuggestReadRouterBuildables = InnerWebViewSceneBuilable & FavoriteItemsSceneBuilable
 
 public final class SuggestReadRouter: Router<SuggestReadRouterBuildables>, SuggestReadRouting { }
 
@@ -42,10 +43,28 @@ extension SuggestReadRouter {
     }
     
     public func showLinkDetail(_ linkID: String) {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?
+                .makeInnerWebViewScene(linkID: linkID,
+                                       isEditable: true,
+                                       isJumpable: true,
+                                       listener: self.currentInteractor)
+        else {
+            return
+        }
+        
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func showAllFavoriteItemList() {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?
+                .makeFavoriteItemsScene(listener: self.currentInteractor)
+        else {
+            return
+        }
+        let navigationController = BaseNavigationController(rootViewController: next)
+        navigationController.shouldHideNavigation = false
+        self.currentScene?.present(navigationController, animated: true, completion: nil)
     }
 }

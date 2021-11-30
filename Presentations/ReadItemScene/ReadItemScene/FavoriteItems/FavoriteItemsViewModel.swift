@@ -43,21 +43,18 @@ public final class FavoriteItemsViewModelImple: FavoriteItemsViewModel {
     private let categoryUsecase: ReadItemCategoryUsecase
     private let router: FavoriteItemsRouting
     private weak var listener: FavoriteItemsSceneListenable?
-    private weak var readCollectionMainInteractor: ReadCollectionMainSceneInteractable?
     
     public init(pagingUsecase: FavoriteItemsPagingUsecase,
                 previewLoadUsecase: ReadLinkPreviewLoadUsecase,
                 categoryUsecase: ReadItemCategoryUsecase,
                 router: FavoriteItemsRouting,
-                listener: FavoriteItemsSceneListenable?,
-                readCollectionMainInteractor: ReadCollectionMainSceneInteractable?) {
+                listener: FavoriteItemsSceneListenable?) {
         
         self.pagingUsecase = pagingUsecase
         self.previewLoadUsecase = previewLoadUsecase
         self.categoryUsecase = categoryUsecase
         self.router = router
         self.listener = listener
-        self.readCollectionMainInteractor = readCollectionMainInteractor
         
         self.bindCategories()
         self.bindItems()
@@ -111,10 +108,7 @@ extension FavoriteItemsViewModelImple {
     
     public func selectCollection(_ uid: String) {
         
-        guard let items = self.subjects.items.value,
-              let collection = items.first(where: { $0.uid == uid }) as? ReadCollection
-        else { return }
-        self.readCollectionMainInteractor?.jumpToCollection(collection.uid)
+        self.listener?.favoriteItemsScene(didRequestJump: uid)
     }
     
     public func selectLink(_ uid: String) {
@@ -122,6 +116,10 @@ extension FavoriteItemsViewModelImple {
               let link = items.first(where: { $0.uid == uid }) as? ReadLink
         else { return }
         self.router.showLinkDetail(link)
+    }
+    
+    public func innerWebView(reqeustJumpTo collectionID: String?) {
+        self.listener?.favoriteItemsScene(didRequestJump: collectionID)
     }
 }
 

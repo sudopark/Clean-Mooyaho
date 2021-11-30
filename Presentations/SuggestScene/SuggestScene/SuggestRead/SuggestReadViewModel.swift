@@ -248,11 +248,19 @@ extension SuggestReadViewModelImple {
 extension SuggestReadViewModelImple {
     
     public func selectCollection(_ itemID: String) {
-        self.readCollectionMainInteractor?.jumpToCollection(itemID)
+        self.listener?.finishSuggesting { [weak self] in
+            self?.readCollectionMainInteractor?.jumpToCollection(itemID)
+        }
     }
     
     public func selectReadLink(_ itemID: String) {
         self.router.showLinkDetail(itemID)
+    }
+    
+    public func innerWebView(reqeustJumpTo collectionID: String?) {
+        self.listener?.finishSuggesting { [weak self] in
+            self?.readCollectionMainInteractor?.jumpToCollection(collectionID)
+        }
     }
 }
 
@@ -262,6 +270,12 @@ extension SuggestReadViewModelImple {
     
     public func viewAllFavoriteRead() {
         self.router.showAllFavoriteItemList()
+    }
+    
+    public func favoriteItemsScene(didRequestJump collectionID: String?) {
+        self.listener?.finishSuggesting { [weak self] in
+            self?.readCollectionMainInteractor?.jumpToCollection(collectionID)
+        }
     }
 }
 

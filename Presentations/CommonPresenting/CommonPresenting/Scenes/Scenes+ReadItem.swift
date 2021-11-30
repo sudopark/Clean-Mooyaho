@@ -128,9 +128,12 @@ public protocol NavigateCollectionScene: Scenable {
 
 // MARK: - FavoriteItemsScene Interactable & Listenable
 
-public protocol FavoriteItemsSceneInteractable { }
+public protocol FavoriteItemsSceneInteractable: InnerWebViewSceneListenable { }
 
-public protocol FavoriteItemsSceneListenable: AnyObject { }
+public protocol FavoriteItemsSceneListenable: AnyObject {
+    
+    func favoriteItemsScene(didRequestJump collectionID: String?)
+}
 
 
 // MARK: - FavoriteItemsScene

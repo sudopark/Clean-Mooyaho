@@ -27,7 +27,7 @@ public protocol FavoriteItemsRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias FavoriteItemsRouterBuildables = EmptyBuilder
+public typealias FavoriteItemsRouterBuildables = InnerWebViewSceneBuilable
 
 public final class FavoriteItemsRouter: Router<FavoriteItemsRouterBuildables>, FavoriteItemsRouting { }
 
@@ -41,5 +41,12 @@ extension FavoriteItemsRouter {
     
     public func showLinkDetail(_ link: ReadLink) {
         
+        guard let next = self.nextScenesBuilder?
+                .makeInnerWebViewScene(link: link, isEditable: true,
+                                       isJumpable: true, listener: self.currentInteractor)
+        else {
+            return
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

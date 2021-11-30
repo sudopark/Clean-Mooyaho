@@ -23,7 +23,7 @@ class FavoriteItemsViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var spyRouter: SpyRouter!
-    var spyInteractor: SpyCollecitonInteractor!
+    var spyListener: SpyListener!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -32,7 +32,7 @@ class FavoriteItemsViewModelTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.spyRouter = nil
-        self.spyInteractor = nil
+        self.spyListener = nil
     }
     
     private var dummyItems: [ReadItem] {
@@ -48,14 +48,13 @@ class FavoriteItemsViewModelTests: BaseTestCase, WaitObservableEvents {
         let router = SpyRouter()
         self.spyRouter = router
         
-        let interactor = SpyCollecitonInteractor()
-        self.spyInteractor = interactor
+        let listener = SpyListener()
+        self.spyListener = listener
         
         return FavoriteItemsViewModelImple(pagingUsecase: pagingUsecase,
                                            previewLoadUsecase: StubReadItemUsecase(),
                                            categoryUsecase: categoryUsecase,
-                                           router: router, listener: nil,
-                                           readCollectionMainInteractor: interactor)
+                                           router: router, listener: listener)
     }
 }
 
@@ -93,7 +92,7 @@ extension FavoriteItemsViewModelTests {
         viewModel.selectCollection(cvms?.first?.uid ?? "")
         
         // then
-        XCTAssertEqual(self.spyInteractor.didJumpToCollection, true)
+        XCTAssertEqual(self.spyListener.didJumpRequested, true)
     }
     
     // link로 이동
@@ -124,23 +123,11 @@ extension FavoriteItemsViewModelTests {
         }
     }
     
-    class SpyCollecitonInteractor: ReadCollectionMainSceneInteractable {
+    class SpyListener: FavoriteItemsSceneListenable {
         
-        func addNewCollectionItem() { }
-        
-        func addNewReadLinkItem() { }
-        
-        func addNewReaedLinkItem(with url: String) { }
-        
-        func switchToSharedCollection(_ collection: SharedReadCollection) { }
-        
-        func switchToMyReadCollections() { }
-        
-        var didJumpToCollection: Bool?
-        func jumpToCollection(_ collectionID: String?) {
-            self.didJumpToCollection = true
+        var didJumpRequested: Bool?
+        func favoriteItemsScene(didRequestJump collectionID: String?) {
+            self.didJumpRequested = true
         }
-        
-        var rootType: CollectionRoot = .myCollections
     }
 }

@@ -26,7 +26,6 @@ public final class FavoriteItemsViewController: BaseViewController, FavoriteItem
     
     public let titleHeaderView = ReadCollectionTtileHeaderView()
     private let tableView = UITableView()
-    private let refreshControl = UIRefreshControl()
     public var titleHeaderViewRelatedScrollView: UIScrollView { self.tableView }
     
     let viewModel: FavoriteItemsViewModel
@@ -72,24 +71,11 @@ extension FavoriteItemsViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.refreshControl.rx.controlEvent(.valueChanged)
+        self.navigationItem.rightBarButtonItem?.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.refreshList()
             })
             .disposed(by: self.disposeBag)
-        
-        self.viewModel.isRefreshing
-            .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] isRefreshing in
-                self?.updateIsRefreshControl(isRefreshing)
-            })
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func updateIsRefreshControl(_ isRefershing: Bool) {
-        isRefershing
-            ? self.tableView.refreshControl?.beginRefreshing()
-            : self.tableView.refreshControl?.endRefreshing()
     }
     
     private func bindTableView() {
@@ -117,7 +103,7 @@ extension FavoriteItemsViewController {
             .disposed(by: self.disposeBag)
         
         let userDragging = self.tableView.rx.willBeginDragging.take(1)
-        self.tableView.rx.scrollBottomHit(wait: userDragging)
+        self.tableView.rx.scrollBottomHit(wait: userDragging, threshold: 100)
             .debounce(.milliseconds(700), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.loadMore()
@@ -168,7 +154,7 @@ extension FavoriteItemsViewController: Presenting {
             $0.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
             $0.widthAnchor.constraint(equalTo: tableView.widthAnchor)
             $0.topAnchor.constraint(equalTo: tableView.topAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 60)
+            $0.heightAnchor.constraint(equalToConstant: 40)
         }
         titleHeaderView.setupLayout()
     }
@@ -186,8 +172,7 @@ extension FavoriteItemsViewController: Presenting {
         
         self.titleHeaderView.setupStyling()
         
-        self.refreshControl.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        self.tableView.refreshControl = self.refreshControl
-        self.refreshControl.layer.zPosition = -1
+        let refreshButton = UIBarButtonItem(systemItem: .refresh, primaryAction: nil, menu: nil)
+        self.navigationItem.rightBarButtonItem = refreshButton
     }
 }
