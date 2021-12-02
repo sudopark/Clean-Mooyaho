@@ -20,7 +20,8 @@ class LocalStorageTests_ItemCategory: BaseLocalStorageTests {
     
     private var dummyCategories: [ItemCategory] {
         return (0..<10).map {
-            return ItemCategory(name: "n:\($0)", colorCode: "color")
+            return ItemCategory(uid: "uid:\($0)", name: "n:\($0)",
+                                colorCode: "color", createdAt: .now() - (10-$0).asTimeStamp())
         }
     }
 }
@@ -61,7 +62,7 @@ extension LocalStorageTests_ItemCategory {
         let categories = self.waitFirstElement(expect, for: saveAndFind.asObservable())
         
         // then
-        XCTAssertEqual(categories?.map { $0.category }, dummies1)
+        XCTAssertEqual(categories?.map { $0.category }.map { $0.uid }, dummies1.map { $0.uid })
     }
     
     func test_loadLatestCategories() {
@@ -77,5 +78,49 @@ extension LocalStorageTests_ItemCategory {
         
         // then
         XCTAssertEqual(categories?.map { $0.category.uid }, dummies.reversed().map { $0.uid })
+    }
+    
+    func testStorage_loadCategories_withPaging() {
+        // given
+        let expect = expectation(description: "카테고리 페이징과함꼐 생성시간 역순으로 조회")
+        let dummies = self.dummyCategories
+        
+        // when
+        let save = self.local.updateCategories(dummies)
+        let load1 = self.local.fetchCategories(earilerThan: .now(), pageSize: 5)
+        let thenLoad2AndMerge: ([ItemCategory]) -> Maybe<[ItemCategory]> = { cates in
+            guard let last = cates.last else { return .just(cates) }
+            return self.local.fetchCategories(earilerThan: last.createdAt, pageSize: 5)
+                .map { cates + $0 }
+        }
+        let thenLoad3AndMerge: ([ItemCategory]) -> Maybe<[ItemCategory]> = { cates in
+            guard let last = cates.last else { return .just(cates) }
+            return self.local.fetchCategories(earilerThan: last.createdAt, pageSize: 5)
+                .map { cates + $0 }
+        }
+        let saveAndLoadAll = save.flatMap{ load1 }.flatMap(thenLoad2AndMerge).flatMap(thenLoad3AndMerge)
+        let items = self.waitFirstElement(expect, for: saveAndLoadAll.asObservable())
+        
+        // then
+        let ids = items?.map { $0.uid }
+        XCTAssertEqual(ids, dummies.reversed().map { $0.uid })
+    }
+    
+    func testStorage_saveAndDeleteCategory() {
+        // given
+        let expect = expectation(description: "저장된 카테고리 삭제")
+        let dummies = self.dummyCategories
+        let target = dummies.randomElement()!
+        
+        // when
+        let save = self.local.updateCategories(dummies)
+        let delete = self.local.deleteCategory(target.uid)
+        let load = self.local.fetchCategories(dummies.map { $0.uid })
+        let saveDeleteAndLoad = save.flatMap { delete }.flatMap { load }
+        let items = self.waitFirstElement(expect, for: saveDeleteAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, dummies.count-1)
+        XCTAssertEqual(items?.contains(where: { $0.uid == target.uid}), false)
     }
 }

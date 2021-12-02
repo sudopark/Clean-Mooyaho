@@ -20,6 +20,10 @@ public protocol ReadItemCategoryUsecase: AnyObject {
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+    
+    func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]>
+    
+    func deleteCategory(_ itemID: String) -> Maybe<Void>
 }
 
 extension ReadItemCategoryUsecase {
@@ -73,15 +77,37 @@ extension ReadItemCategoryUsecaseImple {
     
     public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         
-        let updateOnStore: () -> Void = { [weak self] in
+        return self.repository.updateCategories(categories)
+            .do(onNext: { [weak self] in
+                self?.updateOnStore(categories)
+            })
+    }
+    
+    public func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]> {
+        return self.repository.requestLoadCategories(earilerThan: createTime, pageSize: 30)
+            .do(onNext: { [weak self] categories in
+                self?.updateOnStore(categories)
+            })
+    }
+    
+    public func deleteCategory(_ itemID: String) -> Maybe<Void> {
+        
+        let removeFromStore: () -> Void = { [weak self] in
             guard let self = self else { return }
             let datKey = SharedDataKeys.categoriesMap.rawValue
             self.sharedService.update([String: ItemCategory].self, key: datKey) {
-                return categories.reduce($0 ?? [:]) { $0 |> key($1.uid) .~ $1 }
+                return ($0 ?? [:]) |> key(itemID) .~ nil
             }
         }
         
-        return self.repository.updateCategories(categories)
-            .do(onNext: updateOnStore)
+        return self.repository.requestDeleteCategory(itemID)
+            .do(onNext: removeFromStore)
+    }
+    
+    private func updateOnStore(_ categories: [ItemCategory]) -> Void {
+        let datKey = SharedDataKeys.categoriesMap.rawValue
+        self.sharedService.update([String: ItemCategory].self, key: datKey) {
+            return categories.reduce($0 ?? [:]) { $0 |> key($1.uid) .~ $1 }
+        }
     }
 }

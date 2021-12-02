@@ -220,6 +220,10 @@ public protocol ItemCategoryRemote: AuthorizationNeed {
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>
     
     func requestLoadLastestCategories() -> Maybe<[SuggestCategory]>
+    
+    func requestLoadCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
+    
+    func requestDeleteCategory(_ itemID: String) -> Maybe<Void>
 }
 
 // MARK: - BatchUploadRemote

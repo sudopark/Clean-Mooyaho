@@ -19,6 +19,7 @@ class StubItemCategoryRepository: ItemCategoryRepository {
         var localCategories: Result<[ItemCategory], Error> = .success([])
         var remoteCategories: Result<[ItemCategory], Error> = .success([])
         var latestCategories: Result<[SuggestCategory], Error> = .success([])
+        var loadWithPagingResult: Result<[ItemCategory], Error> = .success([])
     }
     
     private let scenario: Scenario
@@ -53,5 +54,15 @@ extension StubItemCategoryRepository {
             return .empty()
         }
         return .just(mocking)
+    }
+    
+    
+    func requestLoadCategories(earilerThan creatTime: TimeStamp,
+                               pageSize: Int) -> Maybe<[ItemCategory]> {
+        return self.scenario.loadWithPagingResult.asMaybe()
+    }
+    
+    func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
+        return .just()
     }
 }

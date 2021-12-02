@@ -33,4 +33,12 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
     public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return self.scenario.updateResult.asMaybe()
     }
+    
+    public func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]> {
+        return .empty()
+    }
+    
+    public func deleteCategory(_ itemID: String) -> Maybe<Void> {
+        return .empty()
+    }
 }

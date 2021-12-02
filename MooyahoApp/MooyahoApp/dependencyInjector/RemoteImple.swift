@@ -255,6 +255,14 @@ extension RemoteImple {
         return self.firebaseRemote.requestLoadLastestCategories()
     }
     
+    func requestLoadCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]> {
+        return self.firebaseRemote.requestLoadCategories(earilerThan: creatTime, pageSize: pageSize)
+    }
+    
+    func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
+        return self.firebaseRemote.requestDeleteCategory(itemID)
+    }
+    
     // memo
     func requestLoadMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
         return self.firebaseRemote.requestLoadMemo(for: linkItemID)

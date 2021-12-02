@@ -38,6 +38,7 @@ class ItemCategoryUsecaseTests: BaseTestCase, WaitObservableEvents {
         let scenario = StubItemCategoryRepository.Scenario()
             |> \.localCategories .~ .success(local)
             |> \.remoteCategories .~ .success(remote)
+            |> \.loadWithPagingResult .~ .success(remote)
             
         let stubRepositroy = StubItemCategoryRepository(scenario: scenario)
         let sharedStore = SharedDataStoreServiceImple()
@@ -129,5 +130,85 @@ extension ItemCategoryUsecaseTests {
         
         // then
         XCTAssertEqual(newcategory?.name, "new")
+    }
+}
+
+
+extension ItemCategoryUsecaseTests {
+    
+    func testUsecase_loadCategoriesWithPaging() {
+        // given
+        let expect = expectation(description: "카테고리 페이징으로 로드")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let loading = usecase.loadCategories(earilerThan: .now())
+        let items = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(items?.count, 10)
+    }
+    
+    func testUsecase_whenAfterLoadCategoriesWithPaging_updateStore() {
+        // given
+        let expect = expectation(description: "카테고리 페이징으로 로드한 이후에 데이터스토어 업데이트")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let source = self.spyStore
+            .observe([String: ItemCategory].self, key: SharedDataKeys.categoriesMap.rawValue)
+        let cateMap = self.waitFirstElement(expect, for: source) {
+            usecase.loadCategories(earilerThan: .now())
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(cateMap?.count, 10)
+    }
+    
+    func testUsecase_deleteCategory() {
+        // given
+        let expect = expectation(description: "아이템 카테고리 삭제")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let deleting = usecase.deleteCategory("some")
+        let result: Void? = self.waitFirstElement(expect, for: deleting.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testUsecase_whenAfterDeleteCategory_updateOnStore() {
+        // given
+        let expext = expectation(description: "아이템 카테고리 삭제 이후에 스토어 에서도 삭제")
+        expext.expectedFulfillmentCount = 2
+        
+        let usecase = self.makeUsecase()
+        let datKey = SharedDataKeys.categoriesMap
+        let dummy = ItemCategory.dummy(100); let dummy2 = ItemCategory.dummy(1)
+        self.spyStore.save([String: ItemCategory].self, key: datKey, [
+            dummy.uid: dummy, dummy2.uid: dummy2
+        ])
+        
+        // when
+        let source = self.spyStore.observeWithCache([String: ItemCategory].self, key: datKey.rawValue)
+            .compactMap { $0 }
+        let cateMaps = self.waitElements(expext, for: source) {
+            usecase.deleteCategory(dummy.uid)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        let firstMap = cateMaps.first
+        XCTAssertEqual(firstMap?.count, 2)
+        XCTAssertEqual(firstMap?[dummy.uid] != nil, true)
+        XCTAssertEqual(firstMap?[dummy2.uid] != nil, true)
+        
+        let secondMap = cateMaps.last
+        XCTAssertEqual(secondMap?.count, 1)
+        XCTAssertEqual(secondMap?[dummy.uid] != nil, false)
     }
 }

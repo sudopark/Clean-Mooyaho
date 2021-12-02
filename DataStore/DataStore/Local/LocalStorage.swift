@@ -176,6 +176,10 @@ public protocol ItemCategoryLocalStorage {
     func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]>
     
     func loadLatestCategories() -> Maybe<[SuggestCategory]>
+    
+    func fetchCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
+    
+    func deleteCategory(_ itemID: String) -> Maybe<Void>
 }
 
 public protocol ReadLinkMemoLocalStorage {
