@@ -15,7 +15,7 @@ import Optics
 
 // MARK: - ReadRemindUsecaseImple
 
-public final class ReadRemindUsecaseImple: ReadRemindUsecase, RemindOptionUsecase {
+public final class ReadRemindUsecaseImple: ReadRemindUsecase {
     
     private let authInfoProvider: AuthInfoProvider
     private let sharedStore: SharedDataStoreService
@@ -109,20 +109,6 @@ extension ReadRemindUsecaseImple {
     
     public func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void> {
         return self.messagingService.broadcastRemind(readReminder)
-    }
-}
-
-
-// MARK: - setting
-
-extension ReadRemindUsecaseImple {
-    
-    public func loadDefaultRemindTime() -> Maybe<RemindTime> {
-        return .empty()
-    }
-    
-    public func updateDefaultRemindTime(_ time: RemindTime) -> Maybe<Void> {
-        return .empty()
     }
 }
 

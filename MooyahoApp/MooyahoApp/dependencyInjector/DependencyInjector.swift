@@ -193,10 +193,6 @@ extension DependencyInjector {
         return self.remindUsecaseImple
     }
     
-    var remindOptionUsecase: RemindOptionUsecase {
-        return self.remindUsecaseImple
-    }
-    
     var memoUsecase: ReadLinkMemoUsecase {
         return ReadLinkMemoUsecaseImple(repository: self.appReposiotry)
     }
