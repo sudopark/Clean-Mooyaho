@@ -30,9 +30,6 @@ public protocol SettingMainRouting: Routing {
     
     func resumeUserDataMigration(for userID: String)
     
-    func changeDefaultRemindTime()
-    
-    func showScheduleReminds()
 }
 
 // MARK: - Routers
@@ -79,13 +76,5 @@ extension SettingMainRouter {
         
         next.isModalInPresentation = true
         self.currentScene?.present(next, animated: true, completion: nil)
-    }
-    
-    public func changeDefaultRemindTime() {
-        
-    }
-    
-    public func showScheduleReminds() {
-        
     }
 }

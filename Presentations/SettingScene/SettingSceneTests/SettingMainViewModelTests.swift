@@ -44,20 +44,14 @@ class SettingMainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubMemberUsecase = nil
     }
     
-    private func makeViewModel(with currentMember: Member?,
-                               remindTime: RemindTime = .default) -> SettingMainViewModel {
+    private func makeViewModel(with currentMember: Member?) -> SettingMainViewModel {
         
         let scenario = BaseStubMemberUsecase.Scenario()
             |> \.currentMember .~ currentMember
         let stubMemberUsecase = BaseStubMemberUsecase(scenario: scenario)
         self.stubMemberUsecase = stubMemberUsecase
         
-        let remindScenario = StubReadRemindUsecase.Scenario()
-            |> \.defaultRemindtime .~ remindTime
-        let stubRemindUsecase = StubReadRemindUsecase(scenario: remindScenario)
-        
         return SettingMainViewModelImple(memberUsecase: stubMemberUsecase,
-                                         remindOptionUsecase: stubRemindUsecase,
                                          router: self.spyRouter,
                                          listener: self.spyListener)
     }
@@ -83,11 +77,13 @@ extension SettingMainViewModelTests {
         let accountSectionItemIDs = accountSection?.cellViewModels.map { $0.itemID }
         let itemSection = sections?.first(where: { $0.sectionID == Section.items.rawValue })
         let itemSectionItemIDs = itemSection?.cellViewModels.map { $0.itemID }
-        let remindSection = sections?.first(where: { $0.sectionID == Section.remind.rawValue })
-        let remindSectionItemIDs = remindSection?.cellViewModels.map { $0.itemID }
-        XCTAssertEqual(accountSectionItemIDs, [Item.signIn.identifier])
-        XCTAssertEqual(itemSectionItemIDs, [Item.editCategories.identifier, Item.userDataMigration.identifier])
-        XCTAssertEqual(remindSectionItemIDs, [Item.defaultRemidTime(RemindTime.default).identifier, Item.scheduledReminders.identifier])
+        let serviceSection = sections?.first(where: { $0.sectionID == Section.service.rawValue })
+        let serviceSectionItemIDs = serviceSection?.cellViewModels.map { $0.itemID }
+        XCTAssertEqual(accountSectionItemIDs, [Item.signIn.typeName])
+        XCTAssertEqual(itemSectionItemIDs, [Item.editCategories.typeName, Item.userDataMigration.typeName])
+        XCTAssertEqual(serviceSectionItemIDs, [
+            Item.appVersion("").typeName, Item.feedback.typeName, Item.sourceCode.typeName
+        ])
     }
     
     func testViewModel_itemsWhenSignIn() {
@@ -105,14 +101,16 @@ extension SettingMainViewModelTests {
         let accountSectionItemIDs = accountSection?.cellViewModels.map { $0.itemID }
         let itemSection = sections?.first(where: { $0.sectionID == Section.items.rawValue })
         let itemSectionItemIDs = itemSection?.cellViewModels.map { $0.itemID }
-        let remindSection = sections?.first(where: { $0.sectionID == Section.remind.rawValue })
-        let remindSectionItemIDs = remindSection?.cellViewModels.map { $0.itemID }
-        XCTAssertEqual(accountSectionItemIDs, [Item.editProfile.identifier, Item.manageAccount.identifier])
-        XCTAssertEqual(itemSectionItemIDs, [Item.editCategories.identifier, Item.userDataMigration.identifier])
-        XCTAssertEqual(remindSectionItemIDs, [Item.defaultRemidTime(RemindTime.default).identifier, Item.scheduledReminders.identifier])
+        let serviceSection = sections?.first(where: { $0.sectionID == Section.service.rawValue })
+        let serviceSectionItemIDs = serviceSection?.cellViewModels.map { $0.itemID }
+        XCTAssertEqual(accountSectionItemIDs, [Item.editProfile.typeName, Item.manageAccount.typeName])
+        XCTAssertEqual(itemSectionItemIDs, [Item.editCategories.typeName, Item.userDataMigration.typeName])
+        XCTAssertEqual(serviceSectionItemIDs, [
+            Item.appVersion("").typeName, Item.feedback.typeName, Item.sourceCode.typeName
+        ])
         
         let migrationCell = sections?.flatMap { $0.cellViewModels }
-            .first(where: { $0.itemID == Item.userDataMigration.identifier })
+            .first(where: { $0.itemID == Item.userDataMigration.typeName })
         XCTAssertEqual(migrationCell?.isEnable, true)
     }
     
@@ -130,8 +128,8 @@ extension SettingMainViewModelTests {
         // then
         let memberSections = sectionLists.map { $0.filter{ $0.sectionID == Section.account.rawValue } }
         let (sectionSignOut, sectionSignIn) = (memberSections.first?.first, memberSections.last?.last)
-        XCTAssertEqual(sectionSignOut?.cellViewModels.map { $0.itemID }, [Item.signIn.identifier])
-        XCTAssertEqual(sectionSignIn?.cellViewModels.map { $0.itemID }, [Item.editProfile.identifier, Item.manageAccount.identifier])
+        XCTAssertEqual(sectionSignOut?.cellViewModels.map { $0.itemID }, [Item.signIn.typeName])
+        XCTAssertEqual(sectionSignIn?.cellViewModels.map { $0.itemID }, [Item.editProfile.typeName, Item.manageAccount.typeName])
     }
     
     func testViewModel_whenAfterSignOut_updateSections() {
@@ -148,8 +146,8 @@ extension SettingMainViewModelTests {
         // then
         let memberSections = sectionLists.map { $0.filter{ $0.sectionID == Section.account.rawValue } }
         let (sectionSignOut, sectionSignIn) = (memberSections.last?.first, memberSections.first?.last)
-        XCTAssertEqual(sectionSignOut?.cellViewModels.map { $0.itemID }, [Item.signIn.identifier])
-        XCTAssertEqual(sectionSignIn?.cellViewModels.map { $0.itemID }, [Item.editProfile.identifier, Item.manageAccount.identifier])
+        XCTAssertEqual(sectionSignOut?.cellViewModels.map { $0.itemID }, [Item.signIn.typeName])
+        XCTAssertEqual(sectionSignIn?.cellViewModels.map { $0.itemID }, [Item.editProfile.typeName, Item.manageAccount.typeName])
     }
     
     func testViewModel_updateMigrationSection_bySignIn() {
@@ -160,7 +158,7 @@ extension SettingMainViewModelTests {
         
         // when
         let migrationCellSource = viewModel.sections.map { $0.flatMap { $0.cellViewModels } }
-            .map { $0.first(where: { $0.itemID == Item.userDataMigration.identifier }) }
+            .map { $0.first(where: { $0.itemID == Item.userDataMigration.typeName }) }
         let cells = self.waitElements(expect, for: migrationCellSource) {
             self.stubMemberUsecase.currentMemberMocking.onNext(Member(uid: "some", nickName: nil, icon: nil))
             self.stubMemberUsecase.currentMemberMocking.onNext(nil)
@@ -174,37 +172,12 @@ extension SettingMainViewModelTests {
 
 extension SettingMainViewModelTests {
     
-    func testViewModel_showDefaultRemindTime() {
-        // given
-        let expect = expectation(description: "설정된 remind time 출력")
-        let viewmodel = self.makeViewModel(with: nil, remindTime: RemindTime(hour: 13, minute: 30))
-        
-        // when
-        let sections = self.waitFirstElement(expect, for: viewmodel.sections, skip: 1) {
-            viewmodel.refresh()
-        }
-        
-        // then
-        let remindCell = sections?.flatMap { $0.cellViewModels }
-            .first(where: { $0.itemID == Item.defaultRemidTime(.default).identifier })
-        if case let .accentValue(value) = remindCell?.accessory, value == "PM 01:30" {
-            
-        } else {
-            XCTFail("기대하는 값이 아님")
-        }
-    }
-    
-    // TODO: refresh remind time after update
-}
-
-extension SettingMainViewModelTests {
-    
     func testViewModel_requestRouteToEditProfile() {
         // given
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        viewModel.selectItem(Item.editProfile.identifier)
+        viewModel.selectItem(Item.editProfile.typeName)
         
         // then
         XCTAssertEqual(self.spyRouter.didMoveToEditProfile, true)
@@ -215,7 +188,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        viewModel.selectItem(Item.manageAccount.identifier)
+        viewModel.selectItem(Item.manageAccount.typeName)
         
         // then
         XCTAssertEqual(self.spyRouter.didMoveToManageAccount, true)
@@ -226,7 +199,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: nil)
         
         // when
-        viewModel.selectItem(Item.signIn.identifier)
+        viewModel.selectItem(Item.signIn.typeName)
         
         // then
         XCTAssertEqual(self.spyRouter.didMovetoSignIn, true)
@@ -237,7 +210,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        viewModel.selectItem(Item.editCategories.identifier)
+        viewModel.selectItem(Item.editCategories.typeName)
         
         // then
         XCTAssertEqual(self.spyRouter.didMoveToEditCategory, true)
@@ -248,32 +221,10 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        viewModel.selectItem(Item.userDataMigration.identifier)
+        viewModel.selectItem(Item.userDataMigration.typeName)
         
         // then
         XCTAssertEqual(self.spyRouter.didMoveToUserDataMigration, true)
-    }
-    
-    func testViewModel_requestRouteToDefaultRemindTime() {
-        // given
-        let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
-        
-        // when
-        viewModel.selectItem(Item.defaultRemidTime(.default).identifier)
-        
-        // then
-        XCTAssertEqual(self.spyRouter.didMoveToChangeDefaultRemindtime, true)
-    }
-    
-    func testViewModel_requestRouteToShowSceheduleTime() {
-        // given
-        let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
-        
-        // when
-        viewModel.selectItem(Item.scheduledReminders.identifier)
-        
-        // then
-        XCTAssertEqual(self.spyRouter.didMoveToShowScheduleRemind, true)
     }
 }
 
@@ -310,11 +261,6 @@ extension SettingMainViewModelTests {
         var didMoveToChangeDefaultRemindtime = false
         func changeDefaultRemindTime() {
             self.didMoveToChangeDefaultRemindtime = true
-        }
-        
-        var didMoveToShowScheduleRemind = false
-        func showScheduleReminds() {
-            self.didMoveToShowScheduleRemind = true
         }
     }
 }

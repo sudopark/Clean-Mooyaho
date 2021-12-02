@@ -43,7 +43,7 @@ public protocol SettingMainViewModel: AnyObject {
 
     // interactor
     func refresh()
-    func selectItem(_ itemID: String)
+    func selectItem(_ typeName: String)
     
     // presenter
     var sections: Observable<[SettingItemSection]> { get }
@@ -55,17 +55,14 @@ public protocol SettingMainViewModel: AnyObject {
 public final class SettingMainViewModelImple: SettingMainViewModel {
     
     private let memberUsecase: MemberUsecase
-    private let remindOptionUsecase: RemindOptionUsecase
     private let router: SettingMainRouting
     private weak var listener: SettingMainSceneListenable?
     
     public init(memberUsecase: MemberUsecase,
-                remindOptionUsecase: RemindOptionUsecase,
                 router: SettingMainRouting,
                 listener: SettingMainSceneListenable?) {
         
         self.memberUsecase = memberUsecase
-        self.remindOptionUsecase = remindOptionUsecase
         self.router = router
         self.listener = listener
         
@@ -80,7 +77,7 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
     enum Section: String {
         case account
         case items
-        case remind
+        case service
     }
     
     enum Item {
@@ -88,15 +85,14 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
         case manageAccount
         case signIn
         case editCategories
-//        case editSortOptions
         case userDataMigration
-        case defaultRemidTime(RemindTime)
-        case scheduledReminders
+        case appVersion(String)
+        case feedback
+        case sourceCode
     }
     
     fileprivate final class Subjects {
         
-        let defaultRemindTime = BehaviorRelay<RemindTime>(value: RemindTime.default)
         let currentMember = BehaviorRelay<Member?>(value: nil)
     }
     
@@ -118,45 +114,34 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
 
 extension SettingMainViewModelImple {
  
-    public func refresh() {
-        
-        self.reloadRemindTime()
-    }
+    public func refresh() { }
     
-    private func reloadRemindTime() {
-        
-        let updateTime: (RemindTime) -> Void = { time in
-            self.subjects.defaultRemindTime.accept(time)
-        }
-        self.remindOptionUsecase
-            .loadDefaultRemindTime()
-            .subscribe(onSuccess: updateTime)
-            .disposed(by: self.disposeBag)
-    }
-    
-    public func selectItem(_ itemID: String) {
-        switch itemID {
-        case Item.editProfile.identifier:
+    public func selectItem(_ typeName: String) {
+        switch typeName {
+        case Item.editProfile.typeName:
             self.router.editProfile()
             
-        case Item.manageAccount.identifier:
+        case Item.manageAccount.typeName:
             self.router.manageAccount()
             
-        case Item.signIn.identifier:
+        case Item.signIn.typeName:
             self.router.requestSignIn()
             
-        case Item.editCategories.identifier:
+        case Item.editCategories.typeName:
             self.router.editItemsCategory()
             
-        case Item.userDataMigration.identifier:
+        case Item.userDataMigration.typeName:
             guard let member = self.subjects.currentMember.value else { return }
             self.router.resumeUserDataMigration(for: member.uid)
             
-        case Item.defaultRemidTime(RemindTime.default).identifier:
-            self.router.changeDefaultRemindTime()
+        case Item.appVersion("").typeName:
+            break
             
-        case Item.scheduledReminders.identifier:
-            self.router.showScheduleReminds()
+        case Item.feedback.typeName:
+            break
+            
+        case Item.sourceCode.typeName:
+            break
             
         default: break
         }
@@ -170,20 +155,19 @@ extension SettingMainViewModelImple {
     
     public var sections: Observable<[SettingItemSection]> {
         
-        let asSections: (Member?, RemindTime) -> [SettingItemSection]?
-        asSections = { [weak self] member, remindTime in
+        let asSections: (Member?) -> [SettingItemSection]?
+        asSections = { [weak self] member in
             guard let self = self else { return nil }
             let accountSection = self.accountSection(for: member)
             let itemSection = self.itemSection(for: member)
-            let remindSection = self.remindSection(remindTime)
+            let serviceSection = self.serviceSection()
             return [
-                accountSection, itemSection, remindSection
+                accountSection, itemSection, serviceSection
             ]
         }
         
-        return Observable
-            .combineLatest(self.memberUsecase.currentMember, self.subjects.defaultRemindTime,
-                           resultSelector: asSections)
+        return self.memberUsecase.currentMember
+            .map(asSections)
             .compactMap { $0 }
             .distinctUntilChanged()
     }
@@ -202,12 +186,14 @@ extension SettingMainViewModelImple {
         return SettingItemSection(section: .items, with: cells)
     }
     
-    private func remindSection(_ remindTime: RemindTime) -> SettingItemSection {
+    private func serviceSection() -> SettingItemSection {
+        // TODO: load app version
         let cells: [SettingItemCellViewModel] = [
-            Item.defaultRemidTime(remindTime).asCellViewModel(),
-            Item.scheduledReminders.asCellViewModel()
+            Item.appVersion("some").asCellViewModel(),
+            Item.feedback.asCellViewModel(),
+            Item.sourceCode.asCellViewModel()
         ]
-        return SettingItemSection(section: .remind, with: cells)
+        return SettingItemSection(section: .service, with: cells)
     }
 }
 
@@ -223,15 +209,16 @@ private extension SettingItemSection {
 
 extension SettingMainViewModelImple.Item {
     
-    var identifier: String {
+    var typeName: String {
         switch self {
         case .editProfile: return "editProfile"
         case .manageAccount: return "manageAccount"
         case .signIn: return "signIn"
         case .editCategories: return "editCategories"
         case .userDataMigration: return "userDataMigration"
-        case .defaultRemidTime: return "defaultRemidTime"
-        case .scheduledReminders: return "scheduledReminders"
+        case .appVersion: return "appVersion"
+        case .feedback: return "feedback"
+        case .sourceCode: return "sourceCode"
         }
     }
     
@@ -242,20 +229,21 @@ extension SettingMainViewModelImple.Item {
         case .signIn: return "Signin".localized
         case .editCategories: return "Manage item category".localized
         case .userDataMigration: return "Manage temporary user data migration".localized
-        case .defaultRemidTime: return "Default remind time".localized
-        case .scheduledReminders: return "Scheduled reminds".localized
+        case .appVersion: return "App version".localized
+        case .feedback: return "Feedback".localized
+        case .sourceCode: return "Source code".localized
         }
     }
     
     private var accessory: SettingItemCellViewModel.Accessory {
         switch self {
-        case let .defaultRemidTime(time): return .accentValue(time.asText)
+        case let .appVersion(version): return .accentValue(version)
         default: return .disclosure
         }
     }
     
     func asCellViewModel(isEnable: Bool = true) -> SettingItemCellViewModel {
-        return SettingItemCellViewModel(itemID: self.identifier, title: self.title)
+        return SettingItemCellViewModel(itemID: self.typeName, title: self.title)
             |> \.accessory .~ self.accessory
             |> \.isEnable .~ isEnable
     }
@@ -267,28 +255,7 @@ extension SettingMainViewModelImple.Section {
         switch self {
         case .account: return "Account"
         case .items: return "Items"
-        case .remind: return "Remind"
+        case .service: return "Service"
         }
-    }
-}
-
-private extension RemindTime {
-    
-    var asText: String {
-        let date = self.asDate() ?? Date()
-        return date.asText()
-    }
-    
-    private func asDate() -> Date? {
-        return Calendar.current.date(bySettingHour: self.hour, minute: self.minute, second: 0, of: Date())
-    }
-}
-
-private extension Date {
-    
-    func asText() -> String {
-        let form = DateFormatter()
-        form.dateFormat = "a hh:mm"
-        return form.string(from: self)
     }
 }
