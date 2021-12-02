@@ -29,11 +29,13 @@ public struct SuggestingCategoryCellViewModel: SuggestingCategoryCellViewModelTy
     public let uid: String
     public let name: String
     public let colorCode: String
+    public let createdAt: TimeStamp
     
     public init(_ category: ItemCategory) {
         self.uid = category.uid
         self.name = category.name
         self.colorCode = category.colorCode
+        self.createdAt = category.createdAt
     }
     
     public var customCompareKey: Int {
@@ -242,7 +244,7 @@ extension EditCategoryViewModelImple {
     public func confirmSelect() {
         
         let selectedCategories = self.subjects.selectedMap.value.cellViewModels.map {
-            ItemCategory(uid: $0.uid, name: $0.name, colorCode: $0.colorCode)
+            ItemCategory(uid: $0.uid, name: $0.name, colorCode: $0.colorCode, createdAt: $0.createdAt)
         }
         
         self.router.closeScene(animated: true) { [weak self] in

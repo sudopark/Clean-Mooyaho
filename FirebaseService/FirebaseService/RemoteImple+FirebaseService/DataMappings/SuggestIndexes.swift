@@ -95,7 +95,8 @@ extension SuggestIndex {
     func asSuggestCategory() -> SuggestCategory? {
         
         guard let code = self.additionalValue else { return nil }
-        let category = ItemCategory(uid: self.indexID, name: self.keyword, colorCode: code)
+        let category = ItemCategory(uid: self.indexID, name: self.keyword,
+                                    colorCode: code, createdAt: self.lastUpdated)
         return .init(ownerID: self.ownerID, category: category, lastUpdated: self.lastUpdated)
     }
 }

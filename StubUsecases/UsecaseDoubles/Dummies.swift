@@ -132,7 +132,8 @@ extension ItemCategory {
     
     public static func dummy(_ int: Int) -> ItemCategory {
         
-        return  ItemCategory(uid: "c:\(int)", name: "n:\(int)", colorCode: "code:\(int)")
+        return  ItemCategory(uid: "c:\(int)", name: "n:\(int)",
+                             colorCode: "code:\(int)", createdAt: .now() + int.asTimeStamp())
     }
 }
 
