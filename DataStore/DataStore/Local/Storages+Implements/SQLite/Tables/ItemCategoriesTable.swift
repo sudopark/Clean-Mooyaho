@@ -18,7 +18,8 @@ extension ItemCategory: RowValueType {
     public init(_ cursor: CursorIterator) throws {
         self.init(uid: try cursor.next().unwrap(),
                   name: try cursor.next().unwrap(),
-                  colorCode: try cursor.next().unwrap())
+                  colorCode: try cursor.next().unwrap(),
+                  createdAt: try cursor.next().unwrap())
     }
 }
 
@@ -28,12 +29,14 @@ struct ItemCategoriesTable: Table {
         case itemID
         case name
         case colorCode
+        case createAt = "created_at"
         
         var dataType: ColumnDataType {
             switch self {
             case .itemID: return .text([.primaryKey(autoIncrement: false), .notNull])
             case .name: return .text([.notNull])
             case .colorCode: return .text([.notNull])
+            case .createAt: return .real([.notNull])
             }
         }
     }
@@ -48,6 +51,7 @@ struct ItemCategoriesTable: Table {
         case .itemID: return entity.uid
         case .name: return entity.name
         case .colorCode: return entity.colorCode
+        case .createAt: return entity.createdAt
         }
     }
 }

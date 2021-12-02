@@ -279,8 +279,9 @@ extension EditReadCollectionViewModelTests {
         }
         
         // then
-        XCTAssertEqual(categories, [
-            [], [.dummy(0)]
+        let ids = categories.map { $0.map { $0.uid } }
+        XCTAssertEqual(ids, [
+            [], ["c:0"]
         ])
     }
     
@@ -300,7 +301,8 @@ extension EditReadCollectionViewModelTests {
         }
         
         // then
-        XCTAssertEqual(self.didRequestStartWithCategories, [.dummy(0)])
+        let didSelectedIDs = self.didRequestStartWithCategories?.map { $0.uid }
+        XCTAssertEqual(didSelectedIDs, ["c:0"])
     }
     
     func testViewModel_makeColelctionWithSelectedCategories() {

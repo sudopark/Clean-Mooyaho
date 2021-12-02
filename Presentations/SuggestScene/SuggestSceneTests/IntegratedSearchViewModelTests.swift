@@ -65,8 +65,8 @@ class IntegratedSearchViewModelTests: BaseTestCase, WaitObservableEvents {
         
         let scenario = StubItemCategoryUsecase.Scenario()
             |> \.categories .~ [[
-                ItemCategory(uid: "1", name: "n", colorCode: "c"),
-                ItemCategory(uid: "2", name: "n2", colorCode: "c2")
+                ItemCategory(uid: "1", name: "n", colorCode: "c", createdAt: .now()),
+                ItemCategory(uid: "2", name: "n2", colorCode: "c2", createdAt: .now())
             ]]
         let categoryUsecase = StubItemCategoryUsecase(scenario: scenario)
         

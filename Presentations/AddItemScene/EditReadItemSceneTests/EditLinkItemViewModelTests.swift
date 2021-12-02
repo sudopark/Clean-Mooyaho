@@ -319,7 +319,8 @@ extension EditLinkItemViewModelTests_makeNew {
         }
         
         // then
-        XCTAssertEqual(categories, [.dummy(0)])
+        let ids = categories?.map { $0.uid }
+        XCTAssertEqual(ids, ["c:0"])
     }
     
     func testViewModel_changeSelectedCategories() {
@@ -338,9 +339,11 @@ extension EditLinkItemViewModelTests_makeNew {
         }
         
         // then
-        XCTAssertEqual(categoryLists.first, [.dummy(0)])
-        XCTAssertEqual(categoryLists.last, [.dummy(0), .dummy(1)])
-        XCTAssertEqual(self.didSelectCategoriesStartWith, [.dummy(0)])
+        let firstIDs = categoryLists.first?.map { $0.uid }
+        let lastIDs = categoryLists.last?.map { $0.uid }
+        XCTAssertEqual(firstIDs, ["c:0"])
+        XCTAssertEqual(lastIDs, ["c:0", "c:1"])
+        XCTAssertEqual(self.didSelectCategoriesStartWith?.map { $0.uid }, ["c:0"])
     }
 }
 

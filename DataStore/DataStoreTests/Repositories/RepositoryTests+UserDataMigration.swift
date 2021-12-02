@@ -78,7 +78,7 @@ extension RepositoryTests_UserDataMigration {
 extension RepositoryTests_UserDataMigration {
     
     private func dummyCategories(_ range: Range<Int>) -> [ItemCategory] {
-        return range.map { ItemCategory(uid: "\($0)", name: "", colorCode: "") }
+        return range.map { ItemCategory(uid: "\($0)", name: "", colorCode: "", createdAt: .now()) }
     }
     
     private func mockItemCategories(_ range: Range<Int>) {

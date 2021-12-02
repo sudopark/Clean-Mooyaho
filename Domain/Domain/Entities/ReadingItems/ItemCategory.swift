@@ -17,17 +17,20 @@ public struct ItemCategory: Equatable {
     public let name: String
     public let colorCode: String
     public var ownerID: String?
+    public let createdAt: TimeStamp
     
-    public init(uid: String, name: String, colorCode: String) {
+    public init(uid: String, name: String, colorCode: String, createdAt: TimeStamp) {
         self.uid = uid
         self.name = name
         self.colorCode = colorCode
+        self.createdAt = createdAt
     }
     
     public init(name: String, colorCode: String) {
         self.uid = "\(Self.categoryPrefix):\(UUID().uuidString)"
         self.name = name
         self.colorCode = colorCode
+        self.createdAt = .now()
     }
 }
 

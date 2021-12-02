@@ -21,7 +21,7 @@ import DataStore
 class LocalStorageTests_ReadItem: BaseLocalStorageTests {
     
     private var dummyCategories: [ItemCategory] {
-        return (0..<3).map{ .init(uid: "c:\($0)", name: "n:\($0)", colorCode: "$0") }
+        return (0..<3).map{ .init(uid: "c:\($0)", name: "n:\($0)", colorCode: "$0", createdAt: .now()) }
     }
     
     private func collection(at int: Int, parent: String? = nil) -> ReadCollection {
