@@ -198,6 +198,104 @@ extension RepositoryTests_ItemCategory {
     }
 }
 
+extension RepositoryTests_ItemCategory {
+    
+    func testRepo_loadWithPaging_witoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 카테고리 페이징 조회")
+        self.mockLocal.register(key: "fetchCategories:earilerThan") {
+            Maybe<[ItemCategory]>.just([.init(name: "some", colorCode: "c")])
+        }
+        
+        // when
+        let load = self.repository.requestLoadCategories(earilerThan: .now(), pageSize: 30)
+        let categories = self.waitFirstElement(expect, for: load.asObservable())
+        
+        // then
+        XCTAssertEqual(categories?.count, 1)
+    }
+    
+    func testRepo_deleteCategory_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 카테고리 삭제")
+        self.mockLocal.register(key: "deleteCategory") { Maybe<Void>.just() }
+        
+        // when
+        let delete = self.repository.requestDeleteCategory("some")
+        let result: Void? = self.waitFirstElement(expect, for: delete.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepo_loadWithPaging_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인상태에서 카테고리 페이징으로 로드")
+        self.mockRemote.register(key: "requestLoadCategories:earilerThan") {
+            Maybe<[ItemCategory]>.just([.init(name: "some", colorCode: "c")])
+        }
+        
+        // when
+        let load = self.repository.requestLoadCategories(earilerThan: .now(), pageSize: 30)
+        let categories = self.waitFirstElement(expect, for: load.asObservable())
+        
+        // then
+        XCTAssertEqual(categories?.count, 1)
+    }
+    
+    func testRepo_whenLoadWithPagingWithSignIn_updateLocal() {
+        // given
+        let expect = expectation(description: "로그인상태에서 카테고리 페이징으로 로드사에 로컬에도 저장")
+        self.mockRemote.register(key: "requestLoadCategories:earilerThan") {
+            Maybe<[ItemCategory]>.just([.init(name: "some", colorCode: "c")])
+        }
+        self.mockLocal.register(key: "updateCategories") { Maybe<Void>.just() }
+        self.mockLocal.called(key: "updateCategories") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestLoadCategories(earilerThan: .now(), pageSize: 30)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepo_deleteCategory_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 카테고리 삭제")
+        self.mockRemote.register(key: "requestDeleteCategory") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "deleteCategory") { Maybe<Void>.just() }
+        
+        // when
+        let delete = self.repository.requestDeleteCategory("some")
+        let result: Void? = self.waitFirstElement(expect, for: delete.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepo_whenDeleteCategory_alsoDeleteFromLocal() {
+        // given
+        let expect = expectation(description: "로그인상태에서 카테고리 삭제시에 로컬에도 삭제")
+        self.mockRemote.register(key: "requestDeleteCategory") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "deleteCategory") { Maybe<Void>.just() }
+        self.mockLocal.called(key: "deleteCategory") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestDeleteCategory("some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
 
 extension RepositoryTests_ItemCategory {
     

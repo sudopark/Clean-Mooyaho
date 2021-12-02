@@ -16,6 +16,14 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestLoadCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]> {
+        return .empty()
+    }
+    
+    func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestSuggestNextReadItems(for memberID: String, size: Int) -> Maybe<[ReadItem]> {
         return .empty()
     }

@@ -48,4 +48,29 @@ extension ItemCategoryRepository where Self: ItemCategoryRepositoryDefImpleDepen
         let loadFromLocal = self.categoryLocal.loadLatestCategories()
         return loadFromRemote.ifEmpty(switchTo: loadFromLocal)
     }
+    
+    public func requestLoadCategories(earilerThan creatTime: TimeStamp,
+                                      pageSize: Int) -> Maybe<[ItemCategory]> {
+        
+        let updateLocal: ([ItemCategory]) -> Void = { [weak self] categories in
+            guard let self = self else { return }
+            self.updateCategories(categories)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        let loadFromRemote = self.categoryRemote
+            .requestLoadCategories(earilerThan: creatTime, pageSize: pageSize)
+            .do(onNext: updateLocal)
+                
+        let loadFromLocal = self.categoryLocal
+            .fetchCategories(earilerThan: creatTime, pageSize: pageSize)
+        return loadFromRemote.ifEmpty(switchTo: loadFromLocal)
+    }
+    
+    public func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
+        let deleteFromRemote = self.categoryRemote.requestDeleteCategory(itemID)
+        let deleteFromLocal = { [weak self] in self?.categoryLocal.deleteCategory(itemID) ?? .empty() }
+        return deleteFromRemote.switchOr(append: deleteFromLocal, witoutError: ())
+    }
 }

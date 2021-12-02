@@ -23,5 +23,8 @@ public protocol ItemCategoryRepository {
     
     func loadLatestCategories() -> Maybe<[SuggestCategory]>
     
-//    func removeCategory(_ category: ItemCategory) -> Maybe<Void>
+    func requestLoadCategories(earilerThan creatTime: TimeStamp,
+                               pageSize: Int) -> Maybe<[ItemCategory]>
+    
+    func requestDeleteCategory(_ itemID: String) -> Maybe<Void>
 }

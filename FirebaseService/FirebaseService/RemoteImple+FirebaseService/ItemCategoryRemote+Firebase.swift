@@ -97,4 +97,21 @@ extension FirebaseServiceImple {
         let indexes: Maybe<[SuggestIndex]> = self.load(query: query)
         return indexes.map { $0.compactMap { $0.asSuggestCategory() } }
     }
+    
+    public func requestLoadCategories(earilerThan creatTime: TimeStamp,
+                                      pageSize: Int) -> Maybe<[ItemCategory]> {
+        guard self.signInMemberID != nil else {
+            return .empty()
+        }
+        let collectionRef = self.fireStoreDB.collection(.itemCategory)
+        let query = collectionRef
+            .order(by: Key.createdAt.rawValue, descending: true)
+            .whereField(Key.createdAt.rawValue, isLessThan: creatTime)
+            .limit(to: pageSize)
+        return self.load(query: query)
+    }
+    
+    public func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
+        return self.delete(itemID, at: .itemCategory)
+    }
 }

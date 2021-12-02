@@ -134,7 +134,8 @@ extension LinkPreview {
 extension ItemCategory {
     
     static func dummy(_ int: Int) -> ItemCategory {
-        return ItemCategory(uid: "cate:\(int)", name: "name:\(int)", colorCode: "color:\(int)")
+        return ItemCategory(uid: "cate:\(int)", name: "name:\(int)",
+                            colorCode: "color:\(int)", createdAt: .now())
     }
 }
 

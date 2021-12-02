@@ -246,7 +246,11 @@ class MockLocal: LocalStorage, Mocking {
     }
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
-        return self.resolve(key: "updateCategories") ?? .empty()
+        let sender: Maybe<Void> = self.resolve(key: "updateCategories") ?? .empty()
+        return sender
+            .do(onNext: {
+                self.verify(key: "updateCategories")
+            })
     }
     
     func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
@@ -255,6 +259,18 @@ class MockLocal: LocalStorage, Mocking {
     
     func loadLatestCategories() -> Maybe<[SuggestCategory]> {
         return self.resolve(key: "loadLatestCategories") ?? .empty()
+    }
+    
+    func fetchCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]> {
+        return self.resolve(key: "fetchCategories:earilerThan") ?? .empty()
+    }
+    
+    func deleteCategory(_ itemID: String) -> Maybe<Void> {
+        let sender: Maybe<Void> = self.resolve(key: "deleteCategory") ?? .empty()
+        return sender
+            .do(onNext: {
+                self.verify(key: "deleteCategory")
+            })
     }
     
     func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {

@@ -88,6 +88,10 @@ public protocol DataModelStorage {
     
     func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
     
+    func fetchCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
+    
+    func deleteCategory(_ itemID: String) -> Maybe<Void>
+    
     func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
     
     func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void>
@@ -757,6 +761,23 @@ extension DataModelStorageImple {
     public func fetchLatestItemCategories() -> Maybe<[ItemCategory]> {
         let query = ItemCategoriesTable.selectAll().limit(100).orderBy("rowid", isAscending: false)
         return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func fetchCategories(earilerThan creatTime: TimeStamp,
+                                pageSize: Int) -> Maybe<[ItemCategory]> {
+        
+        let query = ItemCategoriesTable
+            .selectAll { $0.createAt < creatTime }
+            .orderBy(isAscending: false) { $0.createAt }
+            .limit(pageSize)
+        
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func deleteCategory(_ itemID: String) -> Maybe<Void> {
+        let query = ItemCategoriesTable.delete()
+            .where { $0.itemID == itemID }
+        return self.sqliteService.rx.run { try $0.delete(ItemCategoriesTable.self, query: query) }
     }
 }
 
