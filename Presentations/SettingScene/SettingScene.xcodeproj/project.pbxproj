@@ -26,6 +26,13 @@
 		F638A5F7273C7388005A7EA9 /* SettingMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */; };
 		F638A5F8273C7388005A7EA9 /* SettingMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F3273C7388005A7EA9 /* SettingMainViewModel.swift */; };
 		F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */; };
+		F66248FE275945E400D4FC74 /* ManageCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */; };
+		F66249002759484600D4FC74 /* CategoryPagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FF2759484600D4FC74 /* CategoryPagingUsecase.swift */; };
+		F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */; };
+		F69FFD7A275920D300D9DF05 /* ManageCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */; };
+		F69FFD7B275920D300D9DF05 /* ManageCategoryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */; };
+		F69FFD7C275920D300D9DF05 /* ManageCategoryScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */; };
+		F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +67,13 @@
 		F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainScene.swift; sourceTree = "<group>"; };
 		F638A5F3273C7388005A7EA9 /* SettingMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewModel.swift; sourceTree = "<group>"; };
 		F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewModelTests.swift; sourceTree = "<group>"; };
+		F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewModelTests.swift; sourceTree = "<group>"; };
+		F66248FF2759484600D4FC74 /* CategoryPagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPagingUsecase.swift; sourceTree = "<group>"; };
+		F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryRouter.swift; sourceTree = "<group>"; };
+		F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewController.swift; sourceTree = "<group>"; };
+		F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryBuilder.swift; sourceTree = "<group>"; };
+		F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryScene.swift; sourceTree = "<group>"; };
+		F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +136,7 @@
 			children = (
 				F638A5EE273C7378005A7EA9 /* Main */,
 				F6118D83273D617400E0489B /* Migration */,
+				F69FFD73275920B300D9DF05 /* ManageCategory */,
 				F62271C9273C720100AF76C1 /* SettingScene.h */,
 			);
 			path = SettingScene;
@@ -133,6 +148,7 @@
 				F62271D3273C720100AF76C1 /* SettingSceneTests.swift */,
 				F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */,
 				F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */,
+				F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */,
 			);
 			path = SettingSceneTests;
 			sourceTree = "<group>";
@@ -160,6 +176,19 @@
 				F638A5F3273C7388005A7EA9 /* SettingMainViewModel.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		F69FFD73275920B300D9DF05 /* ManageCategory */ = {
+			isa = PBXGroup;
+			children = (
+				F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */,
+				F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */,
+				F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */,
+				F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */,
+				F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */,
+				F66248FF2759484600D4FC74 /* CategoryPagingUsecase.swift */,
+			);
+			path = ManageCategory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,11 +303,17 @@
 				F638A5F5273C7388005A7EA9 /* SettingMainViewController.swift in Sources */,
 				F638A5F7273C7388005A7EA9 /* SettingMainScene.swift in Sources */,
 				F638A5F4273C7388005A7EA9 /* SettingMainRouter.swift in Sources */,
+				F69FFD7B275920D300D9DF05 /* ManageCategoryBuilder.swift in Sources */,
 				F6118D8D273D61AE00E0489B /* WaitMigrationRouter.swift in Sources */,
+				F69FFD7C275920D300D9DF05 /* ManageCategoryScene.swift in Sources */,
 				F638A5F8273C7388005A7EA9 /* SettingMainViewModel.swift in Sources */,
+				F69FFD7A275920D300D9DF05 /* ManageCategoryViewController.swift in Sources */,
 				F6118D8A273D61AE00E0489B /* WaitMigrationViewModel.swift in Sources */,
 				F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */,
 				F6118D89273D61AE00E0489B /* WaitMigrationViewController.swift in Sources */,
+				F66249002759484600D4FC74 /* CategoryPagingUsecase.swift in Sources */,
+				F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */,
+				F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +324,7 @@
 				F6118D8F273D658A00E0489B /* WaitMigrationViewModelTests.swift in Sources */,
 				F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */,
 				F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */,
+				F66248FE275945E400D4FC74 /* ManageCategoryViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

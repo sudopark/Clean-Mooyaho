@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - SharedCollectionItemsViewController
 
-public final class SharedCollectionItemsViewController: BaseViewController, SharedCollectionItemsScene, ReadCollectionTtileHeaderViewSupporting {
+public final class SharedCollectionItemsViewController: BaseViewController, SharedCollectionItemsScene, ShrinkableTtileHeaderViewSupporting {
     
     typealias CVM = ReadItemCellViewModel
     typealias Section = SectionModel<String, CVM>

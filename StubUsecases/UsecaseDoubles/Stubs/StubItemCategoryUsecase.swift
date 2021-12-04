@@ -17,10 +17,11 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
     public struct Scenario {
         public var categories: [[ItemCategory]] = []
         public var updateResult: Result<Void, Error> = .success(())
+        public var categoriesWithPaging: [[ItemCategory]] = []
         
         public init () {}
     }
-    private let scenario: Scenario
+    private var scenario: Scenario
     public init(scenario: Scenario = Scenario()) {
         self.scenario = scenario
     }
@@ -35,10 +36,12 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
     }
     
     public func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]> {
-        return .empty()
+        guard self.scenario.categoriesWithPaging.isNotEmpty else { return .just([]) }
+        let first = self.scenario.categoriesWithPaging.removeFirst()
+        return .just(first)
     }
     
     public func deleteCategory(_ itemID: String) -> Maybe<Void> {
-        return .empty()
+        return .just()
     }
 }
