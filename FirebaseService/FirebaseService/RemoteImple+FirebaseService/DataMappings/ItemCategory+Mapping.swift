@@ -7,6 +7,9 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 import Domain
 
 
@@ -15,6 +18,7 @@ enum CategoryMappingKey: String, JSONMappingKeys {
     case name = "nm"
     case colorCode = "cc"
     case createdAt = "ct"
+    case ownerID = "oid"
 }
 
 private typealias Key = CategoryMappingKey
@@ -27,16 +31,18 @@ extension ItemCategory: DocumentMappable {
     init?(docuID: String, json: JSON) {
         guard let name = json[Key.name] as? String,
               let code = json[Key.colorCode] as? String,
-              let createdAt = json[Key.createdAt] as? TimeStamp else { return nil }
+              let createdAt = json[Key.createdAt] as? TimeStamp,
+              let ownerID = json[Key.ownerID] as? String else { return nil }
         self.init(uid: docuID, name: name, colorCode: code, createdAt: createdAt)
+        self.ownerID = ownerID
     }
     
     func asDocument() -> (String, JSON) {
-        let json: JSON = [
-            Key.name.rawValue: self.name,
-            Key.colorCode.rawValue: self.colorCode,
-            Key.createdAt.rawValue: self.createdAt
-        ]
+        var json: JSON = [:]
+        json[Key.name] = self.name
+        json[Key.colorCode] = self.colorCode
+        json[Key.createdAt] = self.createdAt
+        json[Key.ownerID] = self.ownerID
         return (self.uid, json)
     }
 }
