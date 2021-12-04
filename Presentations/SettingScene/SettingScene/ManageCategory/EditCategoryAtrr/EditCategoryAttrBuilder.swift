@@ -13,6 +13,7 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
@@ -20,6 +21,7 @@ import CommonPresenting
 
 public protocol EditCategoryAttrSceneBuilable {
     
-    func makeEditCategoryAttrScene(listener: EditCategoryAttrSceneListenable?) -> EditCategoryAttrScene
+    func makeEditCategoryAttrScene(category: ItemCategory,
+                                   listener: EditCategoryAttrSceneListenable?) -> EditCategoryAttrScene
 }
 

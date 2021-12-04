@@ -11,14 +11,20 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - EditCategoryAttrScene Interactable & Listenable
 
-public protocol EditCategoryAttrSceneInteractable { }
+public protocol EditCategoryAttrSceneInteractable: ColorSelectSceneListenable { }
 
-public protocol EditCategoryAttrSceneListenable: AnyObject { }
+public protocol EditCategoryAttrSceneListenable: AnyObject {
+    
+    func editCategory(didDeleted categoryID: String)
+    
+    func editCategory(didChaged category: ItemCategory)
+}
 
 
 // MARK: - EditCategoryAttrScene

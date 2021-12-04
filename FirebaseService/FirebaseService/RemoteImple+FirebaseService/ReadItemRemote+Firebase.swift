@@ -206,6 +206,8 @@ extension FirebaseServiceImple {
         
         guard self.signInMemberID != nil else { return .empty() }
         
+        guard ids.isNotEmpty else { return .just([]) }
+        
         let collectionQuery = self.fireStoreDB.collection(.readCollection)
             .whereField(FieldPath.documentID(), in: ids)
         let loadCollections: Maybe<[ReadCollection]> = self.load(query: collectionQuery)
@@ -214,6 +216,8 @@ extension FirebaseServiceImple {
             guard let self = self else { return .empty() }
             let collectionIDs = Set(collections.map { $0.uid })
             let restIDs = ids.filter { collectionIDs.contains($0) == false }
+            guard restIDs.isNotEmpty else { return .just([]) }
+            
             let linksQuery = self.fireStoreDB.collection(.readLinks)
                 .whereField(FieldPath.documentID(), in: restIDs)
             let links: Maybe<[ReadLink]> = self.load(query: linksQuery)

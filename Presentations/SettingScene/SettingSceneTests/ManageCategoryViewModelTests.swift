@@ -41,7 +41,7 @@ class ManageCategoryViewModelTests: BaseTestCase, WaitObservableEvents {
         ]
     }
     
-    private func makeViewModel() -> ManageCategoryViewModel {
+    private func makeViewModel() -> ManageCategoryViewModelImple {
         let router = SpyRouter()
         self.spyRouter = router
         
@@ -113,6 +113,42 @@ extension ManageCategoryViewModelTests {
         XCTAssertEqual(self.spyRouter.didAlertConfirmed, true)
         XCTAssertEqual(cvms?.count, 29)
         XCTAssertEqual(cvms?.contains(where: { $0.uid == "c:2" } ), false)
+    }
+    
+    func testViewModel_whenCategoryRemovedFromOutside_removeFromList() {
+        // given
+        let expect = expectation(description: "보여주고있는 카테고리가 외부에서 삭제된경우 제거해서 리스트 업데이트")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
+            viewModel.refresh()
+            viewModel.editCategory(didDeleted: "c:2")
+        }
+        
+        // then
+        XCTAssertEqual(cvms?.count, 29)
+        XCTAssertEqual(cvms?.contains(where: { $0.uid == "c:2" } ), false)
+    }
+    
+    func testViewMdoel_whenCategoryUpdatedFromOutside_updateList() {
+        // given
+        let expect = expectation(description: "카테고리가 외부에서 업데이트된경우 반영해서 리스트 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let cellSource = viewModel.cellViewModels.compactMap { $0.first(where: { $0.uid == "c:1"} ) }
+        let cells = self.waitElements(expect, for: cellSource) {
+            viewModel.refresh()
+            let cate1 = ItemCategory(uid: "c:1", name: "new name", colorCode: "new code", createdAt: .now())
+            viewModel.editCategory(didChaged: cate1)
+        }
+                                                                             
+        // then
+        XCTAssertEqual(cells.count, 2)
+        XCTAssertEqual(cells.first?.name, "n:1")
+        XCTAssertEqual(cells.last?.name, "new name")
     }
 }
 

@@ -15,11 +15,17 @@ import Optics
 
 // MARK: - ReadItemCategoryUsecase
 
+public struct SameNameCategoryExistsError: Error {
+    public init () { }
+}
+
 public protocol ReadItemCategoryUsecase: AnyObject {
     
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+    
+    func updateCategoryIfNotExist(_ category: ItemCategory) -> Maybe<Void>
     
     func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]>
     
@@ -81,6 +87,10 @@ extension ReadItemCategoryUsecaseImple {
             .do(onNext: { [weak self] in
                 self?.updateOnStore(categories)
             })
+    }
+    
+    public func updateCategoryIfNotExist(_ category: ItemCategory) -> Maybe<Void> {
+        return .empty()
     }
     
     public func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]> {
