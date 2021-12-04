@@ -8,6 +8,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import DataStore
@@ -28,6 +30,7 @@ extension FirebaseServiceImple {
         
         let updateCategories: (CollectionReference) -> Void = { collectionRef in
             categories.forEach { cate in
+                let cate = cate |> \.ownerID .~ memberID
                 let (docuID, json) = cate.asDocument()
                 let docuRef = collectionRef.document(docuID)
                 docuRef.setData(json, merge: true)
