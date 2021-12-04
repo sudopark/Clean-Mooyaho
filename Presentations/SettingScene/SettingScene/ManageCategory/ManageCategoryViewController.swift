@@ -53,6 +53,7 @@ public final class ManageCategoryViewController: BaseViewController, ManageCateg
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.bind()
+        viewModel.refresh()
     }
     
 }
@@ -66,12 +67,6 @@ extension ManageCategoryViewController {
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindTableView()
-            })
-            .disposed(by: self.disposeBag)
-        
-        self.navigationItem.leftBarButtonItem?.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
             })
             .disposed(by: self.disposeBag)
     }
@@ -108,7 +103,7 @@ extension ManageCategoryViewController {
             let cell: CategoryCell = tableView.dequeueCell()
             cell.labelView.setup(name: cellViewModel.name)
             cell.labelView.backgroundColor = UIColor.from(hex: cellViewModel.colorCode)
-            cell.accessoryType = .detailDisclosureButton
+            cell.accessoryType = .disclosureIndicator
             return cell
         }
         return DataSource(configureCell: configureCell)
@@ -169,9 +164,6 @@ extension ManageCategoryViewController: Presenting {
         self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
         
         self.titleHeaderView.setupStyling()
-        
-        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: nil, action: nil)
-        self.navigationItem.leftBarButtonItem = closeButton
     }
 }
 

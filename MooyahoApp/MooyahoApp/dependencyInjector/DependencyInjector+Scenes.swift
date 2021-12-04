@@ -479,9 +479,15 @@ extension DependencyInjector: ManageCategorySceneBuilable {
 
 extension DependencyInjector: EditCategoryAttrSceneBuilable {
     
-    public func makeEditCategoryAttrScene(listener: EditCategoryAttrSceneListenable?) -> EditCategoryAttrScene {
+    public func makeEditCategoryAttrScene(category: ItemCategory,
+                                          listener: EditCategoryAttrSceneListenable?) -> EditCategoryAttrScene {
         let router = EditCategoryAttrRouter(nextSceneBuilders: self)
-        let viewModel = EditCategoryAttrViewModelImple(router: router, listener: listener)
+        let viewModel = EditCategoryAttrViewModelImple(
+            category: category,
+            categoryUsecase: self.categoryUsecase,
+            router: router,
+            listener: listener
+        )
         let viewController = EditCategoryAttrViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

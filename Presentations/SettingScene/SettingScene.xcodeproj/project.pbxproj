@@ -33,6 +33,7 @@
 		F66CDF60275B3892009CF185 /* EditCategoryAttrBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5B275B3892009CF185 /* EditCategoryAttrBuilder.swift */; };
 		F66CDF61275B3892009CF185 /* EditCategoryAttrScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5C275B3892009CF185 /* EditCategoryAttrScene.swift */; };
 		F66CDF62275B3892009CF185 /* EditCategoryAttrViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5D275B3892009CF185 /* EditCategoryAttrViewModel.swift */; };
+		F66CDF64275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF63275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift */; };
 		F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */; };
 		F69FFD7A275920D300D9DF05 /* ManageCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */; };
 		F69FFD7B275920D300D9DF05 /* ManageCategoryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */; };
@@ -79,6 +80,7 @@
 		F66CDF5B275B3892009CF185 /* EditCategoryAttrBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrBuilder.swift; sourceTree = "<group>"; };
 		F66CDF5C275B3892009CF185 /* EditCategoryAttrScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrScene.swift; sourceTree = "<group>"; };
 		F66CDF5D275B3892009CF185 /* EditCategoryAttrViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrViewModel.swift; sourceTree = "<group>"; };
+		F66CDF63275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrViewModelTests.swift; sourceTree = "<group>"; };
 		F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryRouter.swift; sourceTree = "<group>"; };
 		F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewController.swift; sourceTree = "<group>"; };
 		F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryBuilder.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */,
 				F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */,
 				F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */,
+				F66CDF63275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift */,
 			);
 			path = SettingSceneTests;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */,
 				F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */,
 				F66248FE275945E400D4FC74 /* ManageCategoryViewModelTests.swift in Sources */,
+				F66CDF64275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

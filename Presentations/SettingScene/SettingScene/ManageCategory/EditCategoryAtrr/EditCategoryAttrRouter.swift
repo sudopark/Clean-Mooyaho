@@ -13,17 +13,23 @@
 
 import UIKit
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - Routing
 
-public protocol EditCategoryAttrRouting: Routing { }
+public protocol EditCategoryAttrRouting: Routing {
+    
+    func selectNewColor(_ stratWith: String)
+    
+    func alertNameDuplicated(_ name: String)
+}
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditCategoryAttrRouterBuildables = EmptyBuilder
+public typealias EditCategoryAttrRouterBuildables = ColorSelectSceneBuilable
 
 public final class EditCategoryAttrRouter: Router<EditCategoryAttrRouterBuildables>, EditCategoryAttrRouting { }
 
@@ -33,5 +39,22 @@ extension EditCategoryAttrRouter {
     // EditCategoryAttrRouting implements
     private var currentInteractor: EditCategoryAttrSceneInteractable? {
         return (self.currentScene as? EditCategoryAttrScene)?.interactor
+    }
+    
+    public func selectNewColor(_ stratWith: String) {
+        
+        let dependency = SelectColorDepedency(startWithSelect: stratWith,
+                                              colorSources: ItemCategory.colorCodes)
+        guard let next = self.nextScenesBuilder?
+                .makeColorSelectScene(dependency, listener: self.currentInteractor)
+        else {
+            return
+        }
+        
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func alertNameDuplicated(_ name: String) {
+        logger.todoImplement()
     }
 }

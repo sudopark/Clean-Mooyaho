@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - ManageCategoryScene Interactable & Listenable
 
-public protocol ManageCategorySceneInteractable { }
+public protocol ManageCategorySceneInteractable: EditCategoryAttrSceneListenable { }
 
 public protocol ManageCategorySceneListenable: AnyObject { }
 

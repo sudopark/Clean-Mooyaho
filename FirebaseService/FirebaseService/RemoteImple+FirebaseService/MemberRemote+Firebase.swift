@@ -99,7 +99,11 @@ extension FirebaseServiceImple {
         
         let collectionRef = self.fireStoreDB.collection(.member)
         
-        let idChunks = ids.slice(by: 10)
+        let idChunks = ids.slice(by: 10).filter { $0.isNotEmpty }
+        guard idChunks.isNotEmpty else {
+            return .just([])
+        }
+        
         let queries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
         return self.loadAll(queries: queries)
             .asMaybe()

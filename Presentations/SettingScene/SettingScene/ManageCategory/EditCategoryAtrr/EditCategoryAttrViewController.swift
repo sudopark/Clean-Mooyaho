@@ -27,6 +27,7 @@ public final class EditCategoryAttrViewController: BaseViewController, EditCateg
     private let colorLabel = UILabel()
     private let colorPreviewView = UIView()
     private let colorSelectIndicatorView = UIImageView()
+    private let colorSectionView = UIView()
     private let colorSectionUnderLineView = UIView()
     private let deleteIconImageView = UIImageView()
     private let deleteButton = UIButton()
@@ -70,6 +71,46 @@ extension EditCategoryAttrViewController {
     private func bind() {
         
         self.bindBottomSlideMenuView()
+        
+        self.nameField.text = self.viewModel.initialName
+        self.nameField.rx.text.orEmpty
+            .skip(1)
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.enter(name: text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.selectedColorCode
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] code in
+                self?.colorPreviewView.backgroundColor = UIColor.from(hex: code)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.colorSectionView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.selectNewColor()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isChangeSavable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isEnable in
+                self?.confirmButton.isEnabled = isEnable
+            })
+            .disposed(by: self.disposeBag)
+            
+        self.confirmButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.confirmSaveChange()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.rx.viewDidAppear.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.nameField.becomeFirstResponder()
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -85,54 +126,62 @@ extension EditCategoryAttrViewController: Presenting {
         bottomSlideMenuView.containerView.addSubview(self.confirmButton)
         confirmButton.setupLayout(bottomSlideMenuView.containerView)
         
-        bottomSlideMenuView.containerView.addSubview(self.deleteButton)
-        deleteButton.autoLayout.active(with: confirmButton) {
-            $0.bottomAnchor.constraint(equalTo: $1.topAnchor, constant: 40)
-            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -20)
-        }
-        
         bottomSlideMenuView.containerView.addSubview(deleteIconImageView)
-        deleteIconImageView.autoLayout.active(with: deleteButton) {
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.leadingAnchor.constraint(equalTo: self.bottomSlideMenuView.containerView.leadingAnchor, constant: 20)
-            $1.leadingAnchor.constraint(equalTo: $0.trailingAnchor, constant: 8)
+        deleteIconImageView.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.widthAnchor.constraint(equalToConstant: 18)
             $0.heightAnchor.constraint(equalToConstant: 18)
+            $0.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -40)
         }
         
-        bottomSlideMenuView.containerView.addSubview(colorSectionUnderLineView)
-        colorSectionUnderLineView.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
+        bottomSlideMenuView.containerView.addSubview(self.deleteButton)
+        deleteButton.autoLayout.active(with: bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: deleteIconImageView.trailingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -20)
+            $0.centerYAnchor.constraint(equalTo: deleteIconImageView.centerYAnchor)
+        }
+        
+        bottomSlideMenuView.containerView.addSubview(colorSectionView)
+        colorSectionView.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 1)
             $0.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -12)
         }
         
-        bottomSlideMenuView.containerView.addSubview(colorPreviewView)
-        colorPreviewView.autoLayout.active() {
-            $0.widthAnchor.constraint(equalToConstant: 30)
-            $0.heightAnchor.constraint(equalToConstant: 30)
-            $0.bottomAnchor.constraint(equalTo: colorSectionUnderLineView.topAnchor, constant: 8)
+        colorSectionView.addSubview(colorSectionUnderLineView)
+        colorSectionUnderLineView.autoLayout.active(with: colorSectionView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.heightAnchor.constraint(equalToConstant: 1)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         
-        bottomSlideMenuView.containerView.addSubview(colorSelectIndicatorView)
-        colorSelectIndicatorView.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
+        colorSectionView.addSubview(colorPreviewView)
+        colorPreviewView.autoLayout.active(with: colorSectionView) {
+            $0.widthAnchor.constraint(equalToConstant: 30)
+            $0.heightAnchor.constraint(equalToConstant: 30)
+            $0.bottomAnchor.constraint(equalTo: colorSectionUnderLineView.topAnchor, constant: -8)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
+        }
+        
+        colorSectionView.addSubview(colorSelectIndicatorView)
+        colorSelectIndicatorView.autoLayout.active(with: colorSectionView) {
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
             $0.widthAnchor.constraint(equalToConstant: 8)
             $0.heightAnchor.constraint(equalToConstant: 22)
             $0.centerYAnchor.constraint(equalTo: colorPreviewView.centerYAnchor)
-            colorPreviewView.trailingAnchor.constraint(equalTo: $1.leadingAnchor, constant: -12)
+            colorPreviewView.trailingAnchor.constraint(equalTo: $0.leadingAnchor, constant: -12)
         }
         
-        bottomSlideMenuView.containerView.addSubview(colorIconView)
-        colorIconView.autoLayout.active(with: bottomSlideMenuView.containerView) {
+        colorSectionView.addSubview(colorIconView)
+        colorIconView.autoLayout.active(with: colorSectionView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.widthAnchor.constraint(equalToConstant: 18)
             $0.heightAnchor.constraint(equalToConstant: 18)
             $0.centerYAnchor.constraint(equalTo: colorPreviewView.centerYAnchor)
         }
         
-        bottomSlideMenuView.containerView.addSubview(colorLabel)
+        colorSectionView.addSubview(colorLabel)
         colorLabel.autoLayout.active {
             $0.leadingAnchor.constraint(equalTo: colorIconView.trailingAnchor, constant: 8)
             $0.centerYAnchor.constraint(equalTo: colorPreviewView.centerYAnchor)
@@ -144,15 +193,16 @@ extension EditCategoryAttrViewController: Presenting {
         underLineView.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: colorPreviewView.topAnchor, constant: -12)
+            $0.bottomAnchor.constraint(equalTo: colorSectionView.topAnchor)
             $0.heightAnchor.constraint(equalToConstant: 1)
         }
         
         bottomSlideMenuView.containerView.addSubview(nameField)
         nameField.autoLayout.active(with: underLineView) {
-            $0.bottomAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
+            $0.bottomAnchor.constraint(equalTo: $1.topAnchor, constant: -6)
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 20)
         }
         
         bottomSlideMenuView.containerView.addSubview(titleLabel)
@@ -182,13 +232,16 @@ extension EditCategoryAttrViewController: Presenting {
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
         
+        self.colorSectionView.backgroundColor = .clear
+        self.colorSectionView.isUserInteractionEnabled = true
+        
         _ = self.colorIconView
             |> \.contentMode .~ .scaleAspectFit
             |> \.image .~ UIImage(systemName: "eyedropper")
             |> \.tintColor .~ self.uiContext.colors.secondaryTitle
         
         _ = self.colorLabel
-            |> self.uiContext.decorating.listItemSubDescription(_:)
+            |> self.uiContext.decorating.listSectionTitle
             |> \.text .~ pure("change color".localized)
         
         self.colorPreviewView.layer.cornerRadius = 15
@@ -207,7 +260,10 @@ extension EditCategoryAttrViewController: Presenting {
             |> \.tintColor .~ self.uiContext.colors.secondaryTitle
         
         self.deleteButton.setTitle("Delete", for: .normal)
+        self.deleteButton.setTitleColor(self.uiContext.colors.secondaryTitle, for: .normal)
+        self.deleteButton.titleLabel?.font = self.uiContext.fonts.get(13, weight: .bold)
         
         self.confirmButton.setupStyling()
+        self.confirmButton.setTitle("Save change", for: .normal)
     }
 }

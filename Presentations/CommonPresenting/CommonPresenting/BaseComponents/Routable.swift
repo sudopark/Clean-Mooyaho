@@ -25,6 +25,8 @@ public protocol Routing: AnyObject {
     func alertForConfirm(_ form: AlertForm)
     
     func alertActionSheet(_ form: ActionSheetForm)
+    
+    func rewind(animated: Bool)
 }
 extension Routing {
     
@@ -37,6 +39,8 @@ extension Routing {
     public func alertForConfirm(_ form: AlertForm) { }
     
     public func alertActionSheet(_ form: ActionSheetForm) { }
+    
+    public func rewind(animated: Bool) { }
 }
 
 
@@ -66,6 +70,12 @@ extension Router {
     public func closeScene(animated: Bool, completed: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in
             self?.currentScene?.dismiss(animated: true, completion: completed)
+        }
+    }
+    
+    public func rewind(animated: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.currentScene?.navigationController?.popViewController(animated: animated)
         }
     }
     

@@ -27,9 +27,12 @@ public protocol ManageCategoryRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias ManageCategoryRouterBuildables = EmptyBuilder
+public typealias ManageCategoryRouterBuildables = EditCategoryAttrSceneBuilable
 
-public final class ManageCategoryRouter: Router<ManageCategoryRouterBuildables>, ManageCategoryRouting { }
+public final class ManageCategoryRouter: Router<ManageCategoryRouterBuildables>, ManageCategoryRouting {
+    
+    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+}
 
 
 extension ManageCategoryRouter {
@@ -41,5 +44,14 @@ extension ManageCategoryRouter {
     
     public func moveToEditCategory(_ category: ItemCategory) {
         
+        guard let next = self.nextScenesBuilder?
+                .makeEditCategoryAttrScene(category: category, listener: self.currentInteractor)
+        else {
+            return
+        }
+        
+        next.modalPresentationStyle = .custom
+        next.transitioningDelegate = self.bottomSliderTransitionManager
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

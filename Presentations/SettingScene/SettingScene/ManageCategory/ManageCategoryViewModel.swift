@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -116,19 +118,10 @@ extension ManageCategoryViewModelImple {
         self.subjects.requestTime.onNext(last)
     }
     
-    public func editCategory(_ uid: String) {
-        guard let categories = self.subjects.categories.value,
-              let category = categories.first(where: { $0.uid == uid })
-        else {
-            return
-        }
-        self.router.moveToEditCategory(category)
-    }
-    
     public func removeCategory(_ uid: String) {
         
         let removeConfirmed: () -> Void = { [weak self] in
-            self?.doRemoveCategory(uid)
+            self?.removeCategoryAfterConfirm(uid)
         }
         
         guard let form = AlertBuilder(base: .init())
@@ -142,12 +135,11 @@ extension ManageCategoryViewModelImple {
         self.router.alertForConfirm(form)
     }
     
-    private func doRemoveCategory(_ uid: String) {
+    private func removeCategoryAfterConfirm(_ uid: String) {
         
         let removed: () -> Void = { [weak self] in
             guard let self = self else { return }
-            let newCategories = (self.subjects.categories.value ?? []).filter { $0.uid != uid }
-            self.subjects.categories.accept(newCategories)
+            self.removeCategoryFromList(uid)
         }
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
@@ -156,6 +148,39 @@ extension ManageCategoryViewModelImple {
             .subscribe(onSuccess: removed,
                        onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func removeCategoryFromList(_ uid: String) {
+        let newCategories = (self.subjects.categories.value ?? []).filter { $0.uid != uid }
+        self.subjects.categories.accept(newCategories)
+    }
+}
+
+// MARK: - edit category
+
+extension ManageCategoryViewModelImple {
+    
+    public func editCategory(_ uid: String) {
+        guard let categories = self.subjects.categories.value,
+              let category = categories.first(where: { $0.uid == uid })
+        else {
+            return
+        }
+        self.router.moveToEditCategory(category)
+    }
+    
+    public func editCategory(didChaged category: ItemCategory) {
+        guard let categories = self.subjects.categories.value,
+              let index = categories.firstIndex(where: { $0.uid == category.uid })
+        else {
+            return
+        }
+        let newCategories = categories |> ix(index) .~ category
+        self.subjects.categories.accept(newCategories)
+    }
+    
+    public func editCategory(didDeleted categoryID: String) {
+        self.removeCategoryFromList(categoryID)
     }
 }
 
