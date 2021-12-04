@@ -16,7 +16,7 @@ import CommonPresenting
 
 // MARK: - ReadCollectionViewController
 
-public final class ReadCollectionItemsViewController: BaseViewController, ReadCollectionScene, ReadCollectionTtileHeaderViewSupporting {
+public final class ReadCollectionItemsViewController: BaseViewController, ReadCollectionScene, ShrinkableTtileHeaderViewSupporting {
     
     typealias CVM = ReadItemCellViewModel
     typealias Section = SectionModel<String, CVM>

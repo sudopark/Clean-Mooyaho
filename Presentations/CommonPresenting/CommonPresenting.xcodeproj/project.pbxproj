@@ -62,6 +62,8 @@
 		F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215822674A395000CAB4B /* TextInputViewModel.swift */; };
 		F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215882674A7C0000CAB4B /* InputTextView.swift */; };
 		F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AC26755626000CAB4B /* ApplicationStatus.swift */; };
+		F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248F9275940C100D4FC74 /* CategoryLabelView.swift */; };
+		F66248FC2759424F00D4FC74 /* BaseTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */; };
 		F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */; };
 		F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */; };
 		F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */; };
@@ -198,6 +200,8 @@
 		F65215822674A395000CAB4B /* TextInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputViewModel.swift; sourceTree = "<group>"; };
 		F65215882674A7C0000CAB4B /* InputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		F65215AC26755626000CAB4B /* ApplicationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatus.swift; sourceTree = "<group>"; };
+		F66248F9275940C100D4FC74 /* CategoryLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryLabelView.swift; sourceTree = "<group>"; };
+		F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewHeaderView.swift; sourceTree = "<group>"; };
 		F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollViwe+Extension.swift"; sourceTree = "<group>"; };
 		F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
 		F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -354,6 +358,7 @@
 				F688F9C526BD99CA00DBB10A /* AutoCompletable.swift */,
 				F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */,
 				F6E30E25270B5A180012A2A0 /* EmptyListener.swift */,
+				F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -494,6 +499,7 @@
 				F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */,
 				F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */,
 				F6E51B7B273F637C00CBE310 /* EmojiListView.swift */,
+				F66248F9275940C100D4FC74 /* CategoryLabelView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -723,6 +729,7 @@
 				F6E51B78273F62B500CBE310 /* SelectEmojiBuilder.swift in Sources */,
 				F61014762657211200D32E38 /* Theme.swift in Sources */,
 				2B39E27A26387BCB003EE954 /* Routable.swift in Sources */,
+				F66248FC2759424F00D4FC74 /* BaseTableViewHeaderView.swift in Sources */,
 				F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */,
 				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
@@ -798,6 +805,7 @@
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F6A3A0BC27521D8F00336E4F /* ReadItemCells.swift in Sources */,
+				F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */,
 				F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */,
 				F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */,
 				F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */,

@@ -13,59 +13,6 @@ import Domain
 import CommonPresenting
 
 
-final class SuggestingCategoryLabelView: BaseUIView, Presenting {
-    
-    let nameLabel = UILabel()
-    let closeImageView = UIImageView()
-    private var nameLabelTrainging: NSLayoutConstraint!
-    
-    func setupLabel(_ cellViewModel: SuggestingCategoryCellViewModelType) {
-        self.nameLabel.text = cellViewModel.name
-        self.backgroundColor = UIColor.from(hex: cellViewModel.colorCode)
-    }
-    
-    func updateCloseViewIsHidden(_ isHidden: Bool) {
-        self.nameLabelTrainging.constant = isHidden ? -4 : -23
-        self.closeImageView.isHidden = isHidden
-    }
-    
-    func setupLayout() {
-        
-        self.addSubview(nameLabel)
-        nameLabel.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 4)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 4)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -4)
-        }
-        self.nameLabelTrainging = nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -4)
-        self.nameLabelTrainging.isActive = true
-        
-        self.addSubview(closeImageView)
-        closeImageView.autoLayout.active(with: self) {
-            $0.widthAnchor.constraint(equalToConstant: 15)
-            $0.heightAnchor.constraint(equalToConstant: 15)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -4)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-        }
-        
-    }
-    
-    func setupStyling() {
-        
-        self.nameLabel.font = self.uiContext.fonts.get(14, weight: .regular)
-        self.nameLabel.textColor = UIColor.white
-        
-        self.closeImageView.image = UIImage(systemName: "xmark")
-        self.closeImageView.tintColor = .white
-        self.closeImageView.isHidden = true
-        self.closeImageView.contentMode = .scaleAspectFit
-        
-        self.layer.cornerRadius = 3
-        self.clipsToBounds = true
-    }
-}
-
-
 // MARK: - SelectedCategoryCell
 
 final class SelectedCategoryCell: BaseCollectionViewCell {
@@ -79,7 +26,7 @@ final class SelectedCategoryCell: BaseCollectionViewCell {
         }
     }
     
-    let labelView = SuggestingCategoryLabelView()
+    let labelView = CategoryLabelView()
     
     override func afterViewInit() {
         super.afterViewInit()
@@ -118,7 +65,7 @@ extension SelectedCategoryCell: Presenting {
 
 final class SuggestingCategoryCell: BaseTableViewCell {
     
-    let labelView = SuggestingCategoryLabelView()
+    let labelView = CategoryLabelView()
     
     override func afterViewInit() {
         super.afterViewInit()
@@ -163,7 +110,7 @@ extension SuggestingCategoryCell: Presenting {
 final class SuggestMakeNewCategoryCell: BaseTableViewCell {
     
     let createButton = UIButton()
-    let labelView = SuggestingCategoryLabelView()
+    let labelView = CategoryLabelView()
     let colorView = UIView()
     
     weak var createSubject: PublishSubject<SuggestMakeNewCategoryCellViewMdoel>?
@@ -231,5 +178,14 @@ extension SuggestMakeNewCategoryCell: Presenting {
         
         self.colorView.clipsToBounds = true
         self.colorView.layer.cornerRadius = 7.5
+    }
+}
+
+
+extension CategoryLabelView {
+    
+    func setupLabel(_ cellViewModel: SuggestingCategoryCellViewModelType) {
+        self.nameLabel.text = cellViewModel.name
+        self.backgroundColor = UIColor.from(hex: cellViewModel.colorCode)
     }
 }

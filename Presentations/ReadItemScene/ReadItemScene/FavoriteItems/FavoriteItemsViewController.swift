@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - FavoriteItemsViewController
 
-public final class FavoriteItemsViewController: BaseViewController, FavoriteItemsScene, ReadCollectionTtileHeaderViewSupporting {
+public final class FavoriteItemsViewController: BaseViewController, FavoriteItemsScene, ShrinkableTtileHeaderViewSupporting {
     
     private typealias CVM = ReadItemCellViewModel
     private typealias Section = SectionModel<String, CVM>

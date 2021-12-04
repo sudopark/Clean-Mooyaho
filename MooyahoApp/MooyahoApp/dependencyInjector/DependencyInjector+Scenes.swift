@@ -462,6 +462,22 @@ extension DependencyInjector: WaitMigrationSceneBuilable {
 }
 
 
+extension DependencyInjector: ManageCategorySceneBuilable {
+    
+    public func makeManageCategoryScene(listener: ManageCategorySceneListenable?) -> ManageCategoryScene {
+        let router = ManageCategoryRouter(nextSceneBuilders: self)
+        let viewModel = ManageCategoryViewModelImple(
+            categoryUsecase: self.categoryUsecase,
+            router: router,
+            listener: listener
+        )
+        let viewController = ManageCategoryViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
 // MARK: - DiscoveryScenes
 
 extension DependencyInjector: DiscoveryMainSceneBuilable {
