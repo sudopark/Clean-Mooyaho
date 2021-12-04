@@ -28,6 +28,11 @@
 		F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */; };
 		F66248FE275945E400D4FC74 /* ManageCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */; };
 		F66249002759484600D4FC74 /* CategoryPagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FF2759484600D4FC74 /* CategoryPagingUsecase.swift */; };
+		F66CDF5E275B3892009CF185 /* EditCategoryAttrRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF59275B3892009CF185 /* EditCategoryAttrRouter.swift */; };
+		F66CDF5F275B3892009CF185 /* EditCategoryAttrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5A275B3892009CF185 /* EditCategoryAttrViewController.swift */; };
+		F66CDF60275B3892009CF185 /* EditCategoryAttrBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5B275B3892009CF185 /* EditCategoryAttrBuilder.swift */; };
+		F66CDF61275B3892009CF185 /* EditCategoryAttrScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5C275B3892009CF185 /* EditCategoryAttrScene.swift */; };
+		F66CDF62275B3892009CF185 /* EditCategoryAttrViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CDF5D275B3892009CF185 /* EditCategoryAttrViewModel.swift */; };
 		F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */; };
 		F69FFD7A275920D300D9DF05 /* ManageCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */; };
 		F69FFD7B275920D300D9DF05 /* ManageCategoryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */; };
@@ -69,6 +74,11 @@
 		F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewModelTests.swift; sourceTree = "<group>"; };
 		F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewModelTests.swift; sourceTree = "<group>"; };
 		F66248FF2759484600D4FC74 /* CategoryPagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPagingUsecase.swift; sourceTree = "<group>"; };
+		F66CDF59275B3892009CF185 /* EditCategoryAttrRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrRouter.swift; sourceTree = "<group>"; };
+		F66CDF5A275B3892009CF185 /* EditCategoryAttrViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrViewController.swift; sourceTree = "<group>"; };
+		F66CDF5B275B3892009CF185 /* EditCategoryAttrBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrBuilder.swift; sourceTree = "<group>"; };
+		F66CDF5C275B3892009CF185 /* EditCategoryAttrScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrScene.swift; sourceTree = "<group>"; };
+		F66CDF5D275B3892009CF185 /* EditCategoryAttrViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrViewModel.swift; sourceTree = "<group>"; };
 		F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryRouter.swift; sourceTree = "<group>"; };
 		F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewController.swift; sourceTree = "<group>"; };
 		F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryBuilder.swift; sourceTree = "<group>"; };
@@ -178,9 +188,22 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		F66CDF58275B3835009CF185 /* EditCategoryAtrr */ = {
+			isa = PBXGroup;
+			children = (
+				F66CDF59275B3892009CF185 /* EditCategoryAttrRouter.swift */,
+				F66CDF5A275B3892009CF185 /* EditCategoryAttrViewController.swift */,
+				F66CDF5B275B3892009CF185 /* EditCategoryAttrBuilder.swift */,
+				F66CDF5C275B3892009CF185 /* EditCategoryAttrScene.swift */,
+				F66CDF5D275B3892009CF185 /* EditCategoryAttrViewModel.swift */,
+			);
+			path = EditCategoryAtrr;
+			sourceTree = "<group>";
+		};
 		F69FFD73275920B300D9DF05 /* ManageCategory */ = {
 			isa = PBXGroup;
 			children = (
+				F66CDF58275B3835009CF185 /* EditCategoryAtrr */,
 				F69FFD74275920D300D9DF05 /* ManageCategoryRouter.swift */,
 				F69FFD75275920D300D9DF05 /* ManageCategoryViewController.swift */,
 				F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */,
@@ -308,12 +331,17 @@
 				F69FFD7C275920D300D9DF05 /* ManageCategoryScene.swift in Sources */,
 				F638A5F8273C7388005A7EA9 /* SettingMainViewModel.swift in Sources */,
 				F69FFD7A275920D300D9DF05 /* ManageCategoryViewController.swift in Sources */,
+				F66CDF62275B3892009CF185 /* EditCategoryAttrViewModel.swift in Sources */,
+				F66CDF60275B3892009CF185 /* EditCategoryAttrBuilder.swift in Sources */,
 				F6118D8A273D61AE00E0489B /* WaitMigrationViewModel.swift in Sources */,
 				F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */,
 				F6118D89273D61AE00E0489B /* WaitMigrationViewController.swift in Sources */,
 				F66249002759484600D4FC74 /* CategoryPagingUsecase.swift in Sources */,
 				F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */,
+				F66CDF5F275B3892009CF185 /* EditCategoryAttrViewController.swift in Sources */,
+				F66CDF5E275B3892009CF185 /* EditCategoryAttrRouter.swift in Sources */,
 				F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */,
+				F66CDF61275B3892009CF185 /* EditCategoryAttrScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
