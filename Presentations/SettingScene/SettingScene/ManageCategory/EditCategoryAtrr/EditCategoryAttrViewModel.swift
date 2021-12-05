@@ -123,39 +123,33 @@ extension EditCategoryAttrViewModelImple {
     
     public func confirmSaveChange() {
         
-        guard let newCategory = self.newCategory() else { return }
+        let params = self.updateCategoryParams()
         
-        let saved: () -> Void = { [weak self] in
-            self?.listener?.editCategory(didChaged: newCategory)
-            self?.router.closeScene(animated: true, completed: nil)
+        let saved: (ItemCategory) -> Void = { [weak self] newCategory in
+            guard let self = self else { return }
+            self.listener?.editCategory(didChaged: newCategory)
+            self.router.closeScene(animated: true, completed: nil)
         }
         
         let handleError: (Error) -> Void = { [weak self] error in
             error is SameNameCategoryExistsError
-                ? self?.router.alertNameDuplicated(newCategory.name)
+            ? self?.router.alertNameDuplicated(params.newName ?? "")
                 : self?.router.alertError(error)
         }
         
-        self.categoryUsecase.updateCategoryIfNotExist(newCategory)
+        self.categoryUsecase.updateCategory(by: params, from: self.category)
             .subscribe(onSuccess: saved,
                        onError: handleError)
             .disposed(by: self.disposeBag)
     }
     
-    private func newCategory() -> ItemCategory? {
+    private func updateCategoryParams() -> UpdateCategoryAttrParams {
         
-        let newName = self.subjects.pendingNewName.value
-        guard newName?.isEmpty != true else { return nil }
-        
-        let newColor = self.subjects.pendingNewColorCode.value
-        
-        return ItemCategory(
-            uid: self.category.uid,
-            name: newName ?? self.category.name,
-            colorCode: newColor ?? self.category.colorCode,
-            createdAt: self.category.createdAt
-        )
-        |> \.ownerID .~ self.category.ownerID
+        let (oldName, pendingName) = (self.category.name, self.subjects.pendingNewName.value)
+        let newName = pendingName != nil && oldName != pendingName ? pendingName : nil
+        return UpdateCategoryAttrParams(uid: self.category.uid)
+            |> \.newName .~ newName
+            |> \.newColorCode .~ self.subjects.pendingNewColorCode.value
     }
 }
 

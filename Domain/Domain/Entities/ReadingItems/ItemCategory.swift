@@ -8,6 +8,9 @@
 
 import Foundation
 
+import Prelude
+import Optics
+
 
 public struct ItemCategory: Equatable {
     
@@ -50,5 +53,17 @@ extension ItemCategory {
             "#424242",
             "#546e7a"
         ]
+    }
+}
+
+
+extension ItemCategory {
+    
+    public func applyingChange(_ params: UpdateCategoryAttrParams) -> ItemCategory {
+        return ItemCategory(uid: self.uid,
+                            name: params.newName ?? self.name,
+                            colorCode: params.newColorCode ?? self.colorCode,
+                            createdAt: self.createdAt)
+            |> \.ownerID .~ self.ownerID
     }
 }

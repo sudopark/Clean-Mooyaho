@@ -173,6 +173,8 @@ public protocol ItemCategoryLocalStorage {
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
     
+    func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void>
+    
     func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]>
     
     func loadLatestCategories() -> Maybe<[SuggestCategory]>
@@ -180,6 +182,8 @@ public protocol ItemCategoryLocalStorage {
     func fetchCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
     
     func deleteCategory(_ itemID: String) -> Maybe<Void>
+    
+    func findCategory(by name: String) -> Maybe<ItemCategory?>
 }
 
 public protocol ReadLinkMemoLocalStorage {

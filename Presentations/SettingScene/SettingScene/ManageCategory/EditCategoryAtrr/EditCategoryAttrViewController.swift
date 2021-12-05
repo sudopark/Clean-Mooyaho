@@ -158,10 +158,10 @@ extension EditCategoryAttrViewController: Presenting {
         
         colorSectionView.addSubview(colorPreviewView)
         colorPreviewView.autoLayout.active(with: colorSectionView) {
-            $0.widthAnchor.constraint(equalToConstant: 30)
-            $0.heightAnchor.constraint(equalToConstant: 30)
-            $0.bottomAnchor.constraint(equalTo: colorSectionUnderLineView.topAnchor, constant: -8)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
+            $0.widthAnchor.constraint(equalToConstant: 20)
+            $0.heightAnchor.constraint(equalToConstant: 20)
+            $0.bottomAnchor.constraint(equalTo: colorSectionUnderLineView.topAnchor, constant: -16)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 16)
         }
         
         colorSectionView.addSubview(colorSelectIndicatorView)
@@ -244,7 +244,7 @@ extension EditCategoryAttrViewController: Presenting {
             |> self.uiContext.decorating.listSectionTitle
             |> \.text .~ pure("change color".localized)
         
-        self.colorPreviewView.layer.cornerRadius = 15
+        self.colorPreviewView.layer.cornerRadius = 10
         self.colorPreviewView.clipsToBounds = true
         
         _ = self.colorSelectIndicatorView

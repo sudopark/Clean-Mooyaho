@@ -33,12 +33,14 @@ class ItemCategoryUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     private func makeUsecase(isSignIn: Bool = false,
                              local: [ItemCategory] = (0..<10).map{ .dummy($0) },
-                             remote: [ItemCategory] = (0..<10).map { .dummy($0) }) -> ReadItemCategoryUsecase {
+                             remote: [ItemCategory] = (0..<10).map { .dummy($0) },
+                             findingCategory: ItemCategory? = nil) -> ReadItemCategoryUsecase {
         
         let scenario = StubItemCategoryRepository.Scenario()
             |> \.localCategories .~ .success(local)
             |> \.remoteCategories .~ .success(remote)
             |> \.loadWithPagingResult .~ .success(remote)
+            |> \.findingCategoryResult .~ .success(findingCategory)
             
         let stubRepositroy = StubItemCategoryRepository(scenario: scenario)
         let sharedStore = SharedDataStoreServiceImple()
@@ -210,5 +212,54 @@ extension ItemCategoryUsecaseTests {
         let secondMap = cateMaps.last
         XCTAssertEqual(secondMap?.count, 1)
         XCTAssertEqual(secondMap?[dummy.uid] != nil, false)
+    }
+    
+    func testUsecase_whenUpdateCategorySameNameCategoryExistsOnStore_error() {
+        // given
+        let expect = expectation(description: "카테고리 업데이트시에 스토어에 동일한 이름의 카테고리 존재시 에러")
+        let usecase = self.makeUsecase()
+        let newCategory = ItemCategory.dummy(0)
+        self.spyStore.save([String: ItemCategory].self, key: .categoriesMap, [newCategory.uid: newCategory])
+        
+        // when
+        let params = UpdateCategoryAttrParams(uid: newCategory.uid)
+            |> \.newName .~ newCategory.name
+        let updating = usecase.updateCategory(by: params, from: newCategory)
+        let error = self.waitError(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertEqual(error is SameNameCategoryExistsError, true)
+    }
+    
+    func testusecase_whenUpdateCategorySameNameCategoryExists_error() {
+        // given
+        let expect = expectation(description: "카테고리 업데이트시에 동일한 이름의 카테고리 존재시 에러")
+        let newCategory = ItemCategory.dummy(0)
+        let usecase = self.makeUsecase(findingCategory: newCategory)
+        
+        // when
+        let params = UpdateCategoryAttrParams(uid: newCategory.uid)
+            |> \.newName .~ newCategory.name
+        let updating = usecase.updateCategory(by: params, from: newCategory)
+        let error = self.waitError(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertEqual(error is SameNameCategoryExistsError, true)
+    }
+    
+    func testUsecase_updateCategory() {
+        // given
+        let expect = expectation(description: "카테고리 업데이트")
+        let newCategory = ItemCategory.dummy(0)
+        let usecase = self.makeUsecase(findingCategory: nil)
+        
+        // when
+        let params = UpdateCategoryAttrParams(uid: newCategory.uid)
+            |> \.newName .~ newCategory.name
+        let updating = usecase.updateCategory(by: params, from: newCategory)
+        let updated = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(updated)
     }
 }

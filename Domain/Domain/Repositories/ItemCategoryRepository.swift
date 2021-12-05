@@ -19,6 +19,8 @@ public protocol ItemCategoryRepository {
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
     
+    func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void>
+    
     func suggestItemCategory(name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>
     
     func loadLatestCategories() -> Maybe<[SuggestCategory]>
@@ -27,4 +29,6 @@ public protocol ItemCategoryRepository {
                                pageSize: Int) -> Maybe<[ItemCategory]>
     
     func requestDeleteCategory(_ itemID: String) -> Maybe<Void>
+    
+    func findCategory(_ name: String) -> Maybe<ItemCategory?>
 }

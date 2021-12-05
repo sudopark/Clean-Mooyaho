@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import UnitTestHelpKit
@@ -288,6 +290,105 @@ extension RepositoryTests_ItemCategory {
         
         // when
         self.repository.requestDeleteCategory("some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepository_findCategoryWithoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃상태에서 이름으로 카테고리 찾기")
+        self.mockLocal.register(key: "findCategory") {
+            Maybe<ItemCategory?>.just(ItemCategory.init(name: "some", colorCode: "cc"))
+        }
+        
+        // when
+        let finding = self.repository.findCategory("some")
+        let category = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(category)
+    }
+    
+    func testRepository_findCategoryWithSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 카테고리 아이템 찾기")
+        self.mockRemote.register(key: "requestFindCategory") {
+            Maybe<ItemCategory?>.just(ItemCategory.init(name: "some", colorCode: "cc"))
+        }
+        
+        // when
+        let finding = self.repository.findCategory("some")
+        let category = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNotNil(category)
+    }
+    
+    func testReopsitory_whenFindCategoryWithSignIn_updateLocal() {
+        // given
+        let expect = expectation(description: "로그인상태에서 카테고리 찾기시에 로컬 업데이트")
+        self.mockRemote.register(key: "requestFindCategory") {
+            Maybe<ItemCategory?>.just(ItemCategory.init(name: "some", colorCode: "cc"))
+        }
+        self.mockLocal.register(key: "updateCategories") { Maybe<Void>.just() }
+        self.mockLocal.called(key: "updateCategories") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.findCategory("some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
+    func testRepository_updateItemByParams_withoutSignIn() {
+        // given
+        let expect = expectation(description: "로그아웃 상태에서 파라미터로 카테고리 업데이트")
+        self.mockLocal.register(key: "updateCategory") { Maybe<Void>.just() }
+        
+        // when
+        let params = UpdateCategoryAttrParams(uid: "some") |> \.newName .~ "new name"
+        let updating = self.repository.updateCategory(by: params)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepository_updateItemByParams_withSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 파라미터로 카테고리 업데이트")
+        self.mockLocal.register(key: "updateCategory") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestUpdateCategory") { Maybe<Void>.just() }
+        
+        // when
+        let params = UpdateCategoryAttrParams(uid: "some") |> \.newName .~ "new name"
+        let updating = self.repository.updateCategory(by: params)
+        let result: Void? = self.waitFirstElement(expect, for: updating.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
+    
+    func testRepository_whenUpdateItemByParamsWithSignIn_updateLocal() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 파라미터로 카테고리 업데이트시에 로컬도 업데이트")
+        self.mockLocal.register(key: "updateCategory") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestUpdateCategory") { Maybe<Void>.just() }
+        self.mockLocal.called(key: "updateCategory") { _ in
+            expect.fulfill()
+        }
+        
+        
+        // when
+        let params = UpdateCategoryAttrParams(uid: "some") |> \.newName .~ "new name"
+        self.repository.updateCategory(by: params)
             .subscribe()
             .disposed(by: self.disposeBag)
         

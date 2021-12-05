@@ -36,6 +36,12 @@ extension ItemCategoryRepository where Self: ItemCategoryRepositoryDefImpleDepen
         return remoteUpdating.switchOr(append: updateLocals, witoutError: ())
     }
     
+    public func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        let remoteUpdating = self.categoryRemote.requestUpdateCategory(by: params)
+        let updateLocal = { [weak self] in self?.categoryLocal.updateCategory(by: params) ?? .empty() }
+        return remoteUpdating.switchOr(append: updateLocal, witoutError: ())
+    }
+    
     public func suggestItemCategory(name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
         let suggestFromRemote = self.categoryRemote.requestSuggestCategories(name, cursor: cursor)
         let suggestFromLocal = self.categoryLocal.suggestCategories(name)
@@ -53,10 +59,7 @@ extension ItemCategoryRepository where Self: ItemCategoryRepositoryDefImpleDepen
                                       pageSize: Int) -> Maybe<[ItemCategory]> {
         
         let updateLocal: ([ItemCategory]) -> Void = { [weak self] categories in
-            guard let self = self else { return }
-            self.updateCategories(categories)
-                .subscribe()
-                .disposed(by: self.disposeBag)
+            self?.runUpdateCategoriesAtLocal(categories)
         }
         
         let loadFromRemote = self.categoryRemote
@@ -72,5 +75,23 @@ extension ItemCategoryRepository where Self: ItemCategoryRepositoryDefImpleDepen
         let deleteFromRemote = self.categoryRemote.requestDeleteCategory(itemID)
         let deleteFromLocal = { [weak self] in self?.categoryLocal.deleteCategory(itemID) ?? .empty() }
         return deleteFromRemote.switchOr(append: deleteFromLocal, witoutError: ())
+    }
+    
+    public func findCategory(_ name: String) -> Maybe<ItemCategory?> {
+        let findFromLocal = self.categoryLocal.findCategory(by: name)
+        let updateLocal: (ItemCategory?) -> Void = { [weak self] category in
+            guard let category = category else { return }
+            self?.runUpdateCategoriesAtLocal([category])
+        }
+        let findFromRemote = self.categoryRemote.requestFindCategory(by: name)
+            .do(onNext: updateLocal)
+        return findFromRemote.ifEmpty(switchTo: findFromLocal)
+    }
+    
+    private func runUpdateCategoriesAtLocal(_ categories: [ItemCategory]) {
+        
+        self.categoryLocal.updateCategories(categories)
+            .subscribe()
+            .disposed(by: self.disposeBag)
     }
 }
