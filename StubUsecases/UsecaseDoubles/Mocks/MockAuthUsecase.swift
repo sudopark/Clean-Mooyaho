@@ -32,6 +32,10 @@ open class MockAuthUsecase: AuthUsecase, Mocking {
         return self.resolve(key: "requestSocialSignIn") ?? .empty()
     }
     
+    open func requestSignout() -> Maybe<Auth> {
+        return self.resolve(key: "requestSignout") ?? .empty()
+    }
+    
     public let auth: BehaviorSubject<Auth?> = .init(value: nil)
     open var currentAuth: Observable<Auth?> {
         return auth
@@ -40,5 +44,9 @@ open class MockAuthUsecase: AuthUsecase, Mocking {
     public var supportingOAuthProviders = [OAuthServiceProviderType]()
     open var supportingOAuthServiceProviders: [OAuthServiceProviderType] {
         return self.supportingOAuthProviders
+    }
+    
+    public var signedOut: Observable<Auth> {
+        return .empty()
     }
 }

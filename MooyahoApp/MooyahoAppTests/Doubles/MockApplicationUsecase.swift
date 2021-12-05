@@ -32,4 +32,10 @@ class MockApplicationUsecase: ApplicationUsecase, Mocking {
     }
     
     var currentSignedInMemeber: Observable<Member?> { .empty() }
+    
+    let signoutSubject = PublishSubject<Auth>()
+    var signedOut: Observable<Auth> {
+        return signoutSubject
+            .asObservable()
+    }
 }

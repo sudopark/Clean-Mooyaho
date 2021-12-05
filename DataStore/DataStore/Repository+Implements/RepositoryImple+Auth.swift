@@ -65,7 +65,7 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
             .flatMap(switchStorageIfNeed)
     }
     
-    private func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth> {
+    public func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth> {
         
         let updateAuthOnStorage: (Auth) -> Void = { [weak self] auth in
             guard let self = self else { return }
@@ -108,5 +108,13 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
             .flatMap(switchStorage)
             .do(onNext: andSaveMemberInfo)
             .map{ $0 }
+    }
+    
+    public func requestSignout() -> Maybe<Void> {
+        let thenSwitchStorage: () -> Maybe<Void> = { [weak self] in
+            return self?.authLocal.switchToAnonymousStorage() ?? .empty()
+        }
+        return self.authRemote.requestSignout()
+            .flatMap(thenSwitchStorage)
     }
 }

@@ -75,6 +75,14 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
                 self?.applicationUsecase.userFCMTokenUpdated(token)
             })
             .disposed(by: self.disposeBag)
+        
+        self.applicationUsecase
+            .signedOut
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] auth in
+                self?.router.routeMain(auth: auth)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 

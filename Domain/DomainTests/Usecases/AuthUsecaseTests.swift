@@ -271,9 +271,56 @@ extension AuthUsecaseTests {
 
 extension AuthUsecaseTests {
     
-    // 로그인 안한 상태에서 로그아웃시 그냥 성공
+    func testusecase_whenAftterSignout_publishNewAnonymousAccount() {
+        // given
+        let expect = expectation(description: "로그아웃 이후에 새로운 익명계정 발급")
+        self.mockAuthRepo.register(key: "requestSignout") { Maybe<Void>.just() }
+        self.mockAuthRepo.register(key: "signInAnonymouslyForPrepareDataAcessPermission") {
+            return Maybe<Auth>.just(.init(userID: "some"))
+        }
+        
+        // when
+        let signout = self.usecase.requestSignout()
+        let newAuth = self.waitFirstElement(expect, for: signout.asObservable())
+        
+        // then
+        XCTAssertNotNil(newAuth)
+    }
     
-    // 로그인 상태에서 로그아웃시 익명유저 반환
+    func testUsecase_whenAfterSignout_clearSharedDataStore() {
+        // given
+        let expect = expectation(description: "로그아웃 이후에 데이터스토어 초기화")
+        self.mockAuthRepo.register(key: "requestSignout") { Maybe<Void>.just() }
+        self.mockAuthRepo.register(key: "signInAnonymouslyForPrepareDataAcessPermission") {
+            return Maybe<Auth>.just(.init(userID: "some"))
+        }
+        
+        // when
+        let signout = self.usecase.requestSignout()
+        let _ = self.waitFirstElement(expect, for: signout.asObservable())
+        
+        // then
+        XCTAssertEqual(self.store.isEmpty, true)
+    }
+    
+    func testUseacse_whenAfterSignout_notifySignedOut() {
+        // given
+        let expect = expectation(description: "로그아웃 이후에 로그아웃 되었음을 알림")
+        self.mockAuthRepo.register(key: "requestSignout") { Maybe<Void>.just() }
+        self.mockAuthRepo.register(key: "signInAnonymouslyForPrepareDataAcessPermission") {
+            return Maybe<Auth>.just(.init(userID: "some"))
+        }
+        
+        // when
+        let newAuth = self.waitFirstElement(expect, for: usecase.signedOut) {
+            self.usecase.requestSignout()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(newAuth)
+    }
 }
 
 

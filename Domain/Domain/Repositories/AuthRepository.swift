@@ -14,6 +14,9 @@ public protocol AuthRepository {
     
     func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)>
     
+    func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth>
     func requestSignIn(using secret: EmailBaseSecret) -> Maybe<SigninResult>
     func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
+    
+    func requestSignout() -> Maybe<Void>
 }

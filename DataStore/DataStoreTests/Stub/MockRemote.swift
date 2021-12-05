@@ -34,6 +34,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestSignIn:credential") ?? .empty()
     }
     
+    func requestSignout() -> Maybe<Void> {
+        return self.resolve(key: "requestSignout") ?? .empty()
+    }
+    
     // member
     func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
         return self.resolve(key: "requestUpdateUserPresence") ?? .empty()

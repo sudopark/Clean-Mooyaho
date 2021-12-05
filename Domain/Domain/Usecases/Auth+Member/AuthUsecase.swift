@@ -18,7 +18,11 @@ public protocol AuthUsecase {
     
     func requestSocialSignIn(_ providerType: OAuthServiceProviderType) -> Maybe<Member>
     
+    func requestSignout() -> Maybe<Auth>
+    
     var currentAuth: Observable<Auth?> { get }
+    
+    var signedOut: Observable<Auth> { get }
     
     var supportingOAuthServiceProviders: [OAuthServiceProviderType] { get }
 }
@@ -47,6 +51,7 @@ public final class AuthUsecaseImple: AuthUsecase {
         self.searchReposiotry = searchReposiotry
     }
     
+    private let signedoutAuth = PublishSubject<Auth>()
     private let disposeBag = DisposeBag()
 }
 
@@ -100,6 +105,22 @@ extension AuthUsecaseImple {
             .do(afterNext: self.postSignInAction())
     }
     
+    public func requestSignout() -> Maybe<Auth> {
+        let signout = self.authRepository.requestSignout()
+        let thenClearSharedDataStore: () -> Void = { [weak self] in
+            self?.sharedDataStroeService.flush()
+        }
+        let thenPublishNewAnonymousAccount: () -> Maybe<Auth> = { [weak self] in
+            return self?.authRepository.signInAnonymouslyForPrepareDataAcessPermission() ?? .empty()
+        }
+        let thenNotifySignedOut: (Auth) -> Void = { [weak self] auth in
+            self?.signedoutAuth.onNext(auth)
+        }
+        return signout
+            .do(onNext: thenClearSharedDataStore)
+            .flatMap(thenPublishNewAnonymousAccount)
+            .do(onNext: thenNotifySignedOut)
+    }
     
     private func updateAccountInfoOnSharedStore(_ auth: Auth, member: Member?) {
         logger.print(level: .info, "current auth changed: \(auth) and member: \(String(describing: member))")
@@ -136,6 +157,11 @@ extension AuthUsecaseImple {
     
     public var supportingOAuthServiceProviders: [OAuthServiceProviderType] {
         return self.oathServiceProviders.map{ $0.providerType }
+    }
+    
+    public var signedOut: Observable<Auth> {
+        return self.signedoutAuth
+            .asObservable()
     }
 }
 

@@ -24,6 +24,8 @@ public protocol ApplicationUsecase {
     func userFCMTokenUpdated(_ newToken: String?)
     
     var currentSignedInMemeber: Observable<Member?> { get }
+    
+    var signedOut: Observable<Auth> { get }
 }
 
 // MARK: - ApplicationUsecaseImple
@@ -104,7 +106,7 @@ extension ApplicationUsecaseImple {
             })
             .disposed(by: self.disposeBag)
     }
-    
+
     private func refreshBaseSharedDatas() {
         self.favoriteItemsUsecase.refreshSharedFavoriteIDs()
     }
@@ -151,5 +153,9 @@ extension ApplicationUsecaseImple {
     
     public var currentSignedInMemeber: Observable<Member?> {
         return self.memberUsecase.currentMember
+    }
+    
+    public var signedOut: Observable<Auth> {
+        return self.authUsecase.signedOut
     }
 }

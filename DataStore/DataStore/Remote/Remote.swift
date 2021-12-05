@@ -55,6 +55,8 @@ public protocol AuthRemote {
     func requestSignIn(withEmail email: String, password: String) -> Maybe<SigninResult>
     
     func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
+    
+    func requestSignout() -> Maybe<Void>
 }
 
 public protocol OAuthRemote {
