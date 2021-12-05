@@ -42,7 +42,7 @@ class EditCategoryAttrViewModelTests: BaseTestCase, WaitObservableEvents {
             |> \.ownerID .~ "owner"
     }()
     
-    private func makeViewModel(saveResult: Result<Void, Error> = .success(())) -> EditCategoryAttrViewModelImple {
+    private func makeViewModel(saveResult: Result<ItemCategory, Error> = .success(.dummy(0))) -> EditCategoryAttrViewModelImple {
         
         let router = SpyRouter()
         self.spyRouter = router
@@ -140,10 +140,8 @@ extension EditCategoryAttrViewModelTests {
         let old = self.dummyCategory
         let new = self.spyUsecase.didUpdateRequestedCategory
         XCTAssertEqual(new?.uid, old.uid)
-        XCTAssertEqual(new?.ownerID, old.ownerID)
-        XCTAssertEqual(new?.createdAt, old.createdAt)
-        XCTAssertEqual(new?.name, "new name")
-        XCTAssertEqual(new?.colorCode, old.colorCode)
+        XCTAssertEqual(new?.newName, "new name")
+        XCTAssertEqual(new?.newColorCode, nil)
     }
     
     func testViewModel_saveChange_withOnlyChangeColor() {
@@ -159,10 +157,26 @@ extension EditCategoryAttrViewModelTests {
         let old = self.dummyCategory
         let new = self.spyUsecase.didUpdateRequestedCategory
         XCTAssertEqual(new?.uid, old.uid)
-        XCTAssertEqual(new?.ownerID, old.ownerID)
-        XCTAssertEqual(new?.createdAt, old.createdAt)
-        XCTAssertEqual(new?.name, old.name)
-        XCTAssertEqual(new?.colorCode, "new color")
+        XCTAssertEqual(new?.newName, nil)
+        XCTAssertEqual(new?.newColorCode, "new color")
+    }
+    
+    func testViewModel_saveChange_withOnlyChangeColor_nameEnterButNotChanged() {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        viewModel.enter(name: self.dummyCategory.name)
+        viewModel.selectNewColor()
+        viewModel.colorSelect(didSeelctColor: "new color")
+        viewModel.confirmSaveChange()
+        
+        // then
+        let old = self.dummyCategory
+        let new = self.spyUsecase.didUpdateRequestedCategory
+        XCTAssertEqual(new?.uid, old.uid)
+        XCTAssertEqual(new?.newName, nil)
+        XCTAssertEqual(new?.newColorCode, "new color")
     }
     
     func testViewModel_saveChange_withChangeNameAndColor() {
@@ -179,10 +193,8 @@ extension EditCategoryAttrViewModelTests {
         let old = self.dummyCategory
         let new = self.spyUsecase.didUpdateRequestedCategory
         XCTAssertEqual(new?.uid, old.uid)
-        XCTAssertEqual(new?.ownerID, old.ownerID)
-        XCTAssertEqual(new?.createdAt, old.createdAt)
-        XCTAssertEqual(new?.name, "new name")
-        XCTAssertEqual(new?.colorCode, "new color")
+        XCTAssertEqual(new?.newName, "new name")
+        XCTAssertEqual(new?.newColorCode, "new color")
     }
     
     // 저장 실패시에 에러알림

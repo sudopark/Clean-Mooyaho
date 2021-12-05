@@ -247,6 +247,10 @@ extension RemoteImple {
         return self.firebaseRemote.requestUpdateCategories(categories)
     }
     
+    func requestUpdateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        return self.firebaseRemote.requestUpdateCategory(by: params)
+    }
+    
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
         return self.firebaseRemote.requestSuggestCategories(name, cursor: cursor)
     }
@@ -261,6 +265,10 @@ extension RemoteImple {
     
     func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
         return self.firebaseRemote.requestDeleteCategory(itemID)
+    }
+    
+    func requestFindCategory(by name: String) -> Maybe<ItemCategory?> {
+        return self.firebaseRemote.requestFindCategory(by: name)
     }
     
     // memo

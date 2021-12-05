@@ -84,6 +84,8 @@ public protocol DataModelStorage {
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
     
+    func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void>
+    
     func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]>
     
     func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
@@ -91,6 +93,8 @@ public protocol DataModelStorage {
     func fetchCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
     
     func deleteCategory(_ itemID: String) -> Maybe<Void>
+    
+    func findCategory(by name: String) -> Maybe<ItemCategory?>
     
     func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
     
@@ -753,6 +757,20 @@ extension DataModelStorageImple {
         }
     }
     
+    public func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        
+        let query = ItemCategoriesTable
+            .update(replace: { column in
+                let conditions: [QueryExpression.Condition?] = [
+                    params.newName.map { column.name == $0 },
+                    params.newColorCode.map { column.colorCode == $0}
+                ]
+                return conditions.compactMap { $0 }
+            })
+            .where { $0.itemID == params.uid }
+        return self.sqliteService.rx.run { try $0.update(ItemCategoriesTable.self, query: query) }
+    }
+    
     public func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]> {
         let query = ItemCategoriesTable.selectAll { $0.name.like( "\(name)%" ) }
         return self.sqliteService.rx.run { try $0.load(query) }
@@ -778,6 +796,12 @@ extension DataModelStorageImple {
         let query = ItemCategoriesTable.delete()
             .where { $0.itemID == itemID }
         return self.sqliteService.rx.run { try $0.delete(ItemCategoriesTable.self, query: query) }
+    }
+    
+    public func findCategory(by name: String) -> Maybe<ItemCategory?> {
+        let query = ItemCategoriesTable
+            .selectAll { $0.name == name }
+        return self.sqliteService.rx.run { try $0.loadOne(query) }
     }
 }
 

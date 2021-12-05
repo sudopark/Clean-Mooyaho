@@ -253,6 +253,14 @@ class MockLocal: LocalStorage, Mocking {
             })
     }
     
+    func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        let sender: Maybe<Void> = self.resolve(key: "updateCategory") ?? .empty()
+        return sender
+            .do(onNext: {
+                self.verify(key: "updateCategory")
+            })
+    }
+    
     func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
         return self.resolve(key: "suggestCategories") ?? .empty()
     }
@@ -271,6 +279,10 @@ class MockLocal: LocalStorage, Mocking {
             .do(onNext: {
                 self.verify(key: "deleteCategory")
             })
+    }
+    
+    func findCategory(by name: String) -> Maybe<ItemCategory?> {
+        return self.resolve(key: "findCategory") ?? .empty()
     }
     
     func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {

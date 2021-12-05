@@ -16,6 +16,14 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestUpdateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        return .empty()
+    }
+    
+    func requestFindCategory(by name: String) -> Maybe<ItemCategory?> {
+        return .empty()
+    }
+    
     func requestLoadCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]> {
         return .empty()
     }

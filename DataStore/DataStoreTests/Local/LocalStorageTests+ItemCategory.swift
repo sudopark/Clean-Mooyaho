@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import UnitTestHelpKit
@@ -122,5 +124,41 @@ extension LocalStorageTests_ItemCategory {
         // then
         XCTAssertEqual(items?.count, dummies.count-1)
         XCTAssertEqual(items?.contains(where: { $0.uid == target.uid}), false)
+    }
+    
+    func testStorage_findCategoryByName() {
+        // given
+        let expect = expectation(description: "이름으로 카테고리 찾기")
+        let dummies = self.dummyCategories
+        let target = dummies.randomElement()!
+        
+        // when
+        let save = self.local.updateCategories(dummies)
+        let find = self.local.findCategory(by: target.name)
+        let saveAndFind = save.flatMap { find }
+        let category = self.waitFirstElement(expect, for: saveAndFind.asObservable())
+        
+        // then
+        XCTAssertNotNil(category)
+    }
+    
+    func testStorage_updateCategoryByParams() {
+        // given
+        let expect = expectation(description: "파라미터로 카테고리 업데이트")
+        let dummy = self.dummyCategories.first!
+        let params = UpdateCategoryAttrParams(uid: dummy.uid)
+            |> \.newName .~ "new name"
+            |> \.newColorCode .~ "new color"
+        
+        // when
+        let save = self.local.updateCategories([dummy])
+        let update = self.local.updateCategory(by: params)
+        let load = self.local.fetchCategories([dummy.uid])
+        let saveUpdateAndLoad = save.flatMap { update }.flatMap { load }
+        let category = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(category?.first?.name, "new name")
+        XCTAssertEqual(category?.first?.colorCode, "new color")
     }
 }

@@ -19,13 +19,29 @@ public struct SameNameCategoryExistsError: Error {
     public init () { }
 }
 
+public struct UpdateCategoryAttrParams {
+    
+    public let uid: String
+    public var newName: String?
+    public var newColorCode: String?
+    
+    public init(uid: String) {
+        self.uid = uid
+    }
+    
+    public var isNothingChanged: Bool {
+        return self.newName == nil && self.newColorCode == nil
+    }
+}
+
 public protocol ReadItemCategoryUsecase: AnyObject {
     
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
     
     func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
     
-    func updateCategoryIfNotExist(_ category: ItemCategory) -> Maybe<Void>
+    func updateCategory(by params: UpdateCategoryAttrParams,
+                        from: ItemCategory) -> Maybe<ItemCategory>
     
     func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]>
     
@@ -89,8 +105,65 @@ extension ReadItemCategoryUsecaseImple {
             })
     }
     
-    public func updateCategoryIfNotExist(_ category: ItemCategory) -> Maybe<Void> {
-        return .empty()
+    public func updateCategory(by params: UpdateCategoryAttrParams,
+                               from: ItemCategory) -> Maybe<ItemCategory> {
+        
+        if params.isNothingChanged {
+            return .just(from)
+        }
+        
+        let findSameNameCategorysIsExistsIfNeed: Maybe<ItemCategory?> = params.newName
+            .map { self.findcategory(by: $0) } ?? .just(nil)
+        
+        let errorWhenSameNameCategoryExists: (ItemCategory?) throws -> Void = { category in
+            if category != nil {
+                throw SameNameCategoryExistsError()
+            }
+        }
+        
+        let thenUpdateCategory: () -> Maybe<ItemCategory> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let newCategory = from.applyingChange(params)
+            return self.repository.updateCategory(by: params).map { newCategory }
+        }
+        
+        let updateStore: (ItemCategory) -> Void = { [weak self] category in
+            guard let self = self else { return }
+            let datKey = SharedDataKeys.categoriesMap.rawValue
+            self.sharedService.update([String: ItemCategory].self, key: datKey) {
+                return ($0 ?? [:]) |> key(category.uid) .~ category
+            }
+        }
+        
+        return findSameNameCategorysIsExistsIfNeed
+            .map(errorWhenSameNameCategoryExists)
+            .flatMap(thenUpdateCategory)
+            .do(onNext: updateStore)
+    }
+    
+    private func findcategory(by name: String) -> Maybe<ItemCategory?> {
+        
+        let itemFromStore = self.findSameNameCategoryExistsOnStore(name)
+        
+        let updateStoreIfPosible: (ItemCategory?) -> Void = { [weak self] category in
+            guard let category = category else { return }
+            let datKey = SharedDataKeys.categoriesMap.rawValue
+            self?.sharedService.update([String: ItemCategory].self, key: datKey) {
+                return ($0 ?? [:]) |> key(category.uid) .~ category
+            }
+            
+        }
+        let orFindFromRepository = self.repository.findCategory(name)
+            .do(onNext: updateStoreIfPosible)
+                
+        return itemFromStore.map { .just($0) } ?? orFindFromRepository
+    }
+    
+    private func findSameNameCategoryExistsOnStore(_ name: String) -> ItemCategory? {
+        return self.sharedService
+            .fetch([String: ItemCategory].self, key: .categoriesMap)?
+            .values
+            .first(where: { $0.name == name })
     }
     
     public func loadCategories(earilerThan createTime: TimeStamp) -> Maybe<[ItemCategory]> {

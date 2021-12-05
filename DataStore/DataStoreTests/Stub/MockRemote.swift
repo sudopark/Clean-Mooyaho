@@ -228,6 +228,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestUpdateCategories") ?? .empty()
     }
     
+    func requestUpdateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        return self.resolve(key: "requestUpdateCategory") ?? .empty()
+    }
+    
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection> {
         return self.resolve(key: "requestSuggestCategories") ?? .empty()
     }
@@ -242,6 +246,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
     
     func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
         return self.resolve(key: "requestDeleteCategory") ?? .empty()
+    }
+    
+    func requestFindCategory(by name: String) -> Maybe<ItemCategory?> {
+        return self.resolve(key: "requestFindCategory") ?? .empty()
     }
     
     // memo

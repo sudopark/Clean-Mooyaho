@@ -40,6 +40,20 @@ extension FirebaseServiceImple {
             .do(onNext: updateIndexes)
     }
     
+    public func requestUpdateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        guard self.signInMemberID != nil else {
+            return .empty()
+        }
+        let updateIndex: () -> Void = { [weak self] in
+            self?.updateIndexes(by: params)
+        }
+        var newField: [String: Any] = [:]
+        newField[Key.name.rawValue] = params.newName
+        newField[Key.colorCode.rawValue] = params.newColorCode
+        return self.update(docuID: params.uid, newFields: newField, at: .itemCategory)
+            .do(onNext: updateIndex)
+    }
+    
     private func updateIndexes(for memberID: String, categories: [ItemCategory]) {
         
         let indexes = categories.map { $0.asIndexes(memberID) }
@@ -51,6 +65,15 @@ extension FirebaseServiceImple {
             }
         }
         self.batch(.suggestCategoryIndexes, write: updating)
+            .subscribe()
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateIndexes(by params: UpdateCategoryAttrParams) {
+        var updatePayload: [String: Any] = [:]
+        updatePayload[SuggestKey.keyword] = params.newName
+        updatePayload[SuggestKey.additionalValue] = params.newColorCode
+        self.update(docuID: params.uid, newFields: updatePayload, at: .suggestCategoryIndexes)
             .subscribe()
             .disposed(by: self.disposeBag)
     }
@@ -116,5 +139,15 @@ extension FirebaseServiceImple {
     
     public func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
         return self.delete(itemID, at: .itemCategory)
+    }
+    
+    public func requestFindCategory(by name: String) -> Maybe<ItemCategory?> {
+        guard let memberID = self.signInMemberID else { return .empty() }
+        let collectionRef = self.fireStoreDB.collection(.itemCategory)
+        let query = collectionRef
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+            .whereField(Key.name.rawValue, isEqualTo: name)
+        let categories: Maybe<[ItemCategory]> = self.load(query: query)
+        return categories.map { $0.first }
     }
 }

@@ -18,7 +18,7 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
         public var categories: [[ItemCategory]] = []
         public var updateResult: Result<Void, Error> = .success(())
         public var categoriesWithPaging: [[ItemCategory]] = []
-        public var updateCategoryWithValidatingReuslt: Result<Void, Error> = .success(())
+        public var updateCategoryWithValidatingReuslt: Result<ItemCategory, Error> = .success(.dummy(0))
         
         public init () {}
     }
@@ -36,9 +36,10 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
         return self.scenario.updateResult.asMaybe()
     }
     
-    public var didUpdateRequestedCategory: ItemCategory?
-    public func updateCategoryIfNotExist(_ category: ItemCategory) -> Maybe<Void> {
-        self.didUpdateRequestedCategory = category
+    public var didUpdateRequestedCategory: UpdateCategoryAttrParams?
+    public func updateCategory(by params: UpdateCategoryAttrParams,
+                               from: ItemCategory) -> Maybe<ItemCategory> {
+        self.didUpdateRequestedCategory = params
         return self.scenario.updateCategoryWithValidatingReuslt.asMaybe()
     }
     

@@ -216,6 +216,8 @@ public protocol ItemCategoryRemote: AuthorizationNeed {
     func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
     
     func requestUpdateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+    
+    func requestUpdateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void>
  
     func requestSuggestCategories(_ name: String, cursor: String?) -> Maybe<SuggestCategoryCollection>
     
@@ -224,6 +226,8 @@ public protocol ItemCategoryRemote: AuthorizationNeed {
     func requestLoadCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
     
     func requestDeleteCategory(_ itemID: String) -> Maybe<Void>
+    
+    func requestFindCategory(by name: String) -> Maybe<ItemCategory?>
 }
 
 // MARK: - BatchUploadRemote

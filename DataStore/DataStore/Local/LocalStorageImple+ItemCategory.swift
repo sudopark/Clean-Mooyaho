@@ -29,6 +29,13 @@ extension LocalStorageImple {
         return storage.updateCategories(categories)
     }
     
+    public func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.updateCategory(by: params)
+    }
+    
     public func suggestCategories(_ name: String) -> Maybe<[SuggestCategory]> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
@@ -60,6 +67,13 @@ extension LocalStorageImple {
         }
         
         return storage.deleteCategory(itemID)
+    }
+    
+    public func findCategory(by name: String) -> Maybe<ItemCategory?> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.findCategory(by: name)
     }
 }
 
