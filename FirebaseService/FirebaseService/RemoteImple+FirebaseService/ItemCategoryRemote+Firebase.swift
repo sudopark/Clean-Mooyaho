@@ -139,6 +139,7 @@ extension FirebaseServiceImple {
     
     public func requestDeleteCategory(_ itemID: String) -> Maybe<Void> {
         return self.delete(itemID, at: .itemCategory)
+            .do(onNext: removeIndex(itemID))
     }
     
     public func requestFindCategory(by name: String) -> Maybe<ItemCategory?> {
@@ -149,5 +150,14 @@ extension FirebaseServiceImple {
             .whereField(Key.name.rawValue, isEqualTo: name)
         let categories: Maybe<[ItemCategory]> = self.load(query: query)
         return categories.map { $0.first }
+    }
+    
+    private func removeIndex(_ uid: String) -> () -> Void {
+        return { [weak self] in
+            guard let self = self else { return }
+            self.delete(uid, at: .suggestCategoryIndexes)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
     }
 }
