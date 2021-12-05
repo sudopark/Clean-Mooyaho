@@ -29,6 +29,8 @@ public protocol SharedDataStoreService: AuthInfoProvider {
     func observeWithCache<V>(_ type: V.Type, key: String) -> Observable<V?>
     
     func flush()
+    
+    var isEmpty: Bool { get }
 }
 
 extension SharedDataStoreService {
@@ -161,6 +163,10 @@ extension SharedDataStoreServiceImple {
         self.lock.lock(); defer { self.lock.unlock() }
         self.internalStore.accept([:])
         self.updatedKey.onNext(nil)
+    }
+    
+    public var isEmpty: Bool {
+        return self.internalStore.value.isEmpty
     }
 }
 

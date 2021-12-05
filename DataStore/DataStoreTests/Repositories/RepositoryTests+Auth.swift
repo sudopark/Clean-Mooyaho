@@ -191,6 +191,24 @@ extension RepositoryTests_Auth {
     }
 }
 
+extension RepositoryTests_Auth {
+    
+    // 로그아웃시에 디비 바꿈
+    func testRepository_whenSignout_changeDatabase() {
+        // given
+        let expect = expectation(description: "로그아웃시에 로그아웃처리하고 디비 바꿈")
+        self.mockRemote.register(key: "requestSignout") { Maybe<Void>.just() }
+        
+        // when
+        let signout = repository.requestSignout()
+        let result: Void? = self.waitFirstElement(expect, for: signout.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+        XCTAssertEqual(self.mockLocal.didSwitchToAnonymousStorage, true)
+    }
+}
+
 
 extension RepositoryTests_Auth {
     

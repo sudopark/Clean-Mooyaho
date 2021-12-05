@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestSignout() -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestUpdateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
         return .empty()
     }

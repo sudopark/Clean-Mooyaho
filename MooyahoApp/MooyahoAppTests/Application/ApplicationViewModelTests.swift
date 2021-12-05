@@ -93,6 +93,22 @@ extension ApplicationViewModelTests {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
+    
+    func testViewModel_whenAfterSignout_routeToMain() {
+        // given
+        let expect = expectation(description: "로그아웃되었으면 다시 메인으로 라우팅")
+        
+        self.spyRouter.called(key: "routeMain") { args in
+            guard let auth = args as? Auth, auth.userID == "new" else { return }
+            expect.fulfill()
+        }
+        
+        // when
+        self.mockUsecase.signoutSubject.onNext(.init(userID: "new"))
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
 }
 
 // MARK: - test handle urls

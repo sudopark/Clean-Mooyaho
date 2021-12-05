@@ -106,6 +106,18 @@ extension FirebaseServiceImple {
             return Disposables.create()
         }
     }
+    
+    public func requestSignout() -> Maybe<Void> {
+        return Maybe.create { callback in
+            do {
+                try Auth.auth().signOut()
+                callback(.success(()))
+            } catch let error {
+                callback(.error(error))
+            }
+            return Disposables.create()
+        }
+    }
 }
 
 
