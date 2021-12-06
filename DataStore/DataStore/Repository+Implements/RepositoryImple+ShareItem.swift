@@ -128,4 +128,12 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
         return self.shareItemRemote.requestRemoveSharedCollection(shareID: sharedID)
             .flatMap(thenRemoveFromLatestSharedCollectionCacheWithoutCache)
     }
+    
+    public func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
+        return self.shareItemRemote.requestLoadAllSharedCollectionIndexes()
+    }
+    
+    public func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
+        return self.shareItemRemote.requestLoadSharedCollections(by: indexes)
+    }
 }

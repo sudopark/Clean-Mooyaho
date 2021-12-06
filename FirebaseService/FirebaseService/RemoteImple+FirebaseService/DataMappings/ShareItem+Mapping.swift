@@ -13,22 +13,6 @@ import Optics
 import Domain
 
 
-// MARK: - SharingItem
-
-struct SharingCollectionIndex {
-    
-    let shareID: String
-    let ownerID: String
-    let collectionID: String
-    
-    init(shareID: String, ownerID: String, collectionID: String) {
-        self.shareID = shareID
-        self.ownerID = ownerID
-        self.collectionID = collectionID
-    }
-}
-
-
 // MARK: - SharedInbox
 
 struct SharedInbox: Equatable {

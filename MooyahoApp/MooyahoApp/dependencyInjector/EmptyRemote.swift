@@ -16,6 +16,14 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
+        return .empty()
+    }
+    
+    func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
+        return .empty()
+    }
+    
     func requestWithdrawal() -> Maybe<Void> {
         return .empty()
     }
