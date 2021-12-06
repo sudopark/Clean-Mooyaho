@@ -24,7 +24,6 @@ public final class SettingMainViewController: BaseViewController, SettingMainSce
     typealias Section = SectionModel<String, CellViewModel>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
-    private let titleLabel = UILabel()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     
     let viewModel: SettingMainViewModel
@@ -108,31 +107,20 @@ extension SettingMainViewController: Presenting {
     
     public func setupLayout() {
         
-        self.view.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 44)
-        }
-        
         self.view.addSubview(tableView)
         tableView.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor)
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
         }
     }
     
     public func setupStyling() {
         
-        _ = self.titleLabel
-            |> self.uiContext.decorating.title(_:)
-            |> \.backgroundColor .~ pure(self.uiContext.colors.appBackground)
-            |> \.text .~ pure("Setting".localized)
-            |> \.textAlignment .~ .center
-            |> \.font .~ self.uiContext.fonts.get(17, weight: .medium)
+        self.view.backgroundColor = self.uiContext.colors.appBackground
+        
+        self.title = "Setting".localized
         
         tableView.registerCell(SettingItemCell.self)
         tableView.rowHeight = 60
@@ -156,6 +144,7 @@ final class SettingItemCell: BaseTableViewCell {
         
         self.titleLabel.text = cellViewModel.title
         self.updateAccessoryView(cellViewModel.accessory)
+        self.titleLabel.alpha = cellViewModel.isEnable ? 1.0 : 0.5
     }
     
     private func updateAccessoryView(_ accessory: SettingItemCellViewModel.Accessory) {

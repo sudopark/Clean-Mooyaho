@@ -143,5 +143,6 @@ extension DataModelStorageGatewayImple {
     public func removeAnonymousStorage() {
         let path = self.anonymousStoragePath
         try? FileManager.default.removeItem(atPath: path)
+        self.anonymousStorage = nil
     }
 }

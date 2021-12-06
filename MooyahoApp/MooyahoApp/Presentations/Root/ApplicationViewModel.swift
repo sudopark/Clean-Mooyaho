@@ -80,6 +80,7 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
             .signedOut
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] auth in
+                logger.print(level: .info, "user signedout")
                 self?.router.routeMain(auth: auth)
             })
             .disposed(by: self.disposeBag)

@@ -39,21 +39,24 @@ public final class AuthUsecaseImple: AuthUsecase {
     private let authInfoManager: AuthInfoManger
     private let sharedDataStroeService: SharedDataStoreService
     private let searchReposiotry: IntegratedSearchReposiotry
+    private weak var signedoutAuth: PublishSubject<Auth>?
     
     public init(authRepository: AuthRepository,
                 oathServiceProviders: [OAuthServiceProvider],
                 authInfoManager: AuthInfoManger,
                 sharedDataStroeService: SharedDataStoreService,
-                searchReposiotry: IntegratedSearchReposiotry) {
+                searchReposiotry: IntegratedSearchReposiotry,
+                signedoutSubject: PublishSubject<Auth>) {
         
         self.authRepository = authRepository
         self.oathServiceProviders = oathServiceProviders
         self.authInfoManager = authInfoManager
         self.sharedDataStroeService = sharedDataStroeService
         self.searchReposiotry = searchReposiotry
+        self.signedoutAuth = signedoutSubject
     }
     
-    private let signedoutAuth = PublishSubject<Auth>()
+    
     private let disposeBag = DisposeBag()
 }
 
@@ -118,10 +121,14 @@ extension AuthUsecaseImple {
     
     public func requestWithdrawal() -> Maybe<Auth> {
         let withdrawal = self.authRepository.requestWithdrawal()
+        let logWtidrawal: () -> Void = {
+            logger.print(level: .info, "user account deleted")
+        }
         let thenPostAction: () -> Maybe<Auth> = { [weak self] in
             return self?.postSignoutAction() ?? .empty()
         }
         return withdrawal
+            .do(onNext: logWtidrawal)
             .flatMap(thenPostAction)
     }
     
@@ -129,7 +136,7 @@ extension AuthUsecaseImple {
         self.sharedDataStroeService.flush()
         
         let thenNotifySignedOut: (Auth) -> Void = { [weak self] auth in
-            self?.signedoutAuth.onNext(auth)
+            self?.signedoutAuth?.onNext(auth)
         }
         
         return self.authRepository.signInAnonymouslyForPrepareDataAcessPermission()
@@ -174,8 +181,7 @@ extension AuthUsecaseImple {
     }
     
     public var signedOut: Observable<Auth> {
-        return self.signedoutAuth
-            .asObservable()
+        return self.signedoutAuth?.asObservable() ?? .empty()
     }
 }
 

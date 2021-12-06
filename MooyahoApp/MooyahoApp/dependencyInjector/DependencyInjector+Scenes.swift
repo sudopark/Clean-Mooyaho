@@ -494,6 +494,21 @@ extension DependencyInjector: EditCategoryAttrSceneBuilable {
     }
 }
 
+extension DependencyInjector: ManageAccountSceneBuilable {
+    
+    public func makeManageAccountScene(listener: ManageAccountSceneListenable?) -> ManageAccountScene {
+        let router = ManageAccountRouter(nextSceneBuilders: self)
+        let viewModel = ManageAccountViewModelImple(
+            authUsecase: self.authUsecase,
+            router: router,
+            listener: listener
+        )
+        let viewController = ManageAccountViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
 
 // MARK: - DiscoveryScenes
 
