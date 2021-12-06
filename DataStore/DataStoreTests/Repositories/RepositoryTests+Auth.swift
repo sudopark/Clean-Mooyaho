@@ -207,6 +207,21 @@ extension RepositoryTests_Auth {
         XCTAssertNotNil(result)
         XCTAssertEqual(self.mockLocal.didSwitchToAnonymousStorage, true)
     }
+    
+    func testReposiotry_whenWithdrawal_requestWithdrawalAndChangeDatabase() {
+        // given
+        let expect = expectation(description: "회원탈퇴시에 로그아웃플로우타고 디비 체인지")
+        self.mockRemote.register(key: "requestWithdrawal") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestSignout") { Maybe<Void>.just() }
+        
+        // when
+        let withdrawal = repository.requestWithdrawal()
+        let result: Void? = self.waitFirstElement(expect, for: withdrawal.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+        XCTAssertEqual(self.mockLocal.didSwitchToAnonymousStorage, true)
+    }
 }
 
 

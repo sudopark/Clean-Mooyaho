@@ -117,4 +117,14 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         return self.authRemote.requestSignout()
             .flatMap(thenSwitchStorage)
     }
+    
+    public func requestWithdrawal() -> Maybe<Void> {
+        
+        let withdrawal = self.authRemote.requestWithdrawal()
+        let thenSignout: () -> Maybe<Void> = { [weak self] in
+            return self?.requestSignout() ?? .empty()
+        }
+        return withdrawal
+            .flatMap(thenSignout)
+    }
 }

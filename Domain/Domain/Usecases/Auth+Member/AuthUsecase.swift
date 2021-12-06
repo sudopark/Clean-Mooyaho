@@ -20,6 +20,8 @@ public protocol AuthUsecase {
     
     func requestSignout() -> Maybe<Auth>
     
+    func requestWithdrawal() -> Maybe<Auth>
+    
     var currentAuth: Observable<Auth?> { get }
     
     var signedOut: Observable<Auth> { get }
@@ -107,18 +109,30 @@ extension AuthUsecaseImple {
     
     public func requestSignout() -> Maybe<Auth> {
         let signout = self.authRepository.requestSignout()
-        let thenClearSharedDataStore: () -> Void = { [weak self] in
-            self?.sharedDataStroeService.flush()
+        let thenPostAction: () -> Maybe<Auth> = { [weak self] in
+            return self?.postSignoutAction() ?? .empty()
         }
-        let thenPublishNewAnonymousAccount: () -> Maybe<Auth> = { [weak self] in
-            return self?.authRepository.signInAnonymouslyForPrepareDataAcessPermission() ?? .empty()
+        return signout
+            .flatMap(thenPostAction)
+    }
+    
+    public func requestWithdrawal() -> Maybe<Auth> {
+        let withdrawal = self.authRepository.requestWithdrawal()
+        let thenPostAction: () -> Maybe<Auth> = { [weak self] in
+            return self?.postSignoutAction() ?? .empty()
         }
+        return withdrawal
+            .flatMap(thenPostAction)
+    }
+    
+    private func postSignoutAction() -> Maybe<Auth> {
+        self.sharedDataStroeService.flush()
+        
         let thenNotifySignedOut: (Auth) -> Void = { [weak self] auth in
             self?.signedoutAuth.onNext(auth)
         }
-        return signout
-            .do(onNext: thenClearSharedDataStore)
-            .flatMap(thenPublishNewAnonymousAccount)
+        
+        return self.authRepository.signInAnonymouslyForPrepareDataAcessPermission()
             .do(onNext: thenNotifySignedOut)
     }
     

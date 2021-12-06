@@ -19,4 +19,5 @@ public protocol AuthRepository {
     func requestSignIn(using credential: OAuthCredential) -> Maybe<SigninResult>
     
     func requestSignout() -> Maybe<Void>
+    func requestWithdrawal() -> Maybe<Void>
 }

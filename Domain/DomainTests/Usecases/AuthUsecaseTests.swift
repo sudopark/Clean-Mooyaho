@@ -321,6 +321,22 @@ extension AuthUsecaseTests {
         // then
         XCTAssertNotNil(newAuth)
     }
+    
+    func testUsecase_withdrawal() {
+        // given
+        let expect = expectation(description: "회원탈퇴 진행")
+        self.mockAuthRepo.register(key: "requestWithdrawal") { Maybe<Void>.just() }
+        self.mockAuthRepo.register(key: "signInAnonymouslyForPrepareDataAcessPermission") {
+            return Maybe<Auth>.just(.init(userID: "some"))
+        }
+        
+        // when
+        let withdrawal = self.usecase.requestWithdrawal()
+        let newAuth = self.waitFirstElement(expect, for: withdrawal.asObservable())
+        
+        // then
+        XCTAssertNotNil(newAuth)
+    }
 }
 
 

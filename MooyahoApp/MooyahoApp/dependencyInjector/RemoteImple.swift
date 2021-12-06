@@ -49,6 +49,10 @@ extension RemoteImple {
         return self.firebaseRemote.requestSignIn(using: credential)
     }
     
+    func requestWithdrawal() -> Maybe<Void> {
+        return self.firebaseRemote.requestWithdrawal()
+    }
+    
     func requestSignout() -> Maybe<Void> {
         return self.firebaseRemote.requestSignout()
     }
