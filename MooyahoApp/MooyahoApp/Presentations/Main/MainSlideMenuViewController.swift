@@ -45,8 +45,8 @@ public final class MainSlideMenuViewController: BaseViewController, MainSlideMen
     let dimView = UIView()
     let bottomBarView = UIView()
     let settingButton = UIButton(type: .system)
-    let alertButton = UIButton(type: .system)
-    let alertBadgeView = UIView()
+//    let alertButton = UIButton(type: .system)
+//    let alertBadgeView = UIView()
     public let discoveryContainerView = UIView()
     let actionSuggestView = ActionSuggestView()
     let discoveryBlockView = UIView()
@@ -183,27 +183,29 @@ extension MainSlideMenuViewController: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 20)
         }
         
-        self.bottomBarView.addSubview(self.alertButton)
-        alertButton.autoLayout.active(with: settingButton) {
-            $0.trailingAnchor.constraint(equalTo: $1.leadingAnchor, constant: -16)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.widthAnchor.constraint(equalToConstant: 20)
-            $0.heightAnchor.constraint(equalToConstant: 20)
-        }
-        
-        self.bottomBarView.addSubview(self.alertBadgeView)
-        alertBadgeView.autoLayout.active(with: self.alertButton) {
-            $0.widthAnchor.constraint(equalToConstant: 6)
-            $0.heightAnchor.constraint(equalToConstant: 6)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 2)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -2)
-        }
+//        self.bottomBarView.addSubview(self.alertButton)
+//        alertButton.autoLayout.active(with: settingButton) {
+//            $0.trailingAnchor.constraint(equalTo: $1.leadingAnchor, constant: -16)
+//            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+//            $0.widthAnchor.constraint(equalToConstant: 20)
+//            $0.heightAnchor.constraint(equalToConstant: 20)
+//        }
+//
+//        self.bottomBarView.addSubview(self.alertBadgeView)
+//        alertBadgeView.autoLayout.active(with: self.alertButton) {
+//            $0.widthAnchor.constraint(equalToConstant: 6)
+//            $0.heightAnchor.constraint(equalToConstant: 6)
+//            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 2)
+//            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -2)
+//        }
         
         self.bottomBarView.addSubview(actionSuggestView)
         actionSuggestView.autoLayout.active(with: self.bottomBarView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.centerYAnchor.constraint(equalTo: alertButton.centerYAnchor, constant: 2)
-            $0.trailingAnchor.constraint(equalTo: alertButton.leadingAnchor, constant: -16)
+//            $0.centerYAnchor.constraint(equalTo: alertButton.centerYAnchor, constant: 2)
+//            $0.trailingAnchor.constraint(equalTo: alertButton.leadingAnchor, constant: -16)
+            $0.centerYAnchor.constraint(equalTo: settingButton.centerYAnchor, constant: 2)
+            $0.trailingAnchor.constraint(equalTo: settingButton.leadingAnchor, constant: -20)
         }
         actionSuggestView.setupLayout()
         
@@ -230,13 +232,13 @@ extension MainSlideMenuViewController: Presenting {
         self.settingButton.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
         self.settingButton.tintColor = UIColor.from(hex: "#CFD8DC")?.withAlphaComponent(0.6)
         
-        self.alertButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)
-        self.alertButton.tintColor = UIColor.from(hex: "#CFD8DC")?.withAlphaComponent(0.6)
-        
-        self.alertBadgeView.backgroundColor = UIColor.systemRed
-        self.alertBadgeView.layer.cornerRadius = 3
-        self.alertBadgeView.clipsToBounds = true
-        self.alertBadgeView.isHidden = true
+//        self.alertButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)
+//        self.alertButton.tintColor = UIColor.from(hex: "#CFD8DC")?.withAlphaComponent(0.6)
+//
+//        self.alertBadgeView.backgroundColor = UIColor.systemRed
+//        self.alertBadgeView.layer.cornerRadius = 3
+//        self.alertBadgeView.clipsToBounds = true
+//        self.alertBadgeView.isHidden = true
         
         self.actionSuggestView.setupStyling()
         
