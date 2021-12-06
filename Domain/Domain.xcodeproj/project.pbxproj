@@ -49,6 +49,9 @@
 		2BFF241B2641BB04008C52EB /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF241A2641BB04008C52EB /* Array+Extensions.swift */; };
 		2BFF241D2641E009008C52EB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFF241C2641E009008C52EB /* Rx+Extensions.swift */; };
 		F601724E26FEF98300E47B75 /* LinkPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601724D26FEF98300E47B75 /* LinkPreviewRepository.swift */; };
+		F6079330275E697D00616E13 /* SharedReadCollectionPagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F607932F275E697D00616E13 /* SharedReadCollectionPagingUsecase.swift */; };
+		F6079332275E6A2A00616E13 /* PagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6079331275E6A2A00616E13 /* PagingUsecase.swift */; };
+		F6079334275E7CE300616E13 /* SharedReadCollectionPagingUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6079333275E7CE300616E13 /* SharedReadCollectionPagingUsecaseTests.swift */; };
 		F6118D82273C86F100E0489B /* ReadRemindUsecaseImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D81273C86F100E0489B /* ReadRemindUsecaseImple.swift */; };
 		F612BDE02740664E0017FD77 /* SharedReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDDF2740664E0017FD77 /* SharedReadCollection.swift */; };
 		F612BDE827406B310017FD77 /* ShareReadCollectionUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612BDE727406B310017FD77 /* ShareReadCollectionUsecase.swift */; };
@@ -228,6 +231,9 @@
 		2BFF241A2641BB04008C52EB /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		2BFF241C2641E009008C52EB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		F601724D26FEF98300E47B75 /* LinkPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewRepository.swift; sourceTree = "<group>"; };
+		F607932F275E697D00616E13 /* SharedReadCollectionPagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedReadCollectionPagingUsecase.swift; sourceTree = "<group>"; };
+		F6079331275E6A2A00616E13 /* PagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingUsecase.swift; sourceTree = "<group>"; };
+		F6079333275E7CE300616E13 /* SharedReadCollectionPagingUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedReadCollectionPagingUsecaseTests.swift; sourceTree = "<group>"; };
 		F6118D81273C86F100E0489B /* ReadRemindUsecaseImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRemindUsecaseImple.swift; sourceTree = "<group>"; };
 		F612BDDF2740664E0017FD77 /* SharedReadCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedReadCollection.swift; sourceTree = "<group>"; };
 		F612BDE727406B310017FD77 /* ShareReadCollectionUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReadCollectionUsecase.swift; sourceTree = "<group>"; };
@@ -552,6 +558,7 @@
 				F61FC991274A2CAD00E82D16 /* IntegratedSearchUsecaseTests.swift */,
 				F6907F19274FDDDB007805EA /* SuggestQueryUsecaseTests.swift */,
 				F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */,
+				F6079333275E7CE300616E13 /* SharedReadCollectionPagingUsecaseTests.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -646,6 +653,7 @@
 				F6A8CE3D2711756A00CA6D3D /* SuggestCategoryUsecase.swift */,
 				F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */,
 				F61FC989274A091500E82D16 /* IntegratedSearchUsecase.swift */,
+				F6079331275E6A2A00616E13 /* PagingUsecase.swift */,
 			);
 			path = "Suggest+Search";
 			sourceTree = "<group>";
@@ -678,6 +686,7 @@
 				F612BDEF27406EDB0017FD77 /* SharedReadCollectionLoadUsecase.swift */,
 				F6BD48022740DF5900D2B2C9 /* SharedReadCollectionHandle.swift */,
 				F612BDF127406FD90017FD77 /* ShareItemUsecaseImple.swift */,
+				F607932F275E697D00616E13 /* SharedReadCollectionPagingUsecase.swift */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -1043,11 +1052,13 @@
 				2B40BF8D263F0E400031C7A6 /* LocationMonitoringOption.swift in Sources */,
 				F612BDE02740664E0017FD77 /* SharedReadCollection.swift in Sources */,
 				F6152945264EE1E7003BCB59 /* HoorayRepository.swift in Sources */,
+				F6079332275E6A2A00616E13 /* PagingUsecase.swift in Sources */,
 				F6391C73271DC6240000F927 /* ReadRemindUsecase.swift in Sources */,
 				2BD9DC33263C793B002EF343 /* AuthErrors.swift in Sources */,
 				2BE978BD263AE91B0000C0C6 /* AuthUsecase.swift in Sources */,
 				F6913EED26EC637000C6E105 /* ReadCollection.swift in Sources */,
 				F6E3F60B264983E900DD4986 /* Location+Extension.swift in Sources */,
+				F6079330275E697D00616E13 /* SharedReadCollectionPagingUsecase.swift in Sources */,
 				2BFF240F2640736F008C52EB /* Builder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1077,6 +1088,7 @@
 				F64061872735B7E200902787 /* UserDataMigrationUsecaseTests.swift in Sources */,
 				F615296326500091003BCB59 /* StubMessagingService.swift in Sources */,
 				F61FC98E274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift in Sources */,
+				F6079334275E7CE300616E13 /* SharedReadCollectionPagingUsecaseTests.swift in Sources */,
 				F66B7D7A26C78AF400D31FAC /* StubPlaceRepository.swift in Sources */,
 				F6E3F6092649812E00DD4986 /* RegisterNewPlaceUsecaseTests.swift in Sources */,
 				F6152954264F0057003BCB59 /* SharedDataStoreServiceTests.swift in Sources */,

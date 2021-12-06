@@ -55,4 +55,21 @@ class StubShareItemRepository: ShareItemRepository {
     func requestRemoveFromSharedList(_ sharedID: String) -> Maybe<Void> {
         return self.removeFromSharedListResult.asMaybe()
     }
+    
+    var loadAllSharedCollectionIDsResult: Result<[String], Error> = .success([])
+    func requestLoadAllSharedCollectionIDs() -> Maybe<[String]> {
+        return self.loadAllSharedCollectionIDsResult.asMaybe()
+    }
+    
+    var loadSharedCollectionError: Error?
+    func requestLoadSharedCollections(by ids: [String]) -> Maybe<[SharedReadCollection]> {
+        if let error = self.loadSharedCollectionError {
+            return .error(error)
+        } else {
+            let collections: [SharedReadCollection] = ids.map {
+                return SharedReadCollection(shareID: $0, uid: "u:\($0)", name: "nae", createdAt: .now(), lastUpdated: .now())
+            }
+            return .just(collections)
+        }
+    }
 }

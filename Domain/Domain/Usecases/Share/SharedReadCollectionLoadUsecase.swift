@@ -19,8 +19,6 @@ public protocol SharedReadCollectionLoadUsecase {
     
     func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection>
     
-//    func loadSharedCollection(shareID: String) -> Maybe<SharedReadCollection>
-    
     func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]>
     
     func removeFromSharedList(shareID: String) -> Maybe<Void>
