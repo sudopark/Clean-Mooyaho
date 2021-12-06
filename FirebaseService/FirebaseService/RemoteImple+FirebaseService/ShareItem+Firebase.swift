@@ -159,13 +159,30 @@ extension FirebaseServiceImple {
         
         let thenLoadCollections: ([SharingCollectionIndex]) -> Maybe<[SharedReadCollection]>
         thenLoadCollections = { [weak self] indexes in
-            return self?.loadCollections(by: indexes) ?? .empty()
+            return self?.requestLoadSharedCollections(by: indexes) ?? .empty()
         }
         return loadIndexes
             .flatMap(thenLoadCollections)
     }
     
-    private func loadCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
+    public func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        return self.updateInboxAction(for: memberID) { $0.removedShared(shareID) }
+    }
+    
+    public func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        
+        let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
+        let query = collectionRef.whereField(Key.ownerID.rawValue, isEqualTo: memberID)
+        return self.load(query: query)
+    }
+    
+    public func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
         let colletionIDs = indexes.map { $0.collectionID }
         let collectionIDIndexMap = indexes.reduce(into: [String: SharingCollectionIndex]()) { $0[$1.collectionID] = $1 }
         
@@ -175,13 +192,6 @@ extension FirebaseServiceImple {
         let quries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
         let collections: Maybe<[ReadCollection]> = self.loadAll(queries: quries).asMaybe()
         return collections.map { $0.asSharedCollection(with: collectionIDIndexMap) }
-    }
-    
-    public func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
-        guard let memberID = self.signInMemberID else {
-            return .error(ApplicationErrors.sigInNeed)
-        }
-        return self.updateInboxAction(for: memberID) { $0.removedShared(shareID) }
     }
 }
 

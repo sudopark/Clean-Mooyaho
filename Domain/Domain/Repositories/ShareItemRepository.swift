@@ -29,7 +29,7 @@ public protocol ShareItemRepository {
     
     func requestRemoveFromSharedList(_ sharedID: String) -> Maybe<Void>
     
-    func requestLoadAllSharedCollectionIDs() -> Maybe<[String]>
+    func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]>
     
-    func requestLoadSharedCollections(by ids: [String]) -> Maybe<[SharedReadCollection]>
+    func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]>
 }

@@ -18,13 +18,13 @@ import Optics
 
 public struct SharedCollectionPagingParameter: PagingLoadParameter {
     
-    public typealias Cursor = [String]
+    public typealias Cursor = [SharingCollectionIndex]
     
-    let collectionIDs: [String]
+    let collectionIndexes: [SharingCollectionIndex]
     public let isFirst: Bool
     
-    public init(collectionIDs: [String] = [], isFirst: Bool = false) {
-        self.collectionIDs = collectionIDs
+    public init(collectionIndexes: [SharingCollectionIndex] = [], isFirst: Bool = false) {
+        self.collectionIndexes = collectionIndexes
         self.isFirst = isFirst
     }
     
@@ -45,31 +45,31 @@ public struct SharedCollectionPagingResult: PagingLoadResult {
     public let isFirst: Bool
     public let isAllLoaded: Bool
     
-    private let restCollectionIDs: [String]
+    private let restCollectionIndexes: [SharingCollectionIndex]
     
     init(collections: [SharedReadCollection],
-         restIDs: [String],
+         restIndexes: [SharingCollectionIndex],
          isFirst: Bool,
          isAllLoaded: Bool) {
         
         self.collections = collections
-        self.restCollectionIDs = restIDs
+        self.restCollectionIndexes = restIndexes
         self.isFirst = isFirst
         self.isAllLoaded = isAllLoaded
     }
     
     static var last: Self {
-        return .init(collections: [], restIDs: [], isFirst: false, isAllLoaded: true)
+        return .init(collections: [], restIndexes: [], isFirst: false, isAllLoaded: true)
     }
     
     public func nextParameter(from previous: SharedCollectionPagingParameter) -> SharedCollectionPagingParameter? {
-        return SharedCollectionPagingParameter(collectionIDs: self.restCollectionIDs)
+        return SharedCollectionPagingParameter(collectionIndexes: self.restCollectionIndexes)
     }
     
     public func append(next: SharedCollectionPagingResult) -> SharedCollectionPagingResult {
         return SharedCollectionPagingResult(
             collections: self.collections + next.collections,
-            restIDs: next.restCollectionIDs,
+            restIndexes: next.restCollectionIndexes,
             isFirst: next.isFirst,
             isAllLoaded: next.collections.isEmpty
         )
@@ -119,14 +119,14 @@ public final class SharedReadCollectionPagingUsecaseImple: SharedReadCollectionP
     
     private func loadCollection(_ parameter: SharedCollectionPagingParameter) -> Maybe<SharedCollectionPagingResult> {
         
-        guard parameter.collectionIDs.isNotEmpty else { return .just(.last) }
+        guard parameter.collectionIndexes.isNotEmpty else { return .just(.last) }
         
-        let prefixedIDs = parameter.collectionIDs.prefix(10) |> Array.init
-        let restIDs = parameter.collectionIDs.dropFirst(prefixedIDs.count) |> Array.init
+        let prefixedIndexes = parameter.collectionIndexes.prefix(10) |> Array.init
+        let restIndexes = parameter.collectionIndexes.dropFirst(prefixedIndexes.count) |> Array.init
         
-        let loadCollection = self.repository.requestLoadSharedCollections(by: prefixedIDs)
+        let loadCollection = self.repository.requestLoadSharedCollections(by: prefixedIndexes)
         let asLoadResult: ([SharedReadCollection]) -> SharedCollectionPagingResult = { collections in
-            return .init(collections: collections, restIDs: restIDs,
+            return .init(collections: collections, restIndexes: restIndexes,
                          isFirst: parameter.isFirst, isAllLoaded: collections.isEmpty)
         }
         return loadCollection
@@ -142,9 +142,9 @@ extension SharedReadCollectionPagingUsecaseImple {
         
         guard self.isRefreshingRelay.value == false else { return }
         
-        let loadTotalCollectionIDs = self.repository.requestLoadAllSharedCollectionIDs()
-        let asLoadParameter: ([String]) -> SharedCollectionPagingParameter = { collectionIDs in
-            return .init(collectionIDs: collectionIDs, isFirst: true)
+        let loadTotalCollectionIndexes = self.repository.requestLoadAllSharedCollectionIndexes()
+        let asLoadParameter: ([SharingCollectionIndex]) -> SharedCollectionPagingParameter = { indexes in
+            return .init(collectionIndexes: indexes, isFirst: true)
         }
         let handleError: (Error) -> Void = { [weak self] _ in
             self?.isRefreshingRelay.accept(false)
@@ -156,7 +156,7 @@ extension SharedReadCollectionPagingUsecaseImple {
         
         self.isRefreshingRelay.accept(true)
         
-        loadTotalCollectionIDs
+        loadTotalCollectionIndexes
             .map(asLoadParameter)
             .subscribe(onSuccess: startLoad, onError: handleError)
             .disposed(by: self.disposeBag)

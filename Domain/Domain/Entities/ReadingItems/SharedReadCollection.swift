@@ -67,3 +67,19 @@ public struct SharedReadCollection: SharedReadItem {
         self.lastUpdatedAt = lastUpdated
     }
 }
+
+
+// MARK: - SharingCollectionIndex
+
+public struct SharingCollectionIndex {
+    
+    public let shareID: String
+    public let ownerID: String
+    public let collectionID: String
+    
+    public init(shareID: String, ownerID: String, collectionID: String) {
+        self.shareID = shareID
+        self.ownerID = ownerID
+        self.collectionID = collectionID
+    }
+}

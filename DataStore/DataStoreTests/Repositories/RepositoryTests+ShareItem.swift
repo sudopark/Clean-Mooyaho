@@ -221,7 +221,7 @@ extension RepositoryTests_ShareItem {
     func testRepository_removeSharedCollectionFromList() {
         // given
         let expect = expectation(description: "공유받은 콜렉션 목록에서 제거")
-        self.mockRemote.register(key: "requestLoadSharedCollectionSubItems") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestRemoveSharedCollection") { Maybe<Void>.just() }
         
         // when
         let removing = self.repository.requestRemoveFromSharedList("some")
@@ -233,7 +233,7 @@ extension RepositoryTests_ShareItem {
     
     func testRepository_whenRemoveSharedCollection_alsoRemoveFromCache() {
         let expect = expectation(description: "공유받은 콜렉션 목록에서 제거시에 케시에서도 삭제")
-        self.mockRemote.register(key: "requestLoadSharedCollectionSubItems") { Maybe<Void>.just() }
+        self.mockRemote.register(key: "requestRemoveSharedCollection") { Maybe<Void>.just() }
 
         self.mockLocal.called(key: "removeSharedCollection") { _ in
             expect.fulfill()
@@ -246,6 +246,40 @@ extension RepositoryTests_ShareItem {
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
+
+extension RepositoryTests_ShareItem {
+   
+    func testReposiotry_loadAllSharedCollectionIDsWithSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 모든 공유받은 아이템 아이디 로드")
+        self.mockRemote.register(key: "requestLoadAllSharedCollectionIndexes") {
+            Maybe<[SharingCollectionIndex]>.just([.init(shareID: "some", ownerID: "owner", collectionID: "cid")])
+        }
+        
+        // when
+        let loading = self.repository.requestLoadAllSharedCollectionIndexes()
+        let indexes = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(indexes?.count, 1)
+    }
+    
+    func testRepository_loadSharedCollectionsByIDWithSignIn() {
+        // given
+        let expect = expectation(description: "로그인 상태에서 공유받은 콜렉션 아이디로 로드")
+        self.mockRemote.register(key: "requestLoadSharedCollections") {
+            Maybe<[SharedReadCollection]>.just([SharedReadCollection(shareID: "some", uid: "ud", name: "name", createdAt: .now(), lastUpdated: .now())])
+        }
+        
+        // when
+        let loading = self.repository.requestLoadSharedCollections(by: [.init(shareID: "some", ownerID: "oid", collectionID: "cid")])
+        let collections = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(collections?.count, 1)
     }
 }
 

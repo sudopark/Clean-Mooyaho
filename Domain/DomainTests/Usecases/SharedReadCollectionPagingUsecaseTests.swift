@@ -29,14 +29,16 @@ class SharedReadCollectionPagingUsecaseTests: BaseTestCase, WaitObservableEvents
         self.disposeBag = nil
     }
     
-    private var totalIDs: [String] {
-        return (0..<31).map { "id:\($0)" }
+    private var totalIndexes: [SharingCollectionIndex] {
+        return (0..<31).map {
+            SharingCollectionIndex(shareID: "id:\($0)", ownerID: "mine", collectionID: "c:\($0)")
+        }
     }
     
     private func makeUsecase() -> SharedReadCollectionPagingUsecase {
         
         let respository = StubShareItemRepository()
-            |> \.loadAllSharedCollectionIDsResult .~ .success(self.totalIDs)
+            |> \.loadAllSharedCollectionIndexesResult .~ .success(self.totalIndexes)
         let store = SharedDataStoreServiceImple()
         
         return SharedReadCollectionPagingUsecaseImple(
