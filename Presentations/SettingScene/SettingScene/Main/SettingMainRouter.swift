@@ -35,7 +35,7 @@ public protocol SettingMainRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SettingMainRouterBuildables = EditProfileSceneBuilable & SignInSceneBuilable & WaitMigrationSceneBuilable & ManageCategorySceneBuilable
+public typealias SettingMainRouterBuildables = EditProfileSceneBuilable & SignInSceneBuilable & WaitMigrationSceneBuilable & ManageCategorySceneBuilable & ManageAccountSceneBuilable
 
 public final class SettingMainRouter: Router<SettingMainRouterBuildables>, SettingMainRouting { }
 
@@ -55,7 +55,11 @@ extension SettingMainRouter {
     }
     
     public func manageAccount() {
-        
+        guard let next = self.nextScenesBuilder?.makeManageAccountScene(listener: nil)
+        else {
+            return
+        }
+        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func requestSignIn() {
@@ -68,9 +72,7 @@ extension SettingMainRouter {
     public func editItemsCategory() {
         
         guard let next = self.nextScenesBuilder?.makeManageCategoryScene(listener: nil) else { return }
-        let navigationController = BaseNavigationController(rootViewController: next)
-        navigationController.shouldHideNavigation = false
-        self.currentScene?.present(navigationController, animated: true, completion: nil)
+        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func resumeUserDataMigration(for userID: String) {

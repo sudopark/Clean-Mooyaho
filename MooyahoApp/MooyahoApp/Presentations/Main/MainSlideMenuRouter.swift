@@ -82,7 +82,9 @@ extension MainSlideMenuRouter {
         else {
             return
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
+        let navigtionController = BaseNavigationController(rootViewController: next)
+        navigtionController.shouldHideNavigation = false
+        self.currentScene?.present(navigtionController, animated: true, completion: nil)
     }
 }
 

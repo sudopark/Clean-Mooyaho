@@ -68,6 +68,7 @@ final class DependencyInjector {
         }
         
         fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
+        fileprivate let signedoutSubject = PublishSubject<Domain.Auth>()
     }
     
     let shared: Shared = Shared()
@@ -141,7 +142,8 @@ extension DependencyInjector {
                                 oathServiceProviders: self.supportingOAuthServiceProviders,
                                 authInfoManager: self.shared.authInfoManager,
                                 sharedDataStroeService: self.shared.dataStore,
-                                searchReposiotry: respository)
+                                searchReposiotry: respository,
+                                signedoutSubject: self.shared.signedoutSubject)
     }
     
     var memberUsecase: MemberUsecase {

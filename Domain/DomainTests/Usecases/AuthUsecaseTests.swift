@@ -23,6 +23,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     private var store: SharedDataStoreServiceImple!
     private var spySearchReposiotry: StubSearchRepository!
     private var usecase: AuthUsecaseImple!
+    private var subject: PublishSubject<Auth>!
     
     override func setUp() {
         super.setUp()
@@ -31,11 +32,13 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockOAuth2Repo = .init()
         self.store = .init()
         self.spySearchReposiotry = .init()
+        self.subject = .init()
         self.usecase = AuthUsecaseImple(authRepository: self.mockAuthRepo,
                                         oathServiceProviders: [self.mockOAuth2Repo],
                                         authInfoManager: self.store,
                                         sharedDataStroeService: self.store,
-                                        searchReposiotry: self.spySearchReposiotry)
+                                        searchReposiotry: self.spySearchReposiotry,
+                                        signedoutSubject: self.subject)
     }
     
     override func tearDown() {
@@ -44,6 +47,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockOAuth2Repo = nil
         self.store = nil
         self.spySearchReposiotry = nil
+        self.subject = nil
         self.usecase = nil
         super.tearDown()
     }

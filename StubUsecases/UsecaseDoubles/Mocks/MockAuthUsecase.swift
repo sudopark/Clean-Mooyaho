@@ -36,6 +36,10 @@ open class MockAuthUsecase: AuthUsecase, Mocking {
         return self.resolve(key: "requestSignout") ?? .empty()
     }
     
+    public func requestWithdrawal() -> Maybe<Auth> {
+        return .just(Auth.init(userID: "some"))
+    }
+    
     public let auth: BehaviorSubject<Auth?> = .init(value: nil)
     open var currentAuth: Observable<Auth?> {
         return auth

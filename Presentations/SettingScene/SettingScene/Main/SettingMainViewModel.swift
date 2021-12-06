@@ -167,6 +167,7 @@ extension SettingMainViewModelImple {
         }
         
         return self.memberUsecase.currentMember
+            .startWith(nil)
             .map(asSections)
             .compactMap { $0 }
             .distinctUntilChanged()

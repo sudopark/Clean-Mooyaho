@@ -92,7 +92,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        let sections = self.waitFirstElement(expect, for: viewModel.sections) {
+        let sections = self.waitFirstElement(expect, for: viewModel.sections, skip: 1) {
             viewModel.refresh()
         }
         
@@ -139,7 +139,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        let sectionLists = self.waitElements(expect, for: viewModel.sections) {
+        let sectionLists = self.waitElements(expect, for: viewModel.sections, skip: 1) {
             self.stubMemberUsecase.currentMemberMocking.onNext(nil)
         }
         

@@ -38,11 +38,22 @@ extension ApplicationRootRouter {
     
     public func routeMain(auth: Auth) {
         
+        self.cleanUpWindowIfNeed()
+        
         guard let main = self.nextScenesBuilder?.makeMainScene(auth: auth) else { return }
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window.rootViewController = main
         self.window.makeKeyAndVisible()
         self.mainInteractor = main.interactor
+    }
+    
+    private func cleanUpWindowIfNeed() {
+        guard self.window != nil else { return }
+        self.window.rootViewController?.removeFromParent()
+        self.window.rootViewController = nil
+        self.window.removeFromSuperview()
+        self.window = nil
+        self.mainInteractor = nil
     }
     
     public func showNotificationAuthorizationNeedBanner() {
