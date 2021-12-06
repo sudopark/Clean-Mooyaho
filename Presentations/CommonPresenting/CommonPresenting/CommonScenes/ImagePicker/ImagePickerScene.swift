@@ -40,6 +40,7 @@ public final class SimpleImagePickerViewController: UIImagePickerController {
     private let dispobseBag = DisposeBag()
     public var fileHandleService: FileHandleService = FileManager.default
     public weak var listener: ImagePickerSceneListenable?
+    public var resizeService: ImageResizeService = ImageResizeServiceImple()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,9 +66,39 @@ extension SimpleImagePickerViewController: UIImagePickerControllerDelegate, UINa
             self.listener?.imagePicker(didFail: ApplicationErrors.invalid)
             return
         }
-        let imageSize = ImageSize(image.size.width, image.size.height)
+        let isEdited = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage) != nil
         
-        let fileName = imageURL.lastPathComponent
+        logger.print(level: .debug, "selected imageSize: \(image.megaSize()), size: \(image.size)")
+        
+        // resize image
+        let resizeImage = self.resizeService.resize(image)
+        let thenSaveToTempPath: (UIImage) -> Maybe<(String, ImageSize)> = { [weak self] resized in
+            guard let self = self else { return .empty() }
+            logger.print(level: .debug, "resized image => \(resized.megaSize()), size: \(resized.size)")
+            return self.copyImageToTempPath(resized,
+                                            imageURL: imageURL,
+                                            isEdited: isEdited,
+                                            fileName: imageURL.lastPathComponent)
+        }
+        let handlePicked: ((String, ImageSize)) -> Void = { [weak self] pair in
+            self?.dismissAndReturn(result: .success(pair))
+        }
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.dismissAndReturn(result: .failure(error))
+        }
+        
+        resizeImage
+            .flatMap(thenSaveToTempPath)
+            .subscribe(onSuccess: handlePicked,
+                       onError: handleError)
+            .disposed(by: self.dispobseBag)
+    }
+    
+    private func copyImageToTempPath(_ image: UIImage,
+                                     imageURL: URL,
+                                     isEdited: Bool,
+                                     fileName: String) -> Maybe<(String, ImageSize)> {
+        let imageSize = ImageSize(image.size.width, image.size.height)
         let newFileName = "\(TimeStamp.now())_\(fileName)"
         let newFilePath = FilePath.temp(newFileName)
         
@@ -83,16 +114,9 @@ extension SimpleImagePickerViewController: UIImagePickerControllerDelegate, UINa
                 .map{ newFilePath.absolutePath }
         }
         
-        let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-        let movedFilePath: Maybe<String> = editedImage.when(exists: saveEditedImage(_:), or: copyImage)
-        
-        movedFilePath
-            .subscribe(onSuccess: { [weak self] path in
-                self?.dismissAndReturn(result: .success((path, imageSize)))
-            }, onError: { [weak self] error in
-                self?.dismissAndReturn(result: .failure(error))
-            })
-            .disposed(by: self.dispobseBag)
+        let moveFile = isEdited ? saveEditedImage(image) : copyImage()
+        return moveFile
+            .map { ($0, imageSize) }
     }
     
     private func dismissAndReturn(result: Result<(String, ImageSize), Error>) {
@@ -114,3 +138,15 @@ extension SimpleImagePickerViewController: UIImagePickerControllerDelegate, UINa
 
 
 extension SimpleImagePickerViewController: ImagePickerScene { }
+
+
+private extension UIImage {
+    
+    func megaSize() -> String {
+        let byteCount = self.pngData()?.count ?? 0
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useMB]
+        bcf.countStyle = .file
+        return bcf.string(fromByteCount: Int64(byteCount))
+    }
+}
