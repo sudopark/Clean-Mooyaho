@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestWithdrawal() -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestSignout() -> Maybe<Void> {
         return .empty()
     }

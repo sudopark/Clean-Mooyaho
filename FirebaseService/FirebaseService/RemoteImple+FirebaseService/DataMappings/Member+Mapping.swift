@@ -110,3 +110,20 @@ extension Member: DocumentMappable {
     }
 }
 
+
+struct WithdrawalMember: DocumentMappable {
+    
+    let memberID: String
+    
+    init(_ memberID: String) {
+        self.memberID = memberID
+    }
+    
+    init?(docuID: String, json: JSON) {
+        self.memberID = docuID
+    }
+    
+    func asDocument() -> (String, JSON) {
+        return (self.memberID, [:])
+    }
+}

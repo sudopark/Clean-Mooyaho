@@ -118,6 +118,40 @@ extension FirebaseServiceImple {
             return Disposables.create()
         }
     }
+    
+    public func requestWithdrawal() -> Maybe<Void> {
+        guard let memberID = self.signInMemberID
+        else {
+            return .error(RemoteErrors.deleteAccountFail(nil))
+        }
+        let withdrawalMember = WithdrawalMember(memberID)
+        let appendToWithdrawal = self.save(withdrawalMember, at: .withdrawalQueue)
+        
+        let thenDeleteMemebr: () -> Maybe<Void> = { [weak self] in
+            return self?.delete(memberID, at: .member) ?? .empty()
+        }
+        
+        let thenDeleteAuth: () -> Maybe<Void> = { [weak self] in
+            return self?.deleteAuth() ?? .empty()
+        }
+        return appendToWithdrawal
+            .flatMap(thenDeleteMemebr)
+            .flatMap(thenDeleteAuth)
+    }
+    
+    private func deleteAuth() -> Maybe<Void> {
+        return Maybe.create { callback in
+            guard let currentAuth = Auth.auth().currentUser else {
+                callback(.success(()))
+                return Disposables.create()
+            }
+            currentAuth.delete { error in
+                let result: MaybeEvent<Void> = error.map { .error($0) } ?? .success(())
+                callback(result)
+            }
+            return Disposables.create()
+        }
+    }
 }
 
 

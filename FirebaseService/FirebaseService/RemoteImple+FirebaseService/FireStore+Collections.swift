@@ -33,6 +33,7 @@ enum FireStoreCollectionType: String {
     case sharedInbox = "shared_inboxes"
     case sharingCollectionIndex = "sharing_collect_indexes"
     case memberFavoriteItems
+    case withdrawalQueue = "withdrawal_queue"
 }
 
 
