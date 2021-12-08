@@ -269,6 +269,7 @@ extension MainViewModelImple: MainSceneInteractable {
     public func readCollection(didChange root: CollectionRoot) {
         logger.print(level: .debug, "didChange to read collection root => \(root)")
         self.subjects.currentCollectionRoot.accept(root)
+        // TODO: close drawer
     }
     
     public func readCollection(didShowMy subCollectionID: String?) {

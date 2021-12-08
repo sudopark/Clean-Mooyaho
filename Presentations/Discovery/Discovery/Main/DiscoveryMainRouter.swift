@@ -31,7 +31,7 @@ public protocol DiscoveryMainRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias DiscoveryMainRouterBuildables = EmptyBuilder
+public typealias DiscoveryMainRouterBuildables = AllSharedCollectionsSceneBuilable
 
 public final class DiscoveryMainRouter: Router<DiscoveryMainRouterBuildables>, DiscoveryMainRouting {
     
@@ -47,7 +47,16 @@ extension DiscoveryMainRouter {
     }
     
     public func viewAllSharedCollections() {
-        logger.todoImplement()
+        
+        guard let next = self.nextScenesBuilder?
+                .makeAllSharedCollectionsScene(listener: nil,
+                                               collectionMainInteractor: self.collectionMainInteractor)
+        else {
+            return
+        }
+        let navigationController = BaseNavigationController(rootViewController: next)
+        navigationController.shouldHideNavigation = false
+        self.currentScene?.present(navigationController, animated: true, completion: nil)
     }
     
     public func routeToSharedCollection(_ collection: SharedReadCollection) {

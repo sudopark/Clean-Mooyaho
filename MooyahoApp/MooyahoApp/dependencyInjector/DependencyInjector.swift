@@ -204,10 +204,15 @@ extension DependencyInjector {
                                              readItemUpdateEventPublisher: self.readItemUpdateEventPublisher)
     }
     
-    var shareItemUsecase: ShareReadCollectionUsecase & SharedReadCollectionLoadUsecase & SharedReadCollectionHandleUsecase {
+    var shareItemUsecase: ShareReadCollectionUsecase & SharedReadCollectionLoadUsecase & SharedReadCollectionHandleUsecase & SharedReadCollectionUpdateUsecase {
         return ShareItemUsecaseImple(shareURLScheme: AppEnvironment.shareScheme,
                                      shareRepository: self.appReposiotry,
                                      authInfoProvider: self.shared.authInfoManager,
                                      sharedDataService: self.shared.dataStore)
+    }
+    
+    var sharedCollectionPagingUsecase: SharedReadCollectionPagingUsecase {
+        return SharedReadCollectionPagingUsecaseImple(repository: self.appReposiotry,
+                                                      sharedDataStoreService: self.shared.dataStore)
     }
 }

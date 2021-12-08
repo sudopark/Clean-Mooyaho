@@ -14,7 +14,7 @@ import Domain
 import UnitTestHelpKit
 
 
-open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionHandleUsecase, Mocking {
+open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionUpdateUsecase, SharedReadCollectionHandleUsecase, Mocking {
     
     public struct Scenario {
         

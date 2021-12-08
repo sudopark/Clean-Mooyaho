@@ -582,6 +582,29 @@ extension DependencyInjector: SharedCollectionInfoDialogSceneBuilable {
     }
 }
 
+extension DependencyInjector: AllSharedCollectionsSceneBuilable {
+    
+    func makeAllSharedCollectionsScene(
+        listener: AllSharedCollectionsSceneListenable?,
+        collectionMainInteractor: ReadCollectionMainSceneInteractable?
+    ) -> AllSharedCollectionsScene {
+        
+        let router = AllSharedCollectionsRouter(nextSceneBuilders: self)
+        router.collectionMainInteractor = collectionMainInteractor
+        let viewModel = AllSharedCollectionsViewModelImple(
+            pagingUsecase: self.sharedCollectionPagingUsecase,
+            updateUsecase: self.shareItemUsecase,
+            memberUsecase: self.memberUsecase,
+            categoryUsecase: self.categoryUsecase,
+            router: router, listener: listener
+        )
+        let viewController = AllSharedCollectionsViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+
 
 // MARK: - suggest
 

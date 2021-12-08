@@ -22,7 +22,7 @@ public final class DefaultReadCollectionCell: BaseTableViewCell, ReadItemCells, 
     
     public typealias CellViewModel = ReadCollectionCellViewModel
     
-    private let expandView = ReadItemExppandContentView()
+    public let expandView = ReadItemExppandContentView()
     private let arrowImageView = UIImageView()
     private let underLineView = UIView()
     
