@@ -334,11 +334,11 @@ extension RemoteImple {
         return self.firebaseRemote.requestLoadAllSearchableReadItemTexts(memberID: memberID)
     }
     
-    func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
-        return self.firebaseRemote.requestLoadAllSharedCollectionIndexes()
+    func requestLoadAllSharedCollectionIDs() -> Maybe<[String]> {
+        return self.firebaseRemote.requestLoadAllSharedCollectionIDs()
     }
     
-    func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
-        return self.firebaseRemote.requestLoadSharedCollections(by: indexes)
+    func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
+        return self.firebaseRemote.requestLoadSharedCollections(by: shareIDs)
     }
 }

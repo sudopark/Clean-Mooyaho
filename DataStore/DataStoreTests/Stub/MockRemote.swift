@@ -325,11 +325,11 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestRemoveSharedCollection") ?? .empty()
     }
     
-    func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
-        return self.resolve(key: "requestLoadAllSharedCollectionIndexes") ?? .empty()
+    func requestLoadAllSharedCollectionIDs() -> Maybe<[String]> {
+        return self.resolve(key: "requestLoadAllSharedCollectionIDs") ?? .empty()
     }
     
-    func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
+    func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
         return self.resolve(key: "requestLoadSharedCollections") ?? .empty()
     }
 }
