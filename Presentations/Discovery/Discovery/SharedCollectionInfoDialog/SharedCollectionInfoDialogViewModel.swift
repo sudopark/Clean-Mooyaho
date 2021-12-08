@@ -34,12 +34,12 @@ public protocol SharedCollectionInfoDialogViewModel: AnyObject {
 public final class SharedCollectionInfoDialogViewModelImple: SharedCollectionInfoDialogViewModel {
     
     private let collection: SharedReadCollection
-    private let shareItemsUsecase: SharedReadCollectionLoadUsecase
+    private let shareItemsUsecase: SharedReadCollectionLoadUsecase & SharedReadCollectionUpdateUsecase
     private let router: SharedCollectionInfoDialogRouting
     private weak var listener: SharedCollectionInfoDialogSceneListenable?
     
     public init(collection: SharedReadCollection,
-                shareItemsUsecase: SharedReadCollectionLoadUsecase,
+                shareItemsUsecase: SharedReadCollectionLoadUsecase & SharedReadCollectionUpdateUsecase,
                 router: SharedCollectionInfoDialogRouting,
                 listener: SharedCollectionInfoDialogSceneListenable?) {
         self.collection = collection

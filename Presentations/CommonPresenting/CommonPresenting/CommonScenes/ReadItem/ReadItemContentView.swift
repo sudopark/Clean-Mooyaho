@@ -10,6 +10,8 @@ import UIKit
 import Prelude
 import Optics
 
+import Domain
+
 
 // MARK: - item shrink content view
 
@@ -115,11 +117,75 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
 }
 
 
+// MARK: - OwnerInfoView
+
+public final class OwnerInfoView: BaseUIView, Presenting {
+    
+    public let sharedLabel = UILabel()
+    public let shareMemberProfileImageView = IntegratedImageView()
+    public let shareMemberNameLabel = UILabel()
+    
+    public func updateOwner(_ member: Member) {
+        self.shareMemberNameLabel.text = member.nickName ?? "Unknown".localized
+        self.shareMemberProfileImageView.cancelSetupImage()
+        guard let icon = member.icon else { return }
+        self.shareMemberProfileImageView.setupImage(using: icon, resize: .init(width: 15, height: 15))
+    }
+}
+
+extension OwnerInfoView {
+    
+    public func setupLayout() {
+        
+        self.addSubview(shareMemberProfileImageView)
+        shareMemberProfileImageView.autoLayout.active(with: self) {
+            $0.widthAnchor.constraint(equalToConstant: 18)
+            $0.heightAnchor.constraint(equalToConstant: 18)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
+        }
+        self.shareMemberProfileImageView.setupLayout()
+        
+        self.addSubview(sharedLabel)
+        sharedLabel.autoLayout.active(with: self) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.centerYAnchor.constraint(equalTo: shareMemberProfileImageView.centerYAnchor)
+            $0.trailingAnchor.constraint(equalTo: shareMemberProfileImageView.leadingAnchor, constant: -6)
+        }
+        sharedLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        self.addSubview(shareMemberNameLabel)
+        shareMemberNameLabel.autoLayout.active(with: self) {
+            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
+            $0.leadingAnchor.constraint(equalTo: shareMemberProfileImageView.trailingAnchor, constant: 4)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor)
+        }
+    }
+    
+    public func setupStyling() {
+        
+        _ = self.sharedLabel
+            |> self.uiContext.decorating.listItemDescription(_:)
+            |> \.text .~ pure("shared by".localized)
+            |> \.numberOfLines .~ 1
+        
+        self.shareMemberProfileImageView.setupStyling()
+        self.shareMemberProfileImageView.layer.cornerRadius = 9
+        self.shareMemberProfileImageView.clipsToBounds = true
+
+        _ = self.shareMemberNameLabel
+            |> self.uiContext.decorating.listItemDescription(_:)
+            |> \.font .~ self.uiContext.fonts.get(12, weight: .medium)
+            |> \.numberOfLines .~ 1
+    }
+}
+
 
 // MARK: - item expand content view
 
 public final class ReadItemExppandContentView: ReadItemShrinkContentView {
     
+    public let ownerInfoView = OwnerInfoView()
     public let priorityLabel = ItemLabelView()
     public let categoriesView = ItemLabelView()
     public let remindView = ItemLabelView()
@@ -134,6 +200,12 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
     
     public override func setupLayout() {
         super.setupLayout()
+        
+        self.contentStackView.addArrangedSubview(ownerInfoView)
+        ownerInfoView.autoLayout.active(with: self.contentStackView) {
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+        }
+        ownerInfoView.setupLayout()
         
         self.contentStackView.addArrangedSubview(priorityLabel)
         priorityLabel.autoLayout.active(with: self.contentStackView) {
@@ -160,6 +232,9 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
     public override func setupStyling() {
         
         super.setupStyling()
+        
+        self.ownerInfoView.setupStyling()
+        self.ownerInfoView.isHidden = true
         
         self.priorityLabel.setupStyling()
         self.priorityLabel.isHidden = true

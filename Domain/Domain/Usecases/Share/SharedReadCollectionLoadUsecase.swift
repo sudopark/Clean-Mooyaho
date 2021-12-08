@@ -11,6 +11,11 @@ import Foundation
 import RxSwift
 
 
+public protocol SharedReadCollectionUpdateUsecase {
+    
+    func removeFromSharedList(shareID: String) -> Maybe<Void>
+}
+
 public protocol SharedReadCollectionLoadUsecase {
     
     func refreshLatestSharedReadCollection()
@@ -20,6 +25,4 @@ public protocol SharedReadCollectionLoadUsecase {
     func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection>
     
     func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]>
-    
-    func removeFromSharedList(shareID: String) -> Maybe<Void>
 }

@@ -13,7 +13,7 @@ import Prelude
 import Optics
 
 
-public final class ShareItemUsecaseImple: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionHandleUsecase {
+public final class ShareItemUsecaseImple: ShareReadCollectionUsecase, SharedReadCollectionLoadUsecase, SharedReadCollectionUpdateUsecase, SharedReadCollectionHandleUsecase {
     
     private let shareURLScheme: String
     private let shareRepository: ShareItemRepository
