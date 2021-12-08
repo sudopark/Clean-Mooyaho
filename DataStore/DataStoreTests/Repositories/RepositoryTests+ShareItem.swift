@@ -255,16 +255,16 @@ extension RepositoryTests_ShareItem {
     func testReposiotry_loadAllSharedCollectionIDsWithSignIn() {
         // given
         let expect = expectation(description: "로그인 상태에서 모든 공유받은 아이템 아이디 로드")
-        self.mockRemote.register(key: "requestLoadAllSharedCollectionIndexes") {
-            Maybe<[SharingCollectionIndex]>.just([.init(shareID: "some", ownerID: "owner", collectionID: "cid")])
+        self.mockRemote.register(key: "requestLoadAllSharedCollectionIDs") {
+            Maybe<[String]>.just(["some"])
         }
         
         // when
-        let loading = self.repository.requestLoadAllSharedCollectionIndexes()
-        let indexes = self.waitFirstElement(expect, for: loading.asObservable())
+        let loading = self.repository.requestLoadAllSharedCollectionIDs()
+        let ids = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
-        XCTAssertEqual(indexes?.count, 1)
+        XCTAssertEqual(ids?.count, 1)
     }
     
     func testRepository_loadSharedCollectionsByIDWithSignIn() {
@@ -275,7 +275,7 @@ extension RepositoryTests_ShareItem {
         }
         
         // when
-        let loading = self.repository.requestLoadSharedCollections(by: [.init(shareID: "some", ownerID: "oid", collectionID: "cid")])
+        let loading = self.repository.requestLoadSharedCollections(by: ["some"])
         let collections = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then

@@ -56,18 +56,18 @@ class StubShareItemRepository: ShareItemRepository {
         return self.removeFromSharedListResult.asMaybe()
     }
     
-    var loadAllSharedCollectionIndexesResult: Result<[SharingCollectionIndex], Error> = .success([])
-    func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
-        return self.loadAllSharedCollectionIndexesResult.asMaybe()
+    var loadAllSharedCollectionIDsResult: Result<[String], Error> = .success([])
+    func requestLoadAllSharedCollectionIDs() -> Maybe<[String]> {
+        return self.loadAllSharedCollectionIDsResult.asMaybe()
     }
     
     var loadSharedCollectionError: Error?
-    func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
+    func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
         if let error = self.loadSharedCollectionError {
             return .error(error)
         } else {
-            let collections: [SharedReadCollection] = indexes.map {
-                return SharedReadCollection(shareID: $0.shareID, uid: $0.collectionID,
+            let collections: [SharedReadCollection] = shareIDs.map {
+                return SharedReadCollection(shareID: $0, uid: "c:\($0)",
                                             name: "nae", createdAt: .now(), lastUpdated: .now())
             }
             return .just(collections)

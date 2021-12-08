@@ -15,10 +15,13 @@ import Domain
 import DataStore
 
 
+private typealias Key = ShareItemMappingKey
+
+
+// MARK: - share or stop
+
 extension FirebaseServiceImple {
     
-    private typealias Key = ShareItemMappingKey
-        
     public func requestShare(collectionID: String) -> Maybe<SharedReadCollection> {
         
         guard let memberID = self.signInMemberID else {
@@ -71,6 +74,12 @@ extension FirebaseServiceImple {
             .flatMap(thenRemoveOrNot)
             .do(onNext: updateInbox)
     }
+}
+
+
+// MARK: - load my sharing
+
+extension FirebaseServiceImple {
     
     public func requestLoadMySharingCollectionIDs() -> Maybe<[String]> {
         
@@ -81,42 +90,7 @@ extension FirebaseServiceImple {
             .map { $0?.sharingCollectionIDs ?? [] }
     }
     
-    public func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
-        
-        guard let memberID = self.signInMemberID else {
-            return .error(ApplicationErrors.sigInNeed)
-        }
-        
-        let loadSharedIDs = self.loadMyInbox(for: memberID).map { $0?.sharedIDs ?? [] }
-            .map { Array($0.prefix(10)) }
-        let thenLoadMatchingCollections: ([String]) -> Maybe<[SharedReadCollection]> = { [weak self] ids in
-            return self?.loadMatchingSharedCollections(by: ids) ?? .empty()
-        }
-        
-        return loadSharedIDs
-            .flatMap(thenLoadMatchingCollections)
-    }
-    
-    public func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection> {
-        
-        guard let memberID = self.signInMemberID else {
-            return .error(ApplicationErrors.sigInNeed)
-        }
-        
-        let emptyThenError: ([SharedReadCollection]) throws -> SharedReadCollection = {
-            guard let first = $0.first else { throw ApplicationErrors.notFound }
-            return first
-        }
-        
-        let updateInbox: (SharedReadCollection) -> Void = { [weak self] collection in
-            self?.updateInbox(for: memberID) { $0.insertShared(collection.shareID) }
-        }
-        
-        return self.loadMatchingSharedCollections(by: [shareID])
-            .map(emptyThenError)
-            .do(onNext: updateInbox)
-    }
-    
+    // 내가 공유한 콜렉션 상세조회
     public func requestLoadMySharingCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
         
         guard let memberID = self.signInMemberID else {
@@ -140,6 +114,63 @@ extension FirebaseServiceImple {
             .map { $0.first }
             .flatMap(thenLoadCollection)
     }
+}
+
+
+// MARK: - add shared or remove
+
+extension FirebaseServiceImple {
+    
+    // 공유받은 콜렉션 조회 => 호출시 인박스에 추가됨
+    public func requestLoadSharedCollection(by shareID: String) -> Maybe<SharedReadCollection> {
+        
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        
+        let emptyThenError: ([SharedReadCollection]) throws -> SharedReadCollection = {
+            guard let first = $0.first else { throw ApplicationErrors.notFound }
+            return first
+        }
+        
+        let updateInbox: (SharedReadCollection) -> Void = { [weak self] collection in
+            self?.updateInbox(for: memberID) { $0.insertShared(collection.shareID) }
+        }
+        
+        return self.requestLoadSharedCollections(by: [shareID])
+            .map(emptyThenError)
+            .do(onNext: updateInbox)
+    }
+    
+    public func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        return self.updateInboxAction(for: memberID) { $0.removedShared(shareID) }
+    }
+}
+
+
+// MARK: - load shared collection
+
+extension FirebaseServiceImple {
+    
+    // 내가 공유받은 최근 콜렉션 로드
+    public func requestLoadLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
+        
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        
+        let loadSharedIDs = self.loadMyInbox(for: memberID).map { $0?.sharedIDs ?? [] }
+            .map { Array($0.prefix(10)) }
+        let thenLoadMatchingCollections: ([String]) -> Maybe<[SharedReadCollection]> = { [weak self] ids in
+            return self?.requestLoadSharedCollections(by: ids) ?? .empty()
+        }
+        
+        return loadSharedIDs
+            .flatMap(thenLoadMatchingCollections)
+    }
     
     public func requestLoadSharedCollectionSubItems(for collectionID: String) -> Maybe<[SharedReadItem]> {
         let loadItems: Maybe<[ReadItem]> = self.requestLoadCollectionItems(collectionID: collectionID)
@@ -150,7 +181,16 @@ extension FirebaseServiceImple {
             .map(asSharedItems)
     }
     
-    private func loadMatchingSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
+    public func requestLoadAllSharedCollectionIDs() -> Maybe<[String]> {
+        guard let memberID = self.signInMemberID else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
+        let loadMyInbox = self.loadMyInbox(for: memberID)
+        return loadMyInbox
+            .map { $0?.sharedIDs ?? [] }
+    }
+    
+    public func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
         guard shareIDs.isNotEmpty else { return .just([]) }
         let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
         let idChunks = shareIDs.slice(by: 10)
@@ -165,24 +205,7 @@ extension FirebaseServiceImple {
             .flatMap(thenLoadCollections)
     }
     
-    public func requestRemoveSharedCollection(shareID: String) -> Maybe<Void> {
-        guard let memberID = self.signInMemberID else {
-            return .error(ApplicationErrors.sigInNeed)
-        }
-        return self.updateInboxAction(for: memberID) { $0.removedShared(shareID) }
-    }
-    
-    public func requestLoadAllSharedCollectionIndexes() -> Maybe<[SharingCollectionIndex]> {
-        guard let memberID = self.signInMemberID else {
-            return .error(ApplicationErrors.sigInNeed)
-        }
-        
-        let collectionRef = self.fireStoreDB.collection(.sharingCollectionIndex)
-        let query = collectionRef.whereField(Key.ownerID.rawValue, isEqualTo: memberID)
-        return self.load(query: query)
-    }
-    
-    public func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
+    private func requestLoadSharedCollections(by indexes: [SharingCollectionIndex]) -> Maybe<[SharedReadCollection]> {
         let colletionIDs = indexes.map { $0.collectionID }
         let collectionIDIndexMap = indexes.reduce(into: [String: SharingCollectionIndex]()) { $0[$1.collectionID] = $1 }
         
