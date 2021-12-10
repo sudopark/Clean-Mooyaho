@@ -27,11 +27,6 @@ public protocol SignInScene: Scenable, PangestureDismissableScene {
     var interactor: SignInSceneInteractable? { get }
 }
 
-public protocol SignInSceneBuilable {
-    
-    func makeSignInScene(_ listener: SignInSceneListenable?) -> SignInScene
-}
-
 
 // MARK: - EditProfileScene
 
@@ -42,7 +37,17 @@ public protocol EditProfileScene: Scenable {
     var interactor: EditProfileSceneInteractable? { get }
 }
 
-public protocol EditProfileSceneBuilable {
+
+// MARK: - MemberProfileScene Interactable & Listenable
+
+public protocol MemberProfileSceneInteractable { }
+
+public protocol MemberProfileSceneListenable: AnyObject { }
+
+
+// MARK: - MemberProfileScene
+
+public protocol MemberProfileScene: Scenable {
     
-    func makeEditProfileScene() -> EditProfileScene
+    var interactor: MemberProfileSceneInteractable? { get }
 }

@@ -34,7 +34,7 @@ public protocol MainSlideMenuRouting: Routing {
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias MainSlideMenuRouterBuildables = EditProfileSceneBuilable & SettingMainSceneBuilable & DiscoveryMainSceneBuilable
+public typealias MainSlideMenuRouterBuildables = EditProfileSceneBuilable & SettingMainSceneBuilable & DiscoveryMainSceneBuilable & MemberProfileSceneBuilable
 
 public final class MainSlideMenuRouter: Router<MainSlideMenuRouterBuildables>, MainSlideMenuRouting {
     
@@ -74,6 +74,13 @@ extension MainSlideMenuRouter {
     public func editProfile() {
         guard let next = self.nextScenesBuilder?.makeEditProfileScene() else { return }
         self.currentScene?.present(next, animated: true, completion: nil)
+        
+//        guard let next = self.nextScenesBuilder?
+//                .makeMemberProfileScene(memberID: "30VxISGPyxMFI54L8jQYhH8A5U82",
+//                                        listener: nil) else { return }
+//        let navigation = BaseNavigationController(rootViewController: next)
+//        navigation.shouldHideNavigation = false
+//        self.currentScene?.present(navigation, animated: true, completion: nil)
     }
     
     public func openSetting() {

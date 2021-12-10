@@ -23,6 +23,8 @@ open class BaseStubMemberUsecase: MemberUsecase {
         
         public var currentMember: Member?
         
+        public var loadMemberResult: Result<[Member], Error> = .success([])
+        
         public init() { }
     }
     
@@ -47,8 +49,9 @@ open class BaseStubMemberUsecase: MemberUsecase {
         
     }
     
+
     public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
-        return .empty()
+        return self.scenario.loadMemberResult.asMaybe()
     }
     
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
