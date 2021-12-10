@@ -39,9 +39,15 @@ extension DependencyInjector: SignInSceneBuilable, EditProfileSceneBuilable {
 
 extension DependencyInjector: MemberProfileSceneBuilable {
     
-    public func makeMemberProfileScene(listener: MemberProfileSceneListenable?) -> MemberProfileScene {
+    public func makeMemberProfileScene(memberID: String,
+                                       listener: MemberProfileSceneListenable?) -> MemberProfileScene {
         let router = MemberProfileRouter(nextSceneBuilders: self)
-        let viewModel = MemberProfileViewModelImple(router: router, listener: listener)
+        let viewModel = MemberProfileViewModelImple(
+            memberID: memberID,
+            memberUsecase: self.memberUsecase,
+            router: router,
+            listener: listener
+        )
         let viewController = MemberProfileViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

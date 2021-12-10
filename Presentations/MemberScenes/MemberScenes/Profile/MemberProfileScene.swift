@@ -14,21 +14,6 @@ import RxCocoa
 import CommonPresenting
 
 
-// MARK: - MemberProfileScene Interactable & Listenable
-
-public protocol MemberProfileSceneInteractable { }
-
-public protocol MemberProfileSceneListenable: AnyObject { }
-
-
-// MARK: - MemberProfileScene
-
-public protocol MemberProfileScene: Scenable {
-    
-    var interactor: MemberProfileSceneInteractable? { get }
-}
-
-
 // MARK: - MemberProfileViewModelImple conform MemberProfileSceneInteractor
 
 extension MemberProfileViewModelImple: MemberProfileSceneInteractable {

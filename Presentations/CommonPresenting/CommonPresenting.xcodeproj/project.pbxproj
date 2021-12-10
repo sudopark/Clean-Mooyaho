@@ -64,6 +64,7 @@
 		F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AC26755626000CAB4B /* ApplicationStatus.swift */; };
 		F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248F9275940C100D4FC74 /* CategoryLabelView.swift */; };
 		F66248FC2759424F00D4FC74 /* BaseTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */; };
+		F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6E52763C7FE00EE8152 /* Builders+Member.swift */; };
 		F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */; };
 		F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */; };
 		F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */; };
@@ -202,6 +203,7 @@
 		F65215AC26755626000CAB4B /* ApplicationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStatus.swift; sourceTree = "<group>"; };
 		F66248F9275940C100D4FC74 /* CategoryLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryLabelView.swift; sourceTree = "<group>"; };
 		F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewHeaderView.swift; sourceTree = "<group>"; };
+		F663E6E52763C7FE00EE8152 /* Builders+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Member.swift"; sourceTree = "<group>"; };
 		F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollViwe+Extension.swift"; sourceTree = "<group>"; };
 		F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
 		F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */,
 				F6F65638274049150069F253 /* Scenes+Discovery.swift */,
 				F68A8808274BFAAC004DADE4 /* Scenes+Suggest.swift */,
+				F663E6E52763C7FE00EE8152 /* Builders+Member.swift */,
 				F6BBF177270851A100420A49 /* Builders+ReadItem.swift */,
 				F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */,
 				F6851A30270B21200048197B /* Builders+Viewer.swift */,
@@ -746,6 +749,7 @@
 				F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */,
 				F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */,
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
+				F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
 				F6E51B77273F62B500CBE310 /* SelectEmojiViewController.swift in Sources */,
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
