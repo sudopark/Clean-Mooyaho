@@ -50,6 +50,13 @@
 		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
 		F6624CD4273F8E5600A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; };
 		F6624CD5273F8E5600A9B7AF /* DiscoveryScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F663E6D82763C21800EE8152 /* DependencyInjector+MemberScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6D72763C21800EE8152 /* DependencyInjector+MemberScenes.swift */; };
+		F663E6DA2763C27200EE8152 /* DependencyInjector+ReadItemScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6D92763C27200EE8152 /* DependencyInjector+ReadItemScenes.swift */; };
+		F663E6DC2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6DB2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift */; };
+		F663E6DE2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6DD2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift */; };
+		F663E6E02763C2AC00EE8152 /* DependencyInjector+SettingScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6DF2763C2AC00EE8152 /* DependencyInjector+SettingScenes.swift */; };
+		F663E6E22763C2C600EE8152 /* DependencyInjector+DiscoverScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6E12763C2C600EE8152 /* DependencyInjector+DiscoverScenes.swift */; };
+		F663E6E42763C2D300EE8152 /* DependencyInjector+SuggestScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6E32763C2D300EE8152 /* DependencyInjector+SuggestScenes.swift */; };
 		F66B63ED273AD808005EBA52 /* MainSlideMenuViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */; };
 		F66E813D2655282500682625 /* dummy in Resources */ = {isa = PBXBuildFile; fileRef = F66E813C2655282500682625 /* dummy */; };
 		F66E813F26552ADA00682625 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
@@ -222,6 +229,13 @@
 		F64E7AF22762CB8000961C38 /* AppleLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginService.swift; sourceTree = "<group>"; };
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DiscoveryScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F663E6D72763C21800EE8152 /* DependencyInjector+MemberScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+MemberScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+MemberScenes.swift"; sourceTree = SOURCE_ROOT; };
+		F663E6D92763C27200EE8152 /* DependencyInjector+ReadItemScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+ReadItemScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+ReadItemScenes.swift"; sourceTree = SOURCE_ROOT; };
+		F663E6DB2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+EditReadItemScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+EditReadItemScenes.swift"; sourceTree = SOURCE_ROOT; };
+		F663E6DD2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+ViewerScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+ViewerScenes.swift"; sourceTree = SOURCE_ROOT; };
+		F663E6DF2763C2AC00EE8152 /* DependencyInjector+SettingScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+SettingScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+SettingScenes.swift"; sourceTree = SOURCE_ROOT; };
+		F663E6E12763C2C600EE8152 /* DependencyInjector+DiscoverScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+DiscoverScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+DiscoverScenes.swift"; sourceTree = SOURCE_ROOT; };
+		F663E6E32763C2D300EE8152 /* DependencyInjector+SuggestScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+SuggestScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+SuggestScenes.swift"; sourceTree = SOURCE_ROOT; };
 		F66B63EC273AD808005EBA52 /* MainSlideMenuViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModelTests.swift; sourceTree = "<group>"; };
 		F66E813C2655282500682625 /* dummy */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy; sourceTree = "<group>"; };
 		F66E813E26552ADA00682625 /* secrets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
@@ -346,6 +360,13 @@
 			children = (
 				2B4FD24B2632A7BA00A99624 /* DependencyInjector.swift */,
 				F6F8732526593F9600FDB24E /* DependencyInjector+Scenes.swift */,
+				F663E6D72763C21800EE8152 /* DependencyInjector+MemberScenes.swift */,
+				F663E6D92763C27200EE8152 /* DependencyInjector+ReadItemScenes.swift */,
+				F663E6DB2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift */,
+				F663E6DD2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift */,
+				F663E6DF2763C2AC00EE8152 /* DependencyInjector+SettingScenes.swift */,
+				F663E6E12763C2C600EE8152 /* DependencyInjector+DiscoverScenes.swift */,
+				F663E6E32763C2D300EE8152 /* DependencyInjector+SuggestScenes.swift */,
 				F603258726594E3C00E4E769 /* Repositories.swift */,
 				F6B21C6227004389006243FD /* RemoteImple.swift */,
 				F62DFFB626621BC000C4A080 /* EmptyRemote.swift */,
@@ -782,15 +803,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F663E6DC2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift in Sources */,
+				F663E6DE2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift in Sources */,
+				F663E6E42763C2D300EE8152 /* DependencyInjector+SuggestScenes.swift in Sources */,
 				F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */,
 				F603258826594E3C00E4E769 /* Repositories.swift in Sources */,
 				F6101467265708B700D32E38 /* MainView.swift in Sources */,
 				F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */,
+				F663E6E22763C2C600EE8152 /* DependencyInjector+DiscoverScenes.swift in Sources */,
 				F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */,
 				F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */,
 				F6F8732626593F9600FDB24E /* DependencyInjector+Scenes.swift in Sources */,
 				F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */,
 				2BA40627263156F8000CC122 /* ApplicationRootRouter.swift in Sources */,
+				F663E6D82763C21800EE8152 /* DependencyInjector+MemberScenes.swift in Sources */,
 				2B56932C263D10F5009F85E1 /* KakaoService.swift in Sources */,
 				2BA4060D263142BD000CC122 /* AppEnvironment.swift in Sources */,
 				F6F24917265587E700AE7A8B /* MainViewModel.swift in Sources */,
@@ -799,10 +825,12 @@
 				F6F24914265587E700AE7A8B /* MainRouter.swift in Sources */,
 				2B47B227263D1F5F003F25D1 /* KakaoService+OAuth2RepositoryImple.swift in Sources */,
 				F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */,
+				F663E6E02763C2AC00EE8152 /* DependencyInjector+SettingScenes.swift in Sources */,
 				F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */,
 				F6B21C6327004389006243FD /* RemoteImple.swift in Sources */,
 				F6F24916265587E700AE7A8B /* MainBuilder.swift in Sources */,
 				2B79FC4C262B640C0006291F /* AppDelegate.swift in Sources */,
+				F663E6DA2763C27200EE8152 /* DependencyInjector+ReadItemScenes.swift in Sources */,
 				F64E7AF32762CB8000961C38 /* AppleLoginService.swift in Sources */,
 				2B4FD24C2632A7BA00A99624 /* DependencyInjector.swift in Sources */,
 			);
