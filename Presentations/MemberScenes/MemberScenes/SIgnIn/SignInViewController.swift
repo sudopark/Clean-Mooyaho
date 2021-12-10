@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AuthenticationServices
 
 import RxSwift
 import RxCocoa
@@ -139,7 +140,11 @@ private extension OAuthServiceProviderType {
             return button
             
         case .apple:
-            return nil
+            let button = ASAuthorizationAppleIDButton()
+            return button
         }
     }
 }
+
+
+extension ASAuthorizationAppleIDButton: SignInButton { }

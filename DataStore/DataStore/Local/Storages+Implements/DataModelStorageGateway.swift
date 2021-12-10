@@ -110,8 +110,13 @@ extension DataModelStorageGatewayImple {
     public func closeAnonymousStorage() -> Maybe<Void> {
         logger.print(level: .info, "close anonymous storage")
         guard let storage = self.anonymousStorage else { return .just() }
+        
+        let thenClearUserStorage: () -> Void = { [weak self] in
+            self?.anonymousStorage = nil
+        }
         return storage.closeDatabase()
             .catchAndReturn(())
+            .do(afterNext: thenClearUserStorage)
     }
     
     private func makeUserStorageIfNeed(_ userID: String) -> DataModelStorage {
@@ -132,8 +137,13 @@ extension DataModelStorageGatewayImple {
         logger.print(level: .info, "close user storage")
         self.currentSelectedUserID = nil
         guard let storage = self.userStorage else { return .just() }
+        
+        let thenClearUserStorage: () -> Void = { [weak self] in
+            self?.userStorage = nil
+        }
         return storage.closeDatabase()
             .catchAndReturn(())
+            .do(afterNext: thenClearUserStorage)
     }
     
     public func checkHasAnonymousStorage() -> Bool {

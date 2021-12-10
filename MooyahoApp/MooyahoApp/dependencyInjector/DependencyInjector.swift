@@ -120,9 +120,14 @@ extension DependencyInjector {
                              local: self.shared.localStorage)
     }
     
+    private var appleLoginService: OAuthServiceProvider {
+        return AppleLoginService()
+    }
+    
     var supportingOAuthServiceProviders: [OAuthServiceProvider] {
         return [
-            self.shared.kakaoService
+            self.shared.kakaoService,
+            self.appleLoginService
         ]
     }
     
