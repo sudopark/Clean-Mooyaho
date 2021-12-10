@@ -12,218 +12,176 @@ import Domain
 
 // MARK: - CategoryTextView
 
-public final class ItemLabelView: BaseUIView, Presenting {
+public final class ItemLabelView: BaseUIView {
     
-    private let underlyingTextView: UITextView = {
-        let container = NSTextContainer()
-        let layout = CategoryTextLayoutManager()
-        layout.addTextContainer(container)
+    private struct LabelElement {
         
-        let storage = NSTextStorage()
-        storage.addLayoutManager(layout)
-        return UITextView(frame: .zero, textContainer: container)
-    }()
+        let attrText: NSAttributedString
+        let backgroundColor: UIColor
+        
+        init(text: String, font: UIFont, backgroundColor: UIColor?, textColor: UIColor) {
+            self.backgroundColor = backgroundColor ?? .clear
+            self.attrText = NSAttributedString(string: text, attributes: [
+                .font: font,
+                .foregroundColor: textColor
+            ])
+        }
+    }
     
-    public var font: UIFont? {
+    private var elements: [LabelElement] = []
+    private var elementRects: [CGRect] = []
+    private var maxHeight: CGFloat?
+    
+    private var underlyingFont: UIFont?
+    
+    public override var backgroundColor: UIColor? {
         get {
-            self.underlyingTextView.font
+            return super.backgroundColor ?? self.uiContext.colors.appBackground
+        }
+        set {
+            super.backgroundColor = newValue
+        }
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.invalidate()
+    }
+    
+    public override var intrinsicContentSize: CGSize {
+        self.elementRects.removeAll()
+        let maxWidth = self.bounds.width
+        guard maxWidth > 0 else { return .zero }
+        
+        var (contentSize, origin) = (CGSize.zero, CGPoint.zero)
+        let edge = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4)
+        let spacing: CGFloat = 6
+        
+        let maxSize = CGSize(width: maxWidth, height: self.maxHeight ?? CGFloat.greatestFiniteMagnitude)
+        for element in self.elements {
+            if let maxHeight = maxHeight, origin.y > maxHeight {
+                continue
+            }
+            let rect = element.attrText
+                .boundingRect(with: maxSize, options: .usesLineFragmentOrigin, context: nil)
+            let (width, height) = (rect.width + edge.left + edge.right,
+                                   rect.height + edge.top + edge.bottom)
+            if origin.x + width > maxWidth {
+                origin.x = 0; origin.y += height + spacing
+                contentSize.height = self.maxHeight.map { min(origin.y, $0) } ?? origin.y
+            }
+            let itemRect = CGRect(origin: origin, size: CGSize(width: width, height: height))
+            self.elementRects.append(itemRect)
+            
+            origin.x += (width + spacing)
+            contentSize.width = max(contentSize.width, origin.x + width)
+            contentSize.height = self.maxHeight.map { min(origin.y + height, $0) } ?? origin.y + height
+        }
+        return contentSize
+    }
+    
+    public override func draw(_ rect: CGRect) {
+        
+        func draw(element: LabelElement, elementRect: CGRect) {
+            element.backgroundColor.setFill()
+            element.backgroundColor.setStroke()
+            let path = UIBezierPath(roundedRect: elementRect, cornerRadius: 5)
+            path.fill()
+            
+            let point = CGPoint(x: elementRect.origin.x + 4, y: elementRect.origin.y + 2)
+            element.attrText.draw(at: point)
+        }
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        context.setFillColor(self.backgroundColor?.cgColor ?? self.uiContext.colors.appBackground.cgColor)
+        
+        for (index, element) in self.elements.enumerated() {
+            guard let elementRect = self.elementRects[safe: index] else { continue }
+            draw(element: element, elementRect: elementRect)
+        }
+        
+        UIGraphicsEndImageContext()
+    }
+    
+    private func invalidate() {
+        self.invalidateIntrinsicContentSize()
+        self.setNeedsDisplay()
+    }
+}
+
+
+// MARK: - update attribute
+
+extension ItemLabelView {
+    
+    public var font: UIFont {
+        get {
+            return self.underlyingFont ?? self.uiContext.fonts.get(13, weight: .regular)
         } set {
-            self.underlyingTextView.font = newValue
+            self.underlyingFont = newValue
         }
     }
     
     public func limitHeight(max: CGFloat) {
-        self.underlyingTextView.heightAnchor.constraint(lessThanOrEqualToConstant: max).isActive = true
-    }
-
-    public func setupLayout() {
-        self.addSubview(self.underlyingTextView)
-        underlyingTextView.autoLayout.fill(self)
-        underlyingTextView.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-    
-    public func setupStyling() {
-        self.underlyingTextView.isEditable = false
-        self.underlyingTextView.isScrollEnabled = false
+        self.maxHeight = max
+        self.invalidate()
     }
 }
+
+// MARK: - update labels
 
 extension ItemLabelView {
     
     public func updateCategories(_ categories: [ItemCategory]) {
-        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
-        let attributedNames = categories.map{ $0.asAttributeString(with: font)}
-        self.setupAttributeItemTexts(attributedNames)
+        
+        let elements = categories.map {
+            LabelElement(
+                text: $0.name, font: self.font,
+                backgroundColor: UIColor.from(hex: $0.colorCode),
+                textColor: .white
+            )
+        }
+        self.updateElements(elements)
     }
     
     public func setupPriority(_ priority: ReadPriority) {
-        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
-        let attributeText = priority
-            .asAttributeString(with: font, color: self.uiContext.colors.blueGray)
-        self.setupAttributeItemTexts([attributeText])
+        let elements = [
+            LabelElement(
+                text: "\(priority.emoji) \(priority.description)",
+                font: self.font,
+                backgroundColor: self.uiContext.colors.blueGray,
+                textColor: .white
+            )
+        ]
+        self.updateElements(elements)
     }
     
     public func setupRemind(_ time: TimeStamp) {
-        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
-        let attributeText = time.remindTimeText()
-            .asAttributeString(with: font,
-                               textColor: self.uiContext.colors.text, backgorundColor: .clear)
-        self.setupAttributeItemTexts([attributeText])
+        let elements = [
+            LabelElement(
+                text: time.remindTimeText(),
+                font: self.font,
+                backgroundColor: .clear,
+                textColor: self.uiContext.colors.text
+            )
+        ]
+        self.updateElements(elements)
     }
     
     public func setupRemindWithIcon(_ time: TimeStamp) {
-        let font = self.font ?? self.uiContext.fonts.get(13, weight: .regular)
-        let attributeText = "⛳️ \(time.remindTimeText())"
-            .asAttributeString(with: font,
-                               textColor: UIColor.black,
-                               backgorundColor: UIColor.systemGray6)
-        self.setupAttributeItemTexts([attributeText])
+        let elements = [
+            LabelElement(
+                text: "⛳️ \(time.remindTimeText())",
+                font: self.font,
+                backgroundColor: UIColor.systemGray6,
+                textColor: UIColor.black
+            )
+        ]
+        self.updateElements(elements)
     }
     
-    private func setupAttributeItemTexts(_ texts: [NSAttributedString]) {
-        let seperator: String = "    "
-        let totalAttributeText = texts.join(seperator: seperator).asMutable()
-        
-        let fullRange = NSRange(location: 0, length: totalAttributeText.length)
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineSpacing = 8
-        totalAttributeText.addAttribute(.paragraphStyle, value: paragraph, range: fullRange)
-        
-        self.underlyingTextView.textContainerInset.top = 2
-        self.underlyingTextView.textContainerInset.bottom = 4
-        self.underlyingTextView.contentInset.left = 5
-        self.underlyingTextView.contentInset.right = 5
-        self.underlyingTextView.attributedText = totalAttributeText
-    }
-}
-
-
-// MARK: - CategoryTextLayoutManager
-
-final class CategoryTextLayoutManager: NSLayoutManager {
-    
-    override func drawGlyphs(forGlyphRange glyphsToShow: NSRange, at origin: CGPoint) {
-        let range = self.characterRange(forGlyphRange: glyphsToShow, actualGlyphRange: nil)
-        guard let textStorage = self.textStorage else { return }
-        
-        let backgroundDrawing: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void = { value, range, _ in
-            guard let value = value else {
-                super.drawGlyphs(forGlyphRange: range, at: origin)
-                return
-            }
-            let glRange = self.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
-            
-            guard let color = (value as? UIColor),
-                  let textContainer = self.textContainer(forGlyphAt: glRange.location, effectiveRange: nil),
-                  let context = UIGraphicsGetCurrentContext(),
-                  let font = self.currentFont(range: range) else {
-                return
-            }
-            
-            context.saveGState()
-            context.translateBy(x: origin.x, y: origin.y)
-            color.setFill()
-            
-            var rect = self.boundingRect(forGlyphRange: glRange, in: textContainer)
-            rect.origin.x = rect.origin.x - 5
-            if(rect.origin.y == 0) {
-                rect.origin.y = rect.origin.y - 1
-            } else {
-                rect.origin.y = rect.origin.y - 2
-            }
-            rect.size.width = rect.size.width + 10
-            rect.size.height = font.lineHeight + 6
-
-            let path = UIBezierPath(roundedRect: rect, cornerRadius: 5)
-            path.fill()
-            context.restoreGState()
-            super.drawGlyphs(forGlyphRange: range, at: origin)
-        }
-        
-        textStorage.enumerateAttribute(.roundBackgroundColor,
-                                       in: range,
-                                       options: .longestEffectiveRangeNotRequired,
-                                       using: backgroundDrawing)
-    }
-    
-    private func currentFont(range: NSRange) -> UIFont? {
-        guard let attributes = textStorage?.attributes(at: range.location, effectiveRange: nil) else {
-            return nil
-        }
-        return attributes[.font] as? UIFont
-    }
-}
-
-
-private extension ItemCategory {
-    
-    func asAttributeString(with font: UIFont) -> NSAttributedString {
-        let attrString = NSMutableAttributedString(string: self.name)
-        let range = NSRange(location: 0, length: self.name.utf16.count)
-        attrString.addAttributes([
-            .font: font,
-            .foregroundColor: UIColor.white,
-            .roundBackgroundColor: UIColor.from(hex: self.colorCode) ?? .systemBlue
-        ], range: range)
-        return attrString
-    }
-}
-
-private extension ReadPriority {
-    
-    func asAttributeString(with font: UIFont, color: UIColor?) -> NSAttributedString {
-        let text = "\(self.emoji) \(self.description)"
-        let attrString = NSMutableAttributedString(string: text)
-        let range = NSRange(location: 0, length: text.utf16.count)
-        attrString.addAttributes([
-            .font: font,
-            .foregroundColor: UIColor.white,
-            .roundBackgroundColor: color ?? .systemBlue,
-        ], range: range)
-        return attrString
-    }
-}
-
-private extension String {
-    
-    func asAttributeString(with font: UIFont,
-                           textColor: UIColor?,
-                           backgorundColor: UIColor?) -> NSAttributedString {
-        let attrString = NSMutableAttributedString(string: self)
-        let range = NSRange(location: 0, length: self.utf16.count)
-        attrString.addAttributes([
-            .font: font,
-            .foregroundColor: textColor ?? .label,
-            .roundBackgroundColor: backgorundColor ?? .clear,
-        ], range: range)
-        return attrString
-    }
-}
-
-
-
-private extension Array where Element == NSAttributedString {
-    
-    func join(seperator: String) -> NSAttributedString {
-        let seed = NSMutableAttributedString(string: "")
-        return self.reduce(into: seed) { acc, element in
-            let seperator = acc.length == 0 ? "" : seperator
-            acc.append(NSAttributedString(string: seperator))
-            acc.append(element)
-        }
-    }
-}
-
-private extension NSAttributedString.Key {
-    
-    static var roundBackgroundColor: NSAttributedString.Key {
-        return NSAttributedString.Key(rawValue: "RoundedBackgroundColorAttribute")
-    }
-}
-
-private extension NSAttributedString {
-    
-    func asMutable() -> NSMutableAttributedString {
-        return .init(attributedString: self)
+    private func updateElements(_ elements: [LabelElement]) {
+        self.elements = elements
+        self.invalidate()
     }
 }

@@ -52,7 +52,6 @@ public final class KeyAndLabeledValueView: BaseUIView, Presenting {
             .make(with: self) { $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor) }.first
         self.labelTrailing.isActive = true
         self.labelView.setContentCompressionResistancePriority(.required, for: .vertical)
-        labelView.setupLayout()
         
         self.addSubview(rightButton)
         rightButton.autoLayout.active(with: self) {
@@ -72,7 +71,7 @@ public final class KeyAndLabeledValueView: BaseUIView, Presenting {
             |> \.numberOfLines .~ 1
         
         self.labelView.font = self.uiContext.fonts.get(13, weight: .regular)
-        self.labelView.setupStyling()
+        self.labelView.backgroundColor = self.uiContext.colors.appBackground
         
         self.rightButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         self.rightButton.tintColor = self.uiContext.colors.hintText

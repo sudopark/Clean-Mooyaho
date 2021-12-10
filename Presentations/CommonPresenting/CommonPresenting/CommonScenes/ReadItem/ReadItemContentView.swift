@@ -212,21 +212,18 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         priorityLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        priorityLabel.setupLayout()
         
         contentStackView.addArrangedSubview(categoriesView)
         categoriesView.autoLayout.active(with: contentStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         categoriesView.setContentCompressionResistancePriority(.required, for: .vertical)
-        categoriesView.setupLayout()
         
         self.contentStackView.addArrangedSubview(remindView)
         remindView.autoLayout.active(with: contentStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         remindView.setContentCompressionResistancePriority(.required, for: .vertical)
-        remindView.setupLayout()
     }
     
     public override func setupStyling() {
@@ -236,13 +233,13 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         self.ownerInfoView.setupStyling()
         self.ownerInfoView.isHidden = true
         
-        self.priorityLabel.setupStyling()
         self.priorityLabel.isHidden = true
+        self.priorityLabel.backgroundColor = self.uiContext.colors.appBackground
         
-        self.categoriesView.setupStyling()
         self.categoriesView.isHidden = true
+        self.categoriesView.backgroundColor = self.uiContext.colors.appBackground
         
-        self.remindView.setupStyling()
         self.remindView.isHidden = true
+        self.remindView.backgroundColor = self.uiContext.colors.appBackground
     }
 }
