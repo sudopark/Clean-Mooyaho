@@ -57,11 +57,17 @@ extension SharedCollectionAttrCell {
         self.stackView.addArrangedSubview(self.descriptionLabel)
         self.stackView.addArrangedSubview(self.categoryView)
         self.descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.descriptionLabel.autoLayout.active {
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 16)
+        }
         
         self.categoryView.autoLayout.active(with: self.stackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
         self.categoryView.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.categoryView.autoLayout.active {
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
+        }
         self.categoryView.setupLayout()
         
         self.contentView.addSubview(underLineView)

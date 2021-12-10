@@ -253,6 +253,7 @@ extension ReadCollectionItemsViewController: Presenting {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.separatorStyle = .none
         self.tableView.delegate = self
+        self.tableView.contentInset = .init(top: 0, left: 0, bottom: 80, right: 0)
         
         self.titleHeaderView.setupStyling()
         
