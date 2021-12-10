@@ -67,6 +67,9 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         self.stackView.addArrangedSubview(self.categoryView)
         self.stackView.addArrangedSubview(self.remindView)
         self.descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.descriptionLabel.autoLayout.active {
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 16)
+        }
         self.priorityView.autoLayout.active(with: self.stackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }

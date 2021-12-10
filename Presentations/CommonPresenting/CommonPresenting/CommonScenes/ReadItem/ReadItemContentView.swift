@@ -45,7 +45,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         contentStackView.autoLayout.fill(self)
         contentStackView.axis = .vertical
         contentStackView.spacing = 4
-        contentStackView.setContentHuggingPriority(.init(rawValue: 250), for: .vertical)
+        contentStackView.distribution = .fill
         
         contentStackView.addArrangedSubview(titleAreaView)
         titleAreaView.autoLayout.active {
@@ -91,8 +91,9 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         contentStackView.addArrangedSubview(descriptionLabel)
         descriptionLabel.autoLayout.active(with: contentStackView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 16)
         }
-        descriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
     public func setupStyling() {
@@ -216,6 +217,7 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         contentStackView.addArrangedSubview(categoriesView)
         categoriesView.autoLayout.active(with: contentStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         }
         categoriesView.setContentCompressionResistancePriority(.required, for: .vertical)
         
