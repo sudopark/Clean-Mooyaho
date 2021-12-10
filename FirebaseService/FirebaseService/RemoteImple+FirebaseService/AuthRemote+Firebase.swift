@@ -87,6 +87,9 @@ extension FirebaseServiceImple {
         case let customToken as CustomTokenCredential:
             return self.signinWithCustomTokenCredential(customToken)
             
+        case let appleLoginCredential as GeneralAuthCredential:
+            return self.signInWithAppleCredential(appleLoginCredential)
+            
         default:
             return .error(RemoteErrors.notSupportCredential(String(describing: credential)))
         }
@@ -97,6 +100,23 @@ extension FirebaseServiceImple {
         return Maybe.create { callback in
             
             Auth.auth().signIn(withCustomToken: credential.token) { result, error in
+                guard error == nil, let user = result?.user else {
+                    callback(.error(RemoteErrors.credentialSigninFail(error)))
+                    return
+                }
+                callback(.success(user))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    private func signInWithAppleCredential(_ appleCredential: GeneralAuthCredential) -> Maybe<FirebaseAuth.User> {
+        
+        return Maybe.create { callback in
+            let credential = OAuthProvider.credential(withProviderID: appleCredential.provider,
+                                                      idToken: appleCredential.idToken,
+                                                      rawNonce: appleCredential.nonce)
+            Auth.auth().signIn(with: credential) { result, error in
                 guard error == nil, let user = result?.user else {
                     callback(.error(RemoteErrors.credentialSigninFail(error)))
                     return

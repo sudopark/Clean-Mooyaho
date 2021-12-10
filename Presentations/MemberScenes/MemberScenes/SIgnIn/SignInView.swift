@@ -93,5 +93,6 @@ extension SignInView: Presenting {
         self.signInButtonContainerView.axis = .vertical
         self.signInButtonContainerView.distribution = .fillEqually
         self.signInButtonContainerView.setContentCompressionResistancePriority(.required, for: .vertical)
+        self.signInButtonContainerView.spacing = 8
     }
 }

@@ -36,6 +36,20 @@ public struct CustomTokenCredential: OAuthCredential {
     }
 }
 
+public struct GeneralAuthCredential: OAuthCredential {
+    
+    public let provider: String
+    public let idToken: String
+    public let nonce: String
+    public var accessToken: String?
+    
+    public init(provider: String, idToken: String, nonce: String) {
+        self.provider = provider
+        self.idToken = idToken
+        self.nonce = nonce
+    }
+}
+
 
 // MARK: OAuthServiceProviderType
 
