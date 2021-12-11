@@ -15,42 +15,48 @@ import Domain
 import CommonPresenting
 
 
-// MARK: - MemberProfileViewModel
+// MARK: - cellviewModels + section
 
-public protocol MemberCellViewModelTyoe {
+public protocol MemberCellViewModelType {
     var compareID: Int { get }
 }
 
-public struct MemberInfoCellViewMdoel: MemberCellViewModelTyoe {
+public struct MemberInfoCellViewMdoel: MemberCellViewModelType {
     
     let displayName: String
     let thumbnail: MemberThumbnail
-    var intro: String?
     
     init(member: Member) {
         self.displayName = member.nickName ?? "Unnamed member"
         self.thumbnail = member.icon ?? .emoji("👻")
-        self.intro = member.introduction
     }
     
     public var compareID: Int {
         var hasher = Hasher()
         hasher.combine(self.displayName)
         hasher.combine(self.thumbnail.hashValue)
-        hasher.combine(self.intro)
         return hasher.finalize()
     }
 }
 
+public struct MemberIntroCellViewModel: MemberCellViewModelType {
+    
+    let intro: String
+    
+    public var compareID: Int { self.intro.hashValue }
+}
+
 public struct MemberCellSection: Equatable {
     let sectionName: String
-    let cellViewModels: [MemberCellViewModelTyoe]
+    let cellViewModels: [MemberCellViewModelType]
     
     public static func ==(_ lhs: Self, _ rhs: Self) -> Bool {
         return lhs.sectionName == rhs.sectionName
             && lhs.cellViewModels.map { $0.compareID } == rhs.cellViewModels.map { $0.compareID }
     }
 }
+
+// MARK: - MemberProfileViewModel
 
 public protocol MemberProfileViewModel: AnyObject {
 
@@ -125,9 +131,11 @@ extension MemberProfileViewModelImple {
         
         let asSection: (Member) -> [MemberCellSection]
         asSection = { member in
-            let memberCell = MemberInfoCellViewMdoel(member: member)
+            let infoCell = MemberInfoCellViewMdoel(member: member)
+            let introCell = member.introduction.map { MemberIntroCellViewModel(intro: $0) }
+            let infoSectionCells: [MemberCellViewModelType?] = [infoCell, introCell]
             return [
-                MemberCellSection(sectionName: "info", cellViewModels: [memberCell])
+                MemberCellSection(sectionName: "info", cellViewModels: infoSectionCells.compactMap { $0 })
             ]
         }
         return self.subjects.member.compactMap { $0 }

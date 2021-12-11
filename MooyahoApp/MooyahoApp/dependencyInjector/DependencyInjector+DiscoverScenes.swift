@@ -77,6 +77,7 @@ extension DependencyInjector: SharedCollectionInfoDialogSceneBuilable {
         let router = SharedCollectionInfoDialogRouter(nextSceneBuilders: self)
         let viewModel = SharedCollectionInfoDialogViewModelImple(collection: collection,
                                                                  shareItemsUsecase: self.shareItemUsecase,
+                                                                 memberUsecase: self.memberUsecase,
                                                                  router: router,
                                                                  listener: listener)
         let viewController = SharedCollectionInfoDialogViewController(viewModel: viewModel)
