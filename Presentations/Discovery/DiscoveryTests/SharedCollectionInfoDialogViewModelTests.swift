@@ -43,8 +43,14 @@ class SharedCollectionInfoDialogViewModelTests: BaseTestCase, WaitObservableEven
             |> \.removeResult .~ (shouldFailRemove ? .failure(ApplicationErrors.invalid) : .success(()))
         let usecase = StubShareItemUsecase(scenario: scenario)
         
-        return SharedCollectionInfoDialogViewModelImple(collection: .dummy(0),
+        let memberUsecase = BaseStubMemberUsecase()
+        
+        let collection = SharedReadCollection.dummy(0)
+            |> \.ownerID .~ "u:0"
+        
+        return SharedCollectionInfoDialogViewModelImple(collection: collection,
                                                         shareItemsUsecase: usecase,
+                                                        memberUsecase: memberUsecase,
                                                         router: routerAndListener,
                                                         listener: routerAndListener)
     }
@@ -92,6 +98,34 @@ extension SharedCollectionInfoDialogViewModelTests {
     }
 }
 
+extension SharedCollectionInfoDialogViewModelTests {
+    
+    func testViewModel_profileOwnerInfo() {
+        // given
+        let expect = expectation(description: "공유자 프로파일 정보 제공")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let owner = self.waitFirstElement(expect, for: viewModel.ownerInfo)
+        
+        // then
+        XCTAssertNotNil(owner)
+    }
+    
+    func testViewModel_requestShowMemberProfile() {
+        // given
+        let expect = expectation(description: "멤버 프로필 조회 요청")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let _ = self.waitFirstElement(expect, for: viewModel.ownerInfo)
+        viewModel.showMemberProfile()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didShowMemberProfile, true)
+    }
+}
+
 
 extension SharedCollectionInfoDialogViewModelTests {
     
@@ -115,6 +149,11 @@ extension SharedCollectionInfoDialogViewModelTests {
         
         func alertForConfirm(_ form: AlertForm) {
             form.confirmed?()
+        }
+        
+        var didShowMemberProfile: Bool?
+        func showMemberProfile(_ mmeberID: String) {
+            self.didShowMemberProfile = true
         }
     }
 }

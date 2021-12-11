@@ -20,7 +20,7 @@ import CommonPresenting
 
 public final class MemberProfileViewController: BaseViewController, MemberProfileScene {
     
-    typealias CVM = MemberCellViewModelTyoe
+    typealias CVM = MemberCellViewModelType
     typealias Section = SectionModel<String, CVM>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
@@ -94,6 +94,11 @@ extension MemberProfileViewController {
                 cell.setupCell(info)
                 return cell
                 
+            case let intro as MemberIntroCellViewModel:
+                let cell: MemberIntroCell = tableView.dequeueCell()
+                cell.introValueLabel.text = intro.intro
+                return cell
+                
             default: return UITableViewCell()
             }
         }
@@ -122,6 +127,7 @@ extension MemberProfileViewController: Presenting {
         self.title = "Member profile".localized
         
         self.tableView.registerCell(MemberProfileInfoCell.self)
+        self.tableView.registerCell(MemberIntroCell.self)
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 200
         self.tableView.separatorStyle = .none
@@ -129,12 +135,14 @@ extension MemberProfileViewController: Presenting {
 }
 
 
+// MARK: - cells
+
 final class MemberProfileInfoCell: BaseTableViewCell, Presenting {
     
     let borderView = UIView()
     let thumbnailImageView = IntegratedImageView()
     let nameLabel = UILabel()
-    let introValueLabel = UILabel()
+    let nameValueLabel = UILabel()
     
     override func afterViewInit() {
         super.afterViewInit()
@@ -145,8 +153,7 @@ final class MemberProfileInfoCell: BaseTableViewCell, Presenting {
     func setupCell(_ info: MemberInfoCellViewMdoel) {
         self.thumbnailImageView.cancelSetupImage()
         self.thumbnailImageView.setupImage(using: info.thumbnail, resize: .init(width: 100, height: 100))
-        self.nameLabel.text = info.displayName
-        self.introValueLabel.text = info.intro
+        self.nameValueLabel.text = info.displayName
     }
 }
 
@@ -157,24 +164,24 @@ extension MemberProfileInfoCell {
         self.addSubview(borderView)
         borderView.autoLayout.active(with: self) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
             $0.widthAnchor.constraint(equalToConstant: 100)
             $0.heightAnchor.constraint(equalToConstant: 100)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 0)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
         }
+        
         self.borderView.addSubview(thumbnailImageView)
         self.thumbnailImageView.autoLayout.fill(borderView, edges: .init(top: 1, left: 1, bottom: 1, right: 1))
         self.thumbnailImageView.setupLayout()
         
         self.addSubview(nameLabel)
         nameLabel.autoLayout.active(with: self) {
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
+            $0.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -8)
             $0.leadingAnchor.constraint(equalTo: borderView.trailingAnchor, constant: 16)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
         }
-        self.nameLabel.setContentHuggingPriority(.required, for: .vertical)
-        
-        self.addSubview(introValueLabel)
-        introValueLabel.autoLayout.active(with: self.nameLabel) {
+        self.addSubview(nameValueLabel)
+        nameValueLabel.autoLayout.active(with: self.nameLabel) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 6)
             $0.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
@@ -187,13 +194,14 @@ extension MemberProfileInfoCell {
         self.backgroundColor = self.uiContext.colors.appBackground
         
         _ = self.nameLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
-            |> \.numberOfLines .~ 1
-            |> \.text .~ pure("Unnamed member".localized)
-        
-        _ = self.introValueLabel
             |> self.uiContext.decorating.listItemDescription
+            |> \.numberOfLines .~ 1
+            |> \.text .~ pure("name".localized)
+        
+        _ = self.nameValueLabel
+            |> self.uiContext.decorating.listItemTitle(_:)
             |> \.numberOfLines .~ 0
+            |> \.text .~ pure("Unnamed member".localized)
         
         self.thumbnailImageView.setupStyling()
         self.thumbnailImageView.backgroundColor = self.uiContext.colors.appBackground
@@ -203,5 +211,52 @@ extension MemberProfileInfoCell {
         self.borderView.backgroundColor = self.uiContext.colors.appSecondBackground
         self.borderView.layer.cornerRadius = 50
         self.borderView.clipsToBounds = true
+    }
+}
+
+final class MemberIntroCell: BaseTableViewCell, Presenting {
+    
+    let introLabel = UILabel()
+    let introValueLabel = UILabel()
+    
+    override func afterViewInit() {
+        super.afterViewInit()
+        self.setupLayout()
+        self.setupStyling()
+    }
+}
+
+extension MemberIntroCell {
+    
+    func setupLayout() {
+        self.contentView.addSubview(introLabel)
+        introLabel.autoLayout.active(with: self.contentView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 24)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -24)
+        }
+        introLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        introLabel.numberOfLines = 1
+        
+        self.contentView.addSubview(introValueLabel)
+        introValueLabel.autoLayout.active(with: self.contentView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 24)
+            $0.topAnchor.constraint(equalTo: introLabel.bottomAnchor, constant: 4)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -24)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -12)
+        }
+    }
+    
+    func setupStyling() {
+        self.backgroundColor = self.uiContext.colors.appSecondBackground
+        
+        _ = self.introLabel
+            |> self.uiContext.decorating.listItemDescription
+            |> \.text .~ pure("Introduction".localized)
+        
+        _ = self.introValueLabel
+            |> self.uiContext.decorating.listItemDescription
+            |> \.textColor .~ self.uiContext.colors.text.withAlphaComponent(0.75)
+            |> \.numberOfLines .~ 0
     }
 }

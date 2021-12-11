@@ -22,10 +22,12 @@ public protocol SharedCollectionInfoDialogViewModel: AnyObject {
     // interactor
     func removeFromSharedList()
     func requestClose()
+    func showMemberProfile()
     
     // presenter
     var collectionTitle: Observable<String> { get }
     var isRemoving: Observable<Bool> { get }
+    var ownerInfo: Observable<Member> { get }
 }
 
 
@@ -35,15 +37,18 @@ public final class SharedCollectionInfoDialogViewModelImple: SharedCollectionInf
     
     private let collection: SharedReadCollection
     private let shareItemsUsecase: SharedReadCollectionLoadUsecase & SharedReadCollectionUpdateUsecase
+    private let memberUsecase: MemberUsecase
     private let router: SharedCollectionInfoDialogRouting
     private weak var listener: SharedCollectionInfoDialogSceneListenable?
     
     public init(collection: SharedReadCollection,
                 shareItemsUsecase: SharedReadCollectionLoadUsecase & SharedReadCollectionUpdateUsecase,
+                memberUsecase: MemberUsecase,
                 router: SharedCollectionInfoDialogRouting,
                 listener: SharedCollectionInfoDialogSceneListenable?) {
         self.collection = collection
         self.shareItemsUsecase = shareItemsUsecase
+        self.memberUsecase = memberUsecase
         self.router = router
         self.listener = listener
         
@@ -117,6 +122,11 @@ extension SharedCollectionInfoDialogViewModelImple {
         guard self.subjects.isRemoving.value == false else { return }
         self.router.closeScene(animated: true, completed: nil)
     }
+    
+    public func showMemberProfile() {
+        guard let ownerID = self.subjects.collection.value?.ownerID else { return }
+        self.router.showMemberProfile(ownerID)
+    }
 }
 
 
@@ -132,5 +142,15 @@ extension SharedCollectionInfoDialogViewModelImple {
     public var isRemoving: Observable<Bool> {
         return self.subjects.isRemoving
             .distinctUntilChanged()
+    }
+    
+    public var ownerInfo: Observable<Member> {
+        let ownerInfo: (String) -> Observable<Member> = { [weak self] memberID in
+            guard let self = self else { return .empty() }
+            return self.memberUsecase.members(for: [memberID]).compactMap { $0[memberID] }
+        }
+        return self.subjects.collection
+            .compactMap { $0?.ownerID }
+            .flatMap(ownerInfo)
     }
 }

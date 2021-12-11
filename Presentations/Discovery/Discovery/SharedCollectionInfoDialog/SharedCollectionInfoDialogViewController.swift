@@ -22,6 +22,7 @@ public final class SharedCollectionInfoDialogViewController: BaseViewController,
     public let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
     private let titleLabel = UILabel()
     private let collectionInfoView = CollectionInfoView()
+    private let ownerInfoView = OwnerInfoView()
     private let removeButton = ConfirmButton()
     
     let viewModel: SharedCollectionInfoDialogViewModel
@@ -87,7 +88,18 @@ extension SharedCollectionInfoDialogViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.ownerInfo
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] member in
+                self?.ownerInfoView.updateOwner(member)
+            })
+            .disposed(by: self.disposeBag)
         
+        self.ownerInfoView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.showMemberProfile()
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -102,11 +114,19 @@ extension SharedCollectionInfoDialogViewController: Presenting {
         bottomSlideMenuView.containerView.addSubview(self.removeButton)
         removeButton.setupLayout(bottomSlideMenuView.containerView)
         
+        self.bottomSlideMenuView.containerView.addSubview(ownerInfoView)
+        ownerInfoView.autoLayout.active(with: self.bottomSlideMenuView.containerView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: removeButton.topAnchor, constant: -20)
+        }
+        ownerInfoView.setupLayout()
+        
         self.bottomSlideMenuView.containerView.addSubview(collectionInfoView)
         collectionInfoView.autoLayout.active(with: bottomSlideMenuView.containerView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: removeButton.topAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: ownerInfoView.topAnchor, constant: -8)
         }
         collectionInfoView.setupLayout()
         
@@ -122,6 +142,7 @@ extension SharedCollectionInfoDialogViewController: Presenting {
     public func setupStyling() {
         
         self.bottomSlideMenuView.setupStyling()
+        self.ownerInfoView.setupStyling()
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader

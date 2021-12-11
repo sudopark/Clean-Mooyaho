@@ -109,6 +109,25 @@ extension MemberProfileViewModelTests {
         XCTAssertEqual(info?.displayName, "nick name")
         XCTAssertEqual(info?.thumbnail, .emoji("👻"))
     }
+    
+    func testViewModel_provideIntro() {
+        // given
+        let expect = expectation(description: "소개 존재시 제공")
+        let dummy = self.dummyMember |> \.introduction .~ "some intro"
+        let viewModel = self.makeViewModel(dummy)
+        
+        // when
+        let introSource = viewModel.sections
+            .compactMap { $0.first?.cellViewModels }
+            .map { $0.compactMap { $0 as? MemberIntroCellViewModel } }
+            .compactMap { $0.first }
+        let intro = self.waitFirstElement(expect, for: introSource) {
+            viewModel.refresh()
+        }
+        
+        // then
+        XCTAssertEqual(intro?.intro, "some intro")
+    }
 }
 
 
