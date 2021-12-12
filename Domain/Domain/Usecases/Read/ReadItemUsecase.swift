@@ -37,6 +37,8 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
     private let sharedStoreService: SharedDataStoreService
     private let clipBoardService: ClipboardServie
     private weak var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?
+    private let remindPreviewLoadTimeout: TimeInterval
+    private let remindMessagingService: ReadRemindMessagingService
     
     private let disposeBag = DisposeBag()
     
@@ -46,7 +48,10 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
                 authInfoProvider: AuthInfoProvider,
                 sharedStoreService: SharedDataStoreService,
                 clipBoardService: ClipboardServie,
-                readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?) {
+                readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?,
+                remindPreviewLoadTimeout: TimeInterval = 3.0,
+                remindMessagingService: ReadRemindMessagingService) {
+        
         self.itemsRespoitory = itemsRespoitory
         self.previewRepository = previewRepository
         self.optionsRespository = optionsRespository
@@ -54,6 +59,8 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
         self.sharedStoreService = sharedStoreService
         self.clipBoardService = clipBoardService
         self.readItemUpdateEventPublisher = readItemUpdateEventPublisher
+        self.remindPreviewLoadTimeout = remindPreviewLoadTimeout
+        self.remindMessagingService = remindMessagingService
     }
 }
 
@@ -422,6 +429,80 @@ extension ReadItemUsecaseImple: ReadLinkAddSuggestUsecase {
             return false
         }
         return suggestSet.contains(url)
+    }
+}
+
+
+extension ReadItemUsecaseImple: ReadRemindUsecase {
+    
+    public func preparePermission() -> Maybe<Bool> {
+        return self.remindMessagingService.prepareNotificationPermission()
+    }
+    
+    public func updateRemind(for item: ReadItem, futureTime: TimeStamp?) -> Maybe<Void> {
+        
+        let makeOrCancelRemind: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return futureTime
+                .map { self.scheduleRemindMessage(for: item, at: $0) }
+                ?? self.cancelRemindMessage(item)
+        }
+        
+        return self.updateItem(item, remindTime: futureTime)
+            .flatMap(makeOrCancelRemind)
+    }
+    
+    public func scheduleRemindMessage(for item: ReadItem, at futureTime: TimeStamp) -> Maybe<Void> {
+
+        let prepareReadRemindMessage = self.prepareReadRemindMessage(for: item, time: futureTime)
+        
+        let sendPendingMessage: (ReadRemindMessage) -> Maybe<Void> = { [weak self] message in
+            return self?.remindMessagingService.sendPendingMessage(message) ?? .empty()
+        }
+        
+        return prepareReadRemindMessage
+            .flatMap(sendPendingMessage)
+    }
+    
+    public func cancelRemindMessage(_ item: ReadItem) -> Maybe<Void> {
+        return self.remindMessagingService.cancelMessage(for: item.uid)
+    }
+    
+    private func updateItem(_ item: ReadItem, remindTime: TimeStamp?) -> Maybe<Void> {
+        let params = ReadItemUpdateParams(item: item)
+            |> \.updatePropertyParams .~ [.remindTime(remindTime)]
+        return self.updateItem(params)
+    }
+    
+    private func prepareReadRemindMessage(for item: ReadItem,
+                                          time: TimeStamp) -> Maybe<ReadRemindMessage> {
+        
+        let message = ReadRemindMessage(itemID: item.uid, scheduledTime: time)
+        switch item {
+        case let collection as ReadCollection:
+            return message
+                |> \.message .~ pure("It's time to start read '%@' read collection".localized(with: collection.name))
+                |> Maybe.just
+            
+        case let link as ReadLink:
+            let loadPreviewWithTimeout = self.loadLinkPreview(link.link).take(1)
+                .timeout(.milliseconds(Int(self.remindPreviewLoadTimeout * 1000)),
+                         scheduler: MainScheduler.instance)
+                .asMaybe()
+            let decorateMessage: (LinkPreview?) -> ReadRemindMessage = { preview in
+                return message
+                |> \.message .~ pure(preview?.title ?? "\(ReadRemindMessage.defaultReadLinkMessage)(\(link.link))")
+            }
+            return loadPreviewWithTimeout
+                .mapAsOptional().catchAndReturn(nil)
+                .map(decorateMessage)
+                
+        default: return .just(message)
+        }
+    }
+    
+    public func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void> {
+        return self.remindMessagingService.broadcastRemind(readReminder)
     }
 }
 

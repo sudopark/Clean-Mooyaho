@@ -37,6 +37,8 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
     var selectRemindTimeMocking: TimeStamp?
     var selectedCollectionMocking: ReadCollection?
     private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
+    
+    var spyRemindUsecase: StubReadRemindUsecase!
 
     
     override func setUpWithError() throws {
@@ -57,6 +59,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         self.didSelectRemindStartWith = nil
         self.selectRemindTimeMocking = nil
         self.selectedCollectionMocking = nil
+        self.spyRemindUsecase = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -81,10 +84,14 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         let usecaseStub = PrivateReadItemUsecaseStub(scenario: scenario)
             |> \.previewMocking .~ loadPreviewMocking
         
+        let remindUsecase = StubReadRemindUsecase()
+        self.spyRemindUsecase = remindUsecase
+        
         let stubCateUsecse = StubItemCategoryUsecase()
         let viewModel =  EditLinkItemViewModelImple(collectionID: parentID,
                                                     editCase: editCase,
                                                     readUsecase: usecaseStub,
+                                                    remindUsecase: remindUsecase,
                                                     categoryUsecase: stubCateUsecse,
                                                     router: self,
                                                     listener: self)
@@ -125,8 +132,9 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
         if case let .select(startWith) = editCase {
             self.didSelectRemindStartWith = startWith
         }
-        guard let mocking = self.selectRemindTimeMocking else { return }
-        self.editLinkItemSceneInteractable?.editReadRemind(didSelect: Date(timeIntervalSince1970: mocking))
+//        guard let mocking = self.selectRemindTimeMocking else { return }
+        let mockDate = self.selectRemindTimeMocking.map { Date(timeIntervalSince1970: $0) }
+        self.editLinkItemSceneInteractable?.editReadRemind(didSelect: mockDate)
     }
     
     class PrivateReadItemUsecaseStub: StubReadItemUsecase {
@@ -451,6 +459,24 @@ extension EditLinkItemViewModelTests_makeNew {
         XCTAssertEqual(newLink?.parentID, "c:100")
     }
     
+    func testViewModel_whenUMakeNewWithRemind_schedule() {
+        // given
+        let expect = expectation(description: "리마인드랑 같이 아이템 추가시에 리마인드 예약함")
+        let viewModel = self.makeViewModel()
+        self.editCompleted = { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.selectRemindTimeMocking = 200
+        viewModel.editRemind()
+        viewModel.confirmSave()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(self.spyRemindUsecase.didRemindScheduled, 200)
+    }
+    
     func testViewModel_whenSaveItemFail_showError() {
         // given
         let viewModel = self.makeViewModel(shouldFailSave: true)
@@ -490,8 +516,10 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
             |> \.parentID .~ "some"
     }
     
-    func makeViewModel(parentID: String? = nil) -> EditLinkItemViewModel {
-        return self.makeViewModel(editCase: .edit(item: self.dummyItem),
+    func makeViewModel(parentID: String? = nil,
+                       linkItem: ReadLink? = nil) -> EditLinkItemViewModel {
+        let item = linkItem ?? self.dummyItem
+        return self.makeViewModel(editCase: .edit(item: item),
                                   parentID: parentID)
     }
     
@@ -535,6 +563,42 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         
         // then
         XCTAssertEqual(name, "collection:0")
+    }
+    
+    func testViewModel_whenUpdateExistingRemind_reschedule() {
+        // given
+        let expect = expectation(description: "수정케이스에서 리마인드 타임 변경되었으면 다시 스케줄")
+        let viewModel = self.makeViewModel()
+        self.editCompleted = { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.selectRemindTimeMocking = 200
+        viewModel.editRemind()
+        viewModel.confirmSave()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(self.spyRemindUsecase.didRemindScheduled, 200)
+    }
+    
+    func testViewModel_whenUpdateExistingToNil_cancel() {
+        // given
+        let expect = expectation(description: "수정케이스에서 리마인드 삭제되었으면 리마인드 취소")
+        let viewModel = self.makeViewModel(linkItem: self.dummyItem |> \.remindTime .~ 100)
+        self.editCompleted = { _ in
+            expect.fulfill()
+        }
+
+        // when
+        self.selectRemindTimeMocking = nil
+        viewModel.editRemind()
+        viewModel.confirmSave()
+        self.wait(for: [expect], timeout: self.timeout)
+
+        // then
+        XCTAssertEqual(self.spyRemindUsecase.didRemindCanceled, true)
     }
 }
 

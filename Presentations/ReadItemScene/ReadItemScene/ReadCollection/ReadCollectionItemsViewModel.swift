@@ -481,7 +481,7 @@ extension ReadCollectionViewItemsModelImple {
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
-        self.remindUsecase.cancelRemind(for: item)
+        self.remindUsecase.updateRemind(for: item, futureTime: nil)
             .subscribe(onError: handleError)
             .disposed(by: self.disposeBag)
     }

@@ -23,9 +23,11 @@ extension SharedDependencyInjecttor: EditLinkItemSceneBuilable {
                                       listener: EditLinkItemSceneListenable?) -> EditLinkItemScene {
         
         let router = EditLinkItemRouter(nextSceneBuilders: self)
+        let usecase = self.readItemUsecase
         let viewModel = EditLinkItemViewModelImple(collectionID: collectionID,
                                                    editCase: editCase,
-                                                   readUsecase: self.readItemUsecase,
+                                                   readUsecase: usecase,
+                                                   remindUsecase: usecase,
                                                    categoryUsecase: self.categoryUsecase,
                                                    router: router,
                                                    listener: listener)
@@ -83,7 +85,7 @@ extension SharedDependencyInjecttor: EditReadRemindSceneBuilable {
                                         listener: EditReadRemindSceneListenable?) -> EditReadRemindScene {
         let router = EditReadRemindRouter(nextSceneBuilders: self)
         let viewModel = EditReadRemindViewModelImple(editCase,
-                                                     remindUsecase: self.remindUsecase,
+                                                     remindUsecase: self.readItemUsecase,
                                                      router: router, listener: listener)
         let viewController = EditReadRemindViewController(viewModel: viewModel)
         router.currentScene = viewController

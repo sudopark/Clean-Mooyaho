@@ -83,14 +83,15 @@ extension SharedDependencyInjecttor {
 
 extension SharedDependencyInjecttor {
     
-    var readItemUsecase: ReadItemUsecase {
+    var readItemUsecase: ReadItemUsecaseImple {
         return ReadItemUsecaseImple(itemsRespoitory: self.appReposiotry,
                                     previewRepository: self.appReposiotry,
                                     optionsRespository: self.appReposiotry,
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
-                                    readItemUpdateEventPublisher: nil)
+                                    readItemUpdateEventPublisher: nil,
+                                    remindMessagingService: self.readRemindMessagingService)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {
@@ -100,12 +101,5 @@ extension SharedDependencyInjecttor {
     
     var suggestCategoryUsecase: SuggestCategoryUsecase {
         return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
-    }
-    
-    var remindUsecase: ReadRemindUsecase {
-        return ReadRemindUsecaseImple(authInfoProvider: self.shared.dataStore,
-                                      sharedStore: self.shared.dataStore,
-                                      readItemUsecase: self.readItemUsecase,
-                                      messagingService: self.readRemindMessagingService)
     }
 }

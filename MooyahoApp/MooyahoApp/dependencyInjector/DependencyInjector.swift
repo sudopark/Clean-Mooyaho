@@ -177,7 +177,8 @@ extension DependencyInjector {
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
-                                    readItemUpdateEventPublisher: self.readItemUpdateEventPublisher)
+                                    readItemUpdateEventPublisher: self.readItemUpdateEventPublisher,
+                                    remindMessagingService: self.readRemindMessagingService)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {
@@ -187,17 +188,6 @@ extension DependencyInjector {
     
     var suggestCategoryUsecase: SuggestCategoryUsecase {
         return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
-    }
-    
-    private var remindUsecaseImple: ReadRemindUsecaseImple {
-        return ReadRemindUsecaseImple(authInfoProvider: self.shared.dataStore,
-                                      sharedStore: self.shared.dataStore,
-                                      readItemUsecase: self.readItemUsecase,
-                                      messagingService: self.readRemindMessagingService)
-    }
-    
-    var remindUsecase: ReadRemindUsecase {
-        return self.remindUsecaseImple
     }
     
     var memoUsecase: ReadLinkMemoUsecase {
