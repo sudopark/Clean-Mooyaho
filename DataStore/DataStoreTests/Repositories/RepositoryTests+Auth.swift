@@ -212,6 +212,7 @@ extension RepositoryTests_Auth {
         // given
         let expect = expectation(description: "회원탈퇴시에 로그아웃플로우타고 디비 체인지")
         self.mockRemote.register(key: "requestWithdrawal") { Maybe<Void>.just() }
+        self.mockLocal.register(key: "removeUserStorage") { Maybe<Void>.just() }
         self.mockRemote.register(key: "requestSignout") { Maybe<Void>.just() }
         
         // when

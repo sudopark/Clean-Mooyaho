@@ -243,4 +243,24 @@ extension FirebaseServiceImple {
             return Disposables.create()
         }
     }
+    
+    func deleteAll(_ query: Query, at collectionType: FireStoreCollectionType) -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            query.getDocuments { snapShot, error in
+                guard error == nil else {
+                    let remoteError = RemoteErrors.operationFail(error)
+                    callback(.error(remoteError))
+                    return
+                }
+                snapShot?.documents.forEach {
+                    let docuRef = db.collection(collectionType).document($0.documentID)
+                    docuRef.delete()
+                }
+                
+                callback(.success(()))
+            }
+            return Disposables.create()
+        }
+    }
 }

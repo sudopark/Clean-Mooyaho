@@ -313,6 +313,10 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "removeAnonymousStorage") ?? .empty()
     }
     
+    func removeUserStorage() -> Maybe<Void> {
+        return self.resolve(key: "removeUserStorage") ?? .empty()
+    }
+    
     func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
         return self.resolve(key: "fetchLatestSharedCollections") ?? .empty()
     }

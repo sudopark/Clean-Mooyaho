@@ -151,11 +151,20 @@ extension FirebaseServiceImple {
             return self?.delete(memberID, at: .member) ?? .empty()
         }
         
+        let thenDeleteMemberDataWithoutError: () -> Maybe<Void> = { [weak self] in
+            return self?.deleteMemberDatas(for: memberID).catchAndReturn(()) ?? .empty()
+        }
+        
         let thenDeleteAuth: () -> Maybe<Void> = { [weak self] in
-            return self?.deleteAuth() ?? .empty()
+            guard let self = self else { return .empty() }
+            return self.deleteAuth().catch { error in
+                logger.print(level: .warning, "delete auth fail.. => \(error)")
+                return self.requestSignout().catchAndReturn(())
+            }
         }
         return appendToWithdrawal
             .flatMap(thenDeleteMemebr)
+            .flatMap(thenDeleteMemberDataWithoutError)
             .flatMap(thenDeleteAuth)
     }
     
@@ -171,6 +180,39 @@ extension FirebaseServiceImple {
             }
             return Disposables.create()
         }
+    }
+    
+    private func deleteMemberDatas(for memberID: String) -> Maybe<Void> {
+        
+        let deleteColelctions: () -> Maybe<Void> = {
+            let collectionRef = self.fireStoreDB.collection(.readCollection)
+            let query = collectionRef.whereField(ReadItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .readCollection)
+        }
+        
+        let thenDeleteLinks: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let linkRef = self.fireStoreDB.collection(.readLinks)
+            let query = linkRef.whereField(ReadItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .readLinks)
+        }
+        
+        let thenDeleteShareIndexes: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let indexRef = self.fireStoreDB.collection(.sharingCollectionIndex)
+            let query = indexRef.whereField(ShareItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .sharingCollectionIndex)
+        }
+        
+        let thenDeleteInbox: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.delete(memberID, at: .sharedInbox)
+        }
+        
+        return deleteColelctions()
+            .flatMap(thenDeleteLinks)
+            .flatMap(thenDeleteShareIndexes)
+            .flatMap(thenDeleteInbox)
     }
 }
 

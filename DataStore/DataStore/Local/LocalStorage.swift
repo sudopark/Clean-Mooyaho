@@ -30,6 +30,8 @@ public protocol DataModelStorageSwitchable {
     func checkHasAnonymousStorage() -> Bool
     
     func removeAnonymousStorage() -> Maybe<Void>
+    
+    func removeUserStorage() -> Maybe<Void>
 }
 
 public protocol AuthLocalStorage {
@@ -274,6 +276,10 @@ public final class LocalStorageImple: LocalStorage {
     
     public func removeAnonymousStorage() -> Maybe<Void> {
         return .just(self.dataModelGateway.removeAnonymousStorage())
+    }
+    
+    public func removeUserStorage() -> Maybe<Void> {
+        return .just(self.dataModelGateway.removeUserStorage())
     }
 }
 

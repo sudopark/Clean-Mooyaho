@@ -32,6 +32,8 @@ public protocol DataModelStorageGateway: AnyObject {
     func checkHasAnonymousStorage() -> Bool
     
     func removeAnonymousStorage()
+    
+    func removeUserStorage()
 }
 
 
@@ -154,5 +156,11 @@ extension DataModelStorageGatewayImple {
         let path = self.anonymousStoragePath
         try? FileManager.default.removeItem(atPath: path)
         self.anonymousStorage = nil
+    }
+    
+    public func removeUserStorage() {
+        guard let userDBPath = self.userStorage?.dbPath else { return }
+        try? FileManager.default.removeItem(atPath: userDBPath)
+        self.userStorage = nil
     }
 }

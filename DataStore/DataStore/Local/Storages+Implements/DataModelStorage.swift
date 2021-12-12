@@ -20,6 +20,8 @@ import Optics
 
 public protocol DataModelStorage {
     
+    var dbPath: String { get }
+    
     func openDatabase() -> Maybe<Void>
     
     func closeDatabase() -> Maybe<Void>
@@ -138,7 +140,7 @@ public final class DataModelStorageImple: DataModelStorage {
     
     let sqliteService: SQLiteService
     
-    private let dbPath: String
+    public let dbPath: String
     private let version: Int
     
     private let disposeBag = DisposeBag()
