@@ -87,7 +87,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                                     authInfoProvider: self.authProvider(signedIn),
                                     sharedStoreService: store,
                                     clipBoardService: clipboardService,
-                                    readItemUpdateEventPublisher: self.mockItemUpdateSubject)
+                                    readItemUpdateEventPublisher: self.mockItemUpdateSubject,
+                                    remindMessagingService: StubReminderMessagingService())
     }
 }
 

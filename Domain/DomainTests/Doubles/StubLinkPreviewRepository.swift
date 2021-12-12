@@ -24,7 +24,9 @@ class StubLinkPreviewRepository: LinkPreviewRepository {
         self.scenario = scenario
     }
     
+    var previewLoadMocking: Maybe<LinkPreview>?
+    
     func loadLinkPreview(_ url: String) -> Maybe<LinkPreview> {
-        return self.scenario.preview.asMaybe()
+        return self.previewLoadMocking ?? self.scenario.preview.asMaybe()
     }
 }

@@ -63,10 +63,12 @@ extension DependencyInjector: EditLinkItemSceneBuilable {
                                       collectionID: String?,
                                       listener: EditLinkItemSceneListenable?) -> EditLinkItemScene {
         
+        let usecase = self.readItemUsecaseImple
         let router = EditLinkItemRouter(nextSceneBuilders: self)
         let viewModel = EditLinkItemViewModelImple(collectionID: collectionID,
                                                    editCase: editCase,
-                                                   readUsecase: self.readItemUsecase,
+                                                   readUsecase: usecase,
+                                                   remindUsecase: usecase,
                                                    categoryUsecase: self.categoryUsecase,
                                                    router: router,
                                                    listener: listener)
@@ -82,12 +84,13 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
                                             editCase: EditCollectionCase,
                                             listener: EditReadCollectionSceneListenable?) -> EditReadCollectionScene {
         
+        let usecase = self.readItemUsecaseImple
         let router = EditReadCollectionRouter(nextSceneBuilders: self)
         let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
                                                          editCase: editCase,
-                                                         updateUsecase: self.readItemUsecase,
+                                                         updateUsecase: usecase,
+                                                         remindUsecase: usecase,
                                                          categoriesUsecase: self.categoryUsecase,
-                                                         remindUsecase: self.remindUsecase,
                                                          router: router,
                                                          listener: listener)
         let viewController = EditReadCollectionViewController(viewModel: viewModel)
@@ -161,7 +164,7 @@ extension DependencyInjector: EditReadRemindSceneBuilable {
                                         listener: EditReadRemindSceneListenable?) -> EditReadRemindScene {
         let router = EditReadRemindRouter(nextSceneBuilders: self)
         let viewModel = EditReadRemindViewModelImple(editCase,
-                                                     remindUsecase: self.remindUsecase,
+                                                     remindUsecase: self.readItemUsecaseImple,
                                                      router: router, listener: listener)
         let viewController = EditReadRemindViewController(viewModel: viewModel)
         router.currentScene = viewController

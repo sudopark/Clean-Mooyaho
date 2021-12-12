@@ -19,16 +19,9 @@ public protocol ReadRemindUsecase {
     
     func updateRemind(for item: ReadItem, futureTime: TimeStamp?) -> Maybe<Void>
     
+    func scheduleRemindMessage(for item: ReadItem, at futureTime: TimeStamp) -> Maybe<Void>
+    
+    func cancelRemindMessage(_ item: ReadItem) -> Maybe<Void>
+    
     func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void>
-}
-
-extension ReadRemindUsecase {
-    
-    public func scheduleRemid(for item: ReadItem, futureTime: TimeStamp) -> Maybe<Void> {
-        return self.updateRemind(for: item, futureTime: futureTime)
-    }
-    
-    public func cancelRemind(for item: ReadItem) -> Maybe<Void> {
-        return self.updateRemind(for: item, futureTime: nil)
-    }
 }

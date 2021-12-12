@@ -75,6 +75,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     private let collectionID: String?
     private let editCase: EditLinkItemCase
     private let readUsecase: ReadItemUsecase
+    private let remindUsecase: ReadRemindUsecase
     private let categoryUsecase: ReadItemCategoryUsecase
     private let router: EditLinkItemRouting
     private weak var listener: EditLinkItemSceneListenable?
@@ -82,12 +83,14 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
     public init(collectionID: String?,
                 editCase: EditLinkItemCase,
                 readUsecase: ReadItemUsecase,
+                remindUsecase: ReadRemindUsecase,
                 categoryUsecase: ReadItemCategoryUsecase,
                 router: EditLinkItemRouting,
                 listener: EditLinkItemSceneListenable?) {
         self.collectionID = collectionID
         self.editCase = editCase
         self.readUsecase = readUsecase
+        self.remindUsecase = remindUsecase
         self.categoryUsecase = categoryUsecase
         self.router = router
         self.listener = listener
@@ -188,9 +191,22 @@ extension EditLinkItemViewModelImple {
         
         self.subjects.isProcessing.accept(true)
         self.readUsecase.saveLink(newItem, at: parentCollectionID)
+            .flatMap(updateRemindIfNeed(newItem))
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: completed, onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func updateRemindIfNeed(_ newItem: ReadLink) -> () -> Maybe<Void> {
+        return { [weak self] in
+            guard let self = self else { return .empty() }
+            let (oldRemind, newRemind) = (self.editCase.item?.remindTime, newItem.remindTime)
+            guard oldRemind != newRemind else { return .just() }
+            let updateReminding: Maybe<Void> = newRemind
+                .map { self.remindUsecase.scheduleRemindMessage(for: newItem, at: $0) }
+                ?? self.remindUsecase.cancelRemindMessage(newItem)
+            return updateReminding.catchAndReturn(())
+        }
     }
     
     private func closeSceneAfterUpdateItem(_ item: ReadLink) {
@@ -379,6 +395,11 @@ private extension EditLinkItemCase {
     var parentID: String? {
         guard case let .edit(item) = self else { return nil }
         return item.parentID
+    }
+    
+    var item: ReadLink? {
+        guard case let .edit(item) = self else { return nil }
+        return item
     }
 }
 

@@ -33,12 +33,12 @@ extension DependencyInjector: ReadCollectionItemSceneBuilable {
                                             navigationListener: ReadCollectionNavigateListenable?,
                                             withInverse coordinator: CollectionInverseNavigationCoordinating?) -> ReadCollectionScene {
         let router = ReadCollectionItemsRouter(nextSceneBuilders: self)
-        let usecase = self.readItemUsecase
+        let usecase = self.readItemUsecaseImple
         let viewModel = ReadCollectionViewItemsModelImple(collectionID: collectionID,
                                                           readItemUsecase: usecase,
                                                           favoriteUsecase: usecase,
                                                           categoryUsecase: self.categoryUsecase,
-                                                          remindUsecase: self.remindUsecase,
+                                                          remindUsecase: usecase,
                                                           router: router,
                                                           navigationListener: navigationListener,
                                                           inverseNavigationCoordinating: coordinator)

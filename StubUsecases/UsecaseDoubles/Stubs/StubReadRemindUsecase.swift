@@ -38,6 +38,18 @@ open class StubReadRemindUsecase: ReadRemindUsecase {
         return .just()
     }
     
+    public var didRemindScheduled: TimeStamp?
+    public func scheduleRemindMessage(for item: ReadItem, at futureTime: TimeStamp) -> Maybe<Void> {
+        self.didRemindScheduled = futureTime
+        return .just()
+    }
+    
+    public var didRemindCanceled: Bool?
+    public func cancelRemindMessage(_ item: ReadItem) -> Maybe<Void> {
+        self.didRemindCanceled = true
+        return .just()
+    }
+    
     public func handleReminder(_ readReminder: ReadRemindMessage) -> Maybe<Void> {
         return .just()
     }

@@ -77,8 +77,8 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
         let viewModel = EditReadCollectionViewModelImple(parentID: "some",
                                                          editCase: editCase,
                                                          updateUsecase: stubUsecase,
-                                                         categoriesUsecase: stubCategoryUsecase,
                                                          remindUsecase: stubRemindUsecase,
+                                                         categoriesUsecase: stubCategoryUsecase,
                                                          router: self,
                                                          listener: self)
         self.editCollectionSceneInteractor = viewModel
@@ -258,6 +258,7 @@ extension EditReadCollectionViewModelTests {
         
         // then
         XCTAssertEqual(newCollection?.remindTime, remindTime)
+        XCTAssertEqual(self.spyRemindUsecase.didRemindScheduled, remindTime)
     }
 }
 

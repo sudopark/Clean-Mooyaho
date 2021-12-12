@@ -47,24 +47,24 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     private let parentID: String?
     private let editCase: EditCollectionCase
     private let updateUsecase: ReadItemUpdateUsecase
-    private let categoriesUsecase: ReadItemCategoryUsecase
     private let remindUsecase: ReadRemindUsecase
+    private let categoriesUsecase: ReadItemCategoryUsecase
     private let router: EditReadCollectionRouting
     private weak var listener: EditReadCollectionSceneListenable?
     
     public init(parentID: String?,
                 editCase: EditCollectionCase,
                 updateUsecase: ReadItemUpdateUsecase,
-                categoriesUsecase: ReadItemCategoryUsecase,
                 remindUsecase: ReadRemindUsecase,
+                categoriesUsecase: ReadItemCategoryUsecase,
                 router: EditReadCollectionRouting,
                 listener: EditReadCollectionSceneListenable?) {
         
         self.parentID = parentID
         self.editCase = editCase
         self.updateUsecase = updateUsecase
-        self.categoriesUsecase = categoriesUsecase
         self.remindUsecase = remindUsecase
+        self.categoriesUsecase = categoriesUsecase
         self.router = router
         self.listener =  listener
         
@@ -152,9 +152,23 @@ extension EditReadCollectionViewModelImple {
         self.subjects.isProcessing.accept(true)
         
         updatingAction
+            .flatMap(updateRemindIfNeed())
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: handleUpdated, onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func updateRemindIfNeed() -> (ReadCollection) -> Maybe<ReadCollection> {
+        return { [weak self] newItem in
+            guard let self = self else { return .empty() }
+            let (oldRemind, newRemind) = (self.editCase.item?.remindTime, newItem.remindTime)
+            guard oldRemind != newRemind else { return .just(newItem) }
+            let remindUpdating: Maybe<Void> = newRemind
+                .map { self.remindUsecase.scheduleRemindMessage(for: newItem, at: $0) }
+                ?? self.remindUsecase.cancelRemindMessage(newItem)
+            return remindUpdating.catchAndReturn(())
+                .map { newItem }
+        }
     }
     
     private func updateCollection(_ collection: ReadCollection) -> Maybe<ReadCollection> {
@@ -258,6 +272,15 @@ extension EditReadCollectionViewModelImple {
     
     public var editCaseCollectionValue: ReadCollection? {
         guard case let .edit(collection) = self.editCase else { return nil }
+        return collection
+    }
+}
+
+
+private extension EditCollectionCase {
+    
+    var item: ReadCollection? {
+        guard case let .edit(collection) = self else { return nil }
         return collection
     }
 }

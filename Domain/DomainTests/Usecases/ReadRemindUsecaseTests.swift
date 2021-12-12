@@ -32,32 +32,34 @@ class ReadRemindUsecaseTests: BaseTestCase, WaitObservableEvents {
     }
     
     private func makeUsecase(shouldFailSchedule: Bool = false,
-                             shouldFailLoadPreview: Bool = false) -> ReadRemindUsecase {
+                             shouldFailLoadPreview: Bool = false,
+                             previewMocking: Maybe<LinkPreview>? = nil) -> ReadRemindUsecase {
         
         let store = SharedDataStoreServiceImple()
+        
         
         let previewScenario = StubLinkPreviewRepository.Scenario()
             |> \.preview .~ (shouldFailLoadPreview ? .failure(ApplicationErrors.invalid) : .success(.dummy(0)))
         let previewRepo = StubLinkPreviewRepository(scenario: previewScenario)
+            |> \.previewLoadMocking .~ previewMocking
         
         let repoScenario = StubReadItemRepository.Scenario()
             |> \.updateWithParamsResult .~ (shouldFailSchedule ? .failure(ApplicationErrors.invalid) : .success(()))
         let repository = StubReadItemRepository(scenario: repoScenario)
+        
+        let messageService = StubReminderMessagingService()
+        self.spyMessagingService = messageService
         
         let readItemUsecase = ReadItemUsecaseImple(itemsRespoitory: repository,
                                                    previewRepository: previewRepo,
                                                    optionsRespository: StubReadItemOptionsRepository(scenario: .init()),
                                                    authInfoProvider: store, sharedStoreService: store,
                                                    clipBoardService: StubClipBoardService(),
-                                                   readItemUpdateEventPublisher: nil)
+                                                   readItemUpdateEventPublisher: nil,
+                                                   remindPreviewLoadTimeout: self.timeout*3,
+                                                   remindMessagingService: messageService)
         
-        let messageService = StubReminderMessagingService()
-        self.spyMessagingService = messageService
-        
-        return ReadRemindUsecaseImple(authInfoProvider: store,
-                                      sharedStore: store,
-                                      readItemUsecase: readItemUsecase,
-                                      messagingService: messageService)
+        return readItemUsecase
     }
 }
 
@@ -85,7 +87,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase(shouldFailSchedule: false)
 
         // when
-        let scheduling = usecase.scheduleRemid(for: ReadCollection.dummy(0), futureTime: .now())
+        let scheduling = usecase.updateRemind(for: ReadCollection.dummy(0), futureTime: .now())
         let result: Void? = self.waitFirstElement(expect, for: scheduling.asObservable())
 
         // then
@@ -98,7 +100,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let scheduling = usecase.scheduleRemid(for: ReadCollection.dummy(0), futureTime: .now())
+        let scheduling = usecase.updateRemind(for: ReadCollection.dummy(0), futureTime: .now())
         let _ : Void? = self.waitFirstElement(expect, for: scheduling.asObservable())
         
         // then
@@ -111,7 +113,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase(shouldFailSchedule: true)
 
         // when
-        let making = usecase.scheduleRemid(for: ReadCollection.dummy(0), futureTime: .now())
+        let making = usecase.updateRemind(for: ReadCollection.dummy(0), futureTime: .now())
         let error: Error? = self.waitError(expect, for: making.asObservable())
 
         // then
@@ -130,7 +132,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let scheduling = usecase.scheduleRemid(for: ReadLink.dummy(0), futureTime: .now())
+        let scheduling = usecase.updateRemind(for: ReadLink.dummy(0), futureTime: .now())
         let result: Void? = self.waitFirstElement(expect, for: scheduling.asObservable())
         
         // then
@@ -143,11 +145,45 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let scheduling = usecase.scheduleRemid(for: ReadLink.dummy(0), futureTime: .now())
+        let scheduling = usecase.updateRemind(for: ReadLink.dummy(0), futureTime: .now())
         let _ = self.waitFirstElement(expect, for: scheduling.asObservable())
         
         // then
         XCTAssertNotNil(self.spyMessagingService?.didSentPendingMessage)
+    }
+    
+    func testUsecase_whenScheduleReadLinkRemindMessage_usePreviewTitle() {
+        // given
+        let expect = expectation(description: "읽기아이템 메세지 예약시에는 프리뷰 타이틀 이용")
+        let preview = LinkPreview(title: "dummy title", description: nil, mainImageURL: nil, iconURL: nil)
+        let mocking = Maybe<LinkPreview>.just(preview)
+        let usecase = self.makeUsecase(previewMocking: mocking)
+        
+        // when
+        let scheduling = usecase.scheduleRemindMessage(for: ReadLink.dummy(0), at: .now())
+        let _ = self.waitFirstElement(expect, for: scheduling.asObservable(), timeout: self.timeout * 5)
+        
+        // then
+        let pendingMessage = self.spyMessagingService?.didSentPendingMessage
+        XCTAssertEqual(pendingMessage?.message, "dummy title")
+    }
+    
+    func testUsecase_whenpreviewTitleTimeout_useDefaultMessaage() {
+        // given
+        let expect = expectation(description: "읽기아이템 메세지 예약시에는 프리뷰 로드 타임아웃나면 디폴트로 변경")
+        let preview = LinkPreview(title: "dummy title", description: nil, mainImageURL: nil, iconURL: nil)
+        let mocking: Maybe<LinkPreview> = Maybe<Int>
+            .timer(.milliseconds(Int(self.timeout * 10  * 1000)), scheduler: MainScheduler.instance)
+            .map { _ in preview }
+        let usecase = self.makeUsecase(previewMocking: mocking)
+        
+        // when
+        let scheduling = usecase.scheduleRemindMessage(for: ReadLink.dummy(0), at: .now())
+        let _ = self.waitFirstElement(expect, for: scheduling.asObservable(), timeout: self.timeout * 5)
+        
+        // then
+        let pendingMessage = self.spyMessagingService?.didSentPendingMessage
+        XCTAssertEqual(pendingMessage?.message, "It's time to read(link:0)")
     }
 }
 
@@ -162,7 +198,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let canceling = usecase.cancelRemind(for: ReadLink.dummy(0))
+        let canceling = usecase.updateRemind(for: ReadLink.dummy(0), futureTime: nil)
         let result: Void? = self.waitFirstElement(expect, for: canceling.asObservable())
         
         // then
@@ -175,7 +211,7 @@ extension ReadRemindUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let canceling = usecase.cancelRemind(for: ReadLink.dummy(0))
+        let canceling = usecase.updateRemind(for: ReadLink.dummy(0), futureTime: nil)
         let _ : Void? = self.waitFirstElement(expect, for: canceling.asObservable())
         
         // then
