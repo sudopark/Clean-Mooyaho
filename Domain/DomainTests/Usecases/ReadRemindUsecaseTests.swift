@@ -57,7 +57,8 @@ class ReadRemindUsecaseTests: BaseTestCase, WaitObservableEvents {
                                                    clipBoardService: StubClipBoardService(),
                                                    readItemUpdateEventPublisher: nil,
                                                    remindPreviewLoadTimeout: self.timeout*3,
-                                                   remindMessagingService: messageService)
+                                                   remindMessagingService: messageService,
+                                                   shareURLScheme: "readminds")
         
         return readItemUsecase
     }

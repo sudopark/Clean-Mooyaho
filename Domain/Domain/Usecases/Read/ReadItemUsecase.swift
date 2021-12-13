@@ -39,6 +39,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
     private weak var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?
     private let remindPreviewLoadTimeout: TimeInterval
     private let remindMessagingService: ReadRemindMessagingService
+    private let shareURLScheme: String
     
     private let disposeBag = DisposeBag()
     
@@ -50,7 +51,8 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
                 clipBoardService: ClipboardServie,
                 readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?,
                 remindPreviewLoadTimeout: TimeInterval = 3.0,
-                remindMessagingService: ReadRemindMessagingService) {
+                remindMessagingService: ReadRemindMessagingService,
+                shareURLScheme: String) {
         
         self.itemsRespoitory = itemsRespoitory
         self.previewRepository = previewRepository
@@ -61,6 +63,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
         self.readItemUpdateEventPublisher = readItemUpdateEventPublisher
         self.remindPreviewLoadTimeout = remindPreviewLoadTimeout
         self.remindMessagingService = remindMessagingService
+        self.shareURLScheme = shareURLScheme
     }
 }
 
@@ -400,6 +403,11 @@ extension ReadItemUsecaseImple: ReadLinkAddSuggestUsecase {
         
         guard let copiedURL = self.clipBoardService.getCopedString(),
               copiedURL.isURLAddress else { return .just(nil) }
+        
+        guard copiedURL.starts(with: self.shareURLScheme) == false
+        else {
+            return .just(nil)
+        }
         
         let isNotSuggestedBefore = self.isSuggestedBefore(copiedURL) == false
         guard isNotSuggestedBefore else { return .just(nil) }

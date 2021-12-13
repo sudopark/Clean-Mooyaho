@@ -50,7 +50,8 @@ class FavoriteItemsPagingUsecaseTests: BaseTestCase, WaitObservableEvents {
                                                sharedStoreService: sharedStore,
                                                clipBoardService: StubClipBoardService(),
                                                readItemUpdateEventPublisher: nil,
-                                               remindMessagingService: StubReminderMessagingService())
+                                               remindMessagingService: StubReminderMessagingService(),
+                                               shareURLScheme: "readminds")
         return FavoriteItemsPagingUsecaseImple(favoriteItemsUsecase: favoriteUsecase,
                                                itemsLoadUsecase: readUsecase,
                                                throttleInterval: 0)
