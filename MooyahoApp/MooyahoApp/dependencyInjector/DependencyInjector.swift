@@ -178,7 +178,8 @@ extension DependencyInjector {
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
                                     readItemUpdateEventPublisher: self.readItemUpdateEventPublisher,
-                                    remindMessagingService: self.readRemindMessagingService)
+                                    remindMessagingService: self.readRemindMessagingService,
+                                    shareURLScheme: AppEnvironment.shareScheme)
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {

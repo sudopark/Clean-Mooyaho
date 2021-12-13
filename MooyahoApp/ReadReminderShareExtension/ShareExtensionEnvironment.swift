@@ -42,6 +42,10 @@ final class ShareExtensionEnvironment {
         return "group.sudo.park.clean-mooyaho"
     }
     
+    static var shareScheme: String {
+        return "readminds"
+    }
+    
     static func dataModelDBPath(for userID: String? = nil) -> String {
         let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.groupID)
         

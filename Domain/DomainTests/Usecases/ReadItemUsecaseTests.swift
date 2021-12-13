@@ -88,7 +88,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                                     sharedStoreService: store,
                                     clipBoardService: clipboardService,
                                     readItemUpdateEventPublisher: self.mockItemUpdateSubject,
-                                    remindMessagingService: StubReminderMessagingService())
+                                    remindMessagingService: StubReminderMessagingService(),
+                                    shareURLScheme: "readminds")
     }
 }
 
@@ -686,6 +687,19 @@ extension ReadItemUsecaseTests {
         // given
         let expect = expectation(description: "복사된 텍스트가 url이 아닐떼 추가 서제스트 안함")
         let usecase = self.makeUsecase(copiedText: "not url text")
+        
+        // when
+        let finding = usecase.loadSuggestAddNewItemByURLExists()
+        let url = self.waitFirstElement(expect, for: finding.asObservable())
+        
+        // then
+        XCTAssertNil(url)
+    }
+    
+    func testUsecase_whenCopiedURLIsShareURL_ignore() {
+        // given
+        let expect = expectation(description: "복사된 텍스트가 서비스 공유 url이면 추천 안함")
+        let usecase = self.makeUsecase(copiedText: "readminds://share/collection?id=share_id")
         
         // when
         let finding = usecase.loadSuggestAddNewItemByURLExists()
