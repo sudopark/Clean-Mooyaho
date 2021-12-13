@@ -148,7 +148,7 @@ extension FirebaseServiceImple {
         let appendToWithdrawal = self.save(withdrawalMember, at: .withdrawalQueue)
         
         let thenDeleteMemebr: () -> Maybe<Void> = { [weak self] in
-            return self?.delete(memberID, at: .member) ?? .empty()
+            return self?.delete(memberID, at: .member).catchAndReturn(()) ?? .empty()
         }
         
         let thenDeleteMemberDataWithoutError: () -> Maybe<Void> = { [weak self] in
@@ -209,10 +209,26 @@ extension FirebaseServiceImple {
             return self.delete(memberID, at: .sharedInbox)
         }
         
+        let thenDeleteCategories: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let collectionRef = self.fireStoreDB.collection(.itemCategory)
+            let query = collectionRef.whereField(CategoryMappingKey.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .itemCategory)
+        }
+        
+        let thenDeleteMemos: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let collectionRef = self.fireStoreDB.collection(.linkMemo)
+            let query = collectionRef.whereField(ReadLinkMemoMappingKey.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .linkMemo)
+        }
+        
         return deleteColelctions()
             .flatMap(thenDeleteLinks)
             .flatMap(thenDeleteShareIndexes)
             .flatMap(thenDeleteInbox)
+            .flatMap(thenDeleteCategories)
+            .flatMap(thenDeleteMemos)
     }
 }
 
