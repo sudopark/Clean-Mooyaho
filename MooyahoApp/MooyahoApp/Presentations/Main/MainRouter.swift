@@ -52,6 +52,8 @@ public protocol MainRouting: Routing {
     func addSaerchScene() -> IntegratedSearchSceneInteractable?
     
     func removeSearchScene()
+    
+    func showRemindDetail(_ itemID: String)
 }
 
 // MARK: - Routers
@@ -62,7 +64,7 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & ReadCollectionMainSceneBuilable & SelectAddItemTypeSceneBuilable
     & WaitMigrationSceneBuilable & StopShareCollectionSceneBuilable
     & SharedCollectionInfoDialogSceneBuilable & IntegratedSearchSceneBuilable
-    & SuggestReadSceneBuilable
+    & SuggestReadSceneBuilable & InnerWebViewSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -248,5 +250,17 @@ extension MainRouter {
         presentingSearchScene.willMove(toParent: nil)
         presentingSearchScene.removeFromParent()
         presentingSearchScene.view.removeFromSuperview()
+    }
+    
+    public func showRemindDetail(_ itemID: String) {
+        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(
+            linkID: itemID,
+            isEditable: true,
+            isJumpable: true,
+            listener: self.currentInteractor
+        ) else {
+            return
+        }
+        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

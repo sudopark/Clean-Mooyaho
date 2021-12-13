@@ -63,6 +63,10 @@ extension FirebaseServiceImple: ReadRemindMessagingService {
             let content = UNMutableNotificationContent()
             content.title = message.title
             content.body = message.message ?? ReadRemindMessage.defaultReadLinkMessage
+            content.userInfo = [
+                BasePushPayloadMappingKey.messageTypeKey: PushMessagingTypes.remind.rawValue,
+                "itemid": message.itemID
+            ]
             return content
         }
         
@@ -173,6 +177,10 @@ extension FirebaseServiceImple: FCMService {
         switch type {
         case .hoorayAck:
             return HoorayAckMessage(payload)
+            
+        case .remind:
+            guard let itemID = payload["itemid"] as? String else { return nil }
+            return ReadRemindMessage(itemID: itemID, scheduledTime: .now())
         }
     }
 }
@@ -183,23 +191,20 @@ extension FirebaseServiceImple: UNUserNotificationCenterDelegate, MessagingDeleg
         self.incommingDataMessageUserInfo.onNext(userInfo)
     }
     
-//    public func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                       willPresent notification: UNNotification,
-//                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//
-//        let userInfo = notification.request.content.userInfo
-//        self.incommingNotificationUserInfo.onNext(userInfo)
-//        completionHandler([])
-//    }
-//
-//    public func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                       didReceive response: UNNotificationResponse,
-//                                       withCompletionHandler completionHandler: @escaping () -> Void) {
-//
-//        let userInfo = response.notification.request.content.userInfo
-//        self.incommingNotificationUserInfo.onNext(userInfo)
-//        completionHandler()
-//    }
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       willPresent notification: UNNotification,
+                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
+    }
+
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       didReceive response: UNNotificationResponse,
+                                       withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        let userInfo = response.notification.request.content.userInfo
+        self.incommingDataMessageUserInfo.onNext(userInfo)
+        completionHandler()
+    }
     
     public func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         self.fcmToken.onNext(fcmToken)

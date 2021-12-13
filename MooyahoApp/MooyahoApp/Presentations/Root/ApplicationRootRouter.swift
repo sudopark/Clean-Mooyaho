@@ -19,6 +19,8 @@ public protocol ApplicationRootRouting: Routing {
     func showNotificationAuthorizationNeedBanner()
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
+    
+    func showRemindItem(_ itemID: String) -> Bool
 }
 
 // MARK: - builders
@@ -63,5 +65,17 @@ extension ApplicationRootRouter {
     public func showSharedReadCollection(_ collection: SharedReadCollection) {
         guard let interactor = self.mainInteractor else { return }
         interactor.showSharedReadCollection(collection)
+    }
+    
+    public func showRemindItem(_ itemID: String) -> Bool {
+        guard let root = self.window.rootViewController,
+              self.mainInteractor != nil
+        else {
+            return false
+        }
+        root.dismiss(animated: true) { [weak self] in
+            self?.mainInteractor?.showRemindDetail(itemID)
+        }
+        return true
     }
 }

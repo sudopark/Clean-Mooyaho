@@ -283,6 +283,21 @@ extension MainViewModelImple: MainSceneInteractable {
     }
 }
 
+// MARK: - show remind detail
+
+extension MainViewModelImple {
+    
+    public func showRemindDetail(_ itemID: String) {
+        self.router.showRemindDetail(itemID)
+    }
+    
+    public func innerWebView(reqeustJumpTo collectionID: String?) {
+        self.router.closeScene(animated: true) { [weak self] in
+            self?.readCollectionMainSceneInteractor?.jumpToCollection(collectionID)
+        }
+    }
+}
+
 
 // MARK: - MainViewModelImple + search
 

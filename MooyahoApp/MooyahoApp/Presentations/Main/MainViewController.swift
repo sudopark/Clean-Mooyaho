@@ -17,9 +17,11 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable {
+public protocol MainSceneInteractable: SignInSceneListenable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable & InnerWebViewSceneListenable {
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
+    
+    func showRemindDetail(_ itemID: String)
 }
 
 public protocol MainScene: Scenable {
