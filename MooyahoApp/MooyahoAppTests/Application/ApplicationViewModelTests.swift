@@ -140,6 +140,43 @@ extension ApplicationViewModelTests {
 }
 
 
+// MARK; - show remind
+
+extension ApplicationViewModelTests {
+    
+    func testViewModel_whenHandleRemindMessage_showDetail() {
+        // given
+        self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        self.viewModel.appDidLaunched()
+        
+        // when
+        self.stubFCMService.mockPushMessages.onNext(ReadRemindMessage(itemID: "some", scheduledTime: .now()))
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didShowRemindDetailRequested, true)
+    }
+    
+    func testViewModel_whenHandleRemindMessageBeforeSetupInitialScene_showAfterSetupInitialScenes() {
+        // given
+        self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        
+        self.spyRouter.handleRemindResult = false
+        
+        // when
+        self.stubFCMService.mockPushMessages.onNext(ReadRemindMessage(itemID: "some", scheduledTime: .now()))
+        self.spyRouter.handleRemindResult = true
+        self.viewModel.appDidLaunched()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didShowRemindDetailRequested, true)
+    }
+}
+
+
 extension ApplicationViewModelTests {
     
     class SpyRouter: ApplicationRootRouting, Mocking {
@@ -155,6 +192,16 @@ extension ApplicationViewModelTests {
         var didShowSharedCollection: SharedReadCollection?
         func showSharedReadCollection(_ collection: SharedReadCollection) {
             self.didShowSharedCollection = collection
+        }
+        
+        var handleRemindResult: Bool = true
+        var didShowRemindDetailRequested: Bool?
+        func showRemindItem(_ itemID: String) -> Bool {
+            let result = self.handleRemindResult
+            if result{
+                self.didShowRemindDetailRequested = true
+            }
+            return result
         }
     }
 }

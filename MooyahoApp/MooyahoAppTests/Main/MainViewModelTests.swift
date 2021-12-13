@@ -464,6 +464,11 @@ extension MainViewModelTests {
         func closeScene(animated: Bool, completed: (() -> Void)?) {
             completed?()
         }
+        
+        var didShowRemindDetail: Bool?
+        func showRemindDetail(_ itemID: String) {
+            self.didShowRemindDetail = true
+        }
     }
     
     class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {

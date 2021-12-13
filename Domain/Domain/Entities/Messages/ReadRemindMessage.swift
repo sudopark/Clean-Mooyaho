@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct ReadRemindMessage {
+public struct ReadRemindMessage: Message {
     
     public let itemID: String
     public let scheduledTime: TimeStamp

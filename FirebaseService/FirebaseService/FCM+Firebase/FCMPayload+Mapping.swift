@@ -23,6 +23,7 @@ struct BasePushPayloadMappingKey: PushPayloadMappingKey { }
 
 enum PushMessagingTypes: String {
     case hoorayAck = "hooray_ack"
+    case remind
 }
 
 

@@ -57,6 +57,7 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
     }
     
     private let disposeBag = DisposeBag()
+    private var pendingShowRemindMessage: ReadRemindMessage?
     
     private func internalBinding() {
         
@@ -84,6 +85,12 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
                 self?.router.routeMain(auth: auth)
             })
             .disposed(by: self.disposeBag)
+        
+        self.fcmService.receiveReadmindMessage
+            .subscribe(onNext: { [weak self] message in
+                self?.handleRemindMessage(message)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -109,6 +116,7 @@ extension ApplicationViewModelImple {
         
         let routing: (Domain.Auth) -> Void = { [weak self] auth in
             self?.router.routeMain(auth: auth)
+            self?.showDetailIfNeed()
         }
         self.applicationUsecase.loadLastSignInAccountInfo()
             .map{ $0.auth }
@@ -168,8 +176,35 @@ extension ApplicationViewModelImple {
     }
 }
 
+
+// MARK: - handle remind
+
+extension ApplicationViewModelImple {
+    
+    private func handleRemindMessage(_ message: ReadRemindMessage) {
+        let handleed = self.router.showRemindItem(message.itemID)
+        guard handleed == false else { return }
+        self.pendingShowRemindMessage = message
+    }
+    
+    private func showDetailIfNeed() {
+        guard let pending = self.pendingShowRemindMessage else { return }
+        _ = self.router.showRemindItem(pending.itemID)
+        self.pendingShowRemindMessage = nil
+    }
+}
+
 // Prenseter
 
 extension ApplicationViewModelImple {
     
+}
+
+
+private extension FCMService {
+    
+    var receiveReadmindMessage: Observable<ReadRemindMessage> {
+        return self.receivePushMessage
+            .compactMap { $0 as? ReadRemindMessage }
+    }
 }
