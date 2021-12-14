@@ -18,4 +18,5 @@ public enum ApplicationErrors: Error {
     case shouldWaitPublishHooray(until: TimeStamp)
     case notFound
     case userDataMigrationFail(_ error: Error)
+    case noUserInfo
 }

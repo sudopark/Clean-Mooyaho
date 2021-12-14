@@ -44,7 +44,7 @@ public protocol Remote: AuthRemote, MemberRemote,
                         PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
                         ReadItemRemote, ReadItemOptionsRemote, LinkPreviewRemote, ItemCategoryRemote,
                         ReadLinkMemoRemote, BatchUploadRemote,
-                        ShareItemRemote { }
+                        ShareItemRemote, HelpRemote { }
 
 // MARK: - Auth remote
 
@@ -265,4 +265,10 @@ public protocol ShareItemRemote: AuthorizationNeed {
     func requestLoadAllSharedCollectionIDs() -> Maybe<[String]>
     
     func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]>
+}
+
+
+public protocol HelpRemote {
+    
+    func requestLeaveFeedback(_ feedback: Feedback) -> Maybe<Void>
 }

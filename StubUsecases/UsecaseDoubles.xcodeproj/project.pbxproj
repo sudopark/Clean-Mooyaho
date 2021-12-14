@@ -13,6 +13,7 @@
 		F60325BF2659571900E4E769 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325BE2659571900E4E769 /* Common3rdParty.framework */; };
 		F60325C32659573700E4E769 /* MockUserLocationUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60325C22659573700E4E769 /* MockUserLocationUsecase.swift */; };
 		F60325C42659581600E4E769 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60325B3265956EA00E4E769 /* XCTest.framework */; platformFilter = ios; };
+		F617F1062768E90100D88F9C /* StubFeedbackUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1052768E90100D88F9C /* StubFeedbackUsecase.swift */; };
 		F62692C7272566C100841B40 /* StubMemoUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692C6272566C100841B40 /* StubMemoUsecase.swift */; };
 		F627A9EE2712945500722BDD /* StubSuggestCategoryUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F627A9ED2712945500722BDD /* StubSuggestCategoryUsecase.swift */; };
 		F62DFFBC26621E4D00C4A080 /* MockHoorayUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFBB26621E4D00C4A080 /* MockHoorayUsecase.swift */; };
@@ -48,6 +49,7 @@
 		F60325BB2659571400E4E769 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F60325BE2659571900E4E769 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F60325C22659573700E4E769 /* MockUserLocationUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserLocationUsecase.swift; sourceTree = "<group>"; };
+		F617F1052768E90100D88F9C /* StubFeedbackUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFeedbackUsecase.swift; sourceTree = "<group>"; };
 		F62692C6272566C100841B40 /* StubMemoUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMemoUsecase.swift; sourceTree = "<group>"; };
 		F627A9ED2712945500722BDD /* StubSuggestCategoryUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSuggestCategoryUsecase.swift; sourceTree = "<group>"; };
 		F62DFFBB26621E4D00C4A080 /* MockHoorayUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHoorayUsecase.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				F6A00BE0274D4AF8006CFAB3 /* StubIntegratedSearchUsecase.swift */,
 				F680E49E27568A7E00B69E8B /* StubFavoritePagingUsecase.swift */,
 				F65D11232760F78B008C48DD /* StubSharedCollectionPagingUsecase.swift */,
+				F617F1052768E90100D88F9C /* StubFeedbackUsecase.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				F63FE0E12738017B006E879E /* MockUserDataMigrationUsecase.swift in Sources */,
 				F6E83128265C57B100C91F3B /* MockMemberUsecase.swift in Sources */,
 				F6A00BE1274D4AF8006CFAB3 /* StubIntegratedSearchUsecase.swift in Sources */,
+				F617F1062768E90100D88F9C /* StubFeedbackUsecase.swift in Sources */,
 				F62692C7272566C100841B40 /* StubMemoUsecase.swift in Sources */,
 				F60325C32659573700E4E769 /* MockUserLocationUsecase.swift in Sources */,
 				F63A08E726DC8DBE009E5961 /* BaseStubMemberUsecase.swift in Sources */,
