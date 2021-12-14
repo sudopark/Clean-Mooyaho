@@ -43,6 +43,8 @@
 		2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */; };
 		2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */; };
 		F6078F0A26AD2EC1000B8AA4 /* FCMPayload+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */; };
+		F617F10A2768EA1200D88F9C /* HelpRemoteImple+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1092768EA1200D88F9C /* HelpRemoteImple+Firebase.swift */; };
+		F617F10C2768EA4900D88F9C /* Feedback+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F10B2768EA4900D88F9C /* Feedback+Mapping.swift */; };
 		F62692B82725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */; };
 		F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */; };
 		F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206726668BB70089D0B3 /* Storage+Extensions.swift */; };
@@ -166,6 +168,8 @@
 		2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonMapping.swift; sourceTree = "<group>"; };
 		2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FCMPayload+Mapping.swift"; sourceTree = "<group>"; };
+		F617F1092768EA1200D88F9C /* HelpRemoteImple+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HelpRemoteImple+Firebase.swift"; sourceTree = "<group>"; };
+		F617F10B2768EA4900D88F9C /* Feedback+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feedback+Mapping.swift"; sourceTree = "<group>"; };
 		F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadLinkMemoRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F637206726668BB70089D0B3 /* Storage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Extensions.swift"; sourceTree = "<group>"; };
@@ -442,6 +446,7 @@
 				F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */,
 				F640618C2735DB4100902787 /* BatchUpload+Firebase.swift */,
 				F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */,
+				F617F1092768EA1200D88F9C /* HelpRemoteImple+Firebase.swift */,
 				F62DEFC727535F6E008D50D1 /* Deprecated */,
 			);
 			path = "RemoteImple+FirebaseService";
@@ -488,6 +493,7 @@
 				F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */,
 				F6C99B302730382600D42A90 /* SuggestIndexes.swift */,
 				F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */,
+				F617F10B2768EA4900D88F9C /* Feedback+Mapping.swift */,
 			);
 			path = DataMappings;
 			sourceTree = "<group>";
@@ -658,7 +664,9 @@
 				F62692B82725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift in Sources */,
 				2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */,
 				F6BD480D2741050800D2B2C9 /* ShareItem+Firebase.swift in Sources */,
+				F617F10A2768EA1200D88F9C /* HelpRemoteImple+Firebase.swift in Sources */,
 				F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */,
+				F617F10C2768EA4900D88F9C /* Feedback+Mapping.swift in Sources */,
 				F66E81412655328000682625 /* MessagingRemote+Firebase.swift in Sources */,
 				F6F35FC12715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift in Sources */,
 				F6C99B2A273031A000D42A90 /* ReadItem+Mapping.swift in Sources */,

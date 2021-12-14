@@ -162,3 +162,11 @@ extension AppRepository: IntegratedSearchReposiotry, IntegratedSearchReposiotryD
         return self.local
     }
 }
+
+
+extension AppRepository: HelpRepository, HelpReposiotryDefImpleDependency {
+    
+    public var helpRemote: HelpRemote {
+        return self.remote
+    }
+}

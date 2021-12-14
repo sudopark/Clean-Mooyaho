@@ -34,6 +34,7 @@ enum FireStoreCollectionType: String {
     case sharingCollectionIndex = "sharing_collect_indexes"
     case memberFavoriteItems
     case withdrawalQueue = "withdrawal_queue"
+    case feedback
 }
 
 
@@ -47,7 +48,8 @@ extension Firestore {
 
 public protocol FirebaseRemote: AuthRemote, MemberRemote, PlaceRemote, TagRemote,
                                 HoorayRemote, MessagingRemote, ReadItemRemote, ReadItemOptionsRemote,
-                                ItemCategoryRemote, ReadLinkMemoRemote, BatchUploadRemote, ShareItemRemote { }
+                                ItemCategoryRemote, ReadLinkMemoRemote, BatchUploadRemote, ShareItemRemote,
+                                HelpRemote { }
 
 extension FirebaseServiceImple: FirebaseRemote{ }
 

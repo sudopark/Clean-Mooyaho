@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestLeaveFeedback(_ feedback: Feedback) -> Maybe<Void> {
+        return .empty()
+    }
+    
     func requestLoadAllSharedCollectionIDs() -> Maybe<[String]> {
         return .empty()
     }
