@@ -39,6 +39,7 @@
 		F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */; };
 		F6101486265792C400D32E38 /* MainSlideMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */; };
 		F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */; };
+		F617F10F2768F37E00D88F9C /* IOSDeviceInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */; };
 		F62271F4273C728D00AF76C1 /* SettingScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271F3273C728D00AF76C1 /* SettingScene.framework */; };
 		F62271F5273C728D00AF76C1 /* SettingScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62271F3273C728D00AF76C1 /* SettingScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
@@ -222,6 +223,7 @@
 		F6101481265792C400D32E38 /* MainSlideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewController.swift; sourceTree = "<group>"; };
 		F6101482265792C400D32E38 /* MainSlideMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuBuilder.swift; sourceTree = "<group>"; };
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
+		F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSDeviceInfoService.swift; sourceTree = "<group>"; };
 		F62271F3273C728D00AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				F64E7AF12762CB6E00961C38 /* AppleLoginService */,
 				2B56932A263D10E4009F85E1 /* KakaoServices */,
 				2B8AC405263C5D7F002BA1AC /* Google-Mobile-Ads-SDK */,
+				F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */,
 			);
 			path = ServiceImplements;
 			sourceTree = "<group>";
@@ -804,6 +807,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F663E6DC2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift in Sources */,
+				F617F10F2768F37E00D88F9C /* IOSDeviceInfoService.swift in Sources */,
 				F663E6DE2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift in Sources */,
 				F663E6E42763C2D300EE8152 /* DependencyInjector+SuggestScenes.swift in Sources */,
 				F6E83120265C4F1000C91F3B /* ApplicationUsecase.swift in Sources */,
@@ -1038,6 +1042,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
@@ -1068,6 +1073,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
@@ -1144,7 +1150,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
@@ -1175,7 +1181,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";

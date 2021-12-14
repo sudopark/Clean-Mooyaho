@@ -54,15 +54,21 @@ public protocol SettingMainViewModel: AnyObject {
 
 public final class SettingMainViewModelImple: SettingMainViewModel {
     
+    private let appID: String
     private let memberUsecase: MemberUsecase
+    private let deviceInfoService: DeviceInfoService
     private let router: SettingMainRouting
     private weak var listener: SettingMainSceneListenable?
     
-    public init(memberUsecase: MemberUsecase,
+    public init(appID: String,
+                memberUsecase: MemberUsecase,
+                deviceInfoService: DeviceInfoService,
                 router: SettingMainRouting,
                 listener: SettingMainSceneListenable?) {
         
+        self.appID = appID
         self.memberUsecase = memberUsecase
+        self.deviceInfoService = deviceInfoService
         self.router = router
         self.listener = listener
         
@@ -135,13 +141,15 @@ extension SettingMainViewModelImple {
             self.router.resumeUserDataMigration(for: member.uid)
             
         case Item.appVersion("").typeName:
-            break
+            let urlPath = "http://itunes.apple.com/app/id\(appID)"
+            self.router.openURL(urlPath)
             
         case Item.feedback.typeName:
             break
             
         case Item.sourceCode.typeName:
-            break
+            let path = "https://github.com/sudopark/Clean-Mooyaho"
+            self.router.openURL(path)
             
         default: break
         }
@@ -188,9 +196,9 @@ extension SettingMainViewModelImple {
     }
     
     private func serviceSection() -> SettingItemSection {
-        // TODO: load app version
+        let appVersion = self.deviceInfoService.appVersion()
         let cells: [SettingItemCellViewModel] = [
-            Item.appVersion("some").asCellViewModel(),
+            Item.appVersion(appVersion).asCellViewModel(),
             Item.feedback.asCellViewModel(),
             Item.sourceCode.asCellViewModel()
         ]
