@@ -12,6 +12,12 @@
 		F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */; };
 		F6118D8D273D61AE00E0489B /* WaitMigrationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */; };
 		F6118D8F273D658A00E0489B /* WaitMigrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */; };
+		F617F1152768F77300D88F9C /* FeedbackRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1102768F77300D88F9C /* FeedbackRouter.swift */; };
+		F617F1162768F77300D88F9C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1112768F77300D88F9C /* FeedbackViewController.swift */; };
+		F617F1172768F77300D88F9C /* FeedbackBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1122768F77300D88F9C /* FeedbackBuilder.swift */; };
+		F617F1182768F77300D88F9C /* FeedbackScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1132768F77300D88F9C /* FeedbackScene.swift */; };
+		F617F1192768F77300D88F9C /* FeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1142768F77300D88F9C /* FeedbackViewModel.swift */; };
+		F617F11B2769005E00D88F9C /* FeedbackViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F11A2769005E00D88F9C /* FeedbackViewModelTests.swift */; };
 		F62271CF273C720100AF76C1 /* SettingScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271C6273C720100AF76C1 /* SettingScene.framework */; };
 		F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62271D3273C720100AF76C1 /* SettingSceneTests.swift */; };
 		F62271D5273C720100AF76C1 /* SettingScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F62271C9273C720100AF76C1 /* SettingScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -62,6 +68,12 @@
 		F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationScene.swift; sourceTree = "<group>"; };
 		F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationRouter.swift; sourceTree = "<group>"; };
 		F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewModelTests.swift; sourceTree = "<group>"; };
+		F617F1102768F77300D88F9C /* FeedbackRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackRouter.swift; sourceTree = "<group>"; };
+		F617F1112768F77300D88F9C /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		F617F1122768F77300D88F9C /* FeedbackBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackBuilder.swift; sourceTree = "<group>"; };
+		F617F1132768F77300D88F9C /* FeedbackScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackScene.swift; sourceTree = "<group>"; };
+		F617F1142768F77300D88F9C /* FeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModel.swift; sourceTree = "<group>"; };
+		F617F11A2769005E00D88F9C /* FeedbackViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModelTests.swift; sourceTree = "<group>"; };
 		F62271C6273C720100AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62271C9273C720100AF76C1 /* SettingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingScene.h; sourceTree = "<group>"; };
 		F62271CE273C720100AF76C1 /* SettingSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SettingSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +149,11 @@
 		F617F10D2768EF9500D88F9C /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
+				F617F1102768F77300D88F9C /* FeedbackRouter.swift */,
+				F617F1112768F77300D88F9C /* FeedbackViewController.swift */,
+				F617F1122768F77300D88F9C /* FeedbackBuilder.swift */,
+				F617F1132768F77300D88F9C /* FeedbackScene.swift */,
+				F617F1142768F77300D88F9C /* FeedbackViewModel.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -181,6 +198,7 @@
 				F6118D8E273D658A00E0489B /* WaitMigrationViewModelTests.swift */,
 				F66248FD275945E400D4FC74 /* ManageCategoryViewModelTests.swift */,
 				F66CDF63275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift */,
+				F617F11A2769005E00D88F9C /* FeedbackViewModelTests.swift */,
 			);
 			path = SettingSceneTests;
 			sourceTree = "<group>";
@@ -374,12 +392,17 @@
 				F66249002759484600D4FC74 /* CategoryPagingUsecase.swift in Sources */,
 				F65F0041275DD33E0022F987 /* ManageAccountBuilder.swift in Sources */,
 				F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */,
+				F617F1182768F77300D88F9C /* FeedbackScene.swift in Sources */,
 				F66CDF5F275B3892009CF185 /* EditCategoryAttrViewController.swift in Sources */,
 				F66CDF5E275B3892009CF185 /* EditCategoryAttrRouter.swift in Sources */,
 				F65F0040275DD33E0022F987 /* ManageAccountViewController.swift in Sources */,
 				F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */,
+				F617F1152768F77300D88F9C /* FeedbackRouter.swift in Sources */,
 				F65F0042275DD33E0022F987 /* ManageAccountScene.swift in Sources */,
+				F617F1162768F77300D88F9C /* FeedbackViewController.swift in Sources */,
 				F66CDF61275B3892009CF185 /* EditCategoryAttrScene.swift in Sources */,
+				F617F1192768F77300D88F9C /* FeedbackViewModel.swift in Sources */,
+				F617F1172768F77300D88F9C /* FeedbackBuilder.swift in Sources */,
 				F65F003F275DD33E0022F987 /* ManageAccountRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +416,7 @@
 				F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */,
 				F66248FE275945E400D4FC74 /* ManageCategoryViewModelTests.swift in Sources */,
 				F66CDF64275B41CF009CF185 /* EditCategoryAttrViewModelTests.swift in Sources */,
+				F617F11B2769005E00D88F9C /* FeedbackViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

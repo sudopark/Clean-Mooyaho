@@ -215,4 +215,10 @@ extension DependencyInjector {
         return SharedReadCollectionPagingUsecaseImple(repository: self.appReposiotry,
                                                       sharedDataStoreService: self.shared.dataStore)
     }
+    
+    var feedbackUsecase: FeedbackUsecase {
+        return FeedbackUsecaseImple(authProvider: self.shared.dataStore,
+                                    deviceInfoService: self.deviceInfoService,
+                                    helpRepository: self.appReposiotry)
+    }
 }

@@ -35,5 +35,11 @@ extension BottomSlideViewSupporatble where Self: BaseViewController {
                 self?.requestCloseScene()
             })
             .disposed(by: self.disposeBag)
+        
+        self.bottomSlideMenuView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
+            .disposed(by: self.disposeBag)
     }
 }

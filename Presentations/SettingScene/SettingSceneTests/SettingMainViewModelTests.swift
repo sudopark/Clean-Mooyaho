@@ -250,6 +250,17 @@ extension SettingMainViewModelTests {
         // then
         XCTAssertEqual(self.spyRouter.didOpenURLPath, "https://github.com/sudopark/Clean-Mooyaho")
     }
+    
+    func testViewMdoel_routeToEnterFeedback() {
+        // given
+        let viewModel = self.makeViewModel(with: Member.init(uid: "some", nickName: nil, icon: nil))
+        
+        // when
+        viewModel.selectItem(Item.feedback.typeName)
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didRouteToEnterFeedback, true)
+    }
 }
 
 
@@ -290,6 +301,11 @@ extension SettingMainViewModelTests {
         var didOpenURLPath: String?
         func openURL(_ path: String) {
             self.didOpenURLPath = path
+        }
+        
+        var didRouteToEnterFeedback: Bool?
+        func routeToEnterFeedback() {
+            self.didRouteToEnterFeedback = true
         }
     }
     

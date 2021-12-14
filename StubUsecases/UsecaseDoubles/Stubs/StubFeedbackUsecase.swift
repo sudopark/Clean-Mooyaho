@@ -14,6 +14,8 @@ import Domain
 
 public final class StubFeedbackUsecase: FeedbackUsecase {
     
+    public init() { }
+    
     public func leaveFeedback(contract: String, message: String) -> Maybe<Void> {
         return .just()
     }
