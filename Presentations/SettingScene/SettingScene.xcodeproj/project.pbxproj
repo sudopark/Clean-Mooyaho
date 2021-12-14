@@ -134,6 +134,13 @@
 			path = Migration;
 			sourceTree = "<group>";
 		};
+		F617F10D2768EF9500D88F9C /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
 		F62271BC273C720100AF76C1 = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +167,7 @@
 				F6118D83273D617400E0489B /* Migration */,
 				F69FFD73275920B300D9DF05 /* ManageCategory */,
 				F65F0039275DD3270022F987 /* ManageAccount */,
+				F617F10D2768EF9500D88F9C /* Feedback */,
 				F62271C9273C720100AF76C1 /* SettingScene.h */,
 			);
 			path = SettingScene;

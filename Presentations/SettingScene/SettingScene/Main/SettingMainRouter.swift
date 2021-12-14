@@ -29,7 +29,6 @@ public protocol SettingMainRouting: Routing {
     func editItemsCategory()
     
     func resumeUserDataMigration(for userID: String)
-    
 }
 
 // MARK: - Routers

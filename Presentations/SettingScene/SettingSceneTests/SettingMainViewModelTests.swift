@@ -51,7 +51,9 @@ class SettingMainViewModelTests: BaseTestCase, WaitObservableEvents {
         let stubMemberUsecase = BaseStubMemberUsecase(scenario: scenario)
         self.stubMemberUsecase = stubMemberUsecase
         
-        return SettingMainViewModelImple(memberUsecase: stubMemberUsecase,
+        return SettingMainViewModelImple(appID: "dummy",
+                                         memberUsecase: stubMemberUsecase,
+                                         deviceInfoService: StubDeviceInfoService(),
                                          router: self.spyRouter,
                                          listener: self.spyListener)
     }
@@ -226,6 +228,28 @@ extension SettingMainViewModelTests {
         // then
         XCTAssertEqual(self.spyRouter.didMoveToUserDataMigration, true)
     }
+    
+    func testViewModel_openAppStore() {
+        // given
+        let viewModel = self.makeViewModel(with: Member.init(uid: "some", nickName: nil, icon: nil))
+        
+        // when
+        viewModel.selectItem(Item.appVersion("some").typeName)
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didOpenURLPath, "http://itunes.apple.com/app/iddummy")
+    }
+    
+    func testViewModel_openSourceCode() {
+        // given
+        let viewModel = self.makeViewModel(with: Member.init(uid: "some", nickName: nil, icon: nil))
+        
+        // when
+        viewModel.selectItem(Item.sourceCode.typeName)
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didOpenURLPath, "https://github.com/sudopark/Clean-Mooyaho")
+    }
 }
 
 
@@ -262,5 +286,26 @@ extension SettingMainViewModelTests {
         func changeDefaultRemindTime() {
             self.didMoveToChangeDefaultRemindtime = true
         }
+        
+        var didOpenURLPath: String?
+        func openURL(_ path: String) {
+            self.didOpenURLPath = path
+        }
+    }
+    
+    class StubDeviceInfoService: DeviceInfoService {
+        
+        func osVersion() -> String {
+            return "os version"
+        }
+        
+        func appVersion() -> String {
+            return "1.0.0(0)"
+        }
+        
+        func deviceModel() -> String {
+            return "some"
+        }
     }
 }
+

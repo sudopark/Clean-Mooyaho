@@ -134,6 +134,10 @@ extension DependencyInjector {
     var imagePickPermissionCheckService: ImagePickPermissionCheckService {
         return ImagePickPermissionCheckServiceImple()
     }
+    
+    var deviceInfoService: DeviceInfoService {
+        return IOSDeviceInfoService()
+    }
 }
 
 // MARK: - Usecases

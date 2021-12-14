@@ -49,6 +49,10 @@ struct AppEnvironment {
         return secretJsons["legacy_api_path"] as? String
     }()
     
+    static var appID: String {
+        return "1565634642"
+    }
+    
     static var groupID: String {
         return "group.sudo.park.clean-mooyaho"
     }

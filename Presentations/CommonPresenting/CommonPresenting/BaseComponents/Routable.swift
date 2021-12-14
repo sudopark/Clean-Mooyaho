@@ -27,6 +27,8 @@ public protocol Routing: AnyObject {
     func alertActionSheet(_ form: ActionSheetForm)
     
     func rewind(animated: Bool)
+    
+    func openURL(_ path: String)
 }
 extension Routing {
     
@@ -41,6 +43,8 @@ extension Routing {
     public func alertActionSheet(_ form: ActionSheetForm) { }
     
     public func rewind(animated: Bool) { }
+    
+    public func openURL(_ path: String) { }
 }
 
 
@@ -111,6 +115,15 @@ extension Router {
         }
         
         self.currentScene?.present(sheet, animated: true, completion: nil)
+    }
+    
+    public func openURL(_ path: String) {
+        guard let url = URL(string: path),
+              UIApplication.shared.canOpenURL(url)
+        else {
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 
