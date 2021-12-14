@@ -21,6 +21,12 @@ extension String {
         return matches.isNotEmpty
     }
     
+    public var isEmailAddress: Bool {
+        let regexExpression = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", regexExpression)
+        return predicate.evaluate(with: self)
+    }
+    
     public var localized: String {
         return NSLocalizedString(self, comment: "")
     }

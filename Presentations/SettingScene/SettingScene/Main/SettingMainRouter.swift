@@ -29,12 +29,14 @@ public protocol SettingMainRouting: Routing {
     func editItemsCategory()
     
     func resumeUserDataMigration(for userID: String)
+    
+    func routeToEnterFeedback()
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias SettingMainRouterBuildables = EditProfileSceneBuilable & SignInSceneBuilable & WaitMigrationSceneBuilable & ManageCategorySceneBuilable & ManageAccountSceneBuilable
+public typealias SettingMainRouterBuildables = EditProfileSceneBuilable & SignInSceneBuilable & WaitMigrationSceneBuilable & ManageCategorySceneBuilable & ManageAccountSceneBuilable & FeedbackSceneBuilable
 
 public final class SettingMainRouter: Router<SettingMainRouterBuildables>, SettingMainRouting { }
 
@@ -80,6 +82,14 @@ extension SettingMainRouter {
         else { return }
         
         next.isModalInPresentation = true
+        self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func routeToEnterFeedback() {
+        guard let next = self.nextScenesBuilder?.makeFeedbackScene(listener: nil)
+        else {
+            return
+        }
         self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

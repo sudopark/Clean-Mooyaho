@@ -45,11 +45,11 @@ extension FeedbackUsecaseImple {
         }
         
         let feedback = Feedback(userID: userID)
-            |> \.appVersion .~ self.deviceInfoService.appVersion()
-            |> \.osVersion .~ self.deviceInfoService.osVersion()
-            |> \.deviceModel .~ self.deviceInfoService.deviceModel()
-            |> \.message .~ message
-            |> \.contract .~ contract
+            |> \.appVersion .~ pure(self.deviceInfoService.appVersion())
+            |> \.osVersion .~ pure(self.deviceInfoService.osVersion())
+            |> \.deviceModel .~ pure(self.deviceInfoService.deviceModel())
+            |> \.message .~ pure(message)
+            |> \.contract .~ pure(contract)
         return self.helpRepository.leaveFeedback(feedback)
     }
 }

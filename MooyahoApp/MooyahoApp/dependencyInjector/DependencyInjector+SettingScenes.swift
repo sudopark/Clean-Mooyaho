@@ -94,3 +94,19 @@ extension DependencyInjector: ManageAccountSceneBuilable {
         return viewController
     }
 }
+
+
+extension DependencyInjector: FeedbackSceneBuilable {
+    
+    public func makeFeedbackScene(listener: FeedbackSceneListenable?) -> FeedbackScene {
+        let router = FeedbackRouter(nextSceneBuilders: self)
+        let viewModel = FeedbackViewModelImple(
+            feedbackUsecase: self.feedbackUsecase,
+            router: router,
+            listener: listener
+        )
+        let viewController = FeedbackViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

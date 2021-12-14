@@ -145,7 +145,7 @@ extension SettingMainViewModelImple {
             self.router.openURL(urlPath)
             
         case Item.feedback.typeName:
-            break
+            self.router.routeToEnterFeedback()
             
         case Item.sourceCode.typeName:
             let path = "https://github.com/sudopark/Clean-Mooyaho"

@@ -13,11 +13,11 @@ public struct Feedback {
     
     public let uuid: String
     public let userID: String
-    public var osVersion: String!
-    public var appVersion: String!
-    public var deviceModel: String!
-    public var message: String!
-    public var contract: String!
+    public var osVersion: String?
+    public var appVersion: String?
+    public var deviceModel: String?
+    public var message: String?
+    public var contract: String?
     
     public init(userID: String) {
         self.uuid = UUID().uuidString
