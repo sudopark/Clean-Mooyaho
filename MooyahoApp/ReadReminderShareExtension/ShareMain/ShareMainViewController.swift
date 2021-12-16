@@ -19,6 +19,12 @@ import FirebaseService
 final class ShareExtensionRoot {
     
     let injector = SharedDependencyInjecttor()
+    private let disposeBag = DisposeBag()
+    
+    init() {
+        self.injector.shared.firebaseServiceImple.setupService()
+        self.bindAuth()
+    }
     
     func setupService() {
         self.injector.shared.firebaseServiceImple.setupService()
@@ -27,6 +33,17 @@ final class ShareExtensionRoot {
     var mainRouter: ShareMainRouter {
         
         return ShareMainRouter(nextSceneBuilders: self.injector)
+    }
+    
+    private func bindAuth() {
+        
+        self.injector.memberUsecase.currentMember
+            .map { $0?.uid }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] memberID in
+                self?.injector.remote.signInMemberID = memberID
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -39,7 +56,11 @@ public final class ShareMainViewController: BaseViewController, ShareMainScene {
     
     private func makeViewModel() -> ShareMainViewModel {
         let router = extensionRoot.mainRouter
-        let viewModel = ShareMainViewModelImple(router: router, listener: nil)
+        let viewModel = ShareMainViewModelImple(
+            authUsecase: extensionRoot.injector.authUsecase,
+            router: router,
+            listener: nil
+        )
         router.currentScene = self
         
         return viewModel
