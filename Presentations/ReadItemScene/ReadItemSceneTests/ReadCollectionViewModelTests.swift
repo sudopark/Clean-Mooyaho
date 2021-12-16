@@ -68,7 +68,8 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
                        sortOrder: ReadCollectionItemSortOrder = .default,
                        customOrder: [String] = [],
                        hasParent: Bool = false,
-                       inverseNavigation: CollectionInverseNavigationCoordinating? = nil) -> ReadCollectionViewItemsModelImple {
+                       inverseNavigation: CollectionInverseNavigationCoordinating? = nil,
+                       isReloadNeed: Bool = false) -> ReadCollectionViewItemsModelImple {
         
         let collectionID = isRootCollection ? nil : "some"
         let dummies = self.dummyCollectionItems.map { $0 |> \.parentID .~ collectionID }
@@ -85,6 +86,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             |> \.customOrder .~ .success(customOrder)
             |> \.collectionInfo .~ .success(collection)
         let stubUsecase = StubReadItemUsecase(scenario: scenario)
+        stubUsecase.isReloadNeedMocking = isReloadNeed
         self.spyItemsUsecase = stubUsecase
         
         self.isShrinkModeMocking = { newValue in
@@ -114,6 +116,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
                                                            readItemUsecase: stubUsecase,
                                                            favoriteUsecase: stubUsecase,
                                                            categoryUsecase: stubCategoryUsecase,
+                                                           readItemSyncUsecase: stubUsecase,
                                                            remindUsecase: stubRemindUsecase,
                                                            router: router,
                                                            navigationListener: spyListener,
@@ -1046,6 +1049,40 @@ extension ReadCollectionViewModelTests {
         
         // then
         XCTAssertEqual(spyCoordinator.didPrepareParentRequested, false)
+    }
+}
+
+extension ReadCollectionViewModelTests {
+    
+    func testViewModel_doNotReloadCollectionsIfNotNeed() {
+        // given
+        let expect = expectation(description: "reload 필요시없으면 reload 안함")
+        expect.isInverted = true
+        let viewModel = self.makeViewModel(isReloadNeed: false)
+        
+        // when
+        let _ = self.waitElements(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollectionItemsIfNeed()
+        }
+        
+        // then
+        XCTAssertEqual(self.spyItemsUsecase.didLoadCollectionItemsCount, 0)
+    }
+    
+    func testViewModel_reloadCollectionsIfNeed() {
+        // given
+        let expect = expectation(description: "reload 필요시 reload")
+        expect.expectedFulfillmentCount = 1
+        expect.assertForOverFulfill = false
+        let viewMdoel = self.makeViewModel(isReloadNeed: true)
+        
+        // when
+        let _ = self.waitElements(expect, for: viewMdoel.cellViewModels) {
+            viewMdoel.reloadCollectionItemsIfNeed()
+        }
+        
+        // then
+        XCTAssertEqual(self.spyItemsUsecase.didLoadCollectionItemsCount, 1)
     }
 }
 

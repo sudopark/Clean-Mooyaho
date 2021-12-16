@@ -893,6 +893,36 @@ extension RepositoryTests_ReadItem {
 
 extension RepositoryTests_ReadItem {
     
+    func testRepository_loadIsReloadNeed() {
+        // given
+        self.mockLocal.register(key: "fetchIsReloadCollectionsNeed") { true }
+        
+        // when
+        let isNeed = self.dummyRepository.isReloadNeed()
+        
+        // then
+        XCTAssertEqual(isNeed, true)
+    }
+
+    func testRepository_updateIsReloadNeed() {
+        // given
+        let expect = expectation(description: "reload 필요여부 업데이트")
+        self.mockLocal.called(key: "updateIsReloadCollectionNeed") { args in
+            guard let isNeed = args as? Bool, isNeed else { return }
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.updateIsReloadNeed(true)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+}
+
+
+extension RepositoryTests_ReadItem {
+    
     class DummyRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency, ReadLinkMemoRepository, ReadLinkMemoRepositoryDefImpleDependency {
         
         let mockLocal: MockLocal

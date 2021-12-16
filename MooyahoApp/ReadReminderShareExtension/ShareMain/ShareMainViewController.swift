@@ -58,6 +58,7 @@ public final class ShareMainViewController: BaseViewController, ShareMainScene {
         let router = extensionRoot.mainRouter
         let viewModel = ShareMainViewModelImple(
             authUsecase: extensionRoot.injector.authUsecase,
+            readItemSyncUsecase: extensionRoot.injector.readItemUsecase,
             router: router,
             listener: nil
         )

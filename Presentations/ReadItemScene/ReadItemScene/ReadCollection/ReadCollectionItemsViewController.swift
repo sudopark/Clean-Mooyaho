@@ -30,6 +30,7 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
     public let titleHeaderView = ReadCollectionTtileHeaderView()
     let tableView = UITableView()
     public var titleHeaderViewRelatedScrollView: UIScrollView { self.tableView }
+    private let refreshControl = UIRefreshControl()
     
     public init(viewModel: ReadCollectionItemsViewModel) {
         self.viewModel = viewModel
@@ -86,6 +87,13 @@ extension ReadCollectionItemsViewController {
                 self?.updateEditButton(by: isEditable)
             })
             .disposed(by: self.disposeBag)
+        
+        UIContext.currentAppStatus
+            .filter { $0 == .forground }
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.reloadCollectionItemsIfNeed()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func updateEditButton(by isEditable: Bool) {
@@ -123,6 +131,25 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
                 self?.viewModel.openItem(model.uid)
             })
             .disposed(by: self.disposeBag)
+        
+        self.refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.reloadCollectionItems()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isReloading
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isReloading in
+                self?.updateIsRefreshControl(isReloading)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateIsRefreshControl(_ isRefershing: Bool) {
+        isRefershing
+            ? self.tableView.refreshControl?.beginRefreshing()
+            : self.tableView.refreshControl?.endRefreshing()
     }
     
     private func makeCollectionViewDataSource() -> DataSource {
@@ -262,6 +289,10 @@ extension ReadCollectionItemsViewController: Presenting {
         self.tableView.registerCell(ReadLinkExpandCell.self)
         self.tableView.registerCell(ReadItemShrinkCollectionCell.self)
         self.tableView.registerCell(ReadItemShrinkLinkCell.self)
+        
+        self.refreshControl.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        self.tableView.refreshControl = self.refreshControl
+        self.refreshControl.layer.zPosition = -1
     }
 }
 

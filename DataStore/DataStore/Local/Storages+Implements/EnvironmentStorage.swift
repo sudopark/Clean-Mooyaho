@@ -39,6 +39,10 @@ public protocol EnvironmentStorage {
     
     func replaceReadiingLinkIDs(_ values: [String])
     
+    func fetchIsReloadCollectionsNeed() -> Bool
+    
+    func updateIsReloadCollectionNeed(_ newValue: Bool)
+    
     func clearAll()
 }
 
@@ -53,6 +57,7 @@ enum EnvironmentStorageKeys {
     case readItemLatestSortOrder
     case readitemCustomOrder(_ collectionID: String)
     case readingLinkIDs
+    case isReloadNeed
     
     var keyvalue: String {
         let prefix = environmentStorageKeyPrefix
@@ -71,6 +76,9 @@ enum EnvironmentStorageKeys {
             
         case .readingLinkIDs:
             return "readingLinkIDs".insertPrefixOrNot(prefix)
+            
+        case .isReloadNeed:
+            return "isReloadNeed".insertPrefixOrNot(prefix)
         }
     }
     
@@ -81,7 +89,8 @@ enum EnvironmentStorageKeys {
             "readItemIsShrinkMode".insertPrefixOrNot(prefix),
             "readItemLatestSortOrder".insertPrefixOrNot(prefix),
             "readitemCustomOrder".insertPrefixOrNot(prefix),
-            "readingLinkIDs".insertPrefixOrNot(prefix)
+            "readingLinkIDs".insertPrefixOrNot(prefix),
+            "isReloadNeed".insertPrefixOrNot(prefix)
         ]
     }
 }
@@ -241,6 +250,16 @@ extension UserDefaults {
     public func replaceReadiingLinkIDs(_ values: [String]) {
         let key = EnvironmentStorageKeys.readingLinkIDs
         _ = self.write(key.keyvalue, value: values)
+    }
+    
+    public func fetchIsReloadCollectionsNeed() -> Bool {
+        let key = EnvironmentStorageKeys.isReloadNeed
+        return self.bool(forKey: key.keyvalue)
+    }
+    
+    public func updateIsReloadCollectionNeed(_ newValue: Bool) {
+        let key = EnvironmentStorageKeys.isReloadNeed
+        self.set(newValue, forKey: key.keyvalue)
     }
 }
 

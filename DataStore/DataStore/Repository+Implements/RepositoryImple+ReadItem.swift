@@ -231,4 +231,12 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         let toggleOnRemote = self.readItemRemote.requestToggleFavoriteItemID(id, isOn: toOn)
         return toggleOnRemote.switchOr(append: toggleOnLocal, witoutError: ())
     }
+    
+    public func isReloadNeed() -> Bool {
+        return self.readItemLocal.fetchIsReloadCollectionsNeed()
+    }
+    
+    public func updateIsReloadNeed(_ newValue: Bool) {
+        return self.readItemLocal.updateIsReloadCollectionNeed(newValue)
+    }
 }

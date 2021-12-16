@@ -145,4 +145,12 @@ extension LocalStorageImple {
             .map(toggleIDs)
             .flatMap(thenReplace)
     }
+    
+    public func fetchIsReloadCollectionsNeed() -> Bool {
+        return self.environmentStorage.fetchIsReloadCollectionsNeed()
+    }
+    
+    public func updateIsReloadCollectionNeed(_ newValue: Bool) {
+        self.environmentStorage.updateIsReloadCollectionNeed(newValue)
+    }
 }

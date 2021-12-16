@@ -38,6 +38,7 @@ extension DependencyInjector: ReadCollectionItemSceneBuilable {
                                                           readItemUsecase: usecase,
                                                           favoriteUsecase: usecase,
                                                           categoryUsecase: self.categoryUsecase,
+                                                          readItemSyncUsecase: usecase,
                                                           remindUsecase: usecase,
                                                           router: router,
                                                           navigationListener: navigationListener,

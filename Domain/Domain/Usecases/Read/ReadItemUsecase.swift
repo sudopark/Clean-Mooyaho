@@ -30,7 +30,7 @@ public protocol ReadItemUsecase: ReadItemLoadUsecase, ReadItemUpdateUsecase, Rea
 
 public final class ReadItemUsecaseImple: ReadItemUsecase {
     
-    private let itemsRespoitory: ReadItemRepository
+    let itemsRespoitory: ReadItemRepository
     private let previewRepository: LinkPreviewRepository
     private let optionsRespository: ReadItemOptionsRepository
     private let authInfoProvider: AuthInfoProvider

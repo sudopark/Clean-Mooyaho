@@ -123,6 +123,7 @@
 		F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */; };
 		F680E49127566A3300B69E8B /* FavoriteItemsPagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */; };
 		F680E493275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */; };
+		F6811335276B9B3E005065E9 /* ReadItemSyncUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6811334276B9B3E005065E9 /* ReadItemSyncUsecase.swift */; };
 		F682ACAB275DF590008CA19E /* ImageResizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682ACAA275DF590008CA19E /* ImageResizeService.swift */; };
 		F682ACAD275DF8FB008CA19E /* ImageResizeServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682ACAC275DF8FB008CA19E /* ImageResizeServiceTests.swift */; };
 		F6907F18274FD657007805EA /* SuggestQueryUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */; };
@@ -308,6 +309,7 @@
 		F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProvider.swift; sourceTree = "<group>"; };
 		F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsPagingUsecase.swift; sourceTree = "<group>"; };
 		F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsPagingUsecaseTests.swift; sourceTree = "<group>"; };
+		F6811334276B9B3E005065E9 /* ReadItemSyncUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemSyncUsecase.swift; sourceTree = "<group>"; };
 		F682ACAA275DF590008CA19E /* ImageResizeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizeService.swift; sourceTree = "<group>"; };
 		F682ACAC275DF8FB008CA19E /* ImageResizeServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizeServiceTests.swift; sourceTree = "<group>"; };
 		F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryUsecase.swift; sourceTree = "<group>"; };
@@ -812,11 +814,12 @@
 				F6913EFE26EE55B400C6E105 /* ReadItemLoadUsecase.swift */,
 				F6913F0026EE5A7800C6E105 /* ReadItemUpdateUsecase.swift */,
 				F6E279D226F71BF500957AC4 /* ReadItemOptionsUsecase.swift */,
-				F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */,
 				F6B6B412271071EB000652E0 /* ReadItemCategoryUsecase.swift */,
 				F6319868272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift */,
 				F6A3A0BF2752A3FF00336E4F /* FavoriteReadItemUsecase.swift */,
 				F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */,
+				F6811334276B9B3E005065E9 /* ReadItemSyncUsecase.swift */,
+				F6913EFA26EE4D6900C6E105 /* ReadItemUsecase.swift */,
 			);
 			path = Read;
 			sourceTree = "<group>";
@@ -1029,6 +1032,7 @@
 				F6C1C8DA27255601007277A5 /* ReadLinkMemoRepository.swift in Sources */,
 				F617F1022768E75300D88F9C /* FeedbackUsecase.swift in Sources */,
 				F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */,
+				F6811335276B9B3E005065E9 /* ReadItemSyncUsecase.swift in Sources */,
 				F6C1C8D527255532007277A5 /* ReadLinkMemo.swift in Sources */,
 				F6A3A0C02752A3FF00336E4F /* FavoriteReadItemUsecase.swift in Sources */,
 				F6907F18274FD657007805EA /* SuggestQueryUsecase.swift in Sources */,

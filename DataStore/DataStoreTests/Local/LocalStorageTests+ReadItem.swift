@@ -402,6 +402,18 @@ extension LocalStorageTests_ReadItem {
         https://www.google.co.kr/search?q=firebase+fcm+send+message+schedule+date&btnK=Google+%EA%B2%80%EC%83%89&newwindow=1&bih=944&biw=1397&hl=ko&sxsrf=AOaemvKTvpUqMZEaJ4CoS4essjh2eq2a-A%3A1635250959171&source=hp&ei=D_N3YZfHB8j2-gScj5nAAQ&iflsig=ALs-wAMAAAAAYXgBH9jwr5bCJvLc8KggQtK7uRbMstAN&ved=0ahUKEwjXiqbEiOjzAhVIu54KHZxHBhgQ4dUDCAc&uact=5&oq=ribs+git&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBQgAEIAEMgYIABAFEB4yBggAEAgQHjoGCCMQJxATOgsIABCABBCxAxCDAToECAAQQzoHCCMQsQIQJzoICAAQgAQQsQM6BwgjEOoCECc6CggAEIAEEIcCEBQ6BAgAEB5Q-ghYoiRg0CVoA3AAeACAAXmIAcUJkgEEMC4xMZgBAKABAbABCg&sclient=gws-wiz
         """
     }
+    
+    func testStorage_updateAndLoadIsNeedRealod() {
+        // given
+        // when
+        let isReloadNeedBeforeUpdate = self.local.fetchIsReloadCollectionsNeed()
+        self.local.updateIsReloadCollectionNeed(true)
+        let isReloadNeedAfterUpdate = self.local.fetchIsReloadCollectionsNeed()
+        
+        // then
+        XCTAssertEqual(isReloadNeedBeforeUpdate, false)
+        XCTAssertEqual(isReloadNeedAfterUpdate, true)
+    }
 }
 
 
