@@ -23,7 +23,7 @@ final class SharedDependencyInjecttor: EmptyBuilder {
         fileprivate init() { }
         
         private let dataStoreImple: SharedDataStoreServiceImple = .init()
-        var dataStore: SharedDataStoreService {
+        var dataStore: SharedDataStoreService & AuthInfoManger {
             return self.dataStoreImple
         }
         
@@ -83,10 +83,21 @@ extension SharedDependencyInjecttor {
 
 extension SharedDependencyInjecttor {
     
+    var authUsecase: AuthUsecase {
+        let repository = self.appReposiotry
+        return AuthUsecaseImple(authRepository: repository,
+                                oathServiceProviders: [],
+                                authInfoManager: self.shared.dataStore,
+                                sharedDataStroeService: self.shared.dataStore,
+                                searchReposiotry: repository,
+                                signedoutSubject: .init())
+    }
+    
     var readItemUsecase: ReadItemUsecaseImple {
-        return ReadItemUsecaseImple(itemsRespoitory: self.appReposiotry,
-                                    previewRepository: self.appReposiotry,
-                                    optionsRespository: self.appReposiotry,
+        let repository = self.appReposiotry
+        return ReadItemUsecaseImple(itemsRespoitory: repository,
+                                    previewRepository: repository,
+                                    optionsRespository: repository,
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
@@ -102,5 +113,10 @@ extension SharedDependencyInjecttor {
     
     var suggestCategoryUsecase: SuggestCategoryUsecase {
         return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
+    }
+    
+    var memberUsecase: MemberUsecase {
+        return MemberUsecaseImple(memberRepository: self.appReposiotry,
+                                  sharedDataService: self.shared.dataStore)
     }
 }
