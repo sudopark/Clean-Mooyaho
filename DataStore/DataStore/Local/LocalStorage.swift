@@ -143,6 +143,10 @@ public protocol ReadItemLocalStorage {
     func replaceFavoriteItemIDs(_ newValue: [String]) -> Maybe<Void>
     
     func toggleItemIsFavorite(_ id: String, isOn: Bool) -> Maybe<Void>
+    
+    func fetchIsReloadCollectionsNeed() -> Bool
+    
+    func updateIsReloadCollectionNeed(_ newValue: Bool)
 }
 
 

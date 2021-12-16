@@ -34,6 +34,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
 
     // interactor
     func reloadCollectionItems()
+    func reloadCollectionItemsIfNeed()
     func requestPrepareParentIfNeed()
     func requestChangeOrder()
     func openItem(_ itemID: String)
@@ -48,6 +49,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     // presenter
     var collectionTitle: Observable<String> { get }
     var currentSortOrder: Observable<ReadCollectionItemSortOrder> { get }
+    var isReloading: Observable<Bool> { get }
     var sections: Observable<[ReadCollectionItemSection]> { get }
     func readLinkPreview(for linkID: String) -> Observable<LinkPreview>
     var isEditable: Observable<Bool> { get }
@@ -64,6 +66,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     private let readItemUsecase: ReadItemUsecase
     private let favoriteUsecase: FavoriteReadItemUsecas
     private let categoryUsecase: ReadItemCategoryUsecase
+    private let readItemSyncUsecase: ReadItemSyncUsecase
     private let remindUsecase: ReadRemindUsecase
     private let router: ReadCollectionRouting
     private weak var navigationListener: ReadCollectionNavigateListenable?
@@ -73,6 +76,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
                 readItemUsecase: ReadItemUsecase,
                 favoriteUsecase: FavoriteReadItemUsecas,
                 categoryUsecase: ReadItemCategoryUsecase,
+                readItemSyncUsecase: ReadItemSyncUsecase,
                 remindUsecase: ReadRemindUsecase,
                 router: ReadCollectionRouting,
                 navigationListener: ReadCollectionNavigateListenable?,
@@ -80,6 +84,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         self.currentCollectionID = collectionID
         self.readItemUsecase = readItemUsecase
         self.favoriteUsecase = favoriteUsecase
+        self.readItemSyncUsecase = readItemSyncUsecase
         self.categoryUsecase = categoryUsecase
         self.remindUsecase = remindUsecase
         self.router = router
@@ -109,6 +114,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
         let categoryMap = BehaviorSubject<[String: ItemCategory]>(value: [:])
         let favoriteIDSet = BehaviorRelay<Set<String>>(value: [])
+        let isReloading = BehaviorRelay<Bool>(value: false)
     }
     
     private let subjects = Subjects()
@@ -261,21 +267,34 @@ extension ReadCollectionViewItemsModelImple {
     
     public func reloadCollectionItems() {
         
+        guard self.subjects.isReloading.value == false else { return }
+        self.readItemSyncUsecase.isReloadNeed = false
+        
         let updateList: ([ReadItem]) -> Void = { [weak self] itemes in
+            self?.subjects.isReloading.accept(false)
             let collections = itemes.compactMap{ $0 as? ReadCollection }
             let links = itemes.compactMap{ $0 as? ReadLink }
             self?.subjects.collections.accept(collections)
             self?.subjects.links.accept(links)
         }
         let handleError: (Error) -> Void = { [weak self] error in
+            self?.subjects.isReloading.accept(false)
             self?.router.alertError(error)
         }
         let loadItems = self.currentCollectionID
             .map { self.readItemUsecase.loadCollectionItems($0) } ?? self.readItemUsecase.loadMyItems()
             
+        self.subjects.isReloading.accept(true)
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+    
+    public func reloadCollectionItemsIfNeed() {
+        
+        guard self.readItemSyncUsecase.isReloadNeed else { return }
+        self.reloadCollectionItems()
+        self.readItemSyncUsecase.isReloadNeed = false
     }
     
     public func requestPrepareParentIfNeed() {
@@ -542,6 +561,11 @@ extension ReadCollectionViewItemsModelImple {
     public var currentSortOrder: Observable<ReadCollectionItemSortOrder> {
         return self.subjects.sortOrder
             .compactMap{ $0 }
+            .distinctUntilChanged()
+    }
+    
+    public var isReloading: Observable<Bool> {
+        return self.subjects.isReloading
             .distinctUntilChanged()
     }
         

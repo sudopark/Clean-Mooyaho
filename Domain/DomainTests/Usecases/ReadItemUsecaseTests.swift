@@ -53,7 +53,8 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                      sortOrder: ReadCollectionItemSortOrder? = .default,
                      collectionMocking: ReadCollection? = nil,
                      customSortOrder: [String] = [],
-                     copiedText: String? = nil) -> ReadItemUsecaseImple {
+                     copiedText: String? = nil,
+                     isReloadNeed: Bool = true) -> ReadItemUsecaseImple {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
         shouldfailLoadMyCollections.then {
@@ -65,6 +66,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         repositoryScenario.ulrAndLinkItemMap = ["some": ReadLink.dummy(0, parent: nil)]
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
         repositoryStub.collectionMocking = collectionMocking
+        repositoryStub.reloadNeedMocking = isReloadNeed
         self.spyRepository = repositoryStub
         
         let previewRepositoryStub = StubLinkPreviewRepository()
@@ -724,6 +726,19 @@ extension ReadItemUsecaseTests {
     }
 }
 
+
+extension ReadItemUsecaseTests {
+    
+    func testUsecase_updateIsReloadNeed() {
+        // given
+        let usecase = self.makeUsecase(isReloadNeed: true)
+        
+        // when + then
+        XCTAssertEqual(usecase.isReloadNeed, true)
+        usecase.isReloadNeed = false
+        XCTAssertEqual(usecase.isReloadNeed, false)
+    }
+}
 
 extension ReadItemUsecaseTests {
     

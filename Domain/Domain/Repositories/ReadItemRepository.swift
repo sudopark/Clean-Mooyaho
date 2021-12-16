@@ -42,4 +42,8 @@ public protocol ReadItemRepository {
     func toggleItemIsFavorite(_ id: String, toOn: Bool) -> Maybe<Void>
     
     func updateLinkItemIsReading(_ id: String)
+    
+    func isReloadNeed() -> Bool
+    
+    func updateIsReloadNeed(_ newValue: Bool)
 }

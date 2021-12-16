@@ -32,14 +32,17 @@ public protocol ShareMainViewModel: AnyObject {
 public final class ShareMainViewModelImple: ShareMainViewModel {
     
     private let authUsecase: AuthUsecase
+    private let readItemSyncUsecase: ReadItemSyncUsecase
     private let router: ShareMainRouting
     private weak var listener: ShareMainSceneListenable?
     
     public init(authUsecase: AuthUsecase,
+                readItemSyncUsecase: ReadItemSyncUsecase,
                 router: ShareMainRouting,
                 listener: ShareMainSceneListenable?) {
         
         self.authUsecase = authUsecase
+        self.readItemSyncUsecase = readItemSyncUsecase
         self.router = router
         self.listener = listener
     }
@@ -82,6 +85,7 @@ extension ShareMainViewModelImple {
 extension ShareMainViewModelImple: EditLinkItemSceneListenable {
     
     public func editReadLink(didEdit item: ReadLink) {
+        self.readItemSyncUsecase.isReloadNeed = true
         self.subjects.itemAdded.onNext()
     }
 }

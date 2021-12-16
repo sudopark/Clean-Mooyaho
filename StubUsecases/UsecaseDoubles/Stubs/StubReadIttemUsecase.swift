@@ -11,12 +11,13 @@ import RxSwift
 
 import Domain
 
-open class StubReadItemUsecase: ReadItemUsecase {
+open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
     
     public struct Scenario {
         public var myItems: Result<[ReadItem], Error> = .success([])
         public var collectionInfo: Result<ReadCollection, Error> = .success(.dummy(0))
         public var collectionItems: Result<[ReadItem], Error> = .success([])
+        public var collectionItemsStream: [[ReadItem]]?
         public var updateCollectionResult: Result<Void, Error> = .success(())
         public var updateLinkResult: Result<Void, Error> = .success(())
         public var refreshedSortOrder: Result<ReadCollectionItemSortOrder, Error> = .success(.default)
@@ -39,6 +40,12 @@ open class StubReadItemUsecase: ReadItemUsecase {
         self.scenario = scenario
     }
     
+    public var isReloadNeedMocking: Bool = false
+    public var isReloadNeed: Bool {
+        get { self.isReloadNeedMocking }
+        set { self.isReloadNeedMocking = newValue }
+    }
+    
     open func loadMyItems() -> Observable<[ReadItem]> {
         return self.scenario.myItems.asMaybe().asObservable()
     }
@@ -47,8 +54,12 @@ open class StubReadItemUsecase: ReadItemUsecase {
         return self.scenario.collectionInfo.asMaybe().asObservable()
     }
     
+    public var didLoadCollectionItemsCount: Int = 0
     open func loadCollectionItems(_ collectionID: String) -> Observable<[ReadItem]> {
         return self.scenario.collectionItems.asMaybe().asObservable()
+            .do(onNext: { _ in
+                self.didLoadCollectionItemsCount += 1
+            })
     }
     
     public func loadReadLink(_ linkID: String) -> Observable<ReadLink> {

@@ -115,4 +115,13 @@ class StubReadItemRepository: ReadItemRepository {
     }
     
     func updateLinkItemIsReading(_ id: String) { }
+    
+    var reloadNeedMocking: Bool = false
+    func isReloadNeed() -> Bool {
+        return self.reloadNeedMocking
+    }
+    
+    func updateIsReloadNeed(_ newValue: Bool) {
+        self.reloadNeedMocking = newValue
+    }
 }

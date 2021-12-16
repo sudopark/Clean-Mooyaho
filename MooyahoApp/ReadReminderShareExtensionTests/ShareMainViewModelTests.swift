@@ -21,6 +21,7 @@ class ShareMainViewModelTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var spyRouter: SpyRouter!
     private var mockAuthUsecase: MockAuthUsecase!
+    private var spyReadItemUsecase: StubReadItemUsecase!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -30,14 +31,22 @@ class ShareMainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
         self.spyRouter = nil
         self.mockAuthUsecase = nil
+        self.spyReadItemUsecase = nil
     }
     
-    private func makeViewModel() -> ShareMainViewModel {
+    private func makeViewModel() -> ShareMainViewModelImple {
         let router = SpyRouter()
         self.spyRouter = router
-        let usecase = MockAuthUsecase()
-        self.mockAuthUsecase = usecase
-        return ShareMainViewModelImple(authUsecase: usecase, router: router, listener: nil)
+        let authUsecase = MockAuthUsecase()
+        self.mockAuthUsecase = authUsecase
+        
+        let syncUsecase = StubReadItemUsecase()
+        self.spyReadItemUsecase = syncUsecase
+        
+        return ShareMainViewModelImple(authUsecase: authUsecase,
+                                       readItemSyncUsecase: syncUsecase,
+                                       router: router,
+                                       listener: nil)
     }
 }
 
@@ -80,6 +89,21 @@ extension ShareMainViewModelTests {
         
         // then
         XCTAssertEqual(self.spyRouter.didShowEditScene, true)
+    }
+    
+    func testViewModel_whenAfterAddItem_updateIsReloadNeed() {
+        // given
+        let viewModel = self.makeViewModel()
+        self.mockAuthUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        
+        // when
+        viewModel.showEditScene("https://dummy-url")
+        viewModel.editReadLink(didEdit: ReadLink.dummy(0))
+        
+        // then
+        XCTAssertEqual(self.spyReadItemUsecase.isReloadNeed, true)
     }
 }
 
