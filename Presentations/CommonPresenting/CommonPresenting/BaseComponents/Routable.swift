@@ -73,7 +73,8 @@ extension Router {
     
     public func closeScene(animated: Bool, completed: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in
-            self?.currentScene?.dismiss(animated: true, completion: completed)
+            let target = self?.currentScene?.presentingViewController ?? self?.currentScene
+            target?.dismiss(animated: true, completion: completed)
         }
     }
     
