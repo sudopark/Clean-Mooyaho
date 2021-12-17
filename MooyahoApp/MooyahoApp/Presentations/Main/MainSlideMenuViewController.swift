@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
 import CommonPresenting
 
 
@@ -21,6 +22,7 @@ public protocol MainSlideMenuSceneInteractor: SettingMainSceneListenable, Discov
 public protocol MainSlideMenuSceneListenable: AnyObject {
     
     func mainSlideMenuDidRequestSignIn()
+    func mainSlideMenu(notifyDidSignedIn member: Member)
 }
 
 public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene {

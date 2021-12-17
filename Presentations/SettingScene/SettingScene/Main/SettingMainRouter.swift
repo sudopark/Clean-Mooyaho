@@ -64,7 +64,7 @@ extension SettingMainRouter {
     }
     
     public func requestSignIn() {
-        guard let next = self.nextScenesBuilder?.makeSignInScene(nil) else {
+        guard let next = self.nextScenesBuilder?.makeSignInScene(self.currentInteractor) else {
             return
         }
         self.currentScene?.present(next, animated: true, completion: nil)

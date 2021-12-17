@@ -256,6 +256,10 @@ extension MainViewModelImple: MainSceneInteractable {
         self.router.presentSignInScene()
     }
     
+    public func mainSlideMenu(notifyDidSignedIn member: Member) {
+        self.signIn(didCompleted: member)
+    }
+    
     public func signIn(didCompleted member: Member) {
         self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
         self.router.presentUserDataMigrationScene(member.uid)

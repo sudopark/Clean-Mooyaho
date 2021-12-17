@@ -307,6 +307,8 @@ extension SettingMainViewModelTests {
         func routeToEnterFeedback() {
             self.didRouteToEnterFeedback = true
         }
+        
+        func settingMain(didCompleteSignedIn member: Member) { }
     }
     
     class StubDeviceInfoService: DeviceInfoService {

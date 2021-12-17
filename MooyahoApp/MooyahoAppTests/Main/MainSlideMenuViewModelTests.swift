@@ -53,6 +53,10 @@ class MainSlideMenuViewModelTests: BaseTestCase, WaitObservableEvents, MainSlide
         self.didOpenSetting = true
     }
     
+    func mainSlideMenu(notifyDidSignedIn member: Member) {
+     
+    }
+    
     override func setUpWithError() throws {
         self.disposeBag = .init()
     }
