@@ -431,7 +431,6 @@ extension EditLinkItemViewController: Presenting {
         self.fakeBackgroundView.backgroundColor = self.uiContext.colors.appBackground
         self.fakeBackgroundView.layer.cornerRadius = 10
         self.fakeBackgroundView.clipsToBounds = true
-        self.fakeBackgroundView.isHidden = true
         
         self.collectionPathView.setupStyling()
         self.collectionPathView.isHidden = true
@@ -492,7 +491,10 @@ extension EditLinkItemViewController: Presenting {
         
         self.rx.viewWillAppear
             .subscribe(onNext: { [weak self] _ in
-                self?.fakeBackgroundView.isHidden = false
+                guard let self = self else { return }
+                self.fakeBackgroundView.isHidden = false
+                self.spaceConstraintForPullGuideViewVisibility.constant = Metric.topSpacingForPullGuideVisible(true)
+                self.pullGuideView.isHidden = false
             })
             .disposed(by: self.disposeBag)
     }
