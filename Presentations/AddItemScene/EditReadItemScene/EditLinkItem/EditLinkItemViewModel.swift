@@ -37,6 +37,7 @@ public protocol EditLinkItemViewModel: AnyObject {
     func editRemind()
     func rewind()
     func changeCollection()
+    func notifyDidDismissed()
     
     // presenter
     var itemSuggestedTitle: Observable<String> { get }
@@ -238,6 +239,10 @@ extension EditLinkItemViewModelImple {
     
     public func rewind() {
         self.router.requestRewind()
+    }
+    
+    public func notifyDidDismissed() {
+        self.listener?.editReadLinkDidDismissed()
     }
 }
 

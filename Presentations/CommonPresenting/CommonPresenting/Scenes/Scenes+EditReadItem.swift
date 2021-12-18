@@ -53,6 +53,13 @@ public protocol EditLinkItemSceneInteractable: ReadPrioritySelectListenable, Edi
 public protocol EditLinkItemSceneListenable: AnyObject {
     
     func editReadLink(didEdit item: ReadLink)
+    
+    func editReadLinkDidDismissed()
+}
+
+extension EditLinkItemSceneListenable {
+    
+    public func editReadLinkDidDismissed() { }
 }
 
 // MARK: - EditLinkItemScene
