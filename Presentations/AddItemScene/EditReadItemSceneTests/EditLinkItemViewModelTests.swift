@@ -37,6 +37,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
     var selectRemindTimeMocking: TimeStamp?
     var selectedCollectionMocking: ReadCollection?
     private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
+    var didDismissed: Bool?
     
     var spyRemindUsecase: StubReadRemindUsecase!
 
@@ -60,6 +61,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         self.selectRemindTimeMocking = nil
         self.selectedCollectionMocking = nil
         self.spyRemindUsecase = nil
+        self.didDismissed = nil
     }
     
     var fullInfoPreview: LinkPreview {
@@ -135,6 +137,10 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
 //        guard let mocking = self.selectRemindTimeMocking else { return }
         let mockDate = self.selectRemindTimeMocking.map { Date(timeIntervalSince1970: $0) }
         self.editLinkItemSceneInteractable?.editReadRemind(didSelect: mockDate)
+    }
+    
+    func editReadLinkDidDismissed() {
+        self.didDismissed = true
     }
     
     class PrivateReadItemUsecaseStub: StubReadItemUsecase {
@@ -396,6 +402,17 @@ extension EditLinkItemViewModelTests_makeNew {
         XCTAssertEqual(times.first, oldTime)
         XCTAssertEqual(times.last, newTime)
         XCTAssertEqual(self.didSelectRemindStartWith, oldTime)
+    }
+    
+    func testViewModel_notifyDidDismissed() {
+        // given
+        let viewModel = self.makeViewModel(editCase: .makeNew(url: "some"))
+        
+        // when
+        viewModel.notifyDidDismissed()
+        
+        // then
+        XCTAssertEqual(self.didDismissed, true)
     }
 }
 

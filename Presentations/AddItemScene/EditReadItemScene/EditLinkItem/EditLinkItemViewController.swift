@@ -128,6 +128,11 @@ public final class EditLinkItemViewController: BaseViewController, EditLinkItemS
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard self.isBeingDismissed else { return }
+        self.viewModel.notifyDidDismissed()
+    }
 }
 
 // MARK: - bind

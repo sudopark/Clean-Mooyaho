@@ -53,7 +53,7 @@ public final class ShareMainViewModelImple: ShareMainViewModel {
     }
     
     fileprivate final class Subjects {
-        let itemAdded = PublishSubject<Void>()
+        let sharingFinished = PublishSubject<Void>()
     }
     
     private let subjects = Subjects()
@@ -86,7 +86,10 @@ extension ShareMainViewModelImple: EditLinkItemSceneListenable {
     
     public func editReadLink(didEdit item: ReadLink) {
         self.readItemSyncUsecase.isReloadNeed = true
-        self.subjects.itemAdded.onNext()
+    }
+    
+    public func editReadLinkDidDismissed() {
+        self.subjects.sharingFinished.onNext()
     }
 }
 
@@ -96,6 +99,6 @@ extension ShareMainViewModelImple: EditLinkItemSceneListenable {
 extension ShareMainViewModelImple {
     
     public var finishSharing: Observable<Void> {
-        return self.subjects.itemAdded.asObservable()
+        return self.subjects.sharingFinished.asObservable()
     }
 }
