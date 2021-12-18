@@ -50,7 +50,7 @@ public final class AddItemNavigationViewController: BaseViewController, AddItemN
     }
     
     public func requestCloseScene() {
-        // TODO: close scene
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
