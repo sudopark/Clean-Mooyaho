@@ -24,6 +24,7 @@ public final class EnterLinkURLViewController: BaseViewController, EnterLinkURLS
     private let titleLabel = UILabel()
     private let textField = UITextField()
     private let underLineView = UIView()
+    private let guideView = UIView()
     private let confirmButton = ConfirmButton()
     
     let viewModel: EnterLinkURLViewModel
@@ -125,11 +126,19 @@ extension EnterLinkURLViewController: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 1)
         }
         
+        self.view.addSubview(guideView)
+        guideView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.topAnchor.constraint(equalTo: underLineView.bottomAnchor, constant: 10)
+            $0.heightAnchor.constraint(equalToConstant: 190)
+        }
+        
         self.view.addSubview(confirmButton)
         confirmButton.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.topAnchor.constraint(equalTo: underLineView.bottomAnchor, constant: 20)
+            $0.topAnchor.constraint(equalTo: guideView.bottomAnchor, constant: 20)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
@@ -149,6 +158,8 @@ extension EnterLinkURLViewController: Presenting {
             |> \.autocapitalizationType .~ .none
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
+        
+        self.guideView.backgroundColor = .black
         
         self.confirmButton.setupStyling()
         self.confirmButton.isEnabled = false
