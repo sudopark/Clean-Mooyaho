@@ -107,7 +107,9 @@ extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
         
         let transition = gesture.translation(in: gesture.view)
         
-        var percent = transition.y / UIScreen.main.bounds.height
+        let safeAreaBottomPadding = UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0
+        let totalLength = (gesture.view?.frame.height ?? UIScreen.main.bounds.height) - safeAreaBottomPadding
+        var percent = transition.y / totalLength
         percent = min(1, percent)
         percent = max(0, percent)
         
@@ -202,7 +204,9 @@ extension PangestureDismissableScene where Self: BaseViewController {
         
         let bindDismissInteractor: () -> Void = { [weak self, weak dismissInteractor] in
             guard let self = self, let interactor = dismissInteractor else { return }
-            interactor.addDismissPangesture(self.view) { [weak self] in
+            let bottomSlide = self as? BottomSlideViewSupporatble
+            let targetView: UIView = bottomSlide?.bottomSlideMenuView.panGestureInteractView ?? self.view
+            interactor.addDismissPangesture(targetView) { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
             }
             .disposed(by: self.disposeBag)
