@@ -119,9 +119,6 @@ extension ReadCollectionItemsRouter {
                 .makeAddItemNavigationScene(at: collectionID, startWith: url, self.currentInteractor) else {
             return
         }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     

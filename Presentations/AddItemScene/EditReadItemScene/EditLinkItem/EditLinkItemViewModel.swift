@@ -48,6 +48,7 @@ public protocol EditLinkItemViewModel: AnyObject {
     var editcaseReadLink: ReadLink? { get }
     var isConfirmable: Observable<Bool> { get }
     var selectedParentCollectionName: Observable<String> { get }
+    var hidePullGuideView: Bool { get }
 }
 
 
@@ -380,6 +381,11 @@ extension EditLinkItemViewModelImple {
         return self.subjects.selectParentCollection
             .map { $0 != nil }
             .distinctUntilChanged()
+    }
+    
+    public var hidePullGuideView: Bool {
+        guard case .makeNew = self.editCase else { return false }
+        return true
     }
 }
 
