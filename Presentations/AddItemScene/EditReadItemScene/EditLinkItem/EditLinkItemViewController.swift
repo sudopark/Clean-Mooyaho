@@ -73,6 +73,15 @@ class CollectionPathView: BaseUIView, Presenting {
 
 public final class EditLinkItemViewController: BaseViewController, EditLinkItemScene {
     
+    private enum Metric {
+        static var topSpacingForPullGuideVisible: (Bool) -> CGFloat {
+            return { $0 ? 0 : -24 }
+        }
+        
+    }
+    
+    private let pullGuideView = PullGuideView()
+    private var spaceConstraintForPullGuideViewVisibility: NSLayoutConstraint!
     private let fakeBackgroundView = UIView()
     private let titleInputField = UITextField()
     private let underLineView = UIView()
@@ -397,15 +406,27 @@ extension EditLinkItemViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: underLineView.topAnchor, constant: -8)
         }
         
-        fakeBackgroundView.autoLayout.active(with: titleInputField) {
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: -20)
+        self.view.addSubview(pullGuideView)
+        pullGuideView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.bottomAnchor.constraint(equalTo: titleInputField.topAnchor, constant: -20)
         }
+        pullGuideView.setupLayout()
+        
+        let spacing = Metric.topSpacingForPullGuideVisible(self.viewModel.hidePullGuideView == false)
+        self.spaceConstraintForPullGuideViewVisibility = fakeBackgroundView
+            .topAnchor.constraint(equalTo: pullGuideView.topAnchor, constant: spacing)
+        self.spaceConstraintForPullGuideViewVisibility.isActive = true
     }
     
     public func setupStyling() {
         
         confirmButton.setupStyling()
         confirmButton.isEnabled = false
+        
+        self.pullGuideView.setupStyling()
+        self.pullGuideView.isHidden = self.viewModel.hidePullGuideView
         
         self.fakeBackgroundView.backgroundColor = self.uiContext.colors.appBackground
         self.fakeBackgroundView.layer.cornerRadius = 10

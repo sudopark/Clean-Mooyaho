@@ -18,10 +18,12 @@ import CommonPresenting
 
 // MARK: - SignInViewController
 
-public final class SignInViewController: BaseViewController, SignInScene {
+public final class SignInViewController: BaseViewController, SignInScene, BottomSlideViewSupporatble {
     
     private let signInView = SignInView()
     let viewModel: SignInViewModel
+    
+    public var bottomSlideMenuView: BaseBottomSlideMenuView { self.signInView.bottomSlideMenuView }
     
     public init(viewModel: SignInViewModel) {
         self.viewModel = viewModel
@@ -47,6 +49,10 @@ public final class SignInViewController: BaseViewController, SignInScene {
         self.bind()
     }
     
+    public func requestCloseScene() {
+        self.viewModel.requestClose()
+    }
+    
 }
 
 // MARK: - bind
@@ -55,11 +61,7 @@ extension SignInViewController {
     
     private func bind() {
         
-        self.signInView.outsideTouchView.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.requestClose()
-            })
-            .disposed(by: self.disposeBag)
+        self.bindBottomSlideMenuView()
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
