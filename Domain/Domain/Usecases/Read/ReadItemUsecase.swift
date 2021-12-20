@@ -13,7 +13,7 @@ import Prelude
 import Optics
 
 
-public enum ReadItemUpdateEvent {
+public enum ReadItemUpdateEvent: SharedEvent {
     case updated(_ item: ReadItem)
     case removed(itemID: String, parent: String?)
 }
@@ -36,7 +36,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
     private let authInfoProvider: AuthInfoProvider
     private let sharedStoreService: SharedDataStoreService
     private let clipBoardService: ClipboardServie
-    private weak var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?
+    private let sharedEventService: SharedEventService
     private let remindPreviewLoadTimeout: TimeInterval
     private let remindMessagingService: ReadRemindMessagingService
     private let shareURLScheme: String
@@ -49,7 +49,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
                 authInfoProvider: AuthInfoProvider,
                 sharedStoreService: SharedDataStoreService,
                 clipBoardService: ClipboardServie,
-                readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent>?,
+                sharedEventService: SharedEventService,
                 remindPreviewLoadTimeout: TimeInterval = 3.0,
                 remindMessagingService: ReadRemindMessagingService,
                 shareURLScheme: String) {
@@ -60,7 +60,7 @@ public final class ReadItemUsecaseImple: ReadItemUsecase {
         self.authInfoProvider = authInfoProvider
         self.sharedStoreService = sharedStoreService
         self.clipBoardService = clipBoardService
-        self.readItemUpdateEventPublisher = readItemUpdateEventPublisher
+        self.sharedEventService = sharedEventService
         self.remindPreviewLoadTimeout = remindPreviewLoadTimeout
         self.remindMessagingService = remindMessagingService
         self.shareURLScheme = shareURLScheme
@@ -250,7 +250,8 @@ extension ReadItemUsecaseImple {
     
     private func broadCastItemUpdated(_ newItem: ReadItem) -> () -> Void {
         return { [weak self] in
-            self?.readItemUpdateEventPublisher?.onNext(.updated(newItem))
+            let event: ReadItemUpdateEvent = .updated(newItem)
+            self?.sharedEventService.notify(event: event)
         }
     }
     
@@ -258,7 +259,7 @@ extension ReadItemUsecaseImple {
         
         let broadCastItemRemoved: () -> Void = { [weak self] in
             let event: ReadItemUpdateEvent = .removed(itemID: item.uid, parent: item.parentID)
-            self?.readItemUpdateEventPublisher?.onNext(event)
+            self?.sharedEventService.notify(event: event)
             if item is ReadLink {
                 self?.removeFromContinueReadingLinks(id: item.uid)
             }
@@ -390,7 +391,8 @@ extension ReadItemUsecaseImple {
     }
     
     public var readItemUpdated: Observable<ReadItemUpdateEvent> {
-        return self.readItemUpdateEventPublisher?.asObservable() ?? .empty()
+        return self.sharedEventService.event
+            .compactMap { $0 as? ReadItemUpdateEvent }
     }
 }
 

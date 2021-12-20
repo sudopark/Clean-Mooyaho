@@ -52,6 +52,10 @@ final class SharedDependencyInjecttor: EmptyBuilder {
                                      environmentStorage: envStore,
                                      dataModelGateway: gateway)
         }()
+        
+        var sharedEventService: SharedEventService {
+            return SharedEventServiceImple()
+        }
     }
     
     let shared: Shared = Shared()
@@ -90,7 +94,7 @@ extension SharedDependencyInjecttor {
                                 authInfoManager: self.shared.dataStore,
                                 sharedDataStroeService: self.shared.dataStore,
                                 searchReposiotry: repository,
-                                signedoutSubject: .init())
+                                sharedEventService: self.shared.sharedEventService)
     }
     
     var readItemUsecase: ReadItemUsecaseImple {
@@ -101,7 +105,7 @@ extension SharedDependencyInjecttor {
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
-                                    readItemUpdateEventPublisher: nil,
+                                    sharedEventService: self.shared.sharedEventService,
                                     remindMessagingService: self.readRemindMessagingService,
                                     shareURLScheme: ShareExtensionEnvironment.shareScheme)
     }

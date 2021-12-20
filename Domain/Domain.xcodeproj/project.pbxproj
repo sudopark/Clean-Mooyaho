@@ -121,11 +121,13 @@
 		F66B7D7A26C78AF400D31FAC /* StubPlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7926C78AF400D31FAC /* StubPlaceRepository.swift */; };
 		F66C2C23270908CF003D56B1 /* RxCocoa+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */; };
 		F66CD9512673B7B70031EEC5 /* SearchServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */; };
+		F680842A2770DEF200234564 /* SharedEventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68084292770DEF200234564 /* SharedEventService.swift */; };
 		F680E49127566A3300B69E8B /* FavoriteItemsPagingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */; };
 		F680E493275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */; };
 		F6811335276B9B3E005065E9 /* ReadItemSyncUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6811334276B9B3E005065E9 /* ReadItemSyncUsecase.swift */; };
 		F682ACAB275DF590008CA19E /* ImageResizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682ACAA275DF590008CA19E /* ImageResizeService.swift */; };
 		F682ACAD275DF8FB008CA19E /* ImageResizeServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F682ACAC275DF8FB008CA19E /* ImageResizeServiceTests.swift */; };
+		F6852EFD2770E0330080ECC6 /* SharedEventServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6852EFC2770E0330080ECC6 /* SharedEventServiceTests.swift */; };
 		F6907F18274FD657007805EA /* SuggestQueryUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */; };
 		F6907F1A274FDDDB007805EA /* SuggestQueryUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F19274FDDDB007805EA /* SuggestQueryUsecaseTests.swift */; };
 		F6907F1C274FDE35007805EA /* StubSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6907F1B274FDE35007805EA /* StubSearchRepository.swift */; };
@@ -307,11 +309,13 @@
 		F66B7D7926C78AF400D31FAC /* StubPlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlaceRepository.swift; sourceTree = "<group>"; };
 		F66C2C22270908CF003D56B1 /* RxCocoa+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxCocoa+Extensions.swift"; sourceTree = "<group>"; };
 		F66CD9502673B7B70031EEC5 /* SearchServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProvider.swift; sourceTree = "<group>"; };
+		F68084292770DEF200234564 /* SharedEventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedEventService.swift; sourceTree = "<group>"; };
 		F680E49027566A3300B69E8B /* FavoriteItemsPagingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsPagingUsecase.swift; sourceTree = "<group>"; };
 		F680E492275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemsPagingUsecaseTests.swift; sourceTree = "<group>"; };
 		F6811334276B9B3E005065E9 /* ReadItemSyncUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemSyncUsecase.swift; sourceTree = "<group>"; };
 		F682ACAA275DF590008CA19E /* ImageResizeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizeService.swift; sourceTree = "<group>"; };
 		F682ACAC275DF8FB008CA19E /* ImageResizeServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResizeServiceTests.swift; sourceTree = "<group>"; };
+		F6852EFC2770E0330080ECC6 /* SharedEventServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedEventServiceTests.swift; sourceTree = "<group>"; };
 		F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryUsecase.swift; sourceTree = "<group>"; };
 		F6907F19274FDDDB007805EA /* SuggestQueryUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryUsecaseTests.swift; sourceTree = "<group>"; };
 		F6907F1B274FDE35007805EA /* StubSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSearchRepository.swift; sourceTree = "<group>"; };
@@ -392,6 +396,7 @@
 				F6152938264DA35A003BCB59 /* MessagingService.swift */,
 				F6391C6E271DBF650000F927 /* ReadRemindMessagingService.swift */,
 				F615294E264EED6A003BCB59 /* SharedDataStoreService.swift */,
+				F68084292770DEF200234564 /* SharedEventService.swift */,
 				F6F29590266D136200CDF980 /* FileHandleService.swift */,
 				F631986A272E71D500E66417 /* ClipboardService.swift */,
 				F61FC98B274A14E800E82D16 /* SuggestQueryEngine.swift */,
@@ -729,6 +734,7 @@
 				F6152953264F0057003BCB59 /* SharedDataStoreServiceTests.swift */,
 				F61FC98D274A1CF700E82D16 /* SearchableQueryTokenStoreServiceTests.swift */,
 				F682ACAC275DF8FB008CA19E /* ImageResizeServiceTests.swift */,
+				F6852EFC2770E0330080ECC6 /* SharedEventServiceTests.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1090,6 +1096,7 @@
 				F617F0FF2768E6CA00D88F9C /* DeviceInfoService.swift in Sources */,
 				F6913EED26EC637000C6E105 /* ReadCollection.swift in Sources */,
 				F6E3F60B264983E900DD4986 /* Location+Extension.swift in Sources */,
+				F680842A2770DEF200234564 /* SharedEventService.swift in Sources */,
 				F6079330275E697D00616E13 /* SharedReadCollectionPagingUsecase.swift in Sources */,
 				2BFF240F2640736F008C52EB /* Builder.swift in Sources */,
 			);
@@ -1128,6 +1135,7 @@
 				F612BDF62740C3EF0017FD77 /* ShareItemUsecaseTests.swift in Sources */,
 				F66B7D7826C789BD00D31FAC /* PlaceUsecaseTests.swift in Sources */,
 				F6152943264EDA9E003BCB59 /* MemberUsecaseTests.swift in Sources */,
+				F6852EFD2770E0330080ECC6 /* SharedEventServiceTests.swift in Sources */,
 				F615294D264EE7BC003BCB59 /* MockHoorayRepository.swift in Sources */,
 				F6A8CE4027117F2D00CA6D3D /* SuggestCategoryUsecaseTests.swift in Sources */,
 				F680E493275676CF00B69E8B /* FavoriteItemsPagingUsecaseTests.swift in Sources */,

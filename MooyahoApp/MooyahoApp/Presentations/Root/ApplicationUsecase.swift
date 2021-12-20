@@ -156,6 +156,10 @@ extension ApplicationUsecaseImple {
     }
     
     public var signedOut: Observable<Auth> {
-        return self.authUsecase.signedOut
+        return self.authUsecase.usersignInStatus
+            .compactMap { event in
+                guard case let .signOut(auth) = event else { return nil }
+                return auth
+            }
     }
 }

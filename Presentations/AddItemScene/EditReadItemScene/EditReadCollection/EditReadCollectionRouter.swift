@@ -61,7 +61,10 @@ extension EditReadCollectionRouter {
     
     public func selectCategories(startWith: [ItemCategory]) {
         
-        guard let next = self.nextScenesBuilder?.makeEditCategoryScene(startWith: startWith, listener: self.currentInteractor) else {
+        guard let next = self.nextScenesBuilder?.makeEditCategoryScene(
+            startWith: startWith,
+            listener: self.currentInteractor)
+        else {
             return
         }
         self.currentScene?.present(next, animated: true, completion: nil)

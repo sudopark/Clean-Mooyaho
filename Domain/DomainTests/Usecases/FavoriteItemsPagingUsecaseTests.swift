@@ -49,7 +49,7 @@ class FavoriteItemsPagingUsecaseTests: BaseTestCase, WaitObservableEvents {
                                                authInfoProvider: sharedStore,
                                                sharedStoreService: sharedStore,
                                                clipBoardService: StubClipBoardService(),
-                                               readItemUpdateEventPublisher: nil,
+                                               sharedEventService: SharedEventServiceImple(),
                                                remindMessagingService: StubReminderMessagingService(),
                                                shareURLScheme: "readminds")
         return FavoriteItemsPagingUsecaseImple(favoriteItemsUsecase: favoriteUsecase,

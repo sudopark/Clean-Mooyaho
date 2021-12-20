@@ -22,7 +22,6 @@ public protocol MainSlideMenuSceneInteractor: SettingMainSceneListenable, Discov
 public protocol MainSlideMenuSceneListenable: AnyObject {
     
     func mainSlideMenuDidRequestSignIn()
-    func mainSlideMenu(notifyDidSignedIn member: Member)
 }
 
 public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene {
