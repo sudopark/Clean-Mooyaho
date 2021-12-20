@@ -32,6 +32,13 @@ extension IOSDeviceInfoService {
     }
     
     func deviceModel() -> String {
-        return UIDevice.current.model
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let modelCode = withUnsafePointer(to: &systemInfo.machine) {
+            $0.withMemoryRebound(to: CChar.self, capacity: 1) {
+                ptr in String.init(validatingUTF8: ptr)
+            }
+        }
+        return modelCode ?? "unknown"
     }
 }
