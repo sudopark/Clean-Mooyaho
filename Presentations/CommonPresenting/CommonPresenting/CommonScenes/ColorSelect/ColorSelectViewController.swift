@@ -102,7 +102,11 @@ extension ColorSelectViewController: UITableViewDataSource, UITableViewDelegate 
     
     private func bind() {
         
-        self.bindBottomSlideMenuView()
+        self.bottomSlideMenuView.outsideTouchView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.requestCloseScene()
+            })
+            .disposed(by: self.disposeBag)
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
