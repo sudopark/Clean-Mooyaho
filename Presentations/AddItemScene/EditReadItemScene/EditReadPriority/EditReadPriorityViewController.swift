@@ -103,8 +103,13 @@ extension EditReadPriorityViewController {
     
     private func bind() {
         
-        self.bindBottomSlideMenuView()
         self.viewModel.showPriorities()
+        
+        self.bottomSlideMenuView.outsideTouchView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.requestCloseScene()
+            })
+            .disposed(by: self.disposeBag)
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
