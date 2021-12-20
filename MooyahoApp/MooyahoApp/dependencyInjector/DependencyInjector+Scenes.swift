@@ -20,7 +20,8 @@ extension DependencyInjector: MainSceneBuilable {
         
         let itemUsecase = self.readItemUsecaseImple
         let router = MainRouter(nextSceneBuilders: self)
-        let viewModel = MainViewModelImple(memberUsecase: self.memberUsecase,
+        let viewModel = MainViewModelImple(authUsecase: self.authUsecase,
+                                           memberUsecase: self.memberUsecase,
                                            readItemOptionUsecase: itemUsecase,
                                            addItemSuggestUsecase: itemUsecase,
                                            shareCollectionUsecase: self.shareItemUsecase,

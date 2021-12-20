@@ -157,16 +157,6 @@ extension SettingMainViewModelImple {
 }
 
 
-// MARK: - handle signin event
-
-extension SettingMainViewModelImple {
-    
-    public func signIn(didCompleted member: Member) {
-        self.listener?.settingMain(didCompleteSignedIn: member)
-    }
-}
-
-
 // MARK: - SettingMainViewModelImple Presenter
 
 extension SettingMainViewModelImple {

@@ -127,18 +127,6 @@ extension MainSlideMenuViewModelImple {
     }
 }
 
-// MARK: - handle setting main event
-
-extension MainSlideMenuViewModelImple {
-    
-    public func settingMain(didCompleteSignedIn member: Member) {
-        self.router.closeScene(animated: true) { [weak self] in
-            self?.listener?.mainSlideMenu(notifyDidSignedIn: member)
-        }
-    }
-}
-
-
 // MARK: - MainSlideMenuViewModelImple Presenter
 
 extension MainSlideMenuViewModelImple {

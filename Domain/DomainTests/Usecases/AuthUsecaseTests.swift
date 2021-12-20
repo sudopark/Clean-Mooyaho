@@ -21,9 +21,9 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     private var mockAuthRepo: MockAuthRepository!
     private var mockOAuth2Repo: MockOAuthService!
     private var store: SharedDataStoreServiceImple!
+    private var sharedEventService: SharedEventService!
     private var spySearchReposiotry: StubSearchRepository!
     private var usecase: AuthUsecaseImple!
-    private var subject: PublishSubject<Auth>!
     
     override func setUp() {
         super.setUp()
@@ -32,13 +32,13 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockOAuth2Repo = .init()
         self.store = .init()
         self.spySearchReposiotry = .init()
-        self.subject = .init()
+        self.sharedEventService = SharedEventServiceImple()
         self.usecase = AuthUsecaseImple(authRepository: self.mockAuthRepo,
                                         oathServiceProviders: [self.mockOAuth2Repo],
                                         authInfoManager: self.store,
                                         sharedDataStroeService: self.store,
                                         searchReposiotry: self.spySearchReposiotry,
-                                        signedoutSubject: self.subject)
+                                        sharedEventService: self.sharedEventService)
     }
     
     override func tearDown() {
@@ -47,7 +47,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockOAuth2Repo = nil
         self.store = nil
         self.spySearchReposiotry = nil
-        self.subject = nil
+        self.sharedEventService = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -145,6 +145,29 @@ extension AuthUsecaseTests {
                 .disposed(by: self.disposeBag)
         }
         XCTAssertEqual(self.spySearchReposiotry.didDownloaded, true)
+    }
+    
+    func testUsecase_whenAfterEmailBaseSignIn_notifySignedIn() {
+        // given
+        let expect = expectation(description: "이메일로 로그인 이후에 로그인 이벤트 전파")
+        self.mockAuthRepo.register(key: "requestSignIn:secret") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when
+        let event = self.waitFirstElement(expect, for: self.usecase.usersignInStatus) {
+            let secret = EmailBaseSecret(email: "email@com", password: "password")
+            self.usecase.requestSignIn(emailBaseSecret: secret)
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        if case .signIn = event {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트는 아님")
+        }
     }
     
     func testUsecase_oauth2SignIn() {
@@ -268,6 +291,31 @@ extension AuthUsecaseTests {
         // then
         XCTAssertNotNil(error)
     }
+    
+    func testUsecase_whenAfterSocialSignIn_notifySignedIn() {
+        // given
+        let expect = expectation(description: "소셜 로그인 이후에 로그인 이벤트 전파")
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
+            return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
+        }
+        self.mockAuthRepo.register(key: "requestSignIn:credential") {
+            return Maybe<SigninResult>.just(.dummy("new_uuid"))
+        }
+        
+        // when
+        let event = self.waitFirstElement(expect, for: self.usecase.usersignInStatus) {
+            self.usecase.requestSocialSignIn(DummyOAuthType())
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        if case .signIn = event {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트는 아님")
+        }
+    }
 }
 
 
@@ -316,14 +364,18 @@ extension AuthUsecaseTests {
         }
         
         // when
-        let newAuth = self.waitFirstElement(expect, for: usecase.signedOut) {
+        let event = self.waitFirstElement(expect, for: usecase.usersignInStatus) {
             self.usecase.requestSignout()
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
         
         // then
-        XCTAssertNotNil(newAuth)
+        if case .signOut = event {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트가 아님")
+        }
     }
     
     func testUsecase_withdrawal() {

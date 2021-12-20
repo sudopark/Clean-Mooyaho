@@ -21,16 +21,17 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var spyRepository: SpyRepository!
     private var spyStore: SharedDataStoreService!
-    private var mockItemUpdateSubject: PublishSubject<ReadItemUpdateEvent>!
+    private var spySharedEventService: SharedEventService!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
-        self.mockItemUpdateSubject = .init()
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
-        self.mockItemUpdateSubject = nil
+        self.spyStore = nil
+        self.spyRepository = nil
+        self.spySharedEventService = nil
     }
     
     var myID: String { "me" }
@@ -83,13 +84,16 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         let clipboardService = StubClipBoardService()
             |> \.copiedString .~ copiedText
         
+        let sharedEventService = SharedEventServiceImple()
+        self.spySharedEventService = sharedEventService
+        
         return ReadItemUsecaseImple(itemsRespoitory: repositoryStub,
                                     previewRepository: previewRepositoryStub,
                                     optionsRespository: optionRepository,
                                     authInfoProvider: self.authProvider(signedIn),
                                     sharedStoreService: store,
                                     clipBoardService: clipboardService,
-                                    readItemUpdateEventPublisher: self.mockItemUpdateSubject,
+                                    sharedEventService: sharedEventService,
                                     remindMessagingService: StubReminderMessagingService(),
                                     shareURLScheme: "readminds")
     }
@@ -461,7 +465,7 @@ extension ReadItemUsecaseTests {
         let dummy = ReadCollection.dummy(0, parent: 100)
         
         // when
-        let eventSource = self.mockItemUpdateSubject ?? .empty()
+        let eventSource = self.spySharedEventService.event.compactMap { $0 as? ReadItemUpdateEvent }
         let updateEvent = self.waitFirstElement(expect, for: eventSource.asObservable()) {
             usecase.removeItem(dummy)
                 .subscribe()

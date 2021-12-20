@@ -55,7 +55,7 @@ class ReadRemindUsecaseTests: BaseTestCase, WaitObservableEvents {
                                                    optionsRespository: StubReadItemOptionsRepository(scenario: .init()),
                                                    authInfoProvider: store, sharedStoreService: store,
                                                    clipBoardService: StubClipBoardService(),
-                                                   readItemUpdateEventPublisher: nil,
+                                                   sharedEventService: SharedEventServiceImple(),
                                                    remindPreviewLoadTimeout: self.timeout*3,
                                                    remindMessagingService: messageService,
                                                    shareURLScheme: "readminds")

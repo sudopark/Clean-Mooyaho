@@ -133,9 +133,7 @@ extension MainRouter {
     
     public func presentSignInScene() {
         
-        guard let scene = self.nextScenesBuilder?
-                .makeSignInScene(self.currentInteractor)
-        else { return }
+        guard let scene = self.nextScenesBuilder?.makeSignInScene(nil) else { return }
         
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager

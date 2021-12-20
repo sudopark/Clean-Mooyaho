@@ -24,6 +24,7 @@ import UnitTestHelpKit
 class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
+    var mockAUthUsecase: MockAuthUsecase!
     var mockMemberUsecase: MockMemberUsecase!
     var stubReadLinkAddSuggestUsecase: StubReadLinkAddSuggestUsecase!
     var stubShareUsecase: StubShareItemUsecase!
@@ -32,6 +33,8 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
+        
+        self.mockAUthUsecase = .init()
         self.mockMemberUsecase = .init()
         self.spyRouter = .init()
         
@@ -42,7 +45,8 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.stubShareUsecase = StubShareItemUsecase()
         self.stubShareUsecase.scenario.mySharingCollectionIDs = [[]]
         
-        self.viewModel = .init(memberUsecase: self.mockMemberUsecase,
+        self.viewModel = .init(authUsecase: self.mockAUthUsecase,
+                               memberUsecase: self.mockMemberUsecase,
                                readItemOptionUsecase: fakeUsecase,
                                addItemSuggestUsecase: self.stubReadLinkAddSuggestUsecase,
                                shareCollectionUsecase: self.stubShareUsecase,
@@ -51,6 +55,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
+        self.mockAUthUsecase = nil
         self.mockMemberUsecase = nil
         self.stubReadLinkAddSuggestUsecase = nil
         self.stubShareUsecase = nil
@@ -95,7 +100,7 @@ extension MainViewModelTests {
         
         // when
         self.viewModel.requestOpenSlideMenu()
-        self.viewModel.signIn(didCompleted: Member(uid: "some", nickName: nil, icon: nil))
+        self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some")))
         
         // then
         XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)

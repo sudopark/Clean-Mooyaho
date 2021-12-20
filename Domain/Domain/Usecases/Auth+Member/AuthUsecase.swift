@@ -10,6 +10,13 @@ import Foundation
 
 import RxSwift
 
+// MARK: - SharedEvent + signIn status
+
+public enum UserSignInStatusChangeEvent: SharedEvent {
+    case signIn(_ auth: Auth)
+    case signOut(_ auth: Auth)
+}
+
 public protocol AuthUsecase {
     
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
@@ -24,11 +31,10 @@ public protocol AuthUsecase {
     
     var currentAuth: Observable<Auth?> { get }
     
-    var signedOut: Observable<Auth> { get }
+    var usersignInStatus: Observable<UserSignInStatusChangeEvent> { get }
     
     var supportingOAuthServiceProviders: [OAuthServiceProviderType] { get }
 }
-
 
 public typealias OAuthServiceProvider = OAuthService & OAuthServiceProviderTypeRepresentable
 
@@ -39,21 +45,21 @@ public final class AuthUsecaseImple: AuthUsecase {
     private let authInfoManager: AuthInfoManger
     private let sharedDataStroeService: SharedDataStoreService
     private let searchReposiotry: IntegratedSearchReposiotry
-    private weak var signedoutAuth: PublishSubject<Auth>?
+    private let sharedEventService: SharedEventService
     
     public init(authRepository: AuthRepository,
                 oathServiceProviders: [OAuthServiceProvider],
                 authInfoManager: AuthInfoManger,
                 sharedDataStroeService: SharedDataStoreService,
                 searchReposiotry: IntegratedSearchReposiotry,
-                signedoutSubject: PublishSubject<Auth>) {
+                sharedEventService: SharedEventService) {
         
         self.authRepository = authRepository
         self.oathServiceProviders = oathServiceProviders
         self.authInfoManager = authInfoManager
         self.sharedDataStroeService = sharedDataStroeService
         self.searchReposiotry = searchReposiotry
-        self.signedoutAuth = signedoutSubject
+        self.sharedEventService = sharedEventService
     }
     
     
@@ -82,8 +88,8 @@ extension AuthUsecaseImple {
         }
         return self.authRepository.requestSignIn(using: secret)
             .do(onNext: updateByResult)
-            .map{ $0.member }
             .do(afterNext: self.postSignInAction())
+            .map{ $0.member }
     }
     
     public func requestSocialSignIn(_ providerType: OAuthServiceProviderType) -> Maybe<Member> {
@@ -106,8 +112,8 @@ extension AuthUsecaseImple {
         return requestOAuth2signIn
             .flatMap(thenSignInService)
             .do(onNext: updateByResult)
-            .map{ $0.member }
             .do(afterNext: self.postSignInAction())
+            .map{ $0.member }
     }
     
     public func requestSignout() -> Maybe<Auth> {
@@ -136,7 +142,8 @@ extension AuthUsecaseImple {
         self.sharedDataStroeService.flush()
         
         let thenNotifySignedOut: (Auth) -> Void = { [weak self] auth in
-            self?.signedoutAuth?.onNext(auth)
+            let event: UserSignInStatusChangeEvent = .signOut(auth)
+            self?.sharedEventService.notify(event: event)
         }
         
         return self.authRepository.signInAnonymouslyForPrepareDataAcessPermission()
@@ -155,10 +162,13 @@ extension AuthUsecaseImple {
             }
     }
     
-    private func postSignInAction() -> (Member) -> Void {
-        return { [weak self] member in
+    private func postSignInAction() -> (SigninResult) -> Void {
+        return { [weak self] result in
             guard let self = self else { return }
-            self.downloadSuggestableQueries(memberID: member.uid)
+            self.downloadSuggestableQueries(memberID: result.member.uid)
+            
+            let event: UserSignInStatusChangeEvent = .signIn(result.auth)
+            self.sharedEventService.notify(event: event)
         }
     }
     
@@ -180,8 +190,9 @@ extension AuthUsecaseImple {
         return self.oathServiceProviders.map{ $0.providerType }
     }
     
-    public var signedOut: Observable<Auth> {
-        return self.signedoutAuth?.asObservable() ?? .empty()
+    public var usersignInStatus: Observable<UserSignInStatusChangeEvent> {
+        return self.sharedEventService.event
+            .compactMap { $0 as? UserSignInStatusChangeEvent }
     }
 }
 

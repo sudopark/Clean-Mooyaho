@@ -53,4 +53,9 @@ open class MockAuthUsecase: AuthUsecase, Mocking {
     public var signedOut: Observable<Auth> {
         return .empty()
     }
+    
+    public let usersignInStatusMocking = PublishSubject<UserSignInStatusChangeEvent>()
+    public var usersignInStatus: Observable<UserSignInStatusChangeEvent> {
+        return usersignInStatusMocking.asObservable()
+    }
 }

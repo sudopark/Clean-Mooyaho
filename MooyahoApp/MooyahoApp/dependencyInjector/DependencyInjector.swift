@@ -63,6 +63,10 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
+        lazy var sharedEventService: SharedEventService = {
+            return SharedEventServiceImple()
+        }()
+        
         var authInfoManager: AuthInfoManger {
             return self.dataStoreImple
         }
@@ -152,7 +156,7 @@ extension DependencyInjector {
                                 authInfoManager: self.shared.authInfoManager,
                                 sharedDataStroeService: self.shared.dataStore,
                                 searchReposiotry: respository,
-                                signedoutSubject: self.shared.signedoutSubject)
+                                sharedEventService: self.shared.sharedEventService)
     }
     
     var memberUsecase: MemberUsecase {
@@ -181,7 +185,7 @@ extension DependencyInjector {
                                     authInfoProvider: self.shared.dataStore,
                                     sharedStoreService: self.shared.dataStore,
                                     clipBoardService: UIPasteboard.general,
-                                    readItemUpdateEventPublisher: self.readItemUpdateEventPublisher,
+                                    sharedEventService: self.shared.sharedEventService,
                                     remindMessagingService: self.readRemindMessagingService,
                                     shareURLScheme: AppEnvironment.shareScheme)
     }

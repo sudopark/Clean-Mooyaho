@@ -61,6 +61,7 @@ public final class MainViewModelImple: MainViewModel {
         case shared(String)
     }
     
+    private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
     private let readItemOptionUsecase: ReadItemOptionsUsecase
     private let addItemSuggestUsecase: ReadLinkAddSuggestUsecase
@@ -73,12 +74,14 @@ public final class MainViewModelImple: MainViewModel {
     private weak var integratedSearchSceneInteractor: IntegratedSearchSceneInteractable?
     private weak var suggestReadSceneInteractor: SuggestReadSceneInteractable?
     
-    public init(memberUsecase: MemberUsecase,
+    public init(authUsecase: AuthUsecase,
+                memberUsecase: MemberUsecase,
                 readItemOptionUsecase: ReadItemOptionsUsecase,
                 addItemSuggestUsecase: ReadLinkAddSuggestUsecase,
                 shareCollectionUsecase: ShareReadCollectionUsecase,
                 router: MainRouting) {
         
+        self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
         self.readItemOptionUsecase = readItemOptionUsecase
         self.addItemSuggestUsecase = addItemSuggestUsecase
@@ -125,6 +128,14 @@ public final class MainViewModelImple: MainViewModel {
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] ids in
                 self?.subjects.sharingIDSets.accept(ids)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.authUsecase.usersignInStatus
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] event in
+                guard case let .signIn(auth) = event else { return }
+                self?.replaceCollectionAfterSignIn(auth)
             })
             .disposed(by: self.disposeBag)
     }
@@ -256,15 +267,11 @@ extension MainViewModelImple: MainSceneInteractable {
         self.router.presentSignInScene()
     }
     
-    public func mainSlideMenu(notifyDidSignedIn member: Member) {
-        self.signIn(didCompleted: member)
-    }
-    
-    public func signIn(didCompleted member: Member) {
+    private func replaceCollectionAfterSignIn(_ auth: Auth) {
         self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
-        self.router.presentUserDataMigrationScene(member.uid)
+        self.router.presentUserDataMigrationScene(auth.userID)
     }
-    
+
     public func showSharedReadCollection(_ collection: SharedReadCollection) {
         logger.print(level: .goal, "switch curent collection aclled from shared collection => \(collection.name)")
         self.router.showSharedCollection(collection)

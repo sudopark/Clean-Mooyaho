@@ -12,12 +12,9 @@ import Domain
 
 // MARK: - SettingMainScene Interactable & Listenable
 
-public protocol SettingMainSceneInteractable: SignInSceneListenable { }
+public protocol SettingMainSceneInteractable { }
 
-public protocol SettingMainSceneListenable: AnyObject {
-    
-    func settingMain(didCompleteSignedIn member: Member)
-}
+public protocol SettingMainSceneListenable: AnyObject { }
 
 
 // MARK: - SettingMainScene
