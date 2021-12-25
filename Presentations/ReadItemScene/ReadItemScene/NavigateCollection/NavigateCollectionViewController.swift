@@ -70,7 +70,7 @@ extension NavigateCollectionViewController {
         self.viewModel.confirmTitle
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] title in
-                self?.confirmButton.setTitle(title, for: .normal)
+                self?.confirmButton.title = title
             })
             .disposed(by: self.disposeBag)
         

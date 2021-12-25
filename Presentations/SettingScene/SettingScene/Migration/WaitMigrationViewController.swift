@@ -178,6 +178,7 @@ extension WaitMigrationViewController: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 40)
             $0.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 20)
         }
+        confirmButton.setupLayout()
         
         self.bottomSlideMenuView.containerView.addSubview(laterButton)
         laterButton.autoLayout.active(with: self.bottomSlideMenuView.containerView) {

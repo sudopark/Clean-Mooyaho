@@ -46,7 +46,6 @@
 		F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6572690B52200E04D29 /* InfoSectionView.swift */; };
 		F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6592690BA8E00E04D29 /* Attribute.swift */; };
 		F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65D26934F5700E04D29 /* WordTokensView.swift */; };
-		F645A66226936AA600E04D29 /* ConfrimButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A66126936AA600E04D29 /* ConfrimButton.swift */; };
 		F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */; };
 		F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBD2669DF800027800F /* Scenes+Member.swift */; };
 		F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBF2669DF950027800F /* Scenes+Place.swift */; };
@@ -54,7 +53,7 @@
 		F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TextTagInputField.swift */; };
 		F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */; };
 		F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE8266CB3A00027800F /* LoadingView.swift */; };
-		F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DEA266CB6F80027800F /* LoadingButton.swift */; };
+		F6502DEB266CB6F80027800F /* ConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DEA266CB6F80027800F /* ConfirmButton.swift */; };
 		F65215832674A395000CAB4B /* TextInputRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652157E2674A395000CAB4B /* TextInputRouter.swift */; };
 		F65215842674A395000CAB4B /* TextInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652157F2674A395000CAB4B /* TextInputViewController.swift */; };
 		F65215852674A395000CAB4B /* TextInputBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215802674A395000CAB4B /* TextInputBuilder.swift */; };
@@ -186,7 +185,6 @@
 		F645A6572690B52200E04D29 /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
 		F645A6592690BA8E00E04D29 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		F645A65D26934F5700E04D29 /* WordTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTokensView.swift; sourceTree = "<group>"; };
-		F645A66126936AA600E04D29 /* ConfrimButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfrimButton.swift; sourceTree = "<group>"; };
 		F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWIndow+Extensions.swift"; sourceTree = "<group>"; };
 		F6502DBD2669DF800027800F /* Scenes+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Member.swift"; sourceTree = "<group>"; };
 		F6502DBF2669DF950027800F /* Scenes+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Place.swift"; sourceTree = "<group>"; };
@@ -194,7 +192,7 @@
 		F6502DC7266A0CC40027800F /* TextTagInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTagInputField.swift; sourceTree = "<group>"; };
 		F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Hooray.swift"; sourceTree = "<group>"; };
 		F6502DE8266CB3A00027800F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		F6502DEA266CB6F80027800F /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
+		F6502DEA266CB6F80027800F /* ConfirmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmButton.swift; sourceTree = "<group>"; };
 		F652157E2674A395000CAB4B /* TextInputRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputRouter.swift; sourceTree = "<group>"; };
 		F652157F2674A395000CAB4B /* TextInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputViewController.swift; sourceTree = "<group>"; };
 		F65215802674A395000CAB4B /* TextInputBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputBuilder.swift; sourceTree = "<group>"; };
@@ -490,12 +488,11 @@
 				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
 				F6502DC7266A0CC40027800F /* TextTagInputField.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
-				F6502DEA266CB6F80027800F /* LoadingButton.swift */,
+				F6502DEA266CB6F80027800F /* ConfirmButton.swift */,
 				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
 				F65215882674A7C0000CAB4B /* InputTextView.swift */,
 				F645A6572690B52200E04D29 /* InfoSectionView.swift */,
 				F645A65D26934F5700E04D29 /* WordTokensView.swift */,
-				F645A66126936AA600E04D29 /* ConfrimButton.swift */,
 				F667E28A26E1254E0046B9FB /* ReactionView.swift */,
 				F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */,
 				F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */,
@@ -788,7 +785,6 @@
 				F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */,
 				F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */,
 				F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */,
-				F645A66226936AA600E04D29 /* ConfrimButton.swift in Sources */,
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
 				F6A3A0AD275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift in Sources */,
@@ -820,7 +816,7 @@
 				F6808426276E49C300234564 /* PullGuideView.swift in Sources */,
 				F6ED41F32743F71A0082DE18 /* ItemCategory+Extensions.swift in Sources */,
 				F665A65026FB674C00E866B7 /* UICollectionView+Extension.swift in Sources */,
-				F6502DEB266CB6F80027800F /* LoadingButton.swift in Sources */,
+				F6502DEB266CB6F80027800F /* ConfirmButton.swift in Sources */,
 				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,
 				F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */,
 				F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */,

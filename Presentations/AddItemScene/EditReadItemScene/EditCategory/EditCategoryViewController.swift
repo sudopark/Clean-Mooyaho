@@ -84,7 +84,7 @@ extension EditCategoryViewController {
         self.viewModel.confirmActionTitleBySelectedCount
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] title in
-                self?.confirmButton.setTitle(title, for: .normal)
+                self?.confirmButton.title = title
             })
             .disposed(by: self.disposeBag)
         
@@ -258,6 +258,15 @@ extension EditCategoryViewController: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 32)
         }
         
+        self.view.addSubview(confirmButton)
+        confirmButton.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
+            $0.heightAnchor.constraint(equalToConstant: 40)
+        }
+        self.confirmButton.setupLayout()
+        
         self.view.addSubview(tableView)
         tableViewTopConstraint = tableView.autoLayout.make(with: inputField) {
             $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 12)
@@ -266,15 +275,7 @@ extension EditCategoryViewController: Presenting {
         tableView.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-        }
-        
-        self.view.addSubview(confirmButton)
-        confirmButton.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -20)
-            $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 40)
+            $0.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -20)
         }
     }
     
@@ -299,7 +300,6 @@ extension EditCategoryViewController: Presenting {
         self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.delegate = self
-        self.tableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
         
         self.confirmButton.setupStyling()
     }

@@ -75,6 +75,7 @@ public protocol EditItemsCustomOrderViewModel: AnyObject {
     func readLinkPreview(for address: String) -> Observable<LinkPreview>
     var sections: Observable<[EditOrderItemsSection]> { get }
     var isConfirmable: Observable<Bool> { get }
+    var isSaving: Observable<Bool> { get }
 }
 
 
@@ -113,6 +114,7 @@ public final class EditItemsCustomOrderViewModelImple: EditItemsCustomOrderViewM
     fileprivate final class Subjects {
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
+        let isSaving = BehaviorRelay<Bool>(value: false)
     }
     
     private let subjects = Subjects()
@@ -192,16 +194,21 @@ extension EditItemsCustomOrderViewModelImple {
     
     public func confirmSave() {
         
-        guard let collections = self.subjects.collections.value,
+        guard self.subjects.isSaving.value == false,
+              let collections = self.subjects.collections.value,
               let links = self.subjects.links.value else { return }
         let ids = collections.map { $0.uid } + links.map { $0.uid }
         
         let didUpdated: () -> Void = { [weak self] in
+            self?.subjects.isSaving.accept(false)
             self?.router.closeScene(animated: true, completed: nil)
         }
         let handleError: (Error) -> Void = { [weak self] error in
+            self?.subjects.isSaving.accept(false)
             self?.router.alertError(error)
         }
+        
+        self.subjects.isSaving.accept(true)
         self.readItemUsecase.updateCustomOrder(for: self.substituteCollectionID, itemIDs: ids)
             .subscribe(onSuccess: didUpdated, onError: handleError)
             .disposed(by: self.disposeBag)
@@ -243,6 +250,11 @@ extension EditItemsCustomOrderViewModelImple {
             resultSelector: asSections
         )
         .distinctUntilChanged()
+    }
+    
+    public var isSaving: Observable<Bool> {
+        return self.subjects.isSaving
+            .distinctUntilChanged()
     }
 }
 

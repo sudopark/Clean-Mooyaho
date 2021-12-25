@@ -125,6 +125,11 @@ extension EditItemsCustomOrderViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
+        
+        self.viewModel.isSaving
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.confirmButton.rx.isLoading)
+            .disposed(by: self.disposeBag)
     }
     
     private func bindTableView() {
@@ -204,7 +209,7 @@ extension EditItemsCustomOrderViewController: Presenting, UITableViewDelegate {
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
-        
+        self.confirmButton.setupLayout()
     }
     
     public func setupStyling() {
