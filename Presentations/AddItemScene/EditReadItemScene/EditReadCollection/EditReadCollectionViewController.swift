@@ -128,6 +128,11 @@ extension EditReadCollectionViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.viewModel.isProcessing
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.confirmButton.rx.isLoading)
+            .disposed(by: self.disposeBag)
+        
         self.viewModel.priority
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] priority in

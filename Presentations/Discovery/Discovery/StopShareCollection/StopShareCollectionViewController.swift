@@ -92,9 +92,7 @@ extension StopShareCollectionViewController {
         
         self.viewModel.isStopSharing
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] stopping in
-                // TODO: update
-            })
+            .drive(self.stopShareButton.rx.isLoading)
             .disposed(by: self.disposeBag)
         
         self.viewModel.collectionTitle
@@ -181,7 +179,7 @@ extension StopShareCollectionViewController: Presenting {
         self.findLabel.text = "Find who watch this reading list".localized
         
         self.stopShareButton.setupStyling()
-        self.stopShareButton.setTitle("Stop sharing", for: .normal)
+        self.stopShareButton.title = "Stop sharing"
     }
 }
 

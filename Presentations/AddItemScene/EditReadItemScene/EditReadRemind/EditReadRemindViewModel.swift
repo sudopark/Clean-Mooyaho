@@ -32,6 +32,7 @@ public protocol EditReadRemindViewModel: AnyObject {
     var isConfirmable: Observable<Bool> { get }
     var confirmButtonTitle: Observable<String> { get }
     var showClearButton: Bool { get }
+    var isUpdating: Observable<Bool> { get }
 }
 
 
@@ -64,6 +65,7 @@ public final class EditReadRemindViewModelImple: EditReadRemindViewModel {
     
     fileprivate final class Subjects {
         let selectedDate = BehaviorRelay<Date?>(value: nil)
+        let isUpdating = BehaviorRelay<Bool>(value: false)
     }
     
     private let subjects = Subjects()
@@ -153,7 +155,10 @@ extension EditReadRemindViewModelImple {
     
     private func updateRemindAndCloseScene(for item: ReadItem, newTime: Date?) {
         
+        guard self.subjects.isUpdating.value == false else { return }
+        
         let handleScheduled: () -> Void = { [weak self] in
+            self?.subjects.isUpdating.accept(false)
             self?.router.closeScene(animated: true) {
                 let newItem = item |> \.remindTime .~ newTime?.timeIntervalSince1970
                 self?.listener?.editReadRemind(didUpdate: newItem)
@@ -161,9 +166,11 @@ extension EditReadRemindViewModelImple {
         }
         
         let handleError: (Error) -> Void = { [weak self] error in
+            self?.subjects.isUpdating.accept(false)
             self?.router.alertError(error)
         }
         
+        self.subjects.isUpdating.accept(true)
         self.remindUsecase
             .updateRemind(for: item, futureTime: newTime?.timeIntervalSince1970)
             .subscribe(onSuccess: handleScheduled, onError: handleError)
@@ -208,5 +215,10 @@ extension EditReadRemindViewModelImple {
     public var showClearButton: Bool {
         guard case .select = self.editCase else { return false }
         return true
+    }
+    
+    public var isUpdating: Observable<Bool> {
+        return self.subjects.isUpdating
+            .distinctUntilChanged()
     }
 }

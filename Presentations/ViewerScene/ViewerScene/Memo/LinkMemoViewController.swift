@@ -23,7 +23,7 @@ public final class LinkMemoViewController: BaseViewController, LinkMemoScene {
     let titleLabel = UILabel()
     let deleteButton = UIButton()
     let textView = InputTextView()
-    let confirmButton = ConfirmButton(type: .system)
+    let confirmButton = ConfirmButton()
     
     let viewModel: LinkMemoViewModel
     

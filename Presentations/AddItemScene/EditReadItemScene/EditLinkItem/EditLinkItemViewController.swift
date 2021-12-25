@@ -245,6 +245,11 @@ extension EditLinkItemViewController {
                 self?.viewModel.confirmSave()
             })
             .disposed(by: self.disposeBag)
+        
+        self.viewModel.isProcessing
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.confirmButton.rx.isLoading)
+            .disposed(by: self.disposeBag)
     }
     
     private func setupInitialAttributeIfPossible() {
@@ -343,6 +348,7 @@ extension EditLinkItemViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
+        confirmButton.setupLayout()
         
         self.view.addSubview(attributeStackView)
         attributeStackView.autoLayout.active(with: self.view) {

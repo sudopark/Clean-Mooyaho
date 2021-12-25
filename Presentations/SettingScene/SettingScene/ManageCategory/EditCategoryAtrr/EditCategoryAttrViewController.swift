@@ -99,6 +99,12 @@ extension EditCategoryAttrViewController {
                 self?.confirmButton.isEnabled = isEnable
             })
             .disposed(by: self.disposeBag)
+        
+        self.deleteButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.delete()
+            })
+            .disposed(by: self.disposeBag)
             
         self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
@@ -264,6 +270,6 @@ extension EditCategoryAttrViewController: Presenting {
         self.deleteButton.titleLabel?.font = self.uiContext.fonts.get(13, weight: .bold)
         
         self.confirmButton.setupStyling()
-        self.confirmButton.setTitle("Save change", for: .normal)
+        self.confirmButton.title = "Save change"
     }
 }

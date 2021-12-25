@@ -77,9 +77,7 @@ extension SharedCollectionInfoDialogViewController {
         
         self.viewModel.isRemoving
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] isRemoving in
-                self?.removeButton.isEnabled = isRemoving == false
-            })
+            .drive(self.removeButton.rx.isLoading)
             .disposed(by: self.disposeBag)
         
         self.removeButton.rx.throttleTap()
@@ -152,6 +150,6 @@ extension SharedCollectionInfoDialogViewController: Presenting {
         self.collectionInfoView.actionButton.isHidden = true
         
         self.removeButton.setupStyling()
-        self.removeButton.setTitle("Remove from shared list".localized, for: .normal)
+        self.removeButton.title = "Remove from shared list"
     }
 }

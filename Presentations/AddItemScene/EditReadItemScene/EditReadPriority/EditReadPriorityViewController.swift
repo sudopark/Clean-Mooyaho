@@ -185,6 +185,7 @@ extension EditReadPriorityViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
+        confirmButton.setupLayout()
     }
     
     public func setupStyling() {

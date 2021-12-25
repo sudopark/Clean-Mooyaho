@@ -76,7 +76,7 @@ extension EditReadRemindViewController {
         viewModel.confirmButtonTitle
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] title in
-                self?.confirmButton.setTitle(title, for: .normal)
+                self?.confirmButton.title = title
             })
             .disposed(by: self.disposeBag)
         
@@ -96,6 +96,11 @@ extension EditReadRemindViewController {
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirmSelectRemindTime()
             })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isUpdating
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.confirmButton.rx.isLoading)
             .disposed(by: self.disposeBag)
     }
 }

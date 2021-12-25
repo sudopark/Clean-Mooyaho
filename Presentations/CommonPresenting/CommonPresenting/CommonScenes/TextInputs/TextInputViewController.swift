@@ -20,7 +20,7 @@ public final class TextInputViewController: BaseViewController, TextInputScene {
     let titleLabel = UILabel()
     let inputTextView = InputTextView()
     let charCountLabel = UILabel()
-    let confirmButton = ConfirmButton(type: .system)
+    let confirmButton = ConfirmButton()
     
     let viewModel: TextInputViewModel
     
@@ -72,7 +72,7 @@ extension TextInputViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.confirmButton.rx.tap
+        self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirm()
             })

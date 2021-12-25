@@ -48,7 +48,7 @@ extension LoadingView: CAAnimationDelegate {
         layer.bounds = self.bounds
         layer.position = center
         
-        let radius = self.bounds.height / 2 * 0.75
+        let radius = self.bounds.height * 0.35
         layer.path = UIBezierPath(arcCenter: center, radius: radius,
                                   startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true).cgPath
         layer.fillColor = UIColor.clear.cgColor
