@@ -216,7 +216,7 @@
 		2B47B22E263D3012003F25D1 /* MockKakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockKakaoService.swift; sourceTree = "<group>"; };
 		2B4FD24B2632A7BA00A99624 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
 		2B56932B263D10F5009F85E1 /* KakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoService.swift; sourceTree = "<group>"; };
-		2B79FC48262B640C0006291F /* MooyahoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MooyahoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B79FC48262B640C0006291F /* Readmind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Readmind.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B79FC4B262B640C0006291F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B79FC54262B640F0006291F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B79FC57262B640F0006291F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -447,7 +447,7 @@
 		2B79FC49262B640C0006291F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2B79FC48262B640C0006291F /* MooyahoApp.app */,
+				2B79FC48262B640C0006291F /* Readmind.app */,
 				2B79FC5E262B640F0006291F /* MooyahoAppTests.xctest */,
 				F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */,
 				F6C54A80272849160012E08B /* ReadReminderShareExtensionTests.xctest */,
@@ -672,7 +672,7 @@
 				F660B8EB26747AF3004FB42E /* KakaoSDKCommon */,
 			);
 			productName = BreadRoadApp;
-			productReference = 2B79FC48262B640C0006291F /* MooyahoApp.app */;
+			productReference = 2B79FC48262B640C0006291F /* Readmind.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2B79FC5D262B640F0006291F /* MooyahoAppTests */ = {
@@ -1081,6 +1081,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -1099,7 +1100,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Readmind;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1114,6 +1115,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -1130,7 +1132,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Readmind;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
