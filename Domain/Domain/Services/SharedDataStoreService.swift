@@ -190,4 +190,8 @@ extension SharedDataStoreServiceImple: AuthInfoManger {
     public func clearAuth() {
         self.delete(SharedDataKeys.auth.rawValue)
     }
+    
+    public func updateCurrentMember(_ member: Member) {
+        self.save(Member.self, key: .currentMember, member)
+    }
 }

@@ -150,12 +150,13 @@ extension DependencyInjector {
     
     var authUsecase: AuthUsecase {
         
-        let respository = self.appReposiotry
-        return AuthUsecaseImple(authRepository: respository,
+        let repository = self.appReposiotry
+        return AuthUsecaseImple(authRepository: repository,
                                 oathServiceProviders: self.supportingOAuthServiceProviders,
                                 authInfoManager: self.shared.authInfoManager,
                                 sharedDataStroeService: self.shared.dataStore,
-                                searchReposiotry: respository,
+                                searchReposiotry: repository,
+                                memberRepository: repository,
                                 sharedEventService: self.shared.sharedEventService)
     }
     

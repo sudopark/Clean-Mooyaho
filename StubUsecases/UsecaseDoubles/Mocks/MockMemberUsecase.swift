@@ -19,6 +19,7 @@ open class MockMemberUsecase: MemberUsecase, Mocking {
     }
     
     public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
+        self.verify(key: "loadMembers", with: ids)
         return self.resolve(key: "loadMembers") ?? .empty()
     }
     

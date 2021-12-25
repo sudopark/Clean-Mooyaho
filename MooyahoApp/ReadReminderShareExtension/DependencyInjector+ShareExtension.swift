@@ -94,6 +94,7 @@ extension SharedDependencyInjecttor {
                                 authInfoManager: self.shared.dataStore,
                                 sharedDataStroeService: self.shared.dataStore,
                                 searchReposiotry: repository,
+                                memberRepository: repository,
                                 sharedEventService: self.shared.sharedEventService)
     }
     
