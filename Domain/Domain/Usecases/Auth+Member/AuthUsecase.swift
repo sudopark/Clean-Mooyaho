@@ -9,6 +9,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 // MARK: - SharedEvent + signIn status
 
@@ -45,6 +47,7 @@ public final class AuthUsecaseImple: AuthUsecase {
     private let authInfoManager: AuthInfoManger
     private let sharedDataStroeService: SharedDataStoreService
     private let searchReposiotry: IntegratedSearchReposiotry
+    private let memberRepository: MemberRepository
     private let sharedEventService: SharedEventService
     
     public init(authRepository: AuthRepository,
@@ -52,6 +55,7 @@ public final class AuthUsecaseImple: AuthUsecase {
                 authInfoManager: AuthInfoManger,
                 sharedDataStroeService: SharedDataStoreService,
                 searchReposiotry: IntegratedSearchReposiotry,
+                memberRepository: MemberRepository,
                 sharedEventService: SharedEventService) {
         
         self.authRepository = authRepository
@@ -59,6 +63,7 @@ public final class AuthUsecaseImple: AuthUsecase {
         self.authInfoManager = authInfoManager
         self.sharedDataStroeService = sharedDataStroeService
         self.searchReposiotry = searchReposiotry
+        self.memberRepository = memberRepository
         self.sharedEventService = sharedEventService
     }
     
@@ -74,6 +79,8 @@ extension AuthUsecaseImple {
     public func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
         let updateAccountInfos: (Auth, Member?) -> Void = { [weak self] auth, member in
             self?.updateAccountInfoOnSharedStore(auth, member: member)
+            guard let signInMemberID = member?.uid else { return }
+            self?.refreshSignedInMember(signInMemberID)
         }
         
         return self.authRepository.fetchLastSignInAccountInfo()
@@ -162,6 +169,23 @@ extension AuthUsecaseImple {
             }
     }
     
+    
+    private func refreshSignedInMember(_ memberID: String) {
+        
+        let updateCurrentMemberIfPossible: (Member?) -> Void = { [weak self] member in
+            guard let self = self, let member = member else { return }
+            self.authInfoManager.updateCurrentMember(member)
+            let datKey = SharedDataKeys.memberMap.rawValue
+            self.sharedDataStroeService.update([String: Member].self, key: datKey) {
+                return ($0 ?? [:]) |> key(member.uid) .~ member
+            }
+        }
+        
+        self.memberRepository.requestLoadMember(memberID)
+            .subscribe(onSuccess: updateCurrentMemberIfPossible)
+            .disposed(by: self.disposeBag)
+    }
+    
     private func postSignInAction() -> (SigninResult) -> Void {
         return { [weak self] result in
             guard let self = self else { return }
@@ -180,6 +204,8 @@ extension AuthUsecaseImple {
             })
             .disposed(by: self.disposeBag)
     }
+    
+//    private func 
     
     public var currentAuth: Observable<Auth?> {
         return self.sharedDataStroeService

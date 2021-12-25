@@ -70,30 +70,18 @@ extension ApplicationUsecaseImple {
     private func bindApplicationStatus() {
         
         let status = self.subjects.applicationStatus.distinctUntilChanged()
-//
+        
         let didLanched = status.filter{ $0 == .launched }.take(1).map{ _ in }
         let enterForeground = status.filter{ $0 == .forground }.map{ _ in true }
         let enterBackground = status.filter{ $0 == .background }.map{ _ in false }
         let terminated = status.filter{ $0 == .terminate }.map{ _ in false }
-//
+
         let isUserInUseApp = Observable
             .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
             .distinctUntilChanged()
         
-//        isUserInUseApp
-//            .flatMapLatest{ [weak self] inUse in self?.waitForLocationUploadableAuth(inUse) ?? .empty()  }
-//            .subscribe(onNext: { [weak self] auth in
-//                if let userID = auth?.userID {
-//                    self?.locationUsecase.startUploadUserLocation(for: userID)
-//                } else {
-//                    self?.locationUsecase.stopUplocationUserLocation()
-//                }
-//            })
-//            .disposed(by: self.disposeBag)
-        
-//        let deviceID = AppEnvironment.deviceID
-        
-        let memberChanges = self.memberUsecase.currentMember.map { $0?.uid }.distinctUntilChanged().share()
+        let memberChanges = self.memberUsecase
+            .currentMember.map { $0?.uid }.distinctUntilChanged().share()
         Observable.combineLatest(memberChanges, isUserInUseApp)
             .subscribe(onNext: { [weak self] memberID, isUse in
                 guard let memberID = memberID, isUse == true else { return }

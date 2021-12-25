@@ -30,4 +30,6 @@ public protocol AuthInfoManger: AuthInfoProvider {
     func updateAuth(_ newValue: Auth)
     
     func clearAuth()
+    
+    func updateCurrentMember(_ member: Member)
 }

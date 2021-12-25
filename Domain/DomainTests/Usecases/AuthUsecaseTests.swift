@@ -23,6 +23,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
     private var store: SharedDataStoreServiceImple!
     private var sharedEventService: SharedEventService!
     private var spySearchReposiotry: StubSearchRepository!
+    private var mockMemebrRepository: MockMemberRepository!
     private var usecase: AuthUsecaseImple!
     
     override func setUp() {
@@ -32,12 +33,14 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.mockOAuth2Repo = .init()
         self.store = .init()
         self.spySearchReposiotry = .init()
+        self.mockMemebrRepository = .init()
         self.sharedEventService = SharedEventServiceImple()
         self.usecase = AuthUsecaseImple(authRepository: self.mockAuthRepo,
                                         oathServiceProviders: [self.mockOAuth2Repo],
                                         authInfoManager: self.store,
                                         sharedDataStroeService: self.store,
                                         searchReposiotry: self.spySearchReposiotry,
+                                        memberRepository: self.mockMemebrRepository,
                                         sharedEventService: self.sharedEventService)
     }
     
@@ -48,6 +51,7 @@ class AuthUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.store = nil
         self.spySearchReposiotry = nil
         self.sharedEventService = nil
+        self.mockMemebrRepository = nil
         self.usecase = nil
         super.tearDown()
     }
@@ -97,6 +101,60 @@ extension AuthUsecaseTests {
                 .subscribe()
                 .disposed(by: self.disposeBag)
         }
+    }
+    
+    func testUsecase_whenAfterLoadLastSignInAccountInfo_refreshSignInMemberAndUpdateCurrentMember() {
+        // given
+        let expect = expectation(description: "로그인한 최근 계정 최초에 로드 이후에 멤버정보 리프레쉬하고 커런트멤버 업데이트")
+        self.mockAuthRepo.register(key: "fetchLastSignInAccountInfo") {
+            return Maybe<(Auth, Member?)>.just((.signIn("dummy"), Member(uid: "dummy")))
+        }
+        self.mockMemebrRepository.register(key: "requestLoadMembers") {
+            return Maybe<[Member]>.just(
+                [Member(uid: "dummy", nickName: "new", icon: nil)]
+            )
+        }
+        
+        // when
+        let datKey: SharedDataKeys = .currentMember
+        let refreshedMemberSource = self.store
+            .observe(Member.self, key: datKey.rawValue).compactMap { $0 }
+            .filter { $0.nickName == "new" }
+        let refreshedMember = self.waitFirstElement(expect, for: refreshedMemberSource) {
+            self.usecase.loadLastSignInAccountInfo()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(refreshedMember)
+    }
+    
+    func testUsecase_whenAfterLoadLastSignInAccountInfo_refreshSignInMemberAndSaveToMemberMap() {
+        // given
+        let expect = expectation(description: "로그인한 최근 계정 최초에 로드 이후에 멤버정보 리프레쉬하고 멤버맵에 저장")
+        self.mockAuthRepo.register(key: "fetchLastSignInAccountInfo") {
+            return Maybe<(Auth, Member?)>.just((.signIn("dummy"), Member(uid: "dummy")))
+        }
+        self.mockMemebrRepository.register(key: "requestLoadMembers") {
+            return Maybe<[Member]>.just(
+                [Member(uid: "dummy", nickName: "new", icon: nil)]
+            )
+        }
+        
+        // when
+        let datKey: SharedDataKeys = .memberMap
+        let refreshedMemberSource = self.store
+            .observe([String: Member].self, key: datKey.rawValue).compactMap { $0?["dummy"] }
+            .filter { $0.nickName == "new" }
+        let refreshedMember = self.waitFirstElement(expect, for: refreshedMemberSource) {
+            self.usecase.loadLastSignInAccountInfo()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(refreshedMember)
     }
     
     func testUsecase_signInUsingEmailBaseSecret() {
