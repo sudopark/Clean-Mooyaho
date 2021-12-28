@@ -14,7 +14,7 @@ import Domain
 import DataStore
 import UnitTestHelpKit
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class KakaoServiceTests: BaseTestCase, WaitObservableEvents {

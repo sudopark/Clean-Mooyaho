@@ -149,11 +149,11 @@ extension EnterLinkURLViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Add read link item"
+            |> \.text .~ pure("Add a read link item".localized)
         
         _ = self.textField
             |> \.font .~ self.uiContext.fonts.get(14, weight: .regular)
-            |> \.placeholder .~ "Enter an url"
+            |> \.placeholder .~ pure("Enter an url".localized)
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
         

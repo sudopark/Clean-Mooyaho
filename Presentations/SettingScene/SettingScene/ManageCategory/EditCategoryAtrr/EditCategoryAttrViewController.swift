@@ -228,11 +228,11 @@ extension EditCategoryAttrViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Edit category"
+            |> \.text .~ pure("Edit category".localized)
         
         _ = self.nameField
             |> \.font .~ self.uiContext.fonts.get(14, weight: .regular)
-            |> \.placeholder .~ "Enter a name"
+            |> \.placeholder .~ pure("Enter a name".localized)
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
         
@@ -248,7 +248,7 @@ extension EditCategoryAttrViewController: Presenting {
         
         _ = self.colorLabel
             |> self.uiContext.decorating.listSectionTitle
-            |> \.text .~ pure("change color".localized)
+            |> \.text .~ pure("Change a color".localized)
         
         self.colorPreviewView.layer.cornerRadius = 10
         self.colorPreviewView.clipsToBounds = true
@@ -265,11 +265,11 @@ extension EditCategoryAttrViewController: Presenting {
             |> \.image .~ UIImage(systemName: "trash")
             |> \.tintColor .~ self.uiContext.colors.secondaryTitle
         
-        self.deleteButton.setTitle("Delete", for: .normal)
+        self.deleteButton.setTitle("Delete".localized, for: .normal)
         self.deleteButton.setTitleColor(self.uiContext.colors.secondaryTitle, for: .normal)
         self.deleteButton.titleLabel?.font = self.uiContext.fonts.get(13, weight: .bold)
         
         self.confirmButton.setupStyling()
-        self.confirmButton.title = "Save change"
+        self.confirmButton.title = pure("Save change".localized)
     }
 }

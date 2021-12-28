@@ -16,7 +16,7 @@ import Domain
 import UnitTestHelpKit
 import UsecaseDoubles
 
-import MooyahoApp
+import Readmind
 
 
 class MainSlideMenuViewModelTests: BaseTestCase, WaitObservableEvents, MainSlideMenuSceneListenable, MainSlideMenuRouting {

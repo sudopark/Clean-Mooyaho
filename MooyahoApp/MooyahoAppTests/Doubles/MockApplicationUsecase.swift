@@ -14,7 +14,7 @@ import Domain
 import CommonPresenting
 import UnitTestHelpKit
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class MockApplicationUsecase: ApplicationUsecase, Mocking {

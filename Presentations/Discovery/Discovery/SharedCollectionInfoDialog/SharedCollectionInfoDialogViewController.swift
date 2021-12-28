@@ -150,6 +150,6 @@ extension SharedCollectionInfoDialogViewController: Presenting {
         self.collectionInfoView.actionButton.isHidden = true
         
         self.removeButton.setupStyling()
-        self.removeButton.title = "Remove from shared list"
+        self.removeButton.title = "Remove from shared list".localized
     }
 }

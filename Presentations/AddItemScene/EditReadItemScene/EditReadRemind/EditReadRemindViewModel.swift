@@ -112,7 +112,7 @@ extension EditReadRemindViewModelImple {
         }
         
         guard let form = AlertBuilder(base: .init())
-                .title("Can't use remind service".localized)
+                .title("Can_t use remind service".localized)
                 .message("To use remind service activate alert setting".localized)
                 .confirmed(moveToSetting)
                 .customConfirmText("Setting".localized)

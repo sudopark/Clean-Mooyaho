@@ -207,7 +207,7 @@ extension EditProfileView: Presenting {
         
         self.closeButton.setTitle("Close".localized, for: .normal)
         
-        self.titleLabel.text = "Edit Profile"
+        self.titleLabel.text = "Edit Profile".localized
         self.titleLabel.textColor = self.uiContext.colors.text
         self.titleLabel.textAlignment = .center
         

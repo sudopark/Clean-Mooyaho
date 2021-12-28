@@ -13,7 +13,7 @@ import RxSwift
 import UnitTestHelpKit
 import FirebaseService
 
-@testable import MooyahoApp
+import Readmind
 
 
 class MockFirebaseService: FirebaseService, Mocking {

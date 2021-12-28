@@ -196,7 +196,7 @@ extension MemberProfileInfoCell {
         _ = self.nameLabel
             |> self.uiContext.decorating.listItemDescription
             |> \.numberOfLines .~ 1
-            |> \.text .~ pure("name".localized)
+            |> \.text .~ pure("Name".localized)
         
         _ = self.nameValueLabel
             |> self.uiContext.decorating.listItemTitle(_:)

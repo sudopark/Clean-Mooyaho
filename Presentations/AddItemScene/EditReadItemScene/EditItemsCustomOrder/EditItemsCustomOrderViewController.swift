@@ -56,7 +56,7 @@ extension EditItemOrderLinkCell {
     }
     
     private func updateTitle(_ title: String?) {
-        let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "Fail to load preview".localized
+        let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "No preview title".localized
         self.shrinkView.nameLabel.text = title
     }
 }
@@ -218,7 +218,7 @@ extension EditItemsCustomOrderViewController: Presenting, UITableViewDelegate {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Change items order"
+            |> \.text .~ pure("Change items order".localized)
         
         self.tableView.registerCell(EditItemOrderCollectionCell.self)
         self.tableView.registerCell(EditItemOrderLinkCell.self)

@@ -132,8 +132,8 @@ private extension ReadPriority {
             case .afterAWhile: return "As soon as possible".localized
             case .onTheWaytoWork: return "On the way home".localized
             case .beforeGoToBed: return "Before go to bed.".localized
-            case .today: return "I'm going to read it today".localized
-            case .thisWeek: return "I think I'll read it this week!".localized
+            case .today: return "I_m going to read it today".localized
+            case .thisWeek: return "I think I_ll read it this week!".localized
             case .someDay: return "Someday~".localized
             case .beforeDying: return "Will I do it before I die?".localized
             }

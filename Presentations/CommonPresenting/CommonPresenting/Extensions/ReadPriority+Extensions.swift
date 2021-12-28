@@ -26,13 +26,13 @@ extension ReadPriority {
     
     public var description: String {
         switch self {
-        case .beforeDying: return "before dying"
-        case .someDay: return "someday"
-        case .thisWeek: return "this week"
-        case .today: return "today"
-        case .beforeGoToBed: return "before go to bed"
-        case .onTheWaytoWork: return "on the way to work"
-        case .afterAWhile: return "after a while"
+        case .beforeDying: return "before dying".localized
+        case .someDay: return "someday".localized
+        case .thisWeek: return "this week".localized
+        case .today: return "today".localized
+        case .beforeGoToBed: return "before go to bed".localized
+        case .onTheWaytoWork: return "on the way to work".localized
+        case .afterAWhile: return "after a while".localized
         }
     }
 }

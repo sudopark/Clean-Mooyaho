@@ -162,7 +162,7 @@ extension EditReadCollectionViewController {
     
     private func setupInitialAttributeIfPossible() {
         guard let colleciton = self.viewModel.editCaseCollectionValue else { return }
-        self.titleLabel.text = "Edit Collection"
+        self.titleLabel.text = "Edit Collection".localized
         self.textField.text = colleciton.name
         self.descriptionInputField.text = colleciton.collectionDescription
     }
@@ -263,18 +263,18 @@ extension EditReadCollectionViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Add new collection"
+            |> \.text .~ pure("Add a new collection".localized)
         
         _ = self.textField
             |> \.font .~ self.uiContext.fonts.get(14, weight: .regular)
-            |> \.placeholder .~ "Enter a collection name"
+            |> \.placeholder .~ pure("Enter a collection name".localized)
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
         
         let descriptionColor: UIColor? = self.uiContext.colors.descriptionText
         _ = self.descriptionInputField
             |> \.font .~ self.uiContext.fonts.get(13, weight: .regular)
-            |> \.placeholder .~ "collection description"
+            |> \.placeholder .~ pure("Collection description".localized)
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
             |> \.textColor .~ descriptionColor
@@ -290,17 +290,17 @@ extension EditReadCollectionViewController: Presenting {
         
         self.addPriorityButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         self.addPriorityButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.addPriorityButton.setTitle("+ set a priority", for: .normal)
+        self.addPriorityButton.setTitle("+ set a priority".localized, for: .normal)
         self.addPriorityButton.contentHorizontalAlignment = .leading
         
         self.addCategoryButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         self.addCategoryButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.addCategoryButton.setTitle("+ add some category", for: .normal)
+        self.addCategoryButton.setTitle("+ add some category".localized, for: .normal)
         self.addCategoryButton.contentHorizontalAlignment = .leading
         
         self.addRemindButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         self.addRemindButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.addRemindButton.setTitle("+ add remind", for: .normal)
+        self.addRemindButton.setTitle("+ add remind".localized, for: .normal)
         self.addRemindButton.contentHorizontalAlignment = .leading
         
         self.priorityLabelView.setupStyling()

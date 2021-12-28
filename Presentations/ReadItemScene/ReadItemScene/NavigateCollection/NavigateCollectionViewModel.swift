@@ -152,7 +152,8 @@ extension NavigateCollectionViewModelImple {
     public var confirmTitle: Observable<String> {
         
         let transform: (String?) -> String = { name in
-            return name.map { "Select \'\($0)\'"} ?? "Select current collection".localized
+            return name.map { "Select_collection".localized(with: $0) }
+            ?? "Select current collection".localized
         }
         
         return self.subjects.currentCollection

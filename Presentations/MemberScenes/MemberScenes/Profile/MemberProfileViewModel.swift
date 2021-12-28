@@ -27,7 +27,7 @@ public struct MemberInfoCellViewMdoel: MemberCellViewModelType {
     let thumbnail: MemberThumbnail
     
     init(member: Member) {
-        self.displayName = member.nickName ?? "Unnamed member"
+        self.displayName = member.nickName ?? "Unnamed member".localized
         self.thumbnail = member.icon ?? .emoji("👻")
     }
     
@@ -135,7 +135,8 @@ extension MemberProfileViewModelImple {
             let introCell = member.introduction.map { MemberIntroCellViewModel(intro: $0) }
             let infoSectionCells: [MemberCellViewModelType?] = [infoCell, introCell]
             return [
-                MemberCellSection(sectionName: "info", cellViewModels: infoSectionCells.compactMap { $0 })
+                MemberCellSection(sectionName: "Info".localized,
+                                  cellViewModels: infoSectionCells.compactMap { $0 })
             ]
         }
         return self.subjects.member.compactMap { $0 }

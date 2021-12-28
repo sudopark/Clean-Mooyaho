@@ -86,7 +86,7 @@ extension SharedCollectionInfoDialogViewModelImple {
 
         guard let form = AlertBuilder(base: .init())
                 .title("Remove".localized)
-                .message("tbd".localized)
+                .message("Would you like to remove the reading list from the shared list? (You can re-add it at any time with the shared URL.)".localized)
                 .confirmed(confirmed)
                 .build()
         else {

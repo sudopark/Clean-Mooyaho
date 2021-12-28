@@ -389,7 +389,7 @@ extension ReadCollectionViewItemsModelImple {
         let cancel = ActionSheetForm.Action(text: "Cancel".localized, isCancel: true)
         
         let actions = self.isRootCollection ? [changeOrder, cancel] : [edit, changeOrder, delete, cancel]
-        let form = ActionSheetForm(title: "Select action")
+        let form = ActionSheetForm(title: "Select an action".localized)
             |> \.actions .~ actions
         self.router.alertActionSheet(form)
     }
@@ -518,8 +518,8 @@ extension ReadCollectionViewItemsModelImple {
         }
         
         guard let form = AlertBuilder(base: .init())
-                .title("Delete item")
-                .message("TBD confirm message")
+                .title("Delete item".localized)
+                .message("Are you sure you want to delete the item?".localized)
                 .confirmed(confirmed).build()
         else {
             return

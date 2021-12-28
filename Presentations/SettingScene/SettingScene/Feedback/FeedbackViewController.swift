@@ -152,7 +152,7 @@ extension FeedbackViewController: Presenting {
             |> \.text .~ pure("Feedback".localized)
         
         self.messageInputView.setupMultilineStyling(120)
-        self.messageInputView.placeHolderLabel.text = "Enter a message"
+        self.messageInputView.placeHolderLabel.text = "Enter a message".localized
         self.uiContext.decorating.placeHolder(self.messageInputView.placeHolderLabel)
         
         _ = self.contactLabel

@@ -178,16 +178,16 @@ extension SelectAddItemTypeViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Select new item type"
+            |> \.text .~ pure("Select a new item type".localized)
         
         self.addCollectionButtonView.setupStyling()
         self.addCollectionButtonView.itemTypeImageView.image = UIImage(systemName: "folder")
         self.addCollectionButtonView.itemTypeImageView.tintColor = self.uiContext.colors.buttonBlue
-        self.addCollectionButtonView.titleLabel.text = "Add a new collection"
+        self.addCollectionButtonView.titleLabel.text = "Add a new collection".localized
         
         self.addLinkButtonView.setupStyling()
         self.addLinkButtonView.itemTypeImageView.image = UIImage(systemName: "doc.text")
         self.addLinkButtonView.itemTypeImageView.tintColor = self.uiContext.colors.buttonBlue
-        self.addLinkButtonView.titleLabel.text = "Add a new read link"
+        self.addLinkButtonView.titleLabel.text = "Add a new read link".localized
     }
 }
