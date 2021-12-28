@@ -14,7 +14,7 @@ import Domain
 import UnitTestHelpKit
 import UsecaseDoubles
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {

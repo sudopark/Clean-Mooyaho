@@ -28,12 +28,12 @@ extension String {
     }
     
     public var localized: String {
-        return NSLocalizedString(self, comment: "")
+        NSLocalizedString(self, bundle: Bundle.main, comment: "")
     }
     
-    public func localized(with args: Any...) -> String {
+    public func localized(with args: CVarArg...) -> String {
         let format = self.localized
-        return String(format: format, args)
+        return String(format: format, arguments: args)
     }
 }
 

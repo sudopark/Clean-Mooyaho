@@ -13,7 +13,7 @@ import RxSwift
 import Domain
 import FirebaseService
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class StubFCMService: FCMService {

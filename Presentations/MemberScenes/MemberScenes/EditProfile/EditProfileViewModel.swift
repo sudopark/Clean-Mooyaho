@@ -146,7 +146,7 @@ extension EditProfileViewModelImple {
             self?.router.selectPhoto()
         }
         let cancel = ActionSheetForm.Action(text: "Cancel".localized, isCancel: true)
-        let form = ActionSheetForm(title: nil, message: "Choose profile image source".localized)
+        let form = ActionSheetForm(title: nil, message: "Choose a profile image source".localized)
         form.actions = [emoji, photo, cancel]
         self.router.chooseProfileImageSource(form)
     }
@@ -200,7 +200,7 @@ extension EditProfileViewModelImple {
             case let .finishedWithImageUploadFail(error):
                 logger.print(level: .error, error.localizedDescription)
                 self?.subjects.isSaveChanges.accept(false)
-                self?.router.showToast("프로필 사진 업로드에 실패했습니다. 다시 시도해보세요.".localized)
+                self?.router.showToast("Failed to upload profile picture. Please try again.".localized)
                 
             default: break
             }
@@ -230,7 +230,7 @@ extension EditProfileViewModelImple {
         
         guard let form = AlertBuilder(base: .init())
                 .title("Warning".localized)
-                .message("[TBD] saving description".localized)
+                .message("The edited profile upload operation is not finished yet. Do you want to cancel all those processes?".localized)
                 .confirmed(confirmClose)
                 .build() else { return }
         self.router.alertForConfirm(form)

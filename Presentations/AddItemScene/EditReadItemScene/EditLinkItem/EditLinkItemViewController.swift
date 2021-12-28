@@ -455,17 +455,17 @@ extension EditLinkItemViewController: Presenting {
         
         self.addPriorityButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         self.addPriorityButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.addPriorityButton.setTitle("+ set a priority", for: .normal)
+        self.addPriorityButton.setTitle("+ set a priority".localized, for: .normal)
         self.addPriorityButton.contentHorizontalAlignment = .leading
         
         self.addCategoryButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         self.addCategoryButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.addCategoryButton.setTitle("+ add some category", for: .normal)
+        self.addCategoryButton.setTitle("+ add some category".localized, for: .normal)
         self.addCategoryButton.contentHorizontalAlignment = .leading
         
         self.addRemindButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         self.addRemindButton.titleLabel?.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.addRemindButton.setTitle("+ add remind", for: .normal)
+        self.addRemindButton.setTitle("+ add remind".localized, for: .normal)
         self.addRemindButton.contentHorizontalAlignment = .leading
         
         self.priorityLabelView.setupStyling()
@@ -492,7 +492,7 @@ extension EditLinkItemViewController: Presenting {
         
         _ = self.titleInputField
             |> \.font .~ self.uiContext.fonts.get(16, weight: .medium)
-            |> \.placeholder .~ "Enter a Custom name"
+            |> \.placeholder .~ pure("Enter a Custom name".localized)
             |> \.autocorrectionType .~ .no
             |> \.autocapitalizationType .~ .none
     }

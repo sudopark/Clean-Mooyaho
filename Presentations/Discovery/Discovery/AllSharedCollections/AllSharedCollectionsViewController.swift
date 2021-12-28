@@ -95,7 +95,7 @@ extension AllSharedCollectionsViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.bindUpdateTitleheaderViewByScroll(with: .just("Shared collections"))
+        self.bindUpdateTitleheaderViewByScroll(with: .just("Shared collections".localized))
     }
     
     private func makeDataSource() -> DataSource {

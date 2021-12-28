@@ -18,7 +18,7 @@ import MemberScenes
 import UsecaseDoubles
 import UnitTestHelpKit
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class MainViewModelTests: BaseTestCase, WaitObservableEvents {

@@ -102,8 +102,8 @@ extension StopShareCollectionViewModelImple {
         }
         
         guard let form = AlertBuilder(base: .init())
-            .title("Stop sharing")
-            .message("TBD message")
+                .title("Stop sharing".localized)
+                .message("Do you want to stop sharing? (Users who have shared the reading list will no longer be able to view it.)".localized)
             .confirmed(stopConfirmed).build() else { return }
         
         self.router.alertForConfirm(form)

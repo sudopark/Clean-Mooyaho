@@ -93,8 +93,8 @@ extension EditCategoryAttrViewModelImple {
             self?.deleteCategoryAfterConfirm()
         }
         guard let form = AlertBuilder(base: .init())
-                .title("Delete category")
-                .message("TBD")
+                .title("Delete category".localized)
+                .message("Are you sure you want to delete this category?".localized)
                 .confirmed(confirmed)
                 .build()
         else {

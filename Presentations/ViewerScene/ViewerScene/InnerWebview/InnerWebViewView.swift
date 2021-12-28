@@ -220,7 +220,6 @@ extension InnerWebViewBottomToolBar: Presenting {
             |> \.textColor .~ self.uiContext.colors.text.withAlphaComponent(0.8)
             |> \.font .~ self.uiContext.fonts.get(12, weight: .regular)
             |> \.textAlignment .~ .center
-            |> \.text .~ "https://stackoverflow.com/questions/33922076/wkwebviewcontentinset-makes-content-size-wrong"
         
         self.backButton.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         self.backButton.isEnabled = false

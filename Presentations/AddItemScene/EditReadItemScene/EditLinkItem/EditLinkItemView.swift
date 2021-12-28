@@ -31,7 +31,7 @@ final class LinkPreviewView: BaseUIView, Presenting {
         let title = (preview.title ?? "").map { $0.isEmpty ? "Unknown".localized : $0 }
         self.titleLabel.text = title
         
-        let descriptionText = (preview.description ?? "").map { $0.isEmpty ? "Fail to load preview".localized : $0 }
+        let descriptionText = (preview.description ?? "").map { $0.isEmpty ? "No preview title".localized : $0 }
         self.descriptionLabel.text = descriptionText
         
         self.thumbnailImageView.isHidden = (preview.mainImageURL?.isNotEmpty == true) == false
@@ -46,7 +46,7 @@ final class LinkPreviewView: BaseUIView, Presenting {
     func setLoadpreviewFail(for url: String) {
         
         self.titleLabel.text = "Unknown".localized
-        self.descriptionLabel.text = "Fail to load preview".localized
+        self.descriptionLabel.text = "No preview title".localized
         self.thumbnailImageView.cancelSetupThumbnail()
         self.thumbnailImageView.isHidden = true
         self.addressLabel.text = url

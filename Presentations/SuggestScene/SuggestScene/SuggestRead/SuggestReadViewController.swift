@@ -313,9 +313,9 @@ private extension SuggestReadSection.SuggestType {
     
     private var title: String {
         switch self {
-        case .todoRead: return "📚 To read".localized
-        case .favotire: return "⛳️ My Favorites".localized
-        case .continueRead: return "🏃‍♂️ Continue red".localized
+        case .todoRead: return "To read".localized
+        case .favotire: return "My Favorites".localized
+        case .continueRead: return "Continue red".localized
         }
     }
     

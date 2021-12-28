@@ -147,13 +147,13 @@ extension LinkMemoViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Memo"
+        |> \.text .~ pure("Memo".localized)
         
         self.deleteButton.setTitle("Delete".localized, for: .normal)
         self.deleteButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
         
         self.textView.setupMultilineStyling(300)
-        self.textView.placeHolderLabel.text = "Enter a memo"
+        self.textView.placeHolderLabel.text = "Enter a memo".localized
         self.textView.placeHolderLabel.decorate(self.uiContext.decorating.placeHolder)
         
         self.confirmButton.setupStyling()

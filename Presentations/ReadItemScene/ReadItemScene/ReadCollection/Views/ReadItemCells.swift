@@ -178,7 +178,7 @@ final class ReadItemShrinkLinkCell: ReadItemShrinkCell {
     }
     
     private func updateTitle(_ title: String?) {
-        let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "Fail to load preview".localized
+        let title = title.flatMap{ $0.isNotEmpty ? $0 : nil } ?? "No preview title".localized
         self.shrinkView.nameLabel.text = title
     }
     

@@ -340,7 +340,7 @@ extension MainView: Presenting {
         self.bottomSearchBarView.setupStyling()
         self.bottomSearchBarView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         self.bottomSearchBarView.iconImageView.tintColor = UIColor.black.withAlphaComponent(0.1)
-        self.bottomSearchBarView.placeHolderLabel.text = "Search item"
+        self.bottomSearchBarView.placeHolderLabel.text = "Search item".localized
         self.bottomSearchBarView.textField.returnKeyType = .search
         
         self.bottomSlideEmbedView.backgroundColor = .clear

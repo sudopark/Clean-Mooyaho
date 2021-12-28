@@ -1,0 +1,193 @@
+/*
+  Localized.strings
+  MooyahoApp
+
+  Created by sudo.park on 2021/12/26.
+  Copyright © 2021 ParkHyunsoo. All rights reserved.
+*/
+
+// common
+"Confirm" = "Confirm";
+"Cancel" = "Cancel";
+"Close" = "Close";
+"Unknown" = "Unknown";
+"No nickname" = "No nickname";
+"Save" = "Save";
+"Info" = "Info";
+"Edit" = "Edit";
+"Create" = "Create";
+"Delete" = "Delete";
+"Clear" = "Clear";
+"Remove" = "Remove";
+"No result found" = "No result found";
+
+// main
+"Return to my read collection?" = "Would you like to return to my collection?";
+"Add item form clipboard" = "Add item form clipboard";
+"Search item" = "Search item";
+"shared by" = "shared by";
+"Login is required" = "Login is required";
+"Click to log in to the service." = "Click to log in to the service.";
+"Click to set up your profile." = "Click to set up your profile.";
+
+
+// common UI
+"No preview title" = "No preview title";
+"Select a color" = "Select a color";
+"now" = "now";
+"minute_ago" = "%d minute(s) ago";
+"hour_ago" = "%d hour(s) ago";
+"day_ago" = "%d day(s) ago";
+"week_ago" = "%d week(s) ago";
+"year_ago" = "%d year(s) ago";
+"before dying" = "before dying";
+"someday" = "someday";
+"this week" = "this week";
+"today" = "today";
+"before go to bed" = "before go to bed";
+"on the way to work" = "on the way to work";
+"after a while" = "after a while";
+
+
+// member
+"Nickname" = "Nickname";
+"Enter a nickname" = "Enter a nickname";
+"Introduction" = "Introduction";
+"Hello world" = "Hello world";
+"Emoji" = "Emoji";
+"Photo" = "Photo";
+"Choose a profile image source" = "Choose a profile image source";
+"Failed to upload profile picture. Please try again." = "Failed to upload profile picture. Please try again.";
+"Warning" = "Warning";
+"The edited profile upload operation is not finished yet. Do you want to cancel all those processes?" = "The edited profile upload operation is not finished yet. Do you want to cancel all those processes?";
+"Edit Profile" = "Edit Profile";
+"Please set a nickname of 30 characters or less" = "Please set a nickname of 30 characters or less";
+"Please introduce yourself in 300 characters or less." = "Please introduce yourself in 300 characters or less.";
+"Member profile" = "Member profile";
+"Name" = "Name";
+"Unnamed member" = "Unnamed member";
+
+
+// read
+"Priority" = "Priority";
+"Categories" = "Categories";
+"Remind" = "Remind";
+"Edit collection" = "Edit collection";
+"Change order" = "Change order";
+"Select an action" = "Select an action";
+"Cancel remind" = "Cancel remind";
+"Do you want to cancel this read remind?" = "Do you want to cancel this read remind?";
+"Delete item" = "Delete item";
+"Are you sure you want to delete the item?" = "Are you sure you want to delete the item?";
+"My Read Collections" = "My Read Collections";
+"Select a collection" = "Select a collection";
+"Select_collection" = "Select '%@'";
+"Select current collection" = "Select current collection";
+"Favorite items" = "Favorite items";
+
+
+// edi
+"Select a new item type" = "Select a new item type";
+"Add a new collection" = "Add a new collection";
+"Add a new read link" = "Add a new read link";
+"Edit Collection" = "Edit Collection";
+"Enter a collection name" = "Enter a collection name";
+"Collection description" = "Collection description";
+"+ set a priority" = "+ set a priority";
+"+ add some category" = "+ add some category";
+"+ add remind" = "+ add a remind";
+"Add a read link item" = "Add a read link item";
+"Enter an url" = "Enter an url";
+"Enter a Custom name" = "Enter a Custom name";
+"Set a priority" = "Set a priority";
+"As soon as possible" = "As soon as possible";
+"On the way home" = "On the way home";
+"Before go to bed." = "Before go to bed.";
+"I_m going to read it today" = "I'm going to read it today";
+"I think I_ll read it this week!" = "I think I'll read it this week!";
+"Someday~" = "Someday~";
+"Will I do it before I die?" = "Will I do it before I die?";
+"Suggesting categories" = "Suggesting categories";
+"Choose a category" = "Choose a category";
+"Enter a name" = "Enter a name";
+"Confirm Select %d item(s)" = "Confirm Select %d item(s)";
+"Change items order" = "Change items order";
+"Collections" = "Collections";
+"Links" = "Links";
+"Select a remind time" = "Select a remind time";
+"Can_t use remind service" = "Can't use remind service";
+"To use remind service activate alert setting" = "To use remind service activate alert setting";
+"Setting" = "Setting";
+"Select a future time" = "Select a future time";
+
+
+// viewer
+"Memo" = "Memo";
+"Enter a memo" = "Enter a memo";
+
+
+// diccovery
+"Switch to my read collection" = "Switch to my read collection";
+"Shared read collections" = "Shared read collections";
+"View all" = "View all";
+"A login is required to use the reading list sharing service." = "A login is required to use the reading list sharing service.";
+"There are no shared reading lists." = "There are no shared reading lists.";
+"Shared collections" = "Shared collections";
+"Would you like to remove the reading list from the shared list? (You can re-add it at any time with the shared URL.)" = "Would you like to remove the reading list from the shared list? (You can re-add it at any time with the shared URL.)";
+"Sharing Reading List" = "Sharing Reading List";
+"Find who watch this reading list" = "Find who watch this reading list";
+"Stop sharing" = "Stop sharing";
+"Do you want to stop sharing? (Users who have shared the reading list will no longer be able to view it.)" = "Do you want to stop sharing? (Users who have shared the reading list will no longer be able to view it.)";
+"Sharing stopped." = "Sharing stopped.";
+"Shared Reading List" = "Shared Reading List";
+"Remove from shared list" = "Remove from shared list";
+
+
+// setting
+"Setting" = "Setting";
+"Edit profile" = "Edit profile";
+"Manage Account" = "Manage Account";
+"Signin" = "Signin";
+"Manage item category" = "Manage item category";
+"Manage temporary user data migration" = "Manage temporary user data migration";
+"App version" = "App version";
+"Feedback" = "Feedback";
+"Source code" = "Source code";
+"Wait for data migration" = "Wait for data migration";
+"Your locally stored data is being uploaded to cloud storage.\nPlease wait until the operation is completed." = "Your locally stored data is being uploaded to cloud storage.\nPlease wait until the operation is completed.";
+"Or do it latter >" = "Or do it latter >";
+"Migration complete" = "Migration complete";
+"All data uploads are complete!" = "All data uploads are complete!";
+"Migration finished" = "Migration finished";
+"All data has already been migrated." = "All data has already been migrated.";
+"Migration failed" = "Migration failed";
+"Migration failed. Please try again after a while.\n(You can restart the operation from the settings screen.)" = "Migration failed. Please try again after a while.\n(You can restart the operation from the settings screen.)";
+"Edit category" = "Edit category";
+"Change a color" = "Change a color";
+"Save change" = "Save change";
+"Delete category" = "Delete category";
+"Are you sure you want to delete this category?" = "Are you sure you want to delete this category?";
+"Category" = "Category";
+"Manage Account" = "Manage Account";
+"Signout" = "Signout";
+"Delete account" = "Delete account";
+"When you delete your account, all of your data is immediately deleted and cannot be restored." = "When you delete your account, all of your data is immediately deleted and cannot be restored.";
+"Are you sure you want to delete your account?" = "Are you sure you want to delete your account?";
+"Feedback" = "Feedback";
+"Enter a message" = "Enter a message";
+"Contact" = "Contact";
+"Please leave your email address to be contacted." = "Please leave your email address to be contacted.";
+
+
+// suggest
+"To read" = "📚 To read";
+"My Favorites" = "⛳️ My Favorites";
+"Continue red" = "🏃‍♂️ Continue read";
+"There are no favorite reading items.\nLet's add a new favorite." = "There are no favorite reading items.\nLet's add a new favorite.";
+"Continue reading and marking as read." = "Continue reading and marking as read.";
+
+
+// domain
+"Read Remind Notification" = "Read Remind Notification";
+"It's time to read" = "It's time to read";
+"It's time to start read '%@' read collection" = "It's time to start read '%@' read collection";

@@ -60,7 +60,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>카메라를 이용하여 사진을 업로드합니다.</string>
+	<string>카메라로 찍은 사진을 업로드합니다.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>다운받은 사진을 저장합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

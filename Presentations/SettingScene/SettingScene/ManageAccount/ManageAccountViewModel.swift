@@ -89,8 +89,8 @@ extension ManageAccountViewModelImple {
             self?.withdrawalAfterConfirm()
         }
         guard let form = AlertBuilder(base: .init())
-                .title("Delete account")
-                .message("TBD")
+                .title("Delete account".localized)
+                .message("Are you sure you want to delete your account?".localized)
                 .confirmed(confirmed)
                 .build()
         else {

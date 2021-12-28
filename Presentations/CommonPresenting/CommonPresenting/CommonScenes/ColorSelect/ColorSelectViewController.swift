@@ -185,7 +185,7 @@ extension ColorSelectViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Select a color"
+            |> \.text .~ pure("Select a color".localized)
         
         self.tableView.rowHeight = 75
         self.tableView.registerCell(ColorCell.self)

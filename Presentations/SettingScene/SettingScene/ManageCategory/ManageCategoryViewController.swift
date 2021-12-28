@@ -95,7 +95,7 @@ extension ManageCategoryViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.bindUpdateTitleheaderViewByScroll(with: .just("Category"))
+        self.bindUpdateTitleheaderViewByScroll(with: .just("Category".localized))
     }
     
     private func makeDataSource() -> DataSource {

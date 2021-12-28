@@ -179,7 +179,7 @@ extension StopShareCollectionViewController: Presenting {
         self.findLabel.text = "Find who watch this reading list".localized
         
         self.stopShareButton.setupStyling()
-        self.stopShareButton.title = "Stop sharing"
+        self.stopShareButton.title = "Stop sharing".localized
     }
 }
 

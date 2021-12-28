@@ -218,7 +218,7 @@ extension EditCategoryViewController {
             }
         }
         let configureTitle: SuggestDataSource.TitleForHeaderInSection = { _, _ in
-            return "Suggesting categories"
+            return "Suggesting categories".localized
         }
         return .init(configureCell: configureCell, titleForHeaderInSection: configureTitle)
     }
@@ -285,11 +285,11 @@ extension EditCategoryViewController: Presenting {
         
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
-            |> \.text .~ "Choose a category"
+            |> \.text .~ pure("Choose a category".localized)
         
         self.inputField.setupStyling()
         self.inputField.backgroundColor = .clear
-        self.inputField.placeHolderLabel.text = "Enter a name"
+        self.inputField.placeHolderLabel.text = "Enter a name".localized
         
         self.selectedCollectionView.registerCell(SelectedCategoryCell.self)
         self.selectedCollectionView.delegate = self

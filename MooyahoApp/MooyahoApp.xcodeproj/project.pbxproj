@@ -77,6 +77,8 @@
 		F6811331276B8C45005065E9 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
 		F6811332276B8C55005065E9 /* RemoteImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B21C6227004389006243FD /* RemoteImple.swift */; };
 		F6811333276B9537005065E9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2BA276EB263CFA2100C0393E /* GoogleService-Info.plist */; };
+		F6832FCF27776F2300EFB99A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6832FD227776F2300EFB99A /* Localizable.strings */; };
+		F6832FD027776F2300EFB99A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6832FD227776F2300EFB99A /* Localizable.strings */; };
 		F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; };
 		F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6851A20270B20640048197B /* ViewerScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68A87FB274BFA61004DADE4 /* SuggestScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A87FA274BFA61004DADE4 /* SuggestScene.framework */; };
@@ -110,6 +112,7 @@
 		F69C1CC926A9C3AC0067315B /* StubFCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C1CC826A9C3AC0067315B /* StubFCMService.swift */; };
 		F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */; };
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
+		F6AF0BE0277B6B4D006748EF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6AF0BE2277B6B4D006748EF /* InfoPlist.strings */; };
 		F6B21C6327004389006243FD /* RemoteImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B21C6227004389006243FD /* RemoteImple.swift */; };
 		F6BBF17A2708523000420A49 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF1792708523000420A49 /* EditReadItemScene.framework */; };
 		F6BBF17B2708523000420A49 /* EditReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF1792708523000420A49 /* EditReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -250,7 +253,6 @@
 		F62271F3273C728D00AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
-		F631DE7D27022DD1003948C2 /* Scenes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scenes.storyboard; sourceTree = "<group>"; };
 		F64E7AF22762CB8000961C38 /* AppleLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginService.swift; sourceTree = "<group>"; };
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DiscoveryScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,6 +270,8 @@
 		F6811320276B870D005065E9 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6811322276B871B005065E9 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6811324276B8722005065E9 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6832FD127776F2300EFB99A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F6832FD327776F3200EFB99A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F6851A20270B20640048197B /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68A87FA274BFA61004DADE4 /* SuggestScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SuggestScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68B7304272863DC00DD5456 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -290,6 +294,8 @@
 		F69C1CC826A9C3AC0067315B /* StubFCMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFCMService.swift; sourceTree = "<group>"; };
 		F6AC569C266157FA0009B0CE /* KakaoOAuthRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoOAuthRemote.swift; sourceTree = "<group>"; };
 		F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoServiceTests.swift; sourceTree = "<group>"; };
+		F6AF0BE1277B6B4D006748EF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F6AF0BE3277B6B4F006748EF /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F6B21C6227004389006243FD /* RemoteImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteImple.swift; path = MooyahoApp/dependencyInjector/RemoteImple.swift; sourceTree = SOURCE_ROOT; };
 		F6BBF14927083EDB00420A49 /* AddItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AddItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BBF1792708523000420A49 /* EditReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EditReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -590,7 +596,8 @@
 			children = (
 				F66E813E26552ADA00682625 /* secrets.json */,
 				F66E813C2655282500682625 /* dummy */,
-				F631DE7D27022DD1003948C2 /* Scenes.storyboard */,
+				F6832FD227776F2300EFB99A /* Localizable.strings */,
+				F6AF0BE2277B6B4D006748EF /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -761,6 +768,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 2B79FC3F262B640C0006291F;
 			packageReferences = (
@@ -783,6 +791,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6832FCF27776F2300EFB99A /* Localizable.strings in Resources */,
+				F6AF0BE0277B6B4D006748EF /* InfoPlist.strings in Resources */,
 				2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */,
 				F66E813D2655282500682625 /* dummy in Resources */,
 				2B79FC55262B640F0006291F /* Assets.xcassets in Resources */,
@@ -802,6 +812,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6832FD027776F2300EFB99A /* Localizable.strings in Resources */,
 				F68B7326272A06D300DD5456 /* secrets.json in Resources */,
 				F6811333276B9537005065E9 /* GoogleService-Info.plist in Resources */,
 			);
@@ -959,6 +970,24 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		F6832FD227776F2300EFB99A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6832FD127776F2300EFB99A /* en */,
+				F6832FD327776F3200EFB99A /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F6AF0BE2277B6B4D006748EF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6AF0BE1277B6B4D006748EF /* en */,
+				F6AF0BE3277B6B4F006748EF /* ko */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -966,6 +995,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1026,6 +1056,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1159,7 +1190,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MooyahoApp.app/MooyahoApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Readmind.app/Readmind";
 			};
 			name = Debug;
 		};
@@ -1181,7 +1212,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MooyahoApp.app/MooyahoApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Readmind.app/Readmind";
 			};
 			name = Release;
 		};

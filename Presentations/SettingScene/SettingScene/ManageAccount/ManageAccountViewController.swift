@@ -180,7 +180,7 @@ final class ManageAccountDescriptionCell: BaseTableViewCell, Presenting {
 
         _ = self.descriptionLabel
             |> self.uiContext.decorating.listItemSubDescription(_:)
-            |> \.text .~ pure("회원 탈퇴 설명 ..... TBD")
+            |> \.text .~ pure("When you delete your account, all of your data is immediately deleted and cannot be restored.".localized)
     }
 }
 

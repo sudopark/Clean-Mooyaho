@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  MooyahoApp
+
+  Created by sudo.park on 2021/12/29.
+  Copyright © 2021 ParkHyunsoo. All rights reserved.
+*/
+
+"NSCameraUsageDescription" = "카메라로 찍은 사진을 업로드합니다.";
+"NSPhotoLibraryAddUsageDescription" = "다운받은 사진을 저장합니다.";
+"NSPhotoLibraryUsageDescription" = "사진첩에 있는 사진을 업로드 합니다.";

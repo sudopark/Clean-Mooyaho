@@ -125,8 +125,8 @@ extension ManageCategoryViewModelImple {
         }
         
         guard let form = AlertBuilder(base: .init())
-                .title("Remove category")
-                .message("TBD message")
+                .title("Delete category".localized)
+                .message("Are you sure you want to delete this category?".localized)
                 .confirmed(removeConfirmed)
                 .build()
         else {
