@@ -129,10 +129,17 @@ extension DependencyInjector {
     }
     
     var supportingOAuthServiceProviders: [OAuthServiceProvider] {
+        #if KOR
         return [
             self.shared.kakaoService,
             self.appleLoginService
         ]
+        #elseif GLOBAL
+        return [
+            self.shared.kakaoService,
+            self.appleLoginService
+        ]
+        #endif
     }
     
     var imagePickPermissionCheckService: ImagePickPermissionCheckService {
