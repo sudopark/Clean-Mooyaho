@@ -265,6 +265,8 @@ public protocol ShareItemRemote: AuthorizationNeed {
     func requestLoadAllSharedCollectionIDs() -> Maybe<[String]>
     
     func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]>
+    
+    func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]>
 }
 
 

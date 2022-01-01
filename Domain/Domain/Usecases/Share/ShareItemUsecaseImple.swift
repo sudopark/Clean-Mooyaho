@@ -146,6 +146,10 @@ extension ShareItemUsecaseImple {
         return self.shareRepository.requestRemoveFromSharedList(shareID)
             .do(onNext: removeFromSharedLatestsCollection)
     }
+    
+    public func loadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        return self.shareRepository.requestLoadSharedMemberIDs(of: collectionShareID)
+    }
 }
 
 

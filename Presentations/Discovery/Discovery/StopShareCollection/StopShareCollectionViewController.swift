@@ -24,7 +24,7 @@ public final class StopShareCollectionViewController: BaseViewController, StopSh
     private let titleLabel = UILabel()
     private let collectionInfoView = CollectionInfoView()
     private let showFindMemberView = UIView()
-    private let findLabel = UILabel()
+    private let sharedMemberCountLabel = UILabel()
     private let findDiscolureIconView = UIImageView()
     private let stopShareButton = ConfirmButton()
     
@@ -78,7 +78,18 @@ extension StopShareCollectionViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.findLabel.rx.addTapgestureRecognizer()
+        self.viewModel.sharedMemberCount
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] count in
+                self?.updateSharedMembers(by: count)
+            })
+            .disposed(by: self.disposeBag)
+        
+        let findTrigger = Observable.merge(
+            self.sharedMemberCountLabel.rx.addTapgestureRecognizer(),
+            self.findDiscolureIconView.rx.addTapgestureRecognizer()
+        )
+        findTrigger
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.findWhoSharedThieList()
             })
@@ -101,6 +112,19 @@ extension StopShareCollectionViewController {
                 self?.collectionInfoView.setupView(title)
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func updateSharedMembers(by count: Int) {
+        let message = count > 0
+            ? "This reading list was shared with %d user(s).".localized(with: count)
+            : "It hasn't been shared with anyone yet.".localized
+        self.sharedMemberCountLabel.isHidden = false
+        self.sharedMemberCountLabel.text = message
+        self.sharedMemberCountLabel.textColor = count > 0
+            ? self.uiContext.colors.buttonBlue
+            : self.uiContext.colors.descriptionText
+        self.sharedMemberCountLabel.isUserInteractionEnabled = count > 0
+        self.findDiscolureIconView.isHidden = count <= 0
     }
 }
 
@@ -131,8 +155,8 @@ extension StopShareCollectionViewController: Presenting {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
         }
         
-        showFindMemberView.addSubview(findLabel)
-        findLabel.autoLayout.active(with: showFindMemberView) {
+        showFindMemberView.addSubview(sharedMemberCountLabel)
+        sharedMemberCountLabel.autoLayout.active(with: showFindMemberView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
             $0.topAnchor.constraint(equalTo: $1.topAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
@@ -168,15 +192,17 @@ extension StopShareCollectionViewController: Presenting {
         self.collectionInfoView.setupStyling()
         self.collectionInfoView.actionButton.setImage(UIImage(systemName: "square.and.arrow.up.fill"), for: .normal)
         
-        _ = self.findLabel
-            |> self.uiContext.decorating.listItemAccentText(_:)
+        _ = self.sharedMemberCountLabel
+            |> self.uiContext.decorating.listItemAccentText
             |> \.font .~ self.uiContext.fonts.get(15, weight: .regular)
             |> \.numberOfLines .~ 1
+            |> \.isHidden .~ true
         
         self.findDiscolureIconView.image = UIImage(systemName: "chevron.right")
         self.findDiscolureIconView.contentMode = .scaleAspectFit
-        self.findDiscolureIconView.tintColor = self.uiContext.colors.lineColor
-        self.findLabel.text = "Find who watch this reading list".localized
+        self.findDiscolureIconView.tintColor = self.uiContext.colors.buttonBlue
+        self.findDiscolureIconView.isHidden = true
+        self.sharedMemberCountLabel.text = "Find who watch this reading list".localized
         
         self.stopShareButton.setupStyling()
         self.stopShareButton.title = "Stop sharing".localized

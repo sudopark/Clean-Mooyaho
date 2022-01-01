@@ -38,6 +38,9 @@ class StopShareCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
     private func makeViewModel() -> StopShareCollectionViewModel {
         
         let shareUsecase = StubShareItemUsecase()
+        let dummyIDs = (0..<10).map { "id:\($0)" }
+        shareUsecase.scenario.loadSharedMemberIDsResult = .success(dummyIDs)
+        
         let router = SpyRouter()
         self.spyRouter = router
         
@@ -78,6 +81,20 @@ extension StopShareCollectionViewModelTests {
         
         // then
         XCTAssertNotNil(self.spyRouter.didPresentShareWith)
+    }
+    
+    func testViewModel_provideSharedMemberCount() {
+        // given
+        let expect = expectation(description: "몇명이 해당 콜렉션을 공유받았는지 정보 제공")
+        let viewModel = self.makeViewModel()
+        
+        // when
+        let count = self.waitFirstElement(expect, for: viewModel.sharedMemberCount) {
+            viewModel.refresh()
+        }
+        
+        // then
+        XCTAssertEqual(count, 10)
     }
     
     func testViewModel_findShareMember() {

@@ -136,4 +136,8 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
     public func requestLoadSharedCollections(by shareIDs: [String]) -> Maybe<[SharedReadCollection]> {
         return self.shareItemRemote.requestLoadSharedCollections(by: shareIDs)
     }
+    
+    public func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        return self.shareItemRemote.requestLoadSharedMemberIDs(of: collectionShareID)
+    }
 }

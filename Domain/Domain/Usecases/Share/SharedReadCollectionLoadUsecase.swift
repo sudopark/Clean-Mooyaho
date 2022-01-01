@@ -25,4 +25,6 @@ public protocol SharedReadCollectionLoadUsecase {
     func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection>
     
     func loadSharedCollectionSubItems(collectionID: String) -> Maybe<[SharedReadItem]>
+    
+    func loadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]>
 }

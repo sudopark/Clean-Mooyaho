@@ -50,6 +50,7 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.loadSharedCollectionResult .~ (shouldFailLoadSharedItem ? .failure(ApplicationErrors.invalid) : .success(self.dummySharedCollection))
             |> \.loadMySharingCollectionIDsResults .~ sharingCollectionIDs
             |> \.latestSharedCollections .~ pure(latestSharedCollections)
+            |> \.loadSharedMemberIDResult .~ .success(["id:1", "id:2"])
         
         return ShareItemUsecaseImple(shareURLScheme: "readminds",
                                      shareRepository: repository,
@@ -360,5 +361,18 @@ extension ShareItemUsecaseTests {
         let (oldCollections, newCollections) = (collectionLists.first, collectionLists.last)
         XCTAssertEqual(oldCollections?.contains(where: { $0.shareID == dummy.shareID }), true)
         XCTAssertEqual(newCollections?.contains(where: { $0.shareID == dummy.shareID }), false)
+    }
+    
+    func testUsecase_loadSharedMemberIDs() {
+        // given
+        let expect = expectation(description: "공유받는 유저 아이디 목록 로드")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let loading = usecase.loadSharedMemberIDs(of: "shareID")
+        let ids = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(ids?.count, 2)
     }
 }

@@ -28,6 +28,7 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
             SharedReadCollection.dummySubCollection(0), SharedReadLink.dummy(1)
         ])
         public var removeResult: Result<Void, Error> = .success(())
+        public var loadSharedMemberIDsResult: Result<[String], Error> = .success([])
         
         public init() {}
     }
@@ -95,5 +96,9 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
     
     public func removeFromSharedList(shareID: String) -> Maybe<Void> {
         return self.scenario.removeResult.asMaybe()
+    }
+    
+    public func loadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        return self.scenario.loadSharedMemberIDsResult.asMaybe()
     }
 }
