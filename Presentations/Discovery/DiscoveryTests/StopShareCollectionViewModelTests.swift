@@ -34,12 +34,14 @@ class StopShareCollectionViewModelTests: BaseTestCase, WaitObservableEvents {
     }
     
     private var dummyCollectionID: String { "some" }
+    private var dummySharedMemberIDs: [String] {
+        return (0..<10).map { "id:\($0)" }
+    }
     
-    private func makeViewModel() -> StopShareCollectionViewModel {
+    private func makeViewModel() -> StopShareCollectionViewModelImple {
         
         let shareUsecase = StubShareItemUsecase()
-        let dummyIDs = (0..<10).map { "id:\($0)" }
-        shareUsecase.scenario.loadSharedMemberIDsResult = .success(dummyIDs)
+        shareUsecase.scenario.loadSharedMemberIDsResult = .success(self.dummySharedMemberIDs)
         
         let router = SpyRouter()
         self.spyRouter = router
@@ -110,6 +112,23 @@ extension StopShareCollectionViewModelTests {
         
         // then
         XCTAssertNotNil(self.spyRouter.didFindMemberFor)
+    }
+    
+    func testViewModel_whenSharedMemberExcluded_updateSharedMemberCount() {
+        // given
+        let expect = expectation(description: "공유받는중인 멤버 제거시에 전체 카운트 업데이트")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        let dummyID = self.dummySharedMemberIDs.randomElement()!
+        
+        // when
+        let counts = self.waitElements(expect, for: viewModel.sharedMemberCount) {
+            viewModel.refresh()
+            viewModel.sharedMemberListDidExcludeMember(dummyID)
+        }
+        
+        // then
+        XCTAssertEqual(counts, [10, 9])
     }
 }
 

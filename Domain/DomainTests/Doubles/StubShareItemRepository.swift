@@ -78,4 +78,8 @@ class StubShareItemRepository: ShareItemRepository {
     func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
         return self.loadSharedMemberIDResult.asMaybe()
     }
+    
+    func requestExcludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
+        return .just()
+    }
 }

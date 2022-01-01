@@ -22,6 +22,7 @@ class SharedMemberListViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var spyRouter: SpyRouter!
+    var spyListener: SpyListener!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -30,6 +31,7 @@ class SharedMemberListViewModelTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.spyRouter = nil
+        self.spyListener = nil
     }
     
     private var dummyMembers: [Member] {
@@ -55,11 +57,15 @@ class SharedMemberListViewModelTests: BaseTestCase, WaitObservableEvents {
         let router = SpyRouter()
         self.spyRouter = router
         
+        let listener = SpyListener()
+        self.spyListener = listener
+        
         return SharedMemberListViewModelImple(sharedCollection: self.dummyCollection,
                                               memberIDs: self.dummyMembers.map { $0.uid },
                                               memberUsecase: memberUsecase,
                                               shareReadCollectionUsecase: shareUsecase,
-                                              router: router, listener: nil)
+                                              router: router,
+                                              listener: listener)
     }
 }
 
@@ -125,6 +131,23 @@ extension SharedMemberListViewModelTests {
         let memberIDLists = cvmLists.map { $0.map { $0.memberID } }
         XCTAssertEqual(memberIDLists.map { $0.contains(dummy.uid) }, [true, false, false])
     }
+    
+    func testViewModel_whenExcludeMember_notifyExcluded() {
+        // given
+        let expect = expectation(description: "멤버 제외시에 제외했음을 알림")
+        expect.expectedFulfillmentCount = 2
+        let viewModel = self.makeViewModel()
+        let dummy = self.dummyMembers.first!
+        
+        // when
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModel, skip: 1) {
+            viewModel.refresh()
+            viewModel.excludeMember(dummy.uid)
+        }
+        
+        // then
+        XCTAssertEqual(self.spyListener.didExcludedMemberID, dummy.uid)
+    }
 }
 
 
@@ -138,7 +161,15 @@ extension SharedMemberListViewModelTests {
             form.confirmed?()
         }
         
-        func showMemberProfile(_ memberID: String) {    
+        func showMemberProfile(_ memberID: String) {
+        }
+    }
+    
+    class SpyListener: SharedMemberListSceneListenable {
+        
+        var didExcludedMemberID: String?
+        func sharedMemberListDidExcludeMember(_ memberID: String) {
+            self.didExcludedMemberID = memberID
         }
     }
 }

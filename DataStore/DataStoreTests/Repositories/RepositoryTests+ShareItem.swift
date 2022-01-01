@@ -296,6 +296,21 @@ extension RepositoryTests_ShareItem {
         // then
         XCTAssertEqual(ids?.count, 1)
     }
+    
+    func testRepository_excludeSharedMember() {
+        // given
+        let expect = expectation(description: "공유받은 유저 목록에서 제거")
+        self.mockRemote.register(key: "requestExcludeCollectionSharing") {
+            Maybe<Void>.just()
+        }
+        
+        // when
+        let excluding = self.repository.requestExcludeCollectionSharing("some", for: "memberID")
+        let result: Void? = self.waitFirstElement(expect, for: excluding.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
 }
 
 

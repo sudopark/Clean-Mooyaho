@@ -175,6 +175,7 @@ extension SharedMemberListViewModelImple {
             guard let paging = self?.subjects.pagingIDs.value else { return }
             let newPaging = paging |> \.pagingIDs %~ { $0.filter { $0 != memberID } }
             self?.subjects.pagingIDs.accept(newPaging)
+            self?.listener?.sharedMemberListDidExcludeMember(memberID)
         }
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
