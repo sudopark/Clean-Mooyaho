@@ -107,3 +107,26 @@ extension DependencyInjector: AllSharedCollectionsSceneBuilable {
         return viewController
     }
 }
+
+extension DependencyInjector: SharedMemberListSceneBuilable {
+    
+    public func makeSharedMemberListScene(
+        sharedCollection: SharedReadCollection,
+        memberIDs: [String],
+        listener: SharedMemberListSceneListenable?
+    ) -> SharedMemberListScene {
+        
+        let router = SharedMemberListRouter(nextSceneBuilders: self)
+        let viewModel = SharedMemberListViewModelImple(
+            sharedCollection: sharedCollection,
+            memberIDs: memberIDs,
+            memberUsecase: self.memberUsecase,
+            shareReadCollectionUsecase: self.shareItemUsecase,
+            router: router,
+            listener: listener
+        )
+        let viewController = SharedMemberListViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}

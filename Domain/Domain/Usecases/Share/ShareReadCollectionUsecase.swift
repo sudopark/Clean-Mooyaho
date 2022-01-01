@@ -20,4 +20,6 @@ public protocol ShareReadCollectionUsecase {
     func refreshMySharingColletionIDs()
     
     var mySharingCollectionIDs: Observable<[String]> { get }
+    
+    func excludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void>
 }

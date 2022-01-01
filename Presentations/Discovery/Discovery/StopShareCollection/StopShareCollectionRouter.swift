@@ -23,13 +23,14 @@ public protocol StopShareCollectionRouting: Routing {
     
     func presentShareSheet(with url: String)
     
-    func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection)
+    func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection,
+                                     memberIDs: [String])
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias StopShareCollectionRouterBuildables = EmptyBuilder
+public typealias StopShareCollectionRouterBuildables = SharedMemberListSceneBuilable
 
 public final class StopShareCollectionRouter: Router<StopShareCollectionRouterBuildables>, StopShareCollectionRouting { }
 
@@ -47,7 +48,19 @@ extension StopShareCollectionRouter {
         self.currentScene?.present(activity, animated: true, completion: nil)
     }
     
-    public func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection) {
-        logger.todoImplement()
+    public func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection,
+                                            memberIDs: [String]) {
+        
+        guard let next = self.nextScenesBuilder?.makeSharedMemberListScene(
+            sharedCollection: sharedCollection,
+            memberIDs: memberIDs,
+            listener: nil
+        )
+        else {
+            return
+        }
+        let navigationController = BaseNavigationController(rootViewController: next)
+        navigationController.shouldHideNavigation = false
+        self.currentScene?.present(navigationController, animated: true, completion: nil)
     }
 }

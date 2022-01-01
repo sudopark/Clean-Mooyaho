@@ -86,6 +86,10 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
         return self.fakeSharingCollectionIDs.asObservable()
     }
     
+    public func excludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
+        return .just()
+    }
+    
     public func loadMyharingCollection(for collectionID: String) -> Observable<SharedReadCollection> {
         return self.scenario.mySharingCollectionResult.asMaybe().asObservable()
     }

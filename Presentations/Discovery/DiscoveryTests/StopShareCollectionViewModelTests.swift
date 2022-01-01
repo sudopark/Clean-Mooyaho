@@ -161,7 +161,7 @@ extension StopShareCollectionViewModelTests {
         }
         
         var didFindMemberFor: SharedReadCollection?
-        func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection) {
+        func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection, memberIDs: [String]) {
             self.didFindMemberFor = sharedCollection
         }
     }
