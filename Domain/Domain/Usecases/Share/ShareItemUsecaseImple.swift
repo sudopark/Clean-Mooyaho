@@ -84,7 +84,8 @@ extension ShareItemUsecaseImple {
     }
     
     public func excludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
-        return .empty()
+        return self.shareRepository
+            .requestExcludeCollectionSharing(shareID, for: memberID)
     }
 }
 

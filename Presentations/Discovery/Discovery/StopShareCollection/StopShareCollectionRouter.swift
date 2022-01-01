@@ -54,7 +54,7 @@ extension StopShareCollectionRouter {
         guard let next = self.nextScenesBuilder?.makeSharedMemberListScene(
             sharedCollection: sharedCollection,
             memberIDs: memberIDs,
-            listener: nil
+            listener: self.currentInteractor
         )
         else {
             return

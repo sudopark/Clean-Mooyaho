@@ -140,4 +140,8 @@ extension ShareItemRepository where Self: ShareItemReposiotryDefImpleDependency 
     public func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
         return self.shareItemRemote.requestLoadSharedMemberIDs(of: collectionShareID)
     }
+    
+    public func requestExcludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
+        return self.shareItemRemote.requestExcludeCollectionSharing(shareID, for: memberID)
+    }
 }

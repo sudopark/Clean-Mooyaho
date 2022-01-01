@@ -30,7 +30,7 @@ public protocol DiscoveryMainScene: Scenable {
 
 // MARK: - StopShareCollectionScene Interactable & Listenable
 
-public protocol StopShareCollectionSceneInteractable { }
+public protocol StopShareCollectionSceneInteractable: SharedMemberListSceneListenable { }
 
 public protocol StopShareCollectionSceneListenable: AnyObject { }
 
@@ -72,4 +72,22 @@ public protocol SharedCollectionInfoDialogSceneListenable: AnyObject {
 public protocol SharedCollectionInfoDialogScene: Scenable {
     
     var interactor: SharedCollectionInfoDialogSceneInteractable? { get }
+}
+
+
+// MARK: - SharedMemberListScene Interactable & Listenable
+
+public protocol SharedMemberListSceneInteractable { }
+
+public protocol SharedMemberListSceneListenable: AnyObject {
+    
+    func sharedMemberListDidExcludeMember(_ memberID: String)
+}
+
+
+// MARK: - SharedMemberListScene
+
+public protocol SharedMemberListScene: Scenable {
+    
+    var interactor: SharedMemberListSceneInteractable? { get }
 }

@@ -74,6 +74,14 @@ extension FirebaseServiceImple {
             .flatMap(thenRemoveOrNot)
             .do(onNext: updateInbox)
     }
+    
+    public func requestExcludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
+        
+        return self.updateInboxAction(for: memberID) { inbox in
+            return inbox
+                |> \.sharedIDs %~ { $0.filter { $0 != shareID } }
+        }
+    }
 }
 
 

@@ -14,21 +14,6 @@ import RxCocoa
 import CommonPresenting
 
 
-// MARK: - SharedMemberListScene Interactable & Listenable
-
-public protocol SharedMemberListSceneInteractable { }
-
-public protocol SharedMemberListSceneListenable: AnyObject { }
-
-
-// MARK: - SharedMemberListScene
-
-public protocol SharedMemberListScene: Scenable {
-    
-    var interactor: SharedMemberListSceneInteractable? { get }
-}
-
-
 // MARK: - SharedMemberListViewModelImple conform SharedMemberListSceneInteractor
 
 extension SharedMemberListViewModelImple: SharedMemberListSceneInteractable {

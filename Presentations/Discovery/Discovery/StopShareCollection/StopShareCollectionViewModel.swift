@@ -95,13 +95,6 @@ extension StopShareCollectionViewModelImple {
             .disposed(by: self.disposeBag)
     }
     
-    public func findWhoSharedThieList() {
-        guard let collection = self.subjects.collection.value,
-              let memberIDs = self.subjects.sharedMemberIDs.value, memberIDs.isNotEmpty
-        else { return }
-        self.router.findWhoSharedReadCollection(collection, memberIDs: memberIDs)
-    }
-    
     public func openShare() {
         guard let collection = self.subjects.collection.value else { return }
         let url = "\(self.shareURLScheme)://\(collection.fullSharePath)"
@@ -146,6 +139,25 @@ extension StopShareCollectionViewModelImple {
             }
             self?.router.alertError(error)
         }
+    }
+}
+
+
+// MARK: - StopShareCollectionViewModelImple interactor + exclude
+
+extension StopShareCollectionViewModelImple {
+    
+    public func findWhoSharedThieList() {
+        guard let collection = self.subjects.collection.value,
+              let memberIDs = self.subjects.sharedMemberIDs.value, memberIDs.isNotEmpty
+        else { return }
+        self.router.findWhoSharedReadCollection(collection, memberIDs: memberIDs)
+    }
+    
+    public func sharedMemberListDidExcludeMember(_ memberID: String) {
+        guard let memberIDs = self.subjects.sharedMemberIDs.value else { return }
+        let newMemberIDs = memberIDs.filter { $0 != memberID }
+        self.subjects.sharedMemberIDs.accept(newMemberIDs)
     }
 }
 

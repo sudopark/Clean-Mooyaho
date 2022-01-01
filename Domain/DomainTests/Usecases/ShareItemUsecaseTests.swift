@@ -375,4 +375,17 @@ extension ShareItemUsecaseTests {
         // then
         XCTAssertEqual(ids?.count, 2)
     }
+    
+    func testUsecase_stopSharingForMmeber() {
+        // given
+        let expect = expectation(description: "특정 멤버 공유받는 목록에서 제거")
+        let usecase = self.makeUsecase()
+        
+        // when
+        let excluding = usecase.excludeCollectionSharing("some", for: "memberID")
+        let result: Void? = self.waitFirstElement(expect, for: excluding.asObservable())
+        
+        // then
+        XCTAssertNotNil(result)
+    }
 }
