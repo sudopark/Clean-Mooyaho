@@ -143,6 +143,9 @@
 "Remove from shared list" = "공유받은 목록에서 제거";
 "This reading list was shared with %d user(s)." = "이 읽기목록을 %d명의 유저에게 공유했습니다.";
 "It hasn't been shared with anyone yet." = "아직 아무에게도 공유되지 않았습니다.";
+"Stop sharing" = "공유 중지";
+"Are you sure want to exclude that user from accessing this shared reading list any more?" = "해당 유저가 더이상 이 공유 읽기목록에 접근할 수 없도록 공유받은 유저 목록에서 제거 하시겠습니까?";
+"Shared with" = "다음 유저들에게 공유함";
 
 
 // setting

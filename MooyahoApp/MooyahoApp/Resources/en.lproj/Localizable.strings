@@ -143,7 +143,9 @@
 "Remove from shared list" = "Remove from shared list";
 "This reading list was shared with %d user(s)." = "This reading list was shared with %d user(s).";
 "It hasn't been shared with anyone yet." = "It hasn't been shared with anyone yet.";
-
+"Stop sharing" = "Stop sharing";
+"Are you sure want to exclude that user from accessing this shared reading list any more?" = "Are you sure want to exclude that user from accessing this shared reading list any more?";
+"Shared with" = "Shared with";
 
 // setting
 "Setting" = "Setting";

@@ -22,6 +22,12 @@
 		F6624CD0273F8E3900A9B7AF /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CCF273F8E3900A9B7AF /* UnitTestHelpKit.framework */; };
 		F6624CD2273F8E3F00A9B7AF /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD1273F8E3F00A9B7AF /* UsecaseDoubles.framework */; };
 		F6624CD6273F8F5900A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F612E455273F8D9B000076AF /* DiscoveryScene.framework */; };
+		F6A2B08E278002D200D2236D /* SharedMemberListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2B089278002D200D2236D /* SharedMemberListRouter.swift */; };
+		F6A2B08F278002D200D2236D /* SharedMemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2B08A278002D200D2236D /* SharedMemberListViewController.swift */; };
+		F6A2B090278002D200D2236D /* SharedMemberListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2B08B278002D200D2236D /* SharedMemberListBuilder.swift */; };
+		F6A2B091278002D200D2236D /* SharedMemberListScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2B08C278002D200D2236D /* SharedMemberListScene.swift */; };
+		F6A2B092278002D200D2236D /* SharedMemberListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2B08D278002D200D2236D /* SharedMemberListViewModel.swift */; };
+		F6A2B09827800DE800D2236D /* SharedMemberListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2B09627800DE500D2236D /* SharedMemberListViewModelTests.swift */; };
 		F6ACA11F274222DF0015C632 /* DiscoveryMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ACA11E274222DF0015C632 /* DiscoveryMainViewModelTests.swift */; };
 		F6D8FBF6274358CB0096B186 /* StopShareCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF1274358CB0096B186 /* StopShareCollectionRouter.swift */; };
 		F6D8FBF7274358CB0096B186 /* StopShareCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8FBF2274358CB0096B186 /* StopShareCollectionViewController.swift */; };
@@ -72,6 +78,12 @@
 		F6624CCD273F8E2E00A9B7AF /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CCF273F8E3900A9B7AF /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CD1273F8E3F00A9B7AF /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6A2B089278002D200D2236D /* SharedMemberListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMemberListRouter.swift; sourceTree = "<group>"; };
+		F6A2B08A278002D200D2236D /* SharedMemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMemberListViewController.swift; sourceTree = "<group>"; };
+		F6A2B08B278002D200D2236D /* SharedMemberListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMemberListBuilder.swift; sourceTree = "<group>"; };
+		F6A2B08C278002D200D2236D /* SharedMemberListScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMemberListScene.swift; sourceTree = "<group>"; };
+		F6A2B08D278002D200D2236D /* SharedMemberListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMemberListViewModel.swift; sourceTree = "<group>"; };
+		F6A2B09627800DE500D2236D /* SharedMemberListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMemberListViewModelTests.swift; sourceTree = "<group>"; };
 		F6ACA11E274222DF0015C632 /* DiscoveryMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMainViewModelTests.swift; sourceTree = "<group>"; };
 		F6D8FBF1274358CB0096B186 /* StopShareCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionRouter.swift; sourceTree = "<group>"; };
 		F6D8FBF2274358CB0096B186 /* StopShareCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopShareCollectionViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +159,7 @@
 				F65D11152760F42C008C48DD /* AllSharedCollections */,
 				F6D8FBE6274357310096B186 /* StopShareCollection */,
 				F6F46B6A27480CDD00CAC510 /* SharedCollectionInfoDialog */,
+				F6A2B0882780024D00D2236D /* SharedMemberList */,
 				F612E458273F8D9B000076AF /* DiscoveryScene.h */,
 			);
 			path = Discovery;
@@ -161,6 +174,7 @@
 				F6ED41F8274415B40082DE18 /* SharedCollectionItemsViewModelTests.swift */,
 				F6F46B75274811C400CAC510 /* SharedCollectionInfoDialogViewModelTests.swift */,
 				F65D11202760F6DD008C48DD /* AllSharedCollectionsViewModelTests.swift */,
+				F6A2B09627800DE500D2236D /* SharedMemberListViewModelTests.swift */,
 			);
 			path = DiscoveryTests;
 			sourceTree = "<group>";
@@ -188,6 +202,18 @@
 				F6624CC3273F8E1300A9B7AF /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6A2B0882780024D00D2236D /* SharedMemberList */ = {
+			isa = PBXGroup;
+			children = (
+				F6A2B089278002D200D2236D /* SharedMemberListRouter.swift */,
+				F6A2B08A278002D200D2236D /* SharedMemberListViewController.swift */,
+				F6A2B08B278002D200D2236D /* SharedMemberListBuilder.swift */,
+				F6A2B08C278002D200D2236D /* SharedMemberListScene.swift */,
+				F6A2B08D278002D200D2236D /* SharedMemberListViewModel.swift */,
+			);
+			path = SharedMemberList;
 			sourceTree = "<group>";
 		};
 		F6D8FBE6274357310096B186 /* StopShareCollection */ = {
@@ -344,22 +370,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6A2B092278002D200D2236D /* SharedMemberListViewModel.swift in Sources */,
 				F6ED41EC2743F40B0082DE18 /* SharedCollectionItemsScene.swift in Sources */,
 				F65D111E2760F464008C48DD /* AllSharedCollectionsScene.swift in Sources */,
 				F6D8FBF6274358CB0096B186 /* StopShareCollectionRouter.swift in Sources */,
+				F6A2B091278002D200D2236D /* SharedMemberListScene.swift in Sources */,
 				F6D8FBFA274358CB0096B186 /* StopShareCollectionViewModel.swift in Sources */,
 				F6F65634274048CE0069F253 /* DiscoveryMainViewController.swift in Sources */,
 				F6F65636274048CE0069F253 /* DiscoveryMainScene.swift in Sources */,
+				F6A2B090278002D200D2236D /* SharedMemberListBuilder.swift in Sources */,
 				F6D8FBF9274358CB0096B186 /* StopShareCollectionScene.swift in Sources */,
 				F65D111C2760F464008C48DD /* AllSharedCollectionsViewController.swift in Sources */,
 				F65D111B2760F464008C48DD /* AllSharedCollectionsRouter.swift in Sources */,
 				F6ED41E92743F40B0082DE18 /* SharedCollectionItemsRouter.swift in Sources */,
+				F6A2B08E278002D200D2236D /* SharedMemberListRouter.swift in Sources */,
 				F6F65637274048CE0069F253 /* DiscoveryMainViewModel.swift in Sources */,
 				F6F46B7327480D0500CAC510 /* SharedCollectionInfoDialogScene.swift in Sources */,
 				F6ED41ED2743F40B0082DE18 /* SharedCollectionItemsViewModel.swift in Sources */,
 				F6F46B7427480D0500CAC510 /* SharedCollectionInfoDialogViewModel.swift in Sources */,
 				F6D8FBF7274358CB0096B186 /* StopShareCollectionViewController.swift in Sources */,
 				F65D111D2760F464008C48DD /* AllSharedCollectionsBuilder.swift in Sources */,
+				F6A2B08F278002D200D2236D /* SharedMemberListViewController.swift in Sources */,
 				F6ED41EA2743F40B0082DE18 /* SharedCollectionItemsViewController.swift in Sources */,
 				F6F46B7027480D0500CAC510 /* SharedCollectionInfoDialogRouter.swift in Sources */,
 				F6ED41F12743F5870082DE18 /* SharedCollectionViews.swift in Sources */,
@@ -375,6 +406,7 @@
 			files = (
 				F6ED41FA274415D80082DE18 /* SharedCollectionItemsViewModelTests.swift in Sources */,
 				F6ACA11F274222DF0015C632 /* DiscoveryMainViewModelTests.swift in Sources */,
+				F6A2B09827800DE800D2236D /* SharedMemberListViewModelTests.swift in Sources */,
 				F6F46B77274811E100CAC510 /* SharedCollectionInfoDialogViewModelTests.swift in Sources */,
 				F612E463273F8D9B000076AF /* DiscoveryTests.swift in Sources */,
 				F6D8FBFE274366E40096B186 /* StopShareCollectionViewModelTests.swift in Sources */,

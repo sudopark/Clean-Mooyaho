@@ -470,6 +470,7 @@
 				F6391C65271DB8BA0000F927 /* Remind */,
 				F6C1C8D627255564007277A5 /* Memo */,
 				2BFF240426405A64008C52EB /* Suggest+Search */,
+				F6A2B0932780084100D2236D /* Paging */,
 				F640617D2735B03400902787 /* Migration */,
 				F612BDE627406AD80017FD77 /* Share */,
 				F617F1002768E73D00D88F9C /* Help */,
@@ -670,7 +671,6 @@
 				F6A8CE3D2711756A00CA6D3D /* SuggestCategoryUsecase.swift */,
 				F6907F17274FD657007805EA /* SuggestQueryUsecase.swift */,
 				F61FC989274A091500E82D16 /* IntegratedSearchUsecase.swift */,
-				F6079331275E6A2A00616E13 /* PagingUsecase.swift */,
 			);
 			path = "Suggest+Search";
 			sourceTree = "<group>";
@@ -837,6 +837,14 @@
 				F6152944264EE1E7003BCB59 /* HoorayRepository.swift */,
 			);
 			path = Deprecated;
+			sourceTree = "<group>";
+		};
+		F6A2B0932780084100D2236D /* Paging */ = {
+			isa = PBXGroup;
+			children = (
+				F6079331275E6A2A00616E13 /* PagingUsecase.swift */,
+			);
+			path = Paging;
 			sourceTree = "<group>";
 		};
 		F6A8CE3A271174EA00CA6D3D /* Suggest */ = {

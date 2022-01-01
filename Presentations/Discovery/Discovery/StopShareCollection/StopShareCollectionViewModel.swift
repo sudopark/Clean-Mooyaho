@@ -96,8 +96,10 @@ extension StopShareCollectionViewModelImple {
     }
     
     public func findWhoSharedThieList() {
-        guard let collection = self.subjects.collection.value else { return }
-        self.router.findWhoSharedReadCollection(collection)
+        guard let collection = self.subjects.collection.value,
+              let memberIDs = self.subjects.sharedMemberIDs.value, memberIDs.isNotEmpty
+        else { return }
+        self.router.findWhoSharedReadCollection(collection, memberIDs: memberIDs)
     }
     
     public func openShare() {

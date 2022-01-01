@@ -82,6 +82,10 @@ extension ShareItemUsecaseImple {
             .observeWithCache([String].self, key: SharedDataKeys.mySharingCollectionIDs.rawValue)
             .compactMap { $0 }
     }
+    
+    public func excludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
+        return .empty()
+    }
 }
 
 
