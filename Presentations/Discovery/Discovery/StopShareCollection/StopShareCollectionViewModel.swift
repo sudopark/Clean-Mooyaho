@@ -26,6 +26,7 @@ public protocol StopShareCollectionViewModel: AnyObject {
     func requestStopShare()
     
     // presenter
+    var sharedMemberCount: Observable<Int> { get }
     var isStopSharing: Observable<Bool> { get }
     var collectionTitle: Observable<String> { get }
 }
@@ -61,6 +62,7 @@ public final class StopShareCollectionViewModelImple: StopShareCollectionViewMod
     fileprivate final class Subjects {
         let collection = BehaviorRelay<SharedReadCollection?>(value: nil)
         let isStopSharing = BehaviorRelay<Bool>(value: false)
+        let sharedMemberIDs = BehaviorRelay<[String]?>(value: nil)
     }
     
     private let subjects = Subjects()
@@ -76,9 +78,20 @@ extension StopShareCollectionViewModelImple {
         
         let refreshCollection: (SharedReadCollection) -> Void = { [weak self] collection in
             self?.subjects.collection.accept(collection)
+            self?.refreshSharedMemberIDs(collection.shareID)
         }
         self.shareCollectionUsecase.loadMyharingCollection(for: self.collectionID)
             .subscribe(onNext: refreshCollection, onError: self.alertError())
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func refreshSharedMemberIDs(_ shareID: String) {
+        let refreshSharedMemberIDs: ([String]) -> Void = { [weak self] ids in
+            self?.subjects.sharedMemberIDs.accept(ids)
+        }
+        
+        self.shareCollectionUsecase.loadSharedMemberIDs(of: shareID)
+            .subscribe(onSuccess: refreshSharedMemberIDs)
             .disposed(by: self.disposeBag)
     }
     
@@ -138,6 +151,12 @@ extension StopShareCollectionViewModelImple {
 // MARK: - StopShareCollectionViewModelImple Presenter
 
 extension StopShareCollectionViewModelImple {
+    
+    public var sharedMemberCount: Observable<Int> {
+        return self.subjects.sharedMemberIDs
+            .compactMap { $0?.count }
+            .distinctUntilChanged()
+    }
     
     public var collectionTitle: Observable<String> {
         return self.subjects.collection

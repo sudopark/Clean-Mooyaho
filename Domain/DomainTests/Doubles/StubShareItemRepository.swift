@@ -73,4 +73,9 @@ class StubShareItemRepository: ShareItemRepository {
             return .just(collections)
         }
     }
+    
+    var loadSharedMemberIDResult: Result<[String], Error> = .success([])
+    func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        return self.loadSharedMemberIDResult.asMaybe()
+    }
 }

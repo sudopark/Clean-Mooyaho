@@ -141,6 +141,8 @@
 "Sharing stopped." = "공유가 중지되었습니다.";
 "Shared Reading List" = "공유받은 읽기목록";
 "Remove from shared list" = "공유받은 목록에서 제거";
+"This reading list was shared with %d user(s)." = "이 읽기목록을 %d명의 유저에게 공유했습니다.";
+"It hasn't been shared with anyone yet." = "아직 아무에게도 공유되지 않았습니다.";
 
 
 // setting

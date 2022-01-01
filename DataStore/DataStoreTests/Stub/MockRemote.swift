@@ -333,6 +333,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestLoadSharedCollections") ?? .empty()
     }
     
+    func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        return self.resolve(key: "requestLoadSharedMemberIDs") ?? .empty()
+    }
+    
     // help
     func requestLeaveFeedback(_ feedback: Feedback) -> Maybe<Void> {
         return self.resolve(key: "requestLeaveFeedback") ?? .empty()

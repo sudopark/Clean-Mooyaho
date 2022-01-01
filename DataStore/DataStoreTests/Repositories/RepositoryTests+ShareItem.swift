@@ -281,6 +281,21 @@ extension RepositoryTests_ShareItem {
         // then
         XCTAssertEqual(collections?.count, 1)
     }
+    
+    func testRepository_loadSharedMemberIDs() {
+        // given
+        let expect = expectation(description: "공유받는 유저 아이디 목록 로드")
+        self.mockRemote.register(key: "requestLoadSharedMemberIDs") {
+            Maybe<[String]>.just(["some"])
+        }
+        
+        // when
+        let loading = self.repository.requestLoadSharedMemberIDs(of: "shareID")
+        let ids = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(ids?.count, 1)
+    }
 }
 
 

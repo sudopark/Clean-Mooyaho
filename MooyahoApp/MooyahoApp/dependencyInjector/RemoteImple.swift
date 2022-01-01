@@ -342,6 +342,10 @@ extension RemoteImple {
         return self.firebaseRemote.requestLoadSharedCollections(by: shareIDs)
     }
     
+    func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        return self.firebaseRemote.requestLoadSharedMemberIDs(of: collectionShareID)
+    }
+    
     // help
     func requestLeaveFeedback(_ feedback: Feedback) -> Maybe<Void> {
         return self.firebaseRemote.requestLeaveFeedback(feedback)

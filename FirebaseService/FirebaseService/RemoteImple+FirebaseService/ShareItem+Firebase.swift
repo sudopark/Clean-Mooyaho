@@ -114,6 +114,13 @@ extension FirebaseServiceImple {
             .map { $0.first }
             .flatMap(thenLoadCollection)
     }
+    
+    public func requestLoadSharedMemberIDs(of collectionShareID: String) -> Maybe<[String]> {
+        let collectionRef = self.fireStoreDB.collection(.sharedInbox)
+        let query = collectionRef.whereField(Key.shared.rawValue, arrayContains: collectionShareID)
+        let loadInboxes: Maybe<[SharedInbox]> = self.load(query: query)
+        return loadInboxes.map { $0.map { $0.ownerID } }
+    }
 }
 
 

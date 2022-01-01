@@ -141,6 +141,8 @@
 "Sharing stopped." = "Sharing stopped.";
 "Shared Reading List" = "Shared Reading List";
 "Remove from shared list" = "Remove from shared list";
+"This reading list was shared with %d user(s)." = "This reading list was shared with %d user(s).";
+"It hasn't been shared with anyone yet." = "It hasn't been shared with anyone yet.";
 
 
 // setting
