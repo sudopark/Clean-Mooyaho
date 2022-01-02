@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import Alamofire
+import Prelude
+import Optics
 
 import Domain
 
@@ -118,7 +120,10 @@ extension HttpAPI {
             
             let code = response.urlResponse?.statusCode ?? -1
             logger.print(level: .debug, "status code: \(code)")
-            logger.print(level: .debug, "url: \(response.urlResponse?.url?.absoluteString ?? "")")
+            let secureMessage = SecureLoggingMessage()
+                |> \.fullText .~ "url: %@"
+                |> \.secureField .~ [response.urlResponse?.url?.absoluteString ?? ""]
+            logger.print(level: .debug, secureMessage)
             
             let decodeResult: Result<T, Error> = response.dataResult.asDecodeResult()
             switch decodeResult {

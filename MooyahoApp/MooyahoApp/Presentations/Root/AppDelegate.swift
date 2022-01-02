@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
         self.dependencyInjector = DependencyInjector()
+        
+        logger.attachCrashLogger(self.dependencyInjector.shared.crashLogger)
+        
         let router = ApplicationRootRouter(nextSceneBuilders: self.dependencyInjector)
         let usecase = self.dependencyInjector.applicationUsecase
         let shareUsecase = self.dependencyInjector.shareItemUsecase

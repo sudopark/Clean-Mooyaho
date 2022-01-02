@@ -11,7 +11,7 @@ import Foundation
 
 public let logger: Logger = Logger()
 
-public struct Logger {
+public final class Logger {
     
     public enum Level {
         
@@ -41,10 +41,32 @@ public struct Logger {
             }
         }
     }
+    
+    private var crashLogger: CrashLogger?
 }
 
 
+public struct SecureLoggingMessage {
+    public var fullText: String = ""
+    public var secureField: [Any] = []
+    
+    public init() { }
+    
+    var message: String {
+        return String(format: fullText, secureField)
+    }
+    
+    var securedMessage: String {
+        let obfuscatedFields = self.secureField.map { _ in "***" }
+        return String(format: fullText, arguments: obfuscatedFields)
+    }
+}
+
 extension Logger {
+    
+    public func attachCrashLogger(_ logger: CrashLogger) {
+        self.crashLogger = logger
+    }
     
     private var current: String {
         let format = DateFormatter()
@@ -58,7 +80,23 @@ extension Logger {
     }
     
     public func print(level: Level, _ message: String, file: StaticString = #file, line: UInt = #line) {
-        Swift.print("\(current): [\(level.emoji)][\(level.key)][\(self.fileName(file)) \(line)L] -> \(message)")
+        
+        let buildMessage: () -> String = {
+            return "\(self.current): [\(level.emoji)][\(level.key)][\(self.fileName(file)) \(line)L] -> \(message)"
+        }
+        
+        #if DEBUG
+            Swift.print(buildMessage())
+        #endif
+        self.crashLogger?.log(buildMessage())
+    }
+    
+    public func print(level: Level, _ secureMessage: SecureLoggingMessage, file: StaticString = #file, line: UInt = #line) {
+        
+        #if DEBUG
+        Swift.print("\(self.current): [\(level.emoji)][\(level.key)][\(self.fileName(file)) \(line)L] -> \(secureMessage.message)")
+        #endif
+        self.crashLogger?.log("\(self.current): [\(level.emoji)][\(level.key)][\(self.fileName(file)) \(line)L] -> \(secureMessage.securedMessage)")
     }
     
     public func todoImplement(message: String? = nil,

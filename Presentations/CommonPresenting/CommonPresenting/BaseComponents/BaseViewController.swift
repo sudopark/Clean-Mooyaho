@@ -11,8 +11,15 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Domain
+
 
 open class BaseViewController: UIViewController, UIContextAccessable {
     
     public let disposeBag: DisposeBag = DisposeBag()
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        logger.print(level: .debug, "will Appear -> \(String(describing: Self.self))")
+    }
 }

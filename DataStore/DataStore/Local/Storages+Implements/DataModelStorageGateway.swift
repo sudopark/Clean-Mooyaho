@@ -9,6 +9,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 
@@ -130,7 +132,10 @@ extension DataModelStorageGatewayImple {
     }
     
     public func openUserStorage(_ userID: String) -> Maybe<Void> {
-        logger.print(level: .info, "request open user storage: \(userID)")
+        let secureMessage = SecureLoggingMessage()
+            |> \.fullText .~ "request open user storage: %@"
+            |> \.secureField .~ [userID]
+        logger.print(level: .info, secureMessage)
         let storage = self.makeUserStorageIfNeed(userID)
         return storage.openDatabase()
     }

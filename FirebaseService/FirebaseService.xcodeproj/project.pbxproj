@@ -88,6 +88,7 @@
 		F6CFA57B264660EA00F9A049 /* MockHttpRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57A264660EA00F9A049 /* MockHttpRemote.swift */; };
 		F6CFA57D2646659F00F9A049 /* FirebaseServiceImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTests.swift */; };
 		F6CFA58226466A8100F9A049 /* SearchPlace.json in Resources */ = {isa = PBXBuildFile; fileRef = F6CFA58126466A8100F9A049 /* SearchPlace.json */; };
+		F6E9F78627817A8700FF992F /* FirebaseCrashLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E9F78527817A8700FF992F /* FirebaseCrashLogger.swift */; };
 		F6F35FC12715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */; };
 /* End PBXBuildFile section */
 
@@ -219,6 +220,7 @@
 		F6CFA57A264660EA00F9A049 /* MockHttpRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHttpRemote.swift; sourceTree = "<group>"; };
 		F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseServiceImpleTests.swift; sourceTree = "<group>"; };
 		F6CFA58126466A8100F9A049 /* SearchPlace.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchPlace.json; sourceTree = "<group>"; };
+		F6E9F78527817A8700FF992F /* FirebaseCrashLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCrashLogger.swift; sourceTree = "<group>"; };
 		F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItemOptionRemote+Firebase.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -292,9 +294,10 @@
 		2B39E17126386CEC003EE954 /* FirebaseService */ = {
 			isa = PBXGroup;
 			children = (
-				F6BA7DB2278149810020B430 /* GoogleSignIn */,
 				F67848DB265123D20074C344 /* RemotePolicy.swift */,
 				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
+				F6E9F78527817A8700FF992F /* FirebaseCrashLogger.swift */,
+				F6BA7DB2278149810020B430 /* GoogleSignIn */,
 				2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */,
 				F68B209926A5D29500DB30CC /* FCM+Firebase */,
 				F67848D8265122690074C344 /* Utills */,
@@ -735,6 +738,7 @@
 				F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */,
 				2B39E2002638708D003EE954 /* FirebaseService.swift in Sources */,
 				F6684E002647CC1000820368 /* GFBase32Utils.m in Sources */,
+				F6E9F78627817A8700FF992F /* FirebaseCrashLogger.swift in Sources */,
 				F6C99B2C2730356100D42A90 /* ItemCategory+Mapping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

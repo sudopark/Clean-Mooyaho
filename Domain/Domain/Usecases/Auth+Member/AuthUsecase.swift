@@ -158,7 +158,10 @@ extension AuthUsecaseImple {
     }
     
     private func updateAccountInfoOnSharedStore(_ auth: Auth, member: Member?) {
-        logger.print(level: .info, "current auth changed: \(auth) and member: \(String(describing: member))")
+        let secureLogMessage = SecureLoggingMessage()
+            |> \.fullText .~ "current auth changed userID: %@ and member is not nil?: \(member != nil)"
+            |> \.secureField .~ [auth.userID]
+        logger.print(level: .info, secureLogMessage)
         self.authInfoManager.updateAuth(auth)
         guard let me = member else { return }
         self.sharedDataStroeService
