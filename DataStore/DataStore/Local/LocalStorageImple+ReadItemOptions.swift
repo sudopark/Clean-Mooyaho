@@ -38,4 +38,12 @@ extension LocalStorageImple {
     public func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
         return environmentStorage.updateReadItemCustomOrder(for: collectionID, itemIDs: itemIDs)
     }
+    
+    public func isAddItemGuideEverShown() -> Bool {
+        return self.environmentStorage.isAddItemGuideEverShown()
+    }
+    
+    public func markAsAddItemGuideShown() {
+        return self.environmentStorage.markAsAddItemGuideShown()
+    }
 }

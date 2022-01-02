@@ -28,6 +28,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
     var mockMemberUsecase: MockMemberUsecase!
     var stubReadLinkAddSuggestUsecase: StubReadLinkAddSuggestUsecase!
     var stubShareUsecase: StubShareItemUsecase!
+    var fakeOptionUsecase: FakeReadItemOptionUsecase!
     var spyRouter: SpyRouter!
     var viewModel: MainViewModelImple!
     
@@ -38,7 +39,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.mockMemberUsecase = .init()
         self.spyRouter = .init()
         
-        let fakeUsecase = FakeReadItemOptionUsecase()
+        self.fakeOptionUsecase = FakeReadItemOptionUsecase()
         
         self.stubReadLinkAddSuggestUsecase = .init()
         
@@ -47,7 +48,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         
         self.viewModel = .init(authUsecase: self.mockAUthUsecase,
                                memberUsecase: self.mockMemberUsecase,
-                               readItemOptionUsecase: fakeUsecase,
+                               readItemOptionUsecase: self.fakeOptionUsecase,
                                addItemSuggestUsecase: self.stubReadLinkAddSuggestUsecase,
                                shareCollectionUsecase: self.stubShareUsecase,
                                router: self.spyRouter)
@@ -58,6 +59,7 @@ class MainViewModelTests: BaseTestCase, WaitObservableEvents {
         self.mockAUthUsecase = nil
         self.mockMemberUsecase = nil
         self.stubReadLinkAddSuggestUsecase = nil
+        self.fakeOptionUsecase = nil
         self.stubShareUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
@@ -167,6 +169,23 @@ extension MainViewModelTests {
         
         // then
         XCTAssertNotNil(suggestURL)
+    }
+    
+    func testViewModel_whenAddItemGuideNotShownBefore_showGuide() {
+        // given
+        // when
+        let needShow = self.viewModel.isNeedShowAddItemGuide()
+        // then
+        XCTAssertEqual(needShow, true)
+    }
+    
+    func testViewModel_whenAddItemGuideShownBefore_notShowGuide() {
+        // given
+        self.fakeOptionUsecase.scenario.isAddIttemGuideEverShown = true
+        // when
+        let needShow = self.viewModel.isNeedShowAddItemGuide()
+        // then
+        XCTAssertEqual(needShow, false)
     }
 }
 

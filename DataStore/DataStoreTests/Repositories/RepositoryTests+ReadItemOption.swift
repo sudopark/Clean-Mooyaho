@@ -225,6 +225,29 @@ extension RepositoryTests_ReadItemOption {
         // then
         XCTAssertNotNil(error)
     }
+    
+    func testRepository_loadIsAddItemGuideEverShown() {
+        // given
+        self.mockLocal.addItemGuideEverShown = true
+        
+        // when
+        let shown = self.dummyRepository.isAddItemGuideEverShownWithMarking()
+        
+        // then
+        XCTAssertEqual(shown, true)
+    }
+    
+    func testRepository_whenLoadIsAddItemGuideEverShownAndIsFirstTime_markAsRead() {
+        // given
+        self.mockLocal.addItemGuideEverShown = false
+        
+        // when
+        let shown = self.dummyRepository.isAddItemGuideEverShownWithMarking()
+        
+        // then
+        XCTAssertEqual(shown, false)
+        XCTAssertEqual(self.mockLocal.didMarkAsAddItemGuideShown, true)
+    }
 }
 
 

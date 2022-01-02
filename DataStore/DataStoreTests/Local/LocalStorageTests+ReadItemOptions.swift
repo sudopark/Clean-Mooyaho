@@ -60,4 +60,16 @@ class LocalStorageTests_ReadItemOptions: BaseLocalStorageTests {
         // then
         XCTAssertEqual(order, ["1", "2"])
     }
+    
+    func testStorage_loadAndUpdateAddItemGuideIsShown() {
+        // given
+        let isShownBeforeUpdate = self.local.isAddItemGuideEverShown()
+        // when
+        self.local.markAsAddItemGuideShown()
+        let isShownAfterUpdate = self.local.isAddItemGuideEverShown()
+        
+        // then
+        XCTAssertEqual(isShownBeforeUpdate, false)
+        XCTAssertEqual(isShownAfterUpdate, true)
+    }
 }

@@ -10,6 +10,8 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -51,6 +53,8 @@ public final class MainViewController: BaseViewController, MainScene {
         return self.mainView.bottomSlideEmbedView
     }
     
+    private var tipsView: EasyTipView?
+    
     public init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -90,6 +94,7 @@ extension MainViewController {
         self.bindBottomBarToolButtons()
         self.bindShareCollectionRootSwitching()
         self.bindSearch()
+        self.bindShowAddItemGuide()
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
@@ -117,6 +122,7 @@ extension MainViewController {
         
         self.mainView.addItemButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
+                self?.tipsView?.dismiss()
                 self?.viewModel.requestAddNewItem()
             })
             .disposed(by: self.disposeBag)
@@ -273,6 +279,29 @@ extension MainViewController {
         self.mainView.shrinkButton.backgroundColor = newValue
             ? self.uiContext.colors.accentColor
             : self.uiContext.colors.raw.lightGray
+    }
+    
+    private func bindShowAddItemGuide() {
+        
+        self.rx.viewDidAppear.take(1)
+            .delay(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.showAddItemGuideIfNeed()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func showAddItemGuideIfNeed() {
+        
+        guard self.viewModel.isNeedShowAddItemGuide() else { return }
+        
+        let message = "Click the Next button to add a new reading list or archive an item to read.".localized
+        let preference = EasyTipView.Preferences()
+            |> \.drawing.backgroundColor .~ self.uiContext.colors.accentColor
+        |> \.drawing.arrowPosition .~ .bottom
+        
+        self.tipsView = EasyTipView(text: message, preferences: preference)
+        self.tipsView?.show(animated: true, forView: self.mainView.addItemButton)
     }
 }
 

@@ -163,6 +163,10 @@ public protocol ReadItemOptionsLocalStorage {
     func fetchReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?>
     
     func updateReadItemCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
+    
+    func isAddItemGuideEverShown() -> Bool
+    
+    func markAsAddItemGuideShown()
 }
 
 

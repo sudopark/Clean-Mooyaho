@@ -236,6 +236,17 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "updateReadItemCustomOrder") ?? .empty()
     }
     
+    var addItemGuideEverShown: Bool = false
+    func isAddItemGuideEverShown() -> Bool {
+        return addItemGuideEverShown
+    }
+    
+    var didMarkAsAddItemGuideShown: Bool = false
+    func markAsAddItemGuideShown() {
+        self.didMarkAsAddItemGuideShown = true
+        self.addItemGuideEverShown = true
+    }
+    
     func fetchPreview(_ url: String) -> Maybe<LinkPreview?> {
         return self.resolve(key: "fetchPreview") ?? .empty()
     }

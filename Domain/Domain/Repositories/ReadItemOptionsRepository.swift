@@ -25,4 +25,6 @@ public protocol ReadItemOptionsRepository {
     
     func requestUpdateCustomSortOrder(for collectionID: String,
                                       itemIDs: [String]) -> Maybe<Void>
+    
+    func isAddItemGuideEverShownWithMarking() -> Bool
 }

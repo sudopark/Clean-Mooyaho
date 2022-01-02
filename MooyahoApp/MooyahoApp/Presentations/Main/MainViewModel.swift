@@ -49,6 +49,7 @@ public protocol MainViewModel: AnyObject {
     var currentSharedCollectionOwnerInfo: Observable<Member?> { get }
     var isIntegratedSearching: Observable<Bool> { get}
     var isSearchFinished: Observable<Void> { get }
+    func isNeedShowAddItemGuide() -> Bool
 }
 
 
@@ -429,6 +430,10 @@ extension MainViewModelImple {
     
     public var isSearchFinished: Observable<Void> {
         return self.subjects.finishSearch
+    }
+    
+    public func isNeedShowAddItemGuide() -> Bool {
+        return self.readItemOptionUsecase.isAddItemGuideEverShownWithMarking() == false
     }
 }
 
