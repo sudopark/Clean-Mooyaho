@@ -68,7 +68,9 @@
 "Member profile" = "Member profile";
 "Name" = "Name";
 "Unnamed member" = "Unnamed member";
-
+"Log in to use the following services" = "Log in to use the following services";
+"You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded)." = "You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded).";
+"Share your organized reading list with others.\nOr you can read reading lists shared by others." = "Share your reading list with others.\nOr you can read reading lists shared by others.";
 
 // read
 "Priority" = "Priority";
@@ -88,7 +90,7 @@
 "Favorite items" = "Favorite items";
 
 
-// edi
+// edit
 "Select a new item type" = "Select a new item type";
 "Add a new collection" = "Add a new collection";
 "Add a new read link" = "Add a new read link";
@@ -121,6 +123,8 @@
 "To use remind service activate alert setting" = "To use remind service activate alert setting";
 "Setting" = "Setting";
 "Select a future time" = "Select a future time";
+"Enter the URL of a post you want to read later or archive." = "Enter the URL of a post you want to read later or archive.";
+"In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications." = "In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications.";
 
 
 // viewer

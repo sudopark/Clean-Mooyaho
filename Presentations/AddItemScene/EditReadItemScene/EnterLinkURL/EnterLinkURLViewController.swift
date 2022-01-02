@@ -24,7 +24,7 @@ public final class EnterLinkURLViewController: BaseViewController, EnterLinkURLS
     private let titleLabel = UILabel()
     private let textField = UITextField()
     private let underLineView = UIView()
-    private let guideView = UIView()
+    private let guideTipsView = DescriptionTipsView()
     private let confirmButton = ConfirmButton()
     
     let viewModel: EnterLinkURLViewModel
@@ -86,12 +86,9 @@ extension EnterLinkURLViewController {
     
     private func bindConfirmButton() {
         
-        logger.print(level: .debug, "bind confirm button")
-        
         self.buttonConfirmBinding?.dispose()
         self.buttonConfirmBinding = self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
-                logger.print(level: .debug, "move confirm called")
                 self?.viewModel.confirmEnter()
             })
     }
@@ -126,10 +123,20 @@ extension EnterLinkURLViewController: Presenting {
             $0.heightAnchor.constraint(equalToConstant: 1)
         }
         
-        self.view.addSubview(guideView)
-        guideView.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+        self.view.addSubview(guideTipsView)
+        guideTipsView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 14)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
+            $0.topAnchor.constraint(equalTo: underLineView.bottomAnchor, constant: 10)
+        }
+        guideTipsView.setupLayout()
+        
+        let spaceView = UIView()
+        spaceView.backgroundColor = .clear
+        self.view.addSubview(spaceView)
+        spaceView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
             $0.topAnchor.constraint(equalTo: underLineView.bottomAnchor, constant: 10)
             $0.heightAnchor.constraint(equalToConstant: 190)
         }
@@ -138,7 +145,7 @@ extension EnterLinkURLViewController: Presenting {
         confirmButton.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.topAnchor.constraint(equalTo: guideView.bottomAnchor, constant: 20)
+            $0.topAnchor.constraint(equalTo: spaceView.bottomAnchor, constant: 20)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
             $0.heightAnchor.constraint(equalToConstant: 40)
         }
@@ -159,7 +166,13 @@ extension EnterLinkURLViewController: Presenting {
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
         
-        self.guideView.backgroundColor = .black
+        self.guideTipsView.setupStyling()
+        let descriptions: [String] = [
+            "Enter the URL of a post you want to read later or archive.".localized,
+            "In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications.".localized
+        ]
+        self.guideTipsView.updateTipsSpacing(8)
+        self.guideTipsView.setupDescriptions(descriptions)
         
         self.confirmButton.setupStyling()
         self.confirmButton.isEnabled = false

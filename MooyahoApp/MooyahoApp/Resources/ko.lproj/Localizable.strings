@@ -68,6 +68,9 @@
 "Member profile" = "멤버 프로필";
 "Name" = "이름";
 "Unnamed member" = "이름없는 멤버";
+"Log in to use the following services" = "로그인하여 다음 서비스를 이용해 보세요";
+"You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded)." = "읽기 목록을 백업하고 다른 iOS 기기에서 동기화 하세요\n(지원하는 플랫폼은 확장 예정입니다.).";
+"Share your organized reading list with others.\nOr you can read reading lists shared by others." = "정리한 읽기목록을 타인에게 공유해보세요.\n물론 타인이 공유한 목록을 조회하는것도 가능합니다.";
 
 
 // read
@@ -88,7 +91,7 @@
 "Favorite items" = "즐겨찾는 아이템들";
 
 
-// edi
+// edit
 "Select a new item type" = "새로 추가할 종류 타입 선택";
 "Add a new collection" = "읽기목록 생성";
 "Add a new read link" = "읽을 링크 추가";
@@ -121,6 +124,8 @@
 "To use remind service activate alert setting" = "리마인드 서비스를 사용하기위해 알림권한을 설정해주세요.";
 "Setting" = "설정";
 "Select a future time" = "미래의 시간을 선택하세요";
+"Enter the URL of a post you want to read later or archive." = "나중에 읽을 예정이거나 보관하고 싶은 게시글의 URL을 입력해주세요.";
+"In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications." = "다음 단계에서 아이템에 태그를 추가하거나\n리마인드 알림을 추가하는 등 추가적인 작업을 진행할 수 있습니다.";
 
 
 // viewer
