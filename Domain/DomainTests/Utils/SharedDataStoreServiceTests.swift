@@ -169,3 +169,33 @@ extension SharedDataStoreServiceTests {
         XCTAssertEqual(valueStream, [[0], [0, 1, 2]])
     }
 }
+
+extension SharedDataStoreServiceTests {
+    
+    func testStore_whenAfterFlush_emitAllObservableValuesAsNil() {
+        // given
+        let expect = expectation(description: "flush 이후에 저장된 모든 데이터 nil로 방출")
+        expect.expectedFulfillmentCount = 3
+        let (k1 ,k2) = ("k1", "k2")
+        self.store.update(Int.self, key: k1, value: 1)
+        self.store.update(Int.self, key: k2, value: 2)
+        
+        // when
+        let valuesForK1andK2 = Observable.combineLatest(
+            self.store.observeWithCache(Int.self, key: k1),
+            self.store.observeWithCache(Int.self, key: k2)
+        )
+        .distinctUntilChanged { $0.0 == $1.0 && $0.1 == $1.1 }
+        let valuePairs = self.waitElements(expect, for: valuesForK1andK2) {
+            self.store.flush()
+        }
+        
+        // then
+        let values0 = valuePairs.map { pair in pair.0 }
+        let values1 = valuePairs.map { pair in pair.1 }
+        XCTAssertEqual(values0.first, 1)
+        XCTAssertEqual(values1.first, 2)
+        XCTAssertEqual(values0.last ?? nil, nil)
+        XCTAssertEqual(values1.last ?? nil, nil)
+    }
+}

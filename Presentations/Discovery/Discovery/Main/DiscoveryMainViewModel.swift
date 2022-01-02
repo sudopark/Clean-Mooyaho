@@ -55,6 +55,7 @@ public protocol DiscoveryMainViewModel: AnyObject {
     var cellViewModels: Observable<[LatestSharedCellViewMdoel]> { get }
     func shareOwner(for memberID: String) -> Observable<Member>
     var sharedListIsEmpty: Observable<SharedListIsEmpty> { get }
+    var viewAllSharedListEnable: Observable<Bool> { get }
 }
 
 
@@ -191,6 +192,15 @@ extension DiscoveryMainViewModelImple {
         return Observable
             .combineLatest(cellViewModels, self.memberUsecase.currentMember,
                            resultSelector: transform)
+            .distinctUntilChanged()
+    }
+    
+    public var viewAllSharedListEnable: Observable<Bool> {
+        let isItemsEmpty = self.subjects.sharedCollections.map { $0.isEmpty }
+        let isNotSignedIn = self.memberUsecase.currentMember.map { $0 == nil }
+        return Observable
+            .combineLatest(isItemsEmpty, isNotSignedIn,
+                           resultSelector: { $0 == false && $1 == false })
             .distinctUntilChanged()
     }
 }

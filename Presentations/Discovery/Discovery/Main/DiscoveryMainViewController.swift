@@ -183,7 +183,7 @@ extension DiscoveryMainViewController: Presenting, UITableViewDelegate {
         let sectionView: SharedCollectionsHeaderView = tableView.dequeueHeaderFooterView()
         sectionView.subject = self.viewAllCollectionSubject
         sectionView.bindViewAll()
-        sectionView.bindIsEmpty(viewModel.sharedListIsEmpty)
+        sectionView.bindIsViewAllButtonEnable(viewModel.viewAllSharedListEnable)
         return sectionView
     }
     
@@ -284,10 +284,8 @@ final class SharedCollectionsHeaderView: BaseTableViewSectionHeaderFooterView, P
             .disposed(by: self.disposeBag)
     }
     
-    func bindIsEmpty(_ source: Observable<SharedListIsEmpty>) {
+    func bindIsViewAllButtonEnable(_ source: Observable<Bool>) {
         source
-            .map { $0.isEmpty == false }
-            .distinctUntilChanged()
             .asDriver(onErrorDriveWith: .never())
             .drive(self.viewAllButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
@@ -321,6 +319,7 @@ final class SharedCollectionsHeaderView: BaseTableViewSectionHeaderFooterView, P
         
         self.viewAllButton.setTitle("View all".localized, for: .normal)
         self.viewAllButton.tintColor = UIColor.systemBlue
+        self.viewAllButton.isEnabled = false
     }
 }
 

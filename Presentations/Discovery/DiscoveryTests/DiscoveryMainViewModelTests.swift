@@ -163,6 +163,48 @@ extension DiscoveryMainViewModelTests {
         // then
         XCTAssertEqual(isEmpty, .empty(signInNeed: true))
     }
+    
+    func testViewModel_whenSignOut_viewAllIsNotEnable() {
+        // given
+        let expect = expectation(description: "로그인 안해있으면 공유받은목록 전체보기 비활성화")
+        let viewModel = self.makeViewModel(isSignIn: false)
+        
+        // when
+        let isEnable = self.waitFirstElement(expect, for: viewModel.viewAllSharedListEnable) {
+            viewModel.refresh()
+        }
+        
+        // then
+        XCTAssertEqual(isEnable, false)
+    }
+    
+    func testViewModel_whenSignInButItemIsEmpty_viewAllIsNotEnable() {
+        // given
+        let expect = expectation(description: "로그인 해있지만 공유받은목록이 없는경우에는 전체보기 비활성화")
+        let viewModel = self.makeViewModel(isEmptyList: true, isSignIn: true)
+        
+        // when
+        let isEnable = self.waitFirstElement(expect, for: viewModel.viewAllSharedListEnable) {
+            viewModel.refresh()
+        }
+        
+        // then
+        XCTAssertEqual(isEnable, false)
+    }
+    
+    func testViewModel_whenSignInAndItemIsNotEmpty_viewAllIsEnable() {
+        // given
+        let expect = expectation(description: "로그인 해있고 공유받은목록이 있으면 전체보기 활성화")
+        let viewModel = self.makeViewModel(isEmptyList: false, isSignIn: true)
+        
+        // when
+        let isEnable = self.waitFirstElement(expect, for: viewModel.viewAllSharedListEnable, skip: 1) {
+            viewModel.refresh()
+        }
+        
+        // then
+        XCTAssertEqual(isEnable, true)
+    }
 }
 
 

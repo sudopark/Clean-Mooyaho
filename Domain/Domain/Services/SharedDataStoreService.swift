@@ -161,7 +161,11 @@ extension SharedDataStoreServiceImple {
     
     public func flush() {
         self.lock.lock(); defer { self.lock.unlock() }
+        let keys = self.internalStore.value.keys
         self.internalStore.accept([:])
+        keys.forEach {
+            self.updatedKey.onNext($0)
+        }
         self.updatedKey.onNext(nil)
     }
     
