@@ -9,6 +9,7 @@
 import UIKit
 
 import RxSwift
+import Toaster
 
 import Domain
 
@@ -68,7 +69,9 @@ extension Router {
     }
     
     public func showToast(_ message: String) {
-        logger.todoImplement()
+        ToastCenter.default.cancelAll()
+        let toast = Toast(text: message)
+        toast.show()
     }
     
     public func closeScene(animated: Bool, completed: (() -> Void)?) {
