@@ -59,4 +59,12 @@ extension ReadItemOptionsRepository where Self: ReadItemOptionReposiotryDefImple
         let remoteUpdate = self.readItemOptionRemote.requestUpdateReadItemCustomOrder(for: collectionID, itemIDs: itemIDs)
         return remoteUpdate.switchOr(append: localUpdate, witoutError: ())
     }
+    
+    public func isAddItemGuideEverShownWithMarking() -> Bool {
+        let isShown = self.readItemOptionLocal.isAddItemGuideEverShown()
+        if isShown == false {
+            self.readItemOptionLocal.markAsAddItemGuideShown()
+        }
+        return isShown
+    }
 }

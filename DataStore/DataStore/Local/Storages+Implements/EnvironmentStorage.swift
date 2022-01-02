@@ -43,6 +43,10 @@ public protocol EnvironmentStorage {
     
     func updateIsReloadCollectionNeed(_ newValue: Bool)
     
+    func isAddItemGuideEverShown() -> Bool
+    
+    func markAsAddItemGuideShown()
+    
     func clearAll()
 }
 
@@ -58,6 +62,7 @@ enum EnvironmentStorageKeys {
     case readitemCustomOrder(_ collectionID: String)
     case readingLinkIDs
     case isReloadNeed
+    case addItemGuideEverShown
     
     var keyvalue: String {
         let prefix = environmentStorageKeyPrefix
@@ -79,6 +84,9 @@ enum EnvironmentStorageKeys {
             
         case .isReloadNeed:
             return "isReloadNeed".insertPrefixOrNot(prefix)
+            
+        case .addItemGuideEverShown:
+            return "addItemGuideEverShown".insertPrefixOrNot(prefix)
         }
     }
     
@@ -90,7 +98,8 @@ enum EnvironmentStorageKeys {
             "readItemLatestSortOrder".insertPrefixOrNot(prefix),
             "readitemCustomOrder".insertPrefixOrNot(prefix),
             "readingLinkIDs".insertPrefixOrNot(prefix),
-            "isReloadNeed".insertPrefixOrNot(prefix)
+            "isReloadNeed".insertPrefixOrNot(prefix),
+            "addItemGuideEverShown".insertPrefixOrNot(prefix)
         ]
     }
 }
@@ -260,6 +269,16 @@ extension UserDefaults {
     public func updateIsReloadCollectionNeed(_ newValue: Bool) {
         let key = EnvironmentStorageKeys.isReloadNeed
         self.set(newValue, forKey: key.keyvalue)
+    }
+    
+    public func isAddItemGuideEverShown() -> Bool {
+        let key = EnvironmentStorageKeys.addItemGuideEverShown
+        return self.bool(forKey: key.keyvalue)
+    }
+    
+    public func markAsAddItemGuideShown() {
+        let key = EnvironmentStorageKeys.addItemGuideEverShown
+        self.set(true, forKey: key.keyvalue)
     }
 }
 

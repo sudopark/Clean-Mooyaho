@@ -31,10 +31,11 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
         public var suggestNextResult: Result<[ReadItem], Error> = .success([])
         public var loadContinueLinks: Result<[ReadLink], Error> = .success([])
         public var loadFavoriteIDsResult: Result<[String], Error> = .success([])
+        public var isAddIttemGuideEverShown: Bool = false
         
         public init() {}
     }
-    private var scenario: Scenario
+    public var scenario: Scenario
     private let disposeBag = DisposeBag()
     public init(scenario: Scenario = Scenario()) {
         self.scenario = scenario
@@ -183,5 +184,9 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
     public var sharedFavoriteItemIDs: Observable<[String]> {
         return self.fakeFavoriteItemIDs
             .asObservable()
+    }
+    
+    public func isAddItemGuideEverShownWithMarking() -> Bool {
+        return self.scenario.isAddIttemGuideEverShown
     }
 }

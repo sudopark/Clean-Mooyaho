@@ -35,4 +35,6 @@ public protocol ReadItemOptionsUsecase {
     func customOrder(for collectionID: String) -> Observable<[String]>
     
     func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
+    
+    func isAddItemGuideEverShownWithMarking() -> Bool
 }

@@ -390,6 +390,10 @@ extension ReadItemUsecaseImple {
             .do(onNext: updateOnLocal)
     }
     
+    public func isAddItemGuideEverShownWithMarking() -> Bool {
+        return self.optionsRespository.isAddItemGuideEverShownWithMarking()
+    }
+    
     public var readItemUpdated: Observable<ReadItemUpdateEvent> {
         return self.sharedEventService.event
             .compactMap { $0 as? ReadItemUpdateEvent }

@@ -49,4 +49,8 @@ class StubReadItemOptionsRepository: ReadItemOptionsRepository {
     func requestUpdateCustomSortOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
         return .just()
     }
+    
+    func isAddItemGuideEverShownWithMarking() -> Bool {
+        return true
+    }
 }
