@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F6D7BE4B278038B900C71637"
-               BuildableName = "ReadReminderShareExtension copy.appex"
+               BuildableName = "ReadReminderShareExtension gloabl.appex"
                BlueprintName = "ReadReminderShareExtension gloabl"
                ReferencedContainer = "container:MooyahoApp.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F6D7BE4B278038B900C71637"
-            BuildableName = "ReadReminderShareExtension copy.appex"
+            BuildableName = "ReadReminderShareExtension gloabl.appex"
             BlueprintName = "ReadReminderShareExtension gloabl"
             ReferencedContainer = "container:MooyahoApp.xcodeproj">
          </BuildableReference>

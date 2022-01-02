@@ -50,7 +50,12 @@ struct AppEnvironment {
     }()
     
     static var appID: String {
+        #if KOR
         return "1565634642"
+        #elseif GLOBAL
+        // TODO: 분기 필요
+        return "1565634642"
+        #endif
     }
     
     static var groupID: String {
@@ -67,6 +72,14 @@ struct AppEnvironment {
         } else {
             return "datamodels"
         }
+    }
+    
+    static var encryptedStorageIdentifier: String {
+        #if KOR
+        return "readmind"
+        #elseif GLOBAL
+        return "readmind-global"
+        #endif
     }
     
     static func dataModelDBPath(for userID: String? = nil) -> String {

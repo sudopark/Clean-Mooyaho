@@ -37,7 +37,7 @@ final class DependencyInjector {
         let kakaoService: KakaoService = KakaoServiceImple(remote: kakaoOAuthRemote)
         
         let localStorage: LocalStorage = {
-            let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
+            let encryptedStorage = EncryptedStorageImple(identifier: AppEnvironment.encryptedStorageIdentifier)
             encryptedStorage.setupSharedGroup(AppEnvironment.groupID)
             
             let defaultPath = AppEnvironment.dataModelDBPath()
