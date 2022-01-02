@@ -20,6 +20,8 @@
 "Clear" = "초기화";
 "Remove" = "제거";
 "No result found" = "일치하는 결과가 없습니다.";
+"The operation failed" = "작업 실패";
+"The requested operation has failed. Please try again later. (error: %@)" = "요청하신 작업에 실패했습니다. 잠시후에 다시 시도해 주세요. (error: %@)";
 
 // main
 "Return to my read collection?" = "내 읽기목록으로 복귀하시겠습니까?";
@@ -182,6 +184,7 @@
 "Enter a message" = "메세지 입력";
 "Contact" = "연락처";
 "Please leave your email address to be contacted." = "연락받을 수 있는 이메일 주소를 입력해 주세요.";
+"A category with the same name already exists." = "동일한 이름의 카테고리가 이미 존재합니다.";
 
 
 // suggest

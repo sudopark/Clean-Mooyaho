@@ -9,6 +9,8 @@
 import UIKit
 
 import RxSwift
+import Prelude
+import Optics
 import Toaster
 
 import Domain
@@ -64,7 +66,12 @@ open class Router<Buildables>: Routing {
 extension Router {
     
     public func alertError(_ error: Error) {
-        logger.todoImplement()
+        let errorDescrition = (error as NSError).description
+        let form = AlertForm()
+            |> \.title .~ pure("The operation failed.".localized)
+            |> \.message .~ pure("The requested operation has failed. Please try again later. (error: %@)".localized(with: errorDescrition))
+            |> \.isSingleConfirmButton .~ true
+        self.alertForConfirm(form)
         logger.print(level: .debug, "alert error: \(error)")
     }
     
@@ -96,13 +103,15 @@ extension Router {
                                           style: .default) { _ in
             form.confirmed?()
         }
-        
-        let cancelAction = UIAlertAction(title: form.customCloseText ?? "Cancel".localized,
-                                         style: .cancel) { _ in
-            form.canceled?()
-        }
         alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
+        
+        if form.isSingleConfirmButton == false {
+            let cancelAction = UIAlertAction(title: form.customCloseText ?? "Cancel".localized,
+                                             style: .cancel) { _ in
+                form.canceled?()
+            }
+            alert.addAction(cancelAction)
+        }
         self.currentScene?.present(alert, animated: true, completion: nil)
     }
     
