@@ -25,6 +25,7 @@ public final class ManageAccountViewController: BaseViewController, ManageAccoun
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let loadingView = FullScreenLoadingView()
     
     let viewModel: ManageAccountViewModel
     private var dataSource: DataSource!
@@ -70,7 +71,7 @@ extension ManageAccountViewController {
         self.viewModel.isProcessing
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] isProcessing in
-                self?.view.isUserInteractionEnabled = isProcessing == false
+                self?.loadingView.updateIsLoading(isProcessing)
             })
             .disposed(by: self.disposeBag)
     }
@@ -130,6 +131,8 @@ extension ManageAccountViewController: Presenting, UITableViewDelegate {
             $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
+        
+        self.setupFullScreenLoadingViewLayout(self.loadingView)
     }
     
     public func setupStyling() {
@@ -143,6 +146,8 @@ extension ManageAccountViewController: Presenting, UITableViewDelegate {
         tableView.estimatedRowHeight = 100
         tableView.delegate = self
         tableView.separatorStyle = .none
+        
+        self.loadingView.setupStyling()
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

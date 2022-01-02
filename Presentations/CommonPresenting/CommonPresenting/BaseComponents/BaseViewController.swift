@@ -23,3 +23,13 @@ open class BaseViewController: UIViewController, UIContextAccessable {
         logger.print(level: .debug, "will Appear -> \(String(describing: Self.self))")
     }
 }
+
+
+extension BaseViewController {
+    
+    public func setupFullScreenLoadingViewLayout(_ loadingView: FullScreenLoadingView) {
+        self.view.addSubview(loadingView)
+        loadingView.autoLayout.fill(self.view)
+        loadingView.setupLayout()
+    }
+}

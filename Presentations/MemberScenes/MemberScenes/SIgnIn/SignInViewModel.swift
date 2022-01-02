@@ -81,6 +81,7 @@ extension SignInViewModelImple {
         }
         
         let closeScene: (Member) -> Void = { [weak self] member in
+            self?.subjects.isProcessing.accept(false)
             self?.router.closeScene(animated: true) {
                 self?.listener?.signIn(didCompleted: member)
             }

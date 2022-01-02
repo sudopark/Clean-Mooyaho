@@ -22,6 +22,7 @@
 "No result found" = "일치하는 결과가 없습니다.";
 "The operation failed" = "작업 실패";
 "The requested operation has failed. Please try again later. (error: %@)" = "요청하신 작업에 실패했습니다. 잠시후에 다시 시도해 주세요. (error: %@)";
+"Wait please.." = "잠시만 기다려주세요..";
 
 // main
 "Return to my read collection?" = "내 읽기목록으로 복귀하시겠습니까?";
