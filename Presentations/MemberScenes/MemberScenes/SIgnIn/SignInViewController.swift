@@ -51,6 +51,16 @@ public final class SignInViewController: BaseViewController, SignInScene, Bottom
         self.bind()
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.signInView.guideView.startAnimation()
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.signInView.guideView.stopAnimation()
+    }
+    
     public func requestCloseScene() {
         self.viewModel.requestClose()
     }
