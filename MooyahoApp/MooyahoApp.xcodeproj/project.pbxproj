@@ -180,6 +180,8 @@
 		F6AC56A0266166CC0009B0CE /* KakaoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AC569F266166CC0009B0CE /* KakaoServiceTests.swift */; };
 		F6AF0BE0277B6B4D006748EF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6AF0BE2277B6B4D006748EF /* InfoPlist.strings */; };
 		F6B21C6327004389006243FD /* RemoteImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B21C6227004389006243FD /* RemoteImple.swift */; };
+		F6BA7DC527815E240020B430 /* OAuthSignInButonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BA7DC427815E240020B430 /* OAuthSignInButonBuilder.swift */; };
+		F6BA7DC6278160CA0020B430 /* OAuthSignInButonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BA7DC427815E240020B430 /* OAuthSignInButonBuilder.swift */; };
 		F6BBF17A2708523000420A49 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF1792708523000420A49 /* EditReadItemScene.framework */; };
 		F6BBF17B2708523000420A49 /* EditReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF1792708523000420A49 /* EditReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6BE6BC0272846FD00F5C544 /* ReadReminderShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -452,6 +454,7 @@
 		F6AF0BE1277B6B4D006748EF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F6AF0BE3277B6B4F006748EF /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F6B21C6227004389006243FD /* RemoteImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteImple.swift; path = MooyahoApp/dependencyInjector/RemoteImple.swift; sourceTree = SOURCE_ROOT; };
+		F6BA7DC427815E240020B430 /* OAuthSignInButonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OAuthSignInButonBuilder.swift; path = MooyahoApp/dependencyInjector/OAuthSignInButonBuilder.swift; sourceTree = SOURCE_ROOT; };
 		F6BBF14927083EDB00420A49 /* AddItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AddItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BBF1792708523000420A49 /* EditReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EditReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BE6BB6272846FD00F5C544 /* ReadReminderShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ReadReminderShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -604,6 +607,7 @@
 				F603258726594E3C00E4E769 /* Repositories.swift */,
 				F6B21C6227004389006243FD /* RemoteImple.swift */,
 				F62DFFB626621BC000C4A080 /* EmptyRemote.swift */,
+				F6BA7DC427815E240020B430 /* OAuthSignInButonBuilder.swift */,
 			);
 			path = DependencyInjector;
 			sourceTree = "<group>";
@@ -1236,6 +1240,7 @@
 				F6101487265792C400D32E38 /* MainSlideMenuViewModel.swift in Sources */,
 				F663E6E22763C2C600EE8152 /* DependencyInjector+DiscoverScenes.swift in Sources */,
 				F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */,
+				F6BA7DC527815E240020B430 /* OAuthSignInButonBuilder.swift in Sources */,
 				F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */,
 				F6F8732626593F9600FDB24E /* DependencyInjector+Scenes.swift in Sources */,
 				F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */,
@@ -1296,6 +1301,7 @@
 				F649EC7D27802FFE0091A5F0 /* ApplicationRootRouter.swift in Sources */,
 				F649EC7E27802FFE0091A5F0 /* DependencyInjector+MemberScenes.swift in Sources */,
 				F649EC7F27802FFE0091A5F0 /* KakaoService.swift in Sources */,
+				F6BA7DC6278160CA0020B430 /* OAuthSignInButonBuilder.swift in Sources */,
 				F649EC8027802FFE0091A5F0 /* AppEnvironment.swift in Sources */,
 				F649EC8127802FFE0091A5F0 /* MainViewModel.swift in Sources */,
 				F649EC8227802FFE0091A5F0 /* ApplicationViewModel.swift in Sources */,

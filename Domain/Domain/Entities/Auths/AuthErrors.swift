@@ -12,5 +12,6 @@ import Foundation
 public enum AuthErrors: Error {
     
     case signInError(_ reason: Error?)
-    case oauth2Fail(_ reason: Error)
+    case oauth2Fail(_ reason: Error?)
+    case noFirebaseClientID
 }
