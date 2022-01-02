@@ -119,6 +119,7 @@
 		F6E51B79273F62B500CBE310 /* SelectEmojiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B74273F62B500CBE310 /* SelectEmojiScene.swift */; };
 		F6E51B7C273F637C00CBE310 /* EmojiListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E51B7B273F637C00CBE310 /* EmojiListView.swift */; };
 		F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E83129265FFF4100C91F3B /* BottomSlideTransitionManager.swift */; };
+		F6E9F7822781718800FF992F /* Toaster in Frameworks */ = {isa = PBXBuildFile; productRef = F6E9F7812781718800FF992F /* Toaster */; };
 		F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EAC61C271AB1EA005C0C2F /* RoundShadowView.swift */; };
 		F6ED41EF2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41EE2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift */; };
 		F6ED41F32743F71A0082DE18 /* ItemCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */; };
@@ -278,6 +279,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E9F7822781718800FF992F /* Toaster in Frameworks */,
 				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				F6E51B6F273F628800CBE310 /* ISEmojiView in Frameworks */,
@@ -631,6 +633,7 @@
 			packageProductDependencies = (
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
 				F6E51B6E273F628800CBE310 /* ISEmojiView */,
+				F6E9F7812781718800FF992F /* Toaster */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -684,6 +687,7 @@
 			packageReferences = (
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */,
+				F6E9F7802781718800FF992F /* XCRemoteSwiftPackageReference "Toaster" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -1113,6 +1117,14 @@
 				minimumVersion = 0.3.0;
 			};
 		};
+		F6E9F7802781718800FF992F /* XCRemoteSwiftPackageReference "Toaster" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Toaster.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1125,6 +1137,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */;
 			productName = ISEmojiView;
+		};
+		F6E9F7812781718800FF992F /* Toaster */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6E9F7802781718800FF992F /* XCRemoteSwiftPackageReference "Toaster" */;
+			productName = Toaster;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
