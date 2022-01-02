@@ -20,6 +20,8 @@
 "Clear" = "Clear";
 "Remove" = "Remove";
 "No result found" = "No result found";
+"The operation failed" = "The operation failed";
+"The requested operation has failed. Please try again later. (error: %@)" = "The requested operation has failed. Please try again later. (error: %@)";
 
 // main
 "Return to my read collection?" = "Would you like to return to my collection?";
@@ -181,6 +183,7 @@
 "Enter a message" = "Enter a message";
 "Contact" = "Contact";
 "Please leave your email address to be contacted." = "Please leave your email address to be contacted.";
+"A category with the same name already exists." = "A category with the same name already exists.";
 
 
 // suggest

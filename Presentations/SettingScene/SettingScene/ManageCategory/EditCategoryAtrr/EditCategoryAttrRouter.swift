@@ -55,6 +55,6 @@ extension EditCategoryAttrRouter {
     }
     
     public func alertNameDuplicated(_ name: String) {
-        logger.todoImplement()
+        self.showToast("A category with the same name already exists.".localized)
     }
 }
