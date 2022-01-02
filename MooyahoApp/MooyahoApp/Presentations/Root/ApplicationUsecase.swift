@@ -36,18 +36,23 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     private let memberUsecase: MemberUsecase
     private let favoriteItemsUsecase: FavoriteReadItemUsecas
     private let shareUsecase: ShareReadCollectionUsecase
+    private let crashLogger: CrashLogger
     
     public init(authUsecase: AuthUsecase,
                 memberUsecase: MemberUsecase,
                 favoriteItemsUsecase: FavoriteReadItemUsecas,
-                shareUsecase: ShareReadCollectionUsecase) {
+                shareUsecase: ShareReadCollectionUsecase,
+                crashLogger: CrashLogger) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
         self.favoriteItemsUsecase = favoriteItemsUsecase
         self.shareUsecase = shareUsecase
+        self.crashLogger = crashLogger
         
         self.bindApplicationStatus()
         self.bindPushTokenUpload()
+        
+        self.bindLogging()
     }
     
     fileprivate struct Subjects {
@@ -149,5 +154,27 @@ extension ApplicationUsecaseImple {
                 guard case let .signOut(auth) = event else { return nil }
                 return auth
             }
+    }
+}
+
+
+// MARK: - bind logging
+
+extension ApplicationUsecaseImple {
+    
+    func bindLogging() {
+        
+        self.authUsecase.currentAuth
+            .compactMap { $0?.userID }
+            .subscribe(onNext: { [weak self] userID in
+                self?.crashLogger.setupUserIdentifier(userID)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.subjects.applicationStatus
+            .subscribe(onNext: { [weak self] status in
+                self?.crashLogger.setupValue(status.rawValue, key: "Application Status")
+            })
+            .disposed(by: self.disposeBag)
     }
 }

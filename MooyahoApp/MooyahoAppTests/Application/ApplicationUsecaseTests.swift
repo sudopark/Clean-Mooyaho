@@ -33,7 +33,8 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.usecase = .init(authUsecase: self.mockAuthUsecase,
                              memberUsecase: self.mockMemberUsecase,
                              favoriteItemsUsecase: StubReadItemUsecase(),
-                             shareUsecase: self.mockShareUsecase)
+                             shareUsecase: self.mockShareUsecase,
+                             crashLogger: EmptyCrashLogger())
     }
     
     override func tearDownWithError() throws {
@@ -325,4 +326,14 @@ extension ApplicationUsecaseTests {
         // then
         XCTAssertNotNil(accountInfo)
     }
+}
+
+
+private class EmptyCrashLogger: CrashLogger {
+    
+    func setupUserIdentifier(_ identifier: String) { }
+    
+    func setupValue(_ value: Any, key: String) { }
+    
+    func log(_ message: String) { }
 }

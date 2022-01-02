@@ -9,6 +9,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 
@@ -27,7 +29,11 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         
         let getLastAuth = self.authLocal.fetchCurrentAuth()
         let prepareAnonymousAuthIfNeed: (Auth?) -> Maybe<Auth> = { [weak self] auth in
-            logger.print(level: .debug, "last signin userID -> \(auth?.userID ?? "")")
+            
+            let secureMessage = SecureLoggingMessage()
+                |> \.fullText .~ "last signin userID -> %@"
+                |> \.secureField .~ [auth?.userID ?? ""]
+            logger.print(level: .debug, secureMessage)
             guard let self = self else { return .empty() }
             switch auth {
             case let .some(existing): return .just(existing)

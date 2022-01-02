@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ApplicationStatus {
+public enum ApplicationStatus: String {
     case idle
     case launched
     case forground

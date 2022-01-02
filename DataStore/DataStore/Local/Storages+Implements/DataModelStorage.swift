@@ -175,13 +175,20 @@ public final class DataModelStorageImple: DataModelStorage {
             guard let self = self else { return }
             self.migrationPlan(for: self.version)
                 .subscribe(onSuccess: { dbVersion in
-                    logger.print(level: .info, "sqlite db open, version: \(dbVersion) and path: \(self.dbPath)")
+                    let secureMessaging = SecureLoggingMessage()
+                        |> \.fullText .~ "sqlite db open, version: \(dbVersion) and path: %@"
+                        |> \.secureField .~ [self.dbPath]
+                    logger.print(level: .info, secureMessaging)
                 })
                 .disposed(by: self.disposeBag)
         }
         
-        let logError: (Error) -> Void = { error in
-            logger.print(level: .error, "fail to open sqlite database -> path: \(self.dbPath) and reason: \(error)")
+        let logError: (Error) -> Void = { [weak self] error in
+            guard let self = self else { return }
+            let secureMessaging = SecureLoggingMessage()
+                |> \.fullText .~ "fail to open sqlite database -> path: %@ and reason: \(error)"
+                |> \.secureField .~ [self.dbPath]
+            logger.print(level: .error, secureMessaging)
         }
         
         return self.openAction()

@@ -73,6 +73,8 @@ final class DependencyInjector {
         
         fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
         fileprivate let signedoutSubject = PublishSubject<Domain.Auth>()
+        
+        let crashLogger: CrashLogger = FirebaseCrashLogger()
     }
     
     let shared: Shared = Shared()
@@ -178,7 +180,8 @@ extension DependencyInjector {
         return ApplicationUsecaseImple(authUsecase: self.authUsecase,
                                        memberUsecase: self.memberUsecase,
                                        favoriteItemsUsecase: self.readItemUsecase,
-                                       shareUsecase: self.shareItemUsecase)
+                                       shareUsecase: self.shareItemUsecase,
+                                       crashLogger: self.shared.crashLogger)
     }
     
     var readItemUsecase: ReadItemUsecase {
