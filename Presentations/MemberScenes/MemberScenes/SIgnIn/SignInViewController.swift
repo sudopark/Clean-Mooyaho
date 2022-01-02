@@ -113,6 +113,7 @@ extension SignInViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] isProcessing in
                 self?.signInView.updateIsActive(isProcessing == false)
+                self?.signInView.loadingView.updateIsLoading(isProcessing)
             })
             .disposed(by: self.disposeBag)
     }
@@ -133,6 +134,7 @@ extension SignInViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         self.signInView.setupLayout()
+        self.setupFullScreenLoadingViewLayout(self.signInView.loadingView)
     }
     
     public func setupStyling() {

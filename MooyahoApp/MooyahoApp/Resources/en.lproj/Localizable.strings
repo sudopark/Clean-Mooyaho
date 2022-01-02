@@ -22,6 +22,7 @@
 "No result found" = "No result found";
 "The operation failed" = "The operation failed";
 "The requested operation has failed. Please try again later. (error: %@)" = "The requested operation has failed. Please try again later. (error: %@)";
+"Wait please.." = "Wait please..";
 
 // main
 "Return to my read collection?" = "Would you like to return to my collection?";

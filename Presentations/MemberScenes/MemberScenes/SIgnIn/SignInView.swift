@@ -20,6 +20,7 @@ public class SignInView: BaseUIView {
     let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
     let guideView = GudieView()
     let signInButtonContainerView = UIStackView()
+    let loadingView = FullScreenLoadingView()
     
     func appendSignInButton(_ button: SignInButton) {
         self.signInButtonContainerView.addArrangedSubview(button)
@@ -72,6 +73,8 @@ extension SignInView: Presenting {
         self.signInButtonContainerView.distribution = .fillEqually
         self.signInButtonContainerView.setContentCompressionResistancePriority(.required, for: .vertical)
         self.signInButtonContainerView.spacing = 8
+        
+        self.loadingView.setupStyling()
     }
 }
 
