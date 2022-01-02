@@ -87,8 +87,11 @@ extension FirebaseServiceImple {
         case let customToken as CustomTokenCredential:
             return self.signinWithCustomTokenCredential(customToken)
             
-        case let appleLoginCredential as GeneralAuthCredential:
+        case let appleLoginCredential as AppleAuthCredential:
             return self.signInWithAppleCredential(appleLoginCredential)
+            
+        case let googleAuthCredential as GoogleAuthCredential:
+            return self.signInWithGoogleCredential(googleAuthCredential)
             
         default:
             return .error(RemoteErrors.notSupportCredential(String(describing: credential)))
@@ -110,12 +113,23 @@ extension FirebaseServiceImple {
         }
     }
     
-    private func signInWithAppleCredential(_ appleCredential: GeneralAuthCredential) -> Maybe<FirebaseAuth.User> {
+    private func signInWithAppleCredential(_ appleCredential: AppleAuthCredential) -> Maybe<FirebaseAuth.User> {
         
+        let credential = OAuthProvider.credential(withProviderID: appleCredential.provider,
+                                                  idToken: appleCredential.idToken,
+                                                  rawNonce: appleCredential.nonce)
+        return self.signInWithCredential(credential)
+    }
+    
+    private func signInWithGoogleCredential(_ googleCredential: GoogleAuthCredential) -> Maybe<FirebaseAuth.User> {
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: googleCredential.idToken,
+                                                       accessToken: googleCredential.accessToken)
+        return self.signInWithCredential(credential)
+    }
+    
+    private func signInWithCredential(_ credential: AuthCredential) -> Maybe<FirebaseAuth.User> {
         return Maybe.create { callback in
-            let credential = OAuthProvider.credential(withProviderID: appleCredential.provider,
-                                                      idToken: appleCredential.idToken,
-                                                      rawNonce: appleCredential.nonce)
             Auth.auth().signIn(with: credential) { result, error in
                 guard error == nil, let user = result?.user else {
                     callback(.error(RemoteErrors.credentialSigninFail(error)))

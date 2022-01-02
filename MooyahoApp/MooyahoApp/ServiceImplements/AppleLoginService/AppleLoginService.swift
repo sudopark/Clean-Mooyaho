@@ -41,7 +41,7 @@ extension AppleLoginService {
             self.handleResult = { result in
                 switch result {
                 case let .success(token):
-                    let credential = GeneralAuthCredential(
+                    let credential = AppleAuthCredential(
                         provider: "apple.com",
                         idToken: token,
                         nonce: nonce

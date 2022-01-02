@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AuthenticationServices
 
 import RxSwift
 import RxCocoa
@@ -22,11 +21,14 @@ public final class SignInViewController: BaseViewController, SignInScene, Bottom
     
     private let signInView = SignInView()
     let viewModel: SignInViewModel
+    private let oauthSignInButtonBuilder: OAuthSignInButtonBuildable
     
     public var bottomSlideMenuView: BaseBottomSlideMenuView { self.signInView.bottomSlideMenuView }
     
-    public init(viewModel: SignInViewModel) {
+    public init(viewModel: SignInViewModel,
+                oauthSignInButtonBuilder: OAuthSignInButtonBuildable) {
         self.viewModel = viewModel
+        self.oauthSignInButtonBuilder = oauthSignInButtonBuilder
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -75,7 +77,7 @@ extension SignInViewController {
     }
     
     private func appendAndBindButtons(_ type: OAuthServiceProviderType) {
-        guard let button = type.makeButton() else { return }
+        guard let button = self.oauthSignInButtonBuilder.makeButton(for: type) else { return }
         
         self.signInView.appendSignInButton(button)
         
@@ -129,24 +131,3 @@ extension SignInViewController: Presenting {
         self.signInView.setupStyling()
     }
 }
-
-
-private extension OAuthServiceProviderType {
-    
-    func makeButton() -> SignInButton? {
-        guard let definedTypes = self as? OAuthServiceProviderTypes else { return nil }
-        switch definedTypes {
-        case .kakao:
-            let button = UIButton()
-            button.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
-            return button
-            
-        case .apple:
-            let button = ASAuthorizationAppleIDButton()
-            return button
-        }
-    }
-}
-
-
-extension ASAuthorizationAppleIDButton: SignInButton { }

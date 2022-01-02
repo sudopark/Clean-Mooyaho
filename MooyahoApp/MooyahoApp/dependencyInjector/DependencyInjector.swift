@@ -136,7 +136,7 @@ extension DependencyInjector {
         ]
         #elseif GLOBAL
         return [
-            self.shared.kakaoService,
+            GoggleSignInServiceImple(),
             self.appleLoginService
         ]
         #endif
@@ -232,5 +232,18 @@ extension DependencyInjector {
         return FeedbackUsecaseImple(authProvider: self.shared.dataStore,
                                     deviceInfoService: self.deviceInfoService,
                                     helpRepository: self.appReposiotry)
+    }
+}
+
+
+// MRAK: - view builders
+
+extension DependencyInjector {
+    
+    var oauthSignInButtonBuilder: OAuthSignInButtonBuildable {
+        
+        return OAuthSignInButonBuilder {
+            GoogleSignInButtonBuilder().makeButton() as? SignInButton
+        }
     }
 }

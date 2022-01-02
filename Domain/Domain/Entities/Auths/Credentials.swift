@@ -36,7 +36,7 @@ public struct CustomTokenCredential: OAuthCredential {
     }
 }
 
-public struct GeneralAuthCredential: OAuthCredential {
+public struct AppleAuthCredential: OAuthCredential {
     
     public let provider: String
     public let idToken: String
@@ -47,6 +47,17 @@ public struct GeneralAuthCredential: OAuthCredential {
         self.provider = provider
         self.idToken = idToken
         self.nonce = nonce
+    }
+}
+
+public struct GoogleAuthCredential: OAuthCredential {
+    
+    public let idToken: String
+    public let accessToken: String
+    
+    public init(idToken: String, accessToken: String) {
+        self.idToken = idToken
+        self.accessToken = accessToken
     }
 }
 
@@ -66,6 +77,7 @@ public enum OAuthServiceProviderTypes: String, OAuthServiceProviderType {
     
     case kakao
     case apple
+    case google
     
     public var uniqueIdentifier: String {
         return self.rawValue

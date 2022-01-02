@@ -22,7 +22,8 @@ extension DependencyInjector: SignInSceneBuilable, EditProfileSceneBuilable {
         let viewModel = SignInViewModelImple(authUsecase: self.authUsecase,
                                              router: router,
                                              listener: listener)
-        let viewController = SignInViewController(viewModel: viewModel)
+        let viewController = SignInViewController(viewModel: viewModel,
+                                                  oauthSignInButtonBuilder: self.oauthSignInButtonBuilder)
         router.currentScene = viewController
         return viewController
     }

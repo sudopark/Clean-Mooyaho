@@ -13,10 +13,6 @@ import RxCocoa
 import CommonPresenting
 
 
-protocol SignInButton: UIView { }
-
-extension UIButton: SignInButton { }
-
 public class SignInView: BaseUIView {
     
     let bottomSlideMenuView: BaseBottomSlideMenuView = .init()
@@ -25,10 +21,6 @@ public class SignInView: BaseUIView {
     
     func appendSignInButton(_ button: SignInButton) {
         self.signInButtonContainerView.addArrangedSubview(button)
-        button.autoLayout.active(with: self) {
-            $0.widthAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.8)
-            $0.heightAnchor.constraint(equalTo: $0.widthAnchor, multiplier: 3.18/21.27)
-        }
     }
     
     func updateIsActive(_ isActive: Bool) {
