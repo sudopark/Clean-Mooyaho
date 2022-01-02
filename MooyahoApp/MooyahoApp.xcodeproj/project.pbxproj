@@ -45,6 +45,8 @@
 		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
 		F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
+		F643D40F278210C0006793A9 /* appicon-readmind.png in Resources */ = {isa = PBXBuildFile; fileRef = F643D40E278210C0006793A9 /* appicon-readmind.png */; };
+		F643D410278210C0006793A9 /* appicon-readmind.png in Resources */ = {isa = PBXBuildFile; fileRef = F643D40E278210C0006793A9 /* appicon-readmind.png */; };
 		F649EC7027802FFE0091A5F0 /* DependencyInjector+EditReadItemScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6DB2763C28700EE8152 /* DependencyInjector+EditReadItemScenes.swift */; };
 		F649EC7127802FFE0091A5F0 /* IOSDeviceInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */; };
 		F649EC7227802FFE0091A5F0 /* DependencyInjector+ViewerScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6DD2763C29A00EE8152 /* DependencyInjector+ViewerScenes.swift */; };
@@ -408,6 +410,7 @@
 		F62271F3273C728D00AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
+		F643D40E278210C0006793A9 /* appicon-readmind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-readmind.png"; sourceTree = "<group>"; };
 		F649ECBC27802FFE0091A5F0 /* MooyahoApp global.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MooyahoApp global.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F649ECBD27802FFE0091A5F0 /* Info-global.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-global.plist"; path = "/Users/sudo.park/Documents/codebase/Clean-Mooyaho/MooyahoApp/Info-global.plist"; sourceTree = "<absolute>"; };
 		F64E7AF22762CB8000961C38 /* AppleLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginService.swift; sourceTree = "<group>"; };
@@ -799,8 +802,9 @@
 				F6D7BE8227803EBE00C71637 /* Firebase */,
 				F66E813E26552ADA00682625 /* secrets.json */,
 				F66E813C2655282500682625 /* dummy */,
-				F6832FD227776F2300EFB99A /* Localizable.strings */,
 				F6AF0BE2277B6B4D006748EF /* InfoPlist.strings */,
+				F6832FD227776F2300EFB99A /* Localizable.strings */,
+				F643D40E278210C0006793A9 /* appicon-readmind.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1056,6 +1060,7 @@
 			files = (
 				F6832FCF27776F2300EFB99A /* Localizable.strings in Resources */,
 				F6AF0BE0277B6B4D006748EF /* InfoPlist.strings in Resources */,
+				F643D40F278210C0006793A9 /* appicon-readmind.png in Resources */,
 				2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */,
 				F66E813D2655282500682625 /* dummy in Resources */,
 				2B79FC55262B640F0006291F /* Assets.xcassets in Resources */,
@@ -1077,6 +1082,7 @@
 			files = (
 				F649ECA227802FFE0091A5F0 /* Localizable.strings in Resources */,
 				F649ECA327802FFE0091A5F0 /* InfoPlist.strings in Resources */,
+				F643D410278210C0006793A9 /* appicon-readmind.png in Resources */,
 				F649ECA427802FFE0091A5F0 /* LaunchScreen.storyboard in Resources */,
 				F649ECA527802FFE0091A5F0 /* dummy in Resources */,
 				F649ECA627802FFE0091A5F0 /* Assets.xcassets in Resources */,
