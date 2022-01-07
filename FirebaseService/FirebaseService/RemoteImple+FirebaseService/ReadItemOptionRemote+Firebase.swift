@@ -15,19 +15,23 @@ import DataStore
 
 extension FirebaseServiceImple {
     
+    private typealias Key = CollectionCustomOrders.MappingKeys
+    
     public func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?> {
-        guard let _ = self.signInMemberID else {
+        guard let ownerID = self.signInMemberID else {
             return .empty()
         }
-        let order: Maybe<CollectionCustomOrders?> = self.load(docuID: collectionID, in: .readCollectionCustomOrders)
+        let combineID = CollectionCustomOrders(ownerID: ownerID, collectionID: collectionID).combineID
+        let order: Maybe<CollectionCustomOrders?> = self.load(docuID: combineID, in: .readCollectionCustomOrders)
         return order.map { $0?.itemIDs }
     }
     
     public func requestUpdateReadItemCustomOrder(for collection: String, itemIDs: [String]) -> Maybe<Void> {
-        guard let _ = self.signInMemberID else {
+        guard let ownerID = self.signInMemberID else {
             return .empty()
         }
-        let order = CollectionCustomOrders(collectionID: collection, itemIDs: itemIDs)
+        
+        let order = CollectionCustomOrders(ownerID: ownerID, collectionID: collection, itemIDs: itemIDs)
         return self.save(order, at: .readCollectionCustomOrders, merging: true)
     }
 }
