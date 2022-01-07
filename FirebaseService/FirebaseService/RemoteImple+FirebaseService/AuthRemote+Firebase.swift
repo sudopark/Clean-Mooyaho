@@ -211,6 +211,13 @@ extension FirebaseServiceImple {
             return self.deleteAll(query, at: .readLinks)
         }
         
+        let thenDeleteItemIndexes: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let collectionRef = self.fireStoreDB.collection(.suggestReadItemIndexes)
+            let query = collectionRef.whereField(SuggestIndexKeys.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .suggestReadItemIndexes)
+        }
+        
         let thenDeleteShareIndexes: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
             let indexRef = self.fireStoreDB.collection(.sharingCollectionIndex)
@@ -230,6 +237,13 @@ extension FirebaseServiceImple {
             return self.deleteAll(query, at: .itemCategory)
         }
         
+        let thenDeleteCategoryIndexes: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let collectionRef = self.fireStoreDB.collection(.suggestCategoryIndexes)
+            let query = collectionRef.whereField(SuggestIndexKeys.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .suggestCategoryIndexes)
+        }
+        
         let thenDeleteMemos: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
             let collectionRef = self.fireStoreDB.collection(.linkMemo)
@@ -239,9 +253,11 @@ extension FirebaseServiceImple {
         
         return deleteColelctions()
             .flatMap(thenDeleteLinks)
+            .flatMap(thenDeleteItemIndexes)
             .flatMap(thenDeleteShareIndexes)
             .flatMap(thenDeleteInbox)
             .flatMap(thenDeleteCategories)
+            .flatMap(thenDeleteCategoryIndexes)
             .flatMap(thenDeleteMemos)
     }
 }
