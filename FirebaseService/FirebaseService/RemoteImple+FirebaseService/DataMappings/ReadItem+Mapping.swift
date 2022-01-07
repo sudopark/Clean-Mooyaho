@@ -107,25 +107,29 @@ extension ReadLink: DocumentMappable {
 
 struct CollectionCustomOrders: DocumentMappable {
     
-    let collectionID: String
+    enum MappingKeys: String, JSONMappingKeys {
+        case itemIDs = "custom_ords"
+    }
+    
+    let combineID: String
     let itemIDs: [String]
     
-    init(collectionID: String, itemIDs: [String]) {
-        self.collectionID = collectionID
+    init(ownerID: String, collectionID: String, itemIDs: [String] = []) {
+        self.combineID = "\(ownerID)-\(collectionID)"
         self.itemIDs = itemIDs
     }
     
     init?(docuID: String, json: JSON) {
-        guard let itemIDs = json[Key.customOrders] as? [String] else { return nil }
-        self.collectionID = docuID
+        self.combineID = docuID
+        guard let itemIDs = json[MappingKeys.itemIDs] as? [String] else { return nil }
         self.itemIDs = itemIDs
     }
     
     func asDocument() -> (String, JSON) {
         let json: JSON = [
-            Key.customOrders.rawValue: self.itemIDs
+            MappingKeys.itemIDs.rawValue: self.itemIDs
         ]
-        return (self.collectionID, json)
+        return (self.combineID, json)
     }
 }
 
