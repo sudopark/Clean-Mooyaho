@@ -31,6 +31,7 @@ public final class EditCategoryViewController: BaseViewController, EditCategoryS
      
     private let titleLabel = UILabel()
     private let inputField = SingleLineInputView()
+    private let underLineView = UIView()
     private var selectedCollectionView: UICollectionView!
     private let tableView = UITableView()
     private let confirmButton = ConfirmButton()
@@ -247,6 +248,14 @@ extension EditCategoryViewController: Presenting {
         }
         inputField.setupLayout()
         
+        self.view.addSubview(underLineView)
+        underLineView.autoLayout.active(with: inputField) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+            $0.topAnchor.constraint(equalTo: $1.bottomAnchor, constant: 8)
+            $0.heightAnchor.constraint(equalToConstant: 1)
+        }
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         self.selectedCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -254,7 +263,7 @@ extension EditCategoryViewController: Presenting {
         selectedCollectionView.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -15)
-            $0.topAnchor.constraint(equalTo: inputField.bottomAnchor, constant: 12)
+            $0.topAnchor.constraint(equalTo: underLineView.bottomAnchor, constant: 12)
             $0.heightAnchor.constraint(equalToConstant: 32)
         }
         
@@ -290,6 +299,8 @@ extension EditCategoryViewController: Presenting {
         self.inputField.setupStyling()
         self.inputField.backgroundColor = .clear
         self.inputField.placeHolderLabel.text = "Enter a name".localized
+        
+        self.underLineView.backgroundColor = self.uiContext.colors.lineColor
         
         self.selectedCollectionView.registerCell(SelectedCategoryCell.self)
         self.selectedCollectionView.delegate = self

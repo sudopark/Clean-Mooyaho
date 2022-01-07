@@ -17,7 +17,7 @@ public class BaseShimmerView: BaseUIView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        self.shimmerColor = self.uiContext.colors.descriptionText.withAlphaComponent(0.6)
+        self.shimmerColor = UIColor(white: 0.80, alpha: 0.6)
     }
     
     public required init?(coder: NSCoder) {
@@ -25,10 +25,6 @@ public class BaseShimmerView: BaseUIView {
     }
     
     private var shimmerLayer: CAGradientLayer?
-}
-
-
-extension BaseShimmerView {
     
     public func startAnimation() {
         
@@ -48,11 +44,15 @@ extension BaseShimmerView {
         self.layer.removeAllAnimations()
         self.shimmerLayer = nil
     }
+}
+
+
+extension BaseShimmerView {
     
     private func makeGradientLayer() -> CAGradientLayer {
         
-        let gradientColorOne : CGColor = UIColor(white: 0.85, alpha: 1.0).cgColor
-        let gradientColorTwo : CGColor = UIColor(white: 0.95, alpha: 1.0).cgColor
+        let gradientColorOne : CGColor = UIColor(white: 0.85, alpha: 0.6).cgColor
+        let gradientColorTwo : CGColor = UIColor(white: 0.95, alpha: 0.6).cgColor
         
         let gradientLayer = CAGradientLayer()
                 
@@ -95,6 +95,14 @@ public class MultilineShimmerView: BaseShimmerView, Presenting {
     public var numberOfLines: Int = 2
     
     private var lineViews: [SingleLineShimmerView] = []
+    
+    public override func startAnimation() {
+        self.lineViews.forEach { $0.startAnimation() }
+    }
+    
+    public override func stopAnimation() {
+        self.lineViews.forEach { $0.stopAnimation() }
+    }
     
     public func setupLayout() {
         

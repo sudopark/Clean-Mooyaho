@@ -261,6 +261,7 @@ extension InnerWebViewViewController: Presenting {
                                                      right: 0)
         self.webView.allowsBackForwardNavigationGestures = true
         self.webView.navigationDelegate = self
+        self.webView.backgroundColor = uiContext.colors.appBackground
         
         self.toolBar.setupStyling()
     }

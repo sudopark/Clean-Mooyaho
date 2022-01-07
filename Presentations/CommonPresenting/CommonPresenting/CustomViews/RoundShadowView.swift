@@ -14,7 +14,7 @@ public class RoundShadowView: BaseUIView {
     public var cornerRadius: CGFloat = 15.0
     public var fillColor: UIColor = .white
     public var shadowOpacity: Float = 0.4
-    public var shadowColor: UIColor = UIColor.black.withAlphaComponent(0.4)
+    public var shadowColor: UIColor = UIColor.label
     
     public func updateLayer() {
         self.shadowLayer?.removeAllAnimations()
@@ -29,7 +29,8 @@ public class RoundShadowView: BaseUIView {
         let newLayer = CAShapeLayer()
         newLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: self.cornerRadius).cgPath
         newLayer.fillColor = self.fillColor.cgColor
-        newLayer.shadowColor = shadowColor.cgColor
+        let alpha: CGFloat = self.traitCollection.userInterfaceStyle == .light ? 0.4 : 0.1
+        newLayer.shadowColor = shadowColor.withAlphaComponent(alpha).cgColor
         newLayer.shadowPath = newLayer.path
         newLayer.shadowOffset = .init(width: 0, height: 0.1)
         newLayer.shadowOpacity = self.shadowOpacity
@@ -38,5 +39,11 @@ public class RoundShadowView: BaseUIView {
         self.shadowLayer = newLayer
         
         self.layer.insertSublayer(shadowLayer, at: 0)
+    }
+    
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard let previous = previousTraitCollection?.userInterfaceStyle,
+              previous != self.traitCollection.userInterfaceStyle else { return }
+        self.updateLayer()
     }
 }

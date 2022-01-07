@@ -277,8 +277,8 @@ extension MainViewController {
     
     private func updateIsShrinkModeOn(_ newValue: Bool) {
         self.mainView.shrinkButton.backgroundColor = newValue
-            ? self.uiContext.colors.accentColor
-            : self.uiContext.colors.raw.lightGray
+            ? self.uiContext.colors.defaultButtonOn
+            : self.uiContext.colors.defaultButtonOff
     }
     
     private func bindShowAddItemGuide() {
@@ -309,7 +309,11 @@ extension MainViewController {
 
 extension MainViewController {
     
-    private var bottomSlideMinOffset: CGFloat { 60 }
+    private var safeAreaBotomInset: CGFloat { UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0 }
+    private var bottomSlideMinOffset: CGFloat {
+        let additionalMargin: CGFloat = self.safeAreaBotomInset == 0 ? 20 : 0
+        return 60 + additionalMargin
+    }
     private var bottomSlideMaxOffset: CGFloat { self.mainView.bottomSlideContainerView.frame.height-20 }
     
     typealias UpdateBottomOffsetParam = (offset: CGFloat, animationDuration: TimeInterval?)
@@ -346,20 +350,15 @@ extension MainViewController {
         
         let pangesture = UIPanGestureRecognizer()
         self.mainView.bottomSlideContainerView.addGestureRecognizer(pangesture)
-        
-        let newBottonConstraint = BehaviorSubject<UpdateBottomOffsetParam?>(value: nil)
-        
         Observable
             .merge(self.newOffsetByPangestureDy(pangesture), self.newOffsetByPangestureEnd(pangesture))
-            .bind(to: newBottonConstraint)
-            .disposed(by: self.disposeBag)
-        
-        newBottonConstraint
             .subscribe(onNext: { [weak self] params in
-                guard let self = self, let params = params else { return }
+                guard let self = self else { return }
                 self.updateBottomSlideOffset(params.offset, withAnimation: params.animationDuration)
             })
             .disposed(by: self.disposeBag)
+        
+        self.mainView.bottomSlideBottomOffsetConstraint.constant = -self.bottomSlideMinOffset
     }
     
     private func updateBottomSlideOffsetIfNeed(show: Bool) {
