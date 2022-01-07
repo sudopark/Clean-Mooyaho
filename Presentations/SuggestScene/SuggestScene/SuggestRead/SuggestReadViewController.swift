@@ -170,6 +170,9 @@ extension SuggestReadViewController: Presenting, UITableViewDelegate {
     
     public func setupStyling() {
         
+        self.view.backgroundColor = self.uiContext.colors.appSecondBackground
+        
+        self.tableView.backgroundColor = uiContext.colors.appSecondBackground
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.separatorStyle = .none

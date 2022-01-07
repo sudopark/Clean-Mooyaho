@@ -9,7 +9,7 @@ import UIKit
 
 import Domain
 
-public class IntegratedImageView: UIView {
+public class IntegratedImageView: BaseUIView {
     
     let internalImageView = UIImageView()
     
@@ -67,7 +67,7 @@ extension IntegratedImageView: Presenting {
     }
     
     public func setupStyling() {
-        self.backgroundColor = .clear
+        self.backgroundColor = self.uiContext.colors.thumbnailBackground
         self.internalImageView.backgroundColor = .clear
         self.internalImageView.contentMode = .scaleAspectFill
     }

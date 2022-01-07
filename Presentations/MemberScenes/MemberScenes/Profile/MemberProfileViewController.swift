@@ -204,7 +204,7 @@ extension MemberProfileInfoCell {
             |> \.text .~ pure("Unnamed member".localized)
         
         self.thumbnailImageView.setupStyling()
-        self.thumbnailImageView.backgroundColor = self.uiContext.colors.appBackground
+        self.thumbnailImageView.backgroundColor = self.uiContext.colors.thumbnailBackground
         self.thumbnailImageView.layer.cornerRadius = 49
         self.thumbnailImageView.clipsToBounds = true
         

@@ -60,6 +60,7 @@ extension InputTextView: Presenting {
     
     public func setupStyling() {
         
+        self.backgroundColor = .clear
         self.stackView.axis = .vertical
         self.stackView.backgroundColor = .clear
         self.singleLineTextField.backgroundColor = .clear
@@ -72,8 +73,6 @@ extension InputTextView: Presenting {
         
         self.singleLineTextField.delegate = self
         self.textInputView.delegate = self
-        
-        self.backgroundColor = UIColor.from(hex: "#fdfdfd")
     }
     
     public func setupSingleLineStyling() {

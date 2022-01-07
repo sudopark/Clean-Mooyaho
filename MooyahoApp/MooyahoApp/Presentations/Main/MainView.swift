@@ -99,7 +99,7 @@ final class FloatingButtonButtonView: BaseUIView, Presenting {
     func setupStyling() {
         
         self.roundView.cornerRadius = 15
-        self.roundView.fillColor = self.uiContext.colors.appBackground
+        self.roundView.fillColor = self.uiContext.colors.appSecondBackground
         self.roundView.shadowOpacity = 0.9
         
         self.closeImageView.image = UIImage(systemName: "xmark")
@@ -218,7 +218,7 @@ extension MainView: Presenting {
             $0.heightAnchor.constraint(equalTo: $1.heightAnchor, constant: 0)
         }
         self.bottomSlideBottomOffsetConstraint = self.bottomSlideContainerView
-            .topAnchor.constraint(equalTo: self.bottomAnchor, constant: -60)
+            .topAnchor.constraint(equalTo: self.bottomAnchor)
         NSLayoutConstraint.activate([self.bottomSlideBottomOffsetConstraint])
         
         self.bottomSlideContainerView.addSubview(bottomSearchBarView)
@@ -338,8 +338,8 @@ extension MainView: Presenting {
         self.bottomSearchBarView.layer.cornerRadius = 10
         self.bottomSearchBarView.clipsToBounds = true
         self.bottomSearchBarView.setupStyling()
-        self.bottomSearchBarView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-        self.bottomSearchBarView.iconImageView.tintColor = UIColor.black.withAlphaComponent(0.1)
+        self.bottomSearchBarView.backgroundColor = self.uiContext.colors.text.withAlphaComponent(0.1)
+        self.bottomSearchBarView.iconImageView.tintColor = self.uiContext.colors.text.withAlphaComponent(0.3)
         self.bottomSearchBarView.placeHolderLabel.text = "Search item".localized
         self.bottomSearchBarView.textField.returnKeyType = .search
         
@@ -351,23 +351,23 @@ extension MainView: Presenting {
         self.cancelSearchButton.isHidden = true
         
         self.profileImageView.setupStyling()
-        self.profileImageView.backgroundColor = self.uiContext.colors.hintText
+        self.profileImageView.backgroundColor = self.uiContext.colors.thumbnailBackground
         self.profileImageView.layer.cornerRadius = 18
         self.profileImageView.clipsToBounds = true
         
         self.addItemButton.setupButton("plus", color: self.uiContext.colors.buttonBlue)
         
-        self.shareButton.setupButton("square.and.arrow.up", color: self.uiContext.colors.raw.lightGray)
+        self.shareButton.setupButton("square.and.arrow.up", color: self.uiContext.colors.defaultButtonOff)
         self.shareButton.isEnabled = false
         
         self.shrinkButton.setupButton("arrow.down.forward.and.arrow.up.backward",
-                                      color: self.uiContext.colors.raw.lightGray)
+                                      color: self.uiContext.colors.defaultButtonOff)
         
         
         self.sharedCoverView.backgroundColor = self.uiContext.colors.appSecondBackground
         self.sharedCoverView.isHidden = true
         
-        self.exitButton.setupButton("arrow.uturn.backward", color: self.uiContext.colors.raw.lightGray)
+        self.exitButton.setupButton("arrow.uturn.backward", color: self.uiContext.colors.defaultButtonOff)
         
         self.sharedRootCollectionView.setupStyling()
         
@@ -405,7 +405,7 @@ final class SharedRootCollectionInfoView: BaseUIView, Presenting {
     private func updateOwnerInfo(_ member: Member?) {
         self.ownerNameLabel.text = member?.nickName ?? "Unknown".localized
         self.ownerProfileImageView.cancelSetupImage()
-        guard let icon = member?.icon else { return }
+        let icon = member?.icon ?? Member.memberDefaultEmoji
         self.ownerProfileImageView.setupImage(using: icon, resize: .init(width: 15, height: 15))
     }
 }

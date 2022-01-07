@@ -492,16 +492,12 @@
 		F6502DC6266A0CA20027800F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F6C910D62788A7CD003E91B0 /* Deprecated */,
 				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
 				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
-				F6502DC7266A0CC40027800F /* TextTagInputField.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
 				F6502DEA266CB6F80027800F /* ConfirmButton.swift */,
-				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
 				F65215882674A7C0000CAB4B /* InputTextView.swift */,
-				F645A6572690B52200E04D29 /* InfoSectionView.swift */,
-				F645A65D26934F5700E04D29 /* WordTokensView.swift */,
-				F667E28A26E1254E0046B9FB /* ReactionView.swift */,
 				F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */,
 				F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */,
 				F6C97B1627091D2500990019 /* ShimmerView.swift */,
@@ -575,6 +571,18 @@
 				F6A3A0AC275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift */,
 			);
 			path = ViewUsecases;
+			sourceTree = "<group>";
+		};
+		F6C910D62788A7CD003E91B0 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				F667E28A26E1254E0046B9FB /* ReactionView.swift */,
+				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
+				F6502DC7266A0CC40027800F /* TextTagInputField.swift */,
+				F645A65D26934F5700E04D29 /* WordTokensView.swift */,
+				F645A6572690B52200E04D29 /* InfoSectionView.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		F6CB4343271355EE00F26508 /* ColorSelect */ = {

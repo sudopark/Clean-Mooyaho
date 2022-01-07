@@ -173,8 +173,8 @@ extension ItemLabelView {
             LabelElement(
                 text: "⛳️ \(time.remindTimeText())",
                 font: self.font,
-                backgroundColor: UIColor.systemGray6,
-                textColor: UIColor.black
+                backgroundColor: UIColor.tertiarySystemGroupedBackground,
+                textColor: UIColor.label
             )
         ]
         self.updateElements(elements)

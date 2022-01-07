@@ -106,6 +106,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         self.favoriteImageVIew.image = UIImage(systemName: "star.fill")
         self.favoriteImageVIew.tintColor = UIColor.systemYellow
         self.favoriteImageVIew.isHidden = true
+        self.favoriteImageVIew.contentMode = .scaleAspectFit
         
         _ = addressLabel
             |> self.uiContext.decorating.listItemSubDescription(_:)
@@ -236,12 +237,12 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         self.ownerInfoView.isHidden = true
         
         self.priorityLabel.isHidden = true
-        self.priorityLabel.backgroundColor = self.uiContext.colors.appBackground
+        self.priorityLabel.backgroundColor = .clear
         
         self.categoriesView.isHidden = true
-        self.categoriesView.backgroundColor = self.uiContext.colors.appBackground
+        self.categoriesView.backgroundColor = .clear
         
         self.remindView.isHidden = true
-        self.remindView.backgroundColor = self.uiContext.colors.appBackground
+        self.remindView.backgroundColor = .clear
     }
 }

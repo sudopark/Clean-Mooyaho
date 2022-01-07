@@ -20,6 +20,12 @@ public protocol ColorSet {
     var secondaryTitle: UIColor { get }
     var descriptionText: UIColor { get }
     var hintText: UIColor { get }
+    
+    var defaultButtonOff: UIColor { get }
+    var defaultButtonOn: UIColor { get }
+    var defaultButtonDisabled: UIColor { get }
+    
+    var thumbnailBackground: UIColor { get }
 }
 
 extension ColorSet {
@@ -31,8 +37,10 @@ extension ColorSet {
     }
     
     public var lineColor: UIColor {
-        return UIColor.systemGroupedBackground
+        return UIColor.tertiarySystemGroupedBackground
     }
+    
+//    public var darkLine
     
     public var buttonBlue: UIColor {
         return UIColor.systemBlue.withAlphaComponent(0.9)
@@ -64,17 +72,25 @@ public struct DefaultColorSet: ColorSet {
     
     public var secondaryAccentColor: UIColor { UIColor(red: 0/255, green: 171/255, blue: 142/255, alpha: 1.0) }
     
-    public var appBackground: UIColor { .white }
+    public var appBackground: UIColor { .systemBackground }
     
-    public var appSecondBackground: UIColor { .systemGroupedBackground }
+    public var appSecondBackground: UIColor { .tertiarySystemGroupedBackground }
     
-    public var title: UIColor { .black }
+    public var title: UIColor { .label }
     
-    public var secondaryTitle: UIColor { UIColor.darkGray }
+    public var secondaryTitle: UIColor { .secondaryLabel }
     
     public var descriptionText: UIColor { UIColor.systemGray }
     
-    public var hintText: UIColor { UIColor.lightGray }
+    public var hintText: UIColor { .placeholderText }
+    
+    // buttons
+    public var defaultButtonOn: UIColor { self.buttonBlue }
+    public var defaultButtonOff: UIColor { UIColor.lightGray }
+    public var defaultButtonDisabled: UIColor { self.defaultButtonOff.withAlphaComponent(0.5) }
+    
+    // thumbnails
+    public var thumbnailBackground: UIColor { self.hintText }
 }
 
 public struct SystemFontSet: FontSet {

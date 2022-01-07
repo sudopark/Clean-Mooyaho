@@ -10,7 +10,15 @@ import UIKit
 import Domain
 
 
-public protocol SignInButton: UIView { }
+public protocol SignInButton: UIView {
+    
+    func updateAppearance(by isDarkMode: Bool)
+}
+
+extension SignInButton {
+    
+    public func updateAppearance(by isDarkMode: Bool) { }
+}
 
 public protocol OAuthSignInButtonBuildable {
     

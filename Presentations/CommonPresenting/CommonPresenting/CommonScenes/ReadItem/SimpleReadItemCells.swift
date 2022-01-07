@@ -39,8 +39,8 @@ open class SimpleReadItemCell: BaseTableViewCell, Presenting {
         
         self.contentView.addSubview(underLineView)
         underLineView.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: self.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
             $0.heightAnchor.constraint(equalToConstant: 1)
         }
