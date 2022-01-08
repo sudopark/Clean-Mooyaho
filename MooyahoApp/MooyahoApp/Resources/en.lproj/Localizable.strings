@@ -72,6 +72,7 @@
 "Log in to use the following services" = "Log in to use the following services";
 "You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded)." = "You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded).";
 "Share your organized reading list with others.\nOr you can read reading lists shared by others." = "Share your reading list with others.\nOr you can read reading lists shared by others.";
+"This account cannot be viewed." = "This account cannot be viewed.";
 
 // read
 "Priority" = "Priority";

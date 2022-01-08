@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -109,12 +111,32 @@ extension MemberProfileViewModelImple {
     
     public func refresh() {
         
+        let handleRefreshedMemnber: (Member) -> Void = { [weak self] member in
+            guard member.isDeactivated == false else {
+                self?.alertMemberDeactivated()
+                return
+            }
+            self?.subjects.member.accept(member)
+        }
         self.memberUsecase.loadMembers([self.memberID])
             .compactMap { $0.first }
-            .subscribe(onSuccess: { [weak self] member in
-                self?.subjects.member.accept(member)
-            })
+            .subscribe(onSuccess: handleRefreshedMemnber)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func alertMemberDeactivated() {
+        
+        let close: (() -> Void)? = { [weak self] in
+            self?.router.closeScene(animated: true, completed: nil)
+        }
+        
+        let form: AlertForm = .init()
+            |> \.message .~ pure("This account cannot be viewed.".localized)
+            |> \.customConfirmText .~ pure("Close".localized)
+            |> \.confirmed .~ close
+            |> \.isSingleConfirmButton .~ true
+        
+        self.router.alertForConfirm(form)
     }
     
     public func report() {
