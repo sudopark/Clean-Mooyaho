@@ -221,8 +221,20 @@ extension MainViewModelImple {
         
         self.subjects.isToggling.accept(true)
         self.shareCollectionUseCase.shareCollection(subCollectionID)
-            .subscribe(onSuccess: sharePrepared, onError: self.handleError())
+            .subscribe(onSuccess: sharePrepared, onError: self.handleStartShareError())
             .disposed(by: self.disposeBag)
+    }
+    
+    private func handleStartShareError() -> (Error) -> Void {
+        return { [weak self] error in
+            self?.subjects.isToggling.accept(false)
+            switch (error as? ApplicationErrors) {
+            case .sigInNeed:
+                self?.router.presentSignInScene()
+            default:
+                self?.router.alertError(error)
+            }
+        }
     }
     
     private func handleError() -> (Error) -> Void {

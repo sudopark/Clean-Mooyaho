@@ -34,14 +34,17 @@ class ShareItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         return .dummy(0)
     }
     
-    private func makeUsecase(shouldFailShare: Bool = false,
+    private func makeUsecase(withoutSignIn: Bool = false,
+                             shouldFailShare: Bool = false,
                              shouldFailStopShare: Bool = false,
                              shouldFailLoadSharedItem: Bool = false,
                              sharingCollectionIDs: [[String]] = [],
                              latestSharedCollections: [SharedReadCollection] = []) -> ShareItemUsecaseImple {
         
         let dataStore = SharedDataStoreServiceImple()
-        dataStore.save(Member.self, key: .currentMember, Member(uid: "some", nickName: nil, icon: nil))
+        (withoutSignIn == false).then <| {
+            dataStore.save(Member.self, key: .currentMember, Member(uid: "some", nickName: nil, icon: nil))
+        }
         self.spySharedStore = dataStore
         
         let repository = StubShareItemRepository()
@@ -75,6 +78,23 @@ extension ShareItemUsecaseTests {
         
         // then
         XCTAssertNotNil(shared)
+    }
+    
+    func testUsecase_whenShareItemWithoutSignIn_error() {
+        // given
+        let expect = expectation(description: "아이템 공유요청시에 로그인 안되어있으면 에러")
+        let usecase = self.makeUsecase(withoutSignIn: true)
+        
+        // when
+        let dummy = ReadCollection.dummy(0, parent: nil)
+        let error = self.waitError(expect, for: usecase.shareCollection(dummy.uid).asObservable())
+        
+        // then
+        if case let appError = error as? ApplicationErrors, case .sigInNeed = appError {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 에러가 아님")
+        }
     }
     
     func testUsecase_whenAfterShareItem_updateSharingIDList() {
