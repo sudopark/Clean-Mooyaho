@@ -161,7 +161,7 @@ extension ManageAccountViewController: Presenting, UITableViewDelegate {
 
 final class ManageAccountDescriptionCell: BaseTableViewCell, Presenting {
     
-    let descriptionLabel = UILabel()
+    let descriptionTipsView = DescriptionTipsView()
     
     override func afterViewInit() {
         super.afterViewInit()
@@ -171,21 +171,22 @@ final class ManageAccountDescriptionCell: BaseTableViewCell, Presenting {
     
     func setupLayout() {
         
-        self.contentView.addSubview(descriptionLabel)
-        descriptionLabel.autoLayout.active(with: self.contentView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -20)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 16)
+        self.contentView.addSubview(descriptionTipsView)
+        descriptionTipsView.autoLayout.active(with: self.contentView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -20)
         }
+        self.descriptionTipsView.setupLayout()
     }
     
     func setupStyling() {
         self.backgroundColor = .clear
+        self.descriptionTipsView.setupStyling()
 
-        _ = self.descriptionLabel
-            |> self.uiContext.decorating.listItemSubDescription(_:)
-            |> \.text .~ pure("When you delete your account, all of your data is immediately deleted and cannot be restored.".localized)
+        let descriptions = "delete_ccount_descriptions".localized.components(separatedBy: "\n")
+        self.descriptionTipsView.setupDescriptions(descriptions)
     }
 }
 

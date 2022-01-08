@@ -53,7 +53,8 @@ public struct SecureLoggingMessage {
     public init() { }
     
     var message: String {
-        return String(format: fullText, secureField)
+        let fieldTexts = secureField.map { "\($0)" }
+        return String(format: fullText, arguments: fieldTexts)
     }
     
     var securedMessage: String {

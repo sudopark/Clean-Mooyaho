@@ -19,17 +19,20 @@ struct MemberTable: Table {
         let uid: String
         let nickName: String?
         let introduction: String?
+        let isDeactivated: Bool
         
         init(_ cursor: CursorIterator) throws {
             self.uid = try cursor.next().unwrap()
             self.nickName = cursor.next()
             self.introduction = cursor.next()
+            self.isDeactivated = (try? cursor.next().unwrap()) ?? false
         }
         
-        init(_ uid: String, nickName: String?, intro: String?) {
-            self.uid = uid
-            self.nickName = nickName
-            self.introduction = intro
+        init(_ member: Member) {
+            self.uid = member.uid
+            self.nickName = member.nickName
+            self.introduction = member.introduction
+            self.isDeactivated = member.isDeactivated
         }
     }
     
@@ -37,12 +40,14 @@ struct MemberTable: Table {
         case uid
         case nickName = "nikc_name"
         case intro
+        case isDeactivated
         
         var dataType: ColumnDataType {
             switch self {
             case .uid: return .text([.primaryKey(autoIncrement: false), .notNull])
             case .nickName: return .text([])
             case .intro: return .text([])
+            case .isDeactivated: return .integer([])
             }
         }
     }
@@ -57,6 +62,7 @@ struct MemberTable: Table {
         case .uid: return model.uid
         case .nickName: return model.nickName
         case .intro: return model.introduction
+        case .isDeactivated: return model.isDeactivated
         }
     }
 }
