@@ -71,9 +71,6 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
-        fileprivate let readItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
-        fileprivate let signedoutSubject = PublishSubject<Domain.Auth>()
-        
         let crashLogger: CrashLogger = FirebaseCrashLogger()
     }
     
@@ -93,10 +90,6 @@ final class DependencyInjector {
     
     var readRemindMessagingService: ReadRemindMessagingService {
         return self.shared.firebaseServiceImple
-    }
-    
-    var readItemUpdateEventPublisher: PublishSubject<ReadItemUpdateEvent> {
-        return self.shared.readItemUpdateSubject
     }
     
     var suggestQueryEngine: SuggestQueryEngine {
@@ -216,7 +209,7 @@ extension DependencyInjector {
     
     var userDataMigrationUsecase: UserDataMigrationUsecase {
         return UserDataMigrationUsecaseImple(migrationRepository: self.appReposiotry,
-                                             readItemUpdateEventPublisher: self.readItemUpdateEventPublisher)
+                                             shareEventService: self.shared.sharedEventService)
     }
     
     var shareItemUsecase: ShareReadCollectionUsecase & SharedReadCollectionLoadUsecase & SharedReadCollectionHandleUsecase & SharedReadCollectionUpdateUsecase {
