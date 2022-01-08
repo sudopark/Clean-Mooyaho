@@ -128,6 +128,19 @@ extension MemberProfileViewModelTests {
         // then
         XCTAssertEqual(intro?.intro, "some intro")
     }
+    
+    func testViewModel_whenLoadDeactivatedMember_alertAndClose() {
+        // given
+        let dummy = self.dummyMember |> \.isDeactivated .~ true
+        let viewModel = self.makeViewModel(dummy)
+        
+        // when
+        viewModel.refresh()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didAlertForConfirm, true)
+        XCTAssertEqual(self.spyRouter.didDismissed, true)
+    }
 }
 
 
@@ -135,5 +148,15 @@ extension MemberProfileViewModelTests {
     
     class SpyRouter: MemberProfileRouting {
         
+        var didAlertForConfirm: Bool?
+        func alertForConfirm(_ form: AlertForm) {
+            self.didAlertForConfirm = true
+            form.confirmed?()
+        }
+        
+        var didDismissed: Bool?
+        func closeScene(animated: Bool, completed: (() -> Void)?) {
+            self.didDismissed = true
+        }
     }
 }
