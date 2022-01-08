@@ -251,6 +251,13 @@ extension FirebaseServiceImple {
             return self.deleteAll(query, at: .linkMemo)
         }
         
+        let thenDeleteFavoriteItemIDs: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let collectionRef = self.fireStoreDB.collection(.memberFavoriteItems)
+            let query = collectionRef.whereField(FieldPath.documentID(), isEqualTo: memberID)
+            return self.deleteAll(query, at: .memberFavoriteItems)
+        }
+        
         return deleteColelctions()
             .flatMap(thenDeleteLinks)
             .flatMap(thenDeleteItemIndexes)
@@ -259,6 +266,7 @@ extension FirebaseServiceImple {
             .flatMap(thenDeleteCategories)
             .flatMap(thenDeleteCategoryIndexes)
             .flatMap(thenDeleteMemos)
+            .flatMap(thenDeleteFavoriteItemIDs)
     }
 }
 
