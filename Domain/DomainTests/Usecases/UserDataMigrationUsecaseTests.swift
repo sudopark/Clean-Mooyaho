@@ -21,6 +21,7 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var stubRepository: StubUserDataMigrationRepository!
+    var shareEventService: SharedEventService!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -29,6 +30,7 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.stubRepository = nil
+        self.shareEventService = nil
     }
     
     private var dummyItemCategorisChunk: [[ItemCategory]] {
@@ -47,8 +49,6 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
         return (0..<23).makeDummyChunks(50) { ReadLinkMemo.dummyID("\($0)") }
     }
     
-    let mockItemUpdateSubject = PublishSubject<ReadItemUpdateEvent>()
-    
     private func makeUsecase(isMigrationNeed: Bool = true,
                              isEmptyCategories: Bool = false,
                              isEmptyReadItem: Bool = false,
@@ -63,8 +63,12 @@ class UserDataMigrationUsecaseTests: BaseTestCase, WaitObservableEvents {
             |> \.migrationError .~ (shouldFail ? ApplicationErrors.invalid as Error : nil)
         let repository = StubUserDataMigrationRepository(scenario: scenario)
         self.stubRepository = repository
+        
+        let sharedService = SharedEventServiceImple()
+        self.shareEventService = sharedService
+        
         return UserDataMigrationUsecaseImple(migrationRepository: repository,
-                                             readItemUpdateEventPublisher: self.mockItemUpdateSubject)
+                                             shareEventService: sharedService)
     }
 }
 
@@ -161,12 +165,12 @@ extension UserDataMigrationUsecaseTests {
         let usecase = self.makeUsecase()
         
         // when
-        let event = self.waitFirstElement(expect, for: self.mockItemUpdateSubject, skip: 1) {
+        let event = self.waitFirstElement(expect, for: self.shareEventService.event, skip: 1) {
             usecase.startDataMigration(for: "some")
         }
         
         // then
-        if case .updated = event {
+        if case .updated = event as? ReadItemUpdateEvent {
             expect.fulfill()
         } else {
             XCTFail("기대하는 이벤트가 아님")
