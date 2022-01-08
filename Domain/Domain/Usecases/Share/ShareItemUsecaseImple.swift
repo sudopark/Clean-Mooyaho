@@ -40,6 +40,10 @@ public final class ShareItemUsecaseImple: ShareReadCollectionUsecase, SharedRead
 extension ShareItemUsecaseImple {
     
     public func shareCollection(_ collectionID: String) -> Maybe<SharedReadCollection> {
+        
+        guard self.authInfoProvider.isSignedIn() else {
+            return .error(ApplicationErrors.sigInNeed)
+        }
      
         let updateSharingID: (SharedReadCollection) -> Void = { [weak self] _ in
             let datKey = SharedDataKeys.mySharingCollectionIDs.rawValue

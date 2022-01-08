@@ -236,6 +236,20 @@ extension MainViewModelTests {
         XCTAssertEqual(self.spyRouter.didAlertError, true)
     }
     
+    func testViewModel_whenShareFailWithSignInNeedError_showSignInScene() {
+        // given
+        self.stubShareUsecase.refreshMySharingColletionIDs()
+        self.viewModel.readCollection(didChange: .myCollections)
+        self.viewModel.readCollection(didShowMy: "some")
+        
+        // when
+        self.stubShareUsecase.scenario.shareCollectionResult = .failure(ApplicationErrors.sigInNeed)
+        self.viewModel.toggleShareStatus()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didSignInRequested, true)
+    }
+    
     func testViewModel_toggleSharingCollection_status() {
         // given
         let expect = expectation(description: "콜렉션 쉐어하고 공유하는 아이템 목록 업데이트됨")
