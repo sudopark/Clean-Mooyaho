@@ -56,6 +56,7 @@ extension LocalStorageTests_AuthAndMember {
         XCTAssertEqual(member.nickName, loadedMember?.nickName)
         XCTAssertEqual(member.introduction, loadedMember?.introduction)
         XCTAssertEqual(member.icon, loadedMember?.icon)
+        XCTAssertEqual(member.isDeactivated, false)
     }
     
     func testStorage_updateMember() {
@@ -66,6 +67,7 @@ extension LocalStorageTests_AuthAndMember {
         newMember.icon = .emoji("🎒")
         newMember.nickName = "new nick"
         newMember.introduction = "new hello world!"
+        newMember.isDeactivated = true
         
         // when
         let saveOldMember = self.local.saveMember(oldMember)
@@ -78,6 +80,7 @@ extension LocalStorageTests_AuthAndMember {
         XCTAssertEqual(loadedMember?.nickName, "new nick")
         XCTAssertEqual(loadedMember?.introduction, "new hello world!")
         XCTAssertEqual(loadedMember?.icon, .emoji("🎒"))
+        XCTAssertEqual(loadedMember?.isDeactivated, true)
     }
     
     func testStorage_saveMembersAndLoad() {

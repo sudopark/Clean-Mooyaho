@@ -161,64 +161,28 @@ extension FirebaseServiceImple {
         let withdrawalMember = WithdrawalMember(memberID)
         let appendToWithdrawal = self.save(withdrawalMember, at: .withdrawalQueue)
         
-        let thenDeleteMemebr: () -> Maybe<Void> = { [weak self] in
-            return self?.delete(memberID, at: .member).catchAndReturn(()) ?? .empty()
+        let thenDeactivateMemebr: () -> Maybe<Void> = { [weak self] in
+            return self?.deactivateMember(memberID) ?? .empty()
         }
         
         let thenDeleteMemberDataWithoutError: () -> Maybe<Void> = { [weak self] in
-            return self?.deleteMemberDatas(for: memberID).catchAndReturn(()) ?? .empty()
+            return self?.deleteShareingDatas(for: memberID).catchAndReturn(()) ?? .empty()
         }
         
-        let thenDeleteAuth: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            return self.deleteAuth().catch { error in
-                logger.print(level: .warning, "delete auth fail.. => \(error)")
-                return self.requestSignout().catchAndReturn(())
-            }
-        }
         return appendToWithdrawal
-            .flatMap(thenDeleteMemebr)
+            .flatMap(thenDeactivateMemebr)
             .flatMap(thenDeleteMemberDataWithoutError)
-            .flatMap(thenDeleteAuth)
     }
     
-    private func deleteAuth() -> Maybe<Void> {
-        return Maybe.create { callback in
-            guard let currentAuth = Auth.auth().currentUser else {
-                callback(.success(()))
-                return Disposables.create()
-            }
-            currentAuth.delete { error in
-                let result: MaybeEvent<Void> = error.map { .error($0) } ?? .success(())
-                callback(result)
-            }
-            return Disposables.create()
-        }
+    private func deactivateMember(_ memberID: String) -> Maybe<Void> {
+        typealias Keys = MemberMappingKey
+        let newFields: JSON = [Keys.isDeactivated.rawValue: true]
+        return self.update(docuID: memberID, newFields: newFields, at: .member)
     }
     
-    private func deleteMemberDatas(for memberID: String) -> Maybe<Void> {
+    private func deleteShareingDatas(for memberID: String) -> Maybe<Void> {
         
-        let deleteColelctions: () -> Maybe<Void> = {
-            let collectionRef = self.fireStoreDB.collection(.readCollection)
-            let query = collectionRef.whereField(ReadItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
-            return self.deleteAll(query, at: .readCollection)
-        }
-        
-        let thenDeleteLinks: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let linkRef = self.fireStoreDB.collection(.readLinks)
-            let query = linkRef.whereField(ReadItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
-            return self.deleteAll(query, at: .readLinks)
-        }
-        
-        let thenDeleteItemIndexes: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let collectionRef = self.fireStoreDB.collection(.suggestReadItemIndexes)
-            let query = collectionRef.whereField(SuggestIndexKeys.ownerID.rawValue, isEqualTo: memberID)
-            return self.deleteAll(query, at: .suggestReadItemIndexes)
-        }
-        
-        let thenDeleteShareIndexes: () -> Maybe<Void> = { [weak self] in
+        let deleteShareIndexes: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
             let indexRef = self.fireStoreDB.collection(.sharingCollectionIndex)
             let query = indexRef.whereField(ShareItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
@@ -230,43 +194,8 @@ extension FirebaseServiceImple {
             return self.delete(memberID, at: .sharedInbox)
         }
         
-        let thenDeleteCategories: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let collectionRef = self.fireStoreDB.collection(.itemCategory)
-            let query = collectionRef.whereField(CategoryMappingKey.ownerID.rawValue, isEqualTo: memberID)
-            return self.deleteAll(query, at: .itemCategory)
-        }
-        
-        let thenDeleteCategoryIndexes: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let collectionRef = self.fireStoreDB.collection(.suggestCategoryIndexes)
-            let query = collectionRef.whereField(SuggestIndexKeys.ownerID.rawValue, isEqualTo: memberID)
-            return self.deleteAll(query, at: .suggestCategoryIndexes)
-        }
-        
-        let thenDeleteMemos: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let collectionRef = self.fireStoreDB.collection(.linkMemo)
-            let query = collectionRef.whereField(ReadLinkMemoMappingKey.ownerID.rawValue, isEqualTo: memberID)
-            return self.deleteAll(query, at: .linkMemo)
-        }
-        
-        let thenDeleteFavoriteItemIDs: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let collectionRef = self.fireStoreDB.collection(.memberFavoriteItems)
-            let query = collectionRef.whereField(FieldPath.documentID(), isEqualTo: memberID)
-            return self.deleteAll(query, at: .memberFavoriteItems)
-        }
-        
-        return deleteColelctions()
-            .flatMap(thenDeleteLinks)
-            .flatMap(thenDeleteItemIndexes)
-            .flatMap(thenDeleteShareIndexes)
+        return deleteShareIndexes()
             .flatMap(thenDeleteInbox)
-            .flatMap(thenDeleteCategories)
-            .flatMap(thenDeleteCategoryIndexes)
-            .flatMap(thenDeleteMemos)
-            .flatMap(thenDeleteFavoriteItemIDs)
     }
 }
 

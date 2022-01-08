@@ -182,7 +182,7 @@
 "Manage Account" = "Manage Account";
 "Signout" = "Signout";
 "Delete account" = "Delete account";
-"When you delete your account, all of your data is immediately deleted and cannot be restored." = "When you delete your account, all of your data is immediately deleted and cannot be restored.";
+"delete_ccount_descriptions" = "Your account will be deactivated after you apply for withdrawal.\nYour deactivated profile cannot be viewed by others, and all shared reading lists will also be deleted.\nYou can restore your account before the grace period (60 days) after the withdrawal request.\nAfter this period, all of your data will be deleted and your account and it will be irrecoverable.";
 "Are you sure you want to delete your account?" = "Are you sure you want to delete your account?";
 "Feedback" = "Feedback";
 "Enter a message" = "Enter a message";

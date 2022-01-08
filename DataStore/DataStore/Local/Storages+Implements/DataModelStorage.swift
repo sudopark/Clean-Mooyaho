@@ -261,6 +261,7 @@ extension DataModelStorageImple {
             var member = Member(uid: memberEntity.uid, nickName: memberEntity.nickName)
             member.introduction = memberEntity.introduction
             member.icon = iconEntity?.thumbnail
+            member.isDeactivated = memberEntity.isDeactivated
             return member
         }
         
@@ -293,8 +294,7 @@ extension DataModelStorageImple {
     }
     
     public func updateMember(_ member: Member) -> Maybe<Void> {
-        let memberEntity = MemberTable
-            .Entity(member.uid, nickName: member.nickName, intro: member.introduction)
+        let memberEntity = MemberTable.Entity(member)
         let updateMember = self.sqliteService.rx
             .run { try $0.insert(MemberTable.self, entities: [memberEntity]) }
         
@@ -961,7 +961,7 @@ private extension Place {
 extension Member {
     
     func asEntity() -> MemberTable.Entity {
-        return .init(self.uid, nickName: self.nickName, intro: self.introduction)
+        return .init(self)
     }
     
     func iconEntity() -> ThumbnailTable.Entity? {
