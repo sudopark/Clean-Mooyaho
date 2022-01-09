@@ -152,20 +152,13 @@
 		F68A87FB274BFA61004DADE4 /* SuggestScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68A87FA274BFA61004DADE4 /* SuggestScene.framework */; };
 		F68A87FC274BFA61004DADE4 /* SuggestScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68A87FA274BFA61004DADE4 /* SuggestScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B7307272863DC00DD5456 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7304272863DC00DD5456 /* Common3rdParty.framework */; };
-		F68B7308272863DC00DD5456 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7304272863DC00DD5456 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B7309272863DC00DD5456 /* CommonPresenting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7305272863DC00DD5456 /* CommonPresenting.framework */; };
-		F68B730A272863DC00DD5456 /* CommonPresenting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7305272863DC00DD5456 /* CommonPresenting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B730B272863DC00DD5456 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7306272863DC00DD5456 /* Domain.framework */; };
-		F68B730C272863DC00DD5456 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7306272863DC00DD5456 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B730F2728653400DD5456 /* DependencyInjector+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B730E2728653400DD5456 /* DependencyInjector+ShareExtension.swift */; };
 		F68B731327286C4400DD5456 /* DataStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731227286C4400DD5456 /* DataStore.framework */; };
-		F68B731427286C4400DD5456 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731227286C4400DD5456 /* DataStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B731627286C6300DD5456 /* FirebaseService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731527286C6300DD5456 /* FirebaseService.framework */; };
-		F68B731727286C6300DD5456 /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731527286C6300DD5456 /* FirebaseService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B731927286C8600DD5456 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731827286C8600DD5456 /* ReadItemScene.framework */; };
-		F68B731A27286C8600DD5456 /* ReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731827286C8600DD5456 /* ReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B731C27286C9200DD5456 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731B27286C9200DD5456 /* EditReadItemScene.framework */; };
-		F68B731D27286C9200DD5456 /* EditReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731B27286C9200DD5456 /* EditReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F68B731F272A026800DD5456 /* DependencyInjector+ShareExtension+Scenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B731E272A026800DD5456 /* DependencyInjector+ShareExtension+Scenes.swift */; };
 		F68B7320272A048400DD5456 /* Repositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603258726594E3C00E4E769 /* Repositories.swift */; };
 		F68B7322272A048F00DD5456 /* RemoteImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B21C6227004389006243FD /* RemoteImple.swift */; };
@@ -208,13 +201,6 @@
 		F6D7BE5F278038B900C71637 /* FirebaseService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731527286C6300DD5456 /* FirebaseService.framework */; };
 		F6D7BE61278038B900C71637 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6832FD227776F2300EFB99A /* Localizable.strings */; };
 		F6D7BE62278038B900C71637 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = F66E813E26552ADA00682625 /* secrets.json */; };
-		F6D7BE65278038B900C71637 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7306272863DC00DD5456 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F6D7BE66278038B900C71637 /* CommonPresenting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7305272863DC00DD5456 /* CommonPresenting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F6D7BE67278038B900C71637 /* DataStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731227286C4400DD5456 /* DataStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F6D7BE68278038B900C71637 /* Common3rdParty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B7304272863DC00DD5456 /* Common3rdParty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F6D7BE69278038B900C71637 /* EditReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731B27286C9200DD5456 /* EditReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F6D7BE6A278038B900C71637 /* ReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731827286C8600DD5456 /* ReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F6D7BE6B278038B900C71637 /* FirebaseService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F68B731527286C6300DD5456 /* FirebaseService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6D7BE71278039D200C71637 /* ReadReminderShareExtension gloabl.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F6D7BE6F278038B900C71637 /* ReadReminderShareExtension gloabl.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F6D7BE8027803E7F00C71637 /* GoogleService-Info-global.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6D7BE7F27803E7F00C71637 /* GoogleService-Info-global.plist */; };
 		F6D7BE8127803E7F00C71637 /* GoogleService-Info-global.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6D7BE7F27803E7F00C71637 /* GoogleService-Info-global.plist */; };
@@ -309,23 +295,6 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F68B730D272863DC00DD5456 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F68B730C272863DC00DD5456 /* Domain.framework in Embed Frameworks */,
-				F68B730A272863DC00DD5456 /* CommonPresenting.framework in Embed Frameworks */,
-				F68B731427286C4400DD5456 /* DataStore.framework in Embed Frameworks */,
-				F68B7308272863DC00DD5456 /* Common3rdParty.framework in Embed Frameworks */,
-				F68B731D27286C9200DD5456 /* EditReadItemScene.framework in Embed Frameworks */,
-				F68B731A27286C8600DD5456 /* ReadItemScene.framework in Embed Frameworks */,
-				F68B731727286C6300DD5456 /* FirebaseService.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F6BE6BC1272846FD00F5C544 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,23 +304,6 @@
 				F6BE6BC0272846FD00F5C544 /* ReadReminderShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F6D7BE64278038B900C71637 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F6D7BE65278038B900C71637 /* Domain.framework in Embed Frameworks */,
-				F6D7BE66278038B900C71637 /* CommonPresenting.framework in Embed Frameworks */,
-				F6D7BE67278038B900C71637 /* DataStore.framework in Embed Frameworks */,
-				F6D7BE68278038B900C71637 /* Common3rdParty.framework in Embed Frameworks */,
-				F6D7BE69278038B900C71637 /* EditReadItemScene.framework in Embed Frameworks */,
-				F6D7BE6A278038B900C71637 /* ReadItemScene.framework in Embed Frameworks */,
-				F6D7BE6B278038B900C71637 /* FirebaseService.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F6D7BE74278039D200C71637 /* Embed App Extensions */ = {
@@ -953,7 +905,6 @@
 				F6BE6BB2272846FD00F5C544 /* Sources */,
 				F6BE6BB3272846FD00F5C544 /* Frameworks */,
 				F6BE6BB4272846FD00F5C544 /* Resources */,
-				F68B730D272863DC00DD5456 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -990,7 +941,6 @@
 				F6D7BE4C278038B900C71637 /* Sources */,
 				F6D7BE58278038B900C71637 /* Frameworks */,
 				F6D7BE60278038B900C71637 /* Resources */,
-				F6D7BE64278038B900C71637 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
