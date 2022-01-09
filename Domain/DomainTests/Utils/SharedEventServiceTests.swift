@@ -43,7 +43,7 @@ extension SharedEventServiceTests {
         
         // when
         let notifiedEvents = self.waitElements(expect, for: service.event) {
-            service.notify(event: UserSignInStatusChangeEvent.signIn(.init(userID: "some")))
+            service.notify(event: UserSignInStatusChangeEvent.signIn(.init(userID: "some"), isDeactivated: true))
             service.notify(event: UserSignInStatusChangeEvent.signOut(.init(userID: "some")))
         }
         

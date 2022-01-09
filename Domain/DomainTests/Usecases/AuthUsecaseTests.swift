@@ -374,6 +374,35 @@ extension AuthUsecaseTests {
             XCTFail("기대하는 이벤트는 아님")
         }
     }
+    
+    func testUsecase_whenSignIn_notifySignedInWithIsDeactivated() {
+        // given
+        let expect = expectation(description: "로그인 이후에 로그인 이벤트 전파시에 비활성화 여부도 같이 전달")
+        self.mockOAuth2Repo.register(key: "requestSignIn") {
+            return Maybe<OAuthCredential>.just(DummyOAuth2Credentail())
+        }
+        self.mockAuthRepo.register(type: Maybe<SigninResult>.self, key: "requestSignIn:credential") {
+            var newMemner = Member(uid: "new_uuid", nickName: nil, icon: nil)
+            newMemner.deactivatedDateTimeStamp = .now()
+            let result = SigninResult(auth: .init(userID: "new_uuid"),
+                                      member: newMemner)
+            return Maybe<SigninResult>.just(result)
+        }
+        
+        // when
+        let event = self.waitFirstElement(expect, for: self.usecase.usersignInStatus) {
+            self.usecase.requestSocialSignIn(DummyOAuthType())
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        if case let .signIn(_, isDeactivated) = event, isDeactivated {
+            XCTAssert(true)
+        } else {
+            XCTFail("기대하는 이벤트는 아님")
+        }
+    }
 }
 
 

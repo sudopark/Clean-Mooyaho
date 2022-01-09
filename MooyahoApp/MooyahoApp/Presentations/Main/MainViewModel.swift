@@ -135,8 +135,9 @@ public final class MainViewModelImple: MainViewModel {
         self.authUsecase.usersignInStatus
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] event in
-                guard case let .signIn(auth) = event else { return }
-                self?.replaceCollectionAfterSignIn(auth)
+                guard case let .signIn(auth, isDeactivated) = event else { return }
+                self?.replaceCollectionAfterSignIn()
+                self?.runMigrationOrActivateAccount(auth, isDeactivated: isDeactivated)
             })
             .disposed(by: self.disposeBag)
     }
@@ -280,9 +281,14 @@ extension MainViewModelImple: MainSceneInteractable {
         self.router.presentSignInScene()
     }
     
-    private func replaceCollectionAfterSignIn(_ auth: Auth) {
+    private func replaceCollectionAfterSignIn() {
         self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
-        self.router.presentUserDataMigrationScene(auth.userID)
+    }
+    
+    private func runMigrationOrActivateAccount(_ auth: Auth, isDeactivated: Bool) {
+        return isDeactivated
+            ? self.router.presentActivateAccountScene(auth.userID)
+            : self.router.presentUserDataMigrationScene(auth.userID)
     }
 
     public func showSharedReadCollection(_ collection: SharedReadCollection) {

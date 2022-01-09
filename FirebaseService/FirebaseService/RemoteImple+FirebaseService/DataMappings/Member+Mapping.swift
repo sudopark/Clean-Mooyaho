@@ -88,7 +88,7 @@ enum MemberMappingKey: String, JSONMappingKeys {
     case nicknanme = "nm"
     case icon
     case introduction = "intro"
-    case isDeactivated
+    case deactivatedAt
 }
 
 extension Member: DocumentMappable {
@@ -100,7 +100,7 @@ extension Member: DocumentMappable {
         self.nickName = json[Key.nicknanme] as? String
         self.icon = (json[Key.icon] as? JSON).flatMap(Thumbnail.init(json:))
         self.introduction = json[Key.introduction] as? String
-        self.isDeactivated = json[Key.isDeactivated] as? Bool ?? false
+        self.deactivatedDateTimeStamp = json[Key.deactivatedAt] as? TimeStamp
     }
     
     func asDocument() -> (String, JSON) {
@@ -108,28 +108,7 @@ extension Member: DocumentMappable {
         json[Key.nicknanme] = self.nickName
         json[Key.icon] = self.icon?.asJSON
         json[Key.introduction] = self.introduction
-        json[Key.isDeactivated] = self.isDeactivated
+        json[Key.deactivatedAt] = self.deactivatedDateTimeStamp
         return (self.uid, json)
-    }
-}
-
-
-struct WithdrawalMember: DocumentMappable {
-    
-    let memberID: String
-    let requestTimeStamp: TimeStamp
-    
-    init(_ memberID: String) {
-        self.memberID = memberID
-        self.requestTimeStamp = .now()
-    }
-    
-    init?(docuID: String, json: JSON) {
-        self.memberID = docuID
-        self.requestTimeStamp = json["req-ts"] as? TimeStamp ?? 0
-    }
-    
-    func asDocument() -> (String, JSON) {
-        return (self.memberID, ["req-ts": self.requestTimeStamp])
     }
 }

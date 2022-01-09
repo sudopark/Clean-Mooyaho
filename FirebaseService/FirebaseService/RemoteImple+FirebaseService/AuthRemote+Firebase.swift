@@ -158,10 +158,8 @@ extension FirebaseServiceImple {
         else {
             return .error(RemoteErrors.deleteAccountFail(nil))
         }
-        let withdrawalMember = WithdrawalMember(memberID)
-        let appendToWithdrawal = self.save(withdrawalMember, at: .withdrawalQueue)
         
-        let thenDeactivateMemebr: () -> Maybe<Void> = { [weak self] in
+        let deactivateMemebr: () -> Maybe<Void> = { [weak self] in
             return self?.deactivateMember(memberID) ?? .empty()
         }
         
@@ -169,14 +167,13 @@ extension FirebaseServiceImple {
             return self?.deleteShareingDatas(for: memberID).catchAndReturn(()) ?? .empty()
         }
         
-        return appendToWithdrawal
-            .flatMap(thenDeactivateMemebr)
+        return deactivateMemebr()
             .flatMap(thenDeleteMemberDataWithoutError)
     }
     
     private func deactivateMember(_ memberID: String) -> Maybe<Void> {
         typealias Keys = MemberMappingKey
-        let newFields: JSON = [Keys.isDeactivated.rawValue: true]
+        let newFields: JSON = [Keys.deactivatedAt.rawValue: TimeStamp.now()]
         return self.update(docuID: memberID, newFields: newFields, at: .member)
     }
     

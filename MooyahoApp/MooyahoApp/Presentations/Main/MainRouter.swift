@@ -35,6 +35,8 @@ public protocol MainRouting: Routing {
     
     func presentUserDataMigrationScene(_ userID: String)
     
+    func presentActivateAccountScene(_ userID: String)
+    
     func presentEditProfileScene()
     
     func askAddNewitemType(_ completed: @escaping (Bool) -> Void)
@@ -138,6 +140,10 @@ extension MainRouter {
         scene.modalPresentationStyle = .custom
         scene.transitioningDelegate = self.bottomSliderTransitionManager
         self.currentScene?.present(scene, animated: true, completion: nil)
+    }
+    
+    public func presentActivateAccountScene(_ userID: String) {
+        logger.todoImplement()
     }
     
     public func presentUserDataMigrationScene(_ userID: String) {

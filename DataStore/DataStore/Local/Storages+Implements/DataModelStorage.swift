@@ -261,7 +261,7 @@ extension DataModelStorageImple {
             var member = Member(uid: memberEntity.uid, nickName: memberEntity.nickName)
             member.introduction = memberEntity.introduction
             member.icon = iconEntity?.thumbnail
-            member.isDeactivated = memberEntity.isDeactivated
+            member.deactivatedDateTimeStamp = memberEntity.deactivatedAt
             return member
         }
         
