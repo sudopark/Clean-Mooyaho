@@ -67,7 +67,7 @@ extension LocalStorageTests_AuthAndMember {
         newMember.icon = .emoji("🎒")
         newMember.nickName = "new nick"
         newMember.introduction = "new hello world!"
-        newMember.isDeactivated = true
+        newMember.deactivatedDateTimeStamp = .now()
         
         // when
         let saveOldMember = self.local.saveMember(oldMember)

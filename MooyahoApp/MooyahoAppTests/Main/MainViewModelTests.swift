@@ -102,11 +102,24 @@ extension MainViewModelTests {
         
         // when
         self.viewModel.requestOpenSlideMenu()
-        self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some")))
+        self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: false))
         
         // then
         XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
         XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
+    }
+    
+    func testViewModel_whenAfterSignInAndDeactivatedMember_replaceReadCollectionAndPresentActivateAccountScene() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(nil)
+        
+        // when
+        self.viewModel.requestOpenSlideMenu()
+        self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: true))
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
+        XCTAssertEqual(self.spyRouter.didShowActivateAccount, true)
     }
 }
 
@@ -440,6 +453,11 @@ extension MainViewModelTests {
         var didPresentMigrationScene = false
         func presentUserDataMigrationScene(_ userID: String) {
             self.didPresentMigrationScene = true
+        }
+        
+        var didShowActivateAccount: Bool?
+        func presentActivateAccountScene(_ userID: String) {
+            self.didShowActivateAccount = true
         }
         
         var didSlideMenuOpen = false

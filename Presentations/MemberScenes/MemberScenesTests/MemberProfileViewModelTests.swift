@@ -131,7 +131,7 @@ extension MemberProfileViewModelTests {
     
     func testViewModel_whenLoadDeactivatedMember_alertAndClose() {
         // given
-        let dummy = self.dummyMember |> \.isDeactivated .~ true
+        let dummy = self.dummyMember |> \.deactivatedDateTimeStamp .~ TimeStamp.now()
         let viewModel = self.makeViewModel(dummy)
         
         // when

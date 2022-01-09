@@ -15,7 +15,7 @@ import Optics
 // MARK: - SharedEvent + signIn status
 
 public enum UserSignInStatusChangeEvent: SharedEvent {
-    case signIn(_ auth: Auth)
+    case signIn(_ auth: Auth, isDeactivated: Bool)
     case signOut(_ auth: Auth)
 }
 
@@ -194,7 +194,11 @@ extension AuthUsecaseImple {
             guard let self = self else { return }
             self.downloadSuggestableQueries(memberID: result.member.uid)
             
-            let event: UserSignInStatusChangeEvent = .signIn(result.auth)
+            let isDeactivatedNow = result.member.isDeactivated
+            let event: UserSignInStatusChangeEvent = .signIn(
+                result.auth,
+                isDeactivated: isDeactivatedNow
+            )
             self.sharedEventService.notify(event: event)
         }
     }

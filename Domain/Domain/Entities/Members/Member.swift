@@ -15,7 +15,11 @@ public struct Member {
     
     public var nickName: String?
     public var introduction: String?
-    public var isDeactivated: Bool = false
+    public var deactivatedDateTimeStamp: TimeStamp?
+    
+    public var isDeactivated: Bool {
+        return self.deactivatedDateTimeStamp != nil
+    }
     
     public var icon: MemberThumbnail?
     
