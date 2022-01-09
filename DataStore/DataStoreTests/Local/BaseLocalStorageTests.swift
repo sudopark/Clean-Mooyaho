@@ -19,14 +19,14 @@ import UnitTestHelpKit
 class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var mockEnvironmentStorage: MockEnvironmentStorage!
     var mockEncrytedStorage: MockEncryptedStorage!
+    var testEnvironmentStorage: EnvironmentStorage!
     var local: LocalStorageImple!
     
-    private var testDBPath: String {
+    func testDBPath(_ name: String) -> String {
         return try! FileManager.default
             .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent("test.db")
+            .appendingPathComponent("\(name).db")
             .path
             
     }
@@ -38,19 +38,33 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         
         self.mockEncrytedStorage = MockEncryptedStorage()
-        self.mockEnvironmentStorage = .init()
-        let dataModelStorage = DataModelStorageImple(dbPath: self.testDBPath, verstion: 0, closeWhenDeinit: false)
+        
+        environmentStorageKeyPrefix = "test"
+        self.testEnvironmentStorage = UserDefaults.standard
+
+        let path = self.testDBPath("test1")
+        let gateway = DataModelStorageGatewayImple(anonymousStoragePath: path,
+                                                   makeAnonymousStorage: {
+            DataModelStorageImple(dbPath: self.testDBPath("test1"), version: 0, closeWhenDeinit: false)
+            
+        }, makeUserStorage: { _ in
+            DataModelStorageImple(dbPath: self.testDBPath("test2"), version: 0, closeWhenDeinit: false)
+        })
+        gateway.openAnonymousStorage().subscribe().disposed(by: self.disposeBag)
+        gateway.openUserStorage("some").subscribe().disposed(by: self.disposeBag)
+        
         self.local = LocalStorageImple(encryptedStorage: mockEncrytedStorage,
                                        environmentStorage: UserDefaults.standard,
-                                       dataModelStorage: dataModelStorage)
+                                       dataModelGateway: gateway)
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockEncrytedStorage = nil
-        self.mockEnvironmentStorage = nil
+        self.testEnvironmentStorage.clearAll()
         self.local = nil
-        try? FileManager.default.removeItem(atPath: self.testDBPath)
+        try? FileManager.default.removeItem(atPath: self.testDBPath("test1"))
+        try? FileManager.default.removeItem(atPath: self.testDBPath("test2"))
     }
 }
 
@@ -59,7 +73,11 @@ extension BaseLocalStorageTests {
     
     class MockEncryptedStorage: EncryptedStorage, Mocking {
         
+        func setupSharedGroup(_ identifier: String) { }
+        
+        var didSavedValue: Any?
         func save<V>(_ key: String, value: V) -> Result<Void, Error> {
+            self.didSavedValue = value
             self.register(key: "fetch") { Result<V?, Error>.success(value) }
             return .success(())
         }
@@ -70,25 +88,6 @@ extension BaseLocalStorageTests {
 
         func delete(_ key: String) -> Bool {
             return true
-        }
-    }
-}
-
-
-extension BaseLocalStorageTests {
-    
-    class MockEnvironmentStorage: EnvironmentStorage, Mocking {
-        
-        func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void> {
-            return self.resolve(key: "savePendingNewPlaceForm") ?? .empty()
-        }
-        
-        func fetchPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
-            return self.resolve(key: "fetchPendingNewPlaceForm") ?? .empty()
-        }
-        
-        func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void> {
-            return self.resolve(key: "removePendingNewPlaceForm") ?? .empty()
         }
     }
 }

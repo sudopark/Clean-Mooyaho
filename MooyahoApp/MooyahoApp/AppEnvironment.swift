@@ -49,21 +49,44 @@ struct AppEnvironment {
         return secretJsons["legacy_api_path"] as? String
     }()
     
+    static var appID: String {
+        #if KOR
+        return "1565634642"
+        #elseif GLOBAL
+        // TODO: 분기 필요
+        return "1565634642"
+        #endif
+    }
+    
+    static var groupID: String {
+        return "group.sudo.park.clean-mooyaho"
+    }
+    
+    static var shareScheme: String {
+        return "readminds"
+    }
+    
     static var dbFileName: String {
         if self.isTestBuild {
-            return "test_dummy.db"
+            return "test_dummy"
         } else {
-            return "datamodels.db"
+            return "datamodels"
         }
     }
     
-    static var dataModelDBPath: String {
+    static var encryptedStorageIdentifier: String {
+        #if KOR
+        return "readmind"
+        #elseif GLOBAL
+        return "readmind-global"
+        #endif
+    }
+    
+    static func dataModelDBPath(for userID: String? = nil) -> String {
+        let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.groupID)
         
-        let dbName = self.dbFileName
-        let dbURL = try? FileManager.default
-            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent(dbName)
-        
+        let fileName = userID.map { "\(self.dbFileName)_\($0)" } ?? self.dbFileName
+        let dbURL = directory?.appendingPathComponent("\(fileName).db")
         return dbURL?.path ?? ""
     }
     

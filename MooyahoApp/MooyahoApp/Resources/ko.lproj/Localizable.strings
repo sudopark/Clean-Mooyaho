@@ -1,0 +1,212 @@
+/*
+  Localized.strings
+  MooyahoApp
+
+  Created by sudo.park on 2021/12/26.
+  Copyright © 2021 ParkHyunsoo. All rights reserved.
+*/
+
+// common
+"Confirm" = "확인";
+"Cancel" = "취소";
+"Close" = "닫기";
+"Unknown" = "알수없음";
+"No nickname" = "닉네임 없음";
+"Save" = "저장";
+"Info" = "정보";
+"Edit" = "수정";
+"Create" = "생성";
+"Delete" = "삭제";
+"Clear" = "초기화";
+"Remove" = "제거";
+"No result found" = "일치하는 결과가 없습니다.";
+"The operation failed" = "작업 실패";
+"The requested operation has failed. Please try again later. (error: %@)" = "요청하신 작업에 실패했습니다. 잠시후에 다시 시도해 주세요. (error: %@)";
+"Wait please.." = "잠시만 기다려주세요..";
+
+// main
+"Return to my read collection?" = "내 읽기목록으로 복귀하시겠습니까?";
+"Add item form clipboard" = "클립보드에서 아이템 추가";
+"Search item" = "아이템 검색";
+"shared by" = "공유한 유저";
+"Login is required" = "로그인이 필요합니다.";
+"Click to log in to the service." = "클릭해 서비스에 로그인하세요.";
+"Click to set up your profile." = "클릭해 프로필 설정";
+
+
+// common UI
+"No preview title" = "미리보기 타이틀이 없습니다.";
+"Select a color" = "색상 선택";
+"now" = "now";
+"minute_ago" = "%d분 이전";
+"hour_ago" = "%d시간 이전";
+"day_ago" = "%d일 이전";
+"week_ago" = "%d주 이전";
+"year_ago" = "%d년 이전";
+"before dying" = "죽기전에";
+"someday" = "언젠가";
+"this week" = "이번주";
+"today" = "오늘";
+"before go to bed" = "자러가기 전에";
+"on the way to work" = "출퇴근길에";
+"after a while" = "조만간";
+
+
+// member
+"Nickname" = "닉네임";
+"Enter a nickname" = "닉네임을 입력하세요.";
+"Introduction" = "소개";
+"Hello world" = "Hello world";
+"Emoji" = "이모지";
+"Photo" = "사진";
+"Choose a profile image source" = "프로필 이미지를 등록할 방법을 고르세요.";
+"Failed to upload profile picture. Please try again." = "프로필 이미지 업로드에 실패했습니다. 잠시후 다시 시도해 주세요.";
+"Warning" = "경고";
+"The edited profile upload operation is not finished yet. Do you want to cancel all those processes?" = "프로필 수정 업로드 작업이 아직 완료되지 않았습니다. 해당 프로세스를 중지할까요?";
+"Edit Profile" = "프로필 수정";
+"Please set a nickname of 30 characters or less" = "30자 이내로 닉네임을 설정해 주세요.";
+"Please introduce yourself in 300 characters or less." = "300자 이내로 자기소개를 입력해 주세요.";
+"Member profile" = "멤버 프로필";
+"Name" = "이름";
+"Unnamed member" = "이름없는 멤버";
+"Log in to use the following services" = "로그인하여 다음 서비스를 이용해 보세요";
+"You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded)." = "읽기 목록을 백업하고 다른 iOS 기기에서 동기화 하세요\n(지원하는 플랫폼은 확장 예정입니다.).";
+"Share your organized reading list with others.\nOr you can read reading lists shared by others." = "정리한 읽기목록을 타인에게 공유해보세요.\n물론 타인이 공유한 목록을 조회하는것도 가능합니다.";
+"This account cannot be viewed." = "조회할 수 없는 상태의 계정입니다.";
+"recover_account_descriptions" = "현재 회원님의 계정은 비활성화 되어있습니다.\n서비스를 다시 이용하기 위해 계정을 복구하시겠습니까?";
+"Recover account" = "계정 복구";
+"Account recovery is complete." = "계정 복구가 완료되었습니다.";
+"Withdrawal request date: %@" = "계정 탈퇴 신청일: %@";
+
+
+// read
+"Priority" = "우선순위";
+"Categories" = "카테고리";
+"Remind" = "리마인드";
+"Edit collection" = "읽기목록 수정";
+"Change order" = "순서 변경";
+"Select an action" = "동작 선택";
+"Cancel remind" = "리마인드 취소";
+"Do you want to cancel this read remind?" = "읽기 리마인드를 취소하시겠습니까?";
+"Delete item" = "아이템 삭제";
+"Are you sure you want to delete the item?" = "해당 아이템을 삭제하시겠습니까?";
+"My Read Collections" = "내 읽기 목록";
+"Select a collection" = "읽기목록 선택";
+"Select_collection" = "'%@' 선택";
+"Select current collection" = "현재 읽기목록 선택";
+"Favorite items" = "즐겨찾는 아이템들";
+
+
+// edit
+"Select a new item type" = "새로 추가할 종류 타입 선택";
+"Add a new collection" = "읽기목록 생성";
+"Add a new read link" = "읽을 링크 추가";
+"Edit Collection" = "읽기목록 수정";
+"Enter a collection name" = "읽기목록 이름 입력";
+"Collection description" = "읽기목록 설명";
+"+ set a priority" = "+ 우선순위 설정";
+"+ add some category" = "+ 카테고리 추가";
+"+ add remind" = "+ 리마인드 추가";
+"Add a read link item" = "읽을 링크 추가";
+"Enter an url" = "URL 입력";
+"Enter a Custom name" = "커스텀 이름 입력";
+"Set a priority" = "우선순위 설정";
+"As soon as possible" = "조만간 읽을거에요";
+"On the way home" = "집가는길에 읽을거에요";
+"Before go to bed." = "자기전에 읽을래요";
+"I_m going to read it today" = "오늘중으로 읽을래요";
+"I think I_ll read it this week!" = "이번주에 읽을거 같아요!";
+"Someday~" = "언젠가~";
+"Will I do it before I die?" = "죽기전에는 읽겠죠?";
+"Suggesting categories" = "카테고리 추천";
+"Choose a category" = "카테고리 선택";
+"Enter a name" = "이름 입력";
+"Confirm Select %d item(s)" = "%d개의 아이템 선택 완료";
+"Change items order" = "순서 변경";
+"Collections" = "읽기목록";
+"Links" = "링크";
+"Select a remind time" = "리마인드 시간 선택";
+"Can_t use remind service" = "리마인드 서비스를 이용할 수 없습니다.";
+"To use remind service activate alert setting" = "리마인드 서비스를 사용하기위해 알림권한을 설정해주세요.";
+"Setting" = "설정";
+"Select a future time" = "미래의 시간을 선택하세요";
+"Enter the URL of a post you want to read later or archive." = "나중에 읽을 예정이거나 보관하고 싶은 게시글의 URL을 입력해주세요.";
+"In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications." = "다음 단계에서 아이템에 태그를 추가하거나\n리마인드 알림을 추가하는 등 추가적인 작업을 진행할 수 있습니다.";
+
+
+// viewer
+"Memo" = "메모";
+"Enter a memo" = "메모를 입력하세요.";
+
+
+// diccovery
+"Switch to my read collection" = "내 읽기목록으로 전환";
+"Shared read collections" = "공유받은 읽기 목록";
+"View all" = "모두보기";
+"A login is required to use the reading list sharing service." = "읽기목록을 공유하고 받기 위해서는 로그인이 필요합니다.";
+"There are no shared reading lists." = "공유받은 읽기목록이 없습니다.";
+"Shared collections" = "공유받은 읽기목록";
+"Would you like to remove the reading list from the shared list? (You can re-add it at any time with the shared URL.)" = "이 읽기목록을 공유받은 목록에서 제거할까요?(공유받았던 URL을 이용해 언제라도 다시 추가 가능합니다.)";
+"Sharing Reading List" = "공유중인 읽기목록";
+"Find who watch this reading list" = "누가 공유받고있는지 보기";
+"Stop sharing" = "공유 중지";
+"Do you want to stop sharing? (Users who have shared the reading list will no longer be able to view it.)" = "공유를 중지할까요? (해당 읽기목록을 공유받은 유저들은 더이상 이를 조회할 수 없습니다.)";
+"Sharing stopped." = "공유가 중지되었습니다.";
+"Shared Reading List" = "공유받은 읽기목록";
+"Remove from shared list" = "공유받은 목록에서 제거";
+"This reading list was shared with %d user(s)." = "이 읽기목록을 %d명의 유저에게 공유했습니다.";
+"It hasn't been shared with anyone yet." = "아직 아무에게도 공유되지 않았습니다.";
+"Stop sharing" = "공유 중지";
+"Are you sure want to exclude that user from accessing this shared reading list any more?" = "해당 유저가 더이상 이 공유 읽기목록에 접근할 수 없도록 공유받은 유저 목록에서 제거 하시겠습니까?";
+"Shared with" = "다음 유저들에게 공유함";
+
+
+// setting
+"Setting" = "설정";
+"Edit profile" = "프로필 수정";
+"Manage Account" = "계정 관리";
+"Signin" = "로그인";
+"Manage item category" = "아이템 카테고리 관리";
+"Manage temporary user data migration" = "임시유저 데이터 마이그레이션";
+"App version" = "앱 버전";
+"Feedback" = "피드백";
+"Source code" = "Source code";
+"Wait for data migration" = "데이터 마이그레이션 중입니다.";
+"Your locally stored data is being uploaded to cloud storage.\nPlease wait until the operation is completed." = "로컬에 저장된 데이터를 클라우드로 업로드 중 입니다.\n작업이 완료될때까지 기다려 주세요.";
+"Or do it latter >" = "혹은 나중에 하기 >";
+"Migration complete" = "마이그레이션 완료";
+"All data uploads are complete!" = "모든 데이터 업로드가 완료되었습니다!";
+"Migration finished" = "마이그레이션 완료";
+"All data has already been migrated." = "모든 데이터 마이그레이션이 이미 완료되었습니다.";
+"Migration failed" = "마이그레이션 실패";
+"Migration failed. Please try again after a while.\n(You can restart the operation from the settings screen.)" = "마이그레이션이 실패되었습니다. 잠시후 다시 시도해 주세요.\n(설정 화면에서 해당 작업을 다시 시작할 수 있습니다.)";
+"Edit category" = "카테고리 수정";
+"Change a color" = "색상 변경";
+"Save change" = "변경사항 저장";
+"Delete category" = "카테고리 삭제";
+"Are you sure you want to delete this category?" = "선택한 카테고리를 선택할까요?";
+"Category" = "카테고리";
+"Manage Account" = "계정 관리";
+"Signout" = "로그아웃";
+"Delete account" = "회원 탈퇴";
+"delete_ccount_descriptions" = "회원 탈퇴 신청 이후 계정이 비활성화됩니다.\n비활성화된 회원님의 프로필은 타인이 조회할 수 없으며 공유한 읽기 목록 또한 모두 삭제됩니다.\n탈퇴 신청 이후 유예기간(60일) 이전에는 계정을 복구할 수 있습니다.\n이 기간이 지난 이후에는 회원님의 모든 데이터가 삭제되고 계정 및 이를 복구할 수 없어지게 됩니다.";
+"Are you sure you want to delete your account?" = "정말로 계정을 삭제하시겠습니까?";
+"Feedback" = "피드백";
+"Enter a message" = "메세지 입력";
+"Contact" = "연락처";
+"Please leave your email address to be contacted." = "연락받을 수 있는 이메일 주소를 입력해 주세요.";
+"A category with the same name already exists." = "동일한 이름의 카테고리가 이미 존재합니다.";
+
+
+// suggest
+"To read" = "📚 읽을 목록";
+"My Favorites" = "⛳️ 즐겨찾는 아이템";
+"Continue red" = "🏃‍♂️ 계속 읽기";
+"There are no favorite reading items.\nLet's add a new favorite." = "즐겨찾는 아이템이 없습니다.\n새로 추가해 보세요.";
+"Continue reading and marking as read." = "계속해서 읽고 읽었음을 표시해 보세요.";
+
+
+// domain
+"Read Remind Notification" = "읽기 리마인드 알림";
+"It's time to read" = "예정된 읽을시간이에요.";
+"It's time to start read '%@' read collection" = "'%@'읽기 목록을 읽을 시간이에요.";

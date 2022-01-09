@@ -87,6 +87,12 @@ extension FirebaseServiceImple {
         case let customToken as CustomTokenCredential:
             return self.signinWithCustomTokenCredential(customToken)
             
+        case let appleLoginCredential as AppleAuthCredential:
+            return self.signInWithAppleCredential(appleLoginCredential)
+            
+        case let googleAuthCredential as GoogleAuthCredential:
+            return self.signInWithGoogleCredential(googleAuthCredential)
+            
         default:
             return .error(RemoteErrors.notSupportCredential(String(describing: credential)))
         }
@@ -105,6 +111,111 @@ extension FirebaseServiceImple {
             }
             return Disposables.create()
         }
+    }
+    
+    private func signInWithAppleCredential(_ appleCredential: AppleAuthCredential) -> Maybe<FirebaseAuth.User> {
+        
+        let credential = OAuthProvider.credential(withProviderID: appleCredential.provider,
+                                                  idToken: appleCredential.idToken,
+                                                  rawNonce: appleCredential.nonce)
+        return self.signInWithCredential(credential)
+    }
+    
+    private func signInWithGoogleCredential(_ googleCredential: GoogleAuthCredential) -> Maybe<FirebaseAuth.User> {
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: googleCredential.idToken,
+                                                       accessToken: googleCredential.accessToken)
+        return self.signInWithCredential(credential)
+    }
+    
+    private func signInWithCredential(_ credential: AuthCredential) -> Maybe<FirebaseAuth.User> {
+        return Maybe.create { callback in
+            Auth.auth().signIn(with: credential) { result, error in
+                guard error == nil, let user = result?.user else {
+                    callback(.error(RemoteErrors.credentialSigninFail(error)))
+                    return
+                }
+                callback(.success(user))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public func requestSignout() -> Maybe<Void> {
+        return Maybe.create { callback in
+            do {
+                try Auth.auth().signOut()
+                callback(.success(()))
+            } catch let error {
+                callback(.error(error))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public func requestWithdrawal() -> Maybe<Void> {
+        guard let memberID = self.signInMemberID
+        else {
+            return .error(RemoteErrors.deleteAccountFail(nil))
+        }
+        
+        let deactivateMemebr: () -> Maybe<Void> = { [weak self] in
+            return self?.deactivateMember(memberID) ?? .empty()
+        }
+        
+        let thenDeleteMemberDataWithoutError: () -> Maybe<Void> = { [weak self] in
+            return self?.deleteShareingDatas(for: memberID).catchAndReturn(()) ?? .empty()
+        }
+        
+        return deactivateMemebr()
+            .flatMap(thenDeleteMemberDataWithoutError)
+    }
+    
+    private func deactivateMember(_ memberID: String) -> Maybe<Void> {
+        typealias Keys = MemberMappingKey
+        let newFields: JSON = [Keys.deactivatedAt.rawValue: TimeStamp.now()]
+        return self.update(docuID: memberID, newFields: newFields, at: .member)
+    }
+    
+    private func deleteShareingDatas(for memberID: String) -> Maybe<Void> {
+        
+        let deleteShareIndexes: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let indexRef = self.fireStoreDB.collection(.sharingCollectionIndex)
+            let query = indexRef.whereField(ShareItemMappingKey.ownerID.rawValue, isEqualTo: memberID)
+            return self.deleteAll(query, at: .sharingCollectionIndex)
+        }
+        
+        let thenDeleteInbox: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.delete(memberID, at: .sharedInbox)
+        }
+        
+        return deleteShareIndexes()
+            .flatMap(thenDeleteInbox)
+    }
+    
+    public func requestRecoverAccount() -> Maybe<Member> {
+        
+        guard let memberID = self.signInMemberID else {
+            return .error(RemoteErrors.invalidRequest("signIn need"))
+        }
+        typealias Keys = MemberMappingKey
+        let newFields: JSON = [Keys.deactivatedAt.rawValue: FieldValue.delete()]
+        let activateMember = self.update(docuID: memberID, newFields: newFields, at: .member)
+        let thenLoadMember: () -> Maybe<Member?> = { [weak self] in
+            return self?.load(docuID: memberID, in: .member) ?? .empty()
+        }
+        let throwErrorWhenNotExists: (Member?) throws -> Member = { member in
+            guard let member = member else {
+                throw RemoteErrors.notFound("no member", reason: nil)
+            }
+            return member
+        }
+        
+        return  activateMember
+            .flatMap(thenLoadMember)
+            .map(throwErrorWhenNotExists)
     }
 }
 

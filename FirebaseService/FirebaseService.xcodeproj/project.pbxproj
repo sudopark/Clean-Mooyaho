@@ -30,7 +30,6 @@
 		2B8AC3ED263BB229002BA1AC /* GoogleAppMeasurement.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D5263BB229002BA1AC /* GoogleAppMeasurement.xcframework */; };
 		2B8AC3EE263BB229002BA1AC /* GoogleUtilities.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D6263BB229002BA1AC /* GoogleUtilities.xcframework */; };
 		2B8AC3EF263BB229002BA1AC /* FirebaseMessaging.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D8263BB229002BA1AC /* FirebaseMessaging.xcframework */; };
-		2B8AC3F0263BB229002BA1AC /* FirebaseInstanceID.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3D9263BB229002BA1AC /* FirebaseInstanceID.xcframework */; };
 		2B8AC3F1263BB229002BA1AC /* FirebaseStorage.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3DB263BB229002BA1AC /* FirebaseStorage.xcframework */; };
 		2B8AC3FD263C57C6002BA1AC /* FirebaseCrashlytics.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8AC3F8263C57C6002BA1AC /* FirebaseCrashlytics.xcframework */; };
 		2B8AC3FE263C57C6002BA1AC /* run in Resources */ = {isa = PBXBuildFile; fileRef = 2B8AC3F9263C57C6002BA1AC /* run */; };
@@ -44,8 +43,12 @@
 		2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */; };
 		2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */; };
 		F6078F0A26AD2EC1000B8AA4 /* FCMPayload+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */; };
+		F617F10A2768EA1200D88F9C /* HelpRemoteImple+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1092768EA1200D88F9C /* HelpRemoteImple+Firebase.swift */; };
+		F617F10C2768EA4900D88F9C /* Feedback+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F10B2768EA4900D88F9C /* Feedback+Mapping.swift */; };
+		F62692B82725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */; };
 		F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */; };
 		F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206726668BB70089D0B3 /* Storage+Extensions.swift */; };
+		F640618D2735DB4100902787 /* BatchUpload+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640618C2735DB4100902787 /* BatchUpload+Firebase.swift */; };
 		F64CCB6C265508490007F7C6 /* UserDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB6B265508490007F7C6 /* UserDevices.swift */; };
 		F6684DF82647CC1000820368 /* GFGeoHashQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6684DF92647CC1000820368 /* GFUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F6684DEF2647CC0F00820368 /* GFUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -67,10 +70,26 @@
 		F68B209B26A5D2B200DB30CC /* FCM+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */; };
 		F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */; };
 		F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */; };
+		F6A8CE4B271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */; };
+		F6BA7DAD278147CD0020B430 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F6BA7DA8278147CD0020B430 /* GoogleSignIn.bundle */; };
+		F6BA7DAF278147CD0020B430 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BA7DAA278147CD0020B430 /* AppAuth.xcframework */; };
+		F6BA7DB0278147CD0020B430 /* GTMAppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BA7DAB278147CD0020B430 /* GTMAppAuth.xcframework */; };
+		F6BA7DB1278147CD0020B430 /* GoogleSignIn.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BA7DAC278147CD0020B430 /* GoogleSignIn.xcframework */; };
+		F6BA7DB4278149900020B430 /* GoogleSignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BA7DB3278149900020B430 /* GoogleSignInService.swift */; };
+		F6BA7DC127815C9F0020B430 /* GoogleSignInButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BA7DC027815C9F0020B430 /* GoogleSignInButtonBuilder.swift */; };
+		F6BD480D2741050800D2B2C9 /* ShareItem+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */; };
+		F6BD480F2741065800D2B2C9 /* ShareItem+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */; };
+		F6C99B2A273031A000D42A90 /* ReadItem+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B29273031A000D42A90 /* ReadItem+Mapping.swift */; };
+		F6C99B2C2730356100D42A90 /* ItemCategory+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B2B2730356100D42A90 /* ItemCategory+Mapping.swift */; };
+		F6C99B2E273035EF00D42A90 /* ReadLinkMemo+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */; };
+		F6C99B312730382600D42A90 /* SuggestIndexes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C99B302730382600D42A90 /* SuggestIndexes.swift */; };
+		F6CEF8B326F4E8B300061097 /* ReadItemRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CEF8B226F4E8B300061097 /* ReadItemRemote+Firebase.swift */; };
 		F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */; };
 		F6CFA57B264660EA00F9A049 /* MockHttpRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57A264660EA00F9A049 /* MockHttpRemote.swift */; };
 		F6CFA57D2646659F00F9A049 /* FirebaseServiceImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTests.swift */; };
 		F6CFA58226466A8100F9A049 /* SearchPlace.json in Resources */ = {isa = PBXBuildFile; fileRef = F6CFA58126466A8100F9A049 /* SearchPlace.json */; };
+		F6E9F78627817A8700FF992F /* FirebaseCrashLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E9F78527817A8700FF992F /* FirebaseCrashLogger.swift */; };
+		F6F35FC12715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,8 +175,12 @@
 		2BD54F84263DCBB7004B3EB0 /* JsonMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonMapping.swift; sourceTree = "<group>"; };
 		2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FCMPayload+Mapping.swift"; sourceTree = "<group>"; };
+		F617F1092768EA1200D88F9C /* HelpRemoteImple+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HelpRemoteImple+Firebase.swift"; sourceTree = "<group>"; };
+		F617F10B2768EA4900D88F9C /* Feedback+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feedback+Mapping.swift"; sourceTree = "<group>"; };
+		F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadLinkMemoRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F637206726668BB70089D0B3 /* Storage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Extensions.swift"; sourceTree = "<group>"; };
+		F640618C2735DB4100902787 /* BatchUpload+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BatchUpload+Firebase.swift"; sourceTree = "<group>"; };
 		F64CCB6B265508490007F7C6 /* UserDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevices.swift; sourceTree = "<group>"; };
 		F6684DEE2647CC0F00820368 /* GFGeoHashQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFGeoHashQuery.h; sourceTree = "<group>"; };
 		F6684DEF2647CC0F00820368 /* GFUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFUtils.h; sourceTree = "<group>"; };
@@ -179,10 +202,26 @@
 		F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FCM+Firebase.swift"; sourceTree = "<group>"; };
 		F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Mapping.swift"; sourceTree = "<group>"; };
 		F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagRemote+Firebase.swift"; sourceTree = "<group>"; };
+		F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCategoryRemote+Firebase.swift"; sourceTree = "<group>"; };
+		F6BA7DA8278147CD0020B430 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleSignIn.bundle; sourceTree = "<group>"; };
+		F6BA7DAA278147CD0020B430 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AppAuth.xcframework; sourceTree = "<group>"; };
+		F6BA7DAB278147CD0020B430 /* GTMAppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GTMAppAuth.xcframework; sourceTree = "<group>"; };
+		F6BA7DAC278147CD0020B430 /* GoogleSignIn.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleSignIn.xcframework; sourceTree = "<group>"; };
+		F6BA7DB3278149900020B430 /* GoogleSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInService.swift; sourceTree = "<group>"; };
+		F6BA7DC027815C9F0020B430 /* GoogleSignInButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButtonBuilder.swift; sourceTree = "<group>"; };
+		F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareItem+Firebase.swift"; sourceTree = "<group>"; };
+		F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareItem+Mapping.swift"; sourceTree = "<group>"; };
+		F6C99B29273031A000D42A90 /* ReadItem+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItem+Mapping.swift"; sourceTree = "<group>"; };
+		F6C99B2B2730356100D42A90 /* ItemCategory+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCategory+Mapping.swift"; sourceTree = "<group>"; };
+		F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadLinkMemo+Mapping.swift"; sourceTree = "<group>"; };
+		F6C99B302730382600D42A90 /* SuggestIndexes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestIndexes.swift; sourceTree = "<group>"; };
+		F6CEF8B226F4E8B300061097 /* ReadItemRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItemRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6CFA57A264660EA00F9A049 /* MockHttpRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHttpRemote.swift; sourceTree = "<group>"; };
 		F6CFA57C2646659F00F9A049 /* FirebaseServiceImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseServiceImpleTests.swift; sourceTree = "<group>"; };
 		F6CFA58126466A8100F9A049 /* SearchPlace.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchPlace.json; sourceTree = "<group>"; };
+		F6E9F78527817A8700FF992F /* FirebaseCrashLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCrashLogger.swift; sourceTree = "<group>"; };
+		F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadItemOptionRemote+Firebase.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,14 +245,16 @@
 				2B8AC3E0263BB229002BA1AC /* leveldb-library.xcframework in Frameworks */,
 				2BD54F87263DD42A004B3EB0 /* Common3rdParty.framework in Frameworks */,
 				2B8AC3F1263BB229002BA1AC /* FirebaseStorage.xcframework in Frameworks */,
+				F6BA7DAF278147CD0020B430 /* AppAuth.xcframework in Frameworks */,
 				2B8AC3EC263BB229002BA1AC /* GoogleDataTransport.xcframework in Frameworks */,
 				2B8AC3DE263BB229002BA1AC /* gRPC-Core.xcframework in Frameworks */,
+				F6BA7DB0278147CD0020B430 /* GTMAppAuth.xcframework in Frameworks */,
 				2B8AC3E3263BB229002BA1AC /* abseil.xcframework in Frameworks */,
-				2B8AC3F0263BB229002BA1AC /* FirebaseInstanceID.xcframework in Frameworks */,
 				2B8AC3E1263BB229002BA1AC /* gRPC-C++.xcframework in Frameworks */,
 				2B8AC3E9263BB229002BA1AC /* FirebaseCoreDiagnostics.xcframework in Frameworks */,
 				2BD54F5C263D4AB4004B3EB0 /* DataStore.framework in Frameworks */,
 				2B8AC3E7263BB229002BA1AC /* PromisesObjC.xcframework in Frameworks */,
+				F6BA7DB1278147CD0020B430 /* GoogleSignIn.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +296,8 @@
 			children = (
 				F67848DB265123D20074C344 /* RemotePolicy.swift */,
 				2B39E1FF2638708D003EE954 /* FirebaseService.swift */,
+				F6E9F78527817A8700FF992F /* FirebaseCrashLogger.swift */,
+				F6BA7DB2278149810020B430 /* GoogleSignIn */,
 				2BD54F54263D4A02004B3EB0 /* RemoteImple+FirebaseService */,
 				F68B209926A5D29500DB30CC /* FCM+Firebase */,
 				F67848D8265122690074C344 /* Utills */,
@@ -328,6 +371,7 @@
 				2B8AC3C1263BB229002BA1AC /* FirebaseFirestore */,
 				2B8AC3D7263BB229002BA1AC /* FirebaseMessaging */,
 				2B8AC3DA263BB229002BA1AC /* FirebaseStorage */,
+				F6BA7DA6278147A10020B430 /* GoogleSignIn */,
 			);
 			path = FirebaseFrameworks;
 			sourceTree = "<group>";
@@ -415,12 +459,27 @@
 				2BD54F82263DCA5E004B3EB0 /* FireStore+Collections.swift */,
 				2BD54F70263DB37D004B3EB0 /* AuthRemote+Firebase.swift */,
 				F633212A26557BA8000D7456 /* MemberRemote+Firebase.swift */,
+				F66E81402655328000682625 /* MessagingRemote+Firebase.swift */,
+				F6CEF8B226F4E8B300061097 /* ReadItemRemote+Firebase.swift */,
+				F6F35FC02715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift */,
+				F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */,
+				F62692B72725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift */,
+				F640618C2735DB4100902787 /* BatchUpload+Firebase.swift */,
+				F6BD480C2741050800D2B2C9 /* ShareItem+Firebase.swift */,
+				F617F1092768EA1200D88F9C /* HelpRemoteImple+Firebase.swift */,
+				F62DEFC727535F6E008D50D1 /* Deprecated */,
+			);
+			path = "RemoteImple+FirebaseService";
+			sourceTree = "<group>";
+		};
+		F62DEFC727535F6E008D50D1 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
 				F6CFA57026444F2500F9A049 /* PlaceRemote+Firebase.swift */,
 				F6A72A4226486D88006BE4BD /* TagRemote+Firebase.swift */,
 				F67848D426510B170074C344 /* HoorayRemote+Firebase.swift */,
-				F66E81402655328000682625 /* MessagingRemote+Firebase.swift */,
 			);
-			path = "RemoteImple+FirebaseService";
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		F6684DED2647CBFA00820368 /* GeoFire+Utils */ = {
@@ -449,6 +508,12 @@
 				F6684E052647E38600820368 /* Place+Mapping.swift */,
 				F6A72A4026486C47006BE4BD /* Tag+Mapping.swift */,
 				F67848D626510CB50074C344 /* Hooray+Mapping.swift */,
+				F6C99B29273031A000D42A90 /* ReadItem+Mapping.swift */,
+				F6C99B2B2730356100D42A90 /* ItemCategory+Mapping.swift */,
+				F6C99B2D273035EF00D42A90 /* ReadLinkMemo+Mapping.swift */,
+				F6C99B302730382600D42A90 /* SuggestIndexes.swift */,
+				F6BD480E2741065800D2B2C9 /* ShareItem+Mapping.swift */,
+				F617F10B2768EA4900D88F9C /* Feedback+Mapping.swift */,
 			);
 			path = DataMappings;
 			sourceTree = "<group>";
@@ -468,6 +533,34 @@
 				F6078F0926AD2EC1000B8AA4 /* FCMPayload+Mapping.swift */,
 			);
 			path = "FCM+Firebase";
+			sourceTree = "<group>";
+		};
+		F6BA7DA6278147A10020B430 /* GoogleSignIn */ = {
+			isa = PBXGroup;
+			children = (
+				F6BA7DAA278147CD0020B430 /* AppAuth.xcframework */,
+				F6BA7DAC278147CD0020B430 /* GoogleSignIn.xcframework */,
+				F6BA7DAB278147CD0020B430 /* GTMAppAuth.xcframework */,
+				F6BA7DA7278147CD0020B430 /* Resources */,
+			);
+			path = GoogleSignIn;
+			sourceTree = "<group>";
+		};
+		F6BA7DA7278147CD0020B430 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F6BA7DA8278147CD0020B430 /* GoogleSignIn.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F6BA7DB2278149810020B430 /* GoogleSignIn */ = {
+			isa = PBXGroup;
+			children = (
+				F6BA7DB3278149900020B430 /* GoogleSignInService.swift */,
+				F6BA7DC027815C9F0020B430 /* GoogleSignInButtonBuilder.swift */,
+			);
+			path = GoogleSignIn;
 			sourceTree = "<group>";
 		};
 		F6CFA579264660D800F9A049 /* Doubles */ = {
@@ -585,6 +678,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6BA7DAD278147CD0020B430 /* GoogleSignIn.bundle in Resources */,
 				2B8AC3FF263C57C6002BA1AC /* upload-symbols in Resources */,
 				2B8AC3FE263C57C6002BA1AC /* run in Resources */,
 				2B8AC3DF263BB229002BA1AC /* gRPCCertificates-Cpp.bundle in Resources */,
@@ -607,29 +701,45 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BD54F83263DCA5E004B3EB0 /* FireStore+Collections.swift in Sources */,
+				F6C99B312730382600D42A90 /* SuggestIndexes.swift in Sources */,
+				F6BA7DB4278149900020B430 /* GoogleSignInService.swift in Sources */,
+				F6C99B2E273035EF00D42A90 /* ReadLinkMemo+Mapping.swift in Sources */,
 				F64CCB6C265508490007F7C6 /* UserDevices.swift in Sources */,
 				F6A72A4326486D88006BE4BD /* TagRemote+Firebase.swift in Sources */,
+				F6A8CE4B271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift in Sources */,
 				2BD54F71263DB37D004B3EB0 /* AuthRemote+Firebase.swift in Sources */,
+				F6BA7DC127815C9F0020B430 /* GoogleSignInButtonBuilder.swift in Sources */,
 				F6684DFB2647CC1000820368 /* GFGeoHashQuery.m in Sources */,
+				F6CEF8B326F4E8B300061097 /* ReadItemRemote+Firebase.swift in Sources */,
 				F6A72A4126486C47006BE4BD /* Tag+Mapping.swift in Sources */,
+				F62692B82725629D00841B40 /* ReadLinkMemoRemote+Firebase.swift in Sources */,
 				2BD54F85263DCBB7004B3EB0 /* JsonMapping.swift in Sources */,
+				F6BD480D2741050800D2B2C9 /* ShareItem+Firebase.swift in Sources */,
+				F617F10A2768EA1200D88F9C /* HelpRemoteImple+Firebase.swift in Sources */,
 				F637206826668BB70089D0B3 /* Storage+Extensions.swift in Sources */,
+				F617F10C2768EA4900D88F9C /* Feedback+Mapping.swift in Sources */,
 				F66E81412655328000682625 /* MessagingRemote+Firebase.swift in Sources */,
+				F6F35FC12715F934002B9DA8 /* ReadItemOptionRemote+Firebase.swift in Sources */,
+				F6C99B2A273031A000D42A90 /* ReadItem+Mapping.swift in Sources */,
 				F67848DA2651229A0074C344 /* DistanceUtills.swift in Sources */,
 				F6078F0A26AD2EC1000B8AA4 /* FCMPayload+Mapping.swift in Sources */,
 				F67848DC265123D20074C344 /* RemotePolicy.swift in Sources */,
 				F6684E012647CC1000820368 /* GFUtils.m in Sources */,
 				F6684E062647E38600820368 /* Place+Mapping.swift in Sources */,
+				F640618D2735DB4100902787 /* BatchUpload+Firebase.swift in Sources */,
 				F67848D726510CB50074C344 /* Hooray+Mapping.swift in Sources */,
 				F6CFA57126444F2500F9A049 /* PlaceRemote+Firebase.swift in Sources */,
 				F6684DFA2647CC1000820368 /* GFGeoHash.m in Sources */,
 				F68B209B26A5D2B200DB30CC /* FCM+Firebase.swift in Sources */,
 				F6684DFC2647CC1000820368 /* GFGeoQueryBounds.m in Sources */,
+				F6BD480F2741065800D2B2C9 /* ShareItem+Mapping.swift in Sources */,
 				F67848D526510B170074C344 /* HoorayRemote+Firebase.swift in Sources */,
 				F6684E042647E33400820368 /* Member+Mapping.swift in Sources */,
 				F633212B26557BA8000D7456 /* MemberRemote+Firebase.swift in Sources */,
 				2B39E2002638708D003EE954 /* FirebaseService.swift in Sources */,
 				F6684E002647CC1000820368 /* GFBase32Utils.m in Sources */,
+				F6E9F78627817A8700FF992F /* FirebaseCrashLogger.swift in Sources */,
+				F6C99B2C2730356100D42A90 /* ItemCategory+Mapping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

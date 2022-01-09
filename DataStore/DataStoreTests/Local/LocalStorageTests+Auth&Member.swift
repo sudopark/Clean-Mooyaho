@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import UnitTestHelpKit
@@ -54,6 +56,7 @@ extension LocalStorageTests_AuthAndMember {
         XCTAssertEqual(member.nickName, loadedMember?.nickName)
         XCTAssertEqual(member.introduction, loadedMember?.introduction)
         XCTAssertEqual(member.icon, loadedMember?.icon)
+        XCTAssertEqual(member.isDeactivated, false)
     }
     
     func testStorage_updateMember() {
@@ -64,6 +67,7 @@ extension LocalStorageTests_AuthAndMember {
         newMember.icon = .emoji("🎒")
         newMember.nickName = "new nick"
         newMember.introduction = "new hello world!"
+        newMember.deactivatedDateTimeStamp = .now()
         
         // when
         let saveOldMember = self.local.saveMember(oldMember)
@@ -76,6 +80,7 @@ extension LocalStorageTests_AuthAndMember {
         XCTAssertEqual(loadedMember?.nickName, "new nick")
         XCTAssertEqual(loadedMember?.introduction, "new hello world!")
         XCTAssertEqual(loadedMember?.icon, .emoji("🎒"))
+        XCTAssertEqual(loadedMember?.isDeactivated, true)
     }
     
     func testStorage_saveMembersAndLoad() {
@@ -97,5 +102,41 @@ extension LocalStorageTests_AuthAndMember {
         
         // then
         XCTAssertEqual(loadedMembers?.map{ $0.uid }, Array(ids[0..<10]))
+    }
+    
+    func testStorage_updateWhenThumbnailNotExists_saveNewThumbnail() {
+        // given
+        let expect = expectation(description: "섬네일이 없는상태에서 섬네일 저장")
+        let memberWithoutThumbnail = Member(uid: "some", nickName: "name", icon: nil)
+        
+        // when
+        let saveMember = self.local.saveSignedIn(member: memberWithoutThumbnail)
+        let memberWithThumbnail = memberWithoutThumbnail |> \.icon .~ .emoji("💩")
+        let updateMember = self.local.updateCurrentMember(memberWithThumbnail)
+        let loadMember = self.local.fetchMember(for: "some")
+        let saveUpdateAndLoad = saveMember.flatMap { updateMember }.flatMap { loadMember }
+        let member = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(member?.nickName, "name")
+        XCTAssertEqual(member?.icon?.emoji, "💩")
+    }
+    
+    func testStorage_updateWhenThumbnailExists_deleteThumbnailWithUpdating() {
+        // given
+        let expect = expectation(description: "섬네일 있는상태에서 아이콘 삭제 업데이트")
+        let memberWithThumbnail = Member(uid: "some", nickName: "name", icon: .emoji("🎃"))
+        
+        // when
+        let saveMember = self.local.saveSignedIn(member: memberWithThumbnail)
+        let memberWithoutThumbnail = memberWithThumbnail |> \.icon .~ nil
+        let updateMember = self.local.updateCurrentMember(memberWithoutThumbnail)
+        let loadMember = self.local.fetchMember(for: "some")
+        let saveUpdateAndLoad = saveMember.flatMap { updateMember }.flatMap { loadMember }
+        let member = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())
+        
+        // then
+        XCTAssertEqual(member?.nickName, "name")
+        XCTAssertEqual(member?.icon?.emoji, nil)
     }
 }

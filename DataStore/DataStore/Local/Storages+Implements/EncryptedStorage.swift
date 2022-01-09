@@ -27,6 +27,8 @@ enum EncrytedDataKeys: String {
 
 public protocol EncryptedStorage {
     
+    func setupSharedGroup(_ identifier: String)
+    
     func save<V>(_ key: String, value: V) -> Result<Void, Error>
     
     func fetch<V>(_ key: String) -> Result<V?, Error>
@@ -46,6 +48,10 @@ public class EncryptedStorageImple: EncryptedStorage {
 
 
 extension EncryptedStorageImple {
+    
+    public func setupSharedGroup(_ identifier: String) {
+        self.keychain.accessGroup = identifier
+    }
     
     public func save<V>(_ key: String, value: V) -> Result<Void, Error> {
         

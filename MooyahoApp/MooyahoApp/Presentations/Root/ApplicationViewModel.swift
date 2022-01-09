@@ -34,17 +34,20 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
     
     
     private let applicationUsecase: ApplicationUsecase
+    private let shareCollectionHandleUsecase: SharedReadCollectionHandleUsecase
     private let firebaseService: FirebaseService
     private let fcmService: FCMService
     private let kakaoService: KakaoService
     private let router: ApplicationRootRouting
     
     public init(applicationUsecase: ApplicationUsecase,
+                shareCollectionHandleUsecase: SharedReadCollectionHandleUsecase,
                 firebaseService: FirebaseService,
                 fcmService: FCMService,
                 kakaoService: KakaoService,
                 router: ApplicationRootRouting) {
         self.applicationUsecase = applicationUsecase
+        self.shareCollectionHandleUsecase = shareCollectionHandleUsecase
         self.firebaseService = firebaseService
         self.fcmService = fcmService
         self.kakaoService = kakaoService
@@ -54,6 +57,7 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
     }
     
     private let disposeBag = DisposeBag()
+    private var pendingShowRemindMessage: ReadRemindMessage?
     
     private func internalBinding() {
         
@@ -70,6 +74,21 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] token in
                 self?.applicationUsecase.userFCMTokenUpdated(token)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.applicationUsecase
+            .signedOut
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] auth in
+                logger.print(level: .info, "user signedout")
+                self?.router.routeMain(auth: auth)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.fcmService.receiveReadmindMessage
+            .subscribe(onNext: { [weak self] message in
+                self?.handleRemindMessage(message)
             })
             .disposed(by: self.disposeBag)
     }
@@ -97,6 +116,7 @@ extension ApplicationViewModelImple {
         
         let routing: (Domain.Auth) -> Void = { [weak self] auth in
             self?.router.routeMain(auth: auth)
+            self?.showDetailIfNeed()
         }
         self.applicationUsecase.loadLastSignInAccountInfo()
             .map{ $0.auth }
@@ -108,6 +128,10 @@ extension ApplicationViewModelImple {
     public func handleOpenURL(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]?) -> Bool {
         if self.kakaoService.canHandleURL(url) {
             return self.kakaoService.handle(url: url)
+        }
+        if self.shareCollectionHandleUsecase.canHandleURL(url) {
+            self.handleSharedCollection(url: url)
+            return true
         }
         return false
     }
@@ -135,10 +159,52 @@ extension ApplicationViewModelImple {
     public func newPushMessageRecived(_ userInfo: [AnyHashable: Any]) {
         self.fcmService.didReceiveDataMessage(userInfo)
     }
+    
+    private func handleSharedCollection(url: URL) {
+        
+        let handled: (SharedReadCollection) -> Void = { [weak self] collection in
+            self?.router.showSharedReadCollection(collection)
+        }
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        
+        self.shareCollectionHandleUsecase.loadSharedCollection(by: url)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: handled, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+}
+
+
+// MARK: - handle remind
+
+extension ApplicationViewModelImple {
+    
+    private func handleRemindMessage(_ message: ReadRemindMessage) {
+        let handleed = self.router.showRemindItem(message.itemID)
+        guard handleed == false else { return }
+        self.pendingShowRemindMessage = message
+    }
+    
+    private func showDetailIfNeed() {
+        guard let pending = self.pendingShowRemindMessage else { return }
+        _ = self.router.showRemindItem(pending.itemID)
+        self.pendingShowRemindMessage = nil
+    }
 }
 
 // Prenseter
 
 extension ApplicationViewModelImple {
     
+}
+
+
+private extension FCMService {
+    
+    var receiveReadmindMessage: Observable<ReadRemindMessage> {
+        return self.receivePushMessage
+            .compactMap { $0 as? ReadRemindMessage }
+    }
 }

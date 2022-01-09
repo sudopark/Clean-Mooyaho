@@ -28,7 +28,9 @@ class FirebaseServiceImpleTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.mockSession = .init()
         self.fakeHttpAPI = FakeHttpAPI(session: self.mockSession)
-        self.service = FirebaseServiceImple(httpAPI: self.fakeHttpAPI, serverKey: "dummy")
+        self.service = FirebaseServiceImple(httpAPI: self.fakeHttpAPI,
+                                            serverKey: "dummy",
+                                            previewRemote: DummyPreviewRemote())
     }
     
     override func tearDown() {
@@ -82,5 +84,16 @@ extension FirebaseServiceImpleTests {
         XCTAssertEqual(payload["m_type"] as? String, "hooray_ack")
         XCTAssertEqual(payload["ack_uid"] as? String, "ack_sender")
         XCTAssertEqual(payload["hid"] as? String, "dummy")
+    }
+}
+
+
+extension FirebaseServiceImpleTests {
+    
+    class DummyPreviewRemote: LinkPreviewRemote {
+        
+        func requestLoadPreview(_ url: String) -> Maybe<LinkPreview> {
+            return .empty()
+        }
     }
 }

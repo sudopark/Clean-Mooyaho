@@ -20,6 +20,12 @@ import Optics
 
 public protocol DataModelStorage {
     
+    var dbPath: String { get }
+    
+    func openDatabase() -> Maybe<Void>
+    
+    func closeDatabase() -> Maybe<Void>
+    
     func fetchMember(for memberID: String) -> Maybe<Member?>
     
     func fetchMembers(_ memberIDs: [String]) -> Maybe<[Member]>
@@ -43,23 +49,112 @@ public protocol DataModelStorage {
     func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void>
     
     func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?>
+    
+    func fetchMyReadItems() -> Maybe<[ReadItem]>
+    
+    func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]>
+    
+    func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
+    
+    func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?>
+    
+    func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void>
+    
+    func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void>
+    
+    func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void>
+    
+    func findLinkItem(using url: String) -> Maybe<ReadLink?>
+    
+    func removeReadItem(_ item: ReadItem) -> Maybe<Void>
+    
+    func fetchReadItem(like name: String) -> Maybe<[SearchReadItemIndex]>
+    
+    func fetchUpcommingItems() -> Maybe<[ReadItem]>
+    
+    func fetchMatchingItems(in ids: [String]) -> Maybe<[ReadItem]>
+    
+    func fetchFavoritemItemIDs() -> Maybe<[String]>
+    
+    func replaceFavoriteItemIDs(_ ids: [String]) -> Maybe<Void>
+    
+    func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?>
+    
+    func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
+    
+    func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
+    
+    func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void>
+    
+    func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void>
+    
+    func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]>
+    
+    func fetchLatestItemCategories() -> Maybe<[ItemCategory]>
+    
+    func fetchCategories(earilerThan creatTime: TimeStamp, pageSize: Int) -> Maybe<[ItemCategory]>
+    
+    func deleteCategory(_ itemID: String) -> Maybe<Void>
+    
+    func findCategory(by name: String) -> Maybe<ItemCategory?>
+    
+    func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
+    
+    func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void>
+    
+    func deleteMemo(for linkItemID: String) -> Maybe<Void>
+    
+    func fetch<T>(_ type: T.Type, with size: Int) -> Maybe<[T]>
+    
+    func remove<T>(_ type: T.Type, in ids: [String]) -> Maybe<Void>
+    
+    func save<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void>
+    
+    func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]>
+    
+    func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void>
+    
+    func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void>
+    
+    func fetchMySharingItemIDs() -> Maybe<[String]>
+    
+    func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void>
+    
+    func removeSharedCollection(shareID: String) -> Maybe<Void>
+    
+    func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]>
+    
+    func insertLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func removeLatestSearchQuery(_ query: String) -> Maybe<Void>
+    
+    func fetchAllSuggestableQueries() -> Maybe<[String]>
+    
+    func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void>
 }
 
 
 // MARK: - DataModelStorageImple
 
-public class DataModelStorageImple: DataModelStorage {
+public final class DataModelStorageImple: DataModelStorage {
     
-    private let sqliteService: SQLiteService
+    let sqliteService: SQLiteService
+    
+    public let dbPath: String
+    private let version: Int
     
     private let disposeBag = DisposeBag()
     private let closeWhenDeinit: Bool
     
-    public init(dbPath: String, verstion: Int = 0, closeWhenDeinit: Bool = true) {
+    var isOpen = false
+    
+    public init(dbPath: String, version: Int = 0, closeWhenDeinit: Bool = true) {
+        
+        self.dbPath = dbPath
+        self.version = version
         
         self.sqliteService = SQLiteService()
         self.closeWhenDeinit = closeWhenDeinit
-        self.openAndStartMigrationIfNeed(dbPath, version: verstion)
     }
     
     deinit {
@@ -68,19 +163,79 @@ public class DataModelStorageImple: DataModelStorage {
         }
     }
     
-    private func openAndStartMigrationIfNeed(_ path: String, version: Int) {
+    public func openDatabase() -> Maybe<Void> {
         
-        let openResult = self.sqliteService.open(path: path)
-        guard case .success = openResult else {
-            logger.print(level: .error, "fail to open sqlite database -> path: \(path)")
-            return
+        guard self.isOpen == false else { return .just() }
+        
+        let updateFlag: () -> Void = { [weak self] in
+            self?.isOpen = true
         }
         
-        self.migrationPlan(for: version)
-            .subscribe(onSuccess: { dbVersion in
-                logger.print(level: .info, "sqlite db open, version: \(dbVersion) and path: \(path)")
-            })
-            .disposed(by: self.disposeBag)
+        let startMigration: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            self.migrationPlan(for: self.version)
+                .subscribe(onSuccess: { dbVersion in
+                    let secureMessaging = SecureLoggingMessage()
+                        |> \.fullText .~ "sqlite db open, version: \(dbVersion) and path: %@"
+                        |> \.secureField .~ [self.dbPath]
+                    logger.print(level: .info, secureMessaging)
+                })
+                .disposed(by: self.disposeBag)
+        }
+        
+        let logError: (Error) -> Void = { [weak self] error in
+            guard let self = self else { return }
+            let secureMessaging = SecureLoggingMessage()
+                |> \.fullText .~ "fail to open sqlite database -> path: %@ and reason: \(error)"
+                |> \.secureField .~ [self.dbPath]
+            logger.print(level: .error, secureMessaging)
+        }
+        
+        return self.openAction()
+            .do(onNext: updateFlag)
+            .do(onNext: startMigration, onError: logError)
+    }
+    
+    private func openAction() -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let self = self else { return Disposables.create() }
+            let result = self.sqliteService.open(path: self.dbPath)
+            switch result {
+            case .success:
+                callback(.success(()))
+                
+            case let .failure(error):
+                callback(.error(error))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public func closeDatabase() -> Maybe<Void> {
+        
+        guard self.isOpen == true else { return .just() }
+        
+        let updateFlag: () -> Void = { [weak self] in
+            self?.isOpen = false
+        }
+        return self.closeAction()
+            .do(onNext: updateFlag)
+    }
+    
+    private func closeAction() -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let self = self else { return Disposables.create() }
+            self.sqliteService.open(path: self.dbPath) { result in
+                switch result {
+                case .success:
+                    callback(.success(()))
+                    
+                case let .failure(error):
+                    callback(.error(error))
+                }
+            }
+            return Disposables.create()
+        }
     }
 }
 
@@ -106,6 +261,7 @@ extension DataModelStorageImple {
             var member = Member(uid: memberEntity.uid, nickName: memberEntity.nickName)
             member.introduction = memberEntity.introduction
             member.icon = iconEntity?.thumbnail
+            member.deactivatedDateTimeStamp = memberEntity.deactivatedAt
             return member
         }
         
@@ -138,30 +294,30 @@ extension DataModelStorageImple {
     }
     
     public func updateMember(_ member: Member) -> Maybe<Void> {
-        let members = MemberTable.self
-        let updateMemberQuery = members.update {
-            [ $0.nickName.equal(member.nickName), $0.intro.equal(member.introduction) ]
-        }
-        .where{ $0.uid == member.uid }
+        let memberEntity = MemberTable.Entity(member)
+        let updateMember = self.sqliteService.rx
+            .run { try $0.insert(MemberTable.self, entities: [memberEntity]) }
         
-        let images = ThumbnailTable.self
-        let updateIconQuery = images.update { [
-            $0.isEmoji.equal(member.icon?.isEmoji),
-            $0.path.equal(member.icon?.source?.path),
-            $0.width.equal(member.icon?.source?.size?.width),
-            $0.height.equal(member.icon?.source?.size?.height),
-            $0.emoji.equal(member.icon?.emoji)
-        ] }
-        .where{ $0.ownerID == member.uid }
-        
-        let updateMember = self.sqliteService.rx.run{ try $0.update(members, query: updateMemberQuery) }
         let thenUpdateIcon: () -> Maybe<Void> = { [weak self] in
             guard let self = self else { return .empty() }
-            return self.sqliteService.rx.run { try $0.update(images, query: updateIconQuery) }
-                .catchAndReturn(())
+            return member.icon.map { self.insertIcon($0, for: member.uid) }
+                ?? self.deleteIcon(for: member.uid)
         }
         return updateMember
             .flatMap(thenUpdateIcon)
+    }
+    
+    private func insertIcon(_ icon: Thumbnail, for memberID: String) -> Maybe<Void> {
+        let entity = ThumbnailTable.Entity(memberID, thumbnail: icon)
+        return self.sqliteService.rx.run { try $0.insert(ThumbnailTable.self, entities: [entity]) }
+            .catchAndReturn(())
+    }
+    
+    private func deleteIcon(for memberID: String) -> Maybe<Void> {
+        let query = ThumbnailTable.delete()
+            .where { $0.ownerID == memberID }
+        return self.sqliteService.rx.run { try $0.delete(ThumbnailTable.self, query: query) }
+            .catchAndReturn(())
     }
 }
 
@@ -348,40 +504,438 @@ extension DataModelStorageImple {
     }
 }
 
-
-// MARK: - DataModelStorageImpl + Migration
+// MARK: - Read Item
 
 extension DataModelStorageImple {
-    
-    private func migrationPlan(for version: Int) -> Maybe<Int32> {
-        
-        let requireVersion = Int32(version)
-        let migrationSteps: (Int32, DataBase) throws -> Void = { _, _ in }
-        
-        let createTablesAfterMigrationFinished: (Int32, DataBase) -> Void = { [weak self] _, database in
-            self?.createTables(database)
-        }
-        return self.sqliteService.rx
-            .migrate(upto: requireVersion,
-                     steps: migrationSteps,
-                     finalized: createTablesAfterMigrationFinished)
+
+    public func fetchMyReadItems() -> Maybe<[ReadItem]> {
+        let linkQuery = ReadLinkTable.selectAll { $0.parentID.isNull() }
+        let collectionQuery = ReadCollectionTable.selectAll { $0.parentID.isNull() }
+        return self.fetchMatchingItems(linkQuery, collectionQuery)
     }
     
-    private func createTables(_ database: DataBase) {
+    public func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]> {
+        let linkQuery = ReadLinkTable.selectAll { $0.parentID == collectionID }
+        let collectionQuery = ReadCollectionTable.selectAll { $0.parentID == collectionID }
+        return self.fetchMatchingItems(linkQuery, collectionQuery)
+    }
+    
+    public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
+        let query = ReadCollectionTable.selectAll { $0.uid == collectionID }
+        return self.fetchReadCollections(query)
+            .map { $0.first }
+    }
+    
+    public func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?> {
+        let query = ReadLinkTable.selectAll { $0.uid == linkID }
+        return self.fetchReadLinks(query)
+            .map { $0.first }
+    }
+    
+    private func fetchMatchingItems(_ linksQuery: SelectQuery<ReadLinkTable>,
+                                    _ collectionQuery: SelectQuery<ReadCollectionTable>) -> Maybe<[ReadItem]> {
         
-        try? database.createTableOrNot(MemberTable.self)
-        try? database.createTableOrNot(ImageSourceTable.self)
-        try? database.createTableOrNot(ThumbnailTable.self)
-        try? database.createTableOrNot(PlaceInfoTable.self)
-        try? database.createTableOrNot(TagTable.self)
-        try? database.createTableOrNot(HoorayTable.self)
-        try? database.createTableOrNot(HoorayAckUserTable.self)
-        try? database.createTableOrNot(HoorayReactionTable.self)
+        let collections = self.fetchReadCollections(collectionQuery).catchAndReturn([]).asObservable()
+        let links = self.fetchReadLinks(linksQuery).catchAndReturn([]).asObservable()
+
+        let fetchBothWithoutError = Observable.combineLatest(collections, links)
+        let mergeItems: ([ReadCollection], [ReadLink]) -> [ReadItem] = { $0 + $1 }
+        return fetchBothWithoutError
+            .map(mergeItems)
+            .asMaybe()
         
-        logger.print(level: .debug, "sqlite tables are created..")
+    }
+    
+    private func fetchReadLinks(_ query: SelectQuery<ReadLinkTable>) -> Maybe<[ReadLink]> {
+        let mapping: (CursorIterator) throws -> ReadLink = { cursor in
+            return try ReadLinkTable.Entity(cursor).asLinkItem()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    private func fetchReadCollections(_ query: SelectQuery<ReadCollectionTable>) -> Maybe<[ReadCollection]> {
+        let mappging: (CursorIterator) throws -> ReadCollection = { cursor in
+            return try ReadCollectionTable.Entity(cursor).asCollection()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mappging) }
+    }
+
+    public func updateReadCollections(_ collections: [ReadCollection]) -> Maybe<Void> {
+        
+        typealias Entity = ReadCollectionTable.Entity
+        let entities = collections.map{ Entity(collection: $0) }
+        return self.sqliteService.rx.run { try $0.insert(ReadCollectionTable.self, entities: entities) }
+    }
+    
+    public func updateReadLinks(_ links: [ReadLink]) -> Maybe<Void> {
+        typealias Entity = ReadLinkTable.Entity
+        let entities = links.map{ Entity(link: $0) }
+        return self.sqliteService.rx.run { try $0.insert(ReadLinkTable.self, entities: entities) }
+    }
+    
+    public func updateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
+        
+        func updateCollection() -> Maybe<Void> {
+            let query = ReadCollectionTable.update(replace: params.updateCollectionConditions(_:))
+            return self.sqliteService.rx.run { try $0.update(ReadCollectionTable.self, query: query) }
+        }
+        
+        func updateLink() -> Maybe<Void> {
+            let query = ReadLinkTable.update(replace: params.updateLinkConditions(_:))
+            return self.sqliteService.rx.run { try $0.update(ReadLinkTable.self, query: query) }
+        }
+        
+        switch params.item {
+        case is ReadCollection:
+            return updateCollection()
+        case is ReadLink:
+            return updateLink()
+            
+        default: return .empty()
+        }
+    }
+    
+    public func findLinkItem(using url: String) -> Maybe<ReadLink?> {
+        let query = ReadLinkTable.selectAll { $0.link == url }
+        
+        let mapping: (CursorIterator) throws -> ReadLink = { cursor in
+            return try ReadLinkTable.Entity(cursor).asLinkItem()
+        }
+        return self.sqliteService.rx.run { try $0.loadOne(query, mapping: mapping) }
+    }
+    
+    public func removeReadItem(_ item: ReadItem) -> Maybe<Void> {
+        switch item {
+        case is ReadCollection:
+            let query = ReadCollectionTable.delete().where { $0.uid == item.uid }
+            return self.sqliteService.rx.run { try $0.delete(ReadCollectionTable.self, query: query) }
+            
+        case is ReadLink:
+            let query = ReadLinkTable.delete().where { $0.uid == item.uid }
+            return self.sqliteService.rx.run { try $0.delete(ReadLinkTable.self, query: query) }
+            
+        default: return .error(LocalErrors.invalidData("not a collection or link"))
+        }
+    }
+    
+    public func fetchReadItem(like name: String) -> Maybe<[SearchReadItemIndex]> {
+        
+        let collections = self.findCollection(like: name).catchAndReturn([])
+        let links = self.findReadLink(like: name).catchAndReturn([])
+        
+        let asIndexes: ([ReadCollection], [ReadLink]) -> [SearchReadItemIndex]
+        asIndexes = { collections, links in
+            let items: [ReadItem] = collections + links
+            return items.compactMap { SearchReadItemIndex(item: $0) }
+        }
+        return Observable
+            .combineLatest( collections.asObservable(), links.asObservable(),
+                            resultSelector: asIndexes)
+            .asMaybe()
+    }
+    
+    private func findCollection(like name: String) -> Maybe<[ReadCollection]> {
+        let query = ReadCollectionTable.selectAll { $0.name.like( "\(name)%" ) }
+        let mappging: (CursorIterator) throws -> ReadCollection = { cursor in
+            return try ReadCollectionTable.Entity(cursor).asCollection()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mappging) }
+    }
+    
+    private func findReadLink(like name: String) -> Maybe<[ReadLink]> {
+        let removeDuplicated: ([ReadLink], [ReadLink]) -> [ReadLink] = { customs, previews in
+            let customMap = customs.reduce(into: [String: ReadLink]()) { $0[$1.uid] = $1 }
+            return customs + previews.filter { customMap[$0.uid] == nil }
+        }
+        return Observable
+            .combineLatest(self.findReadLinkByCustomName(like: name).asObservable(),
+                           self.findReadLinkByPreviewTitle(like: name).asObservable(),
+                           resultSelector: removeDuplicated)
+            .asMaybe()
+    }
+    
+    private func findReadLinkByCustomName(like name: String) -> Maybe<[ReadLink]> {
+        let query = ReadLinkTable.selectAll { $0.customName.like("\(name)%") }
+        let mapping: (CursorIterator) throws -> ReadLink = { cursor in
+            return try ReadLinkTable.Entity(cursor).asLinkItem()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    private func findReadLinkByPreviewTitle(like name: String) -> Maybe<[ReadLink]> {
+        typealias PreviewEntity = LinkPreviewTable.Entity
+        let previewQuery = LinkPreviewTable.selectAll { $0.title.like("\(name)%") }
+        let loadPreviews: Maybe<[PreviewEntity]> = self.sqliteService.rx.run { try $0.load(previewQuery) }
+        
+        let thenLoadMatchLinks: ([PreviewEntity]) -> Maybe<[ReadLink]> = { [weak self] previews in
+            guard let self = self else { return .empty() }
+            let urls = previews.map { $0.url }
+            let previewMap = previews.reduce(into: [String: LinkPreview]()) { $0[$1.url] = $1.preview }
+            
+            let query = ReadLinkTable.selectAll { $0.link.in(urls) }
+            let mapping: (CursorIterator) throws -> ReadLink = { try ReadLinkTable.Entity($0).asLinkItem() }
+            let linkItems: Maybe<[ReadLink]> = self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+            let applyTitle: ([ReadLink]) -> [ReadLink] = { links in
+                return links.map { $0 |> \.customName .~ previewMap[$0.link]?.title }
+            }
+            return linkItems.map(applyTitle)
+        }
+        
+        return loadPreviews
+            .flatMap(thenLoadMatchLinks)
+    }
+    
+    public func fetchUpcommingItems() -> Maybe<[ReadItem]> {
+        let now: TimeStamp = .now()
+        let collectionQuery = ReadCollectionTable.selectAll { $0.remindTime > now }
+        let linkQuery = ReadLinkTable.selectAll { $0.remindTime > now && $0.isRed == false }
+        
+        let orderItems: ([ReadItem]) -> [ReadItem] = { items in
+            return items.sorted(by: { ($0.remindTime ?? 0) < ($1.remindTime ?? 0) })
+        }
+        
+        return fetchMatchingItems(linkQuery, collectionQuery)
+            .map(orderItems)
+    }
+    
+    public func fetchMatchingItems(in ids: [String]) -> Maybe<[ReadItem]> {
+        let collectionQuery = ReadCollectionTable.selectAll { $0.uid.in(ids) }
+        let linkQuery = ReadLinkTable.selectAll { $0.uid.in(ids) }
+        let orderItems: ([ReadItem]) -> [ReadItem] = { items in
+            let itemsMap = items.reduce(into: [String: ReadItem]()) { $0[$1.uid] = $1 }
+            return ids.compactMap { itemsMap[$0] }
+        }
+        return fetchMatchingItems(linkQuery, collectionQuery)
+            .map(orderItems)
+    }
+    
+    public func fetchFavoritemItemIDs() -> Maybe<[String]> {
+        let query = FavoriteItemIDTable.selectAll()
+        let mapping: (CursorIterator) throws -> String = {
+            return try $0.next().unwrap()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func replaceFavoriteItemIDs(_ ids: [String]) -> Maybe<Void> {
+        let drop = self.sqliteService.rx.run { try $0.dropTable(FavoriteItemIDTable.self) }
+        let thenSave: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let entities = ids.map { FavoriteItemIDTable.Entity(id: $0) }
+            return self.sqliteService.rx.run { try $0.insert(FavoriteItemIDTable.self, entities: entities) }
+        }
+        return drop.flatMap(thenSave)
     }
 }
 
+
+// MARK: - LinkPreview
+
+extension DataModelStorageImple {
+    
+    public func fetchLinkPreview(_ url: String) -> Maybe<LinkPreview?> {
+        let previews = LinkPreviewTable.self
+        let query = previews.selectAll { $0.url == url }
+        let mapping: (CursorIterator) throws -> LinkPreview = {
+            let entitry = try LinkPreviewTable.Entity($0)
+            return entitry.preview
+        }
+        return self.sqliteService.rx.run { try $0.loadOne(query, mapping: mapping) }
+    }
+    
+    public func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void> {
+        let entity = LinkPreviewTable.Entity(url: url , preview: preview)
+        return self.sqliteService.rx
+            .run { try $0.insertOne(LinkPreviewTable.self, entity: entity, shouldReplace: true) }
+    }
+}
+
+
+// MARK: - ItemCategory
+
+extension DataModelStorageImple {
+    
+    public func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]> {
+        let query = ItemCategoriesTable.selectAll { $0.itemID.in(ids) }
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+        return self.sqliteService.rx.run {
+            try $0.insert(ItemCategoriesTable.self, entities: categories, shouldReplace: true)
+        }
+    }
+    
+    public func updateCategory(by params: UpdateCategoryAttrParams) -> Maybe<Void> {
+        
+        let query = ItemCategoriesTable
+            .update(replace: { column in
+                let conditions: [QueryExpression.Condition?] = [
+                    params.newName.map { column.name == $0 },
+                    params.newColorCode.map { column.colorCode == $0}
+                ]
+                return conditions.compactMap { $0 }
+            })
+            .where { $0.itemID == params.uid }
+        return self.sqliteService.rx.run { try $0.update(ItemCategoriesTable.self, query: query) }
+    }
+    
+    public func fetchingItemCategories(like name: String) -> Maybe<[ItemCategory]> {
+        let query = ItemCategoriesTable.selectAll { $0.name.like( "\(name)%" ) }
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func fetchLatestItemCategories() -> Maybe<[ItemCategory]> {
+        let query = ItemCategoriesTable.selectAll().limit(100).orderBy("rowid", isAscending: false)
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func fetchCategories(earilerThan creatTime: TimeStamp,
+                                pageSize: Int) -> Maybe<[ItemCategory]> {
+        
+        let query = ItemCategoriesTable
+            .selectAll { $0.createAt < creatTime }
+            .orderBy(isAscending: false) { $0.createAt }
+            .limit(pageSize)
+        
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func deleteCategory(_ itemID: String) -> Maybe<Void> {
+        let query = ItemCategoriesTable.delete()
+            .where { $0.itemID == itemID }
+        return self.sqliteService.rx.run { try $0.delete(ItemCategoriesTable.self, query: query) }
+    }
+    
+    public func findCategory(by name: String) -> Maybe<ItemCategory?> {
+        let query = ItemCategoriesTable
+            .selectAll { $0.name == name }
+        return self.sqliteService.rx.run { try $0.loadOne(query) }
+    }
+}
+
+
+// MARK: - ReadLinkMemo
+
+extension DataModelStorageImple {
+    
+    public func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?> {
+        let query = ReadLinkMemoTable.selectAll { $0.itemID == linkItemID }
+        return self.sqliteService.rx.run { try $0.loadOne(query) }
+    }
+    
+    public func updateMemo(_ newValue: ReadLinkMemo) -> Maybe<Void> {
+        return self.sqliteService.rx.run {
+            try $0.insert(ReadLinkMemoTable.self, entities: [newValue], shouldReplace: true)
+        }
+    }
+    
+    public func deleteMemo(for linkItemID: String) -> Maybe<Void> {
+        let query = ReadLinkMemoTable.delete().where { $0.itemID == linkItemID }
+        return self.sqliteService.rx.run { try $0.delete(ReadLinkMemoTable.self, query: query) }
+    }
+}
+
+// MARK; - shared item
+
+extension DataModelStorageImple {
+    
+    public func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]> {
+        let query = SharedRootReadCollectionTable.selectAll()
+            .orderBy(isAscending: false) { $0.lastOpened }
+            .orderBy("rowid", isAscending: false)
+            .limit(20)
+        let mapping: (CursorIterator) throws -> SharedReadCollection = { cursor in
+            return try SharedRootReadCollectionTable.Entity(cursor).asCollection()
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func replaceLastSharedCollections(_ collections: [SharedReadCollection]) -> Maybe<Void> {
+        let entities = collections.compactMap { SharedRootReadCollectionTable.Entity(collection: $0) }
+        
+        let dropTable = self.sqliteService.rx.run { try $0.dropTable(SharedRootReadCollectionTable.self) }
+        let thenUpdateCollections: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            return self.sqliteService.rx.run
+                { try $0.insert(SharedRootReadCollectionTable.self, entities: entities, shouldReplace: true) }
+        }
+        return dropTable
+            .flatMap(thenUpdateCollections)
+    }
+    
+    public func saveSharedCollection(_ collection: SharedReadCollection) -> Maybe<Void> {
+        guard let entity = SharedRootReadCollectionTable.Entity(collection: collection)else {
+            return .error(ApplicationErrors.invalid)
+        }
+        return self.sqliteService.rx.run
+            { try $0.insert(SharedRootReadCollectionTable.self, entities: [entity], shouldReplace: true) }
+    }
+    
+    public func fetchMySharingItemIDs() -> Maybe<[String]> {
+        let query = SharingCollectionIDsTable.selectAll()
+        let mapping: (CursorIterator) throws -> String = {
+            return try SharingCollectionIDsTable.Entity($0).collectionID
+        }
+        return self.sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void> {
+        
+        let dropTable = self.sqliteService.rx.run { try $0.dropTable(SharingCollectionIDsTable.self) }
+        let andUpdate: () -> Maybe<Void> = { [weak self] in
+            guard let self = self else { return .empty() }
+            let entities = ids.map { SharingCollectionIDsTable.Entity($0) }
+            return self.sqliteService.rx.run { try $0.insert(SharingCollectionIDsTable.self, entities: entities) }
+        }
+        return dropTable
+            .flatMap(andUpdate)
+    }
+    
+    public func removeSharedCollection(shareID: String) -> Maybe<Void> {
+        let collections = SharedRootReadCollectionTable.self
+        let query = collections.delete().where { $0.shareID == shareID }
+        return self.sqliteService.rx.run { try $0.delete(collections, query: query) }
+    }
+}
+
+
+// MARK: - search query
+
+extension DataModelStorageImple {
+    
+    public func fetchLatestSearchQueries() -> Maybe<[LatestSearchedQuery]> {
+        let query = LatestSearchQueryTable
+            .selectAll()
+            .orderBy(isAscending: false) { $0.time }
+            .limit(50)
+        return self.sqliteService.rx.run { try $0.load(query) }
+    }
+    
+    public func insertLatestSearchQuery(_ query: String) -> Maybe<Void> {
+        let entity = LatestSearchedQuery(text: query, time: .now())
+        return self.sqliteService.rx.run {
+            return try $0.insert(LatestSearchQueryTable.self, entities: [entity], shouldReplace: true)
+        }
+    }
+    
+    public func removeLatestSearchQuery(_ query: String) -> Maybe<Void> {
+        let query = LatestSearchQueryTable.delete().where { $0.query == query }
+        return self.sqliteService.rx.run { try $0.delete(LatestSearchQueryTable.self, query: query) }
+    }
+    
+    public func fetchAllSuggestableQueries() -> Maybe<[String]> {
+        let query = SuggestableQueryTable.selectAll()
+        let mapping: (CursorIterator) throws -> String = { try SuggestableQueryTable.Entity($0).text }
+        return sqliteService.rx.run { try $0.load(query, mapping: mapping) }
+    }
+    
+    public func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void> {
+        let entities = queries.map { SuggestableQueryTable.Entity($0) }
+        return self.sqliteService.rx
+            .run { try $0.insert(SuggestableQueryTable.self, entities: entities, shouldReplace: true) }
+    }
+}
 
 private extension CursorIterator {
     
@@ -407,7 +961,7 @@ private extension Place {
 extension Member {
     
     func asEntity() -> MemberTable.Entity {
-        return .init(self.uid, nickName: self.nickName, intro: self.introduction)
+        return .init(self)
     }
     
     func iconEntity() -> ThumbnailTable.Entity? {
@@ -451,5 +1005,71 @@ private extension HoorayReaction {
         return .init(hoorayID: entity.hoorayID,
                      reactionID: entity.reactionID, reactMemberID: entity.memberID,
                      icon: icon, reactAt: entity.reactAt)
+    }
+}
+
+private extension Array where Element == String {
+    
+    func filtering(_ dict: [String: ItemCategory]) -> [ItemCategory] {
+        return self.compactMap { dict[$0] }
+    }
+}
+
+
+private extension ReadItemUpdateParams {
+    
+    func updateCollectionConditions(_ columType: ReadCollectionTable.Columns.Type) -> [QueryExpression.Condition] {
+        return self.updatePropertyParams.compactMap { param -> QueryExpression.Condition? in
+            switch param {
+            case .remindTime(nil):
+                return columType.remindTime == Optional<Double>.none
+                
+            case let .remindTime(time):
+                return columType.remindTime == time
+                
+            default: return nil
+            }
+        }
+    }
+    
+    func updateLinkConditions(_ columType: ReadLinkTable.Columns.Type) -> [QueryExpression.Condition] {
+        return self.updatePropertyParams.compactMap { param -> QueryExpression.Condition? in
+            switch param {
+            case .remindTime(nil):
+                return columType.remindTime == Optional<Double>.none
+                
+            case .parentID(nil):
+                return columType.parentID == Optional<String>.none
+                
+            case let .remindTime(time):
+                return columType.remindTime == time
+                
+            case let .isRed(flag):
+                return columType.isRed == flag
+                
+            case let .parentID(id):
+                return columType.parentID == id
+            }
+        }
+    }
+}
+
+
+private extension SearchReadItemIndex {
+    
+    init?(item: ReadItem) {
+        switch item {
+        case let collection as ReadCollection:
+            self.init(itemID: collection.uid, isCollection: true, displayName: collection.name)
+            self.categoryIDs = collection.categoryIDs
+            self.description = collection.collectionDescription
+            
+        case let link as ReadLink:
+            guard let name = link.customName else { return nil }
+            self.init(itemID: link.uid, isCollection: false, displayName: name)
+            self.categoryIDs = link.categoryIDs
+            
+        default: return nil
+        }
     }
 }

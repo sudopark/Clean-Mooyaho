@@ -9,6 +9,15 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
+
+// MARK: - SharedEvent + signIn status
+
+public enum UserSignInStatusChangeEvent: SharedEvent {
+    case signIn(_ auth: Auth, isDeactivated: Bool)
+    case signOut(_ auth: Auth)
+}
 
 public protocol AuthUsecase {
     
@@ -18,11 +27,18 @@ public protocol AuthUsecase {
     
     func requestSocialSignIn(_ providerType: OAuthServiceProviderType) -> Maybe<Member>
     
+    func requestSignout() -> Maybe<Auth>
+    
+    func requestWithdrawal() -> Maybe<Auth>
+    
+    func recoverAccount() -> Maybe<Member>
+    
     var currentAuth: Observable<Auth?> { get }
+    
+    var usersignInStatus: Observable<UserSignInStatusChangeEvent> { get }
     
     var supportingOAuthServiceProviders: [OAuthServiceProviderType] { get }
 }
-
 
 public typealias OAuthServiceProvider = OAuthService & OAuthServiceProviderTypeRepresentable
 
@@ -31,16 +47,30 @@ public final class AuthUsecaseImple: AuthUsecase {
     private let authRepository: AuthRepository
     private let oathServiceProviders: [OAuthServiceProvider]
     private let authInfoManager: AuthInfoManger
-    private let sharedDataStroeService: SharedDataStoreService
+    private let sharedDataStoreService: SharedDataStoreService
+    private let searchReposiotry: IntegratedSearchReposiotry
+    private let memberRepository: MemberRepository
+    private let sharedEventService: SharedEventService
     
     public init(authRepository: AuthRepository,
                 oathServiceProviders: [OAuthServiceProvider],
-                authInfoManager: AuthInfoManger, sharedDataStroeService: SharedDataStoreService) {
+                authInfoManager: AuthInfoManger,
+                sharedDataStroeService: SharedDataStoreService,
+                searchReposiotry: IntegratedSearchReposiotry,
+                memberRepository: MemberRepository,
+                sharedEventService: SharedEventService) {
+        
         self.authRepository = authRepository
         self.oathServiceProviders = oathServiceProviders
         self.authInfoManager = authInfoManager
-        self.sharedDataStroeService = sharedDataStroeService
+        self.sharedDataStoreService = sharedDataStroeService
+        self.searchReposiotry = searchReposiotry
+        self.memberRepository = memberRepository
+        self.sharedEventService = sharedEventService
     }
+    
+    
+    private let disposeBag = DisposeBag()
 }
 
 
@@ -51,6 +81,8 @@ extension AuthUsecaseImple {
     public func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
         let updateAccountInfos: (Auth, Member?) -> Void = { [weak self] auth, member in
             self?.updateAccountInfoOnSharedStore(auth, member: member)
+            guard let signInMemberID = member?.uid else { return }
+            self?.refreshSignedInMember(signInMemberID)
         }
         
         return self.authRepository.fetchLastSignInAccountInfo()
@@ -65,6 +97,7 @@ extension AuthUsecaseImple {
         }
         return self.authRepository.requestSignIn(using: secret)
             .do(onNext: updateByResult)
+            .do(afterNext: self.postSignInAction())
             .map{ $0.member }
     }
     
@@ -88,31 +121,137 @@ extension AuthUsecaseImple {
         return requestOAuth2signIn
             .flatMap(thenSignInService)
             .do(onNext: updateByResult)
+            .do(afterNext: self.postSignInAction())
             .map{ $0.member }
     }
     
+    public func requestSignout() -> Maybe<Auth> {
+        let signout = self.authRepository.requestSignout()
+        let thenPostAction: () -> Maybe<Auth> = { [weak self] in
+            return self?.postSignoutAction() ?? .empty()
+        }
+        return signout
+            .flatMap(thenPostAction)
+    }
+    
+    public func requestWithdrawal() -> Maybe<Auth> {
+        let withdrawal = self.authRepository.requestWithdrawal()
+        let logWtidrawal: () -> Void = {
+            logger.print(level: .info, "user account deleted")
+        }
+        let thenPostAction: () -> Maybe<Auth> = { [weak self] in
+            return self?.postSignoutAction() ?? .empty()
+        }
+        return withdrawal
+            .do(onNext: logWtidrawal)
+            .flatMap(thenPostAction)
+    }
+    
+    public func recoverAccount() -> Maybe<Member> {
+        
+        let recoverAccount = self.authRepository.requestRecoverAccount()
+        let checkIsActivated: (Member) throws -> (Member) = { member in
+            guard member.isDeactivated == false else {
+                throw ApplicationErrors.notActivated
+            }
+            return member
+        }
+        let thenUpdateStore: (Member) -> Void = { [weak self] newMember in
+            logger.print(level: .debug, "member account recovered")
+            guard let self = self else { return }
+            self.sharedDataStoreService
+                .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: newMember)
+            self.sharedDataStoreService
+                .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
+                    return (dict ?? [:]).merging([newMember.uid: newMember], uniquingKeysWith: { $1 })
+                }
+        }
+        return recoverAccount
+            .map(checkIsActivated)
+            .do(onNext: thenUpdateStore)
+    }
+    
+    private func postSignoutAction() -> Maybe<Auth> {
+        self.sharedDataStoreService.flush()
+        
+        let thenNotifySignedOut: (Auth) -> Void = { [weak self] auth in
+            let event: UserSignInStatusChangeEvent = .signOut(auth)
+            self?.sharedEventService.notify(event: event)
+        }
+        
+        return self.authRepository.signInAnonymouslyForPrepareDataAcessPermission()
+            .do(onNext: thenNotifySignedOut)
+    }
     
     private func updateAccountInfoOnSharedStore(_ auth: Auth, member: Member?) {
-        logger.print(level: .info, "current auth changed: \(auth) and member: \(String(describing: member))")
+        let secureLogMessage = SecureLoggingMessage()
+            |> \.fullText .~ "current auth changed userID: %@ and member is not nil?: \(member != nil)"
+            |> \.secureField .~ [auth.userID]
+        logger.print(level: .info, secureLogMessage)
         self.authInfoManager.updateAuth(auth)
-        member.whenExists { me in
+        guard let me = member else { return }
+        self.sharedDataStoreService
+            .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: me)
+        self.sharedDataStoreService
+            .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
+                return (dict ?? [:]).merging([me.uid: me], uniquingKeysWith: { $1 })
+            }
+    }
+    
+    
+    private func refreshSignedInMember(_ memberID: String) {
+        
+        let updateCurrentMemberIfPossible: (Member?) -> Void = { [weak self] member in
+            guard let self = self, let member = member else { return }
+            self.authInfoManager.updateCurrentMember(member)
+            let datKey = SharedDataKeys.memberMap.rawValue
+            self.sharedDataStoreService.update([String: Member].self, key: datKey) {
+                return ($0 ?? [:]) |> key(member.uid) .~ member
+            }
+        }
+        
+        self.memberRepository.requestLoadMember(memberID)
+            .subscribe(onSuccess: updateCurrentMemberIfPossible)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func postSignInAction() -> (SigninResult) -> Void {
+        return { [weak self] result in
+            guard let self = self else { return }
+            self.downloadSuggestableQueries(memberID: result.member.uid)
             
-            self.sharedDataStroeService
-                .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: me)
-            self.sharedDataStroeService
-                .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
-                    return (dict ?? [:]).merging([me.uid: me], uniquingKeysWith: { $1 })
-                }
+            let isDeactivatedNow = result.member.isDeactivated
+            let event: UserSignInStatusChangeEvent = .signIn(
+                result.auth,
+                isDeactivated: isDeactivatedNow
+            )
+            self.sharedEventService.notify(event: event)
         }
     }
     
+    private func downloadSuggestableQueries(memberID: String) {
+        
+        searchReposiotry.downloadAllSuggestableQueries(memberID: memberID)
+            .subscribe(onSuccess: {
+                logger.print(level: .goal, "all suggestable queries downloaded")
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+//    private func 
+    
     public var currentAuth: Observable<Auth?> {
-        return self.sharedDataStroeService
+        return self.sharedDataStoreService
             .observeWithCache(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     
     public var supportingOAuthServiceProviders: [OAuthServiceProviderType] {
         return self.oathServiceProviders.map{ $0.providerType }
+    }
+    
+    public var usersignInStatus: Observable<UserSignInStatusChangeEvent> {
+        return self.sharedEventService.event
+            .compactMap { $0 as? UserSignInStatusChangeEvent }
     }
 }
 

@@ -49,3 +49,23 @@ extension Reactive where Base == SQLiteService {
         }
     }
 }
+
+
+extension Array where Element == String {
+    
+    func asArrayText() throws -> String {
+        
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(self)
+        return String(data: data, encoding: .utf8) ?? ""
+    }
+}
+
+extension String {
+    
+    func toArray() throws -> [String] {
+        let decoder = JSONDecoder()
+        guard let data = self.data(using: .utf8) else { return [] }
+        return try decoder.decode([String].self, from: data)
+    }
+}

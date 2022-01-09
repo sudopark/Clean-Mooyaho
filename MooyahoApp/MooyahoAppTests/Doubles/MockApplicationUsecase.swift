@@ -14,7 +14,7 @@ import Domain
 import CommonPresenting
 import UnitTestHelpKit
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class MockApplicationUsecase: ApplicationUsecase, Mocking {
@@ -29,5 +29,13 @@ class MockApplicationUsecase: ApplicationUsecase, Mocking {
     
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
         return self.resolve(key: "loadLastSignInAccountInfo") ?? .empty()
+    }
+    
+    var currentSignedInMemeber: Observable<Member?> { .empty() }
+    
+    let signoutSubject = PublishSubject<Auth>()
+    var signedOut: Observable<Auth> {
+        return signoutSubject
+            .asObservable()
     }
 }

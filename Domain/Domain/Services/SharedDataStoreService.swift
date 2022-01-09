@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 
 // MARK: - SharedDataStoreService
@@ -27,6 +29,8 @@ public protocol SharedDataStoreService: AuthInfoProvider {
     func observeWithCache<V>(_ type: V.Type, key: String) -> Observable<V?>
     
     func flush()
+    
+    var isEmpty: Bool { get }
 }
 
 extension SharedDataStoreService {
@@ -34,12 +38,68 @@ extension SharedDataStoreService {
     func update<V>(_ type: V.Type, key: String, value: V) {
         self.update(type, key: key, mutating: { _ in value })
     }
+    
+    public func observeValuesInMappWithSetup<V>(ids: [String],
+                                                sharedKey: String,
+                                                disposeBag: DisposeBag,
+                                                idSelector: @escaping (V) -> String,
+                                                localFetchinig: @escaping ([String]) -> Maybe<[V]>,
+                                                remoteLoading: @escaping ([String]) -> Maybe<[V]>) -> Observable<[V]> {
+        
+        let filtering: ([String: V]?) -> [V]? = { dict in
+            guard let dict = dict else { return nil }
+            return ids.compactMap { dict[$0] }
+        }
+        let prepare: () -> Void = { [weak self] in
+            self?.prepareObserveValues(ids, sharedKey: sharedKey, disposeBag: disposeBag,
+                                       idSelector: idSelector,
+                                       localFetchinig: localFetchinig, remoteLoading: remoteLoading)
+        }
+        
+        return self.observeWithCache([String: V].self, key: sharedKey)
+            .compactMap(filtering)
+            .do(onSubscribed: prepare)
+    }
+    
+    private func prepareObserveValues<V>(_ ids: [String],
+                                         sharedKey: String,
+                                         disposeBag: DisposeBag,
+                                         idSelector: @escaping (V) -> String,
+                                         localFetchinig: @escaping ([String]) -> Maybe<[V]>,
+                                         remoteLoading: @escaping ([String]) -> Maybe<[V]>) {
+        let valuesInMemory = self.get([String: V].self, key: sharedKey) ?? [:]
+        
+        let notExistingIDsInMemory = ids.filter { valuesInMemory[$0] == nil }
+        let fetchValuesInLocal = localFetchinig(notExistingIDsInMemory)
+        
+        let thenLoadValuesFromRemoteIfNeed: ([V]) -> Maybe<[V]> = { localValues in
+            let localValueIDSet = Set(localValues.map { idSelector($0) })
+            let requireIDs = ids.filter {
+                valuesInMemory[$0] == nil && localValueIDSet.contains($0) == false
+            }
+            return requireIDs.isEmpty
+                ? .just(localValues)
+                : remoteLoading(requireIDs).map { $0 + localValues }
+        }
+        
+        let updateStore: ([V]) -> Void = { [weak self] newValues in
+            guard let self = self else { return }
+            self.update([String: V].self, key: sharedKey) {
+                return newValues.reduce($0 ?? [:]) { $0 |> key(idSelector($1)) .~ $1 }
+            }
+        }
+        
+        fetchValuesInLocal
+            .flatMap(thenLoadValuesFromRemoteIfNeed)
+            .subscribe(onSuccess: updateStore)
+            .disposed(by: disposeBag)
+    }
 }
 
 
 // MARK: - SharedDataStoreServiceImple
 
-public final class SharedDataStoreServiceImple: SharedDataStoreService {
+public class SharedDataStoreServiceImple: SharedDataStoreService {
     
     private let updatedKey = BehaviorSubject<String?>(value: nil)
     private let internalStore: BehaviorRelay<[String: Any]> = .init(value: [:])
@@ -91,8 +151,9 @@ extension SharedDataStoreServiceImple {
     
     public func observeWithCache<V>(_ type: V.Type, key: String) -> Observable<V?> {
         let cached: V? = self.get(type, key: key)
+        let isLastUpdated = try? self.updatedKey.value() == key
         let updates: Observable<V?> = self.observe(type, key: key).map{ v -> V? in v }
-        guard let cache = cached else {
+        guard let cache = cached, isLastUpdated == false else {
             return updates
         }
         return updates.startWith(cache)
@@ -100,8 +161,16 @@ extension SharedDataStoreServiceImple {
     
     public func flush() {
         self.lock.lock(); defer { self.lock.unlock() }
+        let keys = self.internalStore.value.keys
         self.internalStore.accept([:])
+        keys.forEach {
+            self.updatedKey.onNext($0)
+        }
         self.updatedKey.onNext(nil)
+    }
+    
+    public var isEmpty: Bool {
+        return self.internalStore.value.isEmpty
     }
 }
 
@@ -114,11 +183,19 @@ extension SharedDataStoreServiceImple: AuthInfoManger {
         return self.get(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     
+    public func signedInMemberID() -> String? {
+        return self.get(Member.self, key: SharedDataKeys.currentMember.rawValue)?.uid
+    }
+    
     public func updateAuth(_ newValue: Auth) {
         self.update(Auth.self, key: SharedDataKeys.auth.rawValue, value: newValue)
     }
     
     public func clearAuth() {
         self.delete(SharedDataKeys.auth.rawValue)
+    }
+    
+    public func updateCurrentMember(_ member: Member) {
+        self.save(Member.self, key: .currentMember, member)
     }
 }

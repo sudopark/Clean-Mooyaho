@@ -18,5 +18,6 @@ import UIKit
 
 public protocol TextInputSceneBuilable {
     
-    func makeTextInputScene(_ inputMode: TextInputMode) -> TextInputScene
+    func makeTextInputScene(_ inputMode: TextInputMode,
+                            listener: TextInputSceneListenable?) -> TextInputScene
 }

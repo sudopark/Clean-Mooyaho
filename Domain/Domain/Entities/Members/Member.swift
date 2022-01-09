@@ -15,6 +15,11 @@ public struct Member {
     
     public var nickName: String?
     public var introduction: String?
+    public var deactivatedDateTimeStamp: TimeStamp?
+    
+    public var isDeactivated: Bool {
+        return self.deactivatedDateTimeStamp != nil
+    }
     
     public var icon: MemberThumbnail?
     
@@ -40,7 +45,7 @@ extension Member {
 
 // MARK: - update member params
 
-public enum MemberUpdateField {
+public enum MemberUpdateField: Equatable {
     case nickName(_ newValue: String)
     case introduction(_ newValue: String?)
 }

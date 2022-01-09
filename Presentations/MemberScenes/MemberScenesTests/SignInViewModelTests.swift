@@ -10,25 +10,32 @@ import XCTest
 import RxSwift
 
 import Domain
+import CommonPresenting
 import UsecaseDoubles
 import UnitTestHelpKit
 
 @testable import MemberScenes
 
 
-class SignInViewModelTests: BaseTestCase, WaitObservableEvents {
+class SignInViewModelTests: BaseTestCase, WaitObservableEvents, SignInSceneListenable {
     
     var disposeBag: DisposeBag!
     var mockAuthUsecase: MockAuthUsecase!
     var spyRouter: SpyRouter!
     var viewModel: SignInViewModelImple!
     
+    var didSignedIn: ((Member) -> Void)?
+    func signIn(didCompleted member: Member) {
+        self.didSignedIn?(member)
+    }
+    
     override func setUpWithError() throws {
         self.disposeBag = .init()
         self.mockAuthUsecase = .init()
         self.spyRouter = .init()
         self.viewModel = .init(authUsecase: self.mockAuthUsecase,
-                               router: self.spyRouter)
+                               router: self.spyRouter,
+                               listener: self)
     }
     
     override func tearDownWithError() throws {
@@ -36,6 +43,7 @@ class SignInViewModelTests: BaseTestCase, WaitObservableEvents {
         self.mockAuthUsecase = nil
         self.spyRouter = nil
         self.viewModel = nil
+        self.didSignedIn = nil
     }
 }
 
@@ -57,8 +65,8 @@ extension SignInViewModelTests {
     
     func testViewModel_whenSignIning_showProcessing() {
         // given
-        let expect = expectation(description: "로그인시 처리중 상태 변경 -> 종료 이후에 처리중 false로 안바꿈")
-        expect.expectedFulfillmentCount = 2
+        let expect = expectation(description: "로그인시 처리중 상태 변경 -> 종료 이후에 처리중 false로 바꿈")
+        expect.expectedFulfillmentCount = 3
         
         self.mockAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.just(Member(uid: "dummy"))
@@ -70,7 +78,7 @@ extension SignInViewModelTests {
         }
         
         // then
-        XCTAssertEqual(isProcessings, [false, true])
+        XCTAssertEqual(isProcessings, [false, true, false])
     }
     
     func testViewModel_whenSignInEnd_closeCurrentSceneAndEmitEvent() {
@@ -80,12 +88,9 @@ extension SignInViewModelTests {
         self.mockAuthUsecase.register(key: "requestSocialSignIn") {
             return Maybe<Member>.just(Member(uid: "dummy"))
         }
-        
-        self.viewModel.signedIn
-            .subscribe(onNext: {
-                expect.fulfill()
-            })
-            .disposed(by: self.disposeBag)
+        self.didSignedIn = { _ in
+            expect.fulfill()
+        }
         
         self.spyRouter.called(key: "closeScene") { _ in
             expect.fulfill()

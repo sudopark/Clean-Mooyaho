@@ -18,6 +18,7 @@ public protocol MemberRepositoryDefImpleDependency {
     var memberRemote: MemberRemote { get }
     var memberLocal: MemberLocalStorage { get}
     var disposeBag: DisposeBag { get }
+    var fileHandleService: FileHandleService { get }
 }
 
 
@@ -49,8 +50,38 @@ extension MemberRepository where Self: MemberRepositoryDefImpleDependency {
         case let .data(data, ext, size):
             return self.memberRemote.requestUploadMemberProfileImage(memberID, data: data, ext: ext, size: size)
             
-        case let .file(path, needCopyTemp, _): return .empty()
+        case let .file(path, needCopyTemp, size):
+            return self.uploadProfileImageFromFile(for: memberID,
+                                                   path: path, withCopy: needCopyTemp, imageSize: size)
         }
+    }
+    
+    private func uploadProfileImageFromFile(for memberID: String,
+                                            path: String,
+                                            withCopy: Bool,
+                                            imageSize: ImageSize) -> Observable<MemberProfileUploadStatus> {
+        let source = FilePath.raw(path)
+        let fileURL = URL(fileURLWithPath: path)
+        let ext = fileURL.pathExtension
+        
+        let copyFileIfNeed: () -> Maybe<FilePath> = {
+            guard withCopy else { return .just(source) }
+            let fileName = "\(memberID).\(ext)"
+            let tempPath = FilePath.raw(FilePath.temp(fileName).absolutePath)
+            return self.fileHandleService.copy(source: source, to: tempPath).map { tempPath }
+        }
+        let thenUpload: (FilePath) -> Observable<MemberProfileUploadStatus>
+        thenUpload = { [weak self] filePath in
+            guard let self = self else { return .empty() }
+            return self.memberRemote
+                .requestUploadMemberProfileImage(memberID,
+                                                 filePath: filePath.fullPath, ext: ext,
+                                                 size: imageSize)
+        }
+        
+        return copyFileIfNeed()
+            .asObservable()
+            .flatMap(thenUpload)
     }
     
     public func requestUpdateMemberProfileFields(_ memberID: String,

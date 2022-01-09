@@ -10,10 +10,6 @@ import UIKit
 
 import Domain
 import CommonPresenting
-import MapScenes
-import MemberScenes
-import PlaceScenes
-import HoorayScene
 
 
 // MARK: - Main Sceens
@@ -21,9 +17,14 @@ import HoorayScene
 extension DependencyInjector: MainSceneBuilable {
     
     public func makeMainScene(auth: Auth) -> MainScene {
+        
+        let itemUsecase = self.readItemUsecaseImple
         let router = MainRouter(nextSceneBuilders: self)
-        let viewModel = MainViewModelImple(memberUsecase: self.memberUsecase,
-                                           hoorayUsecase: self.hoorayUsecase,
+        let viewModel = MainViewModelImple(authUsecase: self.authUsecase,
+                                           memberUsecase: self.memberUsecase,
+                                           readItemOptionUsecase: itemUsecase,
+                                           addItemSuggestUsecase: itemUsecase,
+                                           shareCollectionUsecase: self.shareItemUsecase,
                                            router: router)
         let viewController = MainViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -33,171 +34,15 @@ extension DependencyInjector: MainSceneBuilable {
 
 extension DependencyInjector: MainSlideMenuSceneBuilable {
     
-    public func makeMainSlideMenuScene() -> MainSlideMenuScene {
+    public func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?,
+                                       collectionMainInteractor: ReadCollectionMainSceneInteractable?) -> MainSlideMenuScene {
         let router = MainSlideMenuRouter(nextSceneBuilders: self)
-        let viewModel = MainSlideMenuViewModelImple(router: router)
+        let viewModel = MainSlideMenuViewModelImple(memberUsecase: self.memberUsecase,
+                                                    router: router,
+                                                    listener: listener)
         let viewController = MainSlideMenuViewController(viewModel: viewModel)
         router.currentScene = viewController
-        return viewController
-    }
-}
-
-
-// MARK: - MemberScenes
-
-extension DependencyInjector: SignInSceneBuilable, EditProfileSceneBuilable {
-    
-    public func makeSignInScene() -> SignInScene {
-        let router = SignInRouter(nextSceneBuilders: self)
-        let viewModel = SignInViewModelImple(authUsecase: self.authUsecase,
-                                             router: router)
-        let viewController = SignInViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeEditProfileScene() -> EditProfileScene {
-        let router = EditProfileRouter(nextSceneBuilders: self)
-        let viewModel = EditProfileViewModelImple(usecase: self.memberUsecase,
-                                                  router: router)
-        let viewController = EditProfileViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
-
-// MARK: - Location Scenes
-
-extension DependencyInjector: NearbySceneBuilable {
-    
-    public func makeNearbyScene() -> NearbyScene {
-        let router = NearbyRouter(nextSceneBuilders: self)
-        let viewModel = NearbyViewModelImple(locationUsecase: self.userLocationUsecase,
-                                             hoorayUsecase: self.hoorayUsecase,
-                                             memberUsecase: self.memberUsecase,
-                                             router: router)
-        let viewController = NearbyViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
-extension DependencyInjector: LocationSelectSceneBuilable {
-    
-    public func makeLocationSelectScene(_ previousInfo: Location?) -> LocationSelectScene {
-        let router = LocationSelectRouter(nextSceneBuilders: self)
-        let viewModel = LocationSelectViewModelImple(previousInfo,
-                                                     userLocationUsecase: self.userLocationUsecase,
-                                                     router: router)
-        let viewController = LocationSelectViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
-
-extension DependencyInjector: LocationMarkSceneBuilable {
-    
-    public func makeLocationMarkScene() -> LocationMarkScene {
-        let router = LocationMarkRouter(nextSceneBuilders: self)
-        let viewModel = LocationMarkViewModelImple(router: router)
-        let viewController = LocationMarkViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
-
-// MARK: Place Scenes
-
-extension DependencyInjector: SearchNewPlaceSceneBuilable {
-    
-    public func makeSearchNewPlaceScene(myID: String) -> SearchNewPlaceScene {
-        let router = SearchNewPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SearchNewPlaceViewModelImple(userID: myID,
-                                                     searchServiceProvider: self.searchServiceProvider,
-                                                     userLocationUsecase: self.userLocationUsecase,
-                                                     searchNewPlaceUsecase: self.searchNewPlaceUsecase,
-                                                     registerNewPlaceUsecase: self.registerNewPlaceUsecase,
-                                                     router: router)
-        let viewController = SearchNewPlaceViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
-
-extension DependencyInjector: ManuallyResigterPlaceSceneBuilable {
-    
-    public func makeManuallyResigterPlaceScene(myID: String) -> ManuallyResigterPlaceScene {
-        let router = ManuallyResigterPlaceRouter(nextSceneBuilders: self)
-        let viewModel = ManuallyResigterPlaceViewModelImple(userID: myID,
-                                                            userLocationUsecase: self.userLocationUsecase,
-                                                            registerUsecase: self.registerNewPlaceUsecase,
-                                                            router: router)
-        let viewController = ManuallyResigterPlaceViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
-
-
-// MARK: - Hooray Scenes
-
-extension DependencyInjector: MakeHooraySceneBuilable, WaitNextHooraySceneBuilable {
-    
-    public func makeMakeHoorayScene() -> MakeHoorayScene {
-        let router = MakeHoorayRouter(nextSceneBuilders: self)
-        let viewModel = MakeHoorayViewModelImple(memberUsecase: self.memberUsecase,
-                                                 userLocationUsecase: self.userLocationUsecase,
-                                                 hoorayPublishUsecase: self.hoorayUsecase,
-                                                 permissionService: self.imagePickPermissionCheckService,
-                                                 router: router)
-        let viewController = MakeHoorayViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeWaitNextHoorayScene(_ waitUntil: TimeStamp) -> WaitNextHoorayScene {
-        let router = WaitNextHoorayRouter(nextSceneBuilders: self)
-        let viewModel = WaitNextHoorayViewModelImple(waitUntil: waitUntil, router: router)
-        let viewController = WaitNextHoorayViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeEnterHoorayTagScene(form: NewHoorayForm) -> EnterHoorayTagScene {
-        
-        let router = EnterHoorayTagRouter(nextSceneBuilders: self)
-        let viewModel = EnterHoorayTagViewModelImple(form: form, router: router)
-        let viewController = EnterHoorayTagViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeSelectHoorayPlaceScene(form: NewHoorayForm) -> SelectHoorayPlaceScene {
-        
-        let router = SelectHoorayPlaceRouter(nextSceneBuilders: self)
-        let viewModel = SelectHoorayPlaceViewModelImple(form: form,
-                                                        userLocationUsecase: self.userLocationUsecase,
-                                                        suggestPlaceUsecase: self.suggestPlaceUsecase,
-                                                        router: router)
-        let viewController = SelectHoorayPlaceViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-    
-    public func makeHoorayDetailScene(_ hoorayID: String) -> HoorayDetailScene {
-        let router = HoorayDetailRouter(nextSceneBuilders: self)
-        let viewModel = HoorayDetailViewModelImple(hoorayID: hoorayID,
-                                                   hoorayUsecase: self.hoorayUsecase,
-                                                   memberUsecase: self.memberUsecase,
-                                                   placeUsecase: self.placeUsecase,
-                                                   router: router)
-        let viewController = HoorayDetailViewController(viewModel: viewModel)
-        router.currentScene = viewController
+        router.collectionMainInteractor = collectionMainInteractor
         return viewController
     }
 }
@@ -207,10 +52,12 @@ extension DependencyInjector: MakeHooraySceneBuilable, WaitNextHooraySceneBuilab
 
 extension DependencyInjector: ImagePickerSceneBuilable {
     
-    public func makeImagePickerScene(isCamera: Bool) -> ImagePickerScene {
+    public func makeImagePickerScene(isCamera: Bool,
+                                     listener: ImagePickerSceneListenable?) -> ImagePickerScene {
         let viewController = SimpleImagePickerViewController()
         viewController.sourceType = isCamera ? .camera : .photoLibrary
         viewController.allowsEditing = true
+        viewController.listener = listener
         return viewController
     }
 }
@@ -228,12 +75,37 @@ extension DependencyInjector: SelectTagSceneBuilable {
 
 extension DependencyInjector: TextInputSceneBuilable {
     
-    public func makeTextInputScene(_ inputMode: TextInputMode) -> TextInputScene {
+    public func makeTextInputScene(_ inputMode: TextInputMode,
+                                   listener: TextInputSceneListenable?) -> TextInputScene {
         let router = TextInputRouter(nextSceneBuilders: self)
         let viewModel = TextInputViewModelImple(inputMode: inputMode,
-                                                router: router)
+                                                router: router,
+                                                listener: listener)
         let viewController = TextInputViewController(viewModel: viewModel)
         router.currentScene = viewController
+        return viewController
+    }
+}
+
+extension DependencyInjector: ColorSelectSceneBuilable {
+    
+    public func makeColorSelectScene(_ dependency: SelectColorDepedency,
+                                     listener: ColorSelectSceneListenable?) -> ColorSelectScene {
+        let router = ColorSelectRouter(nextSceneBuilders: self)
+        let viewModel = ColorSelectViewModelImple(startWithSelect: dependency.startWithSelect,
+                                                  colorSources: dependency.colorSources,
+                                                  router: router, listener: listener)
+        let viewController = ColorSelectViewController(viewModel: viewModel)
+        router.currentScene = viewController
+        return viewController
+    }
+}
+
+extension DependencyInjector: SelectEmojiSceneBuilable {
+    
+    public func makeSelectEmojiScene(listener: SelectEmojiSceneListenable?) -> SelectEmojiScene {
+        let viewController = SelectEmojiViewController()
+        viewController.listener = listener
         return viewController
     }
 }

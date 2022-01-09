@@ -14,13 +14,14 @@ import Domain
 import UnitTestHelpKit
 import UsecaseDoubles
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     
     var disposeBag: DisposeBag!
     var mockUsecase: MockApplicationUsecase!
+    var mockShareUsecase: StubShareItemUsecase!
     var spyRouter: SpyRouter!
     var mockFirebaseService: MockFirebaseService!
     var stubFCMService: StubFCMService!
@@ -31,11 +32,13 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         super.setUp()
         self.disposeBag = DisposeBag()
         self.mockUsecase = .init()
+        self.mockShareUsecase = .init()
         self.spyRouter = SpyRouter()
         self.mockFirebaseService = .init()
         self.stubFCMService = .init()
         self.mockKakaoService = .init()
         self.viewModel = ApplicationViewModelImple(applicationUsecase: self.mockUsecase,
+                                                   shareCollectionHandleUsecase: self.mockShareUsecase,
                                                    firebaseService: self.mockFirebaseService,
                                                    fcmService: self.stubFCMService,
                                                    kakaoService: self.mockKakaoService,
@@ -49,6 +52,7 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
         self.stubFCMService = nil
         self.mockKakaoService = nil
         self.mockUsecase = nil
+        self.mockShareUsecase = nil
         self.viewModel = nil
         super.tearDown()
     }
@@ -56,6 +60,7 @@ class ApplicationViewModelTests: BaseTestCase, WaitObservableEvents  {
     private func makeViewModel(_ isNotificationGranted: Bool = true) -> ApplicationViewModel {
         self.stubFCMService.isNotificationGrant = isNotificationGranted
         self.viewModel = ApplicationViewModelImple(applicationUsecase: self.mockUsecase,
+                                                   shareCollectionHandleUsecase: self.mockShareUsecase,
                                                    firebaseService: self.mockFirebaseService,
                                                    fcmService: self.stubFCMService,
                                                    kakaoService: self.mockKakaoService,
@@ -88,28 +93,23 @@ extension ApplicationViewModelTests {
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
-}
-
-// MARK: - test notification
-
-extension ApplicationViewModelTests {
     
-    func testViewModel_whenRequestNotificationAuthorizationAndDenied_showGrantNeedBanner() {
+    func testViewModel_whenAfterSignout_routeToMain() {
         // given
-        let expect = expectation(description: "앱 론칭 이후에 알림권한없으면 필요 배너 알림")
-        let _ = self.makeViewModel(false)
+        let expect = expectation(description: "로그아웃되었으면 다시 메인으로 라우팅")
         
-        self.spyRouter.called(key: "showNotificationAuthorizationNeedBanner") { _ in
+        self.spyRouter.called(key: "routeMain") { args in
+            guard let auth = args as? Auth, auth.userID == "new" else { return }
             expect.fulfill()
         }
+        
         // when
-        self.stubFCMService.checkIsGranted()
+        self.mockUsecase.signoutSubject.onNext(.init(userID: "new"))
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
     }
 }
-
 
 // MARK: - test handle urls
 
@@ -126,6 +126,54 @@ extension ApplicationViewModelTests {
         // then
         XCTAssertEqual(handled, true)
     }
+    
+    func testViewModel_handle_sharedCollectionURL() {
+        // given
+        let url = URL(string: "share_url")!
+        // when
+        let handled = self.viewModel.handleOpenURL(url: url, options: nil)
+        
+        // then
+        XCTAssertEqual(handled, true)
+        XCTAssertNotNil(self.spyRouter.didShowSharedCollection)
+    }
+}
+
+
+// MARK; - show remind
+
+extension ApplicationViewModelTests {
+    
+    func testViewModel_whenHandleRemindMessage_showDetail() {
+        // given
+        self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        self.viewModel.appDidLaunched()
+        
+        // when
+        self.stubFCMService.mockPushMessages.onNext(ReadRemindMessage(itemID: "some", scheduledTime: .now()))
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didShowRemindDetailRequested, true)
+    }
+    
+    func testViewModel_whenHandleRemindMessageBeforeSetupInitialScene_showAfterSetupInitialScenes() {
+        // given
+        self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
+        }
+        
+        self.spyRouter.handleRemindResult = false
+        
+        // when
+        self.stubFCMService.mockPushMessages.onNext(ReadRemindMessage(itemID: "some", scheduledTime: .now()))
+        self.spyRouter.handleRemindResult = true
+        self.viewModel.appDidLaunched()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didShowRemindDetailRequested, true)
+    }
 }
 
 
@@ -139,6 +187,21 @@ extension ApplicationViewModelTests {
         
         func showNotificationAuthorizationNeedBanner() {
             self.verify(key: "showNotificationAuthorizationNeedBanner")
+        }
+        
+        var didShowSharedCollection: SharedReadCollection?
+        func showSharedReadCollection(_ collection: SharedReadCollection) {
+            self.didShowSharedCollection = collection
+        }
+        
+        var handleRemindResult: Bool = true
+        var didShowRemindDetailRequested: Bool?
+        func showRemindItem(_ itemID: String) -> Bool {
+            let result = self.handleRemindResult
+            if result{
+                self.didShowRemindDetailRequested = true
+            }
+            return result
         }
     }
 }

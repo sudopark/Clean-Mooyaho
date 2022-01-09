@@ -16,26 +16,37 @@ import Domain
 extension LocalStorageImple {
     
     public func saveMember(_ member: Member) -> Maybe<Void> {
-        return self.dataModelStorage.save(member: member)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.save(member: member)
     }
     
     public func fetchMember(for memberID: String) -> Maybe<Member?> {
-        
-        return self.dataModelStorage.fetchMember(for: memberID)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchMember(for: memberID)
     }
     
     public func updateCurrentMember(_ newValue: Member) -> Maybe<Void> {
-        
-        return self.dataModelStorage.updateMember(newValue)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.updateMember(newValue)
     }
     
     public func fetchMembers(_ ids: [String]) -> Maybe<[Member]> {
-        
-        return self.dataModelStorage.fetchMembers(ids)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.fetchMembers(ids)
     }
     
     public func saveMembers(_ members: [Member]) -> Maybe<Void> {
-        
-        return self.dataModelStorage.insertOrUpdateMembers(members)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.insertOrUpdateMembers(members)
     }
 }

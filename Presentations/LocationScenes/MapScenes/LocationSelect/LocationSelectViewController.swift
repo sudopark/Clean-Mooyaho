@@ -174,7 +174,7 @@ extension LocationSelectViewController: Presenting {
         self.mapView.delegate = self
         
         self.centerImageView.tintColor = .systemRed
-        self.centerImageView.image = UIImage(named: "flag.fill")
+        self.centerImageView.image = UIImage(systemName: "flag.fill")
         
         self.bottomSlideMenuView.backgroundColor = self.uiContext.colors.appBackground
         self.bottomSlideMenuView.layer.cornerRadius = 10

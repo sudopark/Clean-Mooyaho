@@ -24,15 +24,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
         self.dependencyInjector = DependencyInjector()
+        
+        logger.attachCrashLogger(self.dependencyInjector.shared.crashLogger)
+        
         let router = ApplicationRootRouter(nextSceneBuilders: self.dependencyInjector)
         let usecase = self.dependencyInjector.applicationUsecase
+        let shareUsecase = self.dependencyInjector.shareItemUsecase
         self.applicationViewModel = ApplicationViewModelImple(applicationUsecase: usecase,
+                                                              shareCollectionHandleUsecase: shareUsecase,
                                                               firebaseService: self.dependencyInjector.firebaseService,
                                                               fcmService: self.dependencyInjector.fcmService,
                                                               kakaoService: self.dependencyInjector.shared.kakaoService,
                                                               router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
         UIContext.updateApp(status: .launched)
+        
+        super.init()
+        self.bind(usecase)
     }
 
     func application(_ application: UIApplication,
@@ -40,6 +48,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.applicationViewModel.appDidLaunched()
         return true
+    }
+    
+    private func bind(_ usecase: ApplicationUsecase) {
+        
+        usecase.currentSignedInMemeber
+            .map { $0?.uid }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] uid in
+                self?.dependencyInjector.remote.signInMemberID = uid
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 

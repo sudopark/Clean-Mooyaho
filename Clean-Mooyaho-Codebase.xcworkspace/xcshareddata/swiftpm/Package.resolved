@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "ISEmojiView",
+        "repositoryURL": "https://github.com/isaced/ISEmojiView.git",
+        "state": {
+          "branch": null,
+          "revision": "5df4a1988a746e731b3e6450e069969e13eede5f",
+          "version": "0.3.0"
+        }
+      },
+      {
         "package": "KakaoSDK",
         "repositoryURL": "https://github.com/minsOne/KakaoSDK-SwiftPM.git",
         "state": {
@@ -33,8 +42,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "44450a8f564d7c0165f736ba2250649ff8d3e556",
-          "version": "6.3.0"
+          "revision": "8c65ddf756c633d01d9ae01092bf72f0c66dfc60",
+          "version": "7.0.0"
         }
       },
       {
@@ -57,11 +66,11 @@
       },
       {
         "package": "SQLiteService",
-        "repositoryURL": "https://github.com/sudopark/SQLiteService.git",
+        "repositoryURL": "https://github.com/sudopark/SQLiteService",
         "state": {
-          "branch": null,
-          "revision": "1639a38d3911ec35870ca9f8a56043ea3c62480b",
-          "version": "0.1.5"
+          "branch": "add_like",
+          "revision": "95c9dac5df564365bc5a5014832dce98947f9235",
+          "version": null
         }
       },
       {
@@ -74,11 +83,20 @@
         }
       },
       {
-        "package": "WSTagsField",
-        "repositoryURL": "https://github.com/sudopark/WSTagsField.git",
+        "package": "SwiftLinkPreview",
+        "repositoryURL": "https://github.com/sudopark/SwiftLinkPreview",
+        "state": {
+          "branch": "main",
+          "revision": "34b66f76de89965cea9c7bfb3c0d7ddd3abfe649",
+          "version": null
+        }
+      },
+      {
+        "package": "Toaster",
+        "repositoryURL": "https://github.com/devxoul/Toaster.git",
         "state": {
           "branch": "master",
-          "revision": "9672b47440a003b841a1c9cb1662ccc7a917f9d6",
+          "revision": "e9e62c023ef37719b6b6939ed26a99f577a3d88f",
           "version": null
         }
       }

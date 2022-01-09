@@ -8,6 +8,8 @@
 
 import Foundation
 
+import RxSwift
+
 import Domain
 import CommonPresenting
 import DataStore
@@ -30,16 +32,30 @@ final class DependencyInjector {
         }
         
         let firebaseServiceImple = FirebaseServiceImple(httpAPI: HttpAPIImple(),
-                                                        serverKey: AppEnvironment.firebaseServiceKey ?? "")
+                                                        serverKey: AppEnvironment.firebaseServiceKey ?? "",
+                                                        previewRemote: LinkPreviewRemoteImple())
         let kakaoService: KakaoService = KakaoServiceImple(remote: kakaoOAuthRemote)
-        let locationMonirotingService: LocationMonitoringService = LocationMonitoringServiceImple()
         
         let localStorage: LocalStorage = {
-            let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
-            let dataModelStorage = DataModelStorageImple(dbPath: AppEnvironment.dataModelDBPath)
+            let encryptedStorage = EncryptedStorageImple(identifier: AppEnvironment.encryptedStorageIdentifier)
+            encryptedStorage.setupSharedGroup(AppEnvironment.groupID)
+            
+            let defaultPath = AppEnvironment.dataModelDBPath()
+            let makeAnonymousStorage: () -> DataModelStorage = {
+                return DataModelStorageImple(dbPath: defaultPath)
+            }
+            let makeUserStorage: (String) -> DataModelStorage = {
+                let path = AppEnvironment.dataModelDBPath(for: $0)
+                return DataModelStorageImple(dbPath: path)
+            }
+            let gateway = DataModelStorageGatewayImple(anonymousStoragePath: defaultPath,
+                                                       makeAnonymousStorage: makeAnonymousStorage,
+                                                       makeUserStorage: makeUserStorage)
+            
+            let envStore: UserDefaults = UserDefaults(suiteName: AppEnvironment.groupID) ?? .standard
             return LocalStorageImple(encryptedStorage: encryptedStorage,
-                                     environmentStorage: UserDefaults.standard,
-                                     dataModelStorage: dataModelStorage)
+                                     environmentStorage: envStore,
+                                     dataModelGateway: gateway)
         }()
         
         private let dataStoreImple: SharedDataStoreServiceImple = .init()
@@ -47,14 +63,15 @@ final class DependencyInjector {
             return self.dataStoreImple
         }
         
-        var autoInfoManager: AuthInfoManger {
+        lazy var sharedEventService: SharedEventService = {
+            return SharedEventServiceImple()
+        }()
+        
+        var authInfoManager: AuthInfoManger {
             return self.dataStoreImple
         }
         
-        var pushBaseMessageService: PushBaseMessageService {
-            let source = self.firebaseServiceImple.receivePushMessage
-            return PushBaseMessageService(pushMessageSource: source)
-        }
+        let crashLogger: CrashLogger = FirebaseCrashLogger()
     }
     
     let shared: Shared = Shared()
@@ -68,7 +85,15 @@ final class DependencyInjector {
     }
     
     var messagingService: MessagingService {
-        return self.shared.pushBaseMessageService
+        return self.shared.firebaseServiceImple
+    }
+    
+    var readRemindMessagingService: ReadRemindMessagingService {
+        return self.shared.firebaseServiceImple
+    }
+    
+    var suggestQueryEngine: SuggestQueryEngine {
+        return  SuggestQueryEngineImple()
     }
 }
 
@@ -82,7 +107,9 @@ extension DependencyInjector {
         if AppEnvironment.isTestBuild {
             return EmptyRemote()
         } else {
-            return self.shared.firebaseServiceImple
+            return  RemoteImple(firebaseRemote: self.shared.firebaseServiceImple,
+                                linkPreviewRemote: LinkPreviewRemoteImple())
+            
         }
     }
     
@@ -92,18 +119,30 @@ extension DependencyInjector {
                              local: self.shared.localStorage)
     }
     
+    private var appleLoginService: OAuthServiceProvider {
+        return AppleLoginService()
+    }
+    
     var supportingOAuthServiceProviders: [OAuthServiceProvider] {
+        #if KOR
         return [
-            self.shared.kakaoService
+            self.shared.kakaoService,
+            self.appleLoginService
         ]
+        #elseif GLOBAL
+        return [
+            GoggleSignInServiceImple(),
+            self.appleLoginService
+        ]
+        #endif
     }
     
     var imagePickPermissionCheckService: ImagePickPermissionCheckService {
         return ImagePickPermissionCheckServiceImple()
     }
     
-    var searchServiceProvider: SearchServiceProvider {
-        return SearchServiceProviders.naver
+    var deviceInfoService: DeviceInfoService {
+        return IOSDeviceInfoService()
     }
 }
 
@@ -113,10 +152,14 @@ extension DependencyInjector {
     
     var authUsecase: AuthUsecase {
         
-        return AuthUsecaseImple(authRepository: self.appReposiotry,
+        let repository = self.appReposiotry
+        return AuthUsecaseImple(authRepository: repository,
                                 oathServiceProviders: self.supportingOAuthServiceProviders,
-                                authInfoManager: self.shared.autoInfoManager,
-                                sharedDataStroeService: self.shared.dataStore)
+                                authInfoManager: self.shared.authInfoManager,
+                                sharedDataStroeService: self.shared.dataStore,
+                                searchReposiotry: repository,
+                                memberRepository: repository,
+                                sharedEventService: self.shared.sharedEventService)
     }
     
     var memberUsecase: MemberUsecase {
@@ -125,46 +168,78 @@ extension DependencyInjector {
                                   sharedDataService: self.shared.dataStore)
     }
     
-    var userLocationUsecase: UserLocationUsecase {
-        
-        return UserLocationUsecaseImple(locationMonitoringService: self.shared.locationMonirotingService,
-                                        placeRepository: self.appReposiotry)
-    }
-    
-    var suggestPlaceUsecase: SuggestPlaceUsecase {
-        
-        return SuggestPlaceUsecaseImple(placeRepository: self.appReposiotry)
-    }
-    
     var applicationUsecase: ApplicationUsecase {
         
         return ApplicationUsecaseImple(authUsecase: self.authUsecase,
                                        memberUsecase: self.memberUsecase,
-                                       locationUsecase: self.userLocationUsecase)
+                                       favoriteItemsUsecase: self.readItemUsecase,
+                                       shareUsecase: self.shareItemUsecase,
+                                       crashLogger: self.shared.crashLogger)
     }
     
-    var hoorayUsecase: HoorayUsecase {
+    var readItemUsecase: ReadItemUsecase {
+        return self.readItemUsecaseImple
+    }
+    
+    var readItemUsecaseImple: ReadItemUsecaseImple {
+        let respository = self.appReposiotry
+        return ReadItemUsecaseImple(itemsRespoitory: respository,
+                                    previewRepository: respository,
+                                    optionsRespository: respository,
+                                    authInfoProvider: self.shared.dataStore,
+                                    sharedStoreService: self.shared.dataStore,
+                                    clipBoardService: UIPasteboard.general,
+                                    sharedEventService: self.shared.sharedEventService,
+                                    remindMessagingService: self.readRemindMessagingService,
+                                    shareURLScheme: AppEnvironment.shareScheme)
+    }
+    
+    var categoryUsecase: ReadItemCategoryUsecase {
+        return ReadItemCategoryUsecaseImple(repository: self.appReposiotry,
+                                            sharedService: self.shared.dataStore)
+    }
+    
+    var suggestCategoryUsecase: SuggestCategoryUsecase {
+        return SuggestCategoryUsecaseImple(repository: self.appReposiotry)
+    }
+    
+    var memoUsecase: ReadLinkMemoUsecase {
+        return ReadLinkMemoUsecaseImple(repository: self.appReposiotry)
+    }
+    
+    var userDataMigrationUsecase: UserDataMigrationUsecase {
+        return UserDataMigrationUsecaseImple(migrationRepository: self.appReposiotry,
+                                             shareEventService: self.shared.sharedEventService)
+    }
+    
+    var shareItemUsecase: ShareReadCollectionUsecase & SharedReadCollectionLoadUsecase & SharedReadCollectionHandleUsecase & SharedReadCollectionUpdateUsecase {
+        return ShareItemUsecaseImple(shareURLScheme: AppEnvironment.shareScheme,
+                                     shareRepository: self.appReposiotry,
+                                     authInfoProvider: self.shared.authInfoManager,
+                                     sharedDataService: self.shared.dataStore)
+    }
+    
+    var sharedCollectionPagingUsecase: SharedReadCollectionPagingUsecase {
+        return SharedReadCollectionPagingUsecaseImple(repository: self.appReposiotry,
+                                                      sharedDataStoreService: self.shared.dataStore)
+    }
+    
+    var feedbackUsecase: FeedbackUsecase {
+        return FeedbackUsecaseImple(authProvider: self.shared.dataStore,
+                                    deviceInfoService: self.deviceInfoService,
+                                    helpRepository: self.appReposiotry)
+    }
+}
+
+
+// MRAK: - view builders
+
+extension DependencyInjector {
+    
+    var oauthSignInButtonBuilder: OAuthSignInButtonBuildable {
         
-        return HoorayUsecaseImple(authInfoProvider: self.shared.dataStore,
-                                  memberUsecase: self.memberUsecase,
-                                  hoorayRepository: self.appReposiotry,
-                                  messagingService: self.messagingService,
-                                  sharedStoreService: self.shared.dataStore)
-    }
-    
-    var searchNewPlaceUsecase: SearchNewPlaceUsecase {
-        
-        return SearchNewPlaceUsecaseImple(placeRepository: self.appReposiotry)
-    }
-    
-    var registerNewPlaceUsecase: RegisterNewPlaceUsecase {
-        let tags = PlaceCategoryTags.allCases.map{ $0.tag }.shuffled()
-        return RegisterNewPlaceUsecaseImple(placeRepository: self.appReposiotry,
-                                            categoryTags: tags)
-    }
-    
-    var placeUsecase: PlaceUsecase {
-        return PlaceUsecaseImple(placeRepository: self.appReposiotry,
-                                 sharedStoreService: self.shared.dataStore)
+        return OAuthSignInButonBuilder {
+            GoogleSignInButtonBuilder().makeButton() as? SignInButton
+        }
     }
 }

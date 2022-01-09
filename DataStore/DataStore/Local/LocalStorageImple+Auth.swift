@@ -31,7 +31,11 @@ extension LocalStorageImple {
         let currentMemberID = self.fetchCurrentAuth().map{ $0?.userID }
         let thenFetchMember: (String?) -> Maybe<Member?> = { [weak self] memberID in
             guard let memberID = memberID else { return .just(nil) }
-            return self?.dataModelStorage.fetchMember(for: memberID) ?? .empty()
+            guard let storage = self?.dataModelStorage
+            else {
+                return .error(LocalErrors.localStorageNotReady)
+            }
+            return storage.fetchMember(for: memberID)
         }
         return currentMemberID
             .flatMap(thenFetchMember)
@@ -40,7 +44,6 @@ extension LocalStorageImple {
     public func saveSignedIn(auth: Auth) -> Maybe<Void> {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
-            
             self.encryptedStorage.saveEncodable(EncrytedDataKeys.auth.rawValue, value: auth)
                 .runMaybeCallback(callback)
             
@@ -49,8 +52,10 @@ extension LocalStorageImple {
     }
     
     public func saveSignedIn(member: Member) -> Maybe<Void> {
-        
-        return self.dataModelStorage.save(member: member)
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        return storage.save(member: member)
     }
 }
 
@@ -59,6 +64,7 @@ extension Auth: Codable {
     
     enum CodingKeys: String, CodingKey {
         case userID = "uid"
+        case isSignIn = "is_sign_in"
     }
     
     public func encode(to encoder: Encoder) throws {

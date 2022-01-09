@@ -199,49 +199,23 @@ extension MemberUsecaseImple {
     }
     
     public func members(for ids: [String]) -> Observable<[String: Member]> {
-        
-        let filtering: ([String: Member]) -> [String: Member] = { memberMap in
-            return ids.reduce(into: [String: Member]()) { acc, id in
-                memberMap[id].whenExists{ acc[id] = $0 }
-            }
+
+        let localFetching: ([String]) -> Maybe<[Member]> = { [weak self] ids in
+            return self?.memberRepository.fetchMembers(ids) ?? .empty()
         }
+        let remoteLoading: ([String]) -> Maybe<[Member]> = { [weak self] ids in
+            return self?.memberRepository.requestLoadMembers(ids) ?? .empty()
+        }
+        
         let key = SharedDataKeys.memberMap.rawValue
-        let memberMap = self.sharedDataStoreService
-            .observeWithCache([String: Member].self, key: key)
-            .compactMap{ $0 }
-        
-        let checkLocalMembers: () -> Void = { [weak self] in
-            self?.setupSharedMembersIfPossible(ids)
+        let members: Observable<[Member]> = self.sharedDataStoreService
+            .observeValuesInMappWithSetup(ids: ids, sharedKey: key, disposeBag: self.disposeBag,
+                                    idSelector: { $0.uid },
+                                    localFetchinig: localFetching,
+                                    remoteLoading: remoteLoading)
+        return members.map { ms in
+            return ms.reduce(into: [String: Member]()) { $0[$1.uid] = $1 }
         }
-        
-        return memberMap.map(filtering)
-            .do(onSubscribed: checkLocalMembers)
-    }
-    
-    private func setupSharedMembersIfPossible(_ ids: [String]) {
-        let memberMap = self.sharedDataStoreService.fetch([String: Member].self, key: .memberMap) ?? [:]
-        let notExistingMemberIDsInMemory = ids.filter{ memberMap[$0] == nil }
-        
-        let loadCachedMembers = self.memberRepository.fetchMembers(notExistingMemberIDsInMemory)
-        
-        let loadMembersFromRemoteOrNot: ([Member]) -> Maybe<[Member]>
-        loadMembersFromRemoteOrNot = { [weak self] cacheedMembers in
-            guard let self = self else { return .empty() }
-            let totalCachedIDSet = Set(memberMap.keys + cacheedMembers.map{ $0.uid })
-            let requireIDs = ids.filter{ totalCachedIDSet.contains($0) == false }
-            return requireIDs.isEmpty
-                ? .just(cacheedMembers)
-                : self.memberRepository.requestLoadMembers(requireIDs).map{ $0 + cacheedMembers }
-        }
-        
-        let updateOnStore: ([Member]) -> Void = { [weak self] members in
-            self?.appendMemberInfoOnSharedStore(members)
-        }
-        
-        return loadCachedMembers
-            .flatMap(loadMembersFromRemoteOrNot)
-            .subscribe(onSuccess: updateOnStore)
-            .disposed(by: self.disposeBag)
     }
     
     private func appendMemberInfoOnSharedStore(_ members: [Member]) {

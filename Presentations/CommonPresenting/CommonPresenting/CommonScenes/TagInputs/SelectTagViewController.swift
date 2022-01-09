@@ -19,7 +19,7 @@ public final class SelectTagViewController: BaseViewController, SelectTagScene {
     let bottomSlideMenuView = BaseBottomSlideMenuView()
     let titleLabel = UILabel()
     let wordTokensView = WordTokensView()
-    let confirmButton = ConfirmButton(type: .system)
+    let confirmButton = ConfirmButton()
     
     let viewModel: SelectTagViewModel
     
@@ -55,7 +55,7 @@ extension SelectTagViewController {
     
     private func bind() {
         
-        self.confirmButton.rx.tap
+        self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirmSelect()
             })
@@ -133,7 +133,7 @@ extension SelectTagViewController: Presenting {
         
         self.bottomSlideMenuView.setupStyling()
         
-        self.uiContext.deco.title(self.titleLabel)
+        self.uiContext.decorating.title(self.titleLabel)
         self.titleLabel.text = "Select tags"
         
         self.wordTokensView.setupStyling()

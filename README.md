@@ -1,4 +1,4 @@
-# [iOS] Clean-Mooyaho
+# [iOS] 프로젝트명: Clean-Mooyaho, 서비스 이름: ReadMinder
 
 
 

@@ -10,14 +10,25 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Prelude
+import Optics
 
+import Domain
 import CommonPresenting
 
 
 // MARK: - MainScene
 
+public protocol MainSceneInteractable: MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable & InnerWebViewSceneListenable & RecoverAccountSceneListenable {
+    
+    func showSharedReadCollection(_ collection: SharedReadCollection)
+    
+    func showRemindDetail(_ itemID: String)
+}
+
 public protocol MainScene: Scenable {
     
+    var interactor: MainSceneInteractable? { get }
     var childContainerView: UIView { get }
     var childBottomSlideContainerView: UIView { get }
 }
@@ -25,18 +36,24 @@ public protocol MainScene: Scenable {
 
 // MARK: - MainViewController
 
-public final class MainViewController: BaseNavigationController, MainScene {
+public final class MainViewController: BaseViewController, MainScene {
     
     private let mainView = MainView()
     private let viewModel: MainViewModel
     
+    public var interactor: MainSceneInteractable? {
+        return self.viewModel as? MainSceneInteractable
+    }
+    
     public var childContainerView: UIView {
-        return self.mainView.mapContainerView
+        return self.mainView.mainContainerView
     }
     
     public var childBottomSlideContainerView: UIView {
-        return self.mainView.bottomSlideContainerView
+        return self.mainView.bottomSlideEmbedView
     }
+    
+    private var tipsView: EasyTipView?
     
     public init(viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -61,6 +78,8 @@ public final class MainViewController: BaseNavigationController, MainScene {
         super.viewDidLoad()
         self.viewModel.setupSubScenes()
         self.bind()
+        self.viewModel.checkHasSomeSuggestAddItem()
+        self.viewModel.checkMemberActivatedState()
     }
 
 }
@@ -71,45 +90,219 @@ extension MainViewController {
     
     private func bind() {
         
-        self.mainView.profileView.rx
-            .addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.openSlideMenu()
-            })
-            .disposed(by: self.dispsoseBag)
-        
-        self.mainView.currentPositionButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.moveMapCameraToCurrentUserPosition()
-            })
-            .disposed(by: self.dispsoseBag)
-        
-        self.mainView.newHoorayButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.makeNewHooray()
-            })
-            .disposed(by: self.dispsoseBag)
+        self.bindProfileSection()
+        self.bindAddItem()
+        self.bindBottomBarToolButtons()
+        self.bindShareCollectionRootSwitching()
+        self.bindSearch()
+        self.bindShowAddItemGuide()
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindBottomSlideScroll()
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindProfileSection() {
         
+        self.mainView.profileImageView.rx
+            .addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.requestOpenSlideMenu()
+            })
+            .disposed(by: self.disposeBag)
         self.rx.viewDidAppear.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.bindMemberProfileImage()
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindAddItem() {
+        
+        self.mainView.addItemButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.tipsView?.dismiss()
+                self?.viewModel.requestAddNewItem()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.floatingBottomButtonContainerView.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.mainView.floatingBottomButtonContainerView.hideButton()
+                self?.viewModel.requestAddNewItemUsingURLInClipBoard()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.floatingBottomButtonContainerView.rx.closeTap()
+            .subscribe(onNext: { [weak self] in
+                self?.mainView.floatingBottomButtonContainerView.hideButton()
+            })
+            .disposed(by: self.disposeBag)
+        
+        UIContext.currentAppStatus
+            .subscribe(onNext: { [weak self] state in
+                guard state == .forground else { return }
+                self?.viewModel.checkHasSomeSuggestAddItem()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.showAddItemInUsingURLInClipBoard
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] url in
+                self?.mainView.floatingBottomButtonContainerView.showButton(with: url)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindBottomBarToolButtons() {
+        
+        self.mainView.shrinkButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.toggleIsReadItemShrinkMode()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isReadItemShrinkModeOn
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isOn in
+                self?.updateIsShrinkModeOn(isOn)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindShareCollectionRootSwitching() {
+        self.viewModel.currentCollectionRoot
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] root in
+                self?.mainView.updateBottomToolbar(by: root)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.isAvailToAddItem
+            .asDriver(onErrorDriveWith: .never())
+            .drive(self.mainView.addItemButton.rx.isEnabled)
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.sharedRootCollectionView
+            .bindOwnerInfo(self.viewModel.currentSharedCollectionOwnerInfo)
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.shareStatus
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] status in
+                self?.mainView.updateShareStatus(status)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.shareButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.toggleShareStatus()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.exitButton.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.returnToMyReadCollections()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.sharedRootCollectionView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.showSharedCollectionDetail()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func bindSearch() {
+        self.mainView.bottomSearchBarView.rx.didEditBegin
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.mainView.expandBottomViewForSearchWithAnimation()
+                self.updateBottomSlideOffsetIfNeed(show: true)
+                self.viewModel.didUpdateBottomSearchAreaShowing(isShow: true)
+            })
+            .disposed(by: self.disposeBag)
+
+        let inputText = Observable.merge(self.mainView.bottomSearchBarView.rx.text,
+                                         self.mainView.bottomSearchBarView.rx.clear.map { "" })
+        inputText
+            .subscribe(onNext: { [weak self] text in
+                self?.viewModel.didUpdateSearchText(text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.mainView.bottomSearchBarView.rx.didEnterEnd
+            .subscribe(onNext: { [weak self] in
+                guard let text = self?.mainView.bottomSearchBarView.textField.text else { return }
+                self?.view.endEditing(true)
+                self?.viewModel.didRequestSearch(with: text)
+            })
+            .disposed(by: self.disposeBag)
+        
+        let cancelByButton = self.mainView.cancelSearchButton.rx.throttleTap()
+        let cancelByOuterTrigger = self.viewModel.isSearchFinished
+        Observable.merge(cancelByButton, cancelByOuterTrigger)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.finishSearchInput()
+            })
+            .disposed(by: self.disposeBag)
+
+        self.viewModel.isIntegratedSearching
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isSearching in
+                self?.mainView.bottomSearchBarView.updateIsLoading(isSearching)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func finishSearchInput() {
+        self.mainView.shrinkBottomViewWithAnimation()
+        self.mainView.bottomSearchBarView.clearInput()
+        self.mainView.bottomSearchBarView.textField.resignFirstResponder()
+        self.updateBottomSlideOffsetIfNeed(show: false)
+        self.viewModel.didUpdateBottomSearchAreaShowing(isShow: false)
     }
     
     private func bindMemberProfileImage() {
         self.viewModel.currentMemberProfileImage
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] source in
-                self?.mainView.profileView.setupImage(using: source)
+                self?.mainView.profileImageView.setupImage(using: source)
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateIsShrinkModeOn(_ newValue: Bool) {
+        self.mainView.shrinkButton.backgroundColor = newValue
+            ? self.uiContext.colors.defaultButtonOn
+            : self.uiContext.colors.defaultButtonOff
+    }
+    
+    private func bindShowAddItemGuide() {
+        
+        self.rx.viewDidAppear.take(1)
+            .delay(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.showAddItemGuideIfNeed()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func showAddItemGuideIfNeed() {
+        
+        guard self.viewModel.isNeedShowAddItemGuide() else { return }
+        
+        let message = "Click the Next button to add a new reading list or archive an item to read.".localized
+        let preference = EasyTipView.Preferences()
+            |> \.drawing.backgroundColor .~ self.uiContext.colors.accentColor
+        |> \.drawing.arrowPosition .~ .bottom
+        
+        self.tipsView = EasyTipView(text: message, preferences: preference)
+        self.tipsView?.show(animated: true, forView: self.mainView.addItemButton)
     }
 }
 
@@ -117,7 +310,11 @@ extension MainViewController {
 
 extension MainViewController {
     
-    private var bottomSlideMinOffset: CGFloat { 80 }
+    private var safeAreaBotomInset: CGFloat { UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0 }
+    private var bottomSlideMinOffset: CGFloat {
+        let additionalMargin: CGFloat = self.safeAreaBotomInset == 0 ? 20 : 0
+        return 60 + additionalMargin
+    }
     private var bottomSlideMaxOffset: CGFloat { self.mainView.bottomSlideContainerView.frame.height-20 }
     
     typealias UpdateBottomOffsetParam = (offset: CGFloat, animationDuration: TimeInterval?)
@@ -132,6 +329,9 @@ extension MainViewController {
                 guard let self = self else { return nil }
                 return (-self.mainView.bottomSlideBottomOffsetConstraint.constant - dy, nil)
             }
+            .do(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
     }
     
     private func newOffsetByPangestureEnd(_ pangesture: UIPanGestureRecognizer) -> Observable<UpdateBottomOffsetParam> {
@@ -151,43 +351,39 @@ extension MainViewController {
         
         let pangesture = UIPanGestureRecognizer()
         self.mainView.bottomSlideContainerView.addGestureRecognizer(pangesture)
-        
-        let newBottonConstraint = BehaviorSubject<UpdateBottomOffsetParam?>(value: nil)
-        
         Observable
             .merge(self.newOffsetByPangestureDy(pangesture), self.newOffsetByPangestureEnd(pangesture))
-            .bind(to: newBottonConstraint)
-            .disposed(by: self.dispsoseBag)
-        
-        newBottonConstraint
             .subscribe(onNext: { [weak self] params in
-                guard let self = self, let params = params else { return }
+                guard let self = self else { return }
                 self.updateBottomSlideOffset(params.offset, withAnimation: params.animationDuration)
             })
-            .disposed(by: self.dispsoseBag)
+            .disposed(by: self.disposeBag)
         
-        let shouldHideFloatings = newBottonConstraint.compactMap{ $0?.offset }
-            .compactMap { [weak self] offset -> Bool? in
-                guard let self = self else { return nil }
-                let threshold = self.view.frame.height - 150
-                return offset >= threshold
-            }
-        shouldHideFloatings
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] hide in
-                self?.updateFloatingButtonVisibilities(hide)
-            })
-            .disposed(by: self.dispsoseBag)
+        self.mainView.bottomSlideBottomOffsetConstraint.constant = -self.bottomSlideMinOffset
     }
     
-    private func updateBottomSlideOffset(_ invertedNewOffset: CGFloat, withAnimation duration: TimeInterval? = nil) {
+    private func updateBottomSlideOffsetIfNeed(show: Bool) {
+        guard show else {
+            self.updateBottomSlideOffset(self.bottomSlideMinOffset, withAnimation: 0.55, withBounce: false)
+            return
+        }
+        let threshold = self.bottomSlideMaxOffset * 3 / 5
+        guard -self.mainView.bottomSlideBottomOffsetConstraint.constant <= threshold else { return }
+        self.updateBottomSlideOffset(self.bottomSlideMaxOffset, withAnimation: 0.7, withBounce: false)
+    }
+    
+    private func updateBottomSlideOffset(_ invertedNewOffset: CGFloat,
+                                         withAnimation duration: TimeInterval? = nil,
+                                         withBounce: Bool = true) {
         let newOffset = -min(self.bottomSlideMaxOffset, max(self.bottomSlideMinOffset, invertedNewOffset))
         self.mainView.bottomSlideBottomOffsetConstraint.constant = newOffset
-        
+
         guard let duration = duration else { return }
+        
+        let damping: Double = withBounce ? 0.7 : 1.0
         UIView.animate(withDuration: duration,
                        delay: 0,
-                       usingSpringWithDamping: 0.7,
+                       usingSpringWithDamping: damping,
                        initialSpringVelocity: 0,
                        options: .curveEaseInOut,
                        animations: { [weak self] in
@@ -222,16 +418,6 @@ extension MainViewController {
         default: return nil
         }
     }
-    
-    private func updateFloatingButtonVisibilities(_ shouldHide: Bool) {
-        
-        let changeAlphaTo: CGFloat = shouldHide ? 0.0 : 1.0
-        
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.mainView.newHoorayButton.alpha = changeAlphaTo
-            self?.mainView.topFloatingButtonContainerView.alpha = changeAlphaTo
-        })
-    }
 }
 
 // MARK: - setup presenting
@@ -244,7 +430,7 @@ extension MainViewController: Presenting {
         self.view.addSubview(self.mainView)
         mainView.autoLayout.active(with: self.view) {
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.bottomAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }

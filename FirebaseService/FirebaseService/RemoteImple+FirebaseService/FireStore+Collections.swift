@@ -23,6 +23,18 @@ enum FireStoreCollectionType: String {
     case hoorayIndex = "hoorayindexes"
     case hoorayAcks = "hoorayacks"
     case hoorayReactions = "hoorayreactions"
+    case readCollection
+    case readLinks
+    case readCollectionCustomOrders
+    case itemCategory
+    case suggestCategoryIndexes = "indexes_category"
+    case suggestReadItemIndexes = "indexes_readitem"
+    case linkMemo
+    case sharedInbox = "shared_inboxes"
+    case sharingCollectionIndex = "sharing_collect_indexes"
+    case memberFavoriteItems
+    case withdrawalQueue = "withdrawal_queue"
+    case feedback
 }
 
 
@@ -34,7 +46,12 @@ extension Firestore {
 }
 
 
-extension FirebaseServiceImple: Remote { }
+public protocol FirebaseRemote: AuthRemote, MemberRemote, PlaceRemote, TagRemote,
+                                HoorayRemote, MessagingRemote, ReadItemRemote, ReadItemOptionsRemote,
+                                ItemCategoryRemote, ReadLinkMemoRemote, BatchUploadRemote, ShareItemRemote,
+                                HelpRemote { }
+
+extension FirebaseServiceImple: FirebaseRemote{ }
 
 
 extension FirebaseServiceImple {
@@ -101,8 +118,8 @@ extension FirebaseServiceImple {
                 newFields: [String: Any],
                 at collectionType: FireStoreCollectionType) -> Maybe<Void> {
         
-        return Maybe.create { callback in
-            guard let db = self.fireStoreDB else { return Disposables.create() }
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
             
             let documentRef = db.collection(collectionType).document(docuID)
             documentRef.setData(newFields, merge: true) { error in
@@ -117,6 +134,26 @@ extension FirebaseServiceImple {
                 callback(.success(()))
             }
             
+            return Disposables.create()
+        }
+    }
+    
+    func batch(_ collectionType: FireStoreCollectionType,
+               write: @escaping (CollectionReference) -> Void) -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            
+            let batch = db.batch()
+            let collectionRef = db.collection(collectionType)
+            write(collectionRef)
+            
+            batch.commit { error in
+                if let error = error {
+                    callback(.error(error))
+                } else {
+                    callback(.success(()))
+                }
+            }
             return Disposables.create()
         }
     }
@@ -189,6 +226,43 @@ extension FirebaseServiceImple {
         }
         return eachLoadings.reduce(seed) { acc, next in
             return acc.asObservable().concat(next.asObservable())
+        }
+    }
+    
+    func delete(_ docuID: String, at collectionType: FireStoreCollectionType) -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            let collectionRef = db.collection(collectionType)
+            
+            collectionRef.document(docuID).delete { error in
+                if let error = error {
+                    callback(.error(error))
+                } else {
+                    callback(.success(()))
+                }
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    func deleteAll(_ query: Query, at collectionType: FireStoreCollectionType) -> Maybe<Void> {
+        return Maybe.create { [weak self] callback in
+            guard let db = self?.fireStoreDB else { return Disposables.create() }
+            query.getDocuments { snapShot, error in
+                guard error == nil else {
+                    let remoteError = RemoteErrors.operationFail(error)
+                    callback(.error(remoteError))
+                    return
+                }
+                snapShot?.documents.forEach {
+                    let docuRef = db.collection(collectionType).document($0.documentID)
+                    docuRef.delete()
+                }
+                
+                callback(.success(()))
+            }
+            return Disposables.create()
         }
     }
 }

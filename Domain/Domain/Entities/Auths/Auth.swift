@@ -9,6 +9,7 @@
 import Foundation
 
 
+
 // MARK: - Auth
 
 public struct Auth: Equatable {

@@ -45,6 +45,7 @@ extension ImageSource: JSONMappable {
 
 
 enum ThumbnailMappingKey: String, JSONMappingKeys {
+    case isEmoji
     case source
     case emoji
 }
@@ -54,21 +55,29 @@ extension Thumbnail: JSONMappable {
     private typealias Key = ThumbnailMappingKey
     
     init?(json: JSON) {
-        if let emoji = json[Key.emoji] as? String {
+        let isEmoji = json[Key.isEmoji] as? Bool ?? false
+        if isEmoji, let emoji = json[Key.emoji] as? String {
             self = .emoji(emoji)
         } else if let sourceJson = json[Key.source] as? JSON,
                   let source = ImageSource(json: sourceJson) {
             self = .imageSource(source)
+        } else {
+            return nil
         }
-        return nil
     }
     
     func asJSON() -> JSON {
         switch self {
         case let .emoji(value):
-            return [Key.emoji.rawValue: value]
+            return [
+                Key.isEmoji.rawValue: true,
+                Key.emoji.rawValue: value
+            ]
         case let .imageSource(source):
-            return [Key.source.rawValue: source.asJSON()]
+            return [
+                Key.isEmoji.rawValue: false,
+                Key.source.rawValue: source.asJSON()
+            ]
         }
     }
 }
@@ -79,6 +88,7 @@ enum MemberMappingKey: String, JSONMappingKeys {
     case nicknanme = "nm"
     case icon
     case introduction = "intro"
+    case deactivatedAt
 }
 
 extension Member: DocumentMappable {
@@ -90,6 +100,7 @@ extension Member: DocumentMappable {
         self.nickName = json[Key.nicknanme] as? String
         self.icon = (json[Key.icon] as? JSON).flatMap(Thumbnail.init(json:))
         self.introduction = json[Key.introduction] as? String
+        self.deactivatedDateTimeStamp = json[Key.deactivatedAt] as? TimeStamp
     }
     
     func asDocument() -> (String, JSON) {
@@ -97,7 +108,7 @@ extension Member: DocumentMappable {
         json[Key.nicknanme] = self.nickName
         json[Key.icon] = self.icon?.asJSON
         json[Key.introduction] = self.introduction
+        json[Key.deactivatedAt] = self.deactivatedDateTimeStamp
         return (self.uid, json)
     }
 }
-

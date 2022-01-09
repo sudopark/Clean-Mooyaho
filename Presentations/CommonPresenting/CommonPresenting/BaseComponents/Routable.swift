@@ -9,6 +9,9 @@
 import UIKit
 
 import RxSwift
+import Prelude
+import Optics
+import Toaster
 
 import Domain
 
@@ -25,6 +28,10 @@ public protocol Routing: AnyObject {
     func alertForConfirm(_ form: AlertForm)
     
     func alertActionSheet(_ form: ActionSheetForm)
+    
+    func rewind(animated: Bool)
+    
+    func openURL(_ path: String)
 }
 extension Routing {
     
@@ -37,6 +44,10 @@ extension Routing {
     public func alertForConfirm(_ form: AlertForm) { }
     
     public func alertActionSheet(_ form: ActionSheetForm) { }
+    
+    public func rewind(animated: Bool) { }
+    
+    public func openURL(_ path: String) { }
 }
 
 
@@ -55,16 +66,32 @@ open class Router<Buildables>: Routing {
 extension Router {
     
     public func alertError(_ error: Error) {
-        logger.todoImplement()
+        let errorDescrition = (error as NSError).description
+        let form = AlertForm()
+            |> \.title .~ pure("The operation failed.".localized)
+            |> \.message .~ pure("The requested operation has failed. Please try again later. (error: %@)".localized(with: errorDescrition))
+            |> \.isSingleConfirmButton .~ true
+        self.alertForConfirm(form)
         logger.print(level: .debug, "alert error: \(error)")
     }
     
     public func showToast(_ message: String) {
-        logger.todoImplement()
+        ToastCenter.default.cancelAll()
+        let toast = Toast(text: message)
+        toast.show()
     }
     
     public func closeScene(animated: Bool, completed: (() -> Void)?) {
-        self.currentScene?.dismiss(animated: true, completion: completed)
+        DispatchQueue.main.async { [weak self] in
+            let target = self?.currentScene?.presentingViewController ?? self?.currentScene
+            target?.dismiss(animated: true, completion: completed)
+        }
+    }
+    
+    public func rewind(animated: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.currentScene?.navigationController?.popViewController(animated: animated)
+        }
     }
     
     public func alertForConfirm(_ form: AlertForm) {
@@ -76,13 +103,15 @@ extension Router {
                                           style: .default) { _ in
             form.confirmed?()
         }
-        
-        let cancelAction = UIAlertAction(title: form.customCloseText ?? "Cancel".localized,
-                                         style: .cancel) { _ in
-            form.canceled?()
-        }
         alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
+        
+        if form.isSingleConfirmButton == false {
+            let cancelAction = UIAlertAction(title: form.customCloseText ?? "Cancel".localized,
+                                             style: .cancel) { _ in
+                form.canceled?()
+            }
+            alert.addAction(cancelAction)
+        }
         self.currentScene?.present(alert, animated: true, completion: nil)
     }
     
@@ -99,6 +128,15 @@ extension Router {
         }
         
         self.currentScene?.present(sheet, animated: true, completion: nil)
+    }
+    
+    public func openURL(_ path: String) {
+        guard let url = URL(string: path),
+              UIApplication.shared.canOpenURL(url)
+        else {
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 

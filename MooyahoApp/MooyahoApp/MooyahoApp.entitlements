@@ -8,7 +8,13 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.sudo.park.clean-mooyaho</string>
+	</array>
 	<key>keychain-access-groups</key>
-	<array/>
+	<array>
+		<string>$(AppIdentifierPrefix)com.sudo.park.Mooyaho-iOS</string>
+	</array>
 </dict>
 </plist>

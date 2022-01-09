@@ -17,13 +17,18 @@ import CommonPresenting
 
 // MARK: - SignInViewController
 
-public final class SignInViewController: BaseViewController, SignInScene {
+public final class SignInViewController: BaseViewController, SignInScene, BottomSlideViewSupporatble {
     
     private let signInView = SignInView()
     let viewModel: SignInViewModel
+    private let oauthSignInButtonBuilder: OAuthSignInButtonBuildable
     
-    public init(viewModel: SignInViewModel) {
+    public var bottomSlideMenuView: BaseBottomSlideMenuView { self.signInView.bottomSlideMenuView }
+    
+    public init(viewModel: SignInViewModel,
+                oauthSignInButtonBuilder: OAuthSignInButtonBuildable) {
         self.viewModel = viewModel
+        self.oauthSignInButtonBuilder = oauthSignInButtonBuilder
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,6 +51,20 @@ public final class SignInViewController: BaseViewController, SignInScene {
         self.bind()
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.signInView.guideView.startAnimation()
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.signInView.guideView.stopAnimation()
+    }
+    
+    public func requestCloseScene() {
+        self.viewModel.requestClose()
+    }
+    
 }
 
 // MARK: - bind
@@ -54,11 +73,7 @@ extension SignInViewController {
     
     private func bind() {
         
-        self.signInView.outsideTouchView.rx.addTapgestureRecognizer()
-            .subscribe(onNext: { [weak self] _ in
-                self?.viewModel.requestClose()
-            })
-            .disposed(by: self.disposeBag)
+        self.bindBottomSlideMenuView()
         
         self.rx.viewDidLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
@@ -72,7 +87,7 @@ extension SignInViewController {
     }
     
     private func appendAndBindButtons(_ type: OAuthServiceProviderType) {
-        guard let button = type.makeButton() else { return }
+        guard let button = self.oauthSignInButtonBuilder.makeButton(for: type) else { return }
         
         self.signInView.appendSignInButton(button)
         
@@ -98,6 +113,7 @@ extension SignInViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] isProcessing in
                 self?.signInView.updateIsActive(isProcessing == false)
+                self?.signInView.loadingView.updateIsLoading(isProcessing)
             })
             .disposed(by: self.disposeBag)
     }
@@ -118,28 +134,12 @@ extension SignInViewController: Presenting {
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
         }
         self.signInView.setupLayout()
+        self.setupFullScreenLoadingViewLayout(self.signInView.loadingView)
     }
     
     public func setupStyling() {
         
         self.view.backgroundColor = .clear
         self.signInView.setupStyling()
-    }
-}
-
-
-private extension OAuthServiceProviderType {
-    
-    func makeButton() -> SignInButton? {
-        guard let definedTypes = self as? OAuthServiceProviderTypes else { return nil }
-        switch definedTypes {
-        case .kakao:
-            let button = UIButton()
-            button.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
-            return button
-            
-        case .apple:
-            return nil
-        }
     }
 }

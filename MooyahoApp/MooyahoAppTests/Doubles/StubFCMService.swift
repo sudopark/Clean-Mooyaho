@@ -13,28 +13,23 @@ import RxSwift
 import Domain
 import FirebaseService
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class StubFCMService: FCMService {
     
     var isNotificationGrant: Bool?
+    var fakeGrant = PublishSubject<Bool>()
     
     func setupFCMService() {
         guard let isGrant: Bool = self.isNotificationGrant else { return }
-        self.stubGrant.onNext(isGrant)
+        self.fakeGrant.onNext(isGrant)
     }
     
     func apnsTokenUpdated(_ token: Data) { }
     
-    private let stubGrant = PublishSubject<Bool>()
-    func checkIsGranted() {
-        guard let isGrant: Bool = self.isNotificationGrant else { return }
-        self.stubGrant.onNext(isGrant)
-    }
-    
     var isNotificationGranted: Observable<Bool> {
-        return stubGrant.asObservable()
+        return self.fakeGrant.asObservable()
     }
     
     let stubToken = PublishSubject<String?>()

@@ -13,14 +13,117 @@ import RxRelay
 import Domain
 
 
+
+// MARK: - FirebaseServiceImple + ReadRemindMessagingService
+
+extension FirebaseServiceImple: ReadRemindMessagingService {
+    
+    public func prepareNotificationPermission() -> Maybe<Bool> {
+        
+        let currentStatus = self.getCurrentPermission()
+        
+        let requestIfNeed: (UNAuthorizationStatus) -> Maybe<Bool> = { [weak self] status in
+            guard let self = self else { return .empty() }
+            return status == .notDetermined
+                ? self.requestPermission()
+                : status == .authorized ? .just(true)
+                : .just(false)
+        }
+        return currentStatus
+            .flatMap(requestIfNeed)
+    }
+    
+    private func getCurrentPermission() -> Maybe<UNAuthorizationStatus> {
+        return Maybe.create { callback in
+            UNUserNotificationCenter.current().getNotificationSettings { setting in
+                callback(.success(setting.authorizationStatus))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    private func requestPermission() -> Maybe<Bool> {
+        return Maybe.create { callback in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { result, _ in
+                callback(.success(result))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    public var receivedMessage: Observable<Message> {
+        return self.receivePushMessage
+    }
+    
+    public func sendPendingMessage(_ message: ReadRemindMessage) -> Maybe<Void> {
+        
+        let uuid = "reminder:\(message.itemID)"
+        
+        let prepareContent: () -> UNMutableNotificationContent = {
+            let content = UNMutableNotificationContent()
+            content.title = message.title
+            content.body = message.message ?? ReadRemindMessage.defaultReadLinkMessage
+            content.userInfo = [
+                BasePushPayloadMappingKey.messageTypeKey: PushMessagingTypes.remind.rawValue,
+                "itemid": message.itemID
+            ]
+            return content
+        }
+        
+        let setupTrigger: (UNMutableNotificationContent) -> (UNMutableNotificationContent, UNTimeIntervalNotificationTrigger)
+        setupTrigger = { content in
+            let interval = message.scheduledTime - Date().timeIntervalSince1970
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
+            return (content, trigger)
+        }
+        
+        let makeRequest: (UNMutableNotificationContent, UNTimeIntervalNotificationTrigger) -> UNNotificationRequest
+        makeRequest = { content, trigger in
+            return UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        }
+        
+        let addPendingMessage: (UNNotificationRequest) -> Maybe<Void> = { request in
+            return Maybe.create { callback in
+                let center = UNUserNotificationCenter.current()
+                center.add(request) { error in
+                    if let error = error {
+                        callback(.error(error))
+                    } else {
+                        callback(.success(()))
+                    }
+                }
+                return Disposables.create()
+            }
+        }
+        
+        return self.cancelMessage(for: uuid)
+            .map(prepareContent)
+            .map(setupTrigger)
+            .map(makeRequest)
+            .flatMap(addPendingMessage)
+    }
+    
+    public func cancelMessage(for readMinderID: String) -> Maybe<Void> {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [readMinderID])
+        return .just()
+    }
+    
+    public func broadcastRemind(_ message: ReadRemindMessage) -> Maybe<Void> {
+        logger.todoImplement()
+        return .just()
+    }
+}
+
+
+// MARK: - FCMService
+
 public protocol FCMService {
     
     func setupFCMService()
     
     func apnsTokenUpdated(_ token: Data)
-    
-    func checkIsGranted()
-    
+
     func didReceiveDataMessage(_ userInfo: [AnyHashable: Any])
     
     var isNotificationGranted: Observable<Bool> { get }
@@ -30,33 +133,18 @@ public protocol FCMService {
     var receivePushMessage: Observable<Message> { get }
 }
 
-
 extension FirebaseServiceImple: FCMService {
     
     public func setupFCMService() {
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { grant, _ in
-            self.notificationAuthorizationGranted.onNext(grant)
-            if grant {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
-        }
-    }
-    
-    public func checkIsGranted() {
-        
-        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { setting in
-            switch setting.authorizationStatus {
-            case .denied:
-                self.notificationAuthorizationGranted.onNext(false)
-            case .authorized:
-                self.notificationAuthorizationGranted.onNext(true)
-            default: break
-            }
-        })
+        self.prepareNotificationPermission()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] grant in
+                self?.notificationAuthorizationGranted.onNext(grant)
+                UIApplication.shared.registerForRemoteNotifications()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     public func apnsTokenUpdated(_ token: Data) {
@@ -89,6 +177,10 @@ extension FirebaseServiceImple: FCMService {
         switch type {
         case .hoorayAck:
             return HoorayAckMessage(payload)
+            
+        case .remind:
+            guard let itemID = payload["itemid"] as? String else { return nil }
+            return ReadRemindMessage(itemID: itemID, scheduledTime: .now())
         }
     }
 }
@@ -99,23 +191,20 @@ extension FirebaseServiceImple: UNUserNotificationCenterDelegate, MessagingDeleg
         self.incommingDataMessageUserInfo.onNext(userInfo)
     }
     
-//    public func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                       willPresent notification: UNNotification,
-//                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//
-//        let userInfo = notification.request.content.userInfo
-//        self.incommingNotificationUserInfo.onNext(userInfo)
-//        completionHandler([])
-//    }
-//
-//    public func userNotificationCenter(_ center: UNUserNotificationCenter,
-//                                       didReceive response: UNNotificationResponse,
-//                                       withCompletionHandler completionHandler: @escaping () -> Void) {
-//
-//        let userInfo = response.notification.request.content.userInfo
-//        self.incommingNotificationUserInfo.onNext(userInfo)
-//        completionHandler()
-//    }
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       willPresent notification: UNNotification,
+                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
+    }
+
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       didReceive response: UNNotificationResponse,
+                                       withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        let userInfo = response.notification.request.content.userInfo
+        self.incommingDataMessageUserInfo.onNext(userInfo)
+        completionHandler()
+    }
     
     public func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         self.fcmToken.onNext(fcmToken)

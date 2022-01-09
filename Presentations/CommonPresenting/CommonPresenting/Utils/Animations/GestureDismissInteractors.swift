@@ -93,21 +93,23 @@ public final class BottomPullPangestureDismissalInteractor: PangestureDismissalI
         let gestureRecognizer = UIPanGestureRecognizer()
         gestureRecognizer.delegate = self
         targetView.addGestureRecognizer(gestureRecognizer)
-        
+
         return gestureRecognizer.rx.event
             .bind(onNext: { [weak self] gesture in
-                self?.handleLeftDismissPangesture(gesture, dismissController: dismissController)
+                self?.handleBottomDismissPangesture(gesture, dismissController: dismissController)
             })
     }
 }
 
 extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
     
-    private func handleLeftDismissPangesture(_ gesture: UIPanGestureRecognizer, dismissController: () -> Void) {
+    private func handleBottomDismissPangesture(_ gesture: UIPanGestureRecognizer, dismissController: () -> Void) {
         
         let transition = gesture.translation(in: gesture.view)
         
-        var percent = transition.y / UIScreen.main.bounds.height
+        let safeAreaBottomPadding = UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0
+        let totalLength = (gesture.view?.frame.height ?? UIScreen.main.bounds.height) - safeAreaBottomPadding
+        var percent = transition.y / totalLength
         percent = min(1, percent)
         percent = max(0, percent)
         
@@ -136,15 +138,34 @@ extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldReceive touch: UITouch) -> Bool {
-
+        
+        let isControllTapped = touch.view is UIControl
+        guard isControllTapped == false else {
+            return false
+        }
+        
+        guard self.isNotTouchTableView(touch) else {
+            return false
+        }
+        
         guard let view = viewController?.view else { return false }
         
         let scrollView = self.findScrollView(in: view, touch: touch)
         guard let contentOffsetY = scrollView?.contentOffset.y else { return true }
         return contentOffsetY <= 20
+    }
+    
+    private func isNotTouchTableView(_ touch: UITouch) -> Bool {
+        guard let view = touch.view else { return true }
+        switch view {
+        case _ where view is UITableViewCell: return false
+        case _ where view is UITableView: return false
+        case _ where view.superview is UITableViewCell: return false
+        default: return true
+        }
     }
     
     private func findScrollView(in view: UIView, touch: UITouch) -> UIScrollView? {
@@ -183,7 +204,9 @@ extension PangestureDismissableScene where Self: BaseViewController {
         
         let bindDismissInteractor: () -> Void = { [weak self, weak dismissInteractor] in
             guard let self = self, let interactor = dismissInteractor else { return }
-            interactor.addDismissPangesture(self.view) { [weak self] in
+            let bottomSlide = self as? BottomSlideViewSupporatble
+            let targetView: UIView = bottomSlide?.bottomSlideMenuView.panGestureInteractView ?? self.view
+            interactor.addDismissPangesture(targetView) { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
             }
             .disposed(by: self.disposeBag)

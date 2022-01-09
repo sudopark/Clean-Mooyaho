@@ -104,3 +104,98 @@ extension SharedDataStoreServiceTests {
         XCTAssertEqual(values, Array(-1..<10))
     }
 }
+
+
+extension SharedDataStoreServiceTests {
+    
+    private var ids: [Int] { (0..<3).map { $0 }  }
+    
+    // 모든 데이터가 메모리에 있는경우
+    func testStore_observeValueWithsetup_allDataInMemory() {
+        // given
+        let expect = expectation(description: "구독하려는 데이터가 모두 메모리에 올라와있는 경우")
+        let valueMap = self.ids.reduce(into: [String: Int]()) { $0["\($1)"] = $1 }
+        self.store.update([String: Int].self, key: "some", value: valueMap)
+        
+        // when
+        let observingValues: Observable<[Int]> = self.store
+            .observeValuesInMappWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
+                                    idSelector: { "\($0)" },
+                                    localFetchinig: { _ in .empty() },
+                                    remoteLoading: { _ in .empty() } )
+        let values = self.waitFirstElement(expect, for: observingValues)
+        
+        // then
+        XCTAssertEqual(values, [0, 1, 2])
+    }
+    
+    // 메모리에 없는것들은 캐시에서 불러옴
+    func testStore_observeValueWithsetup_prepareDataFromLocal() {
+        // given
+        let expect = expectation(description: "구독하려는 데이터 중 일부가 로컬에 있는 경우")
+        expect.expectedFulfillmentCount = 2
+        let valueMap = ["0": 0]
+        self.store.update([String: Int].self, key: "some", value: valueMap)
+        
+        // when
+        let observingValues: Observable<[Int]> = self.store
+            .observeValuesInMappWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
+                                    idSelector: { "\($0)" },
+                                    localFetchinig: { _ in .just([1]) },
+                                    remoteLoading: { _ in .just([]) } )
+        let valueStream = self.waitElements(expect, for: observingValues)
+        
+        // then
+        XCTAssertEqual(valueStream, [[0], [0, 1]])
+    }
+    
+    // 캐시에도 없는것은 리모트에서 불러와서 준비
+    func testStore_observeValueWithsetup_prepareDataFromLocalAndRemote() {
+        // given
+        let expect = expectation(description: "구독하려는 데이터 중 일부가 로컬과 리모트에 있는 경우")
+        expect.expectedFulfillmentCount = 2
+        let valueMap = ["0": 0]
+        self.store.update([String: Int].self, key: "some", value: valueMap)
+        
+        // when
+        let observingValues: Observable<[Int]> = self.store
+            .observeValuesInMappWithSetup(ids: self.ids.map{ "\($0)" }, sharedKey: "some", disposeBag: self.disposeBag,
+                                    idSelector: { "\($0)" },
+                                    localFetchinig: { _ in .just([1]) },
+                                    remoteLoading: { _ in .just([2]) } )
+        let valueStream = self.waitElements(expect, for: observingValues)
+        
+        // then
+        XCTAssertEqual(valueStream, [[0], [0, 1, 2]])
+    }
+}
+
+extension SharedDataStoreServiceTests {
+    
+    func testStore_whenAfterFlush_emitAllObservableValuesAsNil() {
+        // given
+        let expect = expectation(description: "flush 이후에 저장된 모든 데이터 nil로 방출")
+        expect.expectedFulfillmentCount = 3
+        let (k1 ,k2) = ("k1", "k2")
+        self.store.update(Int.self, key: k1, value: 1)
+        self.store.update(Int.self, key: k2, value: 2)
+        
+        // when
+        let valuesForK1andK2 = Observable.combineLatest(
+            self.store.observeWithCache(Int.self, key: k1),
+            self.store.observeWithCache(Int.self, key: k2)
+        )
+        .distinctUntilChanged { $0.0 == $1.0 && $0.1 == $1.1 }
+        let valuePairs = self.waitElements(expect, for: valuesForK1andK2) {
+            self.store.flush()
+        }
+        
+        // then
+        let values0 = valuePairs.map { pair in pair.0 }
+        let values1 = valuePairs.map { pair in pair.1 }
+        XCTAssertEqual(values0.first, 1)
+        XCTAssertEqual(values1.first, 2)
+        XCTAssertEqual(values0.last ?? nil, nil)
+        XCTAssertEqual(values1.last ?? nil, nil)
+    }
+}

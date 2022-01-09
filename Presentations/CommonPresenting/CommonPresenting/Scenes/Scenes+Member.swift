@@ -10,38 +10,62 @@ import Foundation
 
 import RxSwift
 
+import Domain
+
 
 // MARK: - SignInScene
 
-public protocol SignInScenePresenter {
+public protocol SignInSceneInteractable { }
+
+public protocol SignInSceneListenable: AnyObject {
     
-    var signedIn: Observable<Void> { get }
+    func signIn(didCompleted member: Member)
 }
 
 public protocol SignInScene: Scenable, PangestureDismissableScene {
     
-    var presenter: SignInScenePresenter? { get }
-}
-
-public protocol SignInSceneBuilable {
-    
-    func makeSignInScene() -> SignInScene
+    var interactor: SignInSceneInteractable? { get }
 }
 
 
 // MARK: - EditProfileScene
 
-public protocol EditProfileScenePresenter {
-    
-    var editCompleted: Observable<Void> { get }
-}
+public protocol EditProfileSceneInteractable: ImagePickerSceneListenable, SelectEmojiSceneListenable { }
 
 public protocol EditProfileScene: Scenable {
     
-    var presenrer: EditProfileScenePresenter? { get }
+    var interactor: EditProfileSceneInteractable? { get }
 }
 
-public protocol EditProfileSceneBuilable {
+
+// MARK: - MemberProfileScene Interactable & Listenable
+
+public protocol MemberProfileSceneInteractable { }
+
+public protocol MemberProfileSceneListenable: AnyObject { }
+
+
+// MARK: - MemberProfileScene
+
+public protocol MemberProfileScene: Scenable {
     
-    func makeEditProfileScene() -> EditProfileScene
+    var interactor: MemberProfileSceneInteractable? { get }
+}
+
+
+// MARK: - RecoverAccountScene Interactable & Listenable
+
+public protocol RecoverAccountSceneInteractable { }
+
+public protocol RecoverAccountSceneListenable: AnyObject {
+    
+    func recoverAccount(didCompleted recoveredMember: Member)
+}
+
+
+// MARK: - RecoverAccountScene
+
+public protocol RecoverAccountScene: Scenable {
+    
+    var interactor: RecoverAccountSceneInteractable? { get }
 }

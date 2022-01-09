@@ -14,9 +14,7 @@ import RxSwift
 
 open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
     
-    public var disposeBag = DisposeBag()
-    
-    open var useSelectedEffect: Bool { false }
+    public var disposeBag: DisposeBag! = DisposeBag()
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,17 +25,13 @@ open class BaseTableViewCell: UITableViewCell, UIContextAccessable {
         fatalError()
     }
     
-    open override func setSelected(_ selected: Bool, animated: Bool) {
-        guard useSelectedEffect else { return }
-        super.setSelected(selected, animated: animated)
-    }
-    
     open func afterViewInit() {
         self.selectionStyle = .none
     }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
+        self.disposeBag = nil
         self.disposeBag = .init()
     }
 }

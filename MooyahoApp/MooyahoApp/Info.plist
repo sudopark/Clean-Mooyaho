@@ -2,30 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>kakaokompassauth</string>
-		<string>kakaolink</string>
-	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>카메라를 이용하여 사진을 업로드합니다.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>다운받은 사진을 저장합니다.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사진첩에 있는 사진을 업로드 합니다.</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>서비스를 정상적으로 이용하기위해 앱 사용 중 유저의 위치정보가 필요합니다.</string>
-	<key>KAKAO_NATIVE_APPKEY</key>
-	<string>${KO_NATIVE_APPKEY}</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Readmind</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIcons</key>
+	<dict/>
+	<key>CFBundleIcons~ipad</key>
+	<dict/>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -35,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -46,11 +32,39 @@
 				<string>${KO_NATIVE_APPKEY}</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.sudo.park.Mooyaho-iOS</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>readminds</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>KAKAO_NATIVE_APPKEY</key>
+	<string>${KO_NATIVE_APPKEY}</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라로 찍은 사진을 업로드합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>다운받은 사진을 저장합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진첩에 있는 사진을 업로드 합니다.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

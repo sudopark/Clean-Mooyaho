@@ -13,7 +13,7 @@ import RxSwift
 import Domain
 import UnitTestHelpKit
 
-@testable import MooyahoApp
+@testable import Readmind
 
 
 class MockKakaoService: KakaoService, Mocking {

@@ -10,8 +10,14 @@ import UIKit
 
 extension UIView {
     
+    @available(*, deprecated, message: "use decorate<S: UIView>(_ decorating: (S) -> S)")
     public func decorate<S: UIView>(_ decorating: (S) -> Void) {
         guard let subTypeView = self as? S else { return }
         decorating(subTypeView)
+    }
+    
+    public func decorate<S: UIView>(_ decorating: (S) -> S) {
+        guard let subTypeView = self as? S else { return }
+        _ = decorating(subTypeView)
     }
 }

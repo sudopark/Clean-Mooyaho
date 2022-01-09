@@ -14,11 +14,11 @@ import CommonPresenting
 
 // MARK: - SignInScene Implement
 
-extension SignInViewModelImple: SignInScenePresenter { }
+extension SignInViewModelImple: SignInSceneInteractable { }
 
 extension SignInViewController {
     
-    public var presenter: SignInScenePresenter? {
-        return self.viewModel as? SignInScenePresenter
+    public var interactor: SignInSceneInteractable? {
+        return self.viewModel as? SignInSceneInteractable
     }
 }

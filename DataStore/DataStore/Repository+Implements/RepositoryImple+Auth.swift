@@ -9,6 +9,8 @@
 import Foundation
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 
@@ -17,7 +19,7 @@ public protocol AuthRepositoryDefImpleDependency: AnyObject {
     
     var disposeBag: DisposeBag { get }
     var authRemote: AuthRemote { get }
-    var authLocal: AuthLocalStorage { get }
+    var authLocal: AuthLocalStorage & DataModelStorageSwitchable { get }
 }
 
 
@@ -27,11 +29,22 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         
         let getLastAuth = self.authLocal.fetchCurrentAuth()
         let prepareAnonymousAuthIfNeed: (Auth?) -> Maybe<Auth> = { [weak self] auth in
+            
+            let secureMessage = SecureLoggingMessage()
+                |> \.fullText .~ "last signin userID -> %@"
+                |> \.secureField .~ [auth?.userID ?? ""]
+            logger.print(level: .debug, secureMessage)
             guard let self = self else { return .empty() }
             switch auth {
             case let .some(existing): return .just(existing)
             case .none: return self.signInAnonymouslyForPrepareDataAcessPermission()
             }
+        }
+        
+        let prepareStorage: (Auth) -> Maybe<Auth> = { [weak self] auth in
+            guard let self = self else { return .empty() }
+            return self.authLocal.openStorage(for: auth)
+                .map { auth }
         }
         
         let thenLoadExistingCurrentMember: (Auth) -> Maybe<(Auth, Member?)>
@@ -42,12 +55,23 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
                 .map{ (auth, $0) }
         }
         
+        let switchStorageIfNeed: ((Auth, Member?)) -> Maybe<(Auth, Member?)> = { [weak self] pair in
+            guard let self = self else { return .empty() }
+            let isSignedInBeforeButNoMember = pair.1 == nil
+            guard isSignedInBeforeButNoMember else { return .just(pair) }
+            logger.print(level: .warning, "is Signed in before But No Member!! => switch to anonymousStorage")
+            return self.authLocal.switchToAnonymousStorage()
+                .map { pair }
+        }
+        
         return getLastAuth
             .flatMap(prepareAnonymousAuthIfNeed)
+            .flatMap(prepareStorage)
             .flatMap(thenLoadExistingCurrentMember)
+            .flatMap(switchStorageIfNeed)
     }
     
-    private func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth> {
+    public func signInAnonymouslyForPrepareDataAcessPermission() -> Maybe<Auth> {
         
         let updateAuthOnStorage: (Auth) -> Void = { [weak self] auth in
             guard let self = self else { return }
@@ -72,6 +96,13 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
     }
     
     private func requestSignInAndSaveMemberInfo(_ signingAction: Maybe<SigninResult>) -> Maybe<SigninResult> {
+        
+        let switchStorage: (SigninResult) -> Maybe<SigninResult> = { [weak self] result in
+            guard let self = self else { return .empty() }
+            return self.authLocal.switchToUserStorage(result.auth.userID)
+                .map { result }
+        }
+        
         let andSaveMemberInfo: (SigninResult) -> Void = { [weak self] result in
             guard let self = self else { return }
             self.disposeBag.insert {
@@ -80,7 +111,44 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
             }
         }
         return signingAction
+            .flatMap(switchStorage)
             .do(onNext: andSaveMemberInfo)
             .map{ $0 }
+    }
+    
+    public func requestSignout() -> Maybe<Void> {
+        let thenSwitchStorage: () -> Maybe<Void> = { [weak self] in
+            return self?.authLocal.switchToAnonymousStorage() ?? .empty()
+        }
+        return self.authRemote.requestSignout()
+            .flatMap(thenSwitchStorage)
+    }
+    
+    public func requestWithdrawal() -> Maybe<Void> {
+        
+        let withdrawal = self.authRemote.requestWithdrawal()
+        let deleteUserStorage: () -> Maybe<Void> = { [weak self] in
+            return self?.authLocal.removeUserStorage() ?? .empty()
+        }
+        let thenSignout: () -> Maybe<Void> = { [weak self] in
+            return self?.requestSignout() ?? .empty()
+        }
+        return withdrawal
+            .flatMap(deleteUserStorage)
+            .flatMap(thenSignout)
+    }
+    
+    public func requestRecoverAccount() -> Maybe<Member> {
+        
+        let recoverAccount = self.authRemote.requestRecoverAccount()
+        
+        let thenUpdateMember: (Member) -> Void = { [weak self] member in
+            guard let self = self else { return }
+            self.disposeBag.insert {
+                self.authLocal.saveSignedIn(member: member).subscribe()
+            }
+        }
+        return recoverAccount
+            .do(onNext: thenUpdateMember)
     }
 }

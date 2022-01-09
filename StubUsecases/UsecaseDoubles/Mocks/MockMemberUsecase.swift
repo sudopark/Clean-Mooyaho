@@ -14,9 +14,12 @@ import UnitTestHelpKit
 
 
 open class MockMemberUsecase: MemberUsecase, Mocking {
-    public func refreshMembers(_ ids: [String]) { }
+    public func refreshMembers(_ ids: [String]) {
+        self.verify(key: "refreshMembers", with: ids)
+    }
     
     public func loadMembers(_ ids: [String]) -> Maybe<[Member]> {
+        self.verify(key: "loadMembers", with: ids)
         return self.resolve(key: "loadMembers") ?? .empty()
     }
     
@@ -50,7 +53,7 @@ open class MockMemberUsecase: MemberUsecase, Mocking {
     
     public let updateStatus = PublishSubject<UpdateMemberProfileStatus>()
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
-        self.verify(key: "updateCurrent")
+        self.verify(key: "updateCurrent", with: (updateFields, profile))
         return self.updateStatus.asObservable()
     }
 }

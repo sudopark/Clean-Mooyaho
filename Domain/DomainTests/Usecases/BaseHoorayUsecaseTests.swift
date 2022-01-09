@@ -21,7 +21,7 @@ class BaseHoorayUsecaseTests: BaseTestCase, WaitObservableEvents {
     var mockMemberRepository: MockMemberRepository!
     var sharedStore: SharedDataStoreServiceImple!
     var mockHoorayRepository: MockHoorayRepository!
-    var mockMessagingService: MockMessagingService!
+    var mockMessagingService: StubMessagingService!
     var usecase: HoorayUsecaseImple!
     
     override func setUp() {

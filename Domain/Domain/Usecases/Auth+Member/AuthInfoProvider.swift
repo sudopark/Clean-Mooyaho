@@ -11,9 +11,18 @@ import Foundation
 import RxSwift
 
 
-public protocol AuthInfoProvider {
+public protocol AuthInfoProvider: AnyObject {
     
     func currentAuth() -> Auth?
+    
+    func signedInMemberID() -> String?
+}
+
+extension AuthInfoProvider {
+    
+    public func isSignedIn() -> Bool {
+        return self.signedInMemberID() != nil
+    }
 }
 
 public protocol AuthInfoManger: AuthInfoProvider {
@@ -21,4 +30,6 @@ public protocol AuthInfoManger: AuthInfoProvider {
     func updateAuth(_ newValue: Auth)
     
     func clearAuth()
+    
+    func updateCurrentMember(_ member: Member)
 }

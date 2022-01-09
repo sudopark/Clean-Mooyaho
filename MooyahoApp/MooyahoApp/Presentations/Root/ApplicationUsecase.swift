@@ -22,6 +22,10 @@ public protocol ApplicationUsecase {
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
     
     func userFCMTokenUpdated(_ newToken: String?)
+    
+    var currentSignedInMemeber: Observable<Member?> { get }
+    
+    var signedOut: Observable<Auth> { get }
 }
 
 // MARK: - ApplicationUsecaseImple
@@ -30,17 +34,25 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
-    private let locationUsecase: UserLocationUsecase
+    private let favoriteItemsUsecase: FavoriteReadItemUsecas
+    private let shareUsecase: ShareReadCollectionUsecase
+    private let crashLogger: CrashLogger
     
     public init(authUsecase: AuthUsecase,
                 memberUsecase: MemberUsecase,
-                locationUsecase: UserLocationUsecase) {
+                favoriteItemsUsecase: FavoriteReadItemUsecas,
+                shareUsecase: ShareReadCollectionUsecase,
+                crashLogger: CrashLogger) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
-        self.locationUsecase = locationUsecase
+        self.favoriteItemsUsecase = favoriteItemsUsecase
+        self.shareUsecase = shareUsecase
+        self.crashLogger = crashLogger
         
         self.bindApplicationStatus()
         self.bindPushTokenUpload()
+        
+        self.bindLogging()
     }
     
     fileprivate struct Subjects {
@@ -68,43 +80,34 @@ extension ApplicationUsecaseImple {
         let enterForeground = status.filter{ $0 == .forground }.map{ _ in true }
         let enterBackground = status.filter{ $0 == .background }.map{ _ in false }
         let terminated = status.filter{ $0 == .terminate }.map{ _ in false }
-        
+
         let isUserInUseApp = Observable
             .merge(didLanched.map{ true }, enterForeground, enterBackground, terminated)
             .distinctUntilChanged()
         
-        isUserInUseApp
-            .flatMapLatest{ [weak self] inUse in self?.waitForLocationUploadableAuth(inUse) ?? .empty()  }
-            .subscribe(onNext: { [weak self] auth in
-                if let userID = auth?.userID {
-                    self?.locationUsecase.startUploadUserLocation(for: userID)
-                } else {
-                    self?.locationUsecase.stopUplocationUserLocation()
-                }
+        let memberChanges = self.memberUsecase
+            .currentMember.map { $0?.uid }.distinctUntilChanged().share()
+        Observable.combineLatest(memberChanges, isUserInUseApp)
+            .subscribe(onNext: { [weak self] memberID, isUse in
+                guard let memberID = memberID, isUse == true else { return }
+                self?.refreshSignInMemberBaseDatas(for: memberID)
             })
             .disposed(by: self.disposeBag)
-        
-        let deviceID = AppEnvironment.deviceID
-        let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
-        Observable.combineLatest(preparedAuth, isUserInUseApp)
-            .subscribe(onNext: { [weak self] auth, isUse in
-                self?.memberUsecase.updateUserIsOnline(auth.userID, deviceID: deviceID, isOnline: isUse)
+        memberChanges
+            .subscribe(onNext: { [weak self] _ in
+                self?.refreshBaseSharedDatas()
             })
             .disposed(by: self.disposeBag)
     }
+
+    private func refreshBaseSharedDatas() {
+        self.favoriteItemsUsecase.refreshSharedFavoriteIDs()
+    }
     
-    private func waitForLocationUploadableAuth(_ isUserInUseApp: Bool) -> Observable<Auth?> {
-        guard isUserInUseApp else { return .just(nil) }
-        let preparedAuth = self.authUsecase.currentAuth.compactMap{ $0 }.distinctUntilChanged()
-        let permissionGranted = self.locationUsecase.checkHasPermission().asObservable()
-            .flatMap { [weak self] status -> Observable<Void> in
-                guard let self = self else { return .empty() }
-                guard status != .granted else { return .just(()) }
-                return self.locationUsecase.isAuthorized.filter{ $0 }.map{ _ in }
-            }
-        return Observable
-            .combineLatest(preparedAuth, permissionGranted)
-            .map{ $0.0 }
+    private func refreshSignInMemberBaseDatas(for memberID: String) {
+        self.memberUsecase.refreshMembers([memberID])
+        self.shareUsecase.refreshMySharingColletionIDs()
+        // TODO: 검색 가능한 단어 전부다 추출
     }
 }
 
@@ -139,5 +142,39 @@ extension ApplicationUsecaseImple {
     
     public func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
         return self.authUsecase.loadLastSignInAccountInfo()
+    }
+    
+    public var currentSignedInMemeber: Observable<Member?> {
+        return self.memberUsecase.currentMember
+    }
+    
+    public var signedOut: Observable<Auth> {
+        return self.authUsecase.usersignInStatus
+            .compactMap { event in
+                guard case let .signOut(auth) = event else { return nil }
+                return auth
+            }
+    }
+}
+
+
+// MARK: - bind logging
+
+extension ApplicationUsecaseImple {
+    
+    func bindLogging() {
+        
+        self.authUsecase.currentAuth
+            .compactMap { $0?.userID }
+            .subscribe(onNext: { [weak self] userID in
+                self?.crashLogger.setupUserIdentifier(userID)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.subjects.applicationStatus
+            .subscribe(onNext: { [weak self] status in
+                self?.crashLogger.setupValue(status.rawValue, key: "Application Status")
+            })
+            .disposed(by: self.disposeBag)
     }
 }

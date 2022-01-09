@@ -92,9 +92,9 @@ final class SelectHoorayHeaderView: BaseUIView, Presenting {
         self.controlButtonsView.clipsToBounds = true
         self.controlLineView.backgroundColor = self.uiContext.colors.text.withAlphaComponent(0.1)
         
-        self.addPlaceButton.setImage(UIImage(named: "plus.circle"), for: .normal)
+        self.addPlaceButton.setImage(UIImage(systemName: "plus.circle"), for: .normal)
         self.addPlaceButton.tintColor = .lightGray
-        self.refreshButton.setImage(UIImage(named: "location.fill"), for: .normal)
+        self.refreshButton.setImage(UIImage(systemName: "location.fill"), for: .normal)
         self.refreshButton.tintColor = .lightGray
     }
 }
@@ -188,7 +188,7 @@ extension SelectHooraySuggestPlaceCell: Presenting {
         self.distanceLabel.textColor = .darkGray
         self.distanceLabel.font = UIFont.systemFont(ofSize: 12)
         
-        self.checkImageView.image = UIImage(named: "checkmark.circle.fill")
+        self.checkImageView.image = UIImage(systemName: "checkmark.circle.fill")
         self.checkImageView.isHidden = true
     }
 }

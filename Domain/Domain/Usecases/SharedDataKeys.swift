@@ -16,6 +16,17 @@ public enum SharedDataKeys: String {
     case memberMap
     case placeMap
     case newHooray
+    case readItemShrinkIsOn
+    case latestReadItemSortOption
+    case readItemCustomOrderMap
+    case readLinkPreviewMap
+    case categoriesMap
+    case addSuggestedURLSet
+    case latestSharedCollections
+    case mySharingCollectionIDs
+    case mySharingCollectionMap
+    case currentReadingItems
+    case favoriteItemIDs
 }
 
 
@@ -27,5 +38,12 @@ extension SharedDataStoreService {
     
     public func fetch<V>(_ type: V.Type, key: SharedDataKeys) -> V? {
         return self.get(type, key: key.rawValue)
+    }
+    
+    public func isExists<V>(_ type: V.Type, key: SharedDataKeys,
+                            finding: ((V?) -> Bool)? = nil) -> Bool {
+        let finding = finding ?? { _ in true }
+        let value = self.fetch(type, key: key)
+        return finding(value)
     }
 }

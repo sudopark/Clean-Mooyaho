@@ -10,7 +10,7 @@ jobs:
     # runs-on: macOS-latest
     strategy:
         matrix:
-          xcode: [12.5]
+          xcode: [13.1]
           destination: ['platform=iOS Simulator,name=iPhone 11']
     
     steps:
@@ -45,67 +45,103 @@ jobs:
           -scheme Mooyaho\ iOS \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
       - name: Member Scenes Unit Tests
         id: test_member_scenes
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme MemberScenes \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: Map Scenes Unit Tests
-        id: test_map_scenes
+      - name: ReadItem Scenes Unit Tests
+        id: test_reads_scenes
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme MapScenes \
+          -scheme ReadItemScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: Place Scenes Unit Tests
-        id: test_place_scenes
+      - name: EditReadItem Scenes Unit Tests
+        id: test_edit_read_item_scenes
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme PlaceScenes \
+          -scheme EditReadItemScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
-      - name: Hooray Scenes Unit Tests
-        id: test_hooray_scenes
+      - name: Viewer Scenes Unit Tests
+        id: test_viewer_scenes
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme HoorayScene \
+          -scheme ViewerScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
+      - name: Discovery Scenes Unit Tests
+        id: test_discovery_scenes
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme DiscoveryScene \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
+      - name: Setting Scenes Unit Tests
+        id: test_setting_scenes
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme SettingScene \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
+      - name: Suggest Scenes Unit Tests
+        id: test_suggest_scenes
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme SuggestScene \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
       - name: Domain Unit Tests
         id: test_domain
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme Domain \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
           
@@ -113,24 +149,24 @@ jobs:
       - name: DataStore Unit Tests
         id: test_data_store
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme DataStore \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
       - name: FirebaseService Unit Tests
         id: test_fb
         run: |
-          xcodebuild clean test \
+          xcodebuild test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme FirebaseService \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -144,18 +180,33 @@ jobs:
         run: |
           echo "Tests Failed"; exit 1
 
-      - name: Check Tests Map Scenes
-        if: steps.test_map_scenes.outputs.result != 0
+      - name: Check Tests ReadItem Scenes
+        if: steps.test_reads_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
 
-      - name: Check Tests Place Scenes
-        if: steps.test_place_scenes.outputs.result != 0
+      - name: Check Tests EditReadItem Scenes
+        if: steps.test_edit_read_item_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
 
-      - name: Check Tests Hooray Scenes
-        if: steps.test_hooray_scenes.outputs.result != 0
+      - name: Check Tests Viewer Scenes
+        if: steps.test_viewer_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Discovery Scenes
+        if: steps.test_discovery_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Setting Scenes
+        if: steps.test_setting_scenes.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Suggest Scenes
+        if: steps.test_suggest_scenes.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
       

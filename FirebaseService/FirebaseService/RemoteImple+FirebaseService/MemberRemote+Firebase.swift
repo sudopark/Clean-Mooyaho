@@ -46,7 +46,16 @@ extension FirebaseServiceImple {
         
         let fileName = "\(memberID).\(ext)"
         let fileRef = self.storage.ref(for: .images(.memberPfoile(fileName)))
-        return fileRef.uploadData(data)
+        return self.storage.upload(fileRef, data: data)
+            .map{ $0.asMemberProfileUploadStatus(size) }
+    }
+    
+    public func requestUploadMemberProfileImage(_ memberID: String,
+                                                filePath: String, ext: String,
+                                                size: ImageSize) -> Observable<MemberProfileUploadStatus> {
+        let fileName = "\(memberID).\(ext)"
+        let fileRef = self.storage.ref(for: .images(.memberPfoile(fileName)))
+        return self.storage.upload(fileRef, filePath: filePath)
             .map{ $0.asMemberProfileUploadStatus(size) }
     }
     
@@ -66,6 +75,9 @@ extension FirebaseServiceImple {
             }
         }
         updating[Key.icon] = thumbnail?.asJSON()
+        let updateMember: Maybe<Void> = updating.isEmpty
+            ? .just()
+            : self.update(docuID: memberID, newFields: updating, at: .member)
         
         let thenLoadMember: () -> Maybe<Member> = { [weak self] in
             guard let self = self else { return .empty() }
@@ -76,7 +88,7 @@ extension FirebaseServiceImple {
             }
         }
         
-        return self.update(docuID: memberID, newFields: updating, at: .member)
+        return updateMember
             .flatMap(thenLoadMember)
     }
     
@@ -86,8 +98,15 @@ extension FirebaseServiceImple {
         typealias Key = MemberMappingKey
         
         let collectionRef = self.fireStoreDB.collection(.member)
-        let query = collectionRef.whereField(FieldPath.documentID(), in: ids)
-        return self.load(query: query)
+        
+        let idChunks = ids.slice(by: 10).filter { $0.isNotEmpty }
+        guard idChunks.isNotEmpty else {
+            return .just([])
+        }
+        
+        let queries = idChunks.map { collectionRef.whereField(FieldPath.documentID(), in: $0) }
+        return self.loadAll(queries: queries)
+            .asMaybe()
     }
 }
 
@@ -99,7 +118,7 @@ private extension FirebaseFileUploadEvents {
         switch self {
         case let .uploading(percent): return .uploading(Float(percent))
         case let .completed(url):
-            let source = ImageSource(path: url.path, size: imageSize)
+            let source = ImageSource(path: url.absoluteString, size: imageSize)
             return .completed(.imageSource(source))
         }
     }

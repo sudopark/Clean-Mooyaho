@@ -20,7 +20,7 @@ public final class TextInputViewController: BaseViewController, TextInputScene {
     let titleLabel = UILabel()
     let inputTextView = InputTextView()
     let charCountLabel = UILabel()
-    let confirmButton = ConfirmButton(type: .system)
+    let confirmButton = ConfirmButton()
     
     let viewModel: TextInputViewModel
     
@@ -72,7 +72,7 @@ extension TextInputViewController {
             })
             .disposed(by: self.disposeBag)
         
-        self.confirmButton.rx.tap
+        self.confirmButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.confirm()
             })
@@ -160,15 +160,19 @@ extension TextInputViewController: Presenting {
         
         let inputMode = self.viewModel.textInputMode
         
-        self.uiContext.deco.title(self.titleLabel)
+        self.uiContext.decorating.title(self.titleLabel)
         self.titleLabel.text = inputMode.title
         
         self.inputTextView.maxCharCount = inputMode.maxCharCount
-        self.inputTextView.setupMultilineStyling(CGFloat(inputMode.defaultHeight ?? 200))
+        if inputMode.isSingleLine {
+            self.inputTextView.setupSingleLineStyling()
+        } else {
+            self.inputTextView.setupMultilineStyling(CGFloat(inputMode.defaultHeight ?? 200))
+        }
         self.inputTextView.placeHolderLabel.text = inputMode.placeHolder
         self.inputTextView.text = inputMode.startWith
         
-        self.uiContext.deco.placeHolder(self.inputTextView.placeHolderLabel)
+        self.uiContext.decorating.placeHolder(self.inputTextView.placeHolderLabel)
         
         self.confirmButton.setupStyling()
     }
