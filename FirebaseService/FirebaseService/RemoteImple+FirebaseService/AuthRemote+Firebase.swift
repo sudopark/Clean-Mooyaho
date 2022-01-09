@@ -194,6 +194,29 @@ extension FirebaseServiceImple {
         return deleteShareIndexes()
             .flatMap(thenDeleteInbox)
     }
+    
+    public func requestRecoverAccount() -> Maybe<Member> {
+        
+        guard let memberID = self.signInMemberID else {
+            return .error(RemoteErrors.invalidRequest("signIn need"))
+        }
+        typealias Keys = MemberMappingKey
+        let newFields: JSON = [Keys.deactivatedAt.rawValue: FieldValue.delete()]
+        let activateMember = self.update(docuID: memberID, newFields: newFields, at: .member)
+        let thenLoadMember: () -> Maybe<Member?> = { [weak self] in
+            return self?.load(docuID: memberID, in: .member) ?? .empty()
+        }
+        let throwErrorWhenNotExists: (Member?) throws -> Member = { member in
+            guard let member = member else {
+                throw RemoteErrors.notFound("no member", reason: nil)
+            }
+            return member
+        }
+        
+        return  activateMember
+            .flatMap(thenLoadMember)
+            .map(throwErrorWhenNotExists)
+    }
 }
 
 

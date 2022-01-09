@@ -18,10 +18,10 @@ extension TimeStamp {
         return form.string(from: Date(timeIntervalSince1970: self))
     }
     
-    public func dateText() -> String {
+    public func dateText(formText: String = "MM.d") -> String {
         
         let form = DateFormatter()
-        form.dateFormat = "MM.d"
+        form.dateFormat = formText
         return form.string(from: Date(timeIntervalSince1970: self))
     }
 }

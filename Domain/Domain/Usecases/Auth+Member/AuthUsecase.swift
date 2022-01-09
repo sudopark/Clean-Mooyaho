@@ -31,6 +31,8 @@ public protocol AuthUsecase {
     
     func requestWithdrawal() -> Maybe<Auth>
     
+    func recoverAccount() -> Maybe<Member>
+    
     var currentAuth: Observable<Auth?> { get }
     
     var usersignInStatus: Observable<UserSignInStatusChangeEvent> { get }
@@ -45,7 +47,7 @@ public final class AuthUsecaseImple: AuthUsecase {
     private let authRepository: AuthRepository
     private let oathServiceProviders: [OAuthServiceProvider]
     private let authInfoManager: AuthInfoManger
-    private let sharedDataStroeService: SharedDataStoreService
+    private let sharedDataStoreService: SharedDataStoreService
     private let searchReposiotry: IntegratedSearchReposiotry
     private let memberRepository: MemberRepository
     private let sharedEventService: SharedEventService
@@ -61,7 +63,7 @@ public final class AuthUsecaseImple: AuthUsecase {
         self.authRepository = authRepository
         self.oathServiceProviders = oathServiceProviders
         self.authInfoManager = authInfoManager
-        self.sharedDataStroeService = sharedDataStroeService
+        self.sharedDataStoreService = sharedDataStroeService
         self.searchReposiotry = searchReposiotry
         self.memberRepository = memberRepository
         self.sharedEventService = sharedEventService
@@ -145,8 +147,32 @@ extension AuthUsecaseImple {
             .flatMap(thenPostAction)
     }
     
+    public func recoverAccount() -> Maybe<Member> {
+        
+        let recoverAccount = self.authRepository.requestRecoverAccount()
+        let checkIsActivated: (Member) throws -> (Member) = { member in
+            guard member.isDeactivated == false else {
+                throw ApplicationErrors.notActivated
+            }
+            return member
+        }
+        let thenUpdateStore: (Member) -> Void = { [weak self] newMember in
+            logger.print(level: .debug, "member account recovered")
+            guard let self = self else { return }
+            self.sharedDataStoreService
+                .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: newMember)
+            self.sharedDataStoreService
+                .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
+                    return (dict ?? [:]).merging([newMember.uid: newMember], uniquingKeysWith: { $1 })
+                }
+        }
+        return recoverAccount
+            .map(checkIsActivated)
+            .do(onNext: thenUpdateStore)
+    }
+    
     private func postSignoutAction() -> Maybe<Auth> {
-        self.sharedDataStroeService.flush()
+        self.sharedDataStoreService.flush()
         
         let thenNotifySignedOut: (Auth) -> Void = { [weak self] auth in
             let event: UserSignInStatusChangeEvent = .signOut(auth)
@@ -164,9 +190,9 @@ extension AuthUsecaseImple {
         logger.print(level: .info, secureLogMessage)
         self.authInfoManager.updateAuth(auth)
         guard let me = member else { return }
-        self.sharedDataStroeService
+        self.sharedDataStoreService
             .update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: me)
-        self.sharedDataStroeService
+        self.sharedDataStoreService
             .update([String: Member].self, key: SharedDataKeys.memberMap.rawValue) { dict in
                 return (dict ?? [:]).merging([me.uid: me], uniquingKeysWith: { $1 })
             }
@@ -179,7 +205,7 @@ extension AuthUsecaseImple {
             guard let self = self, let member = member else { return }
             self.authInfoManager.updateCurrentMember(member)
             let datKey = SharedDataKeys.memberMap.rawValue
-            self.sharedDataStroeService.update([String: Member].self, key: datKey) {
+            self.sharedDataStoreService.update([String: Member].self, key: datKey) {
                 return ($0 ?? [:]) |> key(member.uid) .~ member
             }
         }
@@ -215,7 +241,7 @@ extension AuthUsecaseImple {
 //    private func 
     
     public var currentAuth: Observable<Auth?> {
-        return self.sharedDataStroeService
+        return self.sharedDataStoreService
             .observeWithCache(Auth.self, key: SharedDataKeys.auth.rawValue)
     }
     

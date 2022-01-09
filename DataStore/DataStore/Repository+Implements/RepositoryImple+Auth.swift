@@ -137,4 +137,18 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
             .flatMap(deleteUserStorage)
             .flatMap(thenSignout)
     }
+    
+    public func requestRecoverAccount() -> Maybe<Member> {
+        
+        let recoverAccount = self.authRemote.requestRecoverAccount()
+        
+        let thenUpdateMember: (Member) -> Void = { [weak self] member in
+            guard let self = self else { return }
+            self.disposeBag.insert {
+                self.authLocal.saveSignedIn(member: member).subscribe()
+            }
+        }
+        return recoverAccount
+            .do(onNext: thenUpdateMember)
+    }
 }

@@ -73,6 +73,10 @@
 "You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded)." = "You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded).";
 "Share your organized reading list with others.\nOr you can read reading lists shared by others." = "Share your reading list with others.\nOr you can read reading lists shared by others.";
 "This account cannot be viewed." = "This account cannot be viewed.";
+"recover_account_descriptions" = "Your account is currently disabled.\nDo you want to restore your account to use the service again?";
+"Recover account" = "Account Recovery";
+"Account recovery is complete." = "Account recovery is complete.";
+"Withdrawal request date: %@" = "Withdrawal requested at: %@";
 
 // read
 "Priority" = "Priority";
@@ -182,8 +186,8 @@
 "Category" = "Category";
 "Manage Account" = "Manage Account";
 "Signout" = "Signout";
-"Delete account" = "Delete account";
-"delete_ccount_descriptions" = "Your account will be deactivated after you apply for withdrawal.\nYour deactivated profile cannot be viewed by others, and all shared reading lists will also be deleted.\nYou can restore your account before the grace period (60 days) after the withdrawal request.\nAfter this period, all of your data will be deleted and your account and it will be irrecoverable.";
+"Delete account" = "Withdrawal Request";
+"delete_ccount_descriptions" = "Your account will be deactivated after you apply for withdrawal.\nYour deactivated profile cannot be viewed by others, and all shared reading lists will also be deleted.\nYou can restore your account before the grace period (60 days) after the withdrawal request.\nAfter this period, all data related to your account will be deleted. And it cannot be recovered.";
 "Are you sure you want to delete your account?" = "Are you sure you want to delete your account?";
 "Feedback" = "Feedback";
 "Enter a message" = "Enter a message";

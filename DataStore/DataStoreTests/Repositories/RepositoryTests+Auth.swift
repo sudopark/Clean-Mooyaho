@@ -223,6 +223,45 @@ extension RepositoryTests_Auth {
         XCTAssertNotNil(result)
         XCTAssertEqual(self.mockLocal.didSwitchToAnonymousStorage, true)
     }
+    
+    func testRepository_recoverAccount() {
+        // given
+        let expect = expectation(description: "계정 복구")
+        self.mockRemote.register(type: Maybe<Member>.self, key: "requestRecoverAccount") {
+            var member = Member(uid: "some", nickName: nil, icon: nil)
+            member.deactivatedDateTimeStamp = .now()
+            return .just(member)
+        }
+        
+        // when
+        let recovering = self.repository.requestRecoverAccount()
+        let newMember = self.waitFirstElement(expect, for: recovering.asObservable())
+        
+        // then
+        XCTAssertNotNil(newMember)
+    }
+    
+    func testRepository_whenRecoverAccount_activateMemberAndUpdateLocal() {
+        // given
+        let expect = expectation(description: "계정 복구시에 복구하고 로컬 업데이트")
+        var isMemberUdpated: Bool?
+        self.mockRemote.register(type: Maybe<Member>.self, key: "requestRecoverAccount") {
+            return .just(Member(uid: "some", nickName: nil, icon: nil))
+        }
+        self.mockLocal.called(key: "saveSignedIn:member") { _ in
+            isMemberUdpated = true
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestRecoverAccount()
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(isMemberUdpated, true)
+    }
 }
 
 

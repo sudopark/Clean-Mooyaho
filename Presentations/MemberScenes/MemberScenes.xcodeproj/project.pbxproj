@@ -21,6 +21,11 @@
 		F62DFFB22661863900C4A080 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB12661863900C4A080 /* SignInView.swift */; };
 		F637204B266475430089D0B3 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637204A266475430089D0B3 /* EditProfileView.swift */; };
 		F637206526654BA10089D0B3 /* EditProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206426654BA10089D0B3 /* EditProfileViewModelTests.swift */; };
+		F6472E75278AA96200B11815 /* RecoverAccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E70278AA96200B11815 /* RecoverAccountRouter.swift */; };
+		F6472E76278AA96200B11815 /* RecoverAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E71278AA96200B11815 /* RecoverAccountViewController.swift */; };
+		F6472E78278AA96200B11815 /* RecoverAccountScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E73278AA96200B11815 /* RecoverAccountScene.swift */; };
+		F6472E79278AA96200B11815 /* RecoverAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E74278AA96200B11815 /* RecoverAccountViewModel.swift */; };
+		F6472E7B278AC6AB00B11815 /* RecoverAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E7A278AC6AB00B11815 /* RecoverAccountViewModelTests.swift */; };
 		F661D47D2663193300B77481 /* SignInViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661D47C2663193300B77481 /* SignInViewModelTests.swift */; };
 		F663E6D22763C1F400EE8152 /* MemberProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6CD2763C1F400EE8152 /* MemberProfileRouter.swift */; };
 		F663E6D32763C1F400EE8152 /* MemberProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6CE2763C1F400EE8152 /* MemberProfileViewController.swift */; };
@@ -64,6 +69,11 @@
 		F62DFFB12661863900C4A080 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		F637204A266475430089D0B3 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		F637206426654BA10089D0B3 /* EditProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModelTests.swift; sourceTree = "<group>"; };
+		F6472E70278AA96200B11815 /* RecoverAccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountRouter.swift; sourceTree = "<group>"; };
+		F6472E71278AA96200B11815 /* RecoverAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewController.swift; sourceTree = "<group>"; };
+		F6472E73278AA96200B11815 /* RecoverAccountScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountScene.swift; sourceTree = "<group>"; };
+		F6472E74278AA96200B11815 /* RecoverAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewModel.swift; sourceTree = "<group>"; };
+		F6472E7A278AC6AB00B11815 /* RecoverAccountViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewModelTests.swift; sourceTree = "<group>"; };
 		F661D47C2663193300B77481 /* SignInViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelTests.swift; sourceTree = "<group>"; };
 		F663E6CD2763C1F400EE8152 /* MemberProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileRouter.swift; sourceTree = "<group>"; };
 		F663E6CE2763C1F400EE8152 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +137,7 @@
 				F62DFFA8266185E300C4A080 /* SIgnIn */,
 				F6A814F12663945F00148F5E /* EditProfile */,
 				F663E6CC2763C1DF00EE8152 /* Profile */,
+				F6472E65278AA84500B11815 /* RecoverAccount */,
 				F62DFF78266184BA00C4A080 /* MemberScenes.h */,
 				F62DFF79266184BA00C4A080 /* Info.plist */,
 			);
@@ -140,6 +151,7 @@
 				F661D47C2663193300B77481 /* SignInViewModelTests.swift */,
 				F637206426654BA10089D0B3 /* EditProfileViewModelTests.swift */,
 				F663E6E72763C9BF00EE8152 /* MemberProfileViewModelTests.swift */,
+				F6472E7A278AC6AB00B11815 /* RecoverAccountViewModelTests.swift */,
 			);
 			path = MemberScenesTests;
 			sourceTree = "<group>";
@@ -169,6 +181,17 @@
 				F62DFFB12661863900C4A080 /* SignInView.swift */,
 			);
 			path = SIgnIn;
+			sourceTree = "<group>";
+		};
+		F6472E65278AA84500B11815 /* RecoverAccount */ = {
+			isa = PBXGroup;
+			children = (
+				F6472E70278AA96200B11815 /* RecoverAccountRouter.swift */,
+				F6472E71278AA96200B11815 /* RecoverAccountViewController.swift */,
+				F6472E73278AA96200B11815 /* RecoverAccountScene.swift */,
+				F6472E74278AA96200B11815 /* RecoverAccountViewModel.swift */,
+			);
+			path = RecoverAccount;
 			sourceTree = "<group>";
 		};
 		F663E6CC2763C1DF00EE8152 /* Profile */ = {
@@ -306,12 +329,16 @@
 				F6E6636B2669B67000794E2B /* SignInScene.swift in Sources */,
 				F663E6D62763C1F400EE8152 /* MemberProfileViewModel.swift in Sources */,
 				F663E6D22763C1F400EE8152 /* MemberProfileRouter.swift in Sources */,
+				F6472E75278AA96200B11815 /* RecoverAccountRouter.swift in Sources */,
 				F6E6637A2669C32D00794E2B /* EditProfileScene.swift in Sources */,
 				F663E6D52763C1F400EE8152 /* MemberProfileScene.swift in Sources */,
 				F6A814ED2663945A00148F5E /* EditProfileRouter.swift in Sources */,
+				F6472E79278AA96200B11815 /* RecoverAccountViewModel.swift in Sources */,
 				F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */,
 				F62DFFAE266185F200C4A080 /* SignInViewController.swift in Sources */,
 				F62DFFAD266185F200C4A080 /* SignInRouter.swift in Sources */,
+				F6472E78278AA96200B11815 /* RecoverAccountScene.swift in Sources */,
+				F6472E76278AA96200B11815 /* RecoverAccountViewController.swift in Sources */,
 				F663E6D32763C1F400EE8152 /* MemberProfileViewController.swift in Sources */,
 				F6A814F02663945A00148F5E /* EditProfileViewModel.swift in Sources */,
 				F62DFFB22661863900C4A080 /* SignInView.swift in Sources */,
@@ -326,6 +353,7 @@
 				F661D47D2663193300B77481 /* SignInViewModelTests.swift in Sources */,
 				F663E6E82763C9BF00EE8152 /* MemberProfileViewModelTests.swift in Sources */,
 				F637206526654BA10089D0B3 /* EditProfileViewModelTests.swift in Sources */,
+				F6472E7B278AC6AB00B11815 /* RecoverAccountViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

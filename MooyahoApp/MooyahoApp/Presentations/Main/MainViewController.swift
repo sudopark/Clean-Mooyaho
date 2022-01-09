@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainSceneInteractable: MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable & InnerWebViewSceneListenable {
+public protocol MainSceneInteractable: MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable & InnerWebViewSceneListenable & RecoverAccountSceneListenable {
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
     
@@ -79,6 +79,7 @@ public final class MainViewController: BaseViewController, MainScene {
         self.viewModel.setupSubScenes()
         self.bind()
         self.viewModel.checkHasSomeSuggestAddItem()
+        self.viewModel.checkMemberActivatedState()
     }
 
 }

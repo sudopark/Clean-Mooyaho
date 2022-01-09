@@ -42,6 +42,10 @@ class MockRemote: Remote, LinkPreviewRemote, Mocking {
         return self.resolve(key: "requestWithdrawal") ?? .empty()
     }
     
+    func requestRecoverAccount() -> Maybe<Member> {
+        return self.resolve(key: "requestRecoverAccount") ?? .empty()
+    }
+    
     // member
     func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
         return self.resolve(key: "requestUpdateUserPresence") ?? .empty()

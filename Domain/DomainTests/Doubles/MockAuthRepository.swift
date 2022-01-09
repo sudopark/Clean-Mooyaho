@@ -40,4 +40,8 @@ class MockAuthRepository: AuthRepository, Mocking {
     func requestWithdrawal() -> Maybe<Void> {
         return self.resolve(key: "requestWithdrawal") ?? .empty()
     }
+    
+    func requestRecoverAccount() -> Maybe<Member> {
+        return self.resolve(key: "requestRecoverAccount") ?? .empty()
+    }
 }

@@ -30,6 +30,7 @@ public protocol MainViewModel: AnyObject {
     func requestOpenSlideMenu()
     func requestAddNewItem()
     func checkHasSomeSuggestAddItem()
+    func checkMemberActivatedState()
     func requestAddNewItemUsingURLInClipBoard()
     func toggleIsReadItemShrinkMode()
     func toggleShareStatus()
@@ -181,6 +182,18 @@ extension MainViewModelImple {
             .disposed(by: self.disposeBag)
     }
     
+    public func checkMemberActivatedState() {
+        
+        let prepapredMember = self.subjects.currentMember.compactMap { $0 }.take(1)
+        let showActivateSceneIfNeed: (Member) -> Void = { [weak self] member in
+            guard member.isDeactivated else { return }
+            self?.router.presentActivateAccountScene(member.uid)
+        }
+        prepapredMember
+            .subscribe(onNext: showActivateSceneIfNeed)
+            .disposed(by: self.disposeBag)
+    }
+    
     public func requestAddNewItemUsingURLInClipBoard() {
         
         guard let url = self.subjects.suggestAddItemURL.value,
@@ -289,6 +302,11 @@ extension MainViewModelImple: MainSceneInteractable {
         return isDeactivated
             ? self.router.presentActivateAccountScene(auth.userID)
             : self.router.presentUserDataMigrationScene(auth.userID)
+    }
+    
+    public func recoverAccount(didCompleted recoveredMember: Member) {
+        self.router.showToast("Account recovery is complete.".localized)
+        self.router.presentUserDataMigrationScene(recoveredMember.uid)
     }
 
     public func showSharedReadCollection(_ collection: SharedReadCollection) {

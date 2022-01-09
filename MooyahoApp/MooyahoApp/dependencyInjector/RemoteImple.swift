@@ -57,6 +57,10 @@ extension RemoteImple {
         return self.firebaseRemote.requestSignout()
     }
     
+    func requestRecoverAccount() -> Maybe<Member> {
+        return self.firebaseRemote.requestRecoverAccount()
+    }
+    
     // member
     func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
         return self.firebaseRemote.requestUpdateUserPresence(userID, deviceID: deviceID, isOnline: isOnline)

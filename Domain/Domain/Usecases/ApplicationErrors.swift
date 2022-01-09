@@ -19,4 +19,5 @@ public enum ApplicationErrors: Error {
     case notFound
     case userDataMigrationFail(_ error: Error)
     case noUserInfo
+    case notActivated
 }
