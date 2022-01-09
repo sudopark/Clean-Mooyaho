@@ -58,4 +58,9 @@ open class MockAuthUsecase: AuthUsecase, Mocking {
     public var usersignInStatus: Observable<UserSignInStatusChangeEvent> {
         return usersignInStatusMocking.asObservable()
     }
+    
+    public var recoveredMember: Member?
+    public func recoverAccount() -> Maybe<Member> {
+        return self.recoveredMember.map { .just($0) } ?? .empty()
+    }
 }

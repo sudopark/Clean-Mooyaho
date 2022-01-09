@@ -51,3 +51,21 @@ public protocol MemberProfileScene: Scenable {
     
     var interactor: MemberProfileSceneInteractable? { get }
 }
+
+
+// MARK: - RecoverAccountScene Interactable & Listenable
+
+public protocol RecoverAccountSceneInteractable { }
+
+public protocol RecoverAccountSceneListenable: AnyObject {
+    
+    func recoverAccount(didCompleted recoveredMember: Member)
+}
+
+
+// MARK: - RecoverAccountScene
+
+public protocol RecoverAccountScene: Scenable {
+    
+    var interactor: RecoverAccountSceneInteractable? { get }
+}

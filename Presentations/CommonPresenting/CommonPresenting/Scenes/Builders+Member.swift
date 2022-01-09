@@ -26,3 +26,8 @@ public protocol MemberProfileSceneBuilable {
                                 listener: MemberProfileSceneListenable?) -> MemberProfileScene
 }
 
+
+public protocol RecoverAccountSceneBuilable {
+    
+    func makeRecoverAccountScene(listener: RecoverAccountSceneListenable?) -> RecoverAccountScene
+}

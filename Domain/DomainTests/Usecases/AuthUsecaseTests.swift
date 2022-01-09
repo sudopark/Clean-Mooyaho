@@ -483,6 +483,71 @@ extension AuthUsecaseTests {
 }
 
 
+// MARK: - recover account
+
+extension AuthUsecaseTests {
+    
+    func testUsecase_recoverAccount() {
+        // given
+        let expect = expectation(description: "계정 복구")
+        self.mockAuthRepo.register(type: Maybe<Member>.self, key: "requestRecoverAccount") {
+            return Maybe<Member>.just(Member(uid: "some", nickName: nil, icon: nil))
+        }
+        
+        // when
+        let recovering = self.usecase.recoverAccount()
+        let newMember = self.waitFirstElement(expect, for: recovering.asObservable())
+        
+        // then
+        XCTAssertNotNil(newMember)
+    }
+    
+    func testUsecase_whenRecoverAccountButDeactivatedDateNotCleared_throwError() {
+        // given
+        let expect = expectation(description: "계정 복구 끝났지만 멤버에 반영 안되어있는경우 에러")
+        self.mockAuthRepo.register(type: Maybe<Member>.self, key: "requestRecoverAccount") {
+            var member = Member(uid: "some", nickName: nil, icon: nil)
+            member.deactivatedDateTimeStamp = .now()
+            return Maybe<Member>.just(member)
+        }
+        
+        // when
+        let recovering = self.usecase.recoverAccount()
+        let error = self.waitError(expect, for: recovering.asObservable())
+        
+        // then
+        if case .notActivated = error as? ApplicationErrors {
+            XCTAssert(true)
+        } else {
+            XCTFail("에러가 발생안함")
+        }
+    }
+    
+    func testUsecase_whenAfterRecoverAccount_updateStore() {
+        // given
+        let expect = expectation(description: "계정 복구 이후에 스토어에 업데이트")
+        self.mockAuthRepo.register(type: Maybe<Member>.self, key: "requestRecoverAccount") {
+            return Maybe<Member>.just(Member(uid: "some", nickName: nil, icon: nil))
+        }
+        
+        // when
+        let currentMember = self.store.observe(Member.self, key: SharedDataKeys.currentMember.rawValue)
+            .compactMap { $0 }
+        let memberOnMap = self.store.observe([String: Member].self, key: SharedDataKeys.memberMap.rawValue)
+            .compactMap { $0?["some"] }
+        let membersSource = Observable.combineLatest(currentMember, memberOnMap)
+        let updatedMemberPair = self.waitFirstElement(expect, for: membersSource) {
+            self.usecase.recoverAccount()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertNotNil(updatedMemberPair)
+    }
+}
+
+
 extension AuthUsecaseTests {
     
     struct DummyOAuth2Credentail: OAuthCredential { }

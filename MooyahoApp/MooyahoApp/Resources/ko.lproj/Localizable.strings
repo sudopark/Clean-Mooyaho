@@ -73,6 +73,10 @@
 "You can back up your reading list and sync it across other ios devices\n(supported platforms will be expanded)." = "읽기 목록을 백업하고 다른 iOS 기기에서 동기화 하세요\n(지원하는 플랫폼은 확장 예정입니다.).";
 "Share your organized reading list with others.\nOr you can read reading lists shared by others." = "정리한 읽기목록을 타인에게 공유해보세요.\n물론 타인이 공유한 목록을 조회하는것도 가능합니다.";
 "This account cannot be viewed." = "조회할 수 없는 상태의 계정입니다.";
+"recover_account_descriptions" = "현재 회원님의 계정은 비활성화 되어있습니다.\n서비스를 다시 이용하기 위해 계정을 복구하시겠습니까?";
+"Recover account" = "계정 복구";
+"Account recovery is complete." = "계정 복구가 완료되었습니다.";
+"Withdrawal request date: %@" = "계정 탈퇴 신청일: %@";
 
 
 // read

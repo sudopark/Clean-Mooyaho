@@ -120,6 +120,36 @@ extension MainViewModelTests {
         // then
         XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
         XCTAssertEqual(self.spyRouter.didShowActivateAccount, true)
+        XCTAssertEqual(self.spyRouter.didPresentMigrationScene, false)
+    }
+    
+    func testViewModel_whenAfterActivateMember_showToastAndRunMigration() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(nil)
+        
+        // when
+        self.viewModel.requestOpenSlideMenu()
+        self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: true))
+        self.viewModel.recoverAccount(didCompleted: Member(uid: "some", nickName: nil, icon: nil))
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
+        XCTAssertEqual(self.spyRouter.didShowActivateAccount, true)
+        XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
+        XCTAssertEqual(self.spyRouter.didShowToast, true)
+    }
+    
+    func testViewModel_whenFirstShowUp_checkMemberIsDeactivated() {
+        // given
+        var deactivatedMember = Member(uid: "some", nickName: nil, icon: nil)
+        deactivatedMember.deactivatedDateTimeStamp = .now()
+        self.mockMemberUsecase.currentMemberSubject.onNext(deactivatedMember)
+        
+        // when
+        viewModel.checkMemberActivatedState()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didShowActivateAccount, true)
     }
 }
 
@@ -426,6 +456,11 @@ extension MainViewModelTests {
 extension MainViewModelTests {
     
     class SpyRouter: MainRouting, Mocking {
+        
+        var didShowToast: Bool?
+        func showToast(_ message: String) {
+            self.didShowToast = true
+        }
         
         var spyCollectionMainSceneInput: SpyReadCollectionMainInteractor?
         var spySearchInteractor: SpyIntegratedSearchInteractor?

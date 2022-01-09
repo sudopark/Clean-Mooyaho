@@ -59,6 +59,8 @@ public protocol AuthRemote {
     func requestSignout() -> Maybe<Void>
     
     func requestWithdrawal() -> Maybe<Void>
+    
+    func requestRecoverAccount() -> Maybe<Member>
 }
 
 public protocol OAuthRemote {

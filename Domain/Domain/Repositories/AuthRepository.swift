@@ -20,4 +20,5 @@ public protocol AuthRepository {
     
     func requestSignout() -> Maybe<Void>
     func requestWithdrawal() -> Maybe<Void>
+    func requestRecoverAccount() -> Maybe<Member>
 }

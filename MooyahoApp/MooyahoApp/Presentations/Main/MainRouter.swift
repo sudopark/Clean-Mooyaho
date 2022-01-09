@@ -67,6 +67,7 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
     & WaitMigrationSceneBuilable & StopShareCollectionSceneBuilable
     & SharedCollectionInfoDialogSceneBuilable & IntegratedSearchSceneBuilable
     & SuggestReadSceneBuilable & InnerWebViewSceneBuilable
+    & RecoverAccountSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
@@ -143,7 +144,17 @@ extension MainRouter {
     }
     
     public func presentActivateAccountScene(_ userID: String) {
-        logger.todoImplement()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            guard let scene = self.nextScenesBuilder?.makeRecoverAccountScene(listener: self.currentInteractor)
+            else {
+                return
+            }
+            scene.modalPresentationStyle = .custom
+            scene.transitioningDelegate = self.bottomSliderTransitionManager
+            self.currentScene?.present(scene, animated: true, completion: nil)
+        }
     }
     
     public func presentUserDataMigrationScene(_ userID: String) {

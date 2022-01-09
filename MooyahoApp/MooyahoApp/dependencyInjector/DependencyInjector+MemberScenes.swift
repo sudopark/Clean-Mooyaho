@@ -60,7 +60,12 @@ extension DependencyInjector: RecoverAccountSceneBuilable {
     
     public func makeRecoverAccountScene(listener: RecoverAccountSceneListenable?) -> RecoverAccountScene {
         let router = RecoverAccountRouter(nextSceneBuilders: self)
-        let viewModel = RecoverAccountViewModelImple(router: router, listener: listener)
+        let viewModel = RecoverAccountViewModelImple(
+            authUsecase: self.authUsecase,
+            memberUsecase: self.memberUsecase,
+            router: router,
+            listener: listener
+        )
         let viewController = RecoverAccountViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

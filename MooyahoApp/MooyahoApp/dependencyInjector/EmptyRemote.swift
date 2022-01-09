@@ -16,6 +16,10 @@ import DataStore
 
 final class EmptyRemote: Remote {
     
+    func requestRecoverAccount() -> Maybe<Member> {
+        return .empty()
+    }
+    
     func requestExcludeCollectionSharing(_ shareID: String, for memberID: String) -> Maybe<Void> {
         return .empty()
     }
