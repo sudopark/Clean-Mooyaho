@@ -32,6 +32,9 @@
 "Login is required" = "Login is required";
 "Click to log in to the service." = "Click to log in to the service.";
 "Click to set up your profile." = "Click to set up your profile.";
+"List Collapse Mode: %@" = "List Collapse Mode: %@";
+"Sharing is not possible." = "Sharing is not possible.";
+"The currently viewed reading list is the entire reading list and it cannot be shared.\nPlease create a new sublist, go ahead and try again." = "The currently viewed reading list is the entire reading list and it cannot be shared.\nPlease create a new sub-list, navigate to that list, and try again.";
 
 
 // common UI

@@ -107,6 +107,7 @@
 		F6CB434C2713560900F26508 /* ColorSelectScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43472713560900F26508 /* ColorSelectScene.swift */; };
 		F6CB434D2713560900F26508 /* ColorSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43482713560900F26508 /* ColorSelectViewModel.swift */; };
 		F6CB434F271358EC00F26508 /* ColorSelectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */; };
+		F6D2BD28278C99AC00420837 /* FeedbackImapctStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */; };
 		F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
@@ -250,6 +251,7 @@
 		F6CB43472713560900F26508 /* ColorSelectScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectScene.swift; sourceTree = "<group>"; };
 		F6CB43482713560900F26508 /* ColorSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewModel.swift; sourceTree = "<group>"; };
 		F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewModelTests.swift; sourceTree = "<group>"; };
+		F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackImapctStyle.swift; sourceTree = "<group>"; };
 		F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContext+Decorating.swift"; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
 		F6DA564126889A6000032348 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				F62202BD269972FE00B26B50 /* MapCameramovement.swift */,
 				F667E28E26E1367D0046B9FB /* MemberInfo.swift */,
 				F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */,
+				F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -773,6 +776,7 @@
 				F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
 				F6E51B77273F62B500CBE310 /* SelectEmojiViewController.swift in Sources */,
+				F6D2BD28278C99AC00420837 /* FeedbackImapctStyle.swift in Sources */,
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
 				2B39E27C26387BCB003EE954 /* Presenting.swift in Sources */,
 				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,

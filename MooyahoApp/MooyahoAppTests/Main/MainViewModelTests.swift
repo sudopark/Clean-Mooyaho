@@ -323,6 +323,21 @@ extension MainViewModelTests {
         // then
         XCTAssertNotNil(self.spyRouter.didShowSharingCollectionInfo)
     }
+    
+    func testViewModel_whenTryToShareRootCollection_alertNotPossible() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(.init(uid: "some", nickName: nil, icon: nil))
+        self.stubShareUsecase.refreshMySharingColletionIDs()
+        self.viewModel.readCollection(didChange: .myCollections)
+        self.viewModel.readCollection(didShowMy: nil)
+        
+        
+        // when
+        self.viewModel.toggleShareStatus()
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didAlertConfirmForm != nil, true)
+    }
 }
 
 extension MainViewModelTests {

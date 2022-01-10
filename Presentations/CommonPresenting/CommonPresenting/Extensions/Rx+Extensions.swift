@@ -50,7 +50,8 @@ extension Reactive where Base: UIViewController {
 
 extension Reactive where Base: UIView {
     
-    public func addTapgestureRecognizer(count: Int = 1) -> Observable<UITapGestureRecognizer> {
+    public func addTapgestureRecognizer(count: Int = 1,
+                                        with impactStyle: FeedbackImapctStyle? = nil) -> Observable<UITapGestureRecognizer> {
         self.base.isUserInteractionEnabled = true
         let existingTapGesture = self.base.gestureRecognizers?.filter{ $0 is UITapGestureRecognizer }
         existingTapGesture?.forEach {
@@ -60,6 +61,14 @@ extension Reactive where Base: UIView {
         let gesture = UITapGestureRecognizer()
         gesture.numberOfTouchesRequired = count
         self.base.addGestureRecognizer(gesture)
-        return gesture.rx.event.asObservable()
+        
+        let runFeedbackOrNot: (UITapGestureRecognizer) -> Void = { [weak base] _ in
+            guard let style = impactStyle else { return }
+            base?.providerFeedbackImpact(with: style)
+        }
+        
+        return gesture.rx.event
+            .do(onNext: runFeedbackOrNot)
+            .asObservable()
     }
 }
