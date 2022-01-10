@@ -33,15 +33,18 @@ public final class AddItemNavigationViewModelImple: AddItemNavigationViewModel {
     
     private let startWithURL: String?
     private let targetCollectionID: String?
+    private let shareCollectionHandleUsecase: SharedReadCollectionHandleUsecase
     private let router: AddItemNavigationRouting
     private weak var listener: AddItemNavigationSceneListenable?
     
     public init(startWith url: String?,
                 targetCollectionID: String?,
+                shareCollectionHandleUsecase: SharedReadCollectionHandleUsecase,
                 router: AddItemNavigationRouting,
                 listener: AddItemNavigationSceneListenable?) {
         self.startWithURL = url
         self.targetCollectionID = targetCollectionID
+        self.shareCollectionHandleUsecase = shareCollectionHandleUsecase
         self.router = router
         self.listener = listener
     }
@@ -80,7 +83,18 @@ extension AddItemNavigationViewModelImple {
     
     private func moveToConfirmAddItemScene(with url: String) {
         
+        guard self.handleSharedCollectionIfNeed(url) == false else {
+            return
+        }
+        
         self.router.pushConfirmAddLinkItemScene(at: self.targetCollectionID, url: url)
+    }
+    
+    private func handleSharedCollectionIfNeed(_ urlAddress: String) -> Bool {
+        guard let url = URL(string: urlAddress),
+              self.shareCollectionHandleUsecase.canHandleURL(url) else { return false }
+        self.router.openURL(urlAddress)
+        return true
     }
     
     public func requestpopToEnrerURLScene() {

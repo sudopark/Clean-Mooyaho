@@ -26,6 +26,7 @@ class AddItemNavigationViewModelTests: BaseTestCase, AddItemNavigationSceneListe
     private var enterURLMocking: ((String) -> Void)?
     private var didAddedItem: ReadLink?
     private var didPop: Bool?
+    private var didOpenURL: Bool?
     
     private var interactor: AddItemNavigationSceneInteractable?
     
@@ -36,12 +37,15 @@ class AddItemNavigationViewModelTests: BaseTestCase, AddItemNavigationSceneListe
         self.didClosed = nil
         self.enterURLMocking = nil
         self.didPop = nil
+        self.didOpenURL = nil
     }
     
     private func makeViewModel() -> AddItemNavigationViewModel {
         
+        let usecase = StubShareItemUsecase()
         let viewModel = AddItemNavigationViewModelImple(startWith: nil,
                                                         targetCollectionID: nil,
+                                                        shareCollectionHandleUsecase: usecase,
                                                         router: self, listener: self)
         self.interactor = viewModel
         return viewModel
@@ -87,6 +91,19 @@ extension AddItemNavigationViewModelTests {
         
         // then
         XCTAssertEqual(self.didMoveToConfirmAdd, true)
+    }
+    
+    func testViewModel_whenAfterEnterURLEndAndIsAppDeepLink_handleURL() {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        viewModel.prepareNavigation()
+        self.enterURLMocking?("readminds://share/collection?id=8sQXBHiN0enSa6aIIFpP")
+        
+        // then
+        XCTAssertEqual(self.didMoveToConfirmAdd, nil)
+        XCTAssertEqual(self.didOpenURL, true)
     }
     
     func testViewModel_whenAfterAddIteMConfirmCompleted_closeAndEmitNewItem() {
@@ -138,5 +155,9 @@ extension AddItemNavigationViewModelTests: AddItemNavigationRouting {
     
     func popToEnrerURLScene() {
         self.didPop = true
+    }
+    
+    func openURL(_ path: String) {
+        self.didOpenURL = true
     }
 }
