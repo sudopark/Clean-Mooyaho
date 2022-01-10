@@ -318,12 +318,16 @@ extension SuggestReadViewModelImple {
     }
     
     private var favoriteItems: Observable<[ReadItem]> {
-        let extractItems: ([String], [String: ReadItem]) -> [ReadItem] = { ids, itemsMap in
+        
+        let extractItems: ( [String], [String: ReadItem]) -> [ReadItem] = { ids, itemsMap in
             return ids.compactMap { itemsMap[$0] }
         }
-        return self.subjects.favoriteItemIDs
-            .compactMap { $0 }
-            .withLatestFrom(self.subjects.itemsMap, resultSelector: extractItems)
+        
+        return Observable.combineLatest(
+            self.subjects.favoriteItemIDs.compactMap { $0 },
+            self.subjects.itemsMap,
+            resultSelector: extractItems
+        )
     }
     
     private var continueReadLinks: Observable<[ReadItem]> {
