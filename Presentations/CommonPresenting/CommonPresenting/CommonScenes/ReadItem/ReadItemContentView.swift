@@ -50,6 +50,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         contentStackView.addArrangedSubview(titleAreaView)
         titleAreaView.autoLayout.active {
             $0.heightAnchor.constraint(equalToConstant: 22)
+            $0.widthAnchor.constraint(equalTo: titleAreaView.widthAnchor)
         }
         
         titleAreaView.addSubview(iconImageView)
@@ -83,7 +84,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         contentStackView.addArrangedSubview(addressLabel)
         addressLabel.autoLayout.active(with: contentStackView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
-            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 18)
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 18).setupPriority(.defaultHigh)
         }
         addressLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
@@ -92,7 +93,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         descriptionLabel.autoLayout.active(with: contentStackView) {
             $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 8)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 16)
+            $0.heightAnchor.constraint(equalToConstant: 16).setupPriority(.defaultHigh)
         }
     }
     
@@ -212,6 +213,7 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         self.contentStackView.addArrangedSubview(priorityLabel)
         priorityLabel.autoLayout.active(with: self.contentStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         }
         priorityLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
@@ -225,6 +227,7 @@ public final class ReadItemExppandContentView: ReadItemShrinkContentView {
         self.contentStackView.addArrangedSubview(remindView)
         remindView.autoLayout.active(with: contentStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
+            $0.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         }
         remindView.setContentCompressionResistancePriority(.required, for: .vertical)
     }
