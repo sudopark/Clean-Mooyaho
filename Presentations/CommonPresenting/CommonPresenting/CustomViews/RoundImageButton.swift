@@ -43,6 +43,10 @@ public final class RoundImageButton: BaseUIView {
         }
     }
     
+    public func pretendDisabled() {
+        self.backgroundColor = self.backgroundColor?.withAlphaComponent(0.4)
+    }
+    
     private var paddingTop: NSLayoutConstraint!
     private var paddingLeft: NSLayoutConstraint!
     private var paddingRight: NSLayoutConstraint!
@@ -61,7 +65,12 @@ extension RoundImageButton {
 extension Reactive where Base == RoundImageButton {
     
     public func throttleTap() -> Observable<Void> {
+        
+        let runFeedback: () -> Void = { [weak base] in
+            base?.providerFeedbackImpact(with: .soft)
+        }
         return base.button.rx.throttleTap()
+            .do(onNext: runFeedback)
     }
 }
 

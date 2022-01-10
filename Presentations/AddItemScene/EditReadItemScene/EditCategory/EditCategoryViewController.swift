@@ -187,6 +187,7 @@ extension EditCategoryViewController {
                     self?.viewModel.changeColor()
                     
                 case let suggest as SuggestingCategoryCellViewModel:
+                    self?.view.providerFeedbackImpact(with: .soft)
                     self?.viewModel.select(suggest.uid)
                     
                 default: break
@@ -196,7 +197,15 @@ extension EditCategoryViewController {
         
         self.createCategorySubject
             .subscribe(onNext: { [weak self] model in
+                self?.view.providerFeedbackImpact(with: .soft)
                 self?.viewModel.makeNew(model)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.tableView.rx.contentOffset
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
             })
             .disposed(by: self.disposeBag)
     }

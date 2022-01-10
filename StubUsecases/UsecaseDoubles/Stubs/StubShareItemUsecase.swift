@@ -67,7 +67,7 @@ open class StubShareItemUsecase: ShareReadCollectionUsecase, SharedReadCollectio
     }
     
     public func canHandleURL(_ url: URL) -> Bool {
-        return true
+        return url.absoluteString.starts(with: "readminds")
     }
     
     public func loadSharedCollection(by sharedURL: URL) -> Maybe<SharedReadCollection> {

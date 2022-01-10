@@ -19,7 +19,6 @@ extension UIPasteboard: ClipboardServie {
     
     public func getCopedString() -> String? {
         let sender = self.string
-        self.string = nil
         return sender
     }
 }

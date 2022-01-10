@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import MemberScenes
@@ -204,25 +206,51 @@ extension MainViewModelImple {
     public func toggleIsReadItemShrinkMode() {
         guard let newValue = self.subjects.isReadItemShrinkModeOn.value?.invert() else { return }
         
+        let notifyToggled: () -> Void = { [weak self] in
+            let message = "Item Collapse Mode: %@".localized(with: newValue ? "On" : "Off")
+            self?.router.showToast(message)
+        }
+        
         let handleError: (Error) -> Void = { [weak self] error in
             self?.router.alertError(error)
         }
         
         self.readItemOptionUsecase
             .updateLatestIsShrinkModeIsOn(newValue)
-            .subscribe(onError: handleError)
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onSuccess: notifyToggled, onError: handleError)
             .disposed(by: self.disposeBag)
     }
     
     public func toggleShareStatus() {
-        guard case let .mine(collectionID) = self.subjects.currentSubCollectionID.value,
-              let subCollectionID = collectionID,
+        
+        let current = self.subjects.currentSubCollectionID.value
+        guard current?.isMine == true else { return }
+        let mySubCollectionID = current?.mySubCollectionID
+        
+        let isTryToShareRootCollectionWithSignIn = mySubCollectionID == nil
+            && self.subjects.currentMember.value != nil
+        if isTryToShareRootCollectionWithSignIn {
+            self.alertRootCollectionIsNotSharable()
+            return
+        }
+        
+        guard let subCollectionID = mySubCollectionID,
               self.subjects.isToggling.value == false else { return }
         let shareIDSet = self.subjects.sharingIDSets.value
         let isSharing = shareIDSet.contains(subCollectionID)
         return isSharing
             ? self.router.showSharingCollectionInfo(subCollectionID)
             : self.startShare(subCollectionID)
+    }
+    
+    private func alertRootCollectionIsNotSharable() {
+        
+        let form = AlertForm()
+            |> \.title .~ pure("Sharing is not possible.".localized)
+            |> \.message .~ pure("The currently viewed reading list is the entire reading list and it cannot be shared.\nPlease create a new sublist, go ahead and try again.".localized)
+            |> \.isSingleConfirmButton .~ true
+        self.router.alertForConfirm(form)
     }
     
     private func startShare(_ subCollectionID: String) {
@@ -491,5 +519,19 @@ private extension Member {
     
     static func compareNameAndThumbnail(_ lhs: Self?, _ rhs: Self?) -> Bool {
         return lhs?.uid == rhs?.uid && lhs?.nickName == rhs?.nickName && lhs?.icon == rhs?.icon
+    }
+}
+
+
+private extension MainViewModelImple.CurrentSubCollectionID {
+    
+    var isMine: Bool {
+        guard case .mine = self else { return false }
+        return true
+    }
+
+    var mySubCollectionID: String? {
+        guard case let .mine(subCollectionID) = self else { return nil }
+        return subCollectionID
     }
 }

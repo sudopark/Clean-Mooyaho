@@ -34,6 +34,7 @@ extension DependencyInjector: AddItemNavigationSceneBuilable {
         let router = AddItemNavigationRouter(nextSceneBuilders: self)
         let viewModel = AddItemNavigationViewModelImple(startWith: startWith,
                                                         targetCollectionID: collectionID,
+                                                        shareCollectionHandleUsecase: self.shareItemUsecase,
                                                         router: router,
                                                         listener: listener)
         let viewController = AddItemNavigationViewController(viewModel: viewModel)
