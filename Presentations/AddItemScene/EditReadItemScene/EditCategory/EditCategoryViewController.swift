@@ -199,6 +199,13 @@ extension EditCategoryViewController {
                 self?.viewModel.makeNew(model)
             })
             .disposed(by: self.disposeBag)
+        
+        self.tableView.rx.contentOffset
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func makeTableViewDataSource() -> SuggestDataSource {
