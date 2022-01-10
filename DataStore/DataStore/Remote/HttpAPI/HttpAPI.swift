@@ -9,7 +9,6 @@
 import Foundation
 
 import RxSwift
-import Alamofire
 import Prelude
 import Optics
 
