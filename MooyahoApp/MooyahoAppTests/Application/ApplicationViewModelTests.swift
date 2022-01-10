@@ -129,7 +129,7 @@ extension ApplicationViewModelTests {
     
     func testViewModel_handle_sharedCollectionURL() {
         // given
-        let url = URL(string: "share_url")!
+        let url = URL(string: "readminds://share/collection?id=8sQXBHiN0enSa6aIIFpP")!
         // when
         let handled = self.viewModel.handleOpenURL(url: url, options: nil)
         
