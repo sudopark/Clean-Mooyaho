@@ -99,3 +99,12 @@ extension AutoLayout {
         NSLayoutConstraint.activate(self.makeFill(targetView, edges: edges, withSafeArea: withSafeArea))
     }
 }
+
+
+extension NSLayoutConstraint {
+    
+    public func setupPriority(_ newValue: UILayoutPriority) -> NSLayoutConstraint {
+        self.priority = newValue
+        return self
+    }
+}
