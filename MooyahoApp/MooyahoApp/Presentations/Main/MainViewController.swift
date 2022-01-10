@@ -403,19 +403,18 @@ extension MainViewController {
         
         let isMovingUp = dyVelocity < 0
         switch isMovingUp {
-        case true where currentOffset > pointHalfOpen:
+//        case true where currentOffset > pointHalfOpen:
+        case true:
             return pointFullOpen
             
-        case true where currentOffset > pointClose:
-            return pointHalfOpen
+//        case true:
+//            return pointHalfOpen
             
-        case false where currentOffset > pointHalfOpen:
-            return pointHalfOpen
+//        case false where currentOffset > pointHalfOpen:
+//            return pointHalfOpen
             
-        case false where currentOffset > pointClose:
+        case false:
             return pointClose
-            
-        default: return nil
         }
     }
 }
