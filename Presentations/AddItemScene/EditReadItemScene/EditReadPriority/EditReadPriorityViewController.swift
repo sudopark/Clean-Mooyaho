@@ -136,6 +136,7 @@ extension EditReadPriorityViewController {
         
         self.tableView.rx.modelSelected(CVM.self)
             .subscribe(onNext: { [weak self] model in
+                self?.view.providerFeedbackImpact(with: .soft)
                 self?.viewModel.selectPriority(model.rawValue)
             })
             .disposed(by: self.disposeBag)

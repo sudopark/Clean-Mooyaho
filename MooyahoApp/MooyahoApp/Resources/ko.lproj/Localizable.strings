@@ -32,6 +32,9 @@
 "Login is required" = "로그인이 필요합니다.";
 "Click to log in to the service." = "클릭해 서비스에 로그인하세요.";
 "Click to set up your profile." = "클릭해 프로필 설정";
+"List Collapse Mode: %@" = "리스트 축소 모드: %@";
+"Sharing is not possible." = "공유 불가";
+"The currently viewed reading list is the entire reading list and it cannot be shared.\nPlease create a new sublist, go ahead and try again." = "현재 조회중인 읽기목록은 전체 읽기목록이고 이 읽기목록은 공유할 수 없어요.\n새로운 하위 목록을 만들고 해당 목록으로 이동한 뒤에 다시 시도해 주세요.";
 
 
 // common UI

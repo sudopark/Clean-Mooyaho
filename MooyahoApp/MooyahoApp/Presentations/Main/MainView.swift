@@ -186,7 +186,8 @@ final class MainView: BaseUIView {
         switch newValue {
         case .unavail:
             self.shareButton.backgroundColor = self.uiContext.colors.raw.lightGray
-            self.shareButton.isEnabled = false
+            self.shareButton.isEnabled = true
+            self.shareButton.pretendDisabled()
              
         case .activable:
             self.shareButton.backgroundColor = self.uiContext.colors.raw.lightGray

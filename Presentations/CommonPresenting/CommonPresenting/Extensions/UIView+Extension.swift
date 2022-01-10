@@ -21,3 +21,13 @@ extension UIView {
         _ = decorating(subTypeView)
     }
 }
+
+
+extension UIView {
+    
+    public func providerFeedbackImpact(with style: FeedbackImapctStyle) {
+        let generator = UIImpactFeedbackGenerator(style: style.uiImpactStyle)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+}

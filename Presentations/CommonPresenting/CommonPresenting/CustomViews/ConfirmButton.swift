@@ -82,7 +82,13 @@ import RxCocoa
 extension Reactive where Base: ConfirmButton {
     
     public func throttleTap() -> Observable<Void> {
+        
+        let runFeedback: () -> Void = { [weak base] in
+            base?.providerFeedbackImpact(with: .soft)
+        }
+        
         return base.button.rx.throttleTap()
+            .do(onNext: runFeedback)
     }
     
     public var isLoading: Binder<Bool> {
