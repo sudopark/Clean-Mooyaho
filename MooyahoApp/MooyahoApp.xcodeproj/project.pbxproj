@@ -1512,7 +1512,7 @@
 				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1546,7 +1546,7 @@
 				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MooyahoApp/Info.plist;
@@ -1683,7 +1683,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReadReminderShareExtension/ReadReminderShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReadReminderShareExtension/Info.plist;
@@ -1714,7 +1714,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReadReminderShareExtension/ReadReminderShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReadReminderShareExtension/Info.plist;
