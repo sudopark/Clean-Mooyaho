@@ -58,7 +58,10 @@ public protocol SuggestQueryScene: Scenable {
 
 // MARK: - SuggestReadScene Interactable & Listenable
 
-public protocol SuggestReadSceneInteractable: InnerWebViewSceneListenable & FavoriteItemsSceneListenable { }
+public protocol SuggestReadSceneInteractable: InnerWebViewSceneListenable & FavoriteItemsSceneListenable {
+    
+    func refresh()
+}
 
 public protocol SuggestReadSceneListenable: AnyObject {
     
