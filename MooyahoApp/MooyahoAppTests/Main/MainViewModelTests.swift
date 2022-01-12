@@ -109,6 +109,20 @@ extension MainViewModelTests {
         XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
     }
     
+    func testViewModel_whenAfterSignIn_removeSearchSceneAndRefreshSuggestRead() {
+        // given
+        self.mockMemberUsecase.currentMemberSubject.onNext(nil)
+        self.viewModel.setupSubScenes()
+        
+        // when
+        self.viewModel.requestOpenSlideMenu()
+        self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: false))
+        
+        // then
+        XCTAssertEqual(self.spyRouter.didSearchSceneRemoved, true)
+        XCTAssertEqual(self.spyRouter.spySuggestReadInteractor.didRefreshed, true)
+    }
+    
     func testViewModel_whenAfterSignInAndDeactivatedMember_replaceReadCollectionAndPresentActivateAccountScene() {
         // given
         self.mockMemberUsecase.currentMemberSubject.onNext(nil)
@@ -479,6 +493,7 @@ extension MainViewModelTests {
         
         var spyCollectionMainSceneInput: SpyReadCollectionMainInteractor?
         var spySearchInteractor: SpyIntegratedSearchInteractor?
+        var spySuggestReadInteractor: SpySuggestReadSceneInteractor = .init()
         
         var didSignInRequested = false
         func presentSignInScene() {
@@ -491,7 +506,7 @@ extension MainViewModelTests {
         }
         
         func addSuggestReadScene() -> SuggestReadSceneInteractable? {
-            return nil
+            return self.spySuggestReadInteractor
         }
         
         var didReadCollectionMainReplaced: Bool = false
@@ -563,7 +578,9 @@ extension MainViewModelTests {
             return self.spySearchInteractor
         }
         
+        var didSearchSceneRemoved: Bool?
         func removeSearchScene() {
+            self.didSearchSceneRemoved = true
             self.spySearchInteractor = nil
         }
         
@@ -639,6 +656,18 @@ extension MainViewModelTests {
         }
         
         func suggestQuery(didSelect searchQuery: String) { }
+        
+        func innerWebView(reqeustJumpTo collectionID: String?) { }
+    }
+    
+    class SpySuggestReadSceneInteractor: SuggestReadSceneInteractable {
+        
+        var didRefreshed: Bool?
+        func refresh() {
+            self.didRefreshed = true
+        }
+        
+        func favoriteItemsScene(didRequestJump collectionID: String?) { }
         
         func innerWebView(reqeustJumpTo collectionID: String?) { }
     }

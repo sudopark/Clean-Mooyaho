@@ -141,6 +141,8 @@ public final class MainViewModelImple: MainViewModel {
                 guard case let .signIn(auth, isDeactivated) = event else { return }
                 self?.replaceCollectionAfterSignIn()
                 self?.runMigrationOrActivateAccount(auth, isDeactivated: isDeactivated)
+                self?.didUpdateBottomSearchAreaShowing(isShow: false)
+                self?.suggestReadSceneInteractor?.refresh()
             })
             .disposed(by: self.disposeBag)
     }
