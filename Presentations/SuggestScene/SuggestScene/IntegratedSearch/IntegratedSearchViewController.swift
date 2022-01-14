@@ -157,7 +157,7 @@ extension IntegratedSearchViewController: Presenting, UITableViewDelegate {
         
         self.emptyView.setupStyling()
         self.emptyView.isHidden = true
-        self.emptyView.backgroundColor = .yellow
+        self.emptyView.backgroundColor = self.uiContext.colors.appSecondBackground
     }
     
     public func tableView(_ tableView: UITableView,
