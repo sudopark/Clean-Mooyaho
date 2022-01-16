@@ -121,8 +121,9 @@ public final class DefaultReadLinkCell: BaseTableViewCell, ReadItemCells, Presen
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        expandViewTrailing.constant = -12
         self.thumbNailView.cancelSetupThumbnail()
+        self.thumbNailView.isHidden = true
+        self.expandViewTrailing.constant = -12
     }
     
     public func setupCell(_ cellViewModel: ReadLinkCellViewModel) {
@@ -171,9 +172,6 @@ public final class DefaultReadLinkCell: BaseTableViewCell, ReadItemCells, Presen
     }
     
     private func updateThumbnailIfPossible(with url: String?) {
-        thumbNailView.cancelSetupThumbnail()
-        thumbNailView.isHidden = true
-        expandViewTrailing.constant = -12
         guard let url = url else { return }
         self.thumbNailView.setupThumbnail(url, resize: .init(width: 65, height: 65), completed:  { [weak self] result in
             guard case .success = result else { return }
