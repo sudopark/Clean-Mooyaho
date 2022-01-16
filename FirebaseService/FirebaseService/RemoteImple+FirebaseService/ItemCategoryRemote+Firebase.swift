@@ -126,13 +126,14 @@ extension FirebaseServiceImple {
     
     public func requestLoadCategories(earilerThan creatTime: TimeStamp,
                                       pageSize: Int) -> Maybe<[ItemCategory]> {
-        guard self.signInMemberID != nil else {
+        guard let memberID = self.signInMemberID else {
             return .empty()
         }
         let collectionRef = self.fireStoreDB.collection(.itemCategory)
         let query = collectionRef
             .order(by: Key.createdAt.rawValue, descending: true)
             .whereField(Key.createdAt.rawValue, isLessThan: creatTime)
+            .whereField(Key.ownerID.rawValue, isEqualTo: memberID)
             .limit(to: pageSize)
         return self.load(query: query)
     }
