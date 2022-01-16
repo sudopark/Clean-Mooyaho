@@ -32,7 +32,7 @@ final class SharedDependencyInjecttor: EmptyBuilder {
                                                         previewRemote: LinkPreviewRemoteImple())
         
         let localStorage: LocalStorage = {
-            let encryptedStorage = EncryptedStorageImple(identifier: "clean.mooyaho")
+            let encryptedStorage = EncryptedStorageImple(identifier: "readmind")
             encryptedStorage.setupSharedGroup(ShareExtensionEnvironment.groupID)
             let envStore: UserDefaults = UserDefaults(suiteName: ShareExtensionEnvironment.groupID) ?? .standard
             
