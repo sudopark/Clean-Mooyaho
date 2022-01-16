@@ -15,6 +15,8 @@ public struct GoogleSignInButtonBuilder {
     public init() { }
     
     public func makeButton() -> UIView {
-        return GIDSignInButton()
+        let button = GIDSignInButton()
+        button.style = .wide
+        return button
     }
 }
