@@ -17,10 +17,10 @@ extension UIControl: SignInButton { }
 
 final class OAuthSignInButonBuilder: OAuthSignInButtonBuildable {
     
-    private let googleSignInButtonBuilder: () -> SignInButton?
+    private let googleSignInButtonBuilding: () -> SignInButton?
     
-    init(googleSignInButtonBuilder: @escaping () -> SignInButton?) {
-        self.googleSignInButtonBuilder = googleSignInButtonBuilder
+    init(googleSignInButtonBuilding: @escaping () -> SignInButton?) {
+        self.googleSignInButtonBuilding = googleSignInButtonBuilding
     }
 }
 
@@ -45,7 +45,7 @@ extension OAuthSignInButonBuilder {
             return button
             
         case .google:
-            return self.googleSignInButtonBuilder()
+            return self.googleSignInButtonBuilding()
         }
     }
 }
