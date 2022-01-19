@@ -22,6 +22,7 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
     
     private let toolBar = InnerWebViewBottomToolBar()
     private let bottomBackView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+    private let pullGuideView = PullGuideView()
     private let webView = WKWebView()
     
     let viewModel: InnerWebViewViewModel
@@ -220,9 +221,17 @@ extension InnerWebViewViewController: Presenting {
     
     public func setupLayout() {
         
+        self.view.addSubview(pullGuideView)
+        pullGuideView.autoLayout.active(with: self.view) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
+        }
+        pullGuideView.setupLayout()
+        
         self.view.addSubview(webView)
         webView.autoLayout.active(with: self.view) {
-            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
+            $0.topAnchor.constraint(equalTo: pullGuideView.bottomAnchor)
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
@@ -255,6 +264,8 @@ extension InnerWebViewViewController: Presenting {
     public func setupStyling() {
         
         self.view.backgroundColor = self.uiContext.colors.appBackground
+        
+        self.pullGuideView.setupStyling()
         
         self.webView.scrollView.contentInset = .init(top: 0, left: 0,
                                                      bottom: InnerWebViewBottomToolBar.Metric.height,
