@@ -17,6 +17,7 @@
 		2BFB4820263AEDC700FB025F /* WaitObservableEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */; };
 		2BFB4822263AEDF800FB025F /* WaitObservableEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB4821263AEDF800FB025F /* WaitObservableEventTests.swift */; };
 		2BFB4824263AEE6600FB025F /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BFB4823263AEE6600FB025F /* Common3rdParty.framework */; };
+		F60B36032799EB1E00F5CB97 /* Observable+Concurrency+Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B36022799EB1E00F5CB97 /* Observable+Concurrency+Timeout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitObservableEvents.swift; sourceTree = "<group>"; };
 		2BFB4821263AEDF800FB025F /* WaitObservableEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitObservableEventTests.swift; sourceTree = "<group>"; };
 		2BFB4823263AEE6600FB025F /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F60B36022799EB1E00F5CB97 /* Observable+Concurrency+Timeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Concurrency+Timeout.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				2BF00C23262D5BAD00E235C0 /* Mocks.swift */,
 				2BF00C3B262D85E000E235C0 /* BaseTestCase.swift */,
 				2BFB481F263AEDC700FB025F /* WaitObservableEvents.swift */,
+				F60B36022799EB1E00F5CB97 /* Observable+Concurrency+Timeout.swift */,
 			);
 			path = UnitTestHelpKit;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F60B36032799EB1E00F5CB97 /* Observable+Concurrency+Timeout.swift in Sources */,
 				2BFB4820263AEDC700FB025F /* WaitObservableEvents.swift in Sources */,
 				2BF00C3C262D85E000E235C0 /* BaseTestCase.swift in Sources */,
 				2BF00C24262D5BAD00E235C0 /* Mocks.swift in Sources */,
