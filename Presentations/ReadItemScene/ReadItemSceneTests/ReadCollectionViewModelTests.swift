@@ -178,7 +178,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel()
         
         // when
-        async let cvmsStreams = viewModel.cellViewModels.take(1).values
+        async let cvmsStreams = viewModel.cellViewModels.take(1).values(with: self.timeout)
         viewModel.reloadCollectionItems()
         
         // then
