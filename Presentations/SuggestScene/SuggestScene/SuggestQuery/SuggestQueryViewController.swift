@@ -177,7 +177,7 @@ final class SuggestQueryCell: BaseTableViewCell, Presenting {
     
     private func updateCloseAread(show: Bool) {
         let trailingForHide: CGFloat = -16
-        let trailingForShow: CGFloat = -12-15-8
+        let trailingForShow: CGFloat = -12-25-8
         self.stackViewTrailing.constant = show ? trailingForShow : trailingForHide
         self.closeButton.isHidden = show == false
     }
@@ -210,8 +210,8 @@ extension SuggestQueryCell {
         closeButton.autoLayout.active(with: self.contentView) {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -12)
-            $0.widthAnchor.constraint(equalToConstant: 15)
-            $0.heightAnchor.constraint(equalToConstant: 15)
+            $0.widthAnchor.constraint(equalToConstant: 25)
+            $0.heightAnchor.constraint(equalToConstant: 25)
         }
     }
     
@@ -229,7 +229,7 @@ extension SuggestQueryCell {
             |> \.isHidden .~ true
         
         self.closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        self.closeButton.imageEdgeInsets = .init(top: 2, left: 2, bottom: 2, right: 2)
+        self.closeButton.contentEdgeInsets = .init(top: 6.5, left: 6.5, bottom: 6.5, right: 6.5)
         self.closeButton.tintColor = self.uiContext.colors.descriptionText
         self.closeButton.isHidden = true
     }
