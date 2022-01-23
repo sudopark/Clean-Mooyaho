@@ -39,12 +39,16 @@ class KakaoServiceTests: BaseTestCase, WaitObservableEvents {
 
 extension KakaoServiceTests {
     
-    func testService_signinAndVerify_withKakaoTalk() {
-        // given
-        let expect = expectation(description: "카톡으로 로그인해서 credential 발급")
+    private func signInSuccessMocking() {
         self.mockRemote.register(key: "isKakaoTalkLoginAvailable") { true }
         self.mockRemote.register(key: "loginWithKakaoTalk") { Maybe<String>.just("ko_token") }
         self.mockRemote.register(key: "verifyKakaoAccessToken") { Maybe<String>.just("firebase_token") }
+    }
+    
+    func testService_signinAndVerify_withKakaoTalk() {
+        // given
+        let expect = expectation(description: "카톡으로 로그인해서 credential 발급")
+        self.signInSuccessMocking()
         
         // when
         let requestSignin = self.service.requestSignIn()
@@ -52,6 +56,17 @@ extension KakaoServiceTests {
         
         // then
         XCTAssert(credential is CustomTokenCredential)
+    }
+    
+    func testService_signinAndVerify_withKakaoTalk_async() async throws {
+        // given
+        self.signInSuccessMocking()
+        
+        // when
+        let credentail = try await self.service.requestSignIn().value
+        
+        // then
+        XCTAssert(credentail is CustomTokenCredential)
     }
     
     func testService_signinAndVerify_withKakaoAccount() {

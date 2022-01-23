@@ -131,8 +131,32 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
 
 extension ReadCollectionViewModelTests {
     
+    func testViewModel_whenReload_showCollectionItems_callback() {
+        // given
+        let expect = expectation(description: "reload시에 collection item 노출")
+        let viewModel = self.makeViewModel()
+        var cvms: [ReadItemCellViewModel]?
+        
+        viewModel.cellViewModels
+            .subscribe(onNext: {
+                cvms = $0
+                expect.fulfill()
+            })
+            .disposed(by: self.disposeBag)
+        
+        // when
+        viewModel.reloadCollectionItems()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        let collections = cvms?.compactMap { $0 as? ReadCollectionCellViewModel }
+        let links = cvms?.compactMap { $0 as? ReadLinkCellViewModel }
+        XCTAssertEqual(collections?.count, 5)
+        XCTAssertEqual(links?.count, 5)
+    }
+    
     // load collection items
-    func testViewModel_whenReload_shwoCollectionItems() {
+    func testViewModel_whenReload_showCollectionItems() {
         // given
         let expect = expectation(description: "reload시에 collection item 노출")
         let viewModel = self.makeViewModel()
@@ -148,6 +172,23 @@ extension ReadCollectionViewModelTests {
         XCTAssertEqual(collections?.count, 5)
         XCTAssertEqual(links?.count, 5)
     }
+    
+    func testViewModel_whenReload_showCollectionItems_async() async throws {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        async let cvmsStreams = viewModel.cellViewModels.take(1).values(with: self.timeout)
+        viewModel.reloadCollectionItems()
+        
+        // then
+        let firstCVMs = try await cvmsStreams.first(where: { _ in true })
+        let collections = firstCVMs?.compactMap { $0 as? ReadCollectionCellViewModel }
+        let links = firstCVMs?.compactMap { $0 as? ReadLinkCellViewModel }
+        XCTAssertEqual(collections?.count, 5)
+        XCTAssertEqual(links?.count, 5)
+    }
+    
     
     func testViewModel_whenNotRootCollecitonAndLoadCollectionInfoEnd_showAttrCell() {
         // given

@@ -228,11 +228,21 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     }
     
     private func checkSubLinkItemParentChanged(_ item: ReadItem) {
-        guard let link = item as? ReadLink,
-              let links = self.subjects.links.value, links.isNotEmpty else { return }
-        let newLinks = links.filter { $0.uid != link.uid }
-        guard newLinks.count != links.count else { return }
-        self.subjects.links.accept(newLinks)
+        switch item {
+        case let collection as ReadCollection:
+            guard let collections = self.subjects.collections.value else { return }
+            let newCollections = collections.filter { $0.uid != collection.uid }
+            guard newCollections.count != collections.count else { return }
+            self.subjects.collections.accept(newCollections)
+            
+        case let  link as ReadLink:
+            guard let links = self.subjects.links.value else { return }
+            let newLinks = links.filter { $0.uid != link.uid }
+            guard newLinks.count != links.count else { return }
+            self.subjects.links.accept(newLinks)
+            
+        default: return
+        }
     }
     
     private func removeItemFromTheListIfNeed(_ itemID: String) {

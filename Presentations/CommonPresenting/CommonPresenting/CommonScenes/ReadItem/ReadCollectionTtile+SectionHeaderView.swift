@@ -43,6 +43,9 @@ open class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFooterView
     }
     
     open func setupStyling() {
+        _ = self
+            |> \.backgroundColor .~ self.uiContext.colors.appBackground
+            |> \.tintColor .~ self.uiContext.colors.appBackground
         _ = self.titleLabel |> self.uiContext.decorating.listSectionTitle(_:)
     }
 }

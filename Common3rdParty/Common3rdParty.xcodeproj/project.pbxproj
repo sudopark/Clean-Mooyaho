@@ -19,9 +19,9 @@
 		F60A5849270D499200E39AE0 /* ValidationNearSemiring in Frameworks */ = {isa = PBXBuildFile; productRef = F60A5848270D499200E39AE0 /* ValidationNearSemiring */; };
 		F60A584B270D499200E39AE0 /* ValidationSemigroup in Frameworks */ = {isa = PBXBuildFile; productRef = F60A584A270D499200E39AE0 /* ValidationSemigroup */; };
 		F60A584D270D499200E39AE0 /* Writer in Frameworks */ = {isa = PBXBuildFile; productRef = F60A584C270D499200E39AE0 /* Writer */; };
-		F6DDD30726FE6FCD000DA7BB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F6DDD30626FE6FCD000DA7BB /* RxCocoa */; };
-		F6DDD30926FE6FCD000DA7BB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = F6DDD30826FE6FCD000DA7BB /* RxRelay */; };
-		F6DDD30B26FE6FCD000DA7BB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F6DDD30A26FE6FCD000DA7BB /* RxSwift */; };
+		F60B35FD2799CFD400F5CB97 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FC2799CFD400F5CB97 /* RxCocoa */; };
+		F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FE2799CFD400F5CB97 /* RxRelay */; };
+		F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F60B36002799CFD400F5CB97 /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,11 +41,11 @@
 				F60A584D270D499200E39AE0 /* Writer in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
 				F60A583F270D499200E39AE0 /* Optics in Frameworks */,
+				F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */,
+				F60B35FD2799CFD400F5CB97 /* RxCocoa in Frameworks */,
 				F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */,
-				F6DDD30B26FE6FCD000DA7BB /* RxSwift in Frameworks */,
-				F6DDD30726FE6FCD000DA7BB /* RxCocoa in Frameworks */,
 				F60A5845270D499200E39AE0 /* State in Frameworks */,
-				F6DDD30926FE6FCD000DA7BB /* RxRelay in Frameworks */,
+				F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */,
 				F60A5843270D499200E39AE0 /* Reader in Frameworks */,
 				F60A583D270D499200E39AE0 /* Either in Frameworks */,
 				F60A584B270D499200E39AE0 /* ValidationSemigroup in Frameworks */,
@@ -111,9 +111,6 @@
 			packageProductDependencies = (
 				F603CCA02667D3D500FE6A8A /* RxDataSources */,
 				F603CCA22667D3D500FE6A8A /* Differentiator */,
-				F6DDD30626FE6FCD000DA7BB /* RxCocoa */,
-				F6DDD30826FE6FCD000DA7BB /* RxRelay */,
-				F6DDD30A26FE6FCD000DA7BB /* RxSwift */,
 				F60A583C270D499200E39AE0 /* Either */,
 				F60A583E270D499200E39AE0 /* Optics */,
 				F60A5840270D499200E39AE0 /* Prelude */,
@@ -123,6 +120,9 @@
 				F60A5848270D499200E39AE0 /* ValidationNearSemiring */,
 				F60A584A270D499200E39AE0 /* ValidationSemigroup */,
 				F60A584C270D499200E39AE0 /* Writer */,
+				F60B35FC2799CFD400F5CB97 /* RxCocoa */,
+				F60B35FE2799CFD400F5CB97 /* RxRelay */,
+				F60B36002799CFD400F5CB97 /* RxSwift */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -152,8 +152,8 @@
 			mainGroup = 2BA4069F26315DF2000CC122;
 			packageReferences = (
 				F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				F6DDD30526FE6FCD000DA7BB /* XCRemoteSwiftPackageReference "RxSwift" */,
 				F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */,
+				F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -485,12 +485,12 @@
 				kind = branch;
 			};
 		};
-		F6DDD30526FE6FCD000DA7BB /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.2.0;
+				minimumVersion = 6.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -551,19 +551,19 @@
 			package = F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */;
 			productName = Writer;
 		};
-		F6DDD30626FE6FCD000DA7BB /* RxCocoa */ = {
+		F60B35FC2799CFD400F5CB97 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6DDD30526FE6FCD000DA7BB /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
 		};
-		F6DDD30826FE6FCD000DA7BB /* RxRelay */ = {
+		F60B35FE2799CFD400F5CB97 /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6DDD30526FE6FCD000DA7BB /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
 		};
-		F6DDD30A26FE6FCD000DA7BB /* RxSwift */ = {
+		F60B36002799CFD400F5CB97 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6DDD30526FE6FCD000DA7BB /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

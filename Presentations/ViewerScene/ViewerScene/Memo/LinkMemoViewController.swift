@@ -61,19 +61,12 @@ extension LinkMemoViewController {
         self.bottomSlideMenuView.bindKeyboardFrameChangesIfPossible()?
             .disposed(by: self.disposeBag)
         
-        viewModel.initialText
-            .asDriver(onErrorJustReturn: nil)
-            .drive(onNext: { [weak self] text in
-                self?.textUpdated(text)
-                self?.textView.text = text
-            })
-            .disposed(by: self.disposeBag)
-        
         viewModel.confirmSavable
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
         
+        self.textView.text = self.viewModel.initialText
         self.textView.rx.text.orEmpty
             .subscribe(onNext: { [weak self] text in
                 self?.textUpdated(text)

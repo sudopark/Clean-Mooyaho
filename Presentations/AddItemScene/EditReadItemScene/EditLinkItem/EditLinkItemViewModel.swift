@@ -23,6 +23,30 @@ public enum LoadPreviewStatus: Equatable {
     case loadFail(url: String)
 }
 
+enum ParentCollection {
+    case root
+    case some(ReadCollection)
+    
+    init(_ collection: ReadCollection?) {
+        switch collection {
+        case .none: self = .root
+        case let .some(value): self = .some(value)
+        }
+    }
+    
+    var collection: ReadCollection? {
+        guard case let .some(collection) = self else { return nil }
+        return collection
+    }
+    
+    var collectionName: String {
+        switch self {
+        case .root: return "My Read Collections".localized
+        case let .some(collection): return collection.name
+        }
+    }
+}
+
 
 // MARK: - EditLinkItemViewModel
 
@@ -56,23 +80,6 @@ public protocol EditLinkItemViewModel: AnyObject {
 // MARK: - EditLinkItemViewModelImple
 
 public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
-    
-    enum ParentCollection {
-        case root
-        case some(ReadCollection)
-        
-        init(_ collection: ReadCollection?) {
-            switch collection {
-            case .none: self = .root
-            case let .some(value): self = .some(value)
-            }
-        }
-        
-        var collection: ReadCollection? {
-            guard case let .some(collection) = self else { return nil }
-            return collection
-        }
-    }
     
     private let collectionID: String?
     private let editCase: EditLinkItemCase
@@ -371,13 +378,9 @@ extension EditLinkItemViewModelImple {
     }
     
     public var selectedParentCollectionName: Observable<String> {
-    
-        let transform: (ParentCollection) -> String = { collection in
-            return collection.collection?.name ?? "My Read Collections".localized
-        }
+        
         return self.subjects.selectParentCollection
-            .compactMap { $0 }
-            .map(transform)
+            .compactMap { $0?.collectionName }
             .distinctUntilChanged()
     }
     

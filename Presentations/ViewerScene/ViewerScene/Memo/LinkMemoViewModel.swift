@@ -27,7 +27,7 @@ public protocol LinkMemoViewModel: AnyObject {
     func confirmSave()
     
     // presenter
-    var initialText: Observable<String?> { get }
+    var initialText: String? { get }
     var confirmSavable: Observable<Bool> { get }
 }
 
@@ -36,6 +36,7 @@ public protocol LinkMemoViewModel: AnyObject {
 
 public final class LinkMemoViewModelImple: LinkMemoViewModel {
     
+    private let memo: ReadLinkMemo
     private let memoUsecase: ReadLinkMemoUsecase
     private let router: LinkMemoRouting
     private weak var listener: LinkMemoSceneListenable?
@@ -45,11 +46,12 @@ public final class LinkMemoViewModelImple: LinkMemoViewModel {
                 router: LinkMemoRouting,
                 listener: LinkMemoSceneListenable?) {
         
+        self.memo = memo
         self.memoUsecase = memoUsecase
         self.router = router
         self.listener = listener
         
-        self.subjects.memo.accept(memo)
+        self.subjects.inputText.accept(memo.content)
     }
     
     deinit {
@@ -58,7 +60,7 @@ public final class LinkMemoViewModelImple: LinkMemoViewModel {
     }
     
     fileprivate final class Subjects {
-        let memo = BehaviorRelay<ReadLinkMemo?>(value: nil)
+        let inputText = BehaviorRelay<String?>(value: nil)
     }
     
     private let subjects = Subjects()
@@ -71,16 +73,12 @@ public final class LinkMemoViewModelImple: LinkMemoViewModel {
 extension LinkMemoViewModelImple {
     
     public func updateContent(_ text: String) {
-        
-        guard let item = self.subjects.memo.value else { return }
-        let newItem = item |> \.content .~ text
-        self.subjects.memo.accept(newItem)
+        self.subjects.inputText.accept(text)
     }
     
     public func deleteMemo() {
         
-        guard let itemID = self.subjects.memo.value?.linkItemID else { return }
-        
+        let itemID = self.memo.linkItemID
         let deleted: () -> Void = { [weak self] in
             self?.router.closeScene(animated: true) {
                 self?.listener?.linkMemo(didRemoved: itemID)
@@ -95,8 +93,7 @@ extension LinkMemoViewModelImple {
     
     public func confirmSave() {
         
-        guard let newMemo = self.subjects.memo.value else { return }
-        
+        let newMemo = self.memo |> \.content .~ self.subjects.inputText.value
         let saved: () -> Void = {
             self.router.closeScene(animated: true) {
                 self.listener?.linkMemo(didUpdated: newMemo)
@@ -120,15 +117,11 @@ extension LinkMemoViewModelImple {
 
 extension LinkMemoViewModelImple {
     
-    public var initialText: Observable<String?> {
-        return self.subjects.memo
-            .compactMap { $0 }
-            .map { $0.content }
-    }
+    public var initialText: String? { self.memo.content }
     
     public var confirmSavable: Observable<Bool> {
-        return self.subjects.memo
-            .map { $0?.content?.isNotEmpty == true }
+        return self.subjects.inputText
+            .map { $0?.isNotEmpty == true }
             .distinctUntilChanged()
     }
 }
