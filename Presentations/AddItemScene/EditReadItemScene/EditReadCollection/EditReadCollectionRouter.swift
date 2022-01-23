@@ -26,12 +26,14 @@ public protocol EditReadCollectionRouting: Routing {
     func selectCategories(startWith: [ItemCategory])
     
     func updateRemind(_ editCase: EditRemindCase)
+    
+    func selectParentCollection(statrWith current: ReadCollection?)
 }
 
 // MARK: - Routers
 
 // TODO: compose next Scene Builders protocol
-public typealias EditReadCollectionRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable & EditReadRemindSceneBuilable
+public typealias EditReadCollectionRouterBuildables = EditReadPrioritySceneBuilable & EditCategorySceneBuilable & EditReadRemindSceneBuilable & NavigateCollectionSceneBuilable
 
 public final class EditReadCollectionRouter: Router<EditReadCollectionRouterBuildables>, EditReadCollectionRouting {
     
@@ -79,5 +81,16 @@ extension EditReadCollectionRouter {
         next.transitioningDelegate = self.bottomSliderTransitionManager
         next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
         self.currentScene?.present(next, animated: true, completion: nil)
+    }
+    
+    public func selectParentCollection(statrWith current: ReadCollection?) {
+        
+        guard let next = self.nextScenesBuilder?
+                .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor)
+        else { return }
+        
+        let navigationController = BaseNavigationController(rootViewController: next)
+        navigationController.shouldHideNavigation = false
+        self.currentScene?.present(navigationController, animated: true, completion: nil)
     }
 }

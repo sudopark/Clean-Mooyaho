@@ -73,7 +73,7 @@ public protocol EditLinkItemScene: Scenable, PangestureDismissableScene {
 
 // MARK: - EditReadCollectionScene Input & Output
 
-public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable { }
+public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable, NavigateCollectionSceneListenable { }
 
 public protocol EditReadCollectionSceneListenable: AnyObject {
     

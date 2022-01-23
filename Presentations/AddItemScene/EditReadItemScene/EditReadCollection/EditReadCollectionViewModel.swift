@@ -28,12 +28,14 @@ public protocol EditReadCollectionViewModel: AnyObject {
     func addPriority()
     func addCategory()
     func addRemind()
+    func changeParentCollection()
     func confirmUpdate()
     
     // presenter
     var priority: Observable<ReadPriority?> { get }
     var categories: Observable<[ItemCategory]> { get }
     var remindTime: Observable<TimeStamp?> { get }
+    var parentCollectionName: Observable<String> { get }
     var isProcessing: Observable<Bool> { get }
     var isConfirmable: Observable<Bool> { get }
     var editCaseCollectionValue: ReadCollection? { get }
@@ -46,7 +48,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     
     private let parentID: String?
     private let editCase: EditCollectionCase
-    private let updateUsecase: ReadItemUpdateUsecase
+    private let readItemUsecase: ReadItemUsecase
     private let remindUsecase: ReadRemindUsecase
     private let categoriesUsecase: ReadItemCategoryUsecase
     private let router: EditReadCollectionRouting
@@ -54,7 +56,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
     
     public init(parentID: String?,
                 editCase: EditCollectionCase,
-                updateUsecase: ReadItemUpdateUsecase,
+                readItemUsecase: ReadItemUsecase,
                 remindUsecase: ReadRemindUsecase,
                 categoriesUsecase: ReadItemCategoryUsecase,
                 router: EditReadCollectionRouting,
@@ -62,13 +64,14 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         
         self.parentID = parentID
         self.editCase = editCase
-        self.updateUsecase = updateUsecase
+        self.readItemUsecase = readItemUsecase
         self.remindUsecase = remindUsecase
         self.categoriesUsecase = categoriesUsecase
         self.router = router
         self.listener =  listener
         
         self.setupPreviousSelectedAttributesIfNeed()
+        self.setupParentCollection()
     }
     
     deinit {
@@ -83,6 +86,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])
         let selectedRemindTime = BehaviorRelay<TimeStamp?>(value: nil)
+        let parantCollection = BehaviorRelay<ParentCollection?>(value: nil)
     }
     
     private let subjects = Subjects()
@@ -99,6 +103,19 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
             .take(1)
             .subscribe(onNext: { [weak self] categories in
                 self?.subjects.selectedCategories.accept(categories)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func setupParentCollection() {
+        guard let parentID = parentID else {
+            self.subjects.parantCollection.accept(.root)
+            return
+        }
+
+        self.readItemUsecase.loadCollectionInfo(parentID)
+            .subscribe(onNext: { [weak self] collection in
+                self?.subjects.parantCollection.accept(.some(collection))
             })
             .disposed(by: self.disposeBag)
     }
@@ -172,13 +189,18 @@ extension EditReadCollectionViewModelImple {
     }
     
     private func updateCollection(_ collection: ReadCollection) -> Maybe<ReadCollection> {
+        guard let parent = self.subjects.parantCollection.value
+        else {
+            return .empty()
+        }
         let newCollection = collection
             |> \.collectionDescription .~ self.subjects.description.value
             |> \.parentID .~ self.parentID
             |> \.priority .~ self.subjects.selectedPriority.value
             |> \.categoryIDs .~ self.subjects.selectedCategories.value.map { $0.uid }
             |> \.remindTime .~ self.subjects.selectedRemindTime.value
-        return updateUsecase.updateCollection(newCollection)
+            |> \.parentID .~ parent.collection?.uid
+        return readItemUsecase.updateCollection(newCollection)
             .map{ newCollection }
     }
     
@@ -240,6 +262,23 @@ extension EditReadCollectionViewModelImple {
 }
 
 
+// MARK: - EditReadCollectionViewModelImple Interactor + change parent collection
+
+extension EditReadCollectionViewModelImple {
+    
+    public func changeParentCollection() {
+//        let parent = self.subjects.parantCollection.value?.collection
+        // TODO: 임시로 일단 최상위 콜렉션으로 연결
+        self.router.selectParentCollection(statrWith: nil)
+    }
+    
+    public func navigateCollection(didSelectCollection collection: ReadCollection?) {
+        let parentCollection = ParentCollection(collection)
+        self.subjects.parantCollection.accept(parentCollection)
+    }
+}
+
+
 // MARK: - EditReadCollectionViewModelImple Presenter
 
 extension EditReadCollectionViewModelImple {
@@ -259,10 +298,24 @@ extension EditReadCollectionViewModelImple {
             .distinctUntilChanged()
     }
     
-    public var isConfirmable: Observable<Bool> {
-        return self.subjects.collectionName
-            .map { $0?.isNotEmpty == true }
+    public var parentCollectionName: Observable<String> {
+        return self.subjects.parantCollection
+            .compactMap { $0?.collectionName }
             .distinctUntilChanged()
+    }
+    
+    public var isConfirmable: Observable<Bool> {
+        
+        let checkIsUpdatable: (String?, ParentCollection) -> Bool = { name, _ in
+            return name?.isNotEmpty == true
+        }
+        
+        return Observable.combineLatest(
+            self.subjects.collectionName,
+            self.subjects.parantCollection.compactMap { $0 },
+            resultSelector: checkIsUpdatable
+        )
+        .distinctUntilChanged()
     }
     
     public var isProcessing: Observable<Bool> {
