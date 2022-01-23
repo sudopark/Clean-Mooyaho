@@ -28,6 +28,7 @@ public final class EditReadCollectionViewController: BaseViewController, EditRea
     private let descriptionInputField = UITextField()
     private let underLineView = UIView()
     private let attributeStackView = UIStackView()
+    private let collectionPathView = CollectionPathView()
     private let priorityLabelView = KeyAndLabeledValueView()
     private let categoriesLabelView = KeyAndLabeledValueView()
     private let remindLabelView = KeyAndLabeledValueView()
@@ -89,6 +90,12 @@ extension EditReadCollectionViewController {
             })
             .disposed(by: self.disposeBag)
         
+        self.collectionPathView.rx.addTapgestureRecognizer()
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.changeParentCollection()
+            })
+            .disposed(by: self.disposeBag)
+        
         let editPriorityTrigger = Observable.merge (
             self.addPriorityButton.rx.throttleTap(),
             self.priorityLabelView.rx.addTapgestureRecognizer().map { _ in },
@@ -133,6 +140,13 @@ extension EditReadCollectionViewController {
             .drive(self.confirmButton.rx.isLoading)
             .disposed(by: self.disposeBag)
         
+        self.viewModel.parentCollectionName
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] name in
+                self?.updateParentCollectionName(name)
+            })
+            .disposed(by: self.disposeBag)
+        
         self.viewModel.priority
             .asDriver(onErrorDriveWith: .never())
             .drive(onNext: { [weak self] priority in
@@ -158,6 +172,13 @@ extension EditReadCollectionViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isEnabled)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func updateParentCollectionName(_ name: String) {
+        self.collectionPathView.isHidden.then {
+            self.collectionPathView.isHidden = false
+        }
+        self.collectionPathView.nameLabel.text = name
     }
     
     private func setupInitialAttributeIfPossible() {
@@ -205,12 +226,17 @@ extension EditReadCollectionViewController: Presenting {
         
         attributeStackView.axis = .vertical
         attributeStackView.spacing = 8
+        attributeStackView.addArrangedSubview(collectionPathView)
         attributeStackView.addArrangedSubview(priorityLabelView)
         attributeStackView.addArrangedSubview(categoriesLabelView)
         attributeStackView.addArrangedSubview(remindLabelView)
         attributeStackView.addArrangedSubview(addPriorityButton)
         attributeStackView.addArrangedSubview(addCategoryButton)
         attributeStackView.addArrangedSubview(addRemindButton)
+        collectionPathView.autoLayout.active {
+            $0.heightAnchor.constraint(equalToConstant: 32)
+        }
+        collectionPathView.setupLayout()
         priorityLabelView.autoLayout.active(with: attributeStackView) {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor)
         }
@@ -281,6 +307,8 @@ extension EditReadCollectionViewController: Presenting {
         
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
         
+        self.collectionPathView.setupStyling()
+        self.collectionPathView.isHidden = true
         self.priorityLabelView.isHidden = true
         self.categoriesLabelView.isHidden = true
         self.remindLabelView.isHidden = true

@@ -89,7 +89,7 @@ extension DependencyInjector: EditReadCollectionSceneBuilable {
         let router = EditReadCollectionRouter(nextSceneBuilders: self)
         let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
                                                          editCase: editCase,
-                                                         updateUsecase: usecase,
+                                                         readItemUsecase: usecase,
                                                          remindUsecase: usecase,
                                                          categoriesUsecase: self.categoryUsecase,
                                                          router: router,

@@ -29,6 +29,7 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
     var didRequestStartWithCategories: [ItemCategory]?
     var didRequestStartWithRemindTime: TimeStamp?
     var didRequestStartWithRemindItem: ReadItem?
+    var didRequestSelectParentCollection: Bool?
     var mockSelectedPriority: ReadPriority?
     var mockSelectedCategories: [ItemCategory]?
     var mockSelectedRemindtime: TimeStamp?
@@ -51,6 +52,7 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
         self.didRequestStartWithCategories = nil
         self.didRequestStartWithRemindTime = nil
         self.didRequestStartWithRemindItem = nil
+        self.didRequestSelectParentCollection = nil
         self.mockSelectedPriority = nil
         self.mockSelectedCategories = nil
         self.mockSelectedRemindtime = nil
@@ -58,9 +60,10 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
         self.spyRemindUsecase = nil
     }
     
-    private func makeViewModel(editCase: EditCollectionCase,
+    private func makeViewModel(parentID: String? = "some",
+                               editCase: EditCollectionCase,
                                shouldSaveFail: Bool = false,
-                               categories: [ItemCategory] = []) -> EditReadCollectionViewModel {
+                               categories: [ItemCategory] = []) -> EditReadCollectionViewModelImple {
         
         let scenario = StubReadItemUsecase.Scenario()
             |> \.updateCollectionResult .~ (shouldSaveFail ? .failure(ApplicationErrors.invalid) : .success(()))
@@ -74,9 +77,10 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
         let stubRemindUsecase = StubReadRemindUsecase(scenario: remindScenario)
         self.spyRemindUsecase = stubRemindUsecase
         
-        let viewModel = EditReadCollectionViewModelImple(parentID: "some",
+        
+        let viewModel = EditReadCollectionViewModelImple(parentID: parentID,
                                                          editCase: editCase,
-                                                         updateUsecase: stubUsecase,
+                                                         readItemUsecase: stubUsecase,
                                                          remindUsecase: stubRemindUsecase,
                                                          categoriesUsecase: stubCategoryUsecase,
                                                          router: self,
@@ -330,6 +334,68 @@ extension EditReadCollectionViewModelTests {
     }
 }
 
+// MARK: - edit parent collection
+
+extension EditReadCollectionViewModelTests {
+    
+    func testViewModel_provideParentCollectionName() {
+        // given
+        let expect = expectation(description: "parent collection 이름 제공")
+        let colleciton = ReadCollection.dummy(10) |> \.parentID .~ "parent"
+        let viewModel = self.makeViewModel(editCase: .edit(colleciton))
+        
+        // when
+        let name = self.waitFirstElement(expect, for: viewModel.parentCollectionName)
+        
+        // then
+        XCTAssertEqual(name, ReadCollection.dummy(0).name)
+    }
+    
+    func testViewModel_whenChangeParentCollection_updateParentCollectionName() {
+        // given
+        let expect = expectation(description: "parent collection 변경하면 parent collection 이름도 업데이트")
+        expect.expectedFulfillmentCount = 3
+        let viewModel = self.makeViewModel(parentID: nil, editCase: .makeNew)
+        
+        // when
+        let dummyParent = ReadCollection.dummy(0)
+        let names = self.waitElements(expect, for: viewModel.parentCollectionName) {
+            viewModel.changeParentCollection()
+            viewModel.navigateCollection(didSelectCollection: dummyParent)
+            
+            viewModel.changeParentCollection()
+            viewModel.navigateCollection(didSelectCollection: nil)
+        }
+        
+        // then
+        XCTAssertEqual(names, [
+            "My Read Collections".localized, dummyParent.name, "My Read Collections".localized
+        ])
+    }
+    
+    func testViewModel_makeCollection_withParentCollectionInfo() async {
+        // given
+        let expect = expectation(description: "상위 콜렉션 정보와 함께 새 콜렉션 생성")
+        let viewModel = self.makeViewModel(parentID: "initial parent collection", editCase: .makeNew)
+    
+        var newCollection: ReadCollection?
+        self.didUpdated = {
+            newCollection = $0
+            expect.fulfill()
+        }
+        
+        // when
+        viewModel.enterName("some")
+        viewModel.changeParentCollection()
+        viewModel.navigateCollection(didSelectCollection: .dummy(100))
+        viewModel.confirmUpdate()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(newCollection?.parentID, ReadCollection.dummy(100).uid)
+    }
+}
+
 
 // MARK: - edit case
 
@@ -424,5 +490,9 @@ extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
         } else if let remind = self.mockSelectedRemindedItem {
             self.editCollectionSceneInteractor?.editReadRemind(didUpdate: remind)
         }
+    }
+    
+    func selectParentCollection(statrWith current: ReadCollection?) {
+        self.didRequestSelectParentCollection = true
     }
 }
