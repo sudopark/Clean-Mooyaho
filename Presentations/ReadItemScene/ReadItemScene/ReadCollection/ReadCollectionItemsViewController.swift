@@ -298,10 +298,18 @@ extension ReadCollectionItemsViewController: Presenting {
 
 private extension ReadCollectionItemSectionType {
     
+    private var title: String? {
+        switch self {
+        case .collections: return "Collections".localized
+        case .links: return "Links".localized
+        default: return nil
+        }
+    }
+    
     func makeSectionHeaderIfPossible() -> ReadCollectionSectionHeaderView? {
         guard self != .attribute else { return nil }
         let header = ReadCollectionSectionHeaderView()
-        header.setupTitle(self.rawValue)
+        header.setupTitle(self.title ?? "")
         return header
     }
 }

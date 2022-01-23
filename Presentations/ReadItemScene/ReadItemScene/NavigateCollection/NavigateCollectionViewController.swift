@@ -88,7 +88,7 @@ extension NavigateCollectionViewController {
         self.dataSource = self.makeDataSource()
         
         self.viewModel.cellViewModels
-            .map { [Section(model: "collections", items: $0)] }
+            .map { [Section(model: "Collections".localized, items: $0)] }
             .asDriver(onErrorDriveWith: .never())
             .drive(self.tableView.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
