@@ -43,6 +43,12 @@ extension FeedbackUsecaseImple {
         guard let userID = self.authProvider.currentAuth()?.userID else {
             return .error(ApplicationErrors.noUserInfo)
         }
+        let isiOSAppOnMac:Bool?
+        if #available(iOS 14.0, *) {
+            isiOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
+        } else {
+            isiOSAppOnMac = nil
+        }
         
         let feedback = Feedback(userID: userID)
             |> \.appVersion .~ pure(self.deviceInfoService.appVersion())
@@ -50,6 +56,7 @@ extension FeedbackUsecaseImple {
             |> \.deviceModel .~ pure(self.deviceInfoService.deviceModel())
             |> \.message .~ pure(message)
             |> \.contract .~ pure(contract)
+            |> \.isiOSAppOnMac .~ isiOSAppOnMac
         return self.helpRepository.leaveFeedback(feedback)
     }
 }
