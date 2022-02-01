@@ -44,8 +44,11 @@ extension SharedCollectionInfoDialogRouter {
         else {
             return
         }
-        let navigationController = BaseNavigationController(rootViewController: next)
-        navigationController.shouldHideNavigation = false
-        self.currentScene?.present(navigationController, animated: true, completion: nil)
+        let navigationController = BaseNavigationController(
+            rootViewController: next,
+            shouldHideNavigation: false,
+            shouldShowCloseButtonIfNeed: true
+        )
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
     }
 }

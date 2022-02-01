@@ -36,6 +36,17 @@ open class BaseViewController: UIViewController, UIContextAccessable {
         (viewControllerToPresent as? BaseViewController)?.isKeyCommandCloseEnabled = true
         super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
+    
+    public func presentPageSheetOrFullScreen(_ viewControllerToPresent: UIViewController,
+                                             animated flag: Bool,
+                                             completion: (() -> Void)? = nil) {
+        if ProcessInfo.processInfo.isiOSAppOnMac {
+            viewControllerToPresent.modalPresentationStyle = .fullScreen
+        } else {
+            viewControllerToPresent.modalPresentationStyle = .pageSheet
+        }
+        self.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
 }
 
 

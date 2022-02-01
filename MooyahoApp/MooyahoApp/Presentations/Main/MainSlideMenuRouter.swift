@@ -73,7 +73,7 @@ extension MainSlideMenuRouter {
     
     public func editProfile() {
         guard let next = self.nextScenesBuilder?.makeEditProfileScene() else { return }
-        self.currentScene?.present(next, animated: true, completion: nil)
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(next, animated: true)
     }
     
     public func openSetting() {
@@ -82,9 +82,12 @@ extension MainSlideMenuRouter {
         else {
             return
         }
-        let navigtionController = BaseNavigationController(rootViewController: next)
-        navigtionController.shouldHideNavigation = false
-        self.currentScene?.present(navigtionController, animated: true, completion: nil)
+        let navigtionController = BaseNavigationController(
+            rootViewController: next,
+            shouldHideNavigation: false,
+            shouldShowCloseButtonIfNeed: true
+        )
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigtionController, animated: true)
     }
 }
 

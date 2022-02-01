@@ -55,8 +55,7 @@ extension AddItemNavigationRouter {
         guard let scene = self.currentScene as? AddItemNavigationScene else { return }
         let containerView = scene.navigationdContainerView
         
-        let navigationController = BaseNavigationController()
-        navigationController.shouldHideNavigation = false
+        let navigationController = BaseNavigationController(shouldHideNavigation: false)
         
         scene.addChild(navigationController)
         containerView.addSubview(navigationController.view)

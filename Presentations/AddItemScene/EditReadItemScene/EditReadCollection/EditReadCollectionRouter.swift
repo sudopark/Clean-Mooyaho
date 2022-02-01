@@ -89,8 +89,8 @@ extension EditReadCollectionRouter {
                 .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor)
         else { return }
         
-        let navigationController = BaseNavigationController(rootViewController: next)
-        navigationController.shouldHideNavigation = false
+        let navigationController = BaseNavigationController(rootViewController: next,
+                                                            shouldHideNavigation: false)
         self.currentScene?.present(navigationController, animated: true, completion: nil)
     }
 }
