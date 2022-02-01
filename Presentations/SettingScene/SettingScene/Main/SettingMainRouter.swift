@@ -52,7 +52,7 @@ extension SettingMainRouter {
         guard let next = self.nextScenesBuilder?.makeEditProfileScene() else {
             return
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(next, animated: true)
     }
     
     public func manageAccount() {

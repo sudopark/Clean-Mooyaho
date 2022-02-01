@@ -21,8 +21,7 @@ public final class ReadCollectionMainViewController: BaseNavigationController, R
     
     public init(viewModel: ReadCollectionMainViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-        self.shouldHideNavigation = false
+        super.init(shouldHideNavigation: false)
     }
     
     required init?(coder: NSCoder) {

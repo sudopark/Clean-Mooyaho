@@ -172,7 +172,7 @@ extension MainRouter {
     public func presentEditProfileScene() {
         
         guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return }
-        self.currentScene?.present(scene, animated: true, completion: nil)
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(scene, animated: true)
     }
     
     public func askAddNewitemType(_ completed: @escaping (Bool) -> Void) {
