@@ -18,4 +18,8 @@ class StubClipBoardService: ClipboardServie {
     func getCopedString() -> String? {
         return self.copiedString
     }
+    
+    func copy(_ string: String) {
+        self.copiedString = string
+    }
 }

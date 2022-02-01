@@ -41,7 +41,7 @@ public protocol InnerWebViewViewModel: AnyObject {
     // interactor
     func prepareLinkData()
     func openPageInSafari()
-    func editReadLink()
+    func managePageDetail(withCopyURL: Bool)
     func editMemo()
     func toggleMarkAsRed()
     func jumpToCollection()
@@ -66,6 +66,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     private let readItemUsecase: ReadItemUsecase
     private let memoUsecase: ReadLinkMemoUsecase
     private let router: InnerWebViewRouting
+    private let clipboardService: ClipboardServie
     private weak var listener: InnerWebViewSceneListenable?
     
     public init(itemSource: LinkItemSource,
@@ -74,6 +75,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
                 readItemUsecase: ReadItemUsecase,
                 memoUsecase: ReadLinkMemoUsecase,
                 router: InnerWebViewRouting,
+                clipboardService: ClipboardServie,
                 listener: InnerWebViewSceneListenable?) {
         
         self.itemSource = itemSource
@@ -82,6 +84,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
         self.readItemUsecase = readItemUsecase
         self.memoUsecase = memoUsecase
         self.router = router
+        self.clipboardService = clipboardService
         self.listener = listener
         
         self.bindLinkItem()
@@ -162,9 +165,22 @@ extension InnerWebViewViewModelImple {
         self.router.openSafariBrowser(item.link)
     }
     
-    public func editReadLink() {
+    public func managePageDetail(withCopyURL: Bool) {
+        if withCopyURL {
+            self.copyCurrentItemURL()
+        }
+        self.editReadLink()
+    }
+    
+    private func editReadLink() {
         guard self.isEditable, let item = self.subjects.item.value else { return }
         self.router.editReadLink(item)
+    }
+    
+    private func copyCurrentItemURL() {
+        guard let url = self.subjects.item.value?.link else { return }
+        self.clipboardService.copy(url)
+        self.router.showToast("Item address has been copied.".localized)
     }
     
     public func jumpToCollection() {
