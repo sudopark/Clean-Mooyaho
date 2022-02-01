@@ -59,7 +59,7 @@ extension BaseNavigationController {
     private func setupCloseButtonIfNeed() {
         guard self.shouldShowCloseButtonIfNeed,
               let firstViewController = self.viewControllers.first else { return }
-        let closeButton = UIBarButtonItem(systemItem: .close, primaryAction: nil, menu: nil)
+        let closeButton = UIBarButtonItem(title: "Close".localized, style: .plain, target: nil, action: nil)
         firstViewController.navigationItem.leftBarButtonItem = closeButton
         
         firstViewController.navigationItem.leftBarButtonItem?.rx.tap

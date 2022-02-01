@@ -70,6 +70,7 @@ public final class EditItemsCustomOrderViewController: BaseViewController, EditI
     typealias Section = SectionModel<String, CVM>
     typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
     
+    private let headerView = BaseHeaderView()
     private let titleLabel = UILabel()
     private let tableView = UITableView()
     private let confirmButton = ConfirmButton()
@@ -130,6 +131,12 @@ extension EditItemsCustomOrderViewController {
             .asDriver(onErrorDriveWith: .never())
             .drive(self.confirmButton.rx.isLoading)
             .disposed(by: self.disposeBag)
+        
+        self.headerView.closeButton?.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindTableView() {
@@ -187,16 +194,19 @@ extension EditItemsCustomOrderViewController: Presenting, UITableViewDelegate {
     
     public func setupLayout() {
         
-        self.view.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: self.view) {
+        self.view.addSubview(headerView)
+        headerView.autoLayout.active(with: self.view) {
             $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor, constant: 20)
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor, constant: 20)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }
+        headerView.setupLayout()
+        
+        headerView.setupMainContentView(titleLabel)
         
         self.view.addSubview(tableView)
         tableView.autoLayout.active(with: self.view) {
-            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
+            $0.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20)
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
@@ -216,9 +226,12 @@ extension EditItemsCustomOrderViewController: Presenting, UITableViewDelegate {
         
         self.view.backgroundColor = self.uiContext.colors.appBackground
         
+        self.headerView.setupStyling()
+        
         _ = self.titleLabel
             |> self.uiContext.decorating.smallHeader
             |> \.text .~ pure("Change items order".localized)
+            |> \.textAlignment .~ .left
         
         self.tableView.registerCell(EditItemOrderCollectionCell.self)
         self.tableView.registerCell(EditItemOrderLinkCell.self)
