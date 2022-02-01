@@ -140,6 +140,7 @@
 // viewer
 "Memo" = "메모";
 "Enter a memo" = "메모를 입력하세요.";
+"Item address has been copied." = "아이템 주소가 복사 되었습니다.";
 
 
 // diccovery

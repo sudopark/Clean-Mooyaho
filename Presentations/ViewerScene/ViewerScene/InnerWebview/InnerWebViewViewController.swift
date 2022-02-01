@@ -22,6 +22,7 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
     
     private let toolBar = InnerWebViewBottomToolBar()
     private let bottomBackView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+    private let headerView = BaseHeaderView()
     private let pullGuideView = PullGuideView()
     private let webView = WKWebView()
     
@@ -87,6 +88,12 @@ extension InnerWebViewViewController {
         
         self.viewModel.isEditable ? self.bindEditing() : self.toolBar.hideEditingViews()
         self.viewModel.isJumpable ? self.bindJumpping() : self.toolBar.hideJumping()
+        
+        self.headerView.closeButton?.rx.throttleTap()
+            .subscribe(onNext: { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindEditing() {
@@ -119,10 +126,10 @@ extension InnerWebViewViewController {
             })
             .disposed(by: self.disposeBag)
         
-        Observable.merge(self.toolBar.editButton.rx.throttleTap(),
-                         self.toolBar.titleLabel.rx.addTapgestureRecognizer().map { _ in })
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.editReadLink()
+        Observable.merge(self.toolBar.editButton.rx.throttleTap().map { false },
+                         self.toolBar.titleLabel.rx.addTapgestureRecognizer().map { _ in true })
+            .subscribe(onNext: { [weak self] withCopy in
+                self?.viewModel.managePageDetail(withCopyURL: withCopy)
             })
             .disposed(by: self.disposeBag)
     }
@@ -221,17 +228,19 @@ extension InnerWebViewViewController: Presenting {
     
     public func setupLayout() {
         
-        self.view.addSubview(pullGuideView)
-        pullGuideView.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
+        self.view.addSubview(headerView)
+        headerView.autoLayout.active(with: self.view) {
+            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor, constant: 16)
+            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
         }
+        headerView.setupLayout()
+        headerView.setupMainContentView(pullGuideView, onlyWhenCloseNotNeed: true)
         pullGuideView.setupLayout()
         
         self.view.addSubview(webView)
         webView.autoLayout.active(with: self.view) {
-            $0.topAnchor.constraint(equalTo: pullGuideView.bottomAnchor)
+            $0.topAnchor.constraint(equalTo: headerView.bottomAnchor)
             $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
             $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
             $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
@@ -265,6 +274,7 @@ extension InnerWebViewViewController: Presenting {
         
         self.view.backgroundColor = self.uiContext.colors.appBackground
         
+        self.headerView.setupStyling()
         self.pullGuideView.setupStyling()
         
         self.webView.scrollView.contentInset = .init(top: 0, left: 0,

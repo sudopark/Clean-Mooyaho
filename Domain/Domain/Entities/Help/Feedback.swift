@@ -18,6 +18,7 @@ public struct Feedback {
     public var deviceModel: String?
     public var message: String?
     public var contract: String?
+    public var isiOSAppOnMac: Bool?
     
     public init(userID: String) {
         self.uuid = UUID().uuidString

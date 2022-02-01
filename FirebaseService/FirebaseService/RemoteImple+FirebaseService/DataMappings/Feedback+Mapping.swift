@@ -19,6 +19,7 @@ enum FeedbackMappingKey: String, JSONMappingKeys {
     case os
     case contract
     case message
+    case isiOSAppOnMac
 }
 
 private typealias Key = FeedbackMappingKey
@@ -42,6 +43,7 @@ extension Feedback: DocumentMappable {
         self.deviceModel = deviceModel
         self.contract = contract
         self.message = message
+        self.isiOSAppOnMac = json[Key.isiOSAppOnMac] as? Bool
     }
     
     func asDocument() -> (String, JSON) {
@@ -51,7 +53,8 @@ extension Feedback: DocumentMappable {
             Key.osVersion.rawValue: self.osVersion ?? "",
             Key.deviceModel.rawValue: self.deviceModel ?? "",
             Key.contract.rawValue: self.contract ?? "",
-            Key.message.rawValue: self.message ?? ""
+            Key.message.rawValue: self.message ?? "",
+            Key.isiOSAppOnMac.rawValue: self.isiOSAppOnMac ?? false
         ]
         return (self.uuid, json)
     }

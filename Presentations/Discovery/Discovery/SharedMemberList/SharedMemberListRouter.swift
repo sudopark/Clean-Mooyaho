@@ -43,6 +43,11 @@ extension SharedMemberListRouter {
         else {
             return
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
+        let navigationController = BaseNavigationController(
+            rootViewController: next,
+            shouldHideNavigation: false,
+            shouldShowCloseButtonIfNeed: true
+        )
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
     }
 }
