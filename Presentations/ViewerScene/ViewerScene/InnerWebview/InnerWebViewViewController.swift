@@ -126,10 +126,10 @@ extension InnerWebViewViewController {
             })
             .disposed(by: self.disposeBag)
         
-        Observable.merge(self.toolBar.editButton.rx.throttleTap(),
-                         self.toolBar.titleLabel.rx.addTapgestureRecognizer().map { _ in })
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.editReadLink()
+        Observable.merge(self.toolBar.editButton.rx.throttleTap().map { false },
+                         self.toolBar.titleLabel.rx.addTapgestureRecognizer().map { _ in true })
+            .subscribe(onNext: { [weak self] withCopy in
+                self?.viewModel.managePageDetail(withCopyURL: withCopy)
             })
             .disposed(by: self.disposeBag)
     }

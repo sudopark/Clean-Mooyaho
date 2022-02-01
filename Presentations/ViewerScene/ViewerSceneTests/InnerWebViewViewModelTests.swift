@@ -25,7 +25,9 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     var didSafariOpen: Bool?
     var didEditRequested: Bool?
     var didEditRequestedMemo: ReadLinkMemo?
+    var didShowToast: Bool?
     var spyReadItemUsecase: StubReadItemUsecase!
+    private var spyClipboardService: FakeClipboardService!
 
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -37,7 +39,9 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.didSafariOpen = nil
         self.didEditRequested = nil
         self.didEditRequestedMemo = nil
+        self.didShowToast = nil
         self.spyReadItemUsecase = nil
+        self.spyClipboardService = nil
     }
     
     private var dummyItem: ReadLink {
@@ -56,6 +60,10 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.didEditRequestedMemo = memo
     }
     
+    func showToast(_ message: String) {
+        self.didShowToast = true
+    }
+    
     private func makeViewModel(_ item: ReadLink,
                                itemSourceID: String? = nil,
                                preview: LinkPreview? = nil) -> InnerWebViewViewModelImple {
@@ -70,10 +78,14 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         let memoUsecase = StubMemoUsecase()
         
         let itemSource: LinkItemSource = itemSourceID.map { .itemID($0) } ?? .item(item)
+        
+        let clipboardService = FakeClipboardService()
+        self.spyClipboardService = clipboardService
         return InnerWebViewViewModelImple(itemSource: itemSource,
                                           readItemUsecase: usecase,
                                           memoUsecase: memoUsecase,
                                           router: self,
+                                          clipboardService: clipboardService,
                                           listener: nil)
     }
 }
@@ -157,10 +169,23 @@ extension InnerWebViewViewModelTests {
         let viewModel = self.makeViewModel(.dummy(0), preview: nil)
         
         // when
-        viewModel.editReadLink()
+        viewModel.managePageDetail(withCopyURL: false)
         
         // then
         XCTAssert(self.didEditRequested == true)
+    }
+    
+    func testViewModel_editItemWithCopyURL() {
+        // given
+        let dummy = ReadLink.dummy(0)
+        let viewModel = self.makeViewModel(dummy, preview: nil)
+        
+        // when
+        viewModel.managePageDetail(withCopyURL: true)
+        
+        // then
+        XCTAssertEqual(self.spyClipboardService.getCopedString(), dummy.link)
+        XCTAssertEqual(self.didShowToast, true)
     }
     
     func testViewModel_updateIsRed() {
@@ -235,5 +260,20 @@ extension InnerWebViewViewModelTests {
         
         // then
         XCTAssertNotNil(url)
+    }
+}
+
+
+private extension InnerWebViewViewModelTests {
+    
+    class FakeClipboardService: ClipboardServie {
+        private var copiedText: String?
+        func getCopedString() -> String? {
+            return copiedText
+        }
+        
+        func copy(_ string: String) {
+            self.copiedText = string
+        }
     }
 }

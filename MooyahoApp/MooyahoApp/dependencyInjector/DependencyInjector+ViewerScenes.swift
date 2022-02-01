@@ -28,6 +28,7 @@ extension DependencyInjector: InnerWebViewSceneBuilable {
                                                    readItemUsecase: self.readItemUsecase,
                                                    memoUsecase: self.memoUsecase,
                                                    router: router,
+                                                   clipboardService: UIPasteboard.general,
                                                    listener: listener)
         let viewController = InnerWebViewViewController(viewModel: viewModel)
         router.currentScene = viewController
@@ -45,6 +46,7 @@ extension DependencyInjector: InnerWebViewSceneBuilable {
                                                    readItemUsecase: self.readItemUsecase,
                                                    memoUsecase: self.memoUsecase,
                                                    router: router,
+                                                   clipboardService: UIPasteboard.general,
                                                    listener: listener)
         let viewController = InnerWebViewViewController(viewModel: viewModel)
         router.currentScene = viewController
