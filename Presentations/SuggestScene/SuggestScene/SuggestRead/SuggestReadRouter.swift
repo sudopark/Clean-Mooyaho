@@ -63,6 +63,7 @@ extension SuggestReadRouter {
         else {
             return
         }
+        (next as? BaseViewController)?.isKeyCommandCloseEnabled = true
         let navigationController = BaseNavigationController(rootViewController: next)
         navigationController.shouldHideNavigation = false
         self.currentScene?.present(navigationController, animated: true, completion: nil)
