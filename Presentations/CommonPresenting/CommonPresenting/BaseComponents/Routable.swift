@@ -60,8 +60,8 @@ open class Router<Buildables>: Routing {
         self.nextScenesBuilder = nextSceneBuilders
     }
     
-    public var currentBaseViewControllerScene: BaseViewController? {
-        return self.currentScene as? BaseViewController
+    public var currentBaseViewControllerScene: BaseViewControllable? {
+        return self.currentScene as? BaseViewControllable
     }
 }
 

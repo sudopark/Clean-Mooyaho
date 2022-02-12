@@ -60,6 +60,7 @@ extension SettingMainRouter {
         else {
             return
         }
+        self.currentScene?.navigationController?.navigationBar.isHidden = false
         self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
@@ -71,6 +72,8 @@ extension SettingMainRouter {
     public func editItemsCategory() {
         
         guard let next = self.nextScenesBuilder?.makeManageCategoryScene(listener: nil) else { return }
+        
+        self.currentScene?.navigationController?.navigationBar.isHidden = false
         self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     

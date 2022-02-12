@@ -7,126 +7,48 @@
 //
 
 import UIKit
+import SwiftUI
+import Combine
 
 import RxSwift
 import RxCocoa
-import RxDataSources
-import Prelude
-import Optics
 
+import Domain
 import CommonPresenting
+
 
 // MARK: - SettingMainViewController
 
-public final class SettingMainViewController: BaseViewController, SettingMainScene {
-    
-    typealias CellViewModel = SettingItemCellViewModel
-    typealias Section = SectionModel<String, CellViewModel>
-    typealias DataSource = RxTableViewSectionedReloadDataSource<Section>
-    
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+public final class SettingMainViewController: UIHostingController<SettingMainView>, SettingMainScene, BaseViewControllable {
     
     let viewModel: SettingMainViewModel
-    private var dataSource: DataSource!
     
     public init(viewModel: SettingMainViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        
+        let settingView = SettingMainView(viewModel: viewModel)
+        super.init(rootView: settingView)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError()
     }
     
     deinit {
         LeakDetector.instance.expectDeallocate(object: self.viewModel)
     }
     
-    public override func loadView() {
-        super.loadView()
-        self.setupLayout()
-        self.setupStyling()
-    }
-    
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        self.bind()
-    }
-    
-}
-
-// MARK: - bind
-
-extension SettingMainViewController {
-    
-    private func bind() {
-        
-        self.rx.viewDidLayoutSubviews.take(1)
-            .subscribe(onNext: { [weak self] _ in
-                self?.bindTableView()
-            })
-            .disposed(by: self.disposeBag)
-    }
- 
-    private func bindTableView() {
-        
-        self.dataSource = self.makeDataSource()
-        
-        self.viewModel.sections
-            .map { $0.map { Section(model: $0.title, items: $0.cellViewModels) } }
-            .asDriver(onErrorDriveWith: .never())
-            .drive(self.tableView.rx.items(dataSource: self.dataSource))
-            .disposed(by: self.disposeBag)
-        
-        self.tableView.rx.modelSelected(CellViewModel.self)
-            .subscribe(onNext: { [weak self] cellViewModel in
-                self?.viewModel.selectItem(cellViewModel.itemID)
-            })
-            .disposed(by: self.disposeBag)
-    }
-    
-    private func makeDataSource() -> DataSource {
-        let configureCell: DataSource.ConfigureCell = { _, tableView, indexPath, cellViewMdoel in
-            let cell: SettingItemCell = tableView.dequeueCell()
-            cell.setupCell(cellViewMdoel)
-            return cell
-        }
-        
-        let configureSection: DataSource.TitleForHeaderInSection = { source, index in
-            let section = source[index]
-            return section.model
-        }
-        
-        return DataSource(configureCell: configureCell, titleForHeaderInSection: configureSection)
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
 }
 
-// MARK: - setup presenting
 
-extension SettingMainViewController: Presenting {
-    
-    public func setupLayout() {
-        
-        self.view.addSubview(tableView)
-        tableView.autoLayout.active(with: self.view) {
-            $0.leadingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.leadingAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-            $0.topAnchor.constraint(equalTo: $1.safeAreaLayoutGuide.topAnchor)
-        }
-    }
-    
-    public func setupStyling() {
-        
-        self.view.backgroundColor = self.uiContext.colors.appBackground
-        
-        self.title = "Setting".localized
-        
-        tableView.registerCell(SettingItemCell.self)
-        tableView.rowHeight = 60
-    }
-}
+// MARK: - SettingItemCell
 
+import Prelude
+import Optics
 
 final class SettingItemCell: BaseTableViewCell {
     

@@ -44,6 +44,7 @@ public protocol SettingMainViewModel: AnyObject {
     // interactor
     func refresh()
     func selectItem(_ typeName: String)
+    func close()
     
     // presenter
     var sections: Observable<[SettingItemSection]> { get }
@@ -153,6 +154,10 @@ extension SettingMainViewModelImple {
             
         default: break
         }
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 
