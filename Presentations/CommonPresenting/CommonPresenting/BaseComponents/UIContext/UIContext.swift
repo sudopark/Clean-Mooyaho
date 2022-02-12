@@ -56,3 +56,13 @@ extension UIContextAccessable {
         return UIContext.currentContext
     }
 }
+
+
+// MARK: - UIContext + SwiftUI View
+
+import SwiftUI
+
+public extension View {
+    
+    var uiContext: UIContext { UIContext.currentContext }
+}

@@ -32,6 +32,7 @@
 		F638A5F7273C7388005A7EA9 /* SettingMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */; };
 		F638A5F8273C7388005A7EA9 /* SettingMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F3273C7388005A7EA9 /* SettingMainViewModel.swift */; };
 		F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */; };
+		F63A520A27B2D39D008542E2 /* SettingMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520927B2D39D008542E2 /* SettingMainView.swift */; };
 		F65F003F275DD33E0022F987 /* ManageAccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003A275DD33E0022F987 /* ManageAccountRouter.swift */; };
 		F65F0040275DD33E0022F987 /* ManageAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003B275DD33E0022F987 /* ManageAccountViewController.swift */; };
 		F65F0041275DD33E0022F987 /* ManageAccountBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003C275DD33E0022F987 /* ManageAccountBuilder.swift */; };
@@ -90,6 +91,7 @@
 		F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainScene.swift; sourceTree = "<group>"; };
 		F638A5F3273C7388005A7EA9 /* SettingMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewModel.swift; sourceTree = "<group>"; };
 		F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewModelTests.swift; sourceTree = "<group>"; };
+		F63A520927B2D39D008542E2 /* SettingMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainView.swift; sourceTree = "<group>"; };
 		F65F003A275DD33E0022F987 /* ManageAccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountRouter.swift; sourceTree = "<group>"; };
 		F65F003B275DD33E0022F987 /* ManageAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController.swift; sourceTree = "<group>"; };
 		F65F003C275DD33E0022F987 /* ManageAccountBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountBuilder.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				F638A5F0273C7388005A7EA9 /* SettingMainViewController.swift */,
 				F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */,
 				F638A5F3273C7388005A7EA9 /* SettingMainViewModel.swift */,
+				F63A520927B2D39D008542E2 /* SettingMainView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */,
 				F617F1152768F77300D88F9C /* FeedbackRouter.swift in Sources */,
 				F65F0042275DD33E0022F987 /* ManageAccountScene.swift in Sources */,
+				F63A520A27B2D39D008542E2 /* SettingMainView.swift in Sources */,
 				F617F1162768F77300D88F9C /* FeedbackViewController.swift in Sources */,
 				F66CDF61275B3892009CF185 /* EditCategoryAttrScene.swift in Sources */,
 				F617F1192768F77300D88F9C /* FeedbackViewModel.swift in Sources */,

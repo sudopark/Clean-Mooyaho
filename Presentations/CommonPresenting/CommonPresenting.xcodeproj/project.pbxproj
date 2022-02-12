@@ -43,6 +43,8 @@
 		F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372060266538EA0089D0B3 /* UITableView+Extension.swift */; };
 		F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */; };
 		F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */; };
+		F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */; };
+		F63A520E27B7569E008542E2 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520D27B7569E008542E2 /* Combine+Extensions.swift */; };
 		F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6572690B52200E04D29 /* InfoSectionView.swift */; };
 		F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6592690BA8E00E04D29 /* Attribute.swift */; };
 		F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65D26934F5700E04D29 /* WordTokensView.swift */; };
@@ -188,6 +190,8 @@
 		F6372060266538EA0089D0B3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Setting.swift"; sourceTree = "<group>"; };
 		F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Setting.swift"; sourceTree = "<group>"; };
+		F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
+		F63A520D27B7569E008542E2 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
 		F645A6572690B52200E04D29 /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
 		F645A6592690BA8E00E04D29 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		F645A65D26934F5700E04D29 /* WordTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTokensView.swift; sourceTree = "<group>"; };
@@ -467,6 +471,8 @@
 				F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */,
 				F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */,
 				F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */,
+				F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */,
+				F63A520D27B7569E008542E2 /* Combine+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -742,6 +748,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */,
+				F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */,
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
 				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
@@ -809,6 +816,7 @@
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
 				F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
+				F63A520E27B7569E008542E2 /* Combine+Extensions.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
 				F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */,
 				F6CB434C2713560900F26508 /* ColorSelectScene.swift in Sources */,
