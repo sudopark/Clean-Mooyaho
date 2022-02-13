@@ -34,7 +34,6 @@
 		F638A5FE273C7A34005A7EA9 /* SettingMainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */; };
 		F63A520A27B2D39D008542E2 /* SettingMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520927B2D39D008542E2 /* SettingMainView.swift */; };
 		F65F003F275DD33E0022F987 /* ManageAccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003A275DD33E0022F987 /* ManageAccountRouter.swift */; };
-		F65F0040275DD33E0022F987 /* ManageAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003B275DD33E0022F987 /* ManageAccountViewController.swift */; };
 		F65F0041275DD33E0022F987 /* ManageAccountBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003C275DD33E0022F987 /* ManageAccountBuilder.swift */; };
 		F65F0042275DD33E0022F987 /* ManageAccountScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003D275DD33E0022F987 /* ManageAccountScene.swift */; };
 		F65F0043275DD33E0022F987 /* ManageAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65F003E275DD33E0022F987 /* ManageAccountViewModel.swift */; };
@@ -51,7 +50,7 @@
 		F69FFD7B275920D300D9DF05 /* ManageCategoryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */; };
 		F69FFD7C275920D300D9DF05 /* ManageCategoryScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */; };
 		F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */; };
-		F6FE768F27B91BF2007959EC /* ManageAccountViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE768927B91BF2007959EC /* ManageAccountViewController2.swift */; };
+		F6FE768F27B91BF2007959EC /* ManageAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE768927B91BF2007959EC /* ManageAccountViewController.swift */; };
 		F6FE769227B91BF2007959EC /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE768C27B91BF2007959EC /* ManageAccountView.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,7 +94,6 @@
 		F638A5FD273C7A34005A7EA9 /* SettingMainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewModelTests.swift; sourceTree = "<group>"; };
 		F63A520927B2D39D008542E2 /* SettingMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainView.swift; sourceTree = "<group>"; };
 		F65F003A275DD33E0022F987 /* ManageAccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountRouter.swift; sourceTree = "<group>"; };
-		F65F003B275DD33E0022F987 /* ManageAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController.swift; sourceTree = "<group>"; };
 		F65F003C275DD33E0022F987 /* ManageAccountBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountBuilder.swift; sourceTree = "<group>"; };
 		F65F003D275DD33E0022F987 /* ManageAccountScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountScene.swift; sourceTree = "<group>"; };
 		F65F003E275DD33E0022F987 /* ManageAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewModel.swift; sourceTree = "<group>"; };
@@ -112,7 +110,7 @@
 		F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryBuilder.swift; sourceTree = "<group>"; };
 		F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryScene.swift; sourceTree = "<group>"; };
 		F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewModel.swift; sourceTree = "<group>"; };
-		F6FE768927B91BF2007959EC /* ManageAccountViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController2.swift; sourceTree = "<group>"; };
+		F6FE768927B91BF2007959EC /* ManageAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController.swift; sourceTree = "<group>"; };
 		F6FE768C27B91BF2007959EC /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -238,9 +236,8 @@
 		F65F0039275DD3270022F987 /* ManageAccount */ = {
 			isa = PBXGroup;
 			children = (
-				F6FE768727B91BCE007959EC /* temp */,
 				F65F003A275DD33E0022F987 /* ManageAccountRouter.swift */,
-				F65F003B275DD33E0022F987 /* ManageAccountViewController.swift */,
+				F6FE768927B91BF2007959EC /* ManageAccountViewController.swift */,
 				F65F003C275DD33E0022F987 /* ManageAccountBuilder.swift */,
 				F65F003D275DD33E0022F987 /* ManageAccountScene.swift */,
 				F65F003E275DD33E0022F987 /* ManageAccountViewModel.swift */,
@@ -273,14 +270,6 @@
 				F66248FF2759484600D4FC74 /* CategoryPagingUsecase.swift */,
 			);
 			path = ManageCategory;
-			sourceTree = "<group>";
-		};
-		F6FE768727B91BCE007959EC /* temp */ = {
-			isa = PBXGroup;
-			children = (
-				F6FE768927B91BF2007959EC /* ManageAccountViewController2.swift */,
-			);
-			path = temp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -411,10 +400,9 @@
 				F65F0041275DD33E0022F987 /* ManageAccountBuilder.swift in Sources */,
 				F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */,
 				F617F1182768F77300D88F9C /* FeedbackScene.swift in Sources */,
-				F6FE768F27B91BF2007959EC /* ManageAccountViewController2.swift in Sources */,
+				F6FE768F27B91BF2007959EC /* ManageAccountViewController.swift in Sources */,
 				F66CDF5F275B3892009CF185 /* EditCategoryAttrViewController.swift in Sources */,
 				F66CDF5E275B3892009CF185 /* EditCategoryAttrRouter.swift in Sources */,
-				F65F0040275DD33E0022F987 /* ManageAccountViewController.swift in Sources */,
 				F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */,
 				F617F1152768F77300D88F9C /* FeedbackRouter.swift in Sources */,
 				F65F0042275DD33E0022F987 /* ManageAccountScene.swift in Sources */,
