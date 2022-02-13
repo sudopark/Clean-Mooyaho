@@ -138,6 +138,7 @@
 		F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */; };
 		F6F65639274049150069F253 /* Scenes+Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65638274049150069F253 /* Scenes+Discovery.swift */; };
 		F6F6563B274049420069F253 /* Builders+Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6563A274049420069F253 /* Builders+Discovery.swift */; };
+		F6FE769527B926B1007959EC /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE769427B926B1007959EC /* Views.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -284,6 +285,7 @@
 		F6F52ED126885329006D37F3 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F65638274049150069F253 /* Scenes+Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Discovery.swift"; sourceTree = "<group>"; };
 		F6F6563A274049420069F253 /* Builders+Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Discovery.swift"; sourceTree = "<group>"; };
+		F6FE769427B926B1007959EC /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -522,6 +524,7 @@
 				F6BA7DC227815DA60020B430 /* OAuthSignInButtonBuildable.swift */,
 				F69B3B142781EE1300C03601 /* DescriptionTipsView.swift */,
 				F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */,
+				F6FE769427B926B1007959EC /* Views.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
 				F6A3A0AD275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift in Sources */,
+				F6FE769527B926B1007959EC /* Views.swift in Sources */,
 				F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */,
