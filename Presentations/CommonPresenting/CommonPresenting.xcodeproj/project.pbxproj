@@ -20,6 +20,7 @@
 		2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */; };
 		2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B9263AE5D10000C0C6 /* Executor.swift */; };
 		F6025FED26A9CFD2007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */; };
+		F603F46227B949E30096D8C1 /* BackButton+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */; };
 		F610146926570A1400D32E38 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146826570A1400D32E38 /* BaseUIView.swift */; };
 		F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146C26570B8A00D32E38 /* AutoLayout.swift */; };
 		F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146E2657122300D32E38 /* AutoLayoutTests.swift */; };
@@ -169,6 +170,7 @@
 		2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
 		2BE978B9263AE5D10000C0C6 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackButton+SwiftUI.swift"; sourceTree = "<group>"; };
 		F610146826570A1400D32E38 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		F610146C26570B8A00D32E38 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
 		F610146E2657122300D32E38 /* AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutTests.swift; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 				F69B3B142781EE1300C03601 /* DescriptionTipsView.swift */,
 				F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */,
 				F6FE769427B926B1007959EC /* Views.swift */,
+				F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -796,6 +799,7 @@
 				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,
 				F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F603F46227B949E30096D8C1 /* BackButton+SwiftUI.swift in Sources */,
 				F68A880B274BFACC004DADE4 /* Builders+Suggest.swift in Sources */,
 				F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */,
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
