@@ -50,10 +50,7 @@ extension EditProfileViewModelTests {
     func testViewModel_showPreviousEnteredImage() {
         // given
         let expect = expectation(description: "이전에 입력한 프로필 이미지 소스 방출")
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            let member = Member(uid: "uid", nickName: nil, icon: .emoji("⛳️"))
-            return member
-        }
+        self.registerMember(Member(uid: "uid", nickName: nil, icon: .emoji("⛳️")))
         
         // when
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
@@ -71,10 +68,7 @@ extension EditProfileViewModelTests {
     func testViewModel_initialCellViewModels() {
         // given
         let expect = expectation(description: "셀뷰모델 구성")
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            let member = Member(uid: "uid", nickName: "nick", icon: .emoji("⛳️"))
-            return member
-        }
+        self.registerMember(Member(uid: "uid", nickName: "nick", icon: .emoji("⛳️")))
         
         // when
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
@@ -123,10 +117,7 @@ extension EditProfileViewModelTests {
         // given
         let expect = expectation(description: "닉네임이 있는 경우에만 저장버튼 활성화")
         expect.expectedFulfillmentCount = 3
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            let member = Member(uid: "uid", nickName: nil, icon: .emoji("⛳️"))
-            return member
-        }
+        self.registerMember(Member(uid: "uid", nickName: nil, icon: .emoji("⛳️")))
 
         // when
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
@@ -148,12 +139,9 @@ extension EditProfileViewModelTests {
     func testViewModel_whenNewImageSourceEntered_updateSavable() {
         // given
         let expect = expectation(description: "이미지 입력시에는 저장가능여부 업데이트")
-
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            var member = Member(uid: "uid", nickName: "some", icon: nil)
-            member.introduction = "old"
-            return member
-        }
+        var member = Member(uid: "uid", nickName: "some", icon: nil)
+        member.introduction = "old"
+        self.registerMember(member)
 
         // when
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
@@ -185,11 +173,9 @@ extension EditProfileViewModelTests {
     func testViewModel_selectProfilePhoto() {
         // given
         let expect = expectation(description: "이미지 선택")
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            var member = Member(uid: "uid", nickName: "some", icon: nil)
-            member.introduction = "old"
-            return member
-        }
+        var member = Member(uid: "uid", nickName: "some", icon: nil)
+        member.introduction = "old"
+        self.registerMember(member)
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         
         // when
@@ -205,11 +191,9 @@ extension EditProfileViewModelTests {
     func testViewModel_selectEmoji() {
         // given
         let expect = expectation(description: "이미지 선택")
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            var member = Member(uid: "uid", nickName: "some", icon: nil)
-            member.introduction = "old"
-            return member
-        }
+        var member = Member(uid: "uid", nickName: "some", icon: nil)
+        member.introduction = "old"
+        self.registerMember(member)
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
         
         // when
@@ -226,8 +210,8 @@ extension EditProfileViewModelTests {
 extension EditProfileViewModelTests {
     
     private func registerMember(_ member: Member) {
-        self.mockMemberUsecase.register(type: Member.self, key: "fetchCurrentMember") {
-            return member
+        self.mockMemberUsecase.register(type: Maybe<Member>.self, key: "reloadCurrentMember") {
+            return .just(member)
         }
     }
     
