@@ -156,6 +156,11 @@ extension EditProfileView {
                 }
                 Text(cellViewModel.value ?? cellViewModel.inputType.placeHolder)
                     .font(self.uiContext.fonts.get(15, weight: .regular).asFont)
+                    .foregroundColor(
+                        cellViewModel.value != nil
+                            ? self.uiContext.colors.text.asColor
+                            : self.uiContext.colors.descriptionText.asColor
+                    )
                     .lineLimit(1)
             }
             
