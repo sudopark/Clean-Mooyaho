@@ -135,15 +135,72 @@ extension MemberUsecaseTests {
     
     func testUsecase_fetchCurrentMember() {
         // given
-        var memner: Member?
+        var member: Member?
         
         // when + then
-        memner = self.usecase.fetchCurrentMember()
-        XCTAssertNil(memner)
+        member = self.usecase.fetchCurrentMember()
+        XCTAssertNil(member)
         
         self.store.update(Member.self, key: SharedDataKeys.currentMember.rawValue, value: Member.init(uid: "some"))
-        memner = self.usecase.fetchCurrentMember()
-        XCTAssertNotNil(memner)
+        member = self.usecase.fetchCurrentMember()
+        XCTAssertNotNil(member)
+    }
+    
+    func testUsecase_reloadCurrentMember() {
+        // given
+        let expect = expectation(description: "현재 유저 리로드")
+        self.store.updateAuth(.init(userID: "some"))
+        
+        self.mockRepository.register(type: Maybe<[Member]>.self, key: "requestLoadMembers") {
+            return .just([Member(uid: "some", nickName: "new member", icon: nil)])
+        }
+        
+        // when
+        let loading = self.usecase.reloadCurrentMember()
+        let member = self.waitFirstElement(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertEqual(member?.nickName, "new member")
+    }
+    
+    func testUsecase_whenReloadCurrentMemberWithoutSignIn_error() {
+        // given
+        let expect = expectation(description: "로그인 안한상태에서 현재 멤버 로드시 에러")
+        self.store.clearAuth()
+        
+        self.mockRepository.register(type: Maybe<[Member]>.self, key: "requestLoadMembers") {
+            return .just([Member(uid: "some", nickName: "new member", icon: nil)])
+        }
+        
+        // when
+        let loading = self.usecase.reloadCurrentMember()
+        let error = self.waitError(expect, for: loading.asObservable())
+        
+        // then
+        XCTAssertNotNil(error)
+    }
+    
+    func testUsecase_whenAfterReloadCurrentMember_updateSharedStore() {
+        // given
+        let expect = expectation(description: "현재 멤버 reload 시에 스토어 업데이트")
+        self.store.updateAuth(.init(userID: "some"))
+        self.mockRepository.register(type: Maybe<[Member]>.self, key: "requestLoadMembers") {
+            return .just([Member(uid: "some", nickName: "new member", icon: nil)])
+        }
+        
+        // when
+        let currentMemberSource = self.store.observe(Member.self, key: SharedDataKeys.currentMember.rawValue)
+        let membersMapSource = self.store.observe([String: Member].self, key: SharedDataKeys.memberMap.rawValue)
+        let sharedEventSource = Observable.combineLatest(currentMemberSource, membersMapSource)
+        let pair = self.waitFirstElement(expect, for: sharedEventSource) {
+            self.usecase.reloadCurrentMember()
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(pair?.0?.nickName, "new member")
+        XCTAssertEqual(pair?.1?["some"]?.nickName, "new member")
     }
 }
 

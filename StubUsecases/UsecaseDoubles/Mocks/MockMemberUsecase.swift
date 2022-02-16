@@ -51,6 +51,10 @@ open class MockMemberUsecase: MemberUsecase, Mocking {
         return self.resolve(key: "fetchCurrentMember")
     }
     
+    public func reloadCurrentMember() -> Maybe<Member> {
+        return self.resolve(key: "reloadCurrentMember") ?? .empty()
+    }
+    
     public let updateStatus = PublishSubject<UpdateMemberProfileStatus>()
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
         self.verify(key: "updateCurrent", with: (updateFields, profile))
