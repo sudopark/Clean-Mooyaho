@@ -289,7 +289,7 @@ extension EditProfileViewModelImple {
     private var introCell: Observable<EditProfileCellViewModel> {
         
         let selectValue: (Member, String?) -> String? = { member, editedValue in
-            return editedValue?.emptyAsNil() ?? member.introduction
+            return (editedValue ?? member.introduction)?.emptyAsNil()
         }
         return Observable
             .combineLatest(self.subjects.currentMember.compactMap { $0 },

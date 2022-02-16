@@ -78,12 +78,40 @@ extension EditProfileViewModelTests {
         
         // when
         self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
-        let cellViewMdoels = self.waitFirstElement(expect, for: viewModel.cellViewModels)
+        let cellViewModels = self.waitFirstElement(expect, for: viewModel.cellViewModels)
         
         // then
-        XCTAssertEqual(cellViewMdoels, [
+        XCTAssertEqual(cellViewModels, [
             .init(inputType: .nickname, value: "nick", isRequire: true),
             .init(inputType: .intro, value: nil, isRequire: false)
+        ])
+    }
+    
+    func testViewModel_clearIntro() {
+        // given
+        let expect = expectation(description: "자기소개 초기화")
+        expect.expectedFulfillmentCount = 2
+        var member = Member(uid: "uid", nickName: "some", icon: nil)
+        member.introduction = "old_value"
+        self.registerMember(member)
+        self.viewModel = .init(usecase: self.mockMemberUsecase, router: self.spyRouter)
+        
+        // when
+        let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels) {
+            self.viewModel.requestChangeProperty(.intro)
+            self.spyRouter.capturedListener?.textInput(didEntered: "")
+        }
+        
+        // then
+        XCTAssertEqual(cvmLists, [
+            [
+                .init(inputType: .nickname, value: "some", isRequire: true),
+                .init(inputType: .intro, value: "old_value", isRequire: false)
+            ],
+            [
+                .init(inputType: .nickname, value: "some", isRequire: true),
+                .init(inputType: .intro, value: nil, isRequire: false)
+            ]
         ])
     }
 }
