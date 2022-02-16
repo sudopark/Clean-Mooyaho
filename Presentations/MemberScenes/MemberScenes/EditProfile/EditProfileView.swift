@@ -1,230 +1,190 @@
 //
+//  
 //  EditProfileView.swift
 //  MemberScenes
 //
-//  Created by sudo.park on 2021/05/31.
+//  Created by sudo.park on 2022/02/16.
+//
 //
 
+
 import UIKit
+import SwiftUI
 
 import RxSwift
 import RxCocoa
-import Prelude
-import Optics
 
+import Domain
 import CommonPresenting
 
 
-final class EditProfileView: BaseUIView {
+// MARK: - EditProfileViewController
+
+public final class EditProfileViewStateObject: ObservableObject {
     
-    final class ProfileImageHeaderView: BaseUIView, Presenting, UITextFieldDelegate {
+    @Published var thumbnail: Thumbnail?
+    @Published var cellViewModels: [EditProfileCellViewModel] = []
+    @Published var isSavable: Bool = false
+    @Published var isSaveChanges: Bool = false
+    
+    public func bind(_ viewModel: EditProfileViewModel) {
         
-        let titleLabel = UILabel()
-        let descriptionLabel = UILabel()
+        guard self.didBind == false else { return }
+        self.didBind = true
         
-        let borderView = UIView()
-        let imageView = IntegratedImageView()
+        viewModel.profileImageSource
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] thumbnail in
+                self?.thumbnail = thumbnail
+            })
+            .disposed(by: self.disposeBag)
         
-        func setupLayout() {
-            
-            self.addSubview(borderView)
-            borderView.autoLayout.active(with: self) {
-                $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
-                $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-                $0.heightAnchor.constraint(equalToConstant: 100)
-                $0.widthAnchor.constraint(equalToConstant: 100)
-            }
-            
-            self.addSubview(titleLabel)
-            titleLabel.autoLayout.active(with: self) {
-                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
-                $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 20)
-                $0.trailingAnchor.constraint(lessThanOrEqualTo: borderView.leadingAnchor, constant: -8)
-            }
-            
-            self.addSubview(descriptionLabel)
-            descriptionLabel.autoLayout.active(with: self) {
-                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
-                $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12)
-                $0.trailingAnchor.constraint(lessThanOrEqualTo: borderView.leadingAnchor, constant: -20)
-            }
-            
-            self.borderView.addSubview(imageView)
-            self.imageView.autoLayout.fill(borderView, edges: .init(top: 1, left: 1, bottom: 1, right: 1))
-            self.imageView.setupLayout()
-        }
+        viewModel.cellViewModels
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] cellViewModels in
+                self?.cellViewModels = cellViewModels
+            })
+            .disposed(by: self.disposeBag)
         
-        func setupStyling() {
-            
-            self.backgroundColor = self.uiContext.colors.appBackground
-            
-            _ = self.titleLabel
-                |> self.uiContext.decorating.listItemTitle(_:)
-                |> \.numberOfLines .~ 1
-                |> \.text .~ pure("Profile image".localized)
-            
-            _ = self.descriptionLabel
-                |> self.uiContext.decorating.listItemDescription
-                |> \.numberOfLines .~ 0
-                |> \.text .~ pure("You can choose a photo or emoji as a profile image.".localized)
-            
-            self.imageView.setupStyling()
-            self.imageView.backgroundColor = self.uiContext.colors.appBackground
-            self.imageView.layer.cornerRadius = 49
-            self.imageView.clipsToBounds = true
-            
-            self.borderView.backgroundColor = self.uiContext.colors.appSecondBackground
-            self.borderView.layer.cornerRadius = 50
-            self.borderView.clipsToBounds = true
-        }
+        viewModel.isSavable
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isSavable in
+                self?.isSavable = isSavable
+            })
+            .disposed(by: self.disposeBag)
+        
+        viewModel.isSaveChanges
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isSaveChanges in
+                self?.isSaveChanges = isSaveChanges
+            })
+            .disposed(by: self.disposeBag)
     }
     
-    final class InputTextCell: BaseTableViewCell, Presenting {
-        
-        let keyLabel = UILabel()
-        let valueLabel = UILabel()
-        let requireAccetLabel = UILabel()
-        
-        func setupCell(_ cellViewModel: EditProfileCellViewModel) {
-            self.keyLabel.text = cellViewModel.inputType.title
-            self.valueLabel.text = cellViewModel.value ?? cellViewModel.inputType.placeHolder
-            self.requireAccetLabel.isHidden = cellViewModel.isRequire == false
-        }
-        
-        override func afterViewInit() {
-            super.afterViewInit()
-            self.setupLayout()
-            self.setupStyling()
-        }
-        
-        func setupLayout() {
-            
-            self.contentView.addSubview(keyLabel)
-            keyLabel.autoLayout.active(with: self.contentView) {
-                $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 6)
-                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
-            }
-            keyLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-            
-            self.contentView.addSubview(requireAccetLabel)
-            requireAccetLabel.autoLayout.active(with: self.contentView) {
-                $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -16)
-                $0.leadingAnchor.constraint(equalTo: keyLabel.trailingAnchor, constant: 2)
-                $0.topAnchor.constraint(equalTo: keyLabel.topAnchor, constant: 2)
-            }
-            keyLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-            
-            self.contentView.addSubview(valueLabel)
-            valueLabel.autoLayout.active(with: self.contentView) {
-                $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
-                $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
-                $0.topAnchor.constraint(equalTo: keyLabel.bottomAnchor, constant: 4)
-                $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -6)
-            }
-        }
-        
-        func setupStyling() {
-            self.backgroundColor = self.uiContext.colors.appSecondBackground
-            
-            _ = keyLabel
-                |> self.uiContext.decorating.listItemTitle(_:)
-                |> \.numberOfLines .~ 1
-            
-            _ = self.requireAccetLabel
-                |> \.font .~ self.uiContext.fonts.get(14, weight: .medium)
-                |> \.textColor .~ UIColor.systemRed
-                |> \.text .~ "*"
-                |> \.isHidden .~ true
-            
-            _ = valueLabel
-                |> self.uiContext.decorating.listItemTitle(_:)
-                |>  \.font .~ self.uiContext.fonts.get(15, weight: .regular)
-                |> \.numberOfLines .~ 1
-            
-            self.accessoryType = .disclosureIndicator
-        }
-    }
-    
-    let closeButton = UIButton(type: .system)
-    let saveButton = UIButton(type: .system)
-    let titleLabel = UILabel()
-    
-    let profileHeaderView = ProfileImageHeaderView()
-    let tableView = UITableView()
+    private let disposeBag = DisposeBag()
+    private var didBind = false
 }
 
 
-extension EditProfileView: Presenting {
+// MARK: - EditProfileView
+
+public struct EditProfileView: View {
     
-    func setupLayout() {
-        
-        let topView = UIView()
-        self.addSubview(topView)
-        topView.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-        }
-        
-        topView.addSubview(closeButton)
-        closeButton.autoLayout.active(with: topView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 16)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 12)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -12)
-        }
-        
-        topView.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: topView) {
-            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-        }
-        
-        topView.addSubview(saveButton)
-        saveButton.autoLayout.active(with: topView) {
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -16)
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-        }
-        
-        self.addSubview(tableView)
-        tableView.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: topView.bottomAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-        }
-        
-        self.tableView.tableHeaderView = profileHeaderView
-        profileHeaderView.autoLayout.active {
-            $0.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
-            $0.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-            $0.topAnchor.constraint(equalTo: tableView.topAnchor)
-            $0.heightAnchor.constraint(equalToConstant: 120)
-        }
-        profileHeaderView.setupLayout()
+    private let viewModel: EditProfileViewModel
+    @StateObject var states: EditProfileViewStateObject = .init()
+    
+    public init(viewModel: EditProfileViewModel) {
+        self.viewModel = viewModel
     }
     
-    func setupStyling() {
-        
-        self.closeButton.setTitle("Close".localized, for: .normal)
-        
-        self.titleLabel.text = "Edit Profile".localized
-        self.titleLabel.textColor = self.uiContext.colors.text
-        self.titleLabel.textAlignment = .center
-        
-        self.saveButton.setTitle("Save".localized, for: .normal)
-        self.saveButton.isEnabled = false
-        
-        self.backgroundColor = self.uiContext.colors.appBackground
-        
-        self.tableView.registerCell(InputTextCell.self)
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.separatorStyle = .none
-        
-        self.profileHeaderView.setupStyling()
+    public var body: some View {
+        NavigationView {
+            List {
+                self.profileHeaderView(self.states.thumbnail)
+                ForEach(self.states.cellViewModels) { textCell($0) }
+                    .listRowBackground(self.uiContext.colors.appSecondBackground.asColor)
+            }
+            .listStyle(.plain)
+            .navigationTitle("Edit Profile".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading: closeButton, trailing: saveButton)
+        }
+        .onAppear {
+            self.states.bind(self.viewModel)
+        }
     }
 }
 
+
+extension EditProfileView {
+    
+    private var closeButton: some View {
+        Button("Close".localized) {
+            self.viewModel.requestCloseScene()
+        }
+    }
+    
+    private var saveButton: some View {
+        Button("Save".localized) {
+            self.viewModel.saveChanges()
+        }
+        .disabled(self.states.isSavable == false)
+    }
+    
+    func profileHeaderView(_ thumbnail: Thumbnail?) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Profile image".localized)
+                    .listItemTitle()
+                Text("You can choose a photo or emoji as a profile image.".localized)
+                    .listItemDescription()
+            }
+            Spacer()
+            ZStack {
+                Circle()
+                    .strokeBorder(self.uiContext.colors.appSecondBackground.asColor, lineWidth: 1)
+                    .frame(width: 100, height: 100)
+                
+                Views.IntegratedImageView(
+                    .constant(thumbnail),
+                    resize: .init(width: 98, height: 98),
+                    backgroundColor: self.uiContext.colors.appBackground.asColor
+                )
+                .frame(width: 98, height: 98)
+                .clipShape(Circle())
+            }
+            .onTapGesture {
+                self.viewModel.requestChangeThumbnail()
+            }
+        }
+        .padding(.init(top: 20, leading: 0, bottom: 20, trailing: 0))
+    }
+    
+    func textCell(_ cellViewModel: EditProfileCellViewModel) -> some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .top, spacing: 2) {
+                    Text(cellViewModel.inputType.title)
+                        .listItemTitle()
+                        .lineLimit(1)
+                    if cellViewModel.isRequire {
+                        Text("*")
+                            .font(self.uiContext.fonts.get(14, weight: .medium).asFont)
+                            .foregroundColor(.red)
+                            .offset(y: 2)
+                    }
+                }
+                Text(cellViewModel.value ?? cellViewModel.inputType.placeHolder)
+                    .font(self.uiContext.fonts.get(15, weight: .regular).asFont)
+                    .lineLimit(1)
+            }
+            
+            Spacer(minLength: 16)
+            
+            Image(systemName: "chevron.right")
+                .resizable()
+                .foregroundColor(self.uiContext.colors.raw.lightGray.asColor)
+                .frame(width: 6, height: 12)
+        }
+        .onTapGesture {
+            self.viewModel.requestChangeProperty(cellViewModel.inputType)
+        }
+    }
+}
+
+
+// MARK: - extension
+
+extension EditProfileCellViewModel: Identifiable {
+    
+    public var id: Int {
+        var hasher = Hasher()
+        hasher.combine(self.inputType.rawValue)
+        hasher.combine(self.value)
+        hasher.combine(self.isRequire)
+        return hasher.finalize()
+    }
+}
 
 private extension EditProfileCellViewModel.InputType {
     
@@ -240,5 +200,46 @@ private extension EditProfileCellViewModel.InputType {
         case .nickname: return "Nickname".localized
         case .intro: return "Introduction".localized
         }
+    }
+}
+
+
+struct EditProfileView_Preview: PreviewProvider {
+    
+    final class DummyViewModel: EditProfileViewModel {
+        
+        func requestChangeThumbnail() { }
+        
+        func requestChangeProperty(_ inputType: EditProfileCellViewModel.InputType) { }
+        
+        func saveChanges() { }
+        
+        func requestCloseScene() { }
+        
+        var profileImageSource: Observable<Thumbnail?> {
+            return .just(.emoji("🤑"))
+        }
+        
+        var cellViewModels: Observable<[EditProfileCellViewModel]> {
+            return .just([
+                .init(inputType: .nickname, value: nil, isRequire: true),
+                .init(inputType: .intro, value: nil, isRequire: false)
+            ])
+        }
+        
+        var isSavable: Observable<Bool> {
+            return .just(false)
+        }
+        
+        var isSaveChanges: Observable<Bool> {
+            return .just(false)
+        }
+        
+        
+    }
+    
+    static var previews: some View {
+        let viewModel = DummyViewModel()
+        return EditProfileView(viewModel: viewModel)
     }
 }
