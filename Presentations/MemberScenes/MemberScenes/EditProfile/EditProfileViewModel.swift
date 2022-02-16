@@ -20,7 +20,7 @@ import CommonPresenting
 
 public struct EditProfileCellViewModel: Equatable {
     
-    public enum InputType {
+    public enum InputType: String {
         case nickname
         case intro
     }
