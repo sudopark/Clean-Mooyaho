@@ -24,6 +24,7 @@ open class BaseStubMemberUsecase: MemberUsecase {
         public var currentMember: Member?
         
         public var loadMemberResult: Result<[Member], Error> = .success([])
+        public var reloadedMember: Member?
         
         public init() { }
     }
@@ -35,6 +36,10 @@ open class BaseStubMemberUsecase: MemberUsecase {
     
     open func fetchCurrentMember() -> Member? {
         return nil
+    }
+    
+    public func reloadCurrentMember() -> Maybe<Member> {
+        return self.scenario.reloadedMember.map { .just($0) } ?? .empty()
     }
     
     open func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {
