@@ -21,6 +21,8 @@
 		2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B9263AE5D10000C0C6 /* Executor.swift */; };
 		F6025FED26A9CFD2007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */; };
 		F603F46227B949E30096D8C1 /* BackButton+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */; };
+		F60CCE6B27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */; };
+		F60CCE6D27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */; };
 		F610146926570A1400D32E38 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146826570A1400D32E38 /* BaseUIView.swift */; };
 		F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146C26570B8A00D32E38 /* AutoLayout.swift */; };
 		F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146E2657122300D32E38 /* AutoLayoutTests.swift */; };
@@ -171,6 +173,8 @@
 		2BE978B9263AE5D10000C0C6 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackButton+SwiftUI.swift"; sourceTree = "<group>"; };
+		F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoordinatedScrollView+SwiftUI.swift"; sourceTree = "<group>"; };
+		F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollBottomHitThrottling.swift; sourceTree = "<group>"; };
 		F610146826570A1400D32E38 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		F610146C26570B8A00D32E38 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
 		F610146E2657122300D32E38 /* AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutTests.swift; sourceTree = "<group>"; };
@@ -411,6 +415,7 @@
 				F667E28E26E1367D0046B9FB /* MemberInfo.swift */,
 				F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */,
 				F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */,
+				F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -528,6 +533,7 @@
 				F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */,
 				F6FE769427B926B1007959EC /* Views.swift */,
 				F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */,
+				F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -755,6 +761,7 @@
 			files = (
 				F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */,
 				F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */,
+				F60CCE6D27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift in Sources */,
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
 				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
@@ -831,6 +838,7 @@
 				F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */,
 				F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */,
 				F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */,
+				F60CCE6B27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift in Sources */,
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
 				F6A3A0AD275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift in Sources */,
