@@ -360,3 +360,36 @@ extension EditCategoryViewController: UITableViewDelegate {
         return 0
     }
 }
+
+
+// MARK: - CategoryCell
+
+final class CategoryCell: BaseTableViewCell, Presenting {
+    
+    let labelView = CategoryLabelView()
+    
+    override func afterViewInit() {
+        super.afterViewInit()
+        self.setupLayout()
+        self.setupStyling()
+    }
+}
+
+extension CategoryCell {
+    
+    func setupLayout() {
+        self.contentView.addSubview(labelView)
+        labelView.autoLayout.active(with: self.contentView) {
+            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 20)
+            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor, constant: -20)
+            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
+        }
+        labelView.setupLayout()
+    }
+    
+    func setupStyling() {
+        self.labelView.setupStyling()
+        self.labelView.updateCloseViewIsHidden(true)
+    }
+}
