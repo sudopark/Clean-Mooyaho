@@ -90,6 +90,25 @@ public struct FcmAPIEndPoint: HttpAPIEndPoint {
 }
 
 
+public struct KakaoSignInAPIEndPoint: HttpAPIEndPoint {
+    
+    public let path: String
+    public init(path: String) {
+        self.path = "\(path)/kakao-signin"
+    }
+    
+    public var method: HttpAPIMethods { .post }
+    
+    public var customHeader: [String : String]? {
+        return [
+            "Content-Type": "application/json",
+        ]
+    }
+    
+}
+
+
+@available(*, deprecated, message: "use KakaoSignInAPIEndPoint")
 public struct LegacyAPIEndPoint: HttpAPIEndPoint {
     
     public let path: String
@@ -101,7 +120,7 @@ public struct LegacyAPIEndPoint: HttpAPIEndPoint {
     public var method: HttpAPIMethods { .post }
     public var customHeader: [String : String]? {
         return [
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         ]
     }
 }
