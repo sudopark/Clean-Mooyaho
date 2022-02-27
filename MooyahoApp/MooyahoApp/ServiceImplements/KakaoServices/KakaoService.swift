@@ -41,7 +41,7 @@ public final class KakaoServiceImple: KakaoService, KakaoOAuth2ServiceDefImpleDe
     
     public func setupService() {
         guard let nativeKey = self.loadNativeAppkey() else { return }
-        KakaoSDKCommon.initSDK(appKey: nativeKey)
+        KakaoSDK.initSDK(appKey: nativeKey)
     }
     
     public func canHandleURL(_ url: URL) -> Bool {
