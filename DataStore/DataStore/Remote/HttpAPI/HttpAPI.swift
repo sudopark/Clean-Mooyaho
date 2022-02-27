@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 import Prelude
 import Optics
+import Alamofire
 
 import Domain
 
