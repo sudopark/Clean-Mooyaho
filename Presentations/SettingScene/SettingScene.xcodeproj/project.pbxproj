@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		F60CCE6527BF8BAD00EC4BC0 /* ManageCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CCE5F27BF8BAD00EC4BC0 /* ManageCategoryViewController.swift */; };
 		F60CCE6827BF8BAD00EC4BC0 /* ManageCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CCE6227BF8BAD00EC4BC0 /* ManageCategoryView.swift */; };
-		F6118D89273D61AE00E0489B /* WaitMigrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D84273D61AD00E0489B /* WaitMigrationViewController.swift */; };
 		F6118D8A273D61AE00E0489B /* WaitMigrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D85273D61AD00E0489B /* WaitMigrationViewModel.swift */; };
 		F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */; };
 		F6118D8D273D61AE00E0489B /* WaitMigrationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */; };
@@ -51,6 +50,8 @@
 		F69FFD7B275920D300D9DF05 /* ManageCategoryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */; };
 		F69FFD7C275920D300D9DF05 /* ManageCategoryScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */; };
 		F69FFD7D275920D300D9DF05 /* ManageCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */; };
+		F6F7297B27DDE019003F8E14 /* WaitMigrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F7297527DDE019003F8E14 /* WaitMigrationViewController.swift */; };
+		F6F7297E27DDE019003F8E14 /* WaitMigrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F7297827DDE019003F8E14 /* WaitMigrationView.swift */; };
 		F6FE768F27B91BF2007959EC /* ManageAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE768927B91BF2007959EC /* ManageAccountViewController.swift */; };
 		F6FE769227B91BF2007959EC /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE768C27B91BF2007959EC /* ManageAccountView.swift */; };
 /* End PBXBuildFile section */
@@ -68,7 +69,6 @@
 /* Begin PBXFileReference section */
 		F60CCE5F27BF8BAD00EC4BC0 /* ManageCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewController.swift; sourceTree = "<group>"; };
 		F60CCE6227BF8BAD00EC4BC0 /* ManageCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryView.swift; sourceTree = "<group>"; };
-		F6118D84273D61AD00E0489B /* WaitMigrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewController.swift; sourceTree = "<group>"; };
 		F6118D85273D61AD00E0489B /* WaitMigrationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewModel.swift; sourceTree = "<group>"; };
 		F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationScene.swift; sourceTree = "<group>"; };
 		F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitMigrationRouter.swift; sourceTree = "<group>"; };
@@ -112,6 +112,8 @@
 		F69FFD76275920D300D9DF05 /* ManageCategoryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryBuilder.swift; sourceTree = "<group>"; };
 		F69FFD77275920D300D9DF05 /* ManageCategoryScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryScene.swift; sourceTree = "<group>"; };
 		F69FFD78275920D300D9DF05 /* ManageCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCategoryViewModel.swift; sourceTree = "<group>"; };
+		F6F7297527DDE019003F8E14 /* WaitMigrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitMigrationViewController.swift; sourceTree = "<group>"; };
+		F6F7297827DDE019003F8E14 /* WaitMigrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitMigrationView.swift; sourceTree = "<group>"; };
 		F6FE768927B91BF2007959EC /* ManageAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewController.swift; sourceTree = "<group>"; };
 		F6FE768C27B91BF2007959EC /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,7 +148,8 @@
 			children = (
 				F6118D88273D61AE00E0489B /* WaitMigrationRouter.swift */,
 				F6118D86273D61AD00E0489B /* WaitMigrationScene.swift */,
-				F6118D84273D61AD00E0489B /* WaitMigrationViewController.swift */,
+				F6F7297527DDE019003F8E14 /* WaitMigrationViewController.swift */,
+				F6F7297827DDE019003F8E14 /* WaitMigrationView.swift */,
 				F6118D85273D61AD00E0489B /* WaitMigrationViewModel.swift */,
 			);
 			path = Migration;
@@ -398,11 +401,11 @@
 				F66CDF60275B3892009CF185 /* EditCategoryAttrBuilder.swift in Sources */,
 				F6118D8A273D61AE00E0489B /* WaitMigrationViewModel.swift in Sources */,
 				F6118D8B273D61AE00E0489B /* WaitMigrationScene.swift in Sources */,
-				F6118D89273D61AE00E0489B /* WaitMigrationViewController.swift in Sources */,
 				F66249002759484600D4FC74 /* CategoryPagingUsecase.swift in Sources */,
 				F65F0041275DD33E0022F987 /* ManageAccountBuilder.swift in Sources */,
 				F69FFD79275920D300D9DF05 /* ManageCategoryRouter.swift in Sources */,
 				F617F1182768F77300D88F9C /* FeedbackScene.swift in Sources */,
+				F6F7297E27DDE019003F8E14 /* WaitMigrationView.swift in Sources */,
 				F6FE768F27B91BF2007959EC /* ManageAccountViewController.swift in Sources */,
 				F66CDF5F275B3892009CF185 /* EditCategoryAttrViewController.swift in Sources */,
 				F66CDF5E275B3892009CF185 /* EditCategoryAttrRouter.swift in Sources */,
@@ -413,6 +416,7 @@
 				F617F1162768F77300D88F9C /* FeedbackViewController.swift in Sources */,
 				F66CDF61275B3892009CF185 /* EditCategoryAttrScene.swift in Sources */,
 				F617F1192768F77300D88F9C /* FeedbackViewModel.swift in Sources */,
+				F6F7297B27DDE019003F8E14 /* WaitMigrationViewController.swift in Sources */,
 				F60CCE6827BF8BAD00EC4BC0 /* ManageCategoryView.swift in Sources */,
 				F617F1172768F77300D88F9C /* FeedbackBuilder.swift in Sources */,
 				F65F003F275DD33E0022F987 /* ManageAccountRouter.swift in Sources */,
