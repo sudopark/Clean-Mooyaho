@@ -68,7 +68,7 @@ extension ApplicationRootRouter {
     }
     
     public func showRemindItem(_ itemID: String) -> Bool {
-        guard let root = self.window.rootViewController,
+        guard let root = self.window?.rootViewController,
               self.mainInteractor != nil
         else {
             return false
