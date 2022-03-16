@@ -267,9 +267,8 @@ extension EditReadCollectionViewModelImple {
 extension EditReadCollectionViewModelImple {
     
     public func changeParentCollection() {
-//        let parent = self.subjects.parantCollection.value?.collection
-        // TODO: 임시로 일단 최상위 콜렉션으로 연결
-        self.router.selectParentCollection(statrWith: nil)
+        let current = self.subjects.parantCollection.value?.collection
+        self.router.selectParentCollection(statrWith: current)
     }
     
     public func navigateCollection(didSelectCollection collection: ReadCollection?) {
