@@ -304,10 +304,8 @@ extension EditLinkItemViewModelImple {
     
     public func changeCollection() {
         
-//        let collection = self.subjects.selectParentCollection.value?.collection
-        // TODO: 임시로 최상위 콜렉션으로만 라퉁팅되도록 설정
-        let collection: ReadCollection? = nil
-        self.router.editParentCollection(collection)
+        let current = self.subjects.selectParentCollection.value?.collection
+        self.router.editParentCollection(current)
     }
     
     public func navigateCollection(didSelectCollection collection: ReadCollection?) {

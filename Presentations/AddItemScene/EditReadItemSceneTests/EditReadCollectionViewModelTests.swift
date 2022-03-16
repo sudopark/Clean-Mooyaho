@@ -30,6 +30,7 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
     var didRequestStartWithRemindTime: TimeStamp?
     var didRequestStartWithRemindItem: ReadItem?
     var didRequestSelectParentCollection: Bool?
+    var didRequestSelectParentCollectionStartWiths: [ReadCollection?] = []
     var mockSelectedPriority: ReadPriority?
     var mockSelectedCategories: [ItemCategory]?
     var mockSelectedRemindtime: TimeStamp?
@@ -53,6 +54,7 @@ class EditReadCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Edit
         self.didRequestStartWithRemindTime = nil
         self.didRequestStartWithRemindItem = nil
         self.didRequestSelectParentCollection = nil
+        self.didRequestSelectParentCollectionStartWiths = []
         self.mockSelectedPriority = nil
         self.mockSelectedCategories = nil
         self.mockSelectedRemindtime = nil
@@ -368,6 +370,9 @@ extension EditReadCollectionViewModelTests {
         }
         
         // then
+        XCTAssertEqual(self.didRequestSelectParentCollectionStartWiths.map { $0?.name }, [
+            nil, dummyParent.name
+        ])
         XCTAssertEqual(names, [
             "My Read Collections".localized, dummyParent.name, "My Read Collections".localized
         ])
@@ -494,5 +499,6 @@ extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
     
     func selectParentCollection(statrWith current: ReadCollection?) {
         self.didRequestSelectParentCollection = true
+        self.didRequestSelectParentCollectionStartWiths.append(current)
     }
 }
