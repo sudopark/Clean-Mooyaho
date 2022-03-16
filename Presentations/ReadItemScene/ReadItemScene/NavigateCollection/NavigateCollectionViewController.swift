@@ -51,6 +51,7 @@ public final class NavigateCollectionViewController: BaseViewController, Navigat
         super.viewDidLoad()
         self.bind()
         self.viewModel.reloadCollections()
+        self.viewModel.requestPrepareParentIfNeed()
     }
     
 }

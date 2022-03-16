@@ -35,6 +35,7 @@ public protocol NavigateCollectionViewModel: AnyObject {
 
     // interactor
     func reloadCollections()
+    func requestPrepareParentIfNeed()
     func moveToSubCollection(_ collectionID: String)
     func confirmSelect()
     
@@ -53,14 +54,18 @@ public class NavigateCollectionViewModelImple: NavigateCollectionViewModel {
     let readItemUsecase: ReadItemUsecase
     let router: NavigateCollectionRouting
     private weak var listener: NavigateCollectionSceneListenable?
+    private weak var coordinator: CollectionInverseNavigationCoordinating?
     
     public init(currentCollection: ReadCollection?,
                 readItemUsecase: ReadItemUsecase,
                 router: NavigateCollectionRouting,
-                listener: NavigateCollectionSceneListenable?) {
+                listener: NavigateCollectionSceneListenable?,
+                coordinator: CollectionInverseNavigationCoordinating?) {
+        
         self.readItemUsecase = readItemUsecase
         self.router = router
         self.listener = listener
+        self.coordinator = coordinator
         
         self.subjects.currentCollection.accept(currentCollection)
     }
@@ -117,6 +122,21 @@ extension NavigateCollectionViewModelImple {
         loading
             .map(filtering)
             .subscribe(onNext: loaded, onError: self.handleError())
+            .disposed(by: self.disposeBag)
+    }
+    
+    public func requestPrepareParentIfNeed() {
+        
+        guard let parentID = self.subjects.currentCollection.value?.parentID
+        else { return }
+        let loadParent = self.readItemUsecase.loadCollectionInfo(parentID)
+        let thenRequestPreapre: (ReadCollection) -> Void = { [weak self] parent in
+            self?.coordinator?.inverseNavigating(prepareParent: parent)
+        }
+        
+        loadParent
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: thenRequestPreapre)
             .disposed(by: self.disposeBag)
     }
     

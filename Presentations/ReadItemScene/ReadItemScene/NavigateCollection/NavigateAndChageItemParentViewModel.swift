@@ -12,8 +12,10 @@ import Prelude
 import Optics
 
 import Domain
+import CommonPresenting
 
 
+@available(*, deprecated, message: "사용하는 부분 없음")
 public class NavigateAndChageItemParentViewModelImple: NavigateCollectionViewModelImple {
     
     private let targetItem: ReadItem
@@ -22,12 +24,15 @@ public class NavigateAndChageItemParentViewModelImple: NavigateCollectionViewMod
     public init(targetItem: ReadItem,
                 currentCollection: ReadCollection?,
                 readItemUsecase: ReadItemUsecase,
-                router: NavigateCollectionRouting) {
+                router: NavigateCollectionRouting,
+                coordinator: CollectionInverseNavigationCoordinating?) {
         self.targetItem = targetItem
         self.currentCollection = currentCollection
         super.init(currentCollection: currentCollection,
                    readItemUsecase: readItemUsecase,
-                   router: router, listener: nil)
+                   router: router,
+                   listener: nil,
+                   coordinator: coordinator)
     }
     
     public override func confirmSelect() {

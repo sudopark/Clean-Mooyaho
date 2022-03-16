@@ -10,18 +10,24 @@ import UIKit
 import Domain
 
 
+public protocol CollectionInverseParentMakeParameter { }
+
+extension String: CollectionInverseParentMakeParameter { }
+extension ReadCollection: CollectionInverseParentMakeParameter { }
+
+
 public protocol CollectionInverseNavigationCoordinating: AnyObject {
     
-    func inverseNavigating(prepareParent collectionID: String)
+    func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter)
 }
 
 public final class CollectionInverseNavigationCoordinator {
     
     private weak var navigationController: UINavigationController?
-    private let makeParent: (String) -> UIViewController?
+    private let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
     
     public init(navigationController: UINavigationController?,
-                makeParent: @escaping (String) -> UIViewController?) {
+                makeParent: @escaping (CollectionInverseParentMakeParameter) -> UIViewController?) {
         self.navigationController = navigationController
         self.makeParent = makeParent
     }
@@ -29,15 +35,15 @@ public final class CollectionInverseNavigationCoordinator {
 
 extension CollectionInverseNavigationCoordinator: CollectionInverseNavigationCoordinating {
     
-    public func inverseNavigating(prepareParent collectionID: String) {
+    public func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
         guard let navigationController = self.navigationController,
               navigationController.viewControllers.count > 1,
-              let parentController = self.makeParent(collectionID)
+              let parentController = self.makeParent(parameter)
         else {
             return
         }
         
-        logger.print(level: .debug, "inverse navigating prepare parent: \(collectionID)")        
+        logger.print(level: .debug, "inverse navigating prepare parent: \(parameter)")
         let lastIndex = navigationController.viewControllers.count
         var newControllers = navigationController.viewControllers + [parentController]
         newControllers.swapAt(lastIndex, lastIndex-1)

@@ -1208,7 +1208,7 @@ extension ReadCollectionViewModelTests {
     class SpyInverseNavigationCoorditator: CollectionInverseNavigationCoordinating {
         
         var didPrepareParentRequested: Bool = false
-        func inverseNavigating(prepareParent collectionID: String) {
+        func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
             self.didPrepareParentRequested = true
         }
     }
