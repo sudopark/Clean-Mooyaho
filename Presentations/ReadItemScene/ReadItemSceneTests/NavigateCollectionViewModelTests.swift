@@ -26,6 +26,8 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
     var didMoveTo: ReadCollection?
     var didSelectCollection: ReadCollection?
     
+    var spyCoordinator: SpyInverseNavigationCoordinator!
+    
     func moveToSubCollection(_ collection: ReadCollection, listener: NavigateCollectionSceneListenable?) {
         self.didMoveTo = collection
     }
@@ -40,11 +42,13 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
+        self.spyCoordinator = .init()
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.didMoveTo = nil
+        self.spyCoordinator = nil
     }
     
     var dummyCollectionItems: [ReadCollection] {
@@ -65,10 +69,13 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
             |> \.myItems .~ .success(self.myCollectionItems + dummyLinkItems)
             |> \.collectionItems .~ .success(self.dummyCollectionItems + dummyLinkItems)
         let usecase = StubReadItemUsecase(scenario: scenario)
-        let collection = isRoot ? nil : ReadCollection.dummy(0)
+        let collection: ReadCollection? = (isRoot ? nil : ReadCollection.dummy(0))
+            .map { $0 |> \.parentID .~ (isRoot ? nil : "parent") }
         return NavigateCollectionViewModelImple(currentCollection: collection,
                                                 readItemUsecase: usecase,
-                                                router: self, listener: self)
+                                                router: self,
+                                                listener: self,
+                                                coordinator: self.spyCoordinator)
     }
 }
 
@@ -175,6 +182,34 @@ extension NavigateCollectionViewModelTests {
 }
 
 
+// MARK: - test prepare parent
+
+extension NavigateCollectionViewModelTests {
+    
+    func testViewModel_requestPrepareParent_ifParentExists() {
+        // given
+        let viewModel = self.makeViewModel(isRoot: false)
+        
+        // when
+        viewModel.requestPrepareParentIfNeed()
+        
+        // then
+        XCTAssertNotNil(self.spyCoordinator.didRequestedPrepareParentParams)
+    }
+    
+    func testViewModel_doNotRequestPrepareParent_ifParentNotExists() {
+        // given
+        let viewModel = self.makeViewModel(isRoot: true)
+        
+        // when
+        viewModel.requestPrepareParentIfNeed()
+        
+        // then
+        XCTAssertNil(self.spyCoordinator.didRequestedPrepareParentParams)
+    }
+}
+
+
 class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModelTests {
     
     private func targetItem(_ parentID: String?) -> ReadLink {
@@ -200,7 +235,8 @@ class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModel
         return NavigateAndChageItemParentViewModelImple(targetItem: target,
                                                         currentCollection: collection,
                                                         readItemUsecase: usecase,
-                                                        router: self)
+                                                        router: self,
+                                                        coordinator: self.spyCoordinator)
     }
     
     override func closeScene(animated: Bool, completed: (() -> Void)?) {
@@ -244,5 +280,18 @@ class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModel
         
         // then
         XCTAssertEqual(self.didClose, true)
+    }
+}
+
+
+
+extension NavigateCollectionViewModelTests {
+    
+    class SpyInverseNavigationCoordinator: CollectionInverseNavigationCoordinating {
+        
+        var didRequestedPrepareParentParams: CollectionInverseParentMakeParameter?
+        func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
+            self.didRequestedPrepareParentParams = parameter
+        }
     }
 }

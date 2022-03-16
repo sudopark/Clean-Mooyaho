@@ -40,6 +40,7 @@ public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable & 
 public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, EditLinkItemRouting {
     
     private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    private var collectionInverseNavigationCoordinator: CollectionInverseNavigationCoordinator?
 }
 
 
@@ -94,15 +95,60 @@ extension EditLinkItemRouter {
     
     public func editParentCollection(_ current: ReadCollection?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor)
+        guard let current = current else {
+            self.showNavigationSceneWithoutJump()
+            return
+        }
+
+        self.showNavigationSceneWithJump(current)
+    }
+    
+    private func showNavigationSceneWithoutJump() {
+        
+        guard let root = self.nextScenesBuilder?
+            .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor)
         else { return }
         
-        let navigationController = BaseNavigationController(
-            rootViewController: next,
+        let navigationController = self.makeNavaigationController(root)
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
+    }
+    
+    private func showNavigationSceneWithJump(_ current: ReadCollection) {
+        
+        let navigationController = self.makeNavaigationController()
+        self.prepareInverseCoordinator(navigationController)
+        
+        guard let root = self.nextScenesBuilder?
+            .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor),
+              let dest = self.nextScenesBuilder?
+            .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor, coordinator: self.collectionInverseNavigationCoordinator)
+        else { return }
+        navigationController.viewControllers = [root, dest]
+        
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
+    }
+    
+    private func makeNavaigationController(_ root: UIViewController? = nil) -> BaseNavigationController {
+        return BaseNavigationController(
+            rootViewController: root,
             shouldHideNavigation: false,
             shouldShowCloseButtonIfNeed: true
         )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
+    }
+    
+    private func prepareInverseCoordinator(_ navigationController: UINavigationController) {
+        
+        let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
+        makeParent = { [weak self] parameter in
+            let collection = parameter as? ReadCollection
+            let parent = self?.nextScenesBuilder?.makeNavigateCollectionScene(
+                collection: collection,
+                listener: self?.currentInteractor
+            )
+            return parent
+        }
+        
+        self.collectionInverseNavigationCoordinator = .init(navigationController: navigationController,
+                                                            makeParent: makeParent)
     }
 }
