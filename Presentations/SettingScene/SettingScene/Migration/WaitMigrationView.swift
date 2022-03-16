@@ -83,7 +83,7 @@ public struct WaitMigrationView: View {
         case .migrating:
             return VStack {
                 Spacer().frame(height: 24)
-                self.titleAreaView(self.states.messages.0, icon: "🚀", withAnimation: true)
+                self.titleAreaView(self.states.messages.0, icon: "🚀", isNeedAnimation: true, withAnimation: true)
                 Spacer().frame(height: 16)
                 self.messageLabel(self.states.messages.1)
                 Spacer().frame(height: 20)
@@ -105,7 +105,7 @@ public struct WaitMigrationView: View {
         case .finished:
             return VStack {
                 Spacer().frame(height: 24)
-                self.titleAreaView(self.states.messages.0, icon: "🎉", withAnimation: false)
+                self.titleAreaView(self.states.messages.0, icon: "🎉")
                 Spacer().frame(height: 16)
                 self.messageLabel(self.states.messages.1)
                 Spacer().frame(height: 40)
@@ -116,7 +116,7 @@ public struct WaitMigrationView: View {
         case .finishWithNotStarted:
             return VStack {
                 Spacer().frame(height: 24)
-                self.titleAreaView(self.states.messages.0, icon: "👍", withAnimation: false)
+                self.titleAreaView(self.states.messages.0, icon: "👍")
                 Spacer().frame(height: 16)
                 self.messageLabel(self.states.messages.1)
                 Spacer().frame(height: 40)
@@ -127,7 +127,7 @@ public struct WaitMigrationView: View {
         default:
             return VStack {
                 Spacer().frame(height: 24)
-                self.titleAreaView(self.states.messages.0, icon: "🚀", withAnimation: false)
+                self.titleAreaView(self.states.messages.0, icon: "🚀", isNeedAnimation: true)
                 Spacer().frame(height: 16)
                 self.messageLabel(self.states.messages.1)
                 Spacer().frame(height: 20)
@@ -142,13 +142,17 @@ public struct WaitMigrationView: View {
             .repeatForever(autoreverses: true)
     }
     
-    private func titleAreaView(_ title: String, icon: String, withAnimation: Bool = false) -> some View {
+    private func titleAreaView(_ title: String, icon: String,
+                               isNeedAnimation: Bool = false,
+                               withAnimation: Bool = false) -> some View {
         HStack(alignment: .center, spacing: 8) {
             Text(title)
                 .smallHeader()
             Text(icon)
                 .smallHeader()
-                .rotationEffect(.degrees(withAnimation ? -27 : -15))
+                .rotationEffect(
+                    .degrees(withAnimation ? -27 : isNeedAnimation ? -15 : 0)
+                )
                 .animation(self.foreverAnimation)
         }
     }
@@ -178,69 +182,5 @@ public struct WaitMigrationView: View {
         Views.ConfirmButton {
             self.viewModel.confirmMigrationFinished()
         }
-    }
-}
-
-
-// MARK: - preview + temp
-
-struct WaitMigrationView_Preview: PreviewProvider {
-    
-    class ViewModel: WaitMigrationViewModel {
-        
-        struct DummyError: Error {}
-        let state = BehaviorSubject<UserDataMigrationStatus?>(value: .migrating)
-        
-        func startMigration() {
-        }
-        
-        func doMigrationLater() {
-            self.state.onNext(.idle)
-        }
-        
-        func confirmMigrationFinished() { }
-        
-        var message: Observable<(title: String, description: String)> {
-            let transform: (UserDataMigrationStatus?) -> (String, String)?
-            transform = { state in
-                switch state {
-                case .finished(let notStarted) where notStarted == false:
-                    return (
-                        "Migration complete".localized,
-                        "All data uploads are complete!".localized
-                    )
-                    
-                case .finished(let notStarted) where notStarted == true:
-                    return (
-                        "Migration finished".localized,
-                        "All data has already been migrated.".localized
-                    )
-                case .fail:
-                    return (
-                        "Migration failed".localized,
-                        "Migration failed. Please try again after a while.\n(You can restart the operation from the settings screen.)".localized
-                    )
-                default: return nil
-                }
-            }
-            return self.state.compactMap { $0 }
-                .compactMap(transform)
-        }
-        
-        var migrationProcessAndResult: Observable<MigrationProcessAndResult> {
-            return self.state
-                .compactMap { $0 }
-                .compactMap { .init($0) }
-        }
-        
-        
-    }
-    
-    static var previews: some View {
-        let viewModel = ViewModel()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            viewModel.startMigration()
-        }
-        return WaitMigrationView(viewModel: viewModel)
     }
 }

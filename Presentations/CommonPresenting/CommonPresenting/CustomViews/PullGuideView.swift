@@ -48,10 +48,9 @@ extension Views {
         public var body: some View {
             HStack {
                 Spacer()
-                Rectangle()
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(UIColor.lightGray.asColor)
                     .frame(width: 50, height: 6, alignment: .center)
-                    .cornerRadius(3)
-                    .background(self.uiContext.colors.raw.lightGray.asColor)
                 Spacer()
             }
             .padding([.vertical], 9)
