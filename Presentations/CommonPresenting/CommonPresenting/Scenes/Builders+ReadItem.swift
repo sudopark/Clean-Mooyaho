@@ -16,6 +16,7 @@ public protocol NavigateCollectionSceneBuilable {
     
     func makeNavigateCollectionScene(
         collection: ReadCollection?,
+        withoutSelect unselectableID: String?,
         listener: NavigateCollectionSceneListenable?,
         coordinator: CollectionInverseNavigationCoordinating?
     ) -> NavigateCollectionScene
@@ -25,10 +26,16 @@ extension NavigateCollectionSceneBuilable {
     
     public func makeNavigateCollectionScene(
         collection: ReadCollection?,
+        withoutSelect unselectableID: String?,
         listener: NavigateCollectionSceneListenable?
     ) -> NavigateCollectionScene {
         
-        return self.makeNavigateCollectionScene(collection: collection, listener: listener, coordinator: nil)
+        return self.makeNavigateCollectionScene(
+            collection: collection,
+            withoutSelect: unselectableID,
+            listener: listener,
+            coordinator: nil
+        )
     }
 }
 

@@ -156,7 +156,12 @@ extension NavigateCollectionViewController: Presenting {
         confirmButton.setupLayout()
         
         self.view.addSubview(emptyView)
-        emptyView.autoLayout.fill(self.tableView)
+        emptyView.autoLayout.active(with: tableView) {
+            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
+            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
+            $0.topAnchor.constraint(equalTo: $1.topAnchor)
+            $0.bottomAnchor.constraint(equalTo: confirmButton.topAnchor)
+        }
         
         self.emptyView.addSubview(emptyLabel)
         emptyLabel.autoLayout.active(with: self.emptyView) {
@@ -198,5 +203,7 @@ extension NavigateCollectionCell {
         self.shrinkView.nameLabel.text = cellViewModel.name
         
         self.updateDescription(cellViewModel.description)
+        
+        self.shrinkView.alpha = cellViewModel.isSelectable ? 1.0 : 0.4
     }
 }

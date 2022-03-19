@@ -350,7 +350,7 @@ extension EditReadCollectionViewModelTests {
         let name = self.waitFirstElement(expect, for: viewModel.parentCollectionName)
         
         // then
-        XCTAssertEqual(name, ReadCollection.dummy(0).name)
+        XCTAssertEqual(name, "parent list: \(ReadCollection.dummy(0).name)")
     }
     
     func testViewModel_whenChangeParentCollection_updateParentCollectionName() {
@@ -374,8 +374,10 @@ extension EditReadCollectionViewModelTests {
             nil, dummyParent.name
         ])
         XCTAssertEqual(names, [
-            "My Read Collections".localized, dummyParent.name, "My Read Collections".localized
-        ])
+            "My Read Collections".localized,
+            dummyParent.name,
+            "My Read Collections".localized
+        ].map { "parent list: \($0)" })
     }
     
     func testViewModel_makeCollection_withParentCollectionInfo() async {
@@ -496,9 +498,10 @@ extension EditReadCollectionViewModelTests: EditReadCollectionRouting {
             self.editCollectionSceneInteractor?.editReadRemind(didUpdate: remind)
         }
     }
-    
-    func selectParentCollection(statrWith current: ReadCollection?) {
+
+    func selectParentCollection(statrWith parent: ReadCollection?,
+                                withoutSelect unselectableCollection: ReadCollection?) {
         self.didRequestSelectParentCollection = true
-        self.didRequestSelectParentCollectionStartWiths.append(current)
+        self.didRequestSelectParentCollectionStartWiths.append(parent)
     }
 }

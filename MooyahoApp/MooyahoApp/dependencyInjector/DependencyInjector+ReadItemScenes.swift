@@ -55,12 +55,14 @@ extension DependencyInjector: NavigateCollectionSceneBuilable {
     
     public func makeNavigateCollectionScene(
         collection: ReadCollection?,
+        withoutSelect unselectableID: String?,
         listener: NavigateCollectionSceneListenable?,
         coordinator: CollectionInverseNavigationCoordinating?
     ) -> NavigateCollectionScene {
         
         let router = NavigateCollectionRouter(nextSceneBuilders: self)
         let viewModel = NavigateCollectionViewModelImple(currentCollection: collection,
+                                                         unselectableCollectionID: unselectableID,
                                                          readItemUsecase: self.readItemUsecase,
                                                          router: router,
                                                          listener: listener,

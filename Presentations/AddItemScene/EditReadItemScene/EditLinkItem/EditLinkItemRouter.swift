@@ -29,7 +29,7 @@ public protocol EditLinkItemRouting: Routing {
     
     func editRemind(_ editCase: EditRemindCase)
     
-    func editParentCollection(_ current: ReadCollection?)
+    func editParentCollection(_ parent: ReadCollection?)
 }
 
 // MARK: - Routers
@@ -93,20 +93,22 @@ extension EditLinkItemRouter {
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     
-    public func editParentCollection(_ current: ReadCollection?) {
+    public func editParentCollection(_ parent: ReadCollection?) {
         
-        guard let current = current else {
+        guard let parent = parent else {
             self.showNavigationSceneWithoutJump()
             return
         }
 
-        self.showNavigationSceneWithJump(current)
+        self.showNavigationSceneWithJump(parent)
     }
     
     private func showNavigationSceneWithoutJump() {
         
         guard let root = self.nextScenesBuilder?
-            .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor)
+            .makeNavigateCollectionScene(collection: nil,
+                                         withoutSelect: nil,
+                                         listener: self.currentInteractor)
         else { return }
         
         let sheetController = NavigationEmbedSheetViewController()
@@ -120,9 +122,14 @@ extension EditLinkItemRouter {
         self.prepareInverseCoordinator(sheetController.embedNavigationController)
         
         guard let root = self.nextScenesBuilder?
-            .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor),
+            .makeNavigateCollectionScene(collection: nil,
+                                         withoutSelect: nil,
+                                         listener: self.currentInteractor),
               let dest = self.nextScenesBuilder?
-            .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor, coordinator: self.collectionInverseNavigationCoordinator)
+            .makeNavigateCollectionScene(collection: current,
+                                         withoutSelect: nil,
+                                         listener: self.currentInteractor,
+                                         coordinator: self.collectionInverseNavigationCoordinator)
         else { return }
         sheetController.embedNavigationController.viewControllers = [root, dest]
         
@@ -136,6 +143,7 @@ extension EditLinkItemRouter {
             let collection = parameter as? ReadCollection
             let parent = self?.nextScenesBuilder?.makeNavigateCollectionScene(
                 collection: collection,
+                withoutSelect: nil,
                 listener: self?.currentInteractor
             )
             return parent

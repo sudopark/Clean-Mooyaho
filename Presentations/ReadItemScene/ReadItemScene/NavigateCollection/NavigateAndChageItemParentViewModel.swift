@@ -23,12 +23,14 @@ public class NavigateAndChageItemParentViewModelImple: NavigateCollectionViewMod
     
     public init(targetItem: ReadItem,
                 currentCollection: ReadCollection?,
+                unselectableCollectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 router: NavigateCollectionRouting,
                 coordinator: CollectionInverseNavigationCoordinating?) {
         self.targetItem = targetItem
         self.currentCollection = currentCollection
         super.init(currentCollection: currentCollection,
+                   unselectableCollectionID: unselectableCollectionID,
                    readItemUsecase: readItemUsecase,
                    router: router,
                    listener: nil,

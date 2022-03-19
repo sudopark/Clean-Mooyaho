@@ -21,7 +21,9 @@ import CommonPresenting
 
 public protocol NavigateCollectionRouting: Routing {
     
-    func moveToSubCollection(_ collection: ReadCollection, listener: NavigateCollectionSceneListenable?)
+    func moveToSubCollection(_ collection: ReadCollection,
+                             with unSelectableCollectionID: String?,
+                             listener: NavigateCollectionSceneListenable?)
 }
 
 // MARK: - Routers
@@ -40,10 +42,13 @@ extension NavigateCollectionRouter {
     }
     
     public func moveToSubCollection(_ collection: ReadCollection,
+                                    with unSelectableCollectionID: String?,
                                     listener: NavigateCollectionSceneListenable?) {
         
         guard let next = self.nextScenesBuilder?
-                .makeNavigateCollectionScene(collection: collection, listener: listener)
+                .makeNavigateCollectionScene(collection: collection,
+                                             withoutSelect: unSelectableCollectionID,
+                                             listener: listener)
         else { return }
         
         self.currentScene?.navigationController?.pushViewController(next, animated: true)
