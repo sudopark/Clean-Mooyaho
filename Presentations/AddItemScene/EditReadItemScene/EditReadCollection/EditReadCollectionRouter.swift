@@ -27,7 +27,8 @@ public protocol EditReadCollectionRouting: Routing {
     
     func updateRemind(_ editCase: EditRemindCase)
     
-    func selectParentCollection(statrWith current: ReadCollection?)
+    func selectParentCollection(statrWith parent: ReadCollection?,
+                                withoutSelect unselectableCollection: ReadCollection?)
 }
 
 // MARK: - Routers
@@ -84,20 +85,23 @@ extension EditReadCollectionRouter {
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     
-    public func selectParentCollection(statrWith current: ReadCollection?) {
+    public func selectParentCollection(statrWith parent: ReadCollection?,
+                                       withoutSelect unselectableCollection: ReadCollection?) {
         
-        guard let current = current else {
-            self.showNavigationSceneWithoutJump()
+        guard let parent = parent else {
+            self.showNavigationSceneWithoutJump(withoutSelect: unselectableCollection)
             return
         }
         
-        self.showNavigationSceneWithJump(current)
+        self.showNavigationSceneWithJump(parent, withoutSelect: unselectableCollection)
     }
     
-    private func showNavigationSceneWithoutJump() {
+    private func showNavigationSceneWithoutJump(withoutSelect unselectableCollection: ReadCollection?) {
         
         guard let root = self.nextScenesBuilder?
-            .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor)
+            .makeNavigateCollectionScene(collection: nil,
+                                         withoutSelect: unselectableCollection?.uid,
+                                         listener: self.currentInteractor)
         else { return }
         
         let sheetController = NavigationEmbedSheetViewController()
@@ -105,28 +109,37 @@ extension EditReadCollectionRouter {
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
-    private func showNavigationSceneWithJump(_ current: ReadCollection) {
+    private func showNavigationSceneWithJump(_ parent: ReadCollection,
+                                             withoutSelect unselectableCollection: ReadCollection?) {
         
         let sheetController = NavigationEmbedSheetViewController()
-        self.prepareInverseCoordinator(sheetController.embedNavigationController)
+        self.prepareInverseCoordinator(sheetController.embedNavigationController,
+                                       withoutSelect: unselectableCollection)
         
         guard let root = self.nextScenesBuilder?
-            .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor),
+            .makeNavigateCollectionScene(collection: nil,
+                                         withoutSelect: unselectableCollection?.uid,
+                                         listener: self.currentInteractor),
               let dest = self.nextScenesBuilder?
-            .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor, coordinator: self.collectionInverseNavigationCoordinator)
+            .makeNavigateCollectionScene(collection: parent,
+                                         withoutSelect: unselectableCollection?.uid,
+                                         listener: self.currentInteractor,
+                                         coordinator: self.collectionInverseNavigationCoordinator)
         else { return }
         sheetController.embedNavigationController.viewControllers = [root, dest]
         
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
-    private func prepareInverseCoordinator(_ navigationController: UINavigationController) {
+    private func prepareInverseCoordinator(_ navigationController: UINavigationController,
+                                           withoutSelect unselectableCollection: ReadCollection?) {
         
         let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
         makeParent = { [weak self] parameter in
             let collection = parameter as? ReadCollection
             let parent = self?.nextScenesBuilder?.makeNavigateCollectionScene(
                 collection: collection,
+                withoutSelect: unselectableCollection?.uid,
                 listener: self?.currentInteractor
             )
             return parent

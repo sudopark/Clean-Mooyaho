@@ -304,14 +304,14 @@ extension EditLinkItemViewModelImple {
     
     public func changeCollection() {
         
-        let current = self.subjects.selectParentCollection.value?.collection
-        self.router.editParentCollection(current)
+        let currentParent = self.subjects.selectParentCollection.value?.collection
+        self.router.editParentCollection(currentParent)
     }
     
     public func navigateCollection(didSelectCollection collection: ReadCollection?) {
         
-        let parentCollection = ParentCollection(collection)
-        self.subjects.selectParentCollection.accept(parentCollection)
+        let newParentCollection = ParentCollection(collection)
+        self.subjects.selectParentCollection.accept(newParentCollection)
     }
 }
 
@@ -377,8 +377,11 @@ extension EditLinkItemViewModelImple {
     
     public var selectedParentCollectionName: Observable<String> {
         
+        let transform: (ParentCollection?) -> String? = { parent in
+            return parent.map { "parent list: %@".localized(with: $0.collectionName) }
+        }
         return self.subjects.selectParentCollection
-            .compactMap { $0?.collectionName }
+            .compactMap(transform)
             .distinctUntilChanged()
     }
     

@@ -135,7 +135,8 @@
 "Enter the URL of a post you want to read later or archive." = "Enter the URL of a post you want to read later or archive.";
 "In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications." = "In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications.";
 "Sub reading list does not exist." = "Sub reading list does not exist.";
-
+"You cannot select the same reading list." = "You cannot select the same reading list.";
+"parent list: %@" = "parent list: %@";
 
 // viewer
 "Memo" = "Memo";

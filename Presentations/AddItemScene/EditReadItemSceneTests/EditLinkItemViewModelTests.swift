@@ -446,7 +446,9 @@ extension EditLinkItemViewModelTests_makeNew {
             nil, dummySelectCollection.name
         ])
         XCTAssertEqual(names, [
-            "My Read Collections".localized, dummySelectCollection.name, dummySelectCollection2.name
+            "parent list: My Read Collections".localized,
+            "parent list: \(dummySelectCollection.name)",
+            "parent list: \(dummySelectCollection2.name)",
         ])
     }
 }
@@ -591,7 +593,7 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         let name = self.waitFirstElement(expect, for: viewModel.selectedParentCollectionName)
         
         // then
-        XCTAssertEqual(name, "collection:0")
+        XCTAssertEqual(name, "parent list: collection:0")
     }
     
     func testViewModel_whenUpdateExistingRemind_reschedule() {

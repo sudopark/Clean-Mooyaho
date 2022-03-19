@@ -136,6 +136,8 @@
 "Enter the URL of a post you want to read later or archive." = "나중에 읽을 예정이거나 보관하고 싶은 게시글의 URL을 입력해주세요.";
 "In the next step, you can take additional actions,\nsuch as adding tags to items or adding reminder notifications." = "다음 단계에서 아이템에 태그를 추가하거나\n리마인드 알림을 추가하는 등 추가적인 작업을 진행할 수 있습니다.";
 "Sub reading list does not exist." = "하위 읽기 목록이 존재하지 않습니다.";
+"You cannot select the same reading list." = "현재 읽기목록과 동일한 목록은 선택할 수 없습니다.";
+"parent list: %@" = "상위 목록: %@";
 
 
 // viewer
