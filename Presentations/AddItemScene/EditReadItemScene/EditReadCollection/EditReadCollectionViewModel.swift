@@ -267,14 +267,14 @@ extension EditReadCollectionViewModelImple {
 extension EditReadCollectionViewModelImple {
     
     public func changeParentCollection() {
-//        let parent = self.subjects.parantCollection.value?.collection
-        // TODO: 임시로 일단 최상위 콜렉션으로 연결
-        self.router.selectParentCollection(statrWith: nil)
+        let currentParent = self.subjects.parantCollection.value?.collection
+        let selected = self.editCase.item
+        self.router.selectParentCollection(statrWith: currentParent, withoutSelect: selected)
     }
     
     public func navigateCollection(didSelectCollection collection: ReadCollection?) {
-        let parentCollection = ParentCollection(collection)
-        self.subjects.parantCollection.accept(parentCollection)
+        let newParentCollection = ParentCollection(collection)
+        self.subjects.parantCollection.accept(newParentCollection)
     }
 }
 
@@ -299,8 +299,11 @@ extension EditReadCollectionViewModelImple {
     }
     
     public var parentCollectionName: Observable<String> {
+        let transform: (ParentCollection?) -> String? = { parent in
+            return parent.map { "parent list: %@".localized(with: $0.collectionName) }
+        }
         return self.subjects.parantCollection
-            .compactMap { $0?.collectionName }
+            .compactMap(transform)
             .distinctUntilChanged()
     }
     

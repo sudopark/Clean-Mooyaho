@@ -14,7 +14,23 @@ import RxCocoa
 import Domain
 
 
-open class BaseViewController: UIViewController, UIContextAccessable {
+public protocol BaseViewControllable: UIViewController { }
+
+extension BaseViewControllable {
+    
+    public func presentPageSheetOrFullScreen(_ viewControllerToPresent: UIViewController,
+                                             animated flag: Bool,
+                                             completion: (() -> Void)? = nil) {
+        if ProcessInfo.processInfo.isiOSAppOnMac {
+            viewControllerToPresent.modalPresentationStyle = .fullScreen
+        } else {
+            viewControllerToPresent.modalPresentationStyle = .pageSheet
+        }
+        self.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
+}
+
+open class BaseViewController: UIViewController, BaseViewControllable, UIContextAccessable {
     
     public let disposeBag: DisposeBag = DisposeBag()
     
@@ -35,17 +51,6 @@ open class BaseViewController: UIViewController, UIContextAccessable {
     open override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         (viewControllerToPresent as? BaseViewController)?.isKeyCommandCloseEnabled = true
         super.present(viewControllerToPresent, animated: flag, completion: completion)
-    }
-    
-    public func presentPageSheetOrFullScreen(_ viewControllerToPresent: UIViewController,
-                                             animated flag: Bool,
-                                             completion: (() -> Void)? = nil) {
-        if ProcessInfo.processInfo.isiOSAppOnMac {
-            viewControllerToPresent.modalPresentationStyle = .fullScreen
-        } else {
-            viewControllerToPresent.modalPresentationStyle = .pageSheet
-        }
-        self.present(viewControllerToPresent, animated: flag, completion: completion)
     }
 }
 

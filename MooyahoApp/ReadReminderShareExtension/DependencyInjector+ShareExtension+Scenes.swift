@@ -112,14 +112,20 @@ extension SharedDependencyInjecttor: ColorSelectSceneBuilable {
 
 extension SharedDependencyInjecttor: NavigateCollectionSceneBuilable {
     
-    public func makeNavigateCollectionScene(collection: ReadCollection?,
-                                            listener: NavigateCollectionSceneListenable?) -> NavigateCollectionScene {
+    public func makeNavigateCollectionScene(
+        collection: ReadCollection?,
+        withoutSelect unselectableID: String?,
+        listener: NavigateCollectionSceneListenable?,
+        coordinator: CollectionInverseNavigationCoordinating?
+    ) -> NavigateCollectionScene {
         
         let router = NavigateCollectionRouter(nextSceneBuilders: self)
         let viewModel = NavigateCollectionViewModelImple(currentCollection: collection,
+                                                         unselectableCollectionID: unselectableID,
                                                          readItemUsecase: self.readItemUsecase,
                                                          router: router,
-                                                         listener: listener)
+                                                         listener: listener,
+                                                         coordinator: coordinator)
         let viewController = NavigateCollectionViewController(viewModel: viewModel)
         router.currentScene = viewController
         return viewController

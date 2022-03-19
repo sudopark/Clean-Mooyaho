@@ -47,9 +47,6 @@
 		F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
 		F643D40F278210C0006793A9 /* appicon-readmind.png in Resources */ = {isa = PBXBuildFile; fileRef = F643D40E278210C0006793A9 /* appicon-readmind.png */; };
 		F64E7AF32762CB8000961C38 /* AppleLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64E7AF22762CB8000961C38 /* AppleLoginService.swift */; };
-		F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E726747AF3004FB42E /* KakaoSDKUser */; };
-		F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8E926747AF3004FB42E /* KakaoSDKAuth */; };
-		F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F660B8EB26747AF3004FB42E /* KakaoSDKCommon */; };
 		F6624CD4273F8E5600A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; };
 		F6624CD5273F8E5600A9B7AF /* DiscoveryScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F663E6D82763C21800EE8152 /* DependencyInjector+MemberScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6D72763C21800EE8152 /* DependencyInjector+MemberScenes.swift */; };
@@ -305,7 +302,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F660B8EA26747AF3004FB42E /* KakaoSDKAuth in Frameworks */,
 				2BE9786C263961EC0000C0C6 /* Domain.framework in Frameworks */,
 				F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */,
 				F6E279C526F6E8AA00957AC4 /* ReadItemScene.framework in Frameworks */,
@@ -318,8 +314,6 @@
 				F6624CD4273F8E5600A9B7AF /* DiscoveryScene.framework in Frameworks */,
 				F6ECE4DA26FAF8B3008D7ECA /* FirebaseService.framework in Frameworks */,
 				2BE9787A263962110000C0C6 /* Common3rdParty.framework in Frameworks */,
-				F660B8EC26747AF3004FB42E /* KakaoSDKCommon in Frameworks */,
-				F660B8E826747AF3004FB42E /* KakaoSDKUser in Frameworks */,
 				F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */,
 				F68A87FB274BFA61004DADE4 /* SuggestScene.framework in Frameworks */,
 			);
@@ -657,9 +651,6 @@
 			);
 			name = MooyahoApp;
 			packageProductDependencies = (
-				F660B8E726747AF3004FB42E /* KakaoSDKUser */,
-				F660B8E926747AF3004FB42E /* KakaoSDKAuth */,
-				F660B8EB26747AF3004FB42E /* KakaoSDKCommon */,
 			);
 			productName = BreadRoadApp;
 			productReference = 2B79FC48262B640C0006291F /* Readmind.app */;
@@ -755,7 +746,6 @@
 			);
 			mainGroup = 2B79FC3F262B640C0006291F;
 			packageReferences = (
-				F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */,
 			);
 			productRefGroup = 2B79FC49262B640C0006291F /* Products */;
 			projectDirPath = "";
@@ -1396,35 +1386,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/minsOne/KakaoSDK-SwiftPM.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F660B8E726747AF3004FB42E /* KakaoSDKUser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */;
-			productName = KakaoSDKUser;
-		};
-		F660B8E926747AF3004FB42E /* KakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */;
-			productName = KakaoSDKAuth;
-		};
-		F660B8EB26747AF3004FB42E /* KakaoSDKCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F660B8E626747AF3004FB42E /* XCRemoteSwiftPackageReference "KakaoSDK-SwiftPM" */;
-			productName = KakaoSDKCommon;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2B79FC40262B640C0006291F /* Project object */;
 }

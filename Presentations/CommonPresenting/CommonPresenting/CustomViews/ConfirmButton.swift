@@ -8,6 +8,8 @@
 import UIKit
 
 
+// MARK: - ConfirmButton
+
 public final class ConfirmButton: BaseUIView {
     
     let button = UIButton(type: .system)
@@ -76,6 +78,8 @@ extension ConfirmButton: Presenting {
 }
 
 
+// MARK: - ConfirmButton Reactive Extension
+
 import RxSwift
 import RxCocoa
 
@@ -94,6 +98,41 @@ extension Reactive where Base: ConfirmButton {
     public var isLoading: Binder<Bool> {
         Binder(base) { base, isLoading in
             base.updateIsLoading(isLoading)
+        }
+    }
+}
+
+
+// MARK: - SwiftUI ConfirmButton
+
+import SwiftUI
+
+extension Views {
+    
+    public struct ConfirmButton: View {
+        
+        @Binding var isLoading: Bool
+        private let confirmed: () -> Void
+        
+        public init(_ isLoading: Binding<Bool> = .constant(false),
+                    confirmed: @escaping () -> Void) {
+            self._isLoading = isLoading
+            self.confirmed = confirmed
+        }
+        
+        public var body: some View {
+            Button(action: self.confirmed) {
+                if self.isLoading {
+                    LoadingView(.white, isLoading: self._isLoading)
+                } else {
+                    Text("Confirm".localized)
+                        .font(self.uiContext.fonts.get(16, weight: .medium).asFont)
+                        .foregroundColor(.white)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: 50, alignment: .center)
+            .background(self.uiContext.colors.accentColor.asColor)
+            .cornerRadius(5)
         }
     }
 }

@@ -20,6 +20,9 @@
 		2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */; };
 		2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE978B9263AE5D10000C0C6 /* Executor.swift */; };
 		F6025FED26A9CFD2007A1AA8 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */; };
+		F603F46227B949E30096D8C1 /* BackButton+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */; };
+		F60CCE6B27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */; };
+		F60CCE6D27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */; };
 		F610146926570A1400D32E38 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146826570A1400D32E38 /* BaseUIView.swift */; };
 		F610146D26570B8A00D32E38 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146C26570B8A00D32E38 /* AutoLayout.swift */; };
 		F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610146E2657122300D32E38 /* AutoLayoutTests.swift */; };
@@ -43,6 +46,8 @@
 		F6372061266538EA0089D0B3 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372060266538EA0089D0B3 /* UITableView+Extension.swift */; };
 		F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */; };
 		F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */; };
+		F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */; };
+		F63A520E27B7569E008542E2 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520D27B7569E008542E2 /* Combine+Extensions.swift */; };
 		F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6572690B52200E04D29 /* InfoSectionView.swift */; };
 		F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6592690BA8E00E04D29 /* Attribute.swift */; };
 		F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65D26934F5700E04D29 /* WordTokensView.swift */; };
@@ -82,6 +87,7 @@
 		F66EF6AF2719EFD000AC0DAB /* RoundImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */; };
 		F6732F4827A8E46F00288701 /* BaseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6732F4727A8E46F00288701 /* BaseHeaderView.swift */; };
 		F6775B282781FA0F00D2DCD2 /* EasyTipView..swift in Sources */ = {isa = PBXBuildFile; fileRef = F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */; };
+		F6788C4F27E47A3800610ACB /* NavigationEmbedSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6788C4E27E47A3800610ACB /* NavigationEmbedSheetViewController.swift */; };
 		F67D65312718871400D8E9A5 /* ReadItemsPresentingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65302718871400D8E9A5 /* ReadItemsPresentingUsecase.swift */; };
 		F67DDE9D26FE1E63004BC542 /* ItemLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */; };
 		F6808426276E49C300234564 /* PullGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6808425276E49C300234564 /* PullGuideView.swift */; };
@@ -136,6 +142,7 @@
 		F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F295B1266D447200CDF980 /* BaseBottomSlideMenuView.swift */; };
 		F6F65639274049150069F253 /* Scenes+Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F65638274049150069F253 /* Scenes+Discovery.swift */; };
 		F6F6563B274049420069F253 /* Builders+Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6563A274049420069F253 /* Builders+Discovery.swift */; };
+		F6FE769527B926B1007959EC /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FE769427B926B1007959EC /* Views.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +173,9 @@
 		2BE978B8263AE5D10000C0C6 /* LeakDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
 		2BE978B9263AE5D10000C0C6 /* Executor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackButton+SwiftUI.swift"; sourceTree = "<group>"; };
+		F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoordinatedScrollView+SwiftUI.swift"; sourceTree = "<group>"; };
+		F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollBottomHitThrottling.swift; sourceTree = "<group>"; };
 		F610146826570A1400D32E38 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		F610146C26570B8A00D32E38 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
 		F610146E2657122300D32E38 /* AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutTests.swift; sourceTree = "<group>"; };
@@ -188,6 +198,8 @@
 		F6372060266538EA0089D0B3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		F638A5F9273C739E005A7EA9 /* Scenes+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Setting.swift"; sourceTree = "<group>"; };
 		F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Setting.swift"; sourceTree = "<group>"; };
+		F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
+		F63A520D27B7569E008542E2 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
 		F645A6572690B52200E04D29 /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
 		F645A6592690BA8E00E04D29 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		F645A65D26934F5700E04D29 /* WordTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTokensView.swift; sourceTree = "<group>"; };
@@ -227,6 +239,7 @@
 		F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageButton.swift; sourceTree = "<group>"; };
 		F6732F4727A8E46F00288701 /* BaseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHeaderView.swift; sourceTree = "<group>"; };
 		F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyTipView..swift; sourceTree = "<group>"; };
+		F6788C4E27E47A3800610ACB /* NavigationEmbedSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationEmbedSheetViewController.swift; sourceTree = "<group>"; };
 		F67D65302718871400D8E9A5 /* ReadItemsPresentingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemsPresentingUsecase.swift; sourceTree = "<group>"; };
 		F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelView.swift; sourceTree = "<group>"; };
 		F6808425276E49C300234564 /* PullGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullGuideView.swift; sourceTree = "<group>"; };
@@ -280,6 +293,7 @@
 		F6F52ED126885329006D37F3 /* StubUsecases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = StubUsecases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F65638274049150069F253 /* Scenes+Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Discovery.swift"; sourceTree = "<group>"; };
 		F6F6563A274049420069F253 /* Builders+Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Discovery.swift"; sourceTree = "<group>"; };
+		F6FE769427B926B1007959EC /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -374,6 +388,7 @@
 				F6E30E25270B5A180012A2A0 /* EmptyListener.swift */,
 				F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */,
 				F6732F4727A8E46F00288701 /* BaseHeaderView.swift */,
+				F6788C4E27E47A3800610ACB /* NavigationEmbedSheetViewController.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -403,6 +418,7 @@
 				F667E28E26E1367D0046B9FB /* MemberInfo.swift */,
 				F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */,
 				F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */,
+				F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -467,6 +483,8 @@
 				F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */,
 				F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */,
 				F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */,
+				F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */,
+				F63A520D27B7569E008542E2 /* Combine+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -516,6 +534,9 @@
 				F6BA7DC227815DA60020B430 /* OAuthSignInButtonBuildable.swift */,
 				F69B3B142781EE1300C03601 /* DescriptionTipsView.swift */,
 				F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */,
+				F6FE769427B926B1007959EC /* Views.swift */,
+				F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */,
+				F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -742,6 +763,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */,
+				F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */,
+				F60CCE6D27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift in Sources */,
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
 				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
@@ -779,6 +802,7 @@
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
 				F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
+				F6788C4F27E47A3800610ACB /* NavigationEmbedSheetViewController.swift in Sources */,
 				F6E51B77273F62B500CBE310 /* SelectEmojiViewController.swift in Sources */,
 				F6D2BD28278C99AC00420837 /* FeedbackImapctStyle.swift in Sources */,
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
@@ -786,6 +810,7 @@
 				F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */,
 				F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */,
 				2BE978BB263AE5D10000C0C6 /* Executor.swift in Sources */,
+				F603F46227B949E30096D8C1 /* BackButton+SwiftUI.swift in Sources */,
 				F68A880B274BFACC004DADE4 /* Builders+Suggest.swift in Sources */,
 				F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */,
 				F6F295B2266D447200CDF980 /* BaseBottomSlideMenuView.swift in Sources */,
@@ -809,6 +834,7 @@
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
 				F65215892674A7C0000CAB4B /* InputTextView.swift in Sources */,
 				F610147126571FDE00D32E38 /* UIContext.swift in Sources */,
+				F63A520E27B7569E008542E2 /* Combine+Extensions.swift in Sources */,
 				F61014742657210600D32E38 /* StringsSet.swift in Sources */,
 				F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */,
 				F6CB434C2713560900F26508 /* ColorSelectScene.swift in Sources */,
@@ -816,9 +842,11 @@
 				F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */,
 				F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */,
 				F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */,
+				F60CCE6B27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift in Sources */,
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
 				F6A3A0AD275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift in Sources */,
+				F6FE769527B926B1007959EC /* Views.swift in Sources */,
 				F638A5FA273C739E005A7EA9 /* Scenes+Setting.swift in Sources */,
 				F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */,
 				F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */,

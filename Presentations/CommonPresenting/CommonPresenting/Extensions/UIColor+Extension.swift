@@ -41,3 +41,15 @@ extension UIColor {
         return nil
     }
 }
+
+
+// MARK: - SwiftUI
+
+import SwiftUI
+
+public extension UIColor {
+    
+    var asColor: Color {
+        return Color(self)
+    }
+}

@@ -87,6 +87,7 @@ public final class ApplicationViewModelImple: ApplicationViewModel {
             .disposed(by: self.disposeBag)
         
         self.fcmService.receiveReadmindMessage
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] message in
                 self?.handleRemindMessage(message)
             })

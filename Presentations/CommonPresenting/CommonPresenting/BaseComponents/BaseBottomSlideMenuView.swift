@@ -8,6 +8,8 @@
 import UIKit
 
 
+// MARK: - BaseBottomSlideMenuView
+
 open class BaseBottomSlideMenuView: BaseUIView {
     
     public let outsideTouchView = UIView()
@@ -85,5 +87,39 @@ extension BaseBottomSlideMenuView: Presenting {
         self.sheetContnetView.clipsToBounds = true
         
         self.bottomAreaView.backgroundColor = self.uiContext.colors.appBackground
+    }
+}
+
+
+// MARK: - SwiftUI BaseBottomSlideMenuView
+
+import SwiftUI
+
+extension Views {
+    
+    public struct BaseBottomSlideMenuView<Content: View>: View {
+        
+        private let content: () -> Content
+        public init(_ content: @escaping () -> Content) {
+            self.content = content
+        }
+        
+        public var body: some View {
+            
+            VStack {
+                Spacer()
+                VStack(spacing: 0) {
+                    
+                    Views.PullGuideView()
+                    
+                    self.content()
+                        .padding(.top, 4)
+                }
+                .padding(.bottom, 20)
+                .background(self.uiContext.colors.appBackground.asColor)
+                .cornerRadius(10, corners: [.topLeft, .topRight])
+            }
+            .edgesIgnoringSafeArea(.bottom)
+        }
     }
 }

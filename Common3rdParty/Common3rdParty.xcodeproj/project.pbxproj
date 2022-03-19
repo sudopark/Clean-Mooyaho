@@ -22,6 +22,11 @@
 		F60B35FD2799CFD400F5CB97 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FC2799CFD400F5CB97 /* RxCocoa */; };
 		F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FE2799CFD400F5CB97 /* RxRelay */; };
 		F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F60B36002799CFD400F5CB97 /* RxSwift */; };
+		F63A520827B2D094008542E2 /* RxCombine in Frameworks */ = {isa = PBXBuildFile; productRef = F63A520727B2D094008542E2 /* RxCombine */; };
+		F69F099927CB35E00058CB6B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099827CB35E00058CB6B /* Alamofire */; };
+		F69F099C27CB36020058CB6B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099B27CB36020058CB6B /* KakaoSDKAuth */; };
+		F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099D27CB36020058CB6B /* KakaoSDKCommon */; };
+		F69F09A027CB36020058CB6B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099F27CB36020058CB6B /* KakaoSDKUser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,11 +43,16 @@
 				F60A5847270D499200E39AE0 /* Tuple in Frameworks */,
 				F60A5849270D499200E39AE0 /* ValidationNearSemiring in Frameworks */,
 				F60A5841270D499200E39AE0 /* Prelude in Frameworks */,
+				F69F09A027CB36020058CB6B /* KakaoSDKUser in Frameworks */,
 				F60A584D270D499200E39AE0 /* Writer in Frameworks */,
+				F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */,
+				F63A520827B2D094008542E2 /* RxCombine in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
 				F60A583F270D499200E39AE0 /* Optics in Frameworks */,
 				F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */,
+				F69F099C27CB36020058CB6B /* KakaoSDKAuth in Frameworks */,
 				F60B35FD2799CFD400F5CB97 /* RxCocoa in Frameworks */,
+				F69F099927CB35E00058CB6B /* Alamofire in Frameworks */,
 				F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */,
 				F60A5845270D499200E39AE0 /* State in Frameworks */,
 				F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */,
@@ -123,6 +133,11 @@
 				F60B35FC2799CFD400F5CB97 /* RxCocoa */,
 				F60B35FE2799CFD400F5CB97 /* RxRelay */,
 				F60B36002799CFD400F5CB97 /* RxSwift */,
+				F63A520727B2D094008542E2 /* RxCombine */,
+				F69F099827CB35E00058CB6B /* Alamofire */,
+				F69F099B27CB36020058CB6B /* KakaoSDKAuth */,
+				F69F099D27CB36020058CB6B /* KakaoSDKCommon */,
+				F69F099F27CB36020058CB6B /* KakaoSDKUser */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -154,6 +169,9 @@
 				F603CC9F2667D3D500FE6A8A /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				F60A583B270D499200E39AE0 /* XCRemoteSwiftPackageReference "swift-prelude" */,
 				F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */,
+				F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -493,6 +511,30 @@
 				minimumVersion = 6.5.0;
 			};
 		};
+		F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/RxCombine.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -565,6 +607,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		F63A520727B2D094008542E2 /* RxCombine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */;
+			productName = RxCombine;
+		};
+		F69F099827CB35E00058CB6B /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		F69F099B27CB36020058CB6B /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		F69F099D27CB36020058CB6B /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		F69F099F27CB36020058CB6B /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

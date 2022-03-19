@@ -28,11 +28,11 @@ public protocol KakaoOAuthRemote {
 
 public class KakaoOAuthRemoteImple: KakaoOAuthRemote {
     
-    private let legacyAPIPath: String
+    private let signInAPIPath: String
     private let httpAPI: HttpAPI
     
     public init(path: String, api: HttpAPI) {
-        self.legacyAPIPath = path
+        self.signInAPIPath = path
         self.httpAPI = api
     }
     
@@ -68,7 +68,7 @@ public class KakaoOAuthRemoteImple: KakaoOAuthRemote {
     
     public func verifyKakaoAccessToken(_ token: String) -> Maybe<String> {
         
-        let endPoint = LegacyAPIEndPoint(path: self.legacyAPIPath)
+        let endPoint = KakaoSignInAPIEndPoint(path: self.signInAPIPath)
         let params: [String: Any] = ["token": token]
         
         return self.httpAPI

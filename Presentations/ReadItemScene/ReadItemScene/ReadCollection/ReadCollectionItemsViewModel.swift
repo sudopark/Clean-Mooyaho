@@ -33,15 +33,17 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
     var currentCollectionID: String? { get }
 
     // interactor
-    func reloadCollectionItems()
+    func refreshList()
     func reloadCollectionItemsIfNeed()
     func requestPrepareParentIfNeed()
     func requestChangeOrder()
     func openItem(_ itemID: String)
     func addNewCollectionItem()
     func addNewReadLinkItem()
-    func handleContextAction(for item: ReadItemCellViewModel,
-                             action: ReadCollectionItemSwipeContextAction)
+    func handleContextAction(
+        for item: ReadItemCellViewModel,
+        action: ReadCollectionItemSwipeContextAction
+    )
     func editCollection()
     func viewDidAppear()
     
@@ -130,6 +132,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
     
     private func bindCurrentSortOrder() {
         let setupLatestSortOrder: (ReadCollectionItemSortOrder) -> Void = { [weak self] order in
+            logger.print(level: .debug, "custom order: \(order)")
             self?.subjects.sortOrder.accept(order)
         }
         self.readItemUsecase
@@ -275,7 +278,13 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
 
 extension ReadCollectionViewItemsModelImple {
     
-    public func reloadCollectionItems() {
+    public func refreshList() {
+        
+        self.reloadCollectionItems()
+        self.refreshCollectionCustomOrder()
+    }
+    
+    private func reloadCollectionItems() {
         
         guard self.subjects.isReloading.value == false else { return }
         self.readItemSyncUsecase.isReloadNeed = false
@@ -297,6 +306,13 @@ extension ReadCollectionViewItemsModelImple {
         self.subjects.isReloading.accept(true)
         loadItems
             .subscribe(onNext: updateList, onError: handleError)
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func refreshCollectionCustomOrder() {
+        
+        self.readItemUsecase.reloadCustomOrder(for: self.substituteCollectionID)
+            .subscribe()
             .disposed(by: self.disposeBag)
     }
     
@@ -620,7 +636,8 @@ extension ReadCollectionViewItemsModelImple {
             self.subjects.links.compactMap { $0 },
             self.subjects.sortOrder.compactMap { $0 },
             self.subjects.categoryMap,
-            self.readItemUsecase.customOrder(for: self.substituteCollectionID),
+            self.readItemUsecase
+                .customOrder(for: self.substituteCollectionID).distinctUntilChanged(),
             self.readItemUsecase.isShrinkModeOn,
             self.subjects.favoriteIDSet,
             resultSelector: asSections

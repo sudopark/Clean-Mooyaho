@@ -20,7 +20,7 @@ import CommonPresenting
 
 public struct EditProfileCellViewModel: Equatable {
     
-    public enum InputType {
+    public enum InputType: String {
         case nickname
         case intro
     }
@@ -81,8 +81,16 @@ public final class EditProfileViewModelImple: EditProfileViewModel {
     
     private func internalBind() {
         
-        let member = self.usecase.fetchCurrentMember()
-        self.subjects.currentMember.accept(member)
+        let updateMember: (Member) -> Void = { [weak self] member in
+            self?.subjects.currentMember.accept(member)
+        }
+        let handleError: (Error) -> Void = { [weak self] error in
+            self?.router.alertError(error)
+        }
+        self.usecase.reloadCurrentMember()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: updateMember, onError: handleError)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -289,7 +297,7 @@ extension EditProfileViewModelImple {
     private var introCell: Observable<EditProfileCellViewModel> {
         
         let selectValue: (Member, String?) -> String? = { member, editedValue in
-            return editedValue?.emptyAsNil() ?? member.introduction
+            return (editedValue ?? member.introduction)?.emptyAsNil()
         }
         return Observable
             .combineLatest(self.subjects.currentMember.compactMap { $0 },

@@ -38,6 +38,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
     var selectedCollectionMocking: ReadCollection?
     private var editLinkItemSceneInteractable: EditLinkItemSceneInteractable?
     var didDismissed: Bool?
+    var didRequestSelectParentStartWiths: [ReadCollection?] = []
     
     var spyRemindUsecase: StubReadRemindUsecase!
 
@@ -62,6 +63,7 @@ class BaseEditLinkItemViewModelTests: BaseTestCase, WaitObservableEvents, EditLi
         self.selectedCollectionMocking = nil
         self.spyRemindUsecase = nil
         self.didDismissed = nil
+        self.didRequestSelectParentStartWiths = []
     }
     
     var fullInfoPreview: LinkPreview {
@@ -157,6 +159,7 @@ extension BaseEditLinkItemViewModelTests: EditLinkItemRouting {
     }
     
     func editParentCollection(_ current: ReadCollection?) {
+        self.didRequestSelectParentStartWiths.append(current)
         self.editLinkItemSceneInteractable?.navigateCollection(didSelectCollection: self.selectedCollectionMocking)
     }
 }
@@ -424,18 +427,29 @@ extension EditLinkItemViewModelTests_makeNew {
     func testViewModel_changeSelectedCollection() {
         // given
         let expect = expectation(description: "콜렉션 변경")
-        expect.expectedFulfillmentCount = 2
+        expect.expectedFulfillmentCount = 3
         let viewModel = self.makeViewModel()
         let dummySelectCollection = ReadCollection.dummy(100)
+        let dummySelectCollection2 = ReadCollection.dummy(101)
         
         // when
         let names = self.waitElements(expect, for: viewModel.selectedParentCollectionName) {
             self.selectedCollectionMocking = dummySelectCollection
             viewModel.changeCollection()
+            
+            self.selectedCollectionMocking = dummySelectCollection2
+            viewModel.changeCollection()
         }
         
         // then
-        XCTAssertEqual(names, ["My Read Collections".localized, dummySelectCollection.name])
+        XCTAssertEqual(self.didRequestSelectParentStartWiths.map { $0?.name }, [
+            nil, dummySelectCollection.name
+        ])
+        XCTAssertEqual(names, [
+            "parent list: My Read Collections".localized,
+            "parent list: \(dummySelectCollection.name)",
+            "parent list: \(dummySelectCollection2.name)",
+        ])
     }
 }
 
@@ -579,7 +593,7 @@ class EditLinkItemViewModelTests_Edit: BaseEditLinkItemViewModelTests {
         let name = self.waitFirstElement(expect, for: viewModel.selectedParentCollectionName)
         
         // then
-        XCTAssertEqual(name, "collection:0")
+        XCTAssertEqual(name, "parent list: collection:0")
     }
     
     func testViewModel_whenUpdateExistingRemind_reschedule() {

@@ -29,7 +29,7 @@ public protocol EditLinkItemRouting: Routing {
     
     func editRemind(_ editCase: EditRemindCase)
     
-    func editParentCollection(_ current: ReadCollection?)
+    func editParentCollection(_ parent: ReadCollection?)
 }
 
 // MARK: - Routers
@@ -40,6 +40,7 @@ public typealias EditLinkItemRouterBuildables = EditReadPrioritySceneBuilable & 
 public final class EditLinkItemRouter: Router<EditLinkItemRouterBuildables>, EditLinkItemRouting {
     
     private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    private var collectionInverseNavigationCoordinator: CollectionInverseNavigationCoordinator?
 }
 
 
@@ -92,17 +93,63 @@ extension EditLinkItemRouter {
         self.currentScene?.present(next, animated: true, completion: nil)
     }
     
-    public func editParentCollection(_ current: ReadCollection?) {
+    public func editParentCollection(_ parent: ReadCollection?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor)
+        guard let parent = parent else {
+            self.showNavigationSceneWithoutJump()
+            return
+        }
+
+        self.showNavigationSceneWithJump(parent)
+    }
+    
+    private func showNavigationSceneWithoutJump() {
+        
+        guard let root = self.nextScenesBuilder?
+            .makeNavigateCollectionScene(collection: nil,
+                                         withoutSelect: nil,
+                                         listener: self.currentInteractor)
         else { return }
         
-        let navigationController = BaseNavigationController(
-            rootViewController: next,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
-        )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
+        let sheetController = NavigationEmbedSheetViewController()
+        sheetController.embedNavigationController.pushViewController(root, animated: false)
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
+    }
+    
+    private func showNavigationSceneWithJump(_ current: ReadCollection) {
+        
+        let sheetController = NavigationEmbedSheetViewController()
+        self.prepareInverseCoordinator(sheetController.embedNavigationController)
+        
+        guard let root = self.nextScenesBuilder?
+            .makeNavigateCollectionScene(collection: nil,
+                                         withoutSelect: nil,
+                                         listener: self.currentInteractor),
+              let dest = self.nextScenesBuilder?
+            .makeNavigateCollectionScene(collection: current,
+                                         withoutSelect: nil,
+                                         listener: self.currentInteractor,
+                                         coordinator: self.collectionInverseNavigationCoordinator)
+        else { return }
+        sheetController.embedNavigationController.viewControllers = [root, dest]
+        
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
+    }
+    
+    private func prepareInverseCoordinator(_ navigationController: UINavigationController) {
+        
+        let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
+        makeParent = { [weak self] parameter in
+            let collection = parameter as? ReadCollection
+            let parent = self?.nextScenesBuilder?.makeNavigateCollectionScene(
+                collection: collection,
+                withoutSelect: nil,
+                listener: self?.currentInteractor
+            )
+            return parent
+        }
+        
+        self.collectionInverseNavigationCoordinator = .init(navigationController: navigationController,
+                                                            makeParent: makeParent)
     }
 }

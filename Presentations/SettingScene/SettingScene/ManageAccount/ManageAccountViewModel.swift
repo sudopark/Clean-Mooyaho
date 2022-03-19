@@ -15,7 +15,7 @@ import Domain
 import CommonPresenting
 
 
-public enum ManageAccountCellViewModel {
+public enum ManageAccountCellViewModel: String {
     case signout
     case withdrawal
     case withdrawalDescription
@@ -29,6 +29,7 @@ public protocol ManageAccountViewModel: AnyObject {
     // interactor
     func signout()
     func withdrawal()
+    func close()
     
     // presenter
     var cellViewModels: Observable<[[ManageAccountCellViewModel]]> { get }
@@ -112,6 +113,10 @@ extension ManageAccountViewModelImple {
             self?.subjects.isProcessing.accept(false)
             self?.router.alertError(error)
         }
+    }
+    
+    public func close() {
+        self.router.rewind(animated: true)
     }
 }
 

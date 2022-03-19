@@ -24,7 +24,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var spyRouter: FakeRouter!
     private var spyRemindUsecase: StubReadRemindUsecase!
-    private var spyItemsUsecase: StubReadItemUsecase!
+    private var spyItemsUsecase: PrivateStubReadItemUsecase!
     private var itemUpdateMocking: ((ReadItemUpdateEvent) -> Void)?
     private var isShrinkModeMocking: ((Bool) -> Void)?
     private var spyNavigationListener: SpyNavigationListener!
@@ -80,12 +80,12 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
         let reloadResult: Result<[ReadItem], Error> = shouldFailReload
             ? .failure(ApplicationErrors.invalid)
             : .success(dummies)
-        let scenario = StubReadItemUsecase.Scenario()
+        let scenario = PrivateStubReadItemUsecase.Scenario()
             |> \.collectionItems .~ reloadResult
             |> \.sortOption .~ [sortOrder]
             |> \.customOrder .~ .success(customOrder)
             |> \.collectionInfo .~ .success(collection)
-        let stubUsecase = StubReadItemUsecase(scenario: scenario)
+        let stubUsecase = PrivateStubReadItemUsecase(scenario: scenario)
         stubUsecase.isReloadNeedMocking = isReloadNeed
         self.spyItemsUsecase = stubUsecase
         
@@ -145,7 +145,7 @@ extension ReadCollectionViewModelTests {
             .disposed(by: self.disposeBag)
         
         // when
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         self.wait(for: [expect], timeout: self.timeout)
         
         // then
@@ -163,7 +163,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -179,7 +179,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         async let cvmsStreams = viewModel.cellViewModels.take(1).values(with: self.timeout)
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         // then
         let firstCVMs = try await cvmsStreams.first(where: { _ in true })
@@ -197,7 +197,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let attrs = self.waitFirstElement(expect, for: viewModel.attributeCell) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -211,7 +211,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let attrs = self.waitFirstElement(expect, for: viewModel.attributeCell) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -227,7 +227,7 @@ extension ReadCollectionViewModelTests {
             expect.fulfill()
         }
         // when
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
@@ -300,7 +300,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             self.spyRouter.mockSelectedNewOrder = .byCreatedAt(true)
             viewModel.requestChangeOrder()
@@ -319,7 +319,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             self.spyRouter.mockSelectedNewOrder = .byLastUpdatedAt(true)
             viewModel.requestChangeOrder()
@@ -338,7 +338,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvmLists = self.waitElements(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             self.spyRouter.mockSelectedNewOrder = .byPriority(true)
             viewModel.requestChangeOrder()
@@ -360,7 +360,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -376,7 +376,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -392,7 +392,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -412,7 +412,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitElements(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             self.isShrinkModeMocking?(true)
         }
         
@@ -436,7 +436,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // then
@@ -456,7 +456,7 @@ extension ReadCollectionViewModelTests {
         // given
         let expect = expectation(description: "link preview 제공")
         let viewModel = self.makeViewModel()
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         // when
         let load = viewModel.readLinkPreview(for: "l:8")
@@ -475,7 +475,7 @@ extension ReadCollectionViewModelTests {
         // given
         let expect = expectation(description: "collection으로 이동")
         let viewModel = self.makeViewModel()
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         self.spyRouter.called(key: "moveToSubCollection") { _ in
             expect.fulfill()
@@ -493,7 +493,7 @@ extension ReadCollectionViewModelTests {
         // given
         let expect = expectation(description: "link 상세 노출")
         let viewModel = self.makeViewModel()
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         self.spyRouter.called(key: "showLinkDetail") { _ in
             expect.fulfill()
@@ -533,7 +533,7 @@ extension ReadCollectionViewModelTests {
 
         // when
         let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
 
             viewModel.addNewCollectionItem()
         }
@@ -549,7 +549,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels.withoutAttrCell()) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             viewModel.addNewReadLinkItem()
         }
@@ -569,7 +569,7 @@ extension ReadCollectionViewModelTests {
         let viewModel = self.makeViewModel(isRootCollection: false)
         
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // when
@@ -592,7 +592,7 @@ extension ReadCollectionViewModelTests {
         let expect = expectation(description: "아이템에 대하여 리딩 컨텍스트 메뉴 제공")
         let viewModel = self.makeViewModel(isRootCollection: false)
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // when
@@ -627,7 +627,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             viewModel.handleContextAction(for: ReadCollectionCellViewModel(item: collection),
                                              action: .edit)
@@ -647,7 +647,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
 
             viewModel.handleContextAction(for: ReadLinkCellViewModel(item: link),
                                              action: .edit)
@@ -664,7 +664,7 @@ extension ReadCollectionViewModelTests {
         let expect = expectation(description: "새로운 알림 생성 요청")
         let viewModel = self.makeViewModel()
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         
         // when
@@ -683,7 +683,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let _ = self.waitElements(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         let cvm = ReadCollectionCellViewModel(item: self.dummySubCollections.first!)
         viewModel.handleContextAction(for: cvm, action: .remind(isOn: true))
@@ -702,7 +702,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             viewModel.handleContextAction(for: dummyCell, action: .markAsRead(isRed: false))
         }
         
@@ -723,7 +723,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let editable = self.waitFirstElement(expect, for: viewModel.isEditable) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         viewModel.editCollection()
         
@@ -742,7 +742,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let editable = self.waitFirstElement(expect, for: viewModel.isEditable) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
         }
         viewModel.editCollection()
         
@@ -757,7 +757,7 @@ extension ReadCollectionViewModelTests {
     func testViewModel_requestChangeCustomOrder() {
         // given
         let viewModel = self.makeViewModel(isRootCollection: false)
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         // when
         self.spyRouter.mockSelectActionTitle = "Change order".localized
@@ -783,7 +783,7 @@ extension ReadCollectionViewModelTests {
         let newAttrCell = viewModel.sections.compactMap { $0.first?.cellViewModels.first as? ReadCollectionAttrCellViewModel }
             .filter { $0.collectionDescription == "new value" }
         let cell = self.waitFirstElement(expect, for: newAttrCell) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             let newCollection = dummyItem |> \.collectionDescription .~ pure("new value")
             self.itemUpdateMocking?(.updated(newCollection))
@@ -802,7 +802,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             let updated = dummyItem |> \.remindTime .~ 777
             self.itemUpdateMocking?(.updated(updated))
@@ -830,7 +830,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             let updated = dummyItem |> \.remindTime .~ 777
             self.itemUpdateMocking?(.updated(updated))
@@ -858,7 +858,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             let updated = dummyItem |> \.collectionDescription .~ "new value"
             self.itemUpdateMocking?(.updated(updated))
@@ -886,7 +886,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             
             let updated = dummyItem |> \.collectionDescription .~ "new value"
             self.itemUpdateMocking?(.updated(updated))
@@ -914,7 +914,7 @@ extension ReadCollectionViewModelTests {
 
         // when
         let sectionLists = self.waitElements(expect, for: viewModel.cellViewModels) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
 
             let updated = dummyItem |> \.parentID .~ "new collection"
             self.itemUpdateMocking?(.updated(updated))
@@ -946,7 +946,7 @@ extension ReadCollectionViewModelTests {
     func testViewModel_whenAfterRemoveCurrentCollection_returnToParent() {
         // given
         let viewModel = self.makeViewModel(isRootCollection: false)
-        viewModel.reloadCollectionItems()
+        viewModel.refreshList()
         
         // when
         self.spyRouter.mockSelectActionTitle = "Delete".localized
@@ -965,7 +965,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             self.itemUpdateMocking?(.removed(itemID: dummyCell.uid, parent: "some"))
         }
         
@@ -986,7 +986,7 @@ extension ReadCollectionViewModelTests {
         
         // when
         let cvms = self.waitFirstElement(expect, for: viewModel.cellViewModels, skip: 1) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             self.itemUpdateMocking?(.removed(itemID: dummyCell.uid, parent: "some"))
         }
         
@@ -1019,7 +1019,7 @@ extension ReadCollectionViewModelTests {
             .map { $0.filter { $0.isFavorite == true } }
             .map { $0.map { $0.uid } }
         let favoriteIDs = self.waitElements(expect, for: favoriteIDSource) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: false))
             viewModel.handleContextAction(for: cvm2, action: .favorite(isFavorite: false))
             viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: true))
@@ -1047,7 +1047,7 @@ extension ReadCollectionViewModelTests {
             .map { $0.filter { $0.isFavorite == true } }
             .map { $0.map { $0.uid } }
         let favoriteIDs = self.waitElements(expect, for: favoriteIDSource) {
-            viewModel.reloadCollectionItems()
+            viewModel.refreshList()
             viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: false))
             viewModel.handleContextAction(for: cvm2, action: .favorite(isFavorite: false))
             viewModel.handleContextAction(for: cvm1, action: .favorite(isFavorite: true))
@@ -1098,32 +1098,41 @@ extension ReadCollectionViewModelTests {
     func testViewModel_doNotReloadCollectionsIfNotNeed() {
         // given
         let expect = expectation(description: "reload 필요시없으면 reload 안함")
-        expect.isInverted = true
-        let viewModel = self.makeViewModel(isReloadNeed: false)
+        let viewModel = self.makeViewModel(isRootCollection: false)
         
         // when
-        let _ = self.waitElements(expect, for: viewModel.cellViewModels) {
+        let newCellViewModels = self.waitElements(expect, for: viewModel.cellViewModels.debug()) {
+            viewModel.refreshList()
+            self.spyItemsUsecase.isReloadNeedMocking = false
+            
             viewModel.reloadCollectionItemsIfNeed()
         }
         
         // then
-        XCTAssertEqual(self.spyItemsUsecase.didLoadCollectionItemsCount, 0)
+        XCTAssertEqual(newCellViewModels.count, 1)
+        XCTAssertEqual(self.spyItemsUsecase.didLoadCollectionItemsCount, 1)
     }
     
     func testViewModel_reloadCollectionsIfNeed() {
         // given
         let expect = expectation(description: "reload 필요시 reload")
-        expect.expectedFulfillmentCount = 1
         expect.assertForOverFulfill = false
-        let viewMdoel = self.makeViewModel(isReloadNeed: true)
+        let viewMdoel = self.makeViewModel(isRootCollection: false)
         
         // when
-        let _ = self.waitElements(expect, for: viewMdoel.cellViewModels) {
+        let newCellViewModels = self.waitElements(expect, for: viewMdoel.cellViewModels) {
+            viewMdoel.refreshList()
+            self.spyItemsUsecase.scenario.collectionItems = .success([])
+            self.spyItemsUsecase.isReloadNeedMocking = true
+            
             viewMdoel.reloadCollectionItemsIfNeed()
         }
         
         // then
-        XCTAssertEqual(self.spyItemsUsecase.didLoadCollectionItemsCount, 1)
+        // 최초: 10개, reload: 0개
+        // -> collection, links combineLatest여서 10(colleciton + links) -> 5(links) -> 0 순으로 이벤트 방출
+        XCTAssertGreaterThan(newCellViewModels.count, 1)
+        XCTAssertEqual(self.spyItemsUsecase.didLoadCollectionItemsCount, 2)
     }
 }
 
@@ -1208,7 +1217,7 @@ extension ReadCollectionViewModelTests {
     class SpyInverseNavigationCoorditator: CollectionInverseNavigationCoordinating {
         
         var didPrepareParentRequested: Bool = false
-        func inverseNavigating(prepareParent collectionID: String) {
+        func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
             self.didPrepareParentRequested = true
         }
     }
@@ -1272,6 +1281,23 @@ extension ReadCollectionViewModelTests {
         var didShowMyReadCollectionID: String?
         func readCollection(didShowMy subCollectionID: String?) {
             self.didShowMyReadCollectionID = subCollectionID
+        }
+    }
+    
+    class PrivateStubReadItemUsecase: StubReadItemUsecase {
+        
+        var customOrdersMocking: [[String]]?
+        
+        override func reloadCustomOrder(for collectionID: String) -> Observable<[String]> {
+            
+            guard self.customOrdersMocking != nil
+            else {
+                return super.reloadCustomOrder(for: collectionID)
+            }
+            
+            let first = self.customOrdersMocking?.isNotEmpty == true
+                ? self.customOrdersMocking?.removeFirst() : nil
+            return .just(first ?? [])
         }
     }
 }

@@ -128,7 +128,9 @@ extension EditItemsCustomOrderViewModelImple {
     
     public func loadCollectionItemsWithCustomOrder() {
         
-        let prepareCustomOrder = self.readItemUsecase.customOrder(for: self.substituteCollectionID).take(1)
+        let prepareCustomOrder = self.readItemUsecase
+            .reloadCustomOrder(for: self.substituteCollectionID)
+            .takeLast(1)
         let thenLoadItems: ([String]) -> Observable<([ReadCollection], [ReadLink])> = { [weak self] customOrder in
             guard let self = self else { return .empty() }
             return self.loadItemsWithSortedSection(by: customOrder)

@@ -27,7 +27,7 @@ final class DependencyInjector {
         fileprivate init() {}
         
         private static var kakaoOAuthRemote: KakaoOAuthRemote {
-            return KakaoOAuthRemoteImple(path: AppEnvironment.legacyAPIPath ?? "",
+            return KakaoOAuthRemoteImple(path: AppEnvironment.kakaoSignInAPIPath ?? "",
                                          api: HttpAPIImple())
         }
         

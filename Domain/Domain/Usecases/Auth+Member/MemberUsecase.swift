@@ -37,6 +37,8 @@ public protocol MemberUsecase {
     
     func fetchCurrentMember() -> Member?
     
+    func reloadCurrentMember() -> Maybe<Member>
+    
     func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool)
     
     func updatePushToken(_ userID: String, deviceID: String, newToken: String)
@@ -78,6 +80,32 @@ extension MemberUsecaseImple {
     
     public func fetchCurrentMember() -> Member? {
         return self.sharedDataStoreService.fetch(Member.self, key: .currentMember)
+    }
+    
+    public func reloadCurrentMember() -> Maybe<Member> {
+        guard let currentMemberID = self.sharedDataStoreService.currentAuth()?.userID
+        else {
+            return .error(ApplicationErrors.noUserInfo)
+        }
+        let emptyThenError: (Member?) throws -> Member = { member in
+            guard let member = member else {
+                throw ApplicationErrors.notFound
+            }
+            return member
+        }
+        let thenUpdateStore: (Member) -> Void = { [weak self] newMember in
+            guard let self = self else { return }
+            typealias Key = SharedDataKeys
+            self.sharedDataStoreService
+                .update(Member.self, key: Key.currentMember.rawValue, value: newMember)
+            self.sharedDataStoreService
+                .update([String: Member].self, key: Key.memberMap.rawValue) { dict in
+                    return (dict ?? [:]) |> key(newMember.uid) .~ newMember
+                }
+        }
+        return self.memberRepository.requestLoadMember(currentMemberID)
+            .map(emptyThenError)
+            .do(onNext: thenUpdateStore)
     }
     
     public func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {

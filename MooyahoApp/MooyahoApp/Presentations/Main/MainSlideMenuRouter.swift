@@ -84,8 +84,8 @@ extension MainSlideMenuRouter {
         }
         let navigtionController = BaseNavigationController(
             rootViewController: next,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
+            shouldHideNavigation: true,
+            shouldShowCloseButtonIfNeed: false
         )
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigtionController, animated: true)
     }

@@ -45,8 +45,8 @@ struct AppEnvironment {
         return secretJsons["firebase_server_key"] as? String
     }()
     
-    static var legacyAPIPath: String? = {
-        return secretJsons["legacy_api_path"] as? String
+    static var kakaoSignInAPIPath: String? = {
+        return secretJsons["kakao_signin"] as? String
     }()
     
     static var appID: String {

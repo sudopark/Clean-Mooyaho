@@ -25,8 +25,13 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
     var disposeBag: DisposeBag!
     var didMoveTo: ReadCollection?
     var didSelectCollection: ReadCollection?
+    var didShowToast: Bool?
     
-    func moveToSubCollection(_ collection: ReadCollection, listener: NavigateCollectionSceneListenable?) {
+    var spyCoordinator: SpyInverseNavigationCoordinator!
+    
+    func moveToSubCollection(_ collection: ReadCollection,
+                             with unSelectableCollectionID: String?,
+                             listener: NavigateCollectionSceneListenable?) {
         self.didMoveTo = collection
     }
     
@@ -38,13 +43,19 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
         completed?()
     }
     
+    func showToast(_ message: String) {
+        self.didShowToast = true
+    }
+    
     override func setUpWithError() throws {
         self.disposeBag = .init()
+        self.spyCoordinator = .init()
     }
     
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.didMoveTo = nil
+        self.spyCoordinator = nil
     }
     
     var dummyCollectionItems: [ReadCollection] {
@@ -59,16 +70,21 @@ class NavigateCollectionViewModelTests: BaseTestCase, WaitObservableEvents, Navi
         return (100..<110).map { ReadLink.dummy($0) }
     }
     
-    private func makeViewModel(isRoot: Bool = true) -> NavigateCollectionViewModel {
+    private func makeViewModel(isRoot: Bool = true,
+                               unselectableCollectionID: String? = nil) -> NavigateCollectionViewModel {
         
         let scenario = StubReadItemUsecase.Scenario()
             |> \.myItems .~ .success(self.myCollectionItems + dummyLinkItems)
             |> \.collectionItems .~ .success(self.dummyCollectionItems + dummyLinkItems)
         let usecase = StubReadItemUsecase(scenario: scenario)
-        let collection = isRoot ? nil : ReadCollection.dummy(0)
+        let collection: ReadCollection? = (isRoot ? nil : ReadCollection.dummy(0))
+            .map { $0 |> \.parentID .~ (isRoot ? nil : "parent") }
         return NavigateCollectionViewModelImple(currentCollection: collection,
+                                                unselectableCollectionID: unselectableCollectionID,
                                                 readItemUsecase: usecase,
-                                                router: self, listener: self)
+                                                router: self,
+                                                listener: self,
+                                                coordinator: self.spyCoordinator)
     }
 }
 
@@ -141,6 +157,25 @@ extension NavigateCollectionViewModelTests {
 
 extension NavigateCollectionViewModelTests {
     
+    func testViewModel_markUnselectableCollection() {
+        // given
+        let expect = expectation(description: "선택 불가능한 콜렉션 표시")
+        let dummyCollection = self.dummyCollectionItems.randomElement()!
+        let viewModel = self.makeViewModel(isRoot: false, unselectableCollectionID: dummyCollection.uid)
+        
+        // when
+        let cellViewModels = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollections()
+        } ?? []
+        
+        // then
+        let selectableCells = cellViewModels.filter { $0.isSelectable == true }
+        let nonSelectableCells = cellViewModels.filter { $0.isSelectable == false }
+        XCTAssertEqual(selectableCells.count, self.dummyCollectionItems.count - 1)
+        XCTAssertEqual(nonSelectableCells.count, 1)
+        XCTAssertEqual(nonSelectableCells.first?.uid, dummyCollection.uid)
+    }
+    
     func testViewMdoel_moveToSubCollection() {
         // given
         let expect = expectation(description: "서브콜렉션으로 이동")
@@ -172,6 +207,51 @@ extension NavigateCollectionViewModelTests {
         // then
         XCTAssertEqual(self.didSelectCollection?.uid, "c:0")
     }
+    
+    func testViewModel_whenSelectNotSelectableCollection_showToast() {
+        // given
+        let expect = expectation(description: "선택 불가능한 콜렉션 선택시 토스트 노출")
+        let dummyCollection = self.dummyCollectionItems.randomElement()!
+        let viewModel = self.makeViewModel(isRoot: false, unselectableCollectionID: dummyCollection.uid)
+        
+        // when
+        let _ = self.waitFirstElement(expect, for: viewModel.cellViewModels) {
+            viewModel.reloadCollections()
+        }
+        viewModel.moveToSubCollection(dummyCollection.uid)
+        
+        // then
+        XCTAssertEqual(self.didMoveTo?.uid, nil)
+        XCTAssertEqual(self.didShowToast, true)
+    }
+}
+
+
+// MARK: - test prepare parent
+
+extension NavigateCollectionViewModelTests {
+    
+    func testViewModel_requestPrepareParent_ifParentExists() {
+        // given
+        let viewModel = self.makeViewModel(isRoot: false)
+        
+        // when
+        viewModel.requestPrepareParentIfNeed()
+        
+        // then
+        XCTAssertNotNil(self.spyCoordinator.didRequestedPrepareParentParams)
+    }
+    
+    func testViewModel_doNotRequestPrepareParent_ifParentNotExists() {
+        // given
+        let viewModel = self.makeViewModel(isRoot: true)
+        
+        // when
+        viewModel.requestPrepareParentIfNeed()
+        
+        // then
+        XCTAssertNil(self.spyCoordinator.didRequestedPrepareParentParams)
+    }
 }
 
 
@@ -199,8 +279,10 @@ class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModel
         let usecase = StubReadItemUsecase(scenario: scenario)
         return NavigateAndChageItemParentViewModelImple(targetItem: target,
                                                         currentCollection: collection,
+                                                        unselectableCollectionID: nil,
                                                         readItemUsecase: usecase,
-                                                        router: self)
+                                                        router: self,
+                                                        coordinator: self.spyCoordinator)
     }
     
     override func closeScene(animated: Bool, completed: (() -> Void)?) {
@@ -244,5 +326,18 @@ class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModel
         
         // then
         XCTAssertEqual(self.didClose, true)
+    }
+}
+
+
+
+extension NavigateCollectionViewModelTests {
+    
+    class SpyInverseNavigationCoordinator: CollectionInverseNavigationCoordinating {
+        
+        var didRequestedPrepareParentParams: CollectionInverseParentMakeParameter?
+        func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
+            self.didRequestedPrepareParentParams = parameter
+        }
     }
 }

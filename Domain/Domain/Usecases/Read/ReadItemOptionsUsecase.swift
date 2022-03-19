@@ -32,6 +32,8 @@ public protocol ReadItemOptionsUsecase {
     
     func updateLatestSortOption(to newValue: ReadCollectionItemSortOrder) -> Maybe<Void>
     
+    func reloadCustomOrder(for collectionID: String) -> Observable<[String]>
+    
     func customOrder(for collectionID: String) -> Observable<[String]>
     
     func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>

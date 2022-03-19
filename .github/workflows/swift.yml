@@ -1,7 +1,7 @@
 name: Swift
 
 on:
-  pull_request
+    pull_request
 
 jobs:
   test:
@@ -10,8 +10,8 @@ jobs:
     # runs-on: macOS-latest
     strategy:
         matrix:
-          xcode: [13.1]
-          destination: ['platform=iOS Simulator,name=iPhone 11']
+          xcode: [13.3]
+          destination: ["platform=iOS Simulator,name=iPhone 11,OS=15.4"]
     
     steps:
       - run: swift --version

@@ -32,6 +32,7 @@ public protocol ManageCategoryViewModel: AnyObject {
     func loadMore()
     func editCategory(_ uid: String)
     func removeCategory(_ uid: String)
+    func requestClose()
     
     // presenter
     var cellViewModels: Observable<[CategoryCellViewModel]> { get }
@@ -133,6 +134,10 @@ extension ManageCategoryViewModelImple {
             return
         }
         self.router.alertForConfirm(form)
+    }
+    
+    public func requestClose() {
+        self.router.rewind(animated: true)
     }
     
     private func removeCategoryAfterConfirm(_ uid: String) {

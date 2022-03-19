@@ -20,11 +20,13 @@ public struct NavigateCollectionCellViewModel: Equatable {
     let uid: String
     let name: String
     let description: String?
+    let isSelectable: Bool
     
-    init(collection: ReadCollection) {
+    init(collection: ReadCollection, isSelectable: Bool = true) {
         self.uid = collection.uid
         self.name = collection.name
         self.description = collection.collectionDescription
+        self.isSelectable = isSelectable
     }
 }
 
@@ -35,6 +37,7 @@ public protocol NavigateCollectionViewModel: AnyObject {
 
     // interactor
     func reloadCollections()
+    func requestPrepareParentIfNeed()
     func moveToSubCollection(_ collectionID: String)
     func confirmSelect()
     
@@ -52,15 +55,22 @@ public class NavigateCollectionViewModelImple: NavigateCollectionViewModel {
     
     let readItemUsecase: ReadItemUsecase
     let router: NavigateCollectionRouting
+    private let unselectableCollectionID: String?
     private weak var listener: NavigateCollectionSceneListenable?
+    private weak var coordinator: CollectionInverseNavigationCoordinating?
     
     public init(currentCollection: ReadCollection?,
+                unselectableCollectionID: String?,
                 readItemUsecase: ReadItemUsecase,
                 router: NavigateCollectionRouting,
-                listener: NavigateCollectionSceneListenable?) {
+                listener: NavigateCollectionSceneListenable?,
+                coordinator: CollectionInverseNavigationCoordinating?) {
+        
         self.readItemUsecase = readItemUsecase
+        self.unselectableCollectionID = unselectableCollectionID
         self.router = router
         self.listener = listener
+        self.coordinator = coordinator
         
         self.subjects.currentCollection.accept(currentCollection)
     }
@@ -120,12 +130,31 @@ extension NavigateCollectionViewModelImple {
             .disposed(by: self.disposeBag)
     }
     
+    public func requestPrepareParentIfNeed() {
+        
+        guard let parentID = self.subjects.currentCollection.value?.parentID
+        else { return }
+        let loadParent = self.readItemUsecase.loadCollectionInfo(parentID)
+        let thenRequestPreapre: (ReadCollection) -> Void = { [weak self] parent in
+            self?.coordinator?.inverseNavigating(prepareParent: parent)
+        }
+        
+        loadParent
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: thenRequestPreapre)
+            .disposed(by: self.disposeBag)
+    }
+    
     public func moveToSubCollection(_ collectionID: String) {
         guard let collections = self.subjects.collections.value,
               let collection = collections.first(where: { $0.uid == collectionID })
         else { return }
         
-        self.router.moveToSubCollection(collection, listener: self.listener)
+        let isSelectable = collectionID != self.unselectableCollectionID
+        return isSelectable
+            ? self.router
+                .moveToSubCollection(collection, with: self.unselectableCollectionID, listener: self.listener)
+            : self.router.showToast("You cannot select the same reading list.".localized)
     }
 }
 
@@ -144,8 +173,9 @@ extension NavigateCollectionViewModelImple {
     }
     
     public var cellViewModels: Observable<[NavigateCollectionCellViewModel]> {
+        let unselectableCollectionID = self.unselectableCollectionID
         return self.subjects.collections
-            .compactMap { $0?.asCellViewModels() }
+            .compactMap { $0?.asCellViewModels(with: unselectableCollectionID) }
             .distinctUntilChanged()
     }
     
@@ -165,7 +195,12 @@ extension NavigateCollectionViewModelImple {
 
 private extension Array where Element == ReadCollection {
     
-    func asCellViewModels() -> [NavigateCollectionCellViewModel] {
-        return self.map(NavigateCollectionCellViewModel.init)
+    func asCellViewModels(with unselectableCollectionID: String?) -> [NavigateCollectionCellViewModel] {
+        return self.map {
+            return NavigateCollectionCellViewModel(
+                collection: $0,
+                isSelectable: $0.uid != unselectableCollectionID
+            )
+        }
     }
 }

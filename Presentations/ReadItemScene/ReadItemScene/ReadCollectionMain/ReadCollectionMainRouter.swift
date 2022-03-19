@@ -128,11 +128,15 @@ extension ReadCollectionMainRouter {
     
     private func prepareInverseCoordinatorIfNotExists() {
         guard self.collectionInverseNavigationCoordinator == nil else { return }
-        let makeParent: (String) -> UIViewController? = { [weak self] collectionID in
-            let parent = self?.nextScenesBuilder?
-                .makeReadCollectionItemScene(collectionID: collectionID,
-                                             navigationListener: self?.navigationListener,
-                                             withInverse: self?.collectionInverseNavigationCoordinator)
+        let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
+        makeParent = { [weak self] parameter in
+            guard let collectionID = parameter as? String else { return nil }
+            
+            let parent = self?.nextScenesBuilder?.makeReadCollectionItemScene(
+                collectionID: collectionID,
+                navigationListener: self?.navigationListener,
+                withInverse: self?.collectionInverseNavigationCoordinator
+            )
             return parent
         }
 

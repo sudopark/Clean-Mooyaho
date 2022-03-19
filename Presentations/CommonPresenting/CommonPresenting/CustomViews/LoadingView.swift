@@ -18,7 +18,6 @@ public final class LoadingView: BaseUIView {
     }
     
     private var loadingLayer: CAShapeLayer!
-    private var completeLayer: CAShapeLayer!
     
     public var layerColor = UIColor.white
     
@@ -164,5 +163,110 @@ extension FullScreenLoadingView: Presenting {
         
         self.isHidden = true
         self.isUserInteractionEnabled = true
+    }
+}
+
+
+import SwiftUI
+
+// MARK: SwiftUI Version - LoadingView
+
+extension Views {
+    
+    
+    public struct LoadingView: View {
+        
+        @Binding var isLoading: Bool
+        @State private var percent: CGFloat = 0
+        private let layerColor: Color
+        
+        public init(_ layerColor: Color, isLoading: Binding<Bool>) {
+            self.layerColor = layerColor
+            self._isLoading = isLoading
+        }
+        
+        public var body: some View {
+            
+            Views.ProgessLine()
+                .trim(from: 0, to: self.percent)
+                .stroke(
+                    self.layerColor,
+                    style: .init(lineWidth: 3.5, lineCap: .round)
+                )
+                .animation(.easeInOut(duration: 1.25).repeatForever(autoreverses: true))
+                .aspectRatio(1, contentMode: .fit)
+                .rotationEffect(Angle(degrees: 360 * self.percent))
+                .animation(.linear(duration: 0.9).repeatForever(autoreverses: false))
+                .onAppear {
+                    self.percent = 1.0
+                }
+        }
+    }
+    
+    struct ProgessLine: Shape {
+
+        func path(in rect: CGRect) -> Path {
+            var path = Path()
+            let center = CGPoint(x: rect.size.width/2, y: rect.size.height/2)
+            let radius = rect.size.height * 0.35
+            path.addArc(
+                center: center,
+                radius: radius,
+                startAngle: Angle(degrees: 360 * 0.1),
+                endAngle: Angle(degrees: 360 * 1.2),
+                clockwise: true
+            )
+            return path
+        }
+    }
+}
+
+
+// MARK: SwiftUI Version - FullScreenLoadingView
+
+extension Views {
+    
+    public struct FullScreenLoadingView: View {
+        
+        @Binding var isLoading: Bool
+        
+        public init(isLoading: Binding<Bool>) {
+            self._isLoading = isLoading
+        }
+        
+        public var body: some View {
+            if isLoading {
+                VStack {
+                    self.messageLabel
+                    self.loadingView
+                }
+                .padding(20)
+                .background(Color.black.opacity(0.8))
+                .cornerRadius(16)
+            } else {
+                EmptyView()
+            }
+        }
+        
+        private var messageLabel: some View {
+            Text("Wait please..".localized)
+                .foregroundColor(.white.opacity(0.8))
+                .font(self.uiContext.fonts.get(15, weight: .medium).asFont)
+        }
+        
+        private var loadingView: some View {
+            Views.LoadingView(.white, isLoading: $isLoading)
+                .frame(width: 50, height: 50)
+        }
+    }
+}
+
+
+struct FullScreenLoadingViewPreview: PreviewProvider {
+    
+    static var previews: some View {
+        
+        let loadingView = Views.FullScreenLoadingView(isLoading: .constant(true))
+        return loadingView
     }
 }

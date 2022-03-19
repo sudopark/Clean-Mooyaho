@@ -8,6 +8,8 @@
 import UIKit
 
 
+// MARK: - PullGuideView
+
 public final class PullGuideView: BaseUIView, Presenting {
  
     let lineView = UIView()
@@ -32,3 +34,26 @@ public final class PullGuideView: BaseUIView, Presenting {
     }
 }
 
+
+// MARK: - SwiftUI PullGuideView
+
+import SwiftUI
+
+extension Views {
+    
+    public struct PullGuideView: View {
+        
+        public init() { }
+        
+        public var body: some View {
+            HStack {
+                Spacer()
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(UIColor.lightGray.asColor)
+                    .frame(width: 50, height: 6, alignment: .center)
+                Spacer()
+            }
+            .padding([.vertical], 9)
+        }
+    }
+}
