@@ -345,6 +345,13 @@ extension ReadItemUsecaseImple {
             .do(onNext: updateOnStore)
     }
     
+    public func reloadCustomOrder(for collectionID: String) -> Observable<[String]> {
+        
+        return self.optionsRespository.requestLoadCustomOrder(for: collectionID)
+            .ifEmpty(default: [])
+            .do(onNext: self.updateCustomOrderOnStore(for: collectionID))
+    }
+    
     public func customOrder(for collectionID: String) -> Observable<[String]> {
         
         let datKey = self.customOrderKey
@@ -352,42 +359,24 @@ extension ReadItemUsecaseImple {
         return self.sharedStoreService
             .observeWithCache([String: [String]].self, key: datKey.rawValue)
             .compactMap { $0?[collectionID] }
-            .do(onSubscribed: { [weak self] in
-                self?.prepareObservableCustomOrderIfNeed(collectionID)
-            })
-    }
-    
-    private func prepareObservableCustomOrderIfNeed(_ collectionID: String) {
-        
-        let datKey = self.customOrderKey
-        
-        let preloadedExists = self.sharedStoreService
-            .fetch(CustomOrdersMap.self, key: datKey)?[collectionID] != nil
-        
-        guard preloadedExists == false else { return }
-        
-        let updateOrderOnStore: ([String]) -> Void = { [weak self] ids in
-            guard let self = self else { return }
-            self.sharedStoreService.update(CustomOrdersMap.self, key: datKey.rawValue) {
-                return ($0 ?? [:]) |> key(collectionID) .~ ids
-            }
-        }
-        
-        self.optionsRespository.requestLoadCustomOrder(for: collectionID)
-            .ifEmpty(default: [])
-            .subscribe(onNext: updateOrderOnStore)
-            .disposed(by: self.disposeBag)
     }
     
     public func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
-        let updateOnLocal: () -> Void = { [weak self] in
+        
+        return self.optionsRespository.requestUpdateCustomSortOrder(for: collectionID, itemIDs: itemIDs)
+            .map { itemIDs }
+            .do(onNext: self.updateCustomOrderOnStore(for: collectionID))
+            .map { _ in }
+    }
+    
+    private func updateCustomOrderOnStore(for collectionID: String) -> ([String]) -> Void {
+        return { [weak self] ids in
             guard let self = self else { return }
-            self.sharedStoreService.update(CustomOrdersMap.self, key: self.customOrderKey.rawValue) {
-                return ($0 ?? [:]) |> key(collectionID) .~ itemIDs
+            let datKey = self.customOrderKey.rawValue
+            self.sharedStoreService.update(CustomOrdersMap.self, key: datKey) {
+                return ($0 ?? [:]) |> key(collectionID) .~ ids
             }
         }
-        return self.optionsRespository.requestUpdateCustomSortOrder(for: collectionID, itemIDs: itemIDs)
-            .do(onNext: updateOnLocal)
     }
     
     public func isAddItemGuideEverShownWithMarking() -> Bool {
