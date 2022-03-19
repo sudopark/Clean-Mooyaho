@@ -55,7 +55,7 @@ public final class ReadCollectionItemsViewController: BaseViewController, ReadCo
         super.viewDidLoad()
         self.bind()
         
-        self.viewModel.reloadCollectionItems()
+        self.viewModel.refreshList()
         self.viewModel.requestPrepareParentIfNeed()
     }
     
@@ -134,7 +134,7 @@ extension ReadCollectionItemsViewController: UITableViewDelegate {
         
         self.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                self?.viewModel.reloadCollectionItems()
+                self?.viewModel.refreshList()
             })
             .disposed(by: self.disposeBag)
         

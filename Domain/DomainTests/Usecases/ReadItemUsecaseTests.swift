@@ -602,41 +602,54 @@ extension ReadItemUsecaseTests {
 
 extension ReadItemUsecaseTests {
     
-    func testUsecase_loadCustomSortOrder() {
+    func testUsecase_reloadCustomOrder() {
         // given
-        let expect = expectation(description: "custom sort order 로드 + 이후 변경된값 인지 가능")
-        expect.expectedFulfillmentCount = 2
-        let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
+        let expect = expectation(description: "커스텀 오더 리로드")
+        let usecase = self.makeUsecase(customSortOrder: ["1", "2"])
         
         // when
-        let loading = usecase.customOrder(for: "some")
-        let orders = self.waitElements(expect, for: loading.asObservable()) {
-            self.spyStore.update([String: [String]].self, key: SharedDataKeys.readItemCustomOrderMap.rawValue) {
-                return ($0 ?? [:]) |> key("some") .~ ["c1", "c2", "c3"]
-            }
-        }
+        let loading = usecase.reloadCustomOrder(for: "some")
+        let order = self.waitFirstElement(expect, for: loading)
         
         // then
-        XCTAssertEqual(orders, [["c1", "c2"], ["c1", "c2", "c3"]])
+        XCTAssertEqual(order, ["1", "2"])
     }
     
-    func testUsecase_whenPreloadedCustomSortOrderExists_useIt() {
+    func testUsecase_whenAfterReloadCustomOrder_updateSharedCustomOrder() {
         // given
-        let expect = expectation(description: "미리 로드된 custom 정렬 존재시에 해당값 사용 + 이후 변경된값 인지 가능")
+        let expect = expectation(description: "커스텀 오더 리로드 이후에 공유중인 오더 업데이트")
+        let usecase = self.makeUsecase(customSortOrder: ["3", "2", "54"])
+        
+        // when
+        let order = self.waitFirstElement(expect, for: usecase.customOrder(for: "some")) {
+            usecase.reloadCustomOrder(for: "some")
+                .subscribe()
+                .disposed(by: self.disposeBag)
+        }
+        
+        // then
+        XCTAssertEqual(order, ["3", "2", "54"])
+    }
+    
+    func testUsecase_updateSharedCustomOrder() {
+        // given
+        let expect = expectation(description: "공유중인 커스텀 오더 이벤트 전파")
         expect.expectedFulfillmentCount = 2
         let usecase = self.makeUsecase(customSortOrder: ["c1", "c2"])
         
         // when
-        let loadAndReload = usecase.customOrder(for: "some")
-            .flatMap{ _ in usecase.customOrder(for: "some") }
-        let orders = self.waitElements(expect, for: loadAndReload.asObservable()) {
+        let orderLists = self.waitElements(expect, for: usecase.customOrder(for: "some")) {
+            usecase.reloadCustomOrder(for: "some")
+                .subscribe()
+                .disposed(by: self.disposeBag)
+            
             self.spyStore.update([String: [String]].self, key: SharedDataKeys.readItemCustomOrderMap.rawValue) {
-                return ($0 ?? [:]) |> key("some") .~ ["c1", "c2", "c3"]
+                return ($0 ?? [:]) |> key("some") .~ ["new"]
             }
         }
         
         // then
-        XCTAssertEqual(orders, [["c1", "c2"], ["c1", "c2", "c3"]])
+        XCTAssertEqual(orderLists, [["c1", "c2"], ["new"]])
     }
     
     func testUsecase_updateCustomSortOrder() {

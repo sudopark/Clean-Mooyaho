@@ -105,8 +105,16 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
         return .empty()
     }
     
-    open func customOrder(for collectionID: String) -> Observable<[String]> {
+    open func reloadCustomOrder(for collectionID: String) -> Observable<[String]> {
         return self.scenario.customOrder.asMaybe().asObservable()
+            .do(onNext: { [weak self] ids in
+                self?.fakeOrders.onNext(ids)
+            })
+    }
+    
+    private let fakeOrders = BehaviorSubject<[String]?>(value: nil)
+    open func customOrder(for collectionID: String) -> Observable<[String]> {
+        return self.fakeOrders.compactMap { $0 }
     }
     
     open func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void> {
