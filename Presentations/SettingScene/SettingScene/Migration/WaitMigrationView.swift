@@ -136,12 +136,7 @@ public struct WaitMigrationView: View {
             .asAny()
         }
     }
-    
-    private var foreverAnimation: Animation {
-        return Animation.linear(duration: 0.1)
-            .repeatForever(autoreverses: true)
-    }
-    
+     
     private func titleAreaView(_ title: String, icon: String,
                                isNeedAnimation: Bool = false,
                                withAnimation: Bool = false) -> some View {
@@ -150,10 +145,9 @@ public struct WaitMigrationView: View {
                 .smallHeader()
             Text(icon)
                 .smallHeader()
-                .rotationEffect(
-                    .degrees(withAnimation ? -27 : isNeedAnimation ? -15 : 0)
+                .rocketAnimationOrNot(
+                    animate: withAnimation, isNeedAnimation: isNeedAnimation
                 )
-                .animation(self.foreverAnimation)
         }
     }
 
@@ -182,5 +176,25 @@ public struct WaitMigrationView: View {
         Views.ConfirmButton {
             self.viewModel.confirmMigrationFinished()
         }
+    }
+}
+
+
+private extension View {
+    
+    private var foreverAnimation: Animation {
+        return Animation.linear(duration: 0.1)
+            .repeatForever(autoreverses: true)
+    }
+
+    func rocketAnimationOrNot(animate: Bool, isNeedAnimation: Bool) -> some View {
+        guard isNeedAnimation else {
+            return self.asAny()
+        }
+        
+        return self
+            .rotationEffect(.degrees(animate ? -27 : -15))
+            .animation(foreverAnimation)
+            .asAny()
     }
 }
