@@ -109,31 +109,24 @@ extension EditLinkItemRouter {
             .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor)
         else { return }
         
-        let navigationController = self.makeNavaigationController(root)
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
+        let sheetController = NavigationEmbedSheetViewController()
+        sheetController.embedNavigationController.pushViewController(root, animated: false)
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
     private func showNavigationSceneWithJump(_ current: ReadCollection) {
         
-        let navigationController = self.makeNavaigationController()
-        self.prepareInverseCoordinator(navigationController)
+        let sheetController = NavigationEmbedSheetViewController()
+        self.prepareInverseCoordinator(sheetController.embedNavigationController)
         
         guard let root = self.nextScenesBuilder?
             .makeNavigateCollectionScene(collection: nil, listener: self.currentInteractor),
               let dest = self.nextScenesBuilder?
             .makeNavigateCollectionScene(collection: current, listener: self.currentInteractor, coordinator: self.collectionInverseNavigationCoordinator)
         else { return }
-        navigationController.viewControllers = [root, dest]
+        sheetController.embedNavigationController.viewControllers = [root, dest]
         
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
-    }
-    
-    private func makeNavaigationController(_ root: UIViewController? = nil) -> BaseNavigationController {
-        return BaseNavigationController(
-            rootViewController: root,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
-        )
+        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
     private func prepareInverseCoordinator(_ navigationController: UINavigationController) {

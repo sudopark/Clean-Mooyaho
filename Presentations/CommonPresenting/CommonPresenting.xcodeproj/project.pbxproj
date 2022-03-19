@@ -87,6 +87,7 @@
 		F66EF6AF2719EFD000AC0DAB /* RoundImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */; };
 		F6732F4827A8E46F00288701 /* BaseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6732F4727A8E46F00288701 /* BaseHeaderView.swift */; };
 		F6775B282781FA0F00D2DCD2 /* EasyTipView..swift in Sources */ = {isa = PBXBuildFile; fileRef = F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */; };
+		F6788C4F27E47A3800610ACB /* NavigationEmbedSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6788C4E27E47A3800610ACB /* NavigationEmbedSheetViewController.swift */; };
 		F67D65312718871400D8E9A5 /* ReadItemsPresentingUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D65302718871400D8E9A5 /* ReadItemsPresentingUsecase.swift */; };
 		F67DDE9D26FE1E63004BC542 /* ItemLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */; };
 		F6808426276E49C300234564 /* PullGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6808425276E49C300234564 /* PullGuideView.swift */; };
@@ -238,6 +239,7 @@
 		F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageButton.swift; sourceTree = "<group>"; };
 		F6732F4727A8E46F00288701 /* BaseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHeaderView.swift; sourceTree = "<group>"; };
 		F6775B272781FA0F00D2DCD2 /* EasyTipView..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyTipView..swift; sourceTree = "<group>"; };
+		F6788C4E27E47A3800610ACB /* NavigationEmbedSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationEmbedSheetViewController.swift; sourceTree = "<group>"; };
 		F67D65302718871400D8E9A5 /* ReadItemsPresentingUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemsPresentingUsecase.swift; sourceTree = "<group>"; };
 		F67DDE9C26FE1E63004BC542 /* ItemLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLabelView.swift; sourceTree = "<group>"; };
 		F6808425276E49C300234564 /* PullGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullGuideView.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 				F6E30E25270B5A180012A2A0 /* EmptyListener.swift */,
 				F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */,
 				F6732F4727A8E46F00288701 /* BaseHeaderView.swift */,
+				F6788C4E27E47A3800610ACB /* NavigationEmbedSheetViewController.swift */,
 			);
 			path = BaseComponents;
 			sourceTree = "<group>";
@@ -799,6 +802,7 @@
 				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
 				F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
+				F6788C4F27E47A3800610ACB /* NavigationEmbedSheetViewController.swift in Sources */,
 				F6E51B77273F62B500CBE310 /* SelectEmojiViewController.swift in Sources */,
 				F6D2BD28278C99AC00420837 /* FeedbackImapctStyle.swift in Sources */,
 				F6F295A4266D26EA00CDF980 /* ImagePickerScene.swift in Sources */,
