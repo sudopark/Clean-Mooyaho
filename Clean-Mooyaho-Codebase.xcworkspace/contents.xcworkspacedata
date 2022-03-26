@@ -17,16 +17,16 @@
          location = "group:Presentations/ReadItemScene/ReadItemScene.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/Presentations/AddItemScene/EditReadItemScene.xcodeproj">
+         location = "group:Presentations/EditReadItemScene/EditReadItemScene.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Presentations/ViewerScene/ViewerScene.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/Presentations/Discovery/DiscoveryScene.xcodeproj">
+         location = "group:Presentations/DiscoveryScene/DiscoveryScene.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/Presentations/LocationScenes/MapScenes.xcodeproj">
+         location = "group:Presentations/MapScenes/MapScenes.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Presentations/HoorayScene/HoorayScene.xcodeproj">
@@ -54,7 +54,7 @@
       location = "group:UnitTestHelpKit/UnitTestHelpKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/sudo.park/Documents/codebase/Clean-Mooyaho/StubUsecases/UsecaseDoubles.xcodeproj">
+      location = "group:UsecaseDoubles/UsecaseDoubles.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Common3rdParty/Common3rdParty.xcodeproj">
