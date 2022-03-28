@@ -69,7 +69,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
                        customOrder: [String] = [],
                        hasParent: Bool = false,
                        inverseNavigation: CollectionInverseNavigationCoordinating? = nil,
-                       isReloadNeed: Bool = false) -> ReadCollectionViewItemsModelImple {
+                       reloadNeedIDsMocking: [String] = []) -> ReadCollectionViewItemsModelImple {
         
         let collectionID = isRootCollection ? nil : "some"
         let dummies = self.dummyCollectionItems.map { $0 |> \.parentID .~ collectionID }
@@ -86,7 +86,7 @@ class ReadCollectionViewModelTests: BaseTestCase,  WaitObservableEvents {
             |> \.customOrder .~ .success(customOrder)
             |> \.collectionInfo .~ .success(collection)
         let stubUsecase = PrivateStubReadItemUsecase(scenario: scenario)
-        stubUsecase.isReloadNeedMocking = isReloadNeed
+        stubUsecase.reloadNeedCollectionIDs = reloadNeedIDsMocking
         self.spyItemsUsecase = stubUsecase
         
         self.isShrinkModeMocking = { newValue in
@@ -1103,7 +1103,7 @@ extension ReadCollectionViewModelTests {
         // when
         let newCellViewModels = self.waitElements(expect, for: viewModel.cellViewModels.debug()) {
             viewModel.refreshList()
-            self.spyItemsUsecase.isReloadNeedMocking = false
+            self.spyItemsUsecase.reloadNeedCollectionIDs = []
             
             viewModel.reloadCollectionItemsIfNeed()
         }
@@ -1123,7 +1123,7 @@ extension ReadCollectionViewModelTests {
         let newCellViewModels = self.waitElements(expect, for: viewMdoel.cellViewModels) {
             viewMdoel.refreshList()
             self.spyItemsUsecase.scenario.collectionItems = .success([])
-            self.spyItemsUsecase.isReloadNeedMocking = true
+            self.spyItemsUsecase.reloadNeedCollectionIDs = ["some"]
             
             viewMdoel.reloadCollectionItemsIfNeed()
         }

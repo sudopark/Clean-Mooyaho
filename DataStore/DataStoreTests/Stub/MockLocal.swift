@@ -184,12 +184,12 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "updateLinkItemIsReading", with: isReading)
     }
     
-    func fetchIsReloadCollectionsNeed() -> Bool {
-        return self.resolve(key: "fetchIsReloadCollectionsNeed") ?? false
+    func fetchReloadNeedCollectionIDs() -> [String] {
+        return self.resolve(key: "fetchReloadNeedCollectionIDs") ?? []
     }
     
-    func updateIsReloadCollectionNeed(_ newValue: Bool) {
-        self.verify(key: "updateIsReloadCollectionNeed", with: newValue)
+    func updateIsReloadNeedCollectionIDs(_ newValue: [String]) {
+        self.verify(key: "updateIsReloadNeedCollectionIDs", with: newValue)
     }
     
     func readingLinkItemIDs() -> [String] {

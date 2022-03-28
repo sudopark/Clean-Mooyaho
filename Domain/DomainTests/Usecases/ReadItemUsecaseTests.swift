@@ -55,7 +55,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
                      collectionMocking: ReadCollection? = nil,
                      customSortOrder: [String] = [],
                      copiedText: String? = nil,
-                     isReloadNeed: Bool = true) -> ReadItemUsecaseImple {
+                     reloadNeedIDs: [String] = []) -> ReadItemUsecaseImple {
         
         var repositoryScenario = StubReadItemRepository.Scenario()
         shouldfailLoadMyCollections.then {
@@ -67,7 +67,7 @@ class ReadItemUsecaseTests: BaseTestCase, WaitObservableEvents {
         repositoryScenario.ulrAndLinkItemMap = ["some": ReadLink.dummy(0, parent: nil)]
         let repositoryStub = SpyRepository(scenario: repositoryScenario)
         repositoryStub.collectionMocking = collectionMocking
-        repositoryStub.reloadNeedMocking = isReloadNeed
+        repositoryStub.reloadNeedIDsMocking = reloadNeedIDs
         self.spyRepository = repositoryStub
         
         let previewRepositoryStub = StubLinkPreviewRepository()
@@ -748,12 +748,12 @@ extension ReadItemUsecaseTests {
     
     func testUsecase_updateIsReloadNeed() {
         // given
-        let usecase = self.makeUsecase(isReloadNeed: true)
+        let usecase = self.makeUsecase(reloadNeedIDs: ["some"])
         
         // when + then
-        XCTAssertEqual(usecase.isReloadNeed, true)
-        usecase.isReloadNeed = false
-        XCTAssertEqual(usecase.isReloadNeed, false)
+        XCTAssertEqual(usecase.reloadNeedCollectionIDs, ["some"])
+        usecase.reloadNeedCollectionIDs = []
+        XCTAssertEqual(usecase.reloadNeedCollectionIDs, [])
     }
 }
 

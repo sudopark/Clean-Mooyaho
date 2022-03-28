@@ -9,6 +9,8 @@
 import XCTest
 
 import RxSwift
+import Prelude
+import Optics
 
 import Domain
 import UnitTestHelpKit
@@ -98,12 +100,16 @@ extension ShareMainViewModelTests {
             return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
         }
         
-        // when
+        // when + then
         viewModel.showEditScene("https://dummy-url")
-        viewModel.editReadLink(didEdit: ReadLink.dummy(0))
         
-        // then
-        XCTAssertEqual(self.spyReadItemUsecase.isReloadNeed, true)
+        let dummy1 = ReadLink.dummy(0); let dummy2 = dummy1 |> \.parentID .~ "some"
+        
+        viewModel.editReadLink(didEdit: dummy1)
+        XCTAssertEqual(self.spyReadItemUsecase.reloadNeedCollectionIDs, [ReadCollection.rootID])
+        
+        viewModel.editReadLink(didEdit: dummy2)
+        XCTAssertEqual(self.spyReadItemUsecase.reloadNeedCollectionIDs, [ReadCollection.rootID, "some"])
     }
 }
 

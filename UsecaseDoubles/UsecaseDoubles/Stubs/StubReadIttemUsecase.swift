@@ -41,10 +41,10 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
         self.scenario = scenario
     }
     
-    public var isReloadNeedMocking: Bool = false
-    public var isReloadNeed: Bool {
-        get { self.isReloadNeedMocking }
-        set { self.isReloadNeedMocking = newValue }
+    public var reloadNeedCollectionIDsMocking: [String] = []
+    public var reloadNeedCollectionIDs: [String] {
+        get { self.reloadNeedCollectionIDsMocking }
+        set { self.reloadNeedCollectionIDsMocking = newValue }
     }
     
     open func loadMyItems() -> Observable<[ReadItem]> {

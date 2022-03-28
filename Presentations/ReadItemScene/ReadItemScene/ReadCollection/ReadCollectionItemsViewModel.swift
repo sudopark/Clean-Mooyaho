@@ -287,7 +287,7 @@ extension ReadCollectionViewItemsModelImple {
     private func reloadCollectionItems() {
         
         guard self.subjects.isReloading.value == false else { return }
-        self.readItemSyncUsecase.isReloadNeed = false
+        self.resetCurrentCollectionReloadNeed()
         
         let updateList: ([ReadItem]) -> Void = { [weak self] itemes in
             self?.subjects.isReloading.accept(false)
@@ -318,9 +318,18 @@ extension ReadCollectionViewItemsModelImple {
     
     public func reloadCollectionItemsIfNeed() {
         
-        guard self.readItemSyncUsecase.isReloadNeed else { return }
+        let oldIDs = self.readItemSyncUsecase.reloadNeedCollectionIDs
+        guard oldIDs.contains(self.substituteCollectionID) else { return }
+        logger.print(level: .debug, "will reload collection -> \(self.substituteCollectionID) from: \(oldIDs)")
         self.reloadCollectionItems()
-        self.readItemSyncUsecase.isReloadNeed = false
+        self.resetCurrentCollectionReloadNeed(preparedOldIDs: oldIDs)
+    }
+    
+    private func resetCurrentCollectionReloadNeed(preparedOldIDs: [String]? = nil) {
+        let oldIDs = preparedOldIDs ?? self.readItemSyncUsecase.reloadNeedCollectionIDs
+        let newIDs = oldIDs.filter { $0 != self.substituteCollectionID }
+        guard oldIDs.count != newIDs.count else { return }
+        self.readItemSyncUsecase.reloadNeedCollectionIDs = newIDs
     }
     
     public func requestPrepareParentIfNeed() {
