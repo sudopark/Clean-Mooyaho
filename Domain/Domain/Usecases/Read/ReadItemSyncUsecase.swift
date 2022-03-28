@@ -11,17 +11,17 @@ import Foundation
 
 public protocol ReadItemSyncUsecase: AnyObject {
     
-    var isReloadNeed: Bool { get set }
+    var reloadNeedCollectionIDs: [String] { get set }
 }
 
 
 extension ReadItemUsecaseImple: ReadItemSyncUsecase {
     
-    public var isReloadNeed: Bool {
+    public var reloadNeedCollectionIDs: [String] {
         get {
-            return self.itemsRespoitory.isReloadNeed()
+            return self.itemsRespoitory.reloadNeedCollectionIDs()
         } set {
-            self.itemsRespoitory.updateIsReloadNeed(newValue)
+            self.itemsRespoitory.updateIsReloadNeedCollectionIDs(newValue)
         }
     }
 }

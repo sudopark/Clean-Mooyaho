@@ -406,13 +406,13 @@ extension LocalStorageTests_ReadItem {
     func testStorage_updateAndLoadIsNeedRealod() {
         // given
         // when
-        let isReloadNeedBeforeUpdate = self.local.fetchIsReloadCollectionsNeed()
-        self.local.updateIsReloadCollectionNeed(true)
-        let isReloadNeedAfterUpdate = self.local.fetchIsReloadCollectionsNeed()
+        let reloadNeedIDsBeforeUpdate = self.local.fetchReloadNeedCollectionIDs()
+        self.local.updateIsReloadNeedCollectionIDs(["c1", "c2"])
+        let reloadNeedIDsAfterUpdate = self.local.fetchReloadNeedCollectionIDs()
         
         // then
-        XCTAssertEqual(isReloadNeedBeforeUpdate, false)
-        XCTAssertEqual(isReloadNeedAfterUpdate, true)
+        XCTAssertEqual(reloadNeedIDsBeforeUpdate, [])
+        XCTAssertEqual(reloadNeedIDsAfterUpdate, ["c1", "c2"])
     }
 }
 

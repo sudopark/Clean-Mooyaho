@@ -43,7 +43,7 @@ public protocol ReadItemRepository {
     
     func updateLinkItemIsReading(_ id: String)
     
-    func isReloadNeed() -> Bool
+    func reloadNeedCollectionIDs() -> [String]
     
-    func updateIsReloadNeed(_ newValue: Bool)
+    func updateIsReloadNeedCollectionIDs(_ newValue: [String])
 }

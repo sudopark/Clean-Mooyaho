@@ -85,7 +85,11 @@ extension ShareMainViewModelImple {
 extension ShareMainViewModelImple: EditLinkItemSceneListenable {
     
     public func editReadLink(didEdit item: ReadLink) {
-        self.readItemSyncUsecase.isReloadNeed = true
+        let parentCollectionID = item.parentID ?? ReadCollection.rootID
+        let newIDs = self.readItemSyncUsecase.reloadNeedCollectionIDs
+            .filter { $0 != parentCollectionID }
+            + [parentCollectionID]
+        self.readItemSyncUsecase.reloadNeedCollectionIDs = newIDs
     }
     
     public func editReadLinkDidDismissed() {

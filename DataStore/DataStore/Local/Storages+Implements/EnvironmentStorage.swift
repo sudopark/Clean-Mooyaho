@@ -39,9 +39,9 @@ public protocol EnvironmentStorage {
     
     func replaceReadiingLinkIDs(_ values: [String])
     
-    func fetchIsReloadCollectionsNeed() -> Bool
+    func fetchReloadNeedCollectionIDs() -> [String]
     
-    func updateIsReloadCollectionNeed(_ newValue: Bool)
+    func updateIsReloadNeedCollectionIDs(_ newValue: [String])
     
     func isAddItemGuideEverShown() -> Bool
     
@@ -61,7 +61,7 @@ enum EnvironmentStorageKeys {
     case readItemLatestSortOrder
     case readitemCustomOrder(_ collectionID: String)
     case readingLinkIDs
-    case isReloadNeed
+    case reloadNeedCollectionIDs
     case addItemGuideEverShown
     
     var keyvalue: String {
@@ -82,8 +82,8 @@ enum EnvironmentStorageKeys {
         case .readingLinkIDs:
             return "readingLinkIDs".insertPrefixOrNot(prefix)
             
-        case .isReloadNeed:
-            return "isReloadNeed".insertPrefixOrNot(prefix)
+        case .reloadNeedCollectionIDs:
+            return "reloadNeedCollectionIDs".insertPrefixOrNot(prefix)
             
         case .addItemGuideEverShown:
             return "addItemGuideEverShown".insertPrefixOrNot(prefix)
@@ -98,7 +98,7 @@ enum EnvironmentStorageKeys {
             "readItemLatestSortOrder".insertPrefixOrNot(prefix),
             "readitemCustomOrder".insertPrefixOrNot(prefix),
             "readingLinkIDs".insertPrefixOrNot(prefix),
-            "isReloadNeed".insertPrefixOrNot(prefix),
+            "reloadNeedCollectionIDs".insertPrefixOrNot(prefix),
             "addItemGuideEverShown".insertPrefixOrNot(prefix)
         ]
     }
@@ -261,14 +261,15 @@ extension UserDefaults {
         _ = self.write(key.keyvalue, value: values)
     }
     
-    public func fetchIsReloadCollectionsNeed() -> Bool {
-        let key = EnvironmentStorageKeys.isReloadNeed
-        return self.bool(forKey: key.keyvalue)
+    public func fetchReloadNeedCollectionIDs() -> [String] {
+        let key = EnvironmentStorageKeys.reloadNeedCollectionIDs
+        let ids: Result<[String]?, Error> = self.get(key.keyvalue)
+        return (try? ids.get()) ?? []
     }
     
-    public func updateIsReloadCollectionNeed(_ newValue: Bool) {
-        let key = EnvironmentStorageKeys.isReloadNeed
-        self.set(newValue, forKey: key.keyvalue)
+    public func updateIsReloadNeedCollectionIDs(_ newValue: [String]) {
+        let key = EnvironmentStorageKeys.reloadNeedCollectionIDs
+        _ = self.write(key.keyvalue, value: newValue)
     }
     
     public func isAddItemGuideEverShown() -> Bool {

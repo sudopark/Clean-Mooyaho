@@ -232,11 +232,11 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         return toggleOnRemote.switchOr(append: toggleOnLocal, witoutError: ())
     }
     
-    public func isReloadNeed() -> Bool {
-        return self.readItemLocal.fetchIsReloadCollectionsNeed()
+    public func reloadNeedCollectionIDs() -> [String] {
+        return self.readItemLocal.fetchReloadNeedCollectionIDs()
     }
     
-    public func updateIsReloadNeed(_ newValue: Bool) {
-        return self.readItemLocal.updateIsReloadCollectionNeed(newValue)
+    public func updateIsReloadNeedCollectionIDs(_ newValue: [String]) {
+        self.readItemLocal.updateIsReloadNeedCollectionIDs(newValue)
     }
 }
