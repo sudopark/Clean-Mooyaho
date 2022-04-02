@@ -12,7 +12,6 @@ import RxSwift
 
 import Domain
 import UnitTestHelpKit
-import UsecaseDoubles
 
 
 class SharedEventServiceTests: BaseTestCase, WaitObservableEvents {

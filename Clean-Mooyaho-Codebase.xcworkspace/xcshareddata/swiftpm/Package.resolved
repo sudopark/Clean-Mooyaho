@@ -73,6 +73,15 @@
       }
     },
     {
+      "identity" : "rxswift-do-notation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sudopark/RxSwift-do-notation.git",
+      "state" : {
+        "revision" : "7ec334fae41f0aa612569d6ed165a68d7a6ca1b6",
+        "version" : "0.0.2"
+      }
+    },
+    {
       "identity" : "sqliteservice",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sudopark/SQLiteService",
