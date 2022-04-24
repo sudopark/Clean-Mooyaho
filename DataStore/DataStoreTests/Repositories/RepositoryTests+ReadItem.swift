@@ -374,6 +374,26 @@ extension RepositoryTests_ReadItem {
         XCTAssertEqual(lists.count, 2)
     }
     
+    func testRepository_whenSignInAndAfterLoadMyItems_updateLocal() {
+        // given
+        let expect = expectation(description: "내 아이템 로드 이후에 로컬 업데이트")
+        
+        self.mockLocal.register(key: "fetchMyItems") { Maybe<[ReadItem]>.just([]) }
+        self.mockRemote.register(key: "requestLoadMyItems") { Maybe<[ReadItem]>.just([]) }
+        
+        self.mockLocal.called(key: "overwriteMyItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.requestLoadMyItems(for: "some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testRepository_whenSignInAndLoadMyItems_localFirstAndRemoteWithIgnoreLocalError() {
         // given
         let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 빈값 반환 이후 리모트 로드")
@@ -427,6 +447,26 @@ extension RepositoryTests_ReadItem {
         XCTAssertEqual(lists.count, 2)
     }
     
+    func testRepository_whenSignInAndAfterLoadCollectionItems_updateLocal() {
+        // given
+        let expect = expectation(description: "콜렉션 아이템 로드 이후에 로컬 업데이트")
+        
+        self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.just([]) }
+        self.mockRemote.register(key: "requestLoadCollectionItems") { Maybe<[ReadItem]>.just([]) }
+        
+        self.mockLocal.called(key: "overwriteCollectionItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testRepository_whenSignInAndLoadCollectionItems_localFirstAndRemoteWithIgnoreLocalError() {
         // given
         let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 빈값 반환 이후 리모트 로드")
@@ -457,25 +497,6 @@ extension RepositoryTests_ReadItem {
         
         // then
         XCTAssertNotNil(error)
-    }
-    
-    func testRepository_whenAfterLoadCollectionItems_updateLocal() {
-        // given
-        let expect = expectation(description: "내 아이템 로드 이후에 로컬 업데이트")
-        self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.just([]) }
-        self.mockRemote.register(key: "requestLoadCollectionItems") { Maybe<[ReadItem]>.just([]) }
-        
-        self.mockLocal.called(key: "updateReadItems") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
-            .subscribe()
-            .disposed(by: self.disposeBag)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
     }
     
     func testRepository_loadCollectionWithSignedIn() {
