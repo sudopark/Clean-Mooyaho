@@ -31,7 +31,9 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
-            self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
+            self.readItemLocal
+                .overwriteMyItems(memberID: memberID, items: items)
+                .subscribe().disposed(by: self.disposeBag)
         }
 
         let itemsOnRemote = self.readItemRemote.requestLoadMyItems(for: memberID)
@@ -48,7 +50,9 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
-            self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
+            self.readItemLocal.overwriteCollectionItems(collectionID, items: items)
+                .subscribe()
+                .disposed(by: self.disposeBag)
         }
         let itemsOnRemote = self.readItemRemote
             .requestLoadCollectionItems(collectionID: collectionID)
@@ -232,11 +236,11 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         return toggleOnRemote.switchOr(append: toggleOnLocal, witoutError: ())
     }
     
-    public func isReloadNeed() -> Bool {
-        return self.readItemLocal.fetchIsReloadCollectionsNeed()
+    public func reloadNeedCollectionIDs() -> [String] {
+        return self.readItemLocal.fetchReloadNeedCollectionIDs()
     }
     
-    public func updateIsReloadNeed(_ newValue: Bool) {
-        return self.readItemLocal.updateIsReloadCollectionNeed(newValue)
+    public func updateIsReloadNeedCollectionIDs(_ newValue: [String]) {
+        self.readItemLocal.updateIsReloadNeedCollectionIDs(newValue)
     }
 }

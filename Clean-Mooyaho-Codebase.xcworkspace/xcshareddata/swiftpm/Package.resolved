@@ -1,115 +1,122 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Alamofire",
-        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
-        "state": {
-          "branch": null,
-          "revision": "f82c23a8a7ef8dc1a49a8bfc6a96883e79121864",
-          "version": "5.5.0"
-        }
-      },
-      {
-        "package": "ISEmojiView",
-        "repositoryURL": "https://github.com/isaced/ISEmojiView.git",
-        "state": {
-          "branch": null,
-          "revision": "5df4a1988a746e731b3e6450e069969e13eede5f",
-          "version": "0.3.0"
-        }
-      },
-      {
-        "package": "KakaoOpenSDK",
-        "repositoryURL": "https://github.com/kakao/kakao-ios-sdk",
-        "state": {
-          "branch": "master",
-          "revision": "b7f3cbb82e188c8d5effb12328d2b0d2ea02023d",
-          "version": null
-        }
-      },
-      {
-        "package": "KeychainSwift",
-        "repositoryURL": "https://github.com/evgenyneu/keychain-swift.git",
-        "state": {
-          "branch": null,
-          "revision": "96fb84f45a96630e7583903bd7e08cf095c7a7ef",
-          "version": "19.0.0"
-        }
-      },
-      {
-        "package": "Kingfisher",
-        "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
-        "state": {
-          "branch": null,
-          "revision": "8c65ddf756c633d01d9ae01092bf72f0c66dfc60",
-          "version": "7.0.0"
-        }
-      },
-      {
-        "package": "RxCombine",
-        "repositoryURL": "https://github.com/CombineCommunity/RxCombine.git",
-        "state": {
-          "branch": null,
-          "revision": "19474c2ac9fde613bba8513bf98990e1aa9831cd",
-          "version": "2.0.1"
-        }
-      },
-      {
-        "package": "RxDataSources",
-        "repositoryURL": "https://github.com/RxSwiftCommunity/RxDataSources",
-        "state": {
-          "branch": null,
-          "revision": "e4627ac4f5a8dc10719030561801825c443acfec",
-          "version": "5.0.1"
-        }
-      },
-      {
-        "package": "RxSwift",
-        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
-        "state": {
-          "branch": null,
-          "revision": "b4307ba0b6425c0ba4178e138799946c3da594f8",
-          "version": "6.5.0"
-        }
-      },
-      {
-        "package": "SQLiteService",
-        "repositoryURL": "https://github.com/sudopark/SQLiteService",
-        "state": {
-          "branch": "add_like",
-          "revision": "95c9dac5df564365bc5a5014832dce98947f9235",
-          "version": null
-        }
-      },
-      {
-        "package": "swift-prelude",
-        "repositoryURL": "https://github.com/pointfreeco/swift-prelude",
-        "state": {
-          "branch": "main",
-          "revision": "16550d9104f12e9033c0b0de5d6c6d9de3f04dfa",
-          "version": null
-        }
-      },
-      {
-        "package": "SwiftLinkPreview",
-        "repositoryURL": "https://github.com/sudopark/SwiftLinkPreview",
-        "state": {
-          "branch": "main",
-          "revision": "34b66f76de89965cea9c7bfb3c0d7ddd3abfe649",
-          "version": null
-        }
-      },
-      {
-        "package": "Toaster",
-        "repositoryURL": "https://github.com/devxoul/Toaster.git",
-        "state": {
-          "branch": "master",
-          "revision": "e9e62c023ef37719b6b6939ed26a99f577a3d88f",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "f82c23a8a7ef8dc1a49a8bfc6a96883e79121864",
+        "version" : "5.5.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "isemojiview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/isaced/ISEmojiView.git",
+      "state" : {
+        "revision" : "5df4a1988a746e731b3e6450e069969e13eede5f",
+        "version" : "0.3.0"
+      }
+    },
+    {
+      "identity" : "kakao-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kakao/kakao-ios-sdk",
+      "state" : {
+        "branch" : "master",
+        "revision" : "b7f3cbb82e188c8d5effb12328d2b0d2ea02023d"
+      }
+    },
+    {
+      "identity" : "keychain-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/keychain-swift.git",
+      "state" : {
+        "revision" : "96fb84f45a96630e7583903bd7e08cf095c7a7ef",
+        "version" : "19.0.0"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "8c65ddf756c633d01d9ae01092bf72f0c66dfc60",
+        "version" : "7.0.0"
+      }
+    },
+    {
+      "identity" : "rxcombine",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CombineCommunity/RxCombine.git",
+      "state" : {
+        "revision" : "19474c2ac9fde613bba8513bf98990e1aa9831cd",
+        "version" : "2.0.1"
+      }
+    },
+    {
+      "identity" : "rxdatasources",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxDataSources",
+      "state" : {
+        "revision" : "e4627ac4f5a8dc10719030561801825c443acfec",
+        "version" : "5.0.1"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "b4307ba0b6425c0ba4178e138799946c3da594f8",
+        "version" : "6.5.0"
+      }
+    },
+    {
+      "identity" : "rxswift-do-notation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sudopark/RxSwift-do-notation.git",
+      "state" : {
+        "revision" : "7ec334fae41f0aa612569d6ed165a68d7a6ca1b6",
+        "version" : "0.0.2"
+      }
+    },
+    {
+      "identity" : "sqliteservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sudopark/SQLiteService",
+      "state" : {
+        "revision" : "be79b222f720be445f3cc7260480697c468e1b10",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-prelude",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-prelude",
+      "state" : {
+        "branch" : "main",
+        "revision" : "16550d9104f12e9033c0b0de5d6c6d9de3f04dfa"
+      }
+    },
+    {
+      "identity" : "swiftlinkpreview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sudopark/SwiftLinkPreview",
+      "state" : {
+        "branch" : "main",
+        "revision" : "34b66f76de89965cea9c7bfb3c0d7ddd3abfe649"
+      }
+    },
+    {
+      "identity" : "toaster",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devxoul/Toaster.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e9e62c023ef37719b6b6939ed26a99f577a3d88f"
+      }
+    }
+  ],
+  "version" : 2
 }

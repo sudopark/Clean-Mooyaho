@@ -9,11 +9,12 @@
 import Foundation
 
 import RxSwift
+import RxSwiftDoNotation
 import SQLiteService
-
-import Domain
 import Prelude
 import Optics
+
+import Domain
 
 
 // MARK: - DataModelStorage
@@ -52,7 +53,11 @@ public protocol DataModelStorage {
     
     func fetchMyReadItems() -> Maybe<[ReadItem]>
     
+    func removeMyReadItems() -> Maybe<Void>
+    
     func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]>
+    
+    func removeReadCollectionItems(_ collectionID: String) -> Maybe<Void>
     
     func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
     
@@ -514,10 +519,22 @@ extension DataModelStorageImple {
         return self.fetchMatchingItems(linkQuery, collectionQuery)
     }
     
+    public func removeMyReadItems() -> Maybe<Void> {
+        let linksQuery = ReadLinkTable.delete().where { $0.parentID.isNull() }
+        let collectionsQuery = ReadCollectionTable.delete().where { $0.parentID.isNull() }
+        return self.removeMatchingItems(linksQuery, collectionsQuery)
+    }
+    
     public func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]> {
         let linkQuery = ReadLinkTable.selectAll { $0.parentID == collectionID }
         let collectionQuery = ReadCollectionTable.selectAll { $0.parentID == collectionID }
         return self.fetchMatchingItems(linkQuery, collectionQuery)
+    }
+    
+    public func removeReadCollectionItems(_ collectionID: String) -> Maybe<Void> {
+        let linksQuery = ReadLinkTable.delete().where {$0.parentID == collectionID }
+        let collectionsQuery = ReadCollectionTable.delete().where { $0.parentID == collectionID }
+        return self.removeMatchingItems(linksQuery, collectionsQuery)
     }
     
     public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
@@ -535,15 +552,36 @@ extension DataModelStorageImple {
     private func fetchMatchingItems(_ linksQuery: SelectQuery<ReadLinkTable>,
                                     _ collectionQuery: SelectQuery<ReadCollectionTable>) -> Maybe<[ReadItem]> {
         
-        let collections = self.fetchReadCollections(collectionQuery).catchAndReturn([]).asObservable()
-        let links = self.fetchReadLinks(linksQuery).catchAndReturn([]).asObservable()
-
-        let fetchBothWithoutError = Observable.combineLatest(collections, links)
-        let mergeItems: ([ReadCollection], [ReadLink]) -> [ReadItem] = { $0 + $1 }
-        return fetchBothWithoutError
-            .map(mergeItems)
-            .asMaybe()
+        let fetchCollections = self.fetchReadCollections(collectionQuery).catchAndReturn([])
         
+        let thenLoadLinksAndMerge: ([ReadCollection]) async throws -> [ReadItem]?
+        thenLoadLinksAndMerge = { [weak self] collections in
+            guard let self = self else { return nil }
+            let links = try await self.fetchReadLinks(linksQuery).value
+            return collections + (links ?? [])
+        }
+        
+        return fetchCollections
+            .flatMap(do: thenLoadLinksAndMerge)
+    }
+    
+    private func removeMatchingItems(
+        _ linkQuery: DeleteQuery<ReadLinkTable>,
+        _ collectionQuery: DeleteQuery<ReadCollectionTable>
+    ) -> Maybe<Void> {
+     
+        let runRemove: () async throws -> Void? = { [weak self] in
+            guard let self = self else { return nil }
+            try await self.sqliteService.async.run {
+                try $0.delete(ReadLinkTable.self, query: linkQuery)
+            }
+            try await self.sqliteService.async.run {
+                try $0.delete(ReadCollectionTable.self, query: collectionQuery)
+            }
+            return ()
+        }
+        return .just()
+            .flatMap(do: runRemove)
     }
     
     private func fetchReadLinks(_ query: SelectQuery<ReadLinkTable>) -> Maybe<[ReadLink]> {
@@ -620,18 +658,20 @@ extension DataModelStorageImple {
     
     public func fetchReadItem(like name: String) -> Maybe<[SearchReadItemIndex]> {
         
-        let collections = self.findCollection(like: name).catchAndReturn([])
-        let links = self.findReadLink(like: name).catchAndReturn([])
+        let findingItems: Maybe<[ReadItem]> = Maybe.just()
+            .flatMap { [weak self] in
+                guard let self = self else { return nil }
+                let collections = try? await self.findCollection(like: name).value
+                let links = try? await self.findReadLink(like: name).value
+                return (collections ?? []) + (links ?? [])
+            }
         
-        let asIndexes: ([ReadCollection], [ReadLink]) -> [SearchReadItemIndex]
-        asIndexes = { collections, links in
-            let items: [ReadItem] = collections + links
+        let asIndexes: ([ReadItem]) -> [SearchReadItemIndex] = { items in
             return items.compactMap { SearchReadItemIndex(item: $0) }
         }
-        return Observable
-            .combineLatest( collections.asObservable(), links.asObservable(),
-                            resultSelector: asIndexes)
-            .asMaybe()
+        
+        return findingItems
+            .map(asIndexes)
     }
     
     private func findCollection(like name: String) -> Maybe<[ReadCollection]> {
@@ -643,15 +683,24 @@ extension DataModelStorageImple {
     }
     
     private func findReadLink(like name: String) -> Maybe<[ReadLink]> {
+        
+        let findLikeCustomNames = self.findReadLinkByCustomName(like: name).catchAndReturn([])
+        
+        let thenFindLikePreviewTitleAndMerge: ([ReadLink]) async throws -> ([ReadLink], [ReadLink])?
+        thenFindLikePreviewTitleAndMerge = { [weak self] linksLikeCustomName in
+            guard let self = self else { return nil }
+            let linksLikePreviewTitle = try? await self.findReadLinkByPreviewTitle(like: name).value
+            return (linksLikeCustomName, linksLikePreviewTitle ?? [])
+        }
+        
         let removeDuplicated: ([ReadLink], [ReadLink]) -> [ReadLink] = { customs, previews in
             let customMap = customs.reduce(into: [String: ReadLink]()) { $0[$1.uid] = $1 }
             return customs + previews.filter { customMap[$0.uid] == nil }
         }
-        return Observable
-            .combineLatest(self.findReadLinkByCustomName(like: name).asObservable(),
-                           self.findReadLinkByPreviewTitle(like: name).asObservable(),
-                           resultSelector: removeDuplicated)
-            .asMaybe()
+        
+        return findLikeCustomNames
+            .flatMap(do: thenFindLikePreviewTitleAndMerge)
+            .map(removeDuplicated)
     }
     
     private func findReadLinkByCustomName(like name: String) -> Maybe<[ReadLink]> {

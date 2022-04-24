@@ -22,11 +22,37 @@ extension LocalStorageImple {
         return storage.fetchMyReadItems()
     }
     
+    public func overwriteMyItems(memberID: String?, items: [ReadItem]) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        let removeItems = storage.removeMyReadItems()
+        let thenUpdateItems: () -> Maybe<Void> = { [weak self] in
+            return self?.updateReadItems(items) ?? .empty()
+        }
+        
+        return removeItems
+            .flatMap(thenUpdateItems)
+    }
+    
     public func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
         return storage.fetchReadCollectionItems(collecitonID)
+    }
+    
+    public func overwriteCollectionItems(_ collectionID: String, items: [ReadItem]) -> Maybe<Void> {
+        guard let storage = self.dataModelStorage else {
+            return .error(LocalErrors.localStorageNotReady)
+        }
+        let removeItems = storage.removeReadCollectionItems(collectionID)
+        let thenUpdateItems: () -> Maybe<Void> = { [weak self] in
+            return self?.updateReadItems(items) ?? .empty()
+        }
+        
+        return removeItems
+            .flatMap(thenUpdateItems)
     }
     
     public func updateReadItems(_ items: [ReadItem]) -> Maybe<Void> {
@@ -146,11 +172,11 @@ extension LocalStorageImple {
             .flatMap(thenReplace)
     }
     
-    public func fetchIsReloadCollectionsNeed() -> Bool {
-        return self.environmentStorage.fetchIsReloadCollectionsNeed()
+    public func fetchReloadNeedCollectionIDs() -> [String] {
+        return self.environmentStorage.fetchReloadNeedCollectionIDs()
     }
     
-    public func updateIsReloadCollectionNeed(_ newValue: Bool) {
-        self.environmentStorage.updateIsReloadCollectionNeed(newValue)
+    public func updateIsReloadNeedCollectionIDs(_ newValue: [String]) {
+        return self.environmentStorage.updateIsReloadNeedCollectionIDs(newValue)
     }
 }

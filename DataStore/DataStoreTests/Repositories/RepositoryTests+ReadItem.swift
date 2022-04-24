@@ -374,6 +374,26 @@ extension RepositoryTests_ReadItem {
         XCTAssertEqual(lists.count, 2)
     }
     
+    func testRepository_whenSignInAndAfterLoadMyItems_updateLocal() {
+        // given
+        let expect = expectation(description: "내 아이템 로드 이후에 로컬 업데이트")
+        
+        self.mockLocal.register(key: "fetchMyItems") { Maybe<[ReadItem]>.just([]) }
+        self.mockRemote.register(key: "requestLoadMyItems") { Maybe<[ReadItem]>.just([]) }
+        
+        self.mockLocal.called(key: "overwriteMyItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.requestLoadMyItems(for: "some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testRepository_whenSignInAndLoadMyItems_localFirstAndRemoteWithIgnoreLocalError() {
         // given
         let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 빈값 반환 이후 리모트 로드")
@@ -427,6 +447,26 @@ extension RepositoryTests_ReadItem {
         XCTAssertEqual(lists.count, 2)
     }
     
+    func testRepository_whenSignInAndAfterLoadCollectionItems_updateLocal() {
+        // given
+        let expect = expectation(description: "콜렉션 아이템 로드 이후에 로컬 업데이트")
+        
+        self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.just([]) }
+        self.mockRemote.register(key: "requestLoadCollectionItems") { Maybe<[ReadItem]>.just([]) }
+        
+        self.mockLocal.called(key: "overwriteCollectionItems") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testRepository_whenSignInAndLoadCollectionItems_localFirstAndRemoteWithIgnoreLocalError() {
         // given
         let expect = expectation(description: "로그인 상태에서 내 아이템 로드시 로컬 패칭 에러는 빈값 반환 이후 리모트 로드")
@@ -457,25 +497,6 @@ extension RepositoryTests_ReadItem {
         
         // then
         XCTAssertNotNil(error)
-    }
-    
-    func testRepository_whenAfterLoadCollectionItems_updateLocal() {
-        // given
-        let expect = expectation(description: "내 아이템 로드 이후에 로컬 업데이트")
-        self.mockLocal.register(key: "fetchCollectionItems") { Maybe<[ReadItem]>.just([]) }
-        self.mockRemote.register(key: "requestLoadCollectionItems") { Maybe<[ReadItem]>.just([]) }
-        
-        self.mockLocal.called(key: "updateReadItems") { _ in
-            expect.fulfill()
-        }
-        
-        // when
-        self.dummyRepository.requestLoadCollectionItems(collectionID: "some")
-            .subscribe()
-            .disposed(by: self.disposeBag)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
     }
     
     func testRepository_loadCollectionWithSignedIn() {
@@ -895,25 +916,25 @@ extension RepositoryTests_ReadItem {
     
     func testRepository_loadIsReloadNeed() {
         // given
-        self.mockLocal.register(key: "fetchIsReloadCollectionsNeed") { true }
+        self.mockLocal.register(key: "fetchReloadNeedCollectionIDs") { ["some"] }
         
         // when
-        let isNeed = self.dummyRepository.isReloadNeed()
+        let needIDs = self.dummyRepository.reloadNeedCollectionIDs()
         
         // then
-        XCTAssertEqual(isNeed, true)
+        XCTAssertEqual(needIDs, ["some"])
     }
 
     func testRepository_updateIsReloadNeed() {
         // given
         let expect = expectation(description: "reload 필요여부 업데이트")
-        self.mockLocal.called(key: "updateIsReloadCollectionNeed") { args in
-            guard let isNeed = args as? Bool, isNeed else { return }
+        self.mockLocal.called(key: "updateIsReloadNeedCollectionIDs") { args in
+            guard let ids = args as? [String], ids == ["some"] else { return }
             expect.fulfill()
         }
         
         // when
-        self.dummyRepository.updateIsReloadNeed(true)
+        self.dummyRepository.updateIsReloadNeedCollectionIDs(["some"])
         
         // then
         self.wait(for: [expect], timeout: self.timeout)

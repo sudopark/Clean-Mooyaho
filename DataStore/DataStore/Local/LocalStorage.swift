@@ -114,7 +114,11 @@ public protocol ReadItemLocalStorage {
     
     func fetchMyItems(memberID: String?) -> Maybe<[ReadItem]>
     
+    func overwriteMyItems(memberID: String?, items: [ReadItem]) -> Maybe<Void>
+    
     func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]>
+    
+    func overwriteCollectionItems(_ collectionID: String, items: [ReadItem]) -> Maybe<Void>
     
     func updateReadItems(_ items: [ReadItem]) -> Maybe<Void>
     
@@ -144,9 +148,9 @@ public protocol ReadItemLocalStorage {
     
     func toggleItemIsFavorite(_ id: String, isOn: Bool) -> Maybe<Void>
     
-    func fetchIsReloadCollectionsNeed() -> Bool
+    func fetchReloadNeedCollectionIDs() -> [String]
     
-    func updateIsReloadCollectionNeed(_ newValue: Bool)
+    func updateIsReloadNeedCollectionIDs(_ newValue: [String])
 }
 
 

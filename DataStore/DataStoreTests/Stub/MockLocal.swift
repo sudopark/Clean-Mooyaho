@@ -142,8 +142,18 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "fetchMyItems") ?? .empty()
     }
     
+    func overwriteMyItems(memberID: String?, items: [ReadItem]) -> Maybe<Void> {
+        self.verify(key: "overwriteMyItems")
+        return self.resolve(key: "overwriteMyItems") ?? .empty()
+    }
+    
     func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]> {
         return self.resolve(key: "fetchCollectionItems") ?? .empty()
+    }
+    
+    func overwriteCollectionItems(_ collectionID: String, items: [ReadItem]) -> Maybe<Void> {
+        self.verify(key: "overwriteCollectionItems")
+        return self.resolve(key: "overwriteCollectionItems") ?? .empty()
     }
     
     func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?> {
@@ -184,12 +194,12 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "updateLinkItemIsReading", with: isReading)
     }
     
-    func fetchIsReloadCollectionsNeed() -> Bool {
-        return self.resolve(key: "fetchIsReloadCollectionsNeed") ?? false
+    func fetchReloadNeedCollectionIDs() -> [String] {
+        return self.resolve(key: "fetchReloadNeedCollectionIDs") ?? []
     }
     
-    func updateIsReloadCollectionNeed(_ newValue: Bool) {
-        self.verify(key: "updateIsReloadCollectionNeed", with: newValue)
+    func updateIsReloadNeedCollectionIDs(_ newValue: [String]) {
+        self.verify(key: "updateIsReloadNeedCollectionIDs", with: newValue)
     }
     
     func readingLinkItemIDs() -> [String] {
