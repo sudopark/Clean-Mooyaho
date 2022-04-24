@@ -31,7 +31,9 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
-            self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
+            self.readItemLocal
+                .overwriteMyItems(memberID: memberID, items: items)
+                .subscribe().disposed(by: self.disposeBag)
         }
 
         let itemsOnRemote = self.readItemRemote.requestLoadMyItems(for: memberID)
@@ -48,7 +50,9 @@ extension ReadItemRepository where Self: ReadItemRepositryDefImpleDependency, Se
         
         let updateLocal: ([ReadItem]) -> Void = { [weak self] items in
             guard let self = self else { return }
-            self.readItemLocal.updateReadItems(items).subscribe().disposed(by: self.disposeBag)
+            self.readItemLocal.overwriteCollectionItems(collectionID, items: items)
+                .subscribe()
+                .disposed(by: self.disposeBag)
         }
         let itemsOnRemote = self.readItemRemote
             .requestLoadCollectionItems(collectionID: collectionID)

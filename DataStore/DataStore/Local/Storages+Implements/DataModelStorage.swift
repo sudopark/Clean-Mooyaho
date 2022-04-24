@@ -53,7 +53,11 @@ public protocol DataModelStorage {
     
     func fetchMyReadItems() -> Maybe<[ReadItem]>
     
+    func removeMyReadItems() -> Maybe<Void>
+    
     func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]>
+    
+    func removeReadCollectionItems(_ collectionID: String) -> Maybe<Void>
     
     func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?>
     
@@ -515,10 +519,22 @@ extension DataModelStorageImple {
         return self.fetchMatchingItems(linkQuery, collectionQuery)
     }
     
+    public func removeMyReadItems() -> Maybe<Void> {
+        let linksQuery = ReadLinkTable.delete().where { $0.parentID.isNull() }
+        let collectionsQuery = ReadCollectionTable.delete().where { $0.parentID.isNull() }
+        return self.removeMatchingItems(linksQuery, collectionsQuery)
+    }
+    
     public func fetchReadCollectionItems(_ collectionID: String) -> Maybe<[ReadItem]> {
         let linkQuery = ReadLinkTable.selectAll { $0.parentID == collectionID }
         let collectionQuery = ReadCollectionTable.selectAll { $0.parentID == collectionID }
         return self.fetchMatchingItems(linkQuery, collectionQuery)
+    }
+    
+    public func removeReadCollectionItems(_ collectionID: String) -> Maybe<Void> {
+        let linksQuery = ReadLinkTable.delete().where {$0.parentID == collectionID }
+        let collectionsQuery = ReadCollectionTable.delete().where { $0.parentID == collectionID }
+        return self.removeMatchingItems(linksQuery, collectionsQuery)
     }
     
     public func fetchCollection(_ collectionID: String) -> Maybe<ReadCollection?> {
@@ -547,6 +563,25 @@ extension DataModelStorageImple {
         
         return fetchCollections
             .flatMap(do: thenLoadLinksAndMerge)
+    }
+    
+    private func removeMatchingItems(
+        _ linkQuery: DeleteQuery<ReadLinkTable>,
+        _ collectionQuery: DeleteQuery<ReadCollectionTable>
+    ) -> Maybe<Void> {
+     
+        let runRemove: () async throws -> Void? = { [weak self] in
+            guard let self = self else { return nil }
+            try await self.sqliteService.async.run {
+                try $0.delete(ReadLinkTable.self, query: linkQuery)
+            }
+            try await self.sqliteService.async.run {
+                try $0.delete(ReadCollectionTable.self, query: collectionQuery)
+            }
+            return ()
+        }
+        return .just()
+            .flatMap(do: runRemove)
     }
     
     private func fetchReadLinks(_ query: SelectQuery<ReadLinkTable>) -> Maybe<[ReadLink]> {

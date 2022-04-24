@@ -114,7 +114,11 @@ public protocol ReadItemLocalStorage {
     
     func fetchMyItems(memberID: String?) -> Maybe<[ReadItem]>
     
+    func overwriteMyItems(memberID: String?, items: [ReadItem]) -> Maybe<Void>
+    
     func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]>
+    
+    func overwriteCollectionItems(_ collectionID: String, items: [ReadItem]) -> Maybe<Void>
     
     func updateReadItems(_ items: [ReadItem]) -> Maybe<Void>
     

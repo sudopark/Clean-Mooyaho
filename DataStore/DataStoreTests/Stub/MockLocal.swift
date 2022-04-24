@@ -142,8 +142,18 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "fetchMyItems") ?? .empty()
     }
     
+    func overwriteMyItems(memberID: String?, items: [ReadItem]) -> Maybe<Void> {
+        self.verify(key: "overwriteMyItems")
+        return self.resolve(key: "overwriteMyItems") ?? .empty()
+    }
+    
     func fetchCollectionItems(_ collecitonID: String) -> Maybe<[ReadItem]> {
         return self.resolve(key: "fetchCollectionItems") ?? .empty()
+    }
+    
+    func overwriteCollectionItems(_ collectionID: String, items: [ReadItem]) -> Maybe<Void> {
+        self.verify(key: "overwriteCollectionItems")
+        return self.resolve(key: "overwriteCollectionItems") ?? .empty()
     }
     
     func fetchReadLink(_ linkID: String) -> Maybe<ReadLink?> {

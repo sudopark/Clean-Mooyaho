@@ -44,6 +44,17 @@ class LocalStorageTests_ReadItem: BaseLocalStorageTests {
         let l111 = self.link(at: 111, parent: c11.uid)
         return [c1, c11, l111, l11, c2, l22, l1]
     }
+    
+    private func dummyNewItems(of collectionID: String? = nil) -> [ReadItem] {
+        return [
+            self.collection(at: 3, parent: collectionID),
+            self.collection(at: 2, parent: collectionID),
+            self.collection(at: 1, parent: collectionID),
+            self.link(at: 3, parent: collectionID),
+            self.link(at: 2, parent: collectionID),
+            self.link(at: 1, parent: collectionID)
+        ]
+    }
 }
 
 
@@ -67,6 +78,23 @@ extension LocalStorageTests_ReadItem {
         ])
     }
     
+    func testStorage_updateMyCollectionItems() {
+        // given
+        let expect = expectation(description: "내 아이템(최상위 루트) 새로운 값들로 업데이트")
+        let newDummyItems = self.dummyNewItems()
+        let saveAllItems = self.local.updateReadItems(self.dummyMyItems())
+        
+        // when
+        let updateItems = self.local.overwriteMyItems(memberID: nil, items: newDummyItems)
+        let loadMyItems = self.local.fetchMyItems(memberID: nil)
+        let saveUpdateAndLoad = saveAllItems.flatMap { _ in updateItems }.flatMap { _ in loadMyItems }
+        let items = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())
+        
+        // then
+        let itemIDs = items?.map { $0.uid }
+        XCTAssertEqual(itemIDs, newDummyItems.map { $0.uid })
+    }
+    
     // load c1 items -> c11, l11
     func testStorage_loadCollectionItems() {
         // given
@@ -84,6 +112,24 @@ extension LocalStorageTests_ReadItem {
         XCTAssertEqual(itemIDs, [
             self.collection(at: 11).uid, self.link(at: 11).uid
         ])
+    }
+    
+    func testStorage_updateCollectionItems() {
+        // given
+        let expect = expectation(description: "내 아이템(최상위 루트 x) 새로운 값들로 업데이트")
+        let parentCollectionID = self.collection(at: 1).uid
+        let newDummyItems = self.dummyNewItems(of: parentCollectionID)
+        let saveAllItems = self.local.updateReadItems(self.dummyMyItems())
+        
+        // when
+        let updateItems = self.local.overwriteCollectionItems(parentCollectionID, items: newDummyItems)
+        let loadItems = self.local.fetchCollectionItems(parentCollectionID)
+        let saveUpdateAndLoad = saveAllItems.flatMap { _ in updateItems }.flatMap { _ in loadItems }
+        let items = self.waitFirstElement(expect, for: saveUpdateAndLoad.asObservable())
+        
+        // then
+        let itemIDs = items?.map { $0.uid }
+        XCTAssertEqual(itemIDs, newDummyItems.map { $0.uid })
     }
     
     // add node c22 -> load c2 items -> c22, l22
