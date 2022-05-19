@@ -306,7 +306,7 @@ extension MainViewModelImple {
         }
         
         guard let form = AlertBuilder(base: .init())
-                .message("Would you like to return to my collection?".localized)
+                .message("Would you like to return to my read collection?".localized)
                 .confirmed(confirmed)
                 .build()
         else {
