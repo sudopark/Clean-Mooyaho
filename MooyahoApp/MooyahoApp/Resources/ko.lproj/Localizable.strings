@@ -35,6 +35,8 @@
 "List Collapse Mode: %@" = "리스트 축소 모드: %@";
 "Sharing is not possible." = "공유 불가";
 "The currently viewed reading list is the entire reading list and it cannot be shared.\nPlease create a new sublist, go ahead and try again." = "현재 조회중인 읽기목록은 전체 읽기목록이고 이 읽기목록은 공유할 수 없어요.\n새로운 하위 목록을 만들고 해당 목록으로 이동한 뒤에 다시 시도해 주세요.";
+"Click the Next button to add a new reading list or archive an item to read." = "버튼을 눌러 새로운 읽기 목록을 생성하거나 보관하고자 하는 읽기 링크를 저장해 보세요";
+"Would you like to return to my read collection?" = "내 읽기 목록으로 복귀할까요?";
 
 
 // common UI
