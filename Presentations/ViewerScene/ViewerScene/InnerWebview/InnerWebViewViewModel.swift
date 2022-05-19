@@ -185,7 +185,9 @@ extension InnerWebViewViewModelImple {
     
     public func jumpToCollection() {
         guard let item = self.subjects.item.value else { return }
-        self.listener?.innerWebView(reqeustJumpTo: item.parentID)
+        self.router.closeScene(animated: false) { [weak self] in
+            self?.listener?.innerWebView(reqeustJumpTo: item.parentID)
+        }
     }
 }
 

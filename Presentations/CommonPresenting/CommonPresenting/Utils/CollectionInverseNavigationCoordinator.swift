@@ -40,13 +40,14 @@ extension CollectionInverseNavigationCoordinator: CollectionInverseNavigationCoo
               navigationController.viewControllers.count > 1,
               let parentController = self.makeParent(parameter)
         else {
+            logger.print(level: .debug, "prepare parent called, but not this time, ")
             return
         }
         
-        logger.print(level: .debug, "inverse navigating prepare parent: \(parameter)")
         let lastIndex = navigationController.viewControllers.count
         var newControllers = navigationController.viewControllers + [parentController]
         newControllers.swapAt(lastIndex, lastIndex-1)
+        logger.print(level: .debug, "inverse navigating prepare parent: \(parameter), append parent totalCount: \(newControllers.count)")
         self.navigationController?.viewControllers = newControllers
     }
 }

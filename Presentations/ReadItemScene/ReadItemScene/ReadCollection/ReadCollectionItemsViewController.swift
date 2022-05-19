@@ -78,6 +78,7 @@ extension ReadCollectionItemsViewController {
         self.rx.viewDidAppear
             .subscribe(onNext: { [weak self] _ in
                 self?.viewModel.viewDidAppear()
+                self?.redrawNavigationItems()
             })
             .disposed(by: self.disposeBag)
         
@@ -111,6 +112,10 @@ extension ReadCollectionItemsViewController {
                 self?.viewModel.editCollection()
             })
             .disposed(by: self.disposeBag)
+    }
+    
+    private func redrawNavigationItems() {
+        self.navigationController?.navigationBar.isHidden = false
     }
 }
 
