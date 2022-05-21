@@ -46,4 +46,12 @@ extension LocalStorageImple {
     public func markAsAddItemGuideShown() {
         return self.environmentStorage.markAsAddItemGuideShown()
     }
+    
+    public func didWelComeItemAdded() -> Bool {
+        return self.environmentStorage.didWelComeItemAdded()
+    }
+    
+    public func updateDidWelcomeItemAdded() {
+        self.environmentStorage.updateDidWelcomeItemAdded()
+    }
 }

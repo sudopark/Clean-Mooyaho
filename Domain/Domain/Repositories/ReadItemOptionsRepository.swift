@@ -27,4 +27,8 @@ public protocol ReadItemOptionsRepository {
                                       itemIDs: [String]) -> Maybe<Void>
     
     func isAddItemGuideEverShownWithMarking() -> Bool
+    
+    func didWelComeItemAdded() -> Bool
+    
+    func updateDidWelcomeItemAdded()
 }

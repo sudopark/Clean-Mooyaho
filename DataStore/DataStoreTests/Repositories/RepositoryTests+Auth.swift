@@ -208,6 +208,24 @@ extension RepositoryTests_Auth {
         XCTAssertEqual(self.mockLocal.didSwitchToAnonymousStorage, true)
     }
     
+    func testRepository_whenSignout_clearUserEnvironment() {
+        // given
+        let expect = expectation(description: "로그아웃시에 유저 environment 초기화")
+        self.mockRemote.register(key: "requestSignout") { Maybe<Void>.just() }
+        
+        self.mockLocal.called(key: "clearUserEnvironment") { _ in
+            expect.fulfill()
+        }
+        
+        // when
+        self.repository.requestSignout()
+            .subscribe()
+            .disposed(by: self.disposeBag)
+        
+        // then
+        self.wait(for: [expect], timeout: self.timeout)
+    }
+    
     func testReposiotry_whenWithdrawal_requestWithdrawalAndChangeDatabase() {
         // given
         let expect = expectation(description: "회원탈퇴시에 로그아웃플로우타고 디비 체인지")

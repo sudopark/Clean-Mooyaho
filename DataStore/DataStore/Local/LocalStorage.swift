@@ -40,6 +40,7 @@ public protocol AuthLocalStorage {
     func fetchCurrentMember() -> Maybe<Member?>
     func saveSignedIn(auth: Auth) -> Maybe<Void>
     func saveSignedIn(member: Member) -> Maybe<Void>
+    func clearUserEnvironment()
 }
 
 public protocol MemberLocalStorage {
@@ -171,6 +172,10 @@ public protocol ReadItemOptionsLocalStorage {
     func isAddItemGuideEverShown() -> Bool
     
     func markAsAddItemGuideShown()
+    
+    func didWelComeItemAdded() -> Bool
+    
+    func updateDidWelcomeItemAdded()
 }
 
 
