@@ -72,4 +72,16 @@ class LocalStorageTests_ReadItemOptions: BaseLocalStorageTests {
         XCTAssertEqual(isShownBeforeUpdate, false)
         XCTAssertEqual(isShownAfterUpdate, true)
     }
+    
+    func testStorage_loadDidWelcomeItemAndUpdate() {
+        // given
+        // when
+        let didAddedBeforeUpdate = self.local.didWelComeItemAdded()
+        self.local.updateDidWelcomeItemAdded()
+        let didAddedAfterUpdate = self.local.didWelComeItemAdded()
+        
+        // then
+        XCTAssertEqual(didAddedBeforeUpdate, false)
+        XCTAssertEqual(didAddedAfterUpdate, true)
+    }
 }

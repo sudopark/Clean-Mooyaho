@@ -120,8 +120,12 @@ extension AuthRepository where Self: AuthRepositoryDefImpleDependency {
         let thenSwitchStorage: () -> Maybe<Void> = { [weak self] in
             return self?.authLocal.switchToAnonymousStorage() ?? .empty()
         }
+        let andRemoveUserEnvironment: () -> Void = { [weak self] in
+            self?.authLocal.clearUserEnvironment()
+        }
         return self.authRemote.requestSignout()
             .flatMap(thenSwitchStorage)
+            .do(onNext: andRemoveUserEnvironment)
     }
     
     public func requestWithdrawal() -> Maybe<Void> {

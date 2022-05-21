@@ -55,6 +55,10 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "saveSignedIn:member") ?? .empty()
     }
     
+    func clearUserEnvironment() {
+        self.verify(key: "clearUserEnvironment")
+    }
+    
     func saveMember(_ member: Member) -> Maybe<Void> {
         return self.resolve(key: "saveMember") ?? .empty()
     }
@@ -255,6 +259,15 @@ class MockLocal: LocalStorage, Mocking {
     func markAsAddItemGuideShown() {
         self.didMarkAsAddItemGuideShown = true
         self.addItemGuideEverShown = true
+    }
+    
+    private var didAddedWelcomeItem: Bool = false
+    func didWelComeItemAdded() -> Bool {
+        return self.didAddedWelcomeItem
+    }
+    
+    func updateDidWelcomeItemAdded() {
+        self.didAddedWelcomeItem = true
     }
     
     func fetchPreview(_ url: String) -> Maybe<LinkPreview?> {

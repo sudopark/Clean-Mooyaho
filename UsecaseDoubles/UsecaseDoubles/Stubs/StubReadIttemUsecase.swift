@@ -32,6 +32,7 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
         public var loadContinueLinks: Result<[ReadLink], Error> = .success([])
         public var loadFavoriteIDsResult: Result<[String], Error> = .success([])
         public var isAddIttemGuideEverShown: Bool = false
+        public var isWelcomeItemAddedBefore: Bool = false
         
         public init() {}
     }
@@ -196,5 +197,13 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
     
     public func isAddItemGuideEverShownWithMarking() -> Bool {
         return self.scenario.isAddIttemGuideEverShown
+    }
+    
+    public func didWelComeItemAdded() -> Bool {
+        return self.scenario.isWelcomeItemAddedBefore
+    }
+    
+    public func updateDidWelcomeItemAdded() {
+        self.scenario.isWelcomeItemAddedBefore = true
     }
 }

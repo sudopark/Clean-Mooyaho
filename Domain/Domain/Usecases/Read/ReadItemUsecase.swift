@@ -383,6 +383,14 @@ extension ReadItemUsecaseImple {
         return self.optionsRespository.isAddItemGuideEverShownWithMarking()
     }
     
+    public func didWelComeItemAdded() -> Bool {
+        return self.optionsRespository.didWelComeItemAdded()
+    }
+    
+    public func updateDidWelcomeItemAdded() {
+        return self.optionsRespository.updateDidWelcomeItemAdded()
+    }
+    
     public var readItemUpdated: Observable<ReadItemUpdateEvent> {
         return self.sharedEventService.event
             .compactMap { $0 as? ReadItemUpdateEvent }

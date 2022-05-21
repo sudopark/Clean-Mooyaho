@@ -15,6 +15,11 @@ import Domain
 
 // MARK: - EnvironmentStorage
 
+public enum EnvironmentDataScope {
+    case perUser
+    case perDevice
+}
+
 public protocol EnvironmentStorage {
     
     func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void>
@@ -47,7 +52,11 @@ public protocol EnvironmentStorage {
     
     func markAsAddItemGuideShown()
     
-    func clearAll()
+    func didWelComeItemAdded() -> Bool
+    
+    func updateDidWelcomeItemAdded()
+    
+    func clearAll(scope: EnvironmentDataScope)
 }
 
 var environmentStorageKeyPrefix: String?
@@ -63,6 +72,7 @@ enum EnvironmentStorageKeys {
     case readingLinkIDs
     case reloadNeedCollectionIDs
     case addItemGuideEverShown
+    case welcomeItemAdded
     
     var keyvalue: String {
         let prefix = environmentStorageKeyPrefix
@@ -87,20 +97,37 @@ enum EnvironmentStorageKeys {
             
         case .addItemGuideEverShown:
             return "addItemGuideEverShown".insertPrefixOrNot(prefix)
+            
+        case .welcomeItemAdded:
+            return "welcomeItemAdded:".insertPrefixOrNot(prefix)
         }
     }
     
-    fileprivate static func keyPrefixes() -> [String] {
+    var scope: EnvironmentDataScope {
+        switch self {
+        case .addItemGuideEverShown, .welcomeItemAdded: return .perDevice
+        default: return .perUser
+        }
+    }
+    
+    fileprivate static func keyPrefixes(for scope: EnvironmentDataScope) -> [String] {
         let prefix = environmentStorageKeyPrefix
-        return [
-            "pendingPlaceInfo".insertPrefixOrNot(prefix),
-            "readItemIsShrinkMode".insertPrefixOrNot(prefix),
-            "readItemLatestSortOrder".insertPrefixOrNot(prefix),
-            "readitemCustomOrder".insertPrefixOrNot(prefix),
-            "readingLinkIDs".insertPrefixOrNot(prefix),
-            "reloadNeedCollectionIDs".insertPrefixOrNot(prefix),
-            "addItemGuideEverShown".insertPrefixOrNot(prefix)
-        ]
+        switch scope {
+        case .perUser:
+            return [
+                "pendingPlaceInfo".insertPrefixOrNot(prefix),
+                "readItemIsShrinkMode".insertPrefixOrNot(prefix),
+                "readItemLatestSortOrder".insertPrefixOrNot(prefix),
+                "readitemCustomOrder".insertPrefixOrNot(prefix),
+                "readingLinkIDs".insertPrefixOrNot(prefix),
+                "reloadNeedCollectionIDs".insertPrefixOrNot(prefix)
+            ]
+        case .perDevice:
+            return [
+                "addItemGuideEverShown".insertPrefixOrNot(prefix),
+                "welcomeItemAdded".insertPrefixOrNot(prefix)
+            ]
+        }
     }
 }
 
@@ -182,9 +209,9 @@ extension UserDefaults: EnvironmentStorage {
 
 extension UserDefaults {
     
-    public func clearAll() {
+    public func clearAll(scope: EnvironmentDataScope) {
         let storedDataKeys = UserDefaults.standard.dictionaryRepresentation().keys
-        let keyPrefixes = EnvironmentStorageKeys.keyPrefixes()
+        let keyPrefixes = EnvironmentStorageKeys.keyPrefixes(for: scope)
         let shouldRemoveTargetKeys = storedDataKeys.filter { key in
             return keyPrefixes.first(where: { key.starts(with: $0) }) != nil
         }
@@ -279,6 +306,16 @@ extension UserDefaults {
     
     public func markAsAddItemGuideShown() {
         let key = EnvironmentStorageKeys.addItemGuideEverShown
+        self.set(true, forKey: key.keyvalue)
+    }
+    
+    public func didWelComeItemAdded() -> Bool {
+        let key = EnvironmentStorageKeys.welcomeItemAdded
+        return self.bool(forKey: key.keyvalue)
+    }
+    
+    public func updateDidWelcomeItemAdded() {
+        let key = EnvironmentStorageKeys.welcomeItemAdded
         self.set(true, forKey: key.keyvalue)
     }
 }
