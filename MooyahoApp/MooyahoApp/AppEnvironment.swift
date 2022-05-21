@@ -96,6 +96,11 @@ struct AppEnvironment {
         
         return loadExisting() ?? makeAndSaveID()
     }
+    
+    // MARK: - TODO: 실제 url로 교체
+    static var welcomeItemURLPath: String {
+        return "https://www.naver.com"
+    }
 }
 
 enum PlaceCategoryTags: String, CaseIterable {

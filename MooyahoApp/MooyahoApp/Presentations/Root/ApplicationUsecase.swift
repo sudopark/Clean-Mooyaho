@@ -34,18 +34,18 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
-    private let favoriteItemsUsecase: FavoriteReadItemUsecas
+    private let readItemUsecase: ReadItemUsecase
     private let shareUsecase: ShareReadCollectionUsecase
     private let crashLogger: CrashLogger
     
     public init(authUsecase: AuthUsecase,
                 memberUsecase: MemberUsecase,
-                favoriteItemsUsecase: FavoriteReadItemUsecas,
+                readItemUsecase: ReadItemUsecase,
                 shareUsecase: ShareReadCollectionUsecase,
                 crashLogger: CrashLogger) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
-        self.favoriteItemsUsecase = favoriteItemsUsecase
+        self.readItemUsecase = readItemUsecase
         self.shareUsecase = shareUsecase
         self.crashLogger = crashLogger
         
@@ -101,7 +101,7 @@ extension ApplicationUsecaseImple {
     }
 
     private func refreshBaseSharedDatas() {
-        self.favoriteItemsUsecase.refreshSharedFavoriteIDs()
+        self.readItemUsecase.refreshSharedFavoriteIDs()
     }
     
     private func refreshSignInMemberBaseDatas(for memberID: String) {
@@ -141,7 +141,19 @@ extension ApplicationUsecaseImple {
 extension ApplicationUsecaseImple {
     
     public func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)> {
+        
+        typealias Pair = (auth: Auth, member: Member?)
+        
+        let appendWelcomeItemIfNeed: (Pair) -> Maybe<Pair>
+        appendWelcomeItemIfNeed = { [weak self] pair in
+            guard let self = self else { return .empty() }
+            return self.appendWelcomeItemIfNeed(isSignIn: pair.member?.uid != nil)
+                .catchAndReturn(())
+                .map { pair }
+        }
+        
         return self.authUsecase.loadLastSignInAccountInfo()
+            .flatMap(appendWelcomeItemIfNeed)
     }
     
     public var currentSignedInMemeber: Observable<Member?> {
@@ -154,6 +166,30 @@ extension ApplicationUsecaseImple {
                 guard case let .signOut(auth) = event else { return nil }
                 return auth
             }
+    }
+    
+    private func appendWelcomeItemIfNeed(isSignIn: Bool) -> Maybe<Void> {
+        guard isSignIn == false,
+              self.readItemUsecase.didWelComeItemAdded() == false
+        else {
+            return .just()
+        }
+        
+        let loadMyItems = self.readItemUsecase.loadMyItems().take(1).asMaybe()
+
+        let saveWelcomeItemIfNeedWithMarking: ([ReadItem]) async throws -> Void?
+        saveWelcomeItemIfNeedWithMarking = { [weak self] items in
+            guard let self = self else { return nil }
+            guard items.isEmpty else {
+                return ()
+            }
+            
+            let welcomeItem = ReadLink.makeWelcomeItem(AppEnvironment.welcomeItemURLPath)
+            _ = try await self.readItemUsecase.saveLink(welcomeItem, at: nil).value
+            return self.readItemUsecase.updateDidWelcomeItemAdded()
+        }
+        return loadMyItems
+            .flatMap(do: saveWelcomeItemIfNeedWithMarking)
     }
 }
 

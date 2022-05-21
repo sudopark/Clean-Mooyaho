@@ -199,11 +199,11 @@ open class StubReadItemUsecase: ReadItemUsecase, ReadItemSyncUsecase {
         return self.scenario.isAddIttemGuideEverShown
     }
     
-    public func didWelComeItemAdded() -> Bool {
+    open func didWelComeItemAdded() -> Bool {
         return self.scenario.isWelcomeItemAddedBefore
     }
     
-    public func updateDidWelcomeItemAdded() {
+    open func updateDidWelcomeItemAdded() {
         self.scenario.isWelcomeItemAddedBefore = true
     }
 }
