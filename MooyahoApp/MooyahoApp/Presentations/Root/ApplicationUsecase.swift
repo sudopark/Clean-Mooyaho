@@ -192,13 +192,19 @@ extension ApplicationUsecaseImple {
             let categories = ItemCategory.welcomeItemCategories
             _ = try await self.readItemCategoryUsecase.updateCategories(categories).value
             
-            let welcomeItem = ReadLink.makeWelcomeItem(AppEnvironment.welcomeItemURLPath)
-                |> \.categoryIDs .~ categories.map { $0.uid }
+            let welcomeItem = self.makeWelcomeLinkItem(with: categories)
             _ = try await self.readItemUsecase.saveLink(welcomeItem, at: nil).value
             return self.readItemUsecase.updateDidWelcomeItemAdded()
         }
         return loadMyItems
             .flatMap(do: saveWelcomeItemIfNeedWithMarking)
+    }
+    
+    private func makeWelcomeLinkItem(with categories: [ItemCategory]) -> ReadLink {
+        let supportLang = SupportLanguage(rawValue: Locale.current.languageCode ?? "")
+        let urlPath = AppEnvironment.welcomeItemURLPath(for: supportLang)
+        return ReadLink.makeWelcomeItem(urlPath)
+            |> \.categoryIDs .~ categories.map { $0.uid }
     }
 }
 

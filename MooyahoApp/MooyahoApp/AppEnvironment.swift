@@ -16,6 +16,10 @@ enum BuildMode {
 }
 
 
+enum SupportLanguage: String {
+    case korean = "ko"
+}
+
 struct AppEnvironment {
     
     static var buildMode: BuildMode {
@@ -97,9 +101,9 @@ struct AppEnvironment {
         return loadExisting() ?? makeAndSaveID()
     }
     
-    // MARK: - TODO: 실제 url로 교체
-    static var welcomeItemURLPath: String {
-        return "https://www.naver.com"
+    static func welcomeItemURLPath(for supportLanguage: SupportLanguage?) -> String {
+        let langSuffix = supportLanguage?.rawValue ?? "en"
+        return "https://breadroad-af5c0.web.app/welcome/\(langSuffix)"
     }
 }
 
