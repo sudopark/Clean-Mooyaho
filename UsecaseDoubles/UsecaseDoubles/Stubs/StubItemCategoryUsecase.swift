@@ -32,7 +32,7 @@ open class StubItemCategoryUsecase: ReadItemCategoryUsecase {
         return .from(self.scenario.categories)
     }
     
-    public func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+    open func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
         return self.scenario.updateResult.asMaybe()
     }
     
