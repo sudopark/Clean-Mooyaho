@@ -15,7 +15,6 @@ enum BuildMode {
     case release
 }
 
-
 struct AppEnvironment {
     
     static var buildMode: BuildMode {
@@ -97,9 +96,8 @@ struct AppEnvironment {
         return loadExisting() ?? makeAndSaveID()
     }
     
-    // MARK: - TODO: 실제 url로 교체
     static var welcomeItemURLPath: String {
-        return "https://www.naver.com"
+        return "https://breadroad-af5c0.web.app/welcome"
     }
 }
 
