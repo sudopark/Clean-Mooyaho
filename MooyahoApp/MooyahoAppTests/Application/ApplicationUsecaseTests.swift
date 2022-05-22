@@ -22,6 +22,7 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
     var disposeBag: DisposeBag!
     private var mockAuthUsecase: MockAuthUsecase!
     private var mockReadItemUsecase: MockReadItemUsecase!
+    private var spyCategoryUsecase: SpyCategoryUsecase!
     private var mockMemberUsecase: MockMemberUsecase!
     private var mockShareUsecase: StubShareItemUsecase!
     private var usecase: ApplicationUsecaseImple!
@@ -30,11 +31,13 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = .init()
         self.mockAuthUsecase = .init()
         self.mockReadItemUsecase = .init()
+        self.spyCategoryUsecase = .init()
         self.mockMemberUsecase = .init()
         self.mockShareUsecase = .init()
         self.usecase = .init(authUsecase: self.mockAuthUsecase,
                              memberUsecase: self.mockMemberUsecase,
                              readItemUsecase: self.mockReadItemUsecase,
+                             readItemCategoryUsecase: self.spyCategoryUsecase,
                              shareUsecase: self.mockShareUsecase,
                              crashLogger: EmptyCrashLogger())
     }
@@ -43,6 +46,7 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.disposeBag = nil
         self.mockAuthUsecase = nil
         self.mockReadItemUsecase = nil
+        self.spyCategoryUsecase = nil
         self.mockMemberUsecase = nil
         self.mockShareUsecase = nil
         self.usecase = nil
@@ -217,6 +221,7 @@ extension ApplicationUsecaseTests {
         // then
         XCTAssertEqual(self.mockReadItemUsecase.didWelComeItemAdded(), true)
         XCTAssertEqual(self.mockReadItemUsecase.didUpdateedLinkItem?.isWelcomeItem, true)
+        XCTAssertEqual(self.spyCategoryUsecase.didUpdatedCategories?.count, 3)
     }
     
     func testUsecase_whenLoadLastSignInAccountInfoWithoutSignInAndItemsEmptyButAddWelcomeItemBefore_notAddWelcomeItem() {
@@ -263,7 +268,7 @@ private class EmptyCrashLogger: CrashLogger {
 
 private extension ApplicationUsecaseTests {
     
-    class MockReadItemUsecase: StubReadItemUsecase {
+    final class MockReadItemUsecase: StubReadItemUsecase {
         
         func didWelcomeItemAddedMocking(_ isAdded: Bool) {
             self.scenario.isWelcomeItemAddedBefore = isAdded
@@ -279,6 +284,15 @@ private extension ApplicationUsecaseTests {
                 .do(onNext: {
                     self.didUpdateedLinkItem = link
                 })
+        }
+    }
+    
+    final class SpyCategoryUsecase: StubItemCategoryUsecase {
+        
+        var didUpdatedCategories: [ItemCategory]?
+        override func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+            self.didUpdatedCategories = categories
+            return super.updateCategories(categories)
         }
     }
 }

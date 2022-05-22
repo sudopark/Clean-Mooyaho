@@ -10,6 +10,8 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Prelude
+import Optics
 
 import Domain
 import CommonPresenting
@@ -35,17 +37,20 @@ public final class ApplicationUsecaseImple: ApplicationUsecase {
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
     private let readItemUsecase: ReadItemUsecase
+    private let readItemCategoryUsecase: ReadItemCategoryUsecase
     private let shareUsecase: ShareReadCollectionUsecase
     private let crashLogger: CrashLogger
     
     public init(authUsecase: AuthUsecase,
                 memberUsecase: MemberUsecase,
                 readItemUsecase: ReadItemUsecase,
+                readItemCategoryUsecase: ReadItemCategoryUsecase,
                 shareUsecase: ShareReadCollectionUsecase,
                 crashLogger: CrashLogger) {
         self.authUsecase = authUsecase
         self.memberUsecase = memberUsecase
         self.readItemUsecase = readItemUsecase
+        self.readItemCategoryUsecase = readItemCategoryUsecase
         self.shareUsecase = shareUsecase
         self.crashLogger = crashLogger
         
@@ -184,7 +189,11 @@ extension ApplicationUsecaseImple {
                 return ()
             }
             
+            let categories = ItemCategory.welcomeItemCategories
+            _ = try await self.readItemCategoryUsecase.updateCategories(categories).value
+            
             let welcomeItem = ReadLink.makeWelcomeItem(AppEnvironment.welcomeItemURLPath)
+                |> \.categoryIDs .~ categories.map { $0.uid }
             _ = try await self.readItemUsecase.saveLink(welcomeItem, at: nil).value
             return self.readItemUsecase.updateDidWelcomeItemAdded()
         }
@@ -212,5 +221,15 @@ extension ApplicationUsecaseImple {
                 self?.crashLogger.setupValue(status.rawValue, key: "Application Status")
             })
             .disposed(by: self.disposeBag)
+    }
+}
+
+
+private extension ItemCategory {
+    
+    static var welcomeItemCategories: [ItemCategory] {
+        let labels = ["guide".localized, "how-to-use".localized, "start".localized]
+        let colors = self.colorCodes
+        return labels.map { .init(name: $0, colorCode: colors.randomElement() ?? "")}
     }
 }

@@ -52,11 +52,10 @@ extension ReadLink {
         return self.uid == Self.welcomeItemIdentifier
     }
 
-    // MARK: - 아이템 타이츨 교체 필요
     public static func makeWelcomeItem(_ urlPath: String) -> ReadLink {
         return ReadLink(uid: self.welcomeItemIdentifier, link: urlPath,
                         createAt: .now(), lastUpdated: .now())
-        |> \.customName .~ pure("[TODO]Welcome item custom name".localized)
+        |> \.customName .~ pure("welcome item custom name".localized)
         |> \.priority .~ .afterAWhile
     }
 }
