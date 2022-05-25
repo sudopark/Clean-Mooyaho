@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Prelude
+import Optics
 
 
 public struct ReadLink: ReadItem {
@@ -38,5 +40,22 @@ public struct ReadLink: ReadItem {
         self.link = link
         self.createdAt = TimeStamp.now()
         self.lastUpdatedAt = TimeStamp.now()
+    }
+}
+
+
+extension ReadLink {
+    
+    private static var welcomeItemIdentifier: String { "welcome-item"}
+    
+    public var isWelcomeItem: Bool {
+        return self.uid == Self.welcomeItemIdentifier
+    }
+
+    public static func makeWelcomeItem(_ urlPath: String) -> ReadLink {
+        return ReadLink(uid: self.welcomeItemIdentifier, link: urlPath,
+                        createAt: .now(), lastUpdated: .now())
+        |> \.customName .~ pure("welcome item custom name".localized)
+        |> \.priority .~ .afterAWhile
     }
 }

@@ -15,7 +15,6 @@ enum BuildMode {
     case release
 }
 
-
 struct AppEnvironment {
     
     static var buildMode: BuildMode {
@@ -69,6 +68,15 @@ struct AppEnvironment {
         }
     }
     
+    
+    static var featureFlag: FeatureFlagType = {
+        if isTestBuild {
+            return DummyFeatureFlag()
+        } else {
+            return FeatureFlags()
+        }
+    }()
+    
     static var encryptedStorageIdentifier: String {
         return "readmind"
     }
@@ -95,6 +103,10 @@ struct AppEnvironment {
         }
         
         return loadExisting() ?? makeAndSaveID()
+    }
+    
+    static var welcomeItemURLPath: String {
+        return "https://breadroad-af5c0.web.app/welcome"
     }
 }
 
@@ -144,5 +156,17 @@ enum PlaceCategoryTags: String, CaseIterable {
     
     var tag: PlaceCategoryTag {
         return .init(placeCat: self.rawValue.localized, emoji: self.emoji)
+    }
+}
+
+
+public struct DummyFeatureFlag: FeatureFlagType {
+    
+    public func enable(_ feature: Feature) { }
+    
+    public func disable(_ feature: Feature) { }
+    
+    public func isEnable(_ feature: Feature) -> Bool {
+        return true
     }
 }

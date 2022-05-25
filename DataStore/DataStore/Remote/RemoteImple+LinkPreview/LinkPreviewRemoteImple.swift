@@ -32,7 +32,7 @@ extension LinkPreviewRemoteImple: LinkPreviewRemote {
         return Maybe.create { [weak self] callback in
             guard let self = self else { return Disposables.create() }
             
-            guard let url = URL(string: url) else {
+            guard let url = url.asURL() else {
                 let error = RemoteErrors.invalidRequest(url)
                 callback(.error(error))
                 return Disposables.create()

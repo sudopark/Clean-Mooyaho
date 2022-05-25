@@ -144,7 +144,7 @@ extension InnerWebViewViewController {
     }
     
     private func loadWebPage(address: String) {
-        guard let url = URL(string: address) else { return }
+        guard let url = address.asURL() else { return }
         let urlRequest = URLRequest(url: url)
         self.webView.load(urlRequest)
     }

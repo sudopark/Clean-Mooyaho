@@ -105,6 +105,8 @@ extension ApplicationViewModelImple {
             self.routeToMainAfterLoadLastAccountInfo()
         }
         
+//        AppEnvironment.featureFlag.enable(.welcomeItem)
+        
         guard AppEnvironment.isTestBuild == false else { return }
         self.firebaseService.setupService()
         self.fcmService.setupFCMService()

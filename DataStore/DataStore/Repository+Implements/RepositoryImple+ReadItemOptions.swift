@@ -67,4 +67,12 @@ extension ReadItemOptionsRepository where Self: ReadItemOptionReposiotryDefImple
         }
         return isShown
     }
+    
+    public func didWelComeItemAdded() -> Bool {
+        return self.readItemOptionLocal.didWelComeItemAdded()
+    }
+    
+    public func updateDidWelcomeItemAdded() {
+        return self.readItemOptionLocal.updateDidWelcomeItemAdded()
+    }
 }

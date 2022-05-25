@@ -53,4 +53,13 @@ class StubReadItemOptionsRepository: ReadItemOptionsRepository {
     func isAddItemGuideEverShownWithMarking() -> Bool {
         return true
     }
+    
+    private var isWelcomeItemAdded: Bool = false
+    func didWelComeItemAdded() -> Bool {
+        return self.isWelcomeItemAdded
+    }
+    
+    func updateDidWelcomeItemAdded() {
+        self.isWelcomeItemAdded = true
+    }
 }

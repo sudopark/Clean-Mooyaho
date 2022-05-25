@@ -20,19 +20,24 @@ import UsecaseDoubles
 class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
-    var mockAuthUsecase: MockAuthUsecase!
-    var mockMemberUsecase: MockMemberUsecase!
-    var mockShareUsecase: StubShareItemUsecase!
-    var usecase: ApplicationUsecaseImple!
+    private var mockAuthUsecase: MockAuthUsecase!
+    private var mockReadItemUsecase: MockReadItemUsecase!
+    private var spyCategoryUsecase: SpyCategoryUsecase!
+    private var mockMemberUsecase: MockMemberUsecase!
+    private var mockShareUsecase: StubShareItemUsecase!
+    private var usecase: ApplicationUsecaseImple!
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
         self.mockAuthUsecase = .init()
+        self.mockReadItemUsecase = .init()
+        self.spyCategoryUsecase = .init()
         self.mockMemberUsecase = .init()
         self.mockShareUsecase = .init()
         self.usecase = .init(authUsecase: self.mockAuthUsecase,
                              memberUsecase: self.mockMemberUsecase,
-                             favoriteItemsUsecase: StubReadItemUsecase(),
+                             readItemUsecase: self.mockReadItemUsecase,
+                             readItemCategoryUsecase: self.spyCategoryUsecase,
                              shareUsecase: self.mockShareUsecase,
                              crashLogger: EmptyCrashLogger())
     }
@@ -40,146 +45,17 @@ class ApplicationUsecaseTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockAuthUsecase = nil
+        self.mockReadItemUsecase = nil
+        self.spyCategoryUsecase = nil
         self.mockMemberUsecase = nil
         self.mockShareUsecase = nil
         self.usecase = nil
     }
 }
 
-// MARK: - trigger uploading user location
-
-extension ApplicationUsecaseTests {
-    
-//    func testUsecase_whenAfterLaunchAndAuthLoadedAndHasLocationPermission_startUploadUserLocation() {
-//        // given
-//        let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 있으면 업로드 시작")
-//        
-//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-//            return Maybe<LocationServiceAccessPermission>.just(.granted)
-//        }
-//        
-//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-//            expect.fulfill()
-//        }
-//        
-//        // when
-//        self.usecase.updateApplicationActiveStatus(.launched)
-//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-//        
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
-//    
-//    func testUsecase_whenAfterLanchedAndHasNoLocationPermission_notStartUploadUserLocation() {
-//        // given
-//        let expect = expectation(description: "앱 시작 이후에 위치정보 접근 권한 없으면 업로드 시작 안함")
-//        expect.isInverted = true
-//        
-//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-//            return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
-//        }
-//        
-//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-//            expect.fulfill()
-//        }
-//        
-//        // when
-//        self.usecase.updateApplicationActiveStatus(.launched)
-//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-//        
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
-//    
-//    func testUsecase_whenAfterLocationPermissionChangeToGrant_startUploadUserLocation() {
-//        // given
-//        let expect = expectation(description: "앱 실행중 위치권한이 실행중으로 바뀌면 업로드 시작")
-//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-//            return Maybe<LocationServiceAccessPermission>.just(.notDetermined)
-//        }
-//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-//            expect.fulfill()
-//        }
-//        
-//        // when
-//        self.usecase.updateApplicationActiveStatus(.launched)
-//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-//        self.mockUserLocationUsecase.isAuthorizedSubject.onNext(true)
-//        
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
-//    
-//    func testUsecase_whenAfterEnterBackground_stopUploadUserLocation() {
-//        // given
-//        let expect = expectation(description: "앱 백그라운드 진입시 업로드 중지 요청")
-//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-//            return Maybe<LocationServiceAccessPermission>.just(.granted)
-//        }
-//        self.mockUserLocationUsecase.called(key: "stopUplocationUserLocation") { _ in
-//            expect.fulfill()
-//        }
-//        
-//        // when
-//        self.usecase.updateApplicationActiveStatus(.launched)
-//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-//        self.usecase.updateApplicationActiveStatus(.background)
-//        
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
-//    
-//    func testUsecase_whenAfterEnterForgroundAgain_startUploadUserLocation() {
-//        // given
-//        let expect = expectation(description: "백그라운드 진입 이후에 업로드할 수 있으면 다시 업로드 시작")
-//        expect.expectedFulfillmentCount = 2
-//        
-//        self.mockUserLocationUsecase.register(key: "checkHasPermission") {
-//            return Maybe<LocationServiceAccessPermission>.just(.granted)
-//        }
-//        self.mockUserLocationUsecase.called(key: "startUploadUserLocation") { _ in
-//            expect.fulfill()
-//        }
-//        
-//        
-//        // when
-//        self.usecase.updateApplicationActiveStatus(.launched)
-//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-//        self.usecase.updateApplicationActiveStatus(.background)
-//        self.usecase.updateApplicationActiveStatus(.forground)
-//        
-//        // then
-//        self.wait(for: [expect], timeout: self.timeout)
-//    }
-}
-
-
 // MARK: - update user device info
 
 extension ApplicationUsecaseTests {
-    
-//    func testUsecase_udpateIsOnline_byApplicaitonStatus() {
-//        // given
-//        let expect = expectation(description: "어플리케이션 상태에 때라 isOnline 상태 업데이트")
-//        expect.expectedFulfillmentCount = 3
-//        var isOnlineFlags = [Bool]()
-//
-//        self.mockMemberUsecase.called(key: "updateUserIsOnline") { args in
-//            guard let flag = args as? Bool else { return }
-//            isOnlineFlags.append(flag)
-//            expect.fulfill()
-//        }
-//
-//        // when
-//        self.usecase.updateApplicationActiveStatus(.launched)
-//        self.mockAuthUsecase.auth.onNext(Auth(userID: "some"))
-//        self.usecase.updateApplicationActiveStatus(.background)
-//        self.usecase.updateApplicationActiveStatus(.forground)
-//        self.wait(for: [expect], timeout: self.timeout)
-//
-//        // then
-//        XCTAssertEqual(isOnlineFlags, [true, false, true])
-//    }
     
     func testUsecase_whenFCMTokenIsUpdated_uploadToken() {
         // given
@@ -311,13 +187,17 @@ extension ApplicationUsecaseTests {
 
 extension ApplicationUsecaseTests {
     
+    private func signInOrNotMocking(_ isSignIn: Bool) {
+        let member: Member? = isSignIn ? Member(uid: "some") : nil
+        self.mockAuthUsecase.register(key: "loadLastSignInAccountInfo") {
+            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), member))
+        }
+    }
+    
     func testUsecase_loadLastSignInAccountInfo() {
         // given
         let expect = expectation(description: "마지막 로그인한 계정정보 로드")
-        
-        self.mockAuthUsecase.register(key: "loadLastSignInAccountInfo") {
-            return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
-        }
+        self.signInOrNotMocking(false)
         
         // when
         let requestLoad = self.usecase.loadLastSignInAccountInfo()
@@ -325,6 +205,53 @@ extension ApplicationUsecaseTests {
         
         // then
         XCTAssertNotNil(accountInfo)
+    }
+    
+    func testUsecase_whenLoadLastSignInAccountInfoWithoutSignInAndNotAddedWelcomeItemAndItemsEmpty_addWelcomeItem() {
+        // given
+        let expect = expectation(description: "로그인 안한 유저 + 웰컴아이템 추가 안되어있는경우 + 저장된 아이템이 없다면 웰컴아이템 추가")
+        self.signInOrNotMocking(false)
+        self.mockReadItemUsecase.myItemsMocking([])
+        self.mockReadItemUsecase.didWelcomeItemAddedMocking(false)
+        
+        // when
+        let request = self.usecase.loadLastSignInAccountInfo()
+        let _ = self.waitFirstElement(expect, for: request.asObservable())
+        
+        // then
+        XCTAssertEqual(self.mockReadItemUsecase.didWelComeItemAdded(), true)
+        XCTAssertEqual(self.mockReadItemUsecase.didUpdateedLinkItem?.isWelcomeItem, true)
+        XCTAssertEqual(self.spyCategoryUsecase.didUpdatedCategories?.count, 3)
+    }
+    
+    func testUsecase_whenLoadLastSignInAccountInfoWithoutSignInAndItemsEmptyButAddWelcomeItemBefore_notAddWelcomeItem() {
+        // given
+        let expect = expectation(description: "로그인 안한 유저 + 저장된 아이템 없지만 + 웰컴아이템 추가한적 있으면 웰컴아이템 추가 안함")
+        self.signInOrNotMocking(false)
+        self.mockReadItemUsecase.myItemsMocking([])
+        self.mockReadItemUsecase.didWelcomeItemAddedMocking(true)
+        
+        // when
+        let request = self.usecase.loadLastSignInAccountInfo()
+        let _ = self.waitFirstElement(expect, for: request.asObservable())
+        
+        // then
+        XCTAssertNil(self.mockReadItemUsecase.didUpdateedLinkItem?.isWelcomeItem)
+    }
+    
+    func testUsecase_whenSignoutButReadItemsNotEmpty_notAddWelcomeItem() {
+        // given
+        let expect = expectation(description: "로그인 안한상태이지만 아이템들이 있으면 웰컴아이템 추가 안함")
+        self.signInOrNotMocking(false)
+        self.mockReadItemUsecase.myItemsMocking([ReadLink.dummy(0)])
+        self.mockReadItemUsecase.didWelcomeItemAddedMocking(false)
+        
+        // when
+        let request = self.usecase.loadLastSignInAccountInfo()
+        let _ = self.waitFirstElement(expect, for: request.asObservable())
+        
+        // then
+        XCTAssertNil(self.mockReadItemUsecase.didUpdateedLinkItem?.isWelcomeItem)
     }
 }
 
@@ -336,4 +263,36 @@ private class EmptyCrashLogger: CrashLogger {
     func setupValue(_ value: Any, key: String) { }
     
     func log(_ message: String) { }
+}
+
+
+private extension ApplicationUsecaseTests {
+    
+    final class MockReadItemUsecase: StubReadItemUsecase {
+        
+        func didWelcomeItemAddedMocking(_ isAdded: Bool) {
+            self.scenario.isWelcomeItemAddedBefore = isAdded
+        }
+        
+        func myItemsMocking(_ items: [ReadItem]) {
+            self.scenario.myItems = .success(items)
+        }
+        
+        var didUpdateedLinkItem: ReadLink?
+        override func updateLink(_ link: ReadLink) -> Maybe<Void> {
+            return super.updateLink(link)
+                .do(onNext: {
+                    self.didUpdateedLinkItem = link
+                })
+        }
+    }
+    
+    final class SpyCategoryUsecase: StubItemCategoryUsecase {
+        
+        var didUpdatedCategories: [ItemCategory]?
+        override func updateCategories(_ categories: [ItemCategory]) -> Maybe<Void> {
+            self.didUpdatedCategories = categories
+            return super.updateCategories(categories)
+        }
+    }
 }

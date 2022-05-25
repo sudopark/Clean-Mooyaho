@@ -57,6 +57,10 @@ extension LocalStorageImple {
         }
         return storage.save(member: member)
     }
+    
+    public func clearUserEnvironment() {
+        self.environmentStorage.clearAll(scope: .perUser)
+    }
 }
 
 

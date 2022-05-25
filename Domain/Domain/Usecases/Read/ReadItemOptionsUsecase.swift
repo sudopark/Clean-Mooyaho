@@ -39,4 +39,8 @@ public protocol ReadItemOptionsUsecase {
     func updateCustomOrder(for collectionID: String, itemIDs: [String]) -> Maybe<Void>
     
     func isAddItemGuideEverShownWithMarking() -> Bool
+    
+    func didWelComeItemAdded() -> Bool
+    
+    func updateDidWelcomeItemAdded()
 }

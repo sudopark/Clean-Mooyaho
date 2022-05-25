@@ -33,7 +33,7 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     
     override func setUpWithError() throws {
         
-        self.timeout = 1.0
+        self.timeout = 3.0
         
         self.disposeBag = .init()
         
@@ -61,7 +61,8 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.mockEncrytedStorage = nil
-        self.testEnvironmentStorage.clearAll()
+        self.testEnvironmentStorage.clearAll(scope: .perUser)
+        self.testEnvironmentStorage.clearAll(scope: .perDevice)
         self.local = nil
         try? FileManager.default.removeItem(atPath: self.testDBPath("test1"))
         try? FileManager.default.removeItem(atPath: self.testDBPath("test2"))
