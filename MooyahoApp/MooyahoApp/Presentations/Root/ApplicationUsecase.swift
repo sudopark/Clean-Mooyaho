@@ -174,7 +174,8 @@ extension ApplicationUsecaseImple {
     }
     
     private func appendWelcomeItemIfNeed(isSignIn: Bool) -> Maybe<Void> {
-        guard isSignIn == false,
+        guard AppEnvironment.featureFlag.isEnable(.welcomeItem),
+              isSignIn == false,
               self.readItemUsecase.didWelComeItemAdded() == false
         else {
             return .just()
