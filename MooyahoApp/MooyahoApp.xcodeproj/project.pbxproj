@@ -1127,7 +1127,7 @@
 				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1138,7 +1138,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.1.4;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
@@ -1161,7 +1161,7 @@
 				CODE_SIGN_ENTITLEMENTS = MooyahoApp/MooyahoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MooyahoApp/Info.plist;
@@ -1170,7 +1170,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.1.4;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS";
@@ -1235,7 +1235,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReadReminderShareExtension/ReadReminderShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReadReminderShareExtension/Info.plist;
@@ -1247,7 +1247,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
@@ -1266,7 +1266,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReadReminderShareExtension/ReadReminderShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReadReminderShareExtension/Info.plist;
@@ -1278,7 +1278,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
