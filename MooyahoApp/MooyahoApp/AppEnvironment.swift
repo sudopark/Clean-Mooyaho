@@ -68,6 +68,15 @@ struct AppEnvironment {
         }
     }
     
+    
+    static var featureFlag: FeatureFlagType = {
+        if isTestBuild {
+            return DummyFeatureFlag()
+        } else {
+            return FeatureFlags()
+        }
+    }()
+    
     static var encryptedStorageIdentifier: String {
         return "readmind"
     }
@@ -147,5 +156,17 @@ enum PlaceCategoryTags: String, CaseIterable {
     
     var tag: PlaceCategoryTag {
         return .init(placeCat: self.rawValue.localized, emoji: self.emoji)
+    }
+}
+
+
+public struct DummyFeatureFlag: FeatureFlagType {
+    
+    public func enable(_ feature: Feature) { }
+    
+    public func disable(_ feature: Feature) { }
+    
+    public func isEnable(_ feature: Feature) -> Bool {
+        return true
     }
 }
