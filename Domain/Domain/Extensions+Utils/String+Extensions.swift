@@ -27,6 +27,11 @@ extension String {
         return predicate.evaluate(with: self)
     }
     
+    public func asURL(withEncoding allowCharSet: CharacterSet = .urlQueryAllowed) -> URL? {
+        let path = self.addingPercentEncoding(withAllowedCharacters: allowCharSet) ?? self
+        return URL(string: path)
+    }
+    
     public var localized: String {
         NSLocalizedString(self, bundle: Bundle.main, comment: "")
     }
