@@ -33,7 +33,7 @@ class BaseLocalStorageTests: BaseTestCase, WaitObservableEvents {
     
     override func setUpWithError() throws {
         
-        self.timeout = 1.0
+        self.timeout = 3.0
         
         self.disposeBag = .init()
         
