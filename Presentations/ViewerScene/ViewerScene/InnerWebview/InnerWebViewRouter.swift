@@ -47,8 +47,7 @@ extension InnerWebViewRouter {
     
     // InnerWebViewRouting implements
     public func openSafariBrowser(_ address: String) {
-        
-        guard let url = URL(string: address) else { return }
+        guard let url = address.asURL() else { return }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
