@@ -224,7 +224,8 @@ extension InnerWebViewViewModelImple {
               encodedURL == self.subjects.currentPageURL.value
         else { return }
         
-        self.readingOptionUsecase.updateLastReadPosition(for: item.uid, position: position)
+        self.readingOptionUsecase
+            .updateLastReadPositionIsPossible(for: item.uid, position: position)
             .subscribe()
             .disposed(by: self.disposeBag)
     }

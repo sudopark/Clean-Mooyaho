@@ -178,6 +178,16 @@ public protocol ReadItemOptionsLocalStorage {
     func updateDidWelcomeItemAdded()
 }
 
+public protocol ReadingOptionLocalStorage {
+    
+    func fetchLastReadPosition(for itemID: String) -> Maybe<Float?>
+    
+    func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void>
+    
+    func updateEnableLastReadPositionSaveOption(_ isOn: Bool)
+    
+    func isEnabledLastReadPositionSaveOption() -> Bool
+}
 
 public protocol LinkPreviewCacheStorage {
     
@@ -251,7 +261,7 @@ public protocol SearchLocalStorage {
 
 // MARK: - LocalStorage
 
-public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage, SearchLocalStorage { }
+public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, ReadingOptionLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage, SearchLocalStorage { }
 
 
 // MARK: - LocalStorageImple

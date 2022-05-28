@@ -26,6 +26,8 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
     private let headerView = BaseHeaderView()
     private let pullGuideView = PullGuideView()
     private let webView = WKWebView()
+    private let moveFloatingButton = BaseFloatingButton()
+    private var bottomMoveBinding: Disposable?
     
     let viewModel: InnerWebViewViewModel
     
@@ -54,8 +56,8 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
         self.viewModel.prepareLinkData()
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         let currentY = Float(self.webView.scrollView.contentOffset.y)
         self.viewModel.saveLastReadPositionIfNeed(currentY)
     }
@@ -100,6 +102,12 @@ extension InnerWebViewViewController {
         self.headerView.closeButton?.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.moveFloatingButton.rx.closeTap()
+            .subscribe(onNext: { [weak self] in
+                self?.moveFloatingButton.hideButonWithAniation()
             })
             .disposed(by: self.disposeBag)
     }
@@ -241,7 +249,7 @@ extension InnerWebViewViewController {
             .filter{ $0 }
             .take(1)
             .subscribe(onNext: { [weak self] _ in
-                self?.moveToLastReadPositionIfPossible(lastReadPosition)
+                self?.askShouldMovetoLastReadPositionIsNeed(lastReadPosition)
             })
             .disposed(by: self.disposeBag)
         
@@ -262,13 +270,25 @@ extension InnerWebViewViewController {
         self.toolBar.updateNavigationButton(isBack: false, enable: forwardCount > 0)
     }
     
-    private func moveToLastReadPositionIfPossible(_ preivousPosition: Float?) {
+    private func askShouldMovetoLastReadPositionIsNeed(_ preivousPosition: Float?) {
         
         guard let previous = preivousPosition else { return }
+       
+        self.bottomMoveBinding?.dispose()
+        self.bottomMoveBinding = nil
         
-        logger.print(level: .debug, "will move focus to last read position: \(previous)")
-        let startPoint = CGPoint(x: 0, y: CGFloat(previous))
-        self.webView.scrollView.setContentOffset(startPoint, animated: false)
+        let moveScroll: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            logger.print(level: .debug, "will move focus to last read position: \(previous)")
+            let startPoint = CGPoint(x: 0, y: CGFloat(previous))
+            self.webView.scrollView.setContentOffset(startPoint, animated: false)
+            
+            self.moveFloatingButton.hideButonWithAniation()
+        }
+        
+        self.moveFloatingButton.showButtonWithAnimation()
+        self.bottomMoveBinding = self.moveFloatingButton.rx.throttleTap()
+            .subscribe(onNext: moveScroll)
     }
 }
 
@@ -318,6 +338,16 @@ extension InnerWebViewViewController: Presenting {
         }
         
         self.view.bringSubviewToFront(toolBar)
+        
+        self.view.addSubview(moveFloatingButton)
+        moveFloatingButton.autoLayout.active(with: self.view) {
+            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
+            $0.bottomAnchor.constraint(equalTo: toolBar.topAnchor, constant: -8)
+            $0.widthAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.7)
+        }
+        moveFloatingButton.setupLayout()
+        moveFloatingButton.titleLabel.text = ""
+        self.view.bringSubviewToFront(moveFloatingButton)
     }
     
     public func setupStyling() {
@@ -334,5 +364,9 @@ extension InnerWebViewViewController: Presenting {
         self.webView.backgroundColor = uiContext.colors.appBackground
         
         self.toolBar.setupStyling()
+        
+        self.moveFloatingButton.setupStyling()
+        self.moveFloatingButton.titleLabel.text = "reading-option-ask-last-position".localized
+        self.moveFloatingButton.isHidden = true
     }
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 import RxSwift
+import RxSwiftDoNotation
 
 
 // MARK: - ReadingOptionUsecase
@@ -17,9 +18,9 @@ public protocol ReadingOptionUsecase: AnyObject {
     
     func lastReadPosition(for itemID: String) -> Maybe<Float?>
     
-    func updateLastReadPosition(for itemID: String, position: Float) -> Maybe<Void>
+    func updateLastReadPositionIsPossible(for itemID: String, position: Float) -> Maybe<Bool>
     
-    func updateEnableLastReadPositionSaveOption(_ isOn: Bool) -> Maybe<Void>
+    func updateEnableLastReadPositionSaveOption(_ isOn: Bool)
     
     func isEnabledLastReadPositionSaveOption() -> Observable<Bool>
 }
@@ -29,8 +30,19 @@ public protocol ReadingOptionUsecase: AnyObject {
 
 public final class ReadingOptionUsecaseImple: ReadingOptionUsecase {
     
-    public init() {
-        
+    private let readingOptionRepository: ReadingOptionRepository
+    private let sharedDataStore: SharedDataStoreService
+    
+    private struct OptionSet {
+        var lastReadPosition: Bool?
+    }
+    
+    public init(
+        readingOptionRepository: ReadingOptionRepository,
+        sharedDataStore: SharedDataStoreService
+    ) {
+        self.readingOptionRepository = readingOptionRepository
+        self.sharedDataStore = sharedDataStore
     }
 }
 
@@ -38,18 +50,54 @@ public final class ReadingOptionUsecaseImple: ReadingOptionUsecase {
 extension ReadingOptionUsecaseImple {
     
     public func lastReadPosition(for itemID: String) -> Maybe<Float?> {
-        return .just(nil)
+        
+        guard self.prepareLastReadPositionOption() == true
+        else {
+            return .just(nil)
+        }
+        
+        return self.readingOptionRepository.fetchLastReadPosition(for: itemID)
     }
     
-    public func updateLastReadPosition(for itemID: String, position: Float) -> Maybe<Void> {
-        return .just()
+    public func updateLastReadPositionIsPossible(for itemID: String, position: Float) -> Maybe<Bool> {
+        guard self.prepareLastReadPositionOption() == true
+        else {
+            return .just(false)
+        }
+        logger.print(level: .debug, "will update last read position: \(itemID) at: \(position)")
+        return self.readingOptionRepository.updateLastReadPosition(for: itemID, position)
+            .map { true }
     }
     
-    public func updateEnableLastReadPositionSaveOption(_ isOn: Bool) -> Maybe<Void> {
-        return .just()
+    public func updateEnableLastReadPositionSaveOption(_ isOn: Bool) {
+        
+        self.readingOptionRepository.updateEnableLastReadPositionSaveOption(isOn)
+        self.sharedDataStore
+            .update(Bool.self, key: SharedDataKeys.saveLastReadPosition.rawValue, value: isOn)
     }
     
     public func isEnabledLastReadPositionSaveOption() -> Observable<Bool> {
-        return .just(true)
+        
+        let key = SharedDataKeys.saveLastReadPosition
+        
+        let refreshIsOn: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            let isOn = self.readingOptionRepository.isEnabledLastReadPositionSaveOption()
+            self.sharedDataStore.update(Bool.self, key: key.rawValue, value: isOn)
+        }
+        
+        return self.sharedDataStore
+            .observe(Bool.self, key: key.rawValue)
+            .do(onSubscribed: refreshIsOn)
+            .compactMap { $0 }
+            .distinctUntilChanged()
+    }
+
+    private func prepareLastReadPositionOption() -> Bool {
+        
+        let key = SharedDataKeys.saveLastReadPosition
+
+        return self.sharedDataStore.fetch(Bool.self, key: key)
+            ?? self.readingOptionRepository.isEnabledLastReadPositionSaveOption()
     }
 }

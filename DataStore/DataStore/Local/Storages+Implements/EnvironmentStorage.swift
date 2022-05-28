@@ -56,6 +56,10 @@ public protocol EnvironmentStorage {
     
     func updateDidWelcomeItemAdded()
     
+    func updateEnableLastReadPositionSaveOption(_ isOn: Bool)
+    
+    func isEnabledLastReadPositionSaveOption() -> Bool
+    
     func clearAll(scope: EnvironmentDataScope)
 }
 
@@ -73,6 +77,7 @@ enum EnvironmentStorageKeys {
     case reloadNeedCollectionIDs
     case addItemGuideEverShown
     case welcomeItemAdded
+    case saveLastReadPosition
     
     var keyvalue: String {
         let prefix = environmentStorageKeyPrefix
@@ -100,6 +105,9 @@ enum EnvironmentStorageKeys {
             
         case .welcomeItemAdded:
             return "welcomeItemAdded:".insertPrefixOrNot(prefix)
+            
+        case .saveLastReadPosition:
+            return "saveLastReadPosition".insertPrefixOrNot(prefix)
         }
     }
     
@@ -120,7 +128,8 @@ enum EnvironmentStorageKeys {
                 "readItemLatestSortOrder".insertPrefixOrNot(prefix),
                 "readitemCustomOrder".insertPrefixOrNot(prefix),
                 "readingLinkIDs".insertPrefixOrNot(prefix),
-                "reloadNeedCollectionIDs".insertPrefixOrNot(prefix)
+                "reloadNeedCollectionIDs".insertPrefixOrNot(prefix),
+                "saveLastReadPosition".insertPrefixOrNot(prefix)
             ]
         case .perDevice:
             return [
@@ -317,6 +326,16 @@ extension UserDefaults {
     public func updateDidWelcomeItemAdded() {
         let key = EnvironmentStorageKeys.welcomeItemAdded
         self.set(true, forKey: key.keyvalue)
+    }
+    
+    public func updateEnableLastReadPositionSaveOption(_ isOn: Bool) {
+        let key = EnvironmentStorageKeys.saveLastReadPosition
+        self.set(isOn, forKey: key.keyvalue)
+    }
+    
+    public func isEnabledLastReadPositionSaveOption() -> Bool {
+        let key = EnvironmentStorageKeys.saveLastReadPosition
+        return self.value(forKey: key.keyvalue) as? Bool ?? true
     }
 }
 

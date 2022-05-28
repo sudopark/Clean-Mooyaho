@@ -170,3 +170,11 @@ extension AppRepository: HelpRepository, HelpReposiotryDefImpleDependency {
         return self.remote
     }
 }
+
+
+extension AppRepository: ReadingOptionRepository, ReadingOptionsRepositoryDefImpleDependency {
+    
+    public var readingOptionLocal: ReadingOptionLocalStorage {
+        return self.local
+    }
+}

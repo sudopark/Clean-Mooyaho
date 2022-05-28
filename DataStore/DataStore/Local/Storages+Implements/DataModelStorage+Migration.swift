@@ -117,5 +117,12 @@ extension DataModelStorageImple {
         } catch {
             logger.print(level: .error, "fail to create FavoriteItemIDTable")
         }
+        
+        do {
+            try database.createTableOrNot(ReadPositionTable.self)
+            logger.print(level: .debug, "sqlite ReadPositionTable are created..")
+        } catch {
+            logger.print(level: .error, "fail to create ReadPositionTable")
+        }
     }
 }

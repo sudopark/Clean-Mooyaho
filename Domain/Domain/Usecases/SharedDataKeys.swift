@@ -27,6 +27,7 @@ public enum SharedDataKeys: String {
     case mySharingCollectionMap
     case currentReadingItems
     case favoriteItemIDs
+    case saveLastReadPosition
 }
 
 

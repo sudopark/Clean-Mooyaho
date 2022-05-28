@@ -190,7 +190,10 @@ extension DependencyInjector {
     }
     
     var readingOptionUsecase: ReadingOptionUsecase {
-        return ReadingOptionUsecaseImple()
+        return ReadingOptionUsecaseImple(
+            readingOptionRepository: self.appReposiotry,
+            sharedDataStore: self.shared.dataStore
+        )
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {
