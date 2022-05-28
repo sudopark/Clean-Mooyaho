@@ -189,6 +189,10 @@ extension DependencyInjector {
                                     shareURLScheme: AppEnvironment.shareScheme)
     }
     
+    var readingOptionUsecase: ReadingOptionUsecase {
+        return ReadingOptionUsecaseImple()
+    }
+    
     var categoryUsecase: ReadItemCategoryUsecase {
         return ReadItemCategoryUsecaseImple(repository: self.appReposiotry,
                                             sharedService: self.shared.dataStore)

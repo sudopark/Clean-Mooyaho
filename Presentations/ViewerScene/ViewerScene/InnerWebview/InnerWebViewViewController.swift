@@ -13,6 +13,7 @@ import RxSwift
 import RxCocoa
 import Prelude
 
+import Domain
 import CommonPresenting
 
 
@@ -52,6 +53,12 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
         self.bind()
         self.viewModel.prepareLinkData()
     }
+    
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let currentY = Float(self.webView.scrollView.contentOffset.y)
+        self.viewModel.saveLastReadPositionIfNeed(currentY)
+    }
 }
 
 // MARK: - bind
@@ -62,8 +69,9 @@ extension InnerWebViewViewController {
         
         self.viewModel.startLoadWebPage
             .asDriver(onErrorDriveWith: .never())
-            .drive(onNext: { [weak self] url in
-                self?.loadWebPage(address: url)
+            .drive(onNext: { [weak self] params in
+                self?.loadWebPage(address: params.urlPath)
+                self?.bindWebview(with: params.lastReadPosition)
             })
             .disposed(by: self.disposeBag)
      
@@ -78,7 +86,7 @@ extension InnerWebViewViewController {
             .drive(self.toolBar.titleLabel.rx.text)
             .disposed(by: self.disposeBag)
         
-        self.bindWebView()
+        self.bindToolbar()
         
         self.toolBar.safariButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
@@ -174,17 +182,11 @@ extension InnerWebViewViewController {
     }
 }
 
-// MARK: - handling webView delegates
+// MARK: - handling webView
 
-extension InnerWebViewViewController: WKNavigationDelegate {
+extension InnerWebViewViewController {
     
-    private func bindWebView() {
-        self.webView.rx.observeWeakly(Double.self, "estimatedProgress", options: .new)
-            .compactMap { $0 }
-            .subscribe(onNext: { [weak self] progress in
-                self?.toolBar.updateLoadingStatus(progress)
-            })
-            .disposed(by: self.disposeBag)
+    private func bindToolbar() {
         
         self.toolBar.backButton.rx.throttleTap()
             .subscribe(onNext: { [weak self] in
@@ -214,11 +216,59 @@ extension InnerWebViewViewController: WKNavigationDelegate {
             .disposed(by: self.disposeBag)
     }
     
-    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    private func bindWebview(with lastReadPosition: Float?) {
+        
+        let loadProgess = self.webView.rx
+            .observeWeakly(Double.self, "estimatedProgress", options: .new)
+            .compactMap { $0 }
+            .share()
+        
+        loadProgess
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] progress in
+                self?.toolBar.updateLoadingStatus(progress)
+                if self?.webView.isLoading == false {
+                    self?.updateWebviewNavigationButton()
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        let whetherLoadIsEnd: (Double) -> Bool = { [weak self] progress in
+            return progress >= 1.0 || self?.webView.isLoading == false
+        }
+        loadProgess
+            .map(whetherLoadIsEnd)
+            .filter{ $0 }
+            .take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.moveToLastReadPositionIfPossible(lastReadPosition)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.webView.rx
+            .observeWeakly(URL.self, "URL")
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] url in
+                self?.viewModel.pageLoaded(for: url.absoluteString)
+                self?.updateWebviewNavigationButton()
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func updateWebviewNavigationButton() {
         let forwardCount = self.webView.backForwardList.forwardList.count
         let backwardCount = self.webView.backForwardList.backList.count
         self.toolBar.updateNavigationButton(isBack: true, enable: backwardCount > 0)
         self.toolBar.updateNavigationButton(isBack: false, enable: forwardCount > 0)
+    }
+    
+    private func moveToLastReadPositionIfPossible(_ preivousPosition: Float?) {
+        
+        guard let previous = preivousPosition else { return }
+        
+        logger.print(level: .debug, "will move focus to last read position: \(previous)")
+        let startPoint = CGPoint(x: 0, y: CGFloat(previous))
+        self.webView.scrollView.setContentOffset(startPoint, animated: false)
     }
 }
 
@@ -281,7 +331,6 @@ extension InnerWebViewViewController: Presenting {
                                                      bottom: InnerWebViewBottomToolBar.Metric.height,
                                                      right: 0)
         self.webView.allowsBackForwardNavigationGestures = true
-        self.webView.navigationDelegate = self
         self.webView.backgroundColor = uiContext.colors.appBackground
         
         self.toolBar.setupStyling()
