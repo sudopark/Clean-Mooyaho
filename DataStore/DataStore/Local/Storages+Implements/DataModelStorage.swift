@@ -136,6 +136,10 @@ public protocol DataModelStorage {
     func fetchAllSuggestableQueries() -> Maybe<[String]>
     
     func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void>
+    
+    func fetchLastReadPosition(for itemID: String) -> Maybe<Float?>
+    
+    func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void>
 }
 
 
@@ -885,7 +889,26 @@ extension DataModelStorageImple {
     }
 }
 
-// MARK; - shared item
+// MARK: - ReadingOption
+
+extension DataModelStorageImple {
+    
+    public func fetchLastReadPosition(for itemID: String) -> Maybe<Float?> {
+        let query = ReadPositionTable.selectAll { $0.itemID == itemID }
+        let loading: Maybe<ReadPositionTable.Entity?> = self.sqliteService.rx.run {
+            try $0.loadOne(query)
+        }
+        return loading.map { $0?.position.map { Float($0) } }
+    }
+    
+    public func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void> {
+        let entity = ReadPositionTable.Entity(itemID: itemID, position: Double(position))
+        return self.sqliteService.rx
+            .run { try $0.insert(ReadPositionTable.self, entities: [entity], shouldReplace: true) }
+    }
+}
+
+// MARK: - shared item
 
 extension DataModelStorageImple {
     

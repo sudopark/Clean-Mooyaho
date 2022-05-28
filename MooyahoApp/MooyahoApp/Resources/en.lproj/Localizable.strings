@@ -144,6 +144,7 @@
 "Memo" = "Memo";
 "Enter a memo" = "Enter a memo";
 "Item address has been copied." = "Item address has been copied.";
+"reading-option-ask-last-position" = "Go to last read position";
 
 
 // diccovery

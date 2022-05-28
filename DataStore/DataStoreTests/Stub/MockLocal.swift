@@ -408,5 +408,21 @@ class MockLocal: LocalStorage, Mocking {
         self.verify(key: "insertSuggestableQueries")
         return .just()
     }
+    
+    func fetchLastReadPosition(for itemID: String) -> Maybe<Float?> {
+        return .just(nil)
+    }
+    
+    func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void> {
+        return .just()
+    }
+    
+    func updateEnableLastReadPositionSaveOption(_ isOn: Bool) {
+        
+    }
+    
+    func isEnabledLastReadPositionSaveOption() -> Bool {
+        return true
+    }
 }
 

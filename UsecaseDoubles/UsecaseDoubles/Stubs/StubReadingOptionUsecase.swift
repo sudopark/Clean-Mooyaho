@@ -16,9 +16,8 @@ open class StubReadingOptionUsecase: ReadingOptionUsecase {
     
     public struct Scenario {
         public var loadLastReadPositionResult: Result<Float?, Error> = .success(nil)
-        public var updateLastReadPositionResult: Result<Void, Error> = .success(())
-        public var updateEnableLastReadPositionResult: Result<Void, Error> = .success(())
-        
+        public var updateLastReadPositionResult: Result<Bool, Error> = .success(true)
+        public var isEnableLastReadPositionSaveOption = true
         public init() {}
     }
     
@@ -34,22 +33,17 @@ open class StubReadingOptionUsecase: ReadingOptionUsecase {
     
     public var didSavedReadPosiiton: Float?
     
-    public func updateLastReadPosition(for itemID: String, position: Float) -> Maybe<Void> {
+    public func updateLastReadPositionIsPossible(for itemID: String, position: Float) -> Maybe<Bool> {
         self.didSavedReadPosiiton = position
         return self.scenario.updateLastReadPositionResult.asMaybe()
     }
     
-    public func updateEnableLastReadPositionSaveOption(_ isOn: Bool) -> Maybe<Void> {
-        return self.scenario.updateEnableLastReadPositionResult.asMaybe()
-            .do(onNext: {
-                self.isOnLastReadPositionSaveOption.onNext(isOn)
-            })
+    public func updateEnableLastReadPositionSaveOption(_ isOn: Bool) {
+        self.scenario.isEnableLastReadPositionSaveOption = isOn
     }
     
-    private let isOnLastReadPositionSaveOption = BehaviorSubject<Bool>(value: true)
-    
     public func isEnabledLastReadPositionSaveOption() -> Observable<Bool> {
-        return self.isOnLastReadPositionSaveOption.asObservable()
+        return .just(self.scenario.isEnableLastReadPositionSaveOption)
     }
 }
 
