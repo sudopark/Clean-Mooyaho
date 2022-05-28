@@ -27,6 +27,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     var didEditRequestedMemo: ReadLinkMemo?
     var didShowToast: Bool?
     var spyReadItemUsecase: StubReadItemUsecase!
+    var spyReadingOptionUsecase: StubReadingOptionUsecase!
     private var spyClipboardService: FakeClipboardService!
 
     override func setUpWithError() throws {
@@ -41,6 +42,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.didEditRequestedMemo = nil
         self.didShowToast = nil
         self.spyReadItemUsecase = nil
+        self.spyReadingOptionUsecase = nil
         self.spyClipboardService = nil
     }
     
@@ -66,6 +68,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     
     private func makeViewModel(_ item: ReadLink,
                                itemSourceID: String? = nil,
+                               withLastReadPosition: Float? = nil,
                                preview: LinkPreview? = nil) -> InnerWebViewViewModelImple {
         
         let preview = preview ?? LinkPreview.dummy(0)
@@ -75,6 +78,10 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         let usecase = StubReadItemUsecase(scenario: scenario)
         self.spyReadItemUsecase = usecase
         
+        let readingUsecase = StubReadingOptionUsecase()
+        readingUsecase.scenario.loadLastReadPositionResult = .success(withLastReadPosition)
+        self.spyReadingOptionUsecase = readingUsecase
+        
         let memoUsecase = StubMemoUsecase()
         
         let itemSource: LinkItemSource = itemSourceID.map { .itemID($0) } ?? .item(item)
@@ -83,6 +90,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.spyClipboardService = clipboardService
         return InnerWebViewViewModelImple(itemSource: itemSource,
                                           readItemUsecase: usecase,
+                                          readingOptionUsecase: readingUsecase,
                                           memoUsecase: memoUsecase,
                                           router: self,
                                           clipboardService: clipboardService,
@@ -93,10 +101,17 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
 
 extension InnerWebViewViewModelTests {
     
+    private func waitForPageLoaded(_ viewModel: InnerWebViewViewModel) {
+        let expect = expectation(description: "expect page")
+        let _ = self.waitFirstElement(expect, for: viewModel.startLoadWebPage)
+    }
+    
     func testViewModel_whenSceneStart_markIsReading() {
         // given
+        let viewModel = self.makeViewModel(self.dummyItem, preview: nil)
+        
         // when
-        let _ = self.makeViewModel(self.dummyItem, preview: nil)
+        self.waitForPageLoaded(viewModel)
         
         // then
         XCTAssertEqual(self.spyReadItemUsecase.didMarkIsReadingLink?.uid, self.dummyItem.uid)
@@ -156,6 +171,7 @@ extension InnerWebViewViewModelTests {
     func testViewModel_openSafari() {
         // given
         let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        self.waitForPageLoaded(viewModel)
         
         // when
         viewModel.openPageInSafari()
@@ -167,6 +183,7 @@ extension InnerWebViewViewModelTests {
     func testViewModel_editItem() {
         // given
         let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        self.waitForPageLoaded(viewModel)
         
         // when
         viewModel.managePageDetail(withCopyURL: false)
@@ -179,6 +196,7 @@ extension InnerWebViewViewModelTests {
         // given
         let dummy = ReadLink.dummy(0)
         let viewModel = self.makeViewModel(dummy, preview: nil)
+        self.waitForPageLoaded(viewModel)
         
         // when
         viewModel.managePageDetail(withCopyURL: true)
@@ -190,9 +208,11 @@ extension InnerWebViewViewModelTests {
     
     func testViewModel_updateIsRed() {
         // given
+        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        self.waitForPageLoaded(viewModel)
+        
         let expect = expectation(description: "읽음처리 업데이트")
         expect.expectedFulfillmentCount = 3
-        let viewModel = self.makeViewModel(.dummy(0), preview: nil)
         
         // when
         let isReds = self.waitElements(expect, for: viewModel.isRed) {
@@ -206,10 +226,12 @@ extension InnerWebViewViewModelTests {
     
     func testViewModel_updateMemo() {
         // given
-        let expect = expectation(description: "메모 업데이트")
-        expect.expectedFulfillmentCount = 3
         let dummy = ReadLink.dummy(0)
         let viewModel = self.makeViewModel(.dummy(0), preview: nil)
+        self.waitForPageLoaded(viewModel)
+        
+        let expect = expectation(description: "메모 업데이트")
+        expect.expectedFulfillmentCount = 3
         
         // when
         let hasMemos = self.waitElements(expect, for: viewModel.hasMemo) {
@@ -234,14 +256,60 @@ extension InnerWebViewViewModelTests {
         let viewModel = self.makeViewModel(.dummy(0), preview: nil)
         
         // when
-        let _ = self.waitFirstElement(expect, for: viewModel.hasMemo) {
-            viewModel.prepareLinkData()
-            viewModel.editMemo()
-        }
+        let _ = self.waitFirstElement(expect, for: viewModel.hasMemo)
+        viewModel.prepareLinkData()
+        viewModel.editMemo()
         
         // then
         XCTAssertEqual(self.didEditRequestedMemo?.linkItemID, dummy.uid)
         XCTAssertEqual(self.didEditRequestedMemo?.content, nil)
+    }
+}
+
+
+// MARK: - last read position
+
+extension InnerWebViewViewModelTests {
+    
+    func testViewModel_whenLastReadPositionExists_moveToThereAfterPageLoaded() {
+        // given
+        let expect = expectation(description: "페이지 로드 요청시에 마지막 읽음 위치 존재시 같이 반환")
+        let viewModel = self.makeViewModel(.dummy(0), withLastReadPosition: 120)
+        
+        // when
+        let parasm = self.waitFirstElement(expect, for: viewModel.startLoadWebPage)
+        
+        // then
+        XCTAssertEqual(parasm?.lastReadPosition, 120)
+    }
+    
+    func testViewModel_requestSaveReadPosition() {
+        // given
+        let dummy = ReadLink(link: "https://www.naver.com?인코딩필요함")
+        let viewModel = self.makeViewModel(dummy)
+        self.waitForPageLoaded(viewModel)
+        
+        // when
+        viewModel.pageLoaded(for: dummy.link.asURL()?.absoluteString ?? "")
+        viewModel.saveLastReadPositionIfNeed(300)
+        
+        // then
+        XCTAssertEqual(self.spyReadingOptionUsecase.didSavedReadPosiiton, 300)
+    }
+    
+    func testViewModel_notUpdateLastReadPosiiton_ifCurrentPageIsNotEqualItemPageURL() {
+        // given
+        let dummy = ReadLink(link: "https://www.naver.com?인코딩필요함")
+        let viewModel = self.makeViewModel(dummy)
+        self.waitForPageLoaded(viewModel)
+        
+        // when
+        viewModel.pageLoaded(for: dummy.link.asURL()?.absoluteString ?? "")
+        viewModel.pageLoaded(for: "https://new.url.path")
+        viewModel.saveLastReadPositionIfNeed(300)
+        
+        // then
+        XCTAssertNil(self.spyReadingOptionUsecase.didSavedReadPosiiton)
     }
 }
 
