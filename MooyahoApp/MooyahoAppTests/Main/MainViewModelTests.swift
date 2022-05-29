@@ -594,13 +594,6 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyNearbySceneInteractor: NearbySceneInteractor, Mocking {
-        
-        func moveMapCameraToCurrentUserPosition() {
-            self.verify(key: "moveMapCameraToCurrentUserPosition")
-        }
-    }
-    
     class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable  {
         
         func switchToSharedCollection(_ collection: SharedReadCollection) { }

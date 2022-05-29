@@ -80,68 +80,6 @@ class MockLocal: LocalStorage, Mocking {
         return self.resolve(key: "updateCurrentMember") ?? .empty()
     }
     
-    func fetchRecentSelectTags(_ type: Tag.TagType, query: String) -> Maybe<[Tag]> {
-        return self.resolve(key: "fetchRecentSelectTags") ?? .empty()
-    }
-    
-    func updateRecentSelect(tag: Tag) -> Maybe<Void> {
-        self.verify(key: "updateRecentSelect")
-        return self.resolve(key: "updateRecentSelect") ?? .empty()
-    }
-    
-    func removeRecentSelect(tag: Tag) -> Maybe<Void> {
-        return self.resolve(key: "removeRecentSelect") ?? .empty()
-    }
-    
-    func saveTags(_ tag: [Tag]) -> Maybe<Void> {
-        self.verify(key: "saveTags")
-        return .just()
-    }
-    
-    func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
-        return self.resolve(key: "fetchRegisterPendingNewPlaceForm") ?? .empty()
-    }
-    
-    func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void> {
-        return self.resolve(key: "savePendingRegister") ?? .empty()
-    }
-    
-    func removePendingRegisterForm(_ memberID: String) -> Maybe<Void> {
-        self.verify(key: "removePendingRegisterForm")
-        return self.resolve(key: "removePendingRegisterForm") ?? .empty()
-    }
-    
-    func savePlace(_ place: Place) -> Maybe<Void> {
-        self.verify(key: "savePlaces")
-        return self.resolve(key: "savePlaces") ?? .empty()
-    }
-    
-    func fetchPlace(_ placeID: String) -> Maybe<Place?> {
-        return self.resolve(key: "fetchPlace") ?? .empty()
-    }
-    
-    func fetchLatestHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]> {
-        return self.resolve(key: "fetchLatestHoorays") ?? .empty()
-    }
-    
-    func saveHoorays(_ hooray: [Hooray]) -> Maybe<Void> {
-        self.verify(key: "saveHoorays")
-        return self.resolve(key: "saveHoorays") ?? .empty()
-    }
-    
-    func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]> {
-        return self.resolve(key: "fetchHoorays") ?? .empty()
-    }
-    
-    func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void> {
-        self.verify(key: "saveHoorayDetail")
-        return self.resolve(key: "saveHoorayDetail") ?? .empty()
-    }
-    
-    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?> {
-        return self.resolve(key: "fetchHoorayDetail") ?? .empty()
-    }
-    
     func fetchMyItems(memberID: String?) -> Maybe<[ReadItem]> {
         return self.resolve(key: "fetchMyItems") ?? .empty()
     }

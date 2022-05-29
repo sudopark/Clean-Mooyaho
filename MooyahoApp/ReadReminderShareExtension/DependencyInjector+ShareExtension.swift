@@ -6,7 +6,7 @@
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 import Domain

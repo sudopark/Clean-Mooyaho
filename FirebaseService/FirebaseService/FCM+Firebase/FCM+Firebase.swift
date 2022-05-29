@@ -175,8 +175,6 @@ extension FirebaseServiceImple: FCMService {
         guard let typeRawValue = payload[typeKey] as? String,
               let type = PushMessagingTypes(rawValue: typeRawValue) else { return nil }
         switch type {
-        case .hoorayAck:
-            return HoorayAckMessage(payload)
             
         case .remind:
             guard let itemID = payload["itemid"] as? String else { return nil }

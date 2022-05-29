@@ -22,12 +22,6 @@ public enum EnvironmentDataScope {
 
 public protocol EnvironmentStorage {
     
-    func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void>
-
-    func fetchPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?>
-
-    func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void>
-    
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?>
     
     func updateReadItemIsShrinkMode(_ newValue: Bool) -> Maybe<Void>
@@ -229,33 +223,6 @@ extension UserDefaults {
         }
     }
     
-    public func savePendingNewPlaceForm(_ form: NewPlaceForm) -> Maybe<Void> {
-        
-        let key = EnvironmentStorageKeys.pendingPlaceInfo(form.reporterID)
-        let pendingInfo = PendingNewPlaceForm(form: form)
-        return self.save(key.keyvalue, value: pendingInfo)
-    }
-
-    public func fetchPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?> {
-        let key = EnvironmentStorageKeys.pendingPlaceInfo(memberID)
-        let pendingInfo: Maybe<PendingNewPlaceForm?> = self.load(key.keyvalue)
-        
-        let mapping: (PendingNewPlaceForm?) -> PendingRegisterNewPlaceForm? = { pending in
-            return pending.map { value in
-                return PendingRegisterNewPlaceForm(form: value.form,
-                                                   time: Date(timeIntervalSince1970: value.time))
-            }
-        }
-        
-        return pendingInfo
-            .map(mapping)
-    }
-
-    public func removePendingNewPlaceForm(_ memberID: String) -> Maybe<Void> {
-        let key = EnvironmentStorageKeys.pendingPlaceInfo(memberID)
-        return self.remove(key.keyvalue)
-    }
-    
     public func fetchReadItemIsShrinkMode() -> Maybe<Bool?> {
         let key = EnvironmentStorageKeys.readItemIsShrinkMode
         return self.load(key.keyvalue)
@@ -343,33 +310,6 @@ extension UserDefaults {
 
 // mapping
 
-extension PlaceCategoryTag: Codable {
-    
-    private enum CodingKeys: String, CodingKey {
-        case type
-        case keyword
-        case emoji
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let rawValue: String = try container.decode(String.self, forKey: .type)
-        guard let type = TagType(rawValue: rawValue) else {
-            throw LocalErrors.deserializeFail("PlaceCategoryTag")
-        }
-        self.init(type: type,
-                  keyword: try container.decode(String.self, forKey: .keyword),
-                  emoji: try? container.decode(String.self, forKey: .emoji))
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.tagType.rawValue, forKey: .type)
-        try container.encode(self.keyword, forKey: .keyword)
-        try container.encode(self.emoji, forKey: .emoji)
-    }
-}
-
 extension ImageSource: Codable {
     
     private enum CodingKeys: String, CodingKey {
@@ -396,88 +336,6 @@ extension ImageSource: Codable {
         try container.encode(self.size?.height, forKey: .height)
     }
 }
-
-extension NewPlaceForm: Codable {
-    
-    private enum CodingKeys: String, CodingKey {
-        
-        case reporterID = "reporter_id"
-        case provider = "info_provider"
-        case title
-        case thumbnail
-        case searchID = "search_id"
-        case link
-        case latt
-        case lng
-        case address
-        case contact
-        case categoies
-    }
-    
-    public convenience init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let reporterID: String = try container.decode(String.self, forKey: .reporterID)
-        let rawValue: String = try container.decode(String.self, forKey: .provider)
-        guard let provider = Place.RequireInfoProvider(rawValue: rawValue) else {
-            throw LocalErrors.deserializeFail("NewPlaceForm")
-        }
-        self.init(reporterID: reporterID, infoProvider: provider)
-        self.title = try container.decode(String.self, forKey: .title)
-        self.thumbnail = try? container.decode(ImageSource.self, forKey: .thumbnail)
-        self.searchID = try? container.decode(String.self, forKey: .searchID)
-        self.detailLink = try? container.decode(String.self, forKey: .link)
-        self.coordinate = .init(latt: try container.decode(Double.self, forKey: .latt),
-                                long: try container.decode(Double.self, forKey: .lng))
-        self.address = try container.decode(String.self, forKey: .address)
-        self.contact = try? container.decode(String.self, forKey: .contact)
-        self.categoryTags = (try? container.decode([PlaceCategoryTag].self, forKey: .categoies)) ?? []
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.reporterID, forKey: .reporterID)
-        try container.encode(self.infoProvider.rawValue, forKey: .provider)
-        try container.encode(self.title, forKey: .title)
-        try container.encode(self.thumbnail, forKey: .thumbnail)
-        try container.encode(self.searchID, forKey: .searchID)
-        try container.encode(self.detailLink, forKey: .link)
-        try container.encode(self.coordinate.latt, forKey: .latt)
-        try container.encode(self.coordinate.long, forKey: .lng)
-        try container.encode(self.address, forKey: .address)
-        try container.encode(self.contact, forKey: .contact)
-        try container.encode(self.categoryTags, forKey: .categoies)
-    }
-}
-
-
-fileprivate struct PendingNewPlaceForm: Codable {
-    
-    private enum CodingKeys: String, CodingKey {
-        case time
-        case form
-    }
-    
-    let time: Double
-    let form: NewPlaceForm
-    
-    init(form: NewPlaceForm) {
-        self.time = .now()
-        self.form = form
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.time = try container.decode(Double.self, forKey: .time)
-        self.form = try container.decode(NewPlaceForm.self, forKey: .form)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.time, forKey: .time)
-        try container.encode(self.form, forKey: .form)
-    }
-}
-
 
 extension ReadCollectionItemSortOrder: Codable {
     

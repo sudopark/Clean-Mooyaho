@@ -54,29 +54,6 @@ extension AppRepository: MemberRepository, MemberRepositoryDefImpleDependency {
     }
 }
 
-extension AppRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {
-    
-    public var placeRemote: PlaceRemote {
-        return self.remote
-    }
-    
-    public var placeLocal: PlaceLocalStorage {
-        return self.local
-    }
-}
-
-
-extension AppRepository: HoorayRepository, HoorayRepositoryDefImpleDependency {
-    
-    public var hoorayRemote: HoorayRemote {
-        return self.remote
-    }
-    
-    public var hoorayLocal: HoorayLocalStorage {
-        return self.local
-    }
-}
-
 extension AppRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency {
     
     public var readItemRemote: ReadItemRemote {

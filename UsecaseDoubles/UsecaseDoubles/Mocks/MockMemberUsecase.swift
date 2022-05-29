@@ -30,16 +30,8 @@ open class MockMemberUsecase: MemberUsecase, Mocking {
     
     public init() {}
     
-    public func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {
-        self.verify(key: "updateUserIsOnline", with: isOnline)
-    }
-    
     public func updatePushToken(_ userID: String, deviceID: String, newToken: String) {
         self.verify(key: "updatePushToken")
-    }
-    
-    public func loadCurrentMembership() -> Maybe<MemberShip> {
-        return self.resolve(key: "loadCurrentMembership") ?? .empty()
     }
     
     public let currentMemberSubject = PublishSubject<Member?>()

@@ -62,17 +62,6 @@ extension DependencyInjector: ImagePickerSceneBuilable {
     }
 }
 
-extension DependencyInjector: SelectTagSceneBuilable {
-    
-    public func makeSelectTagScene(startWith tags: [Tag], total: [Tag]) -> SelectTagScene {
-        let router = SelectTagRouter(nextSceneBuilders: self)
-        let viewModel = SelectTagViewModelImple(startWith: tags, total: total, router: router)
-        let viewController = SelectTagViewController(viewModel: viewModel)
-        router.currentScene = viewController
-        return viewController
-    }
-}
-
 extension DependencyInjector: TextInputSceneBuilable {
     
     public func makeTextInputScene(_ inputMode: TextInputMode,

@@ -12,10 +12,7 @@ import Foundation
 public enum SharedDataKeys: String {
     case auth
     case currentMember
-    case membership
     case memberMap
-    case placeMap
-    case newHooray
     case readItemShrinkIsOn
     case latestReadItemSortOption
     case readItemCustomOrderMap
