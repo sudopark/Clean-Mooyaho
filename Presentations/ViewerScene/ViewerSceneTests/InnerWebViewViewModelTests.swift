@@ -68,7 +68,7 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
     
     private func makeViewModel(_ item: ReadLink,
                                itemSourceID: String? = nil,
-                               withLastReadPosition: Float? = nil,
+                               withLastReadPosition: Double? = nil,
                                preview: LinkPreview? = nil) -> InnerWebViewViewModelImple {
         
         let preview = preview ?? LinkPreview.dummy(0)
@@ -79,7 +79,9 @@ class InnerWebViewViewModelTests: BaseTestCase, WaitObservableEvents, InnerWebVi
         self.spyReadItemUsecase = usecase
         
         let readingUsecase = StubReadingOptionUsecase()
-        readingUsecase.scenario.loadLastReadPositionResult = .success(withLastReadPosition)
+        readingUsecase.scenario.loadLastReadPositionResult = withLastReadPosition
+            .map { ReadPosition(itemID: "some", position: $0) }
+            .map { .success($0) } ?? .success(nil)
         self.spyReadingOptionUsecase = readingUsecase
         
         let memoUsecase = StubMemoUsecase()
@@ -280,7 +282,7 @@ extension InnerWebViewViewModelTests {
         let parasm = self.waitFirstElement(expect, for: viewModel.startLoadWebPage)
         
         // then
-        XCTAssertEqual(parasm?.lastReadPosition, 120)
+        XCTAssertEqual(parasm?.lastReadPosition?.position, 120)
     }
     
     func testViewModel_requestSaveReadPosition() {

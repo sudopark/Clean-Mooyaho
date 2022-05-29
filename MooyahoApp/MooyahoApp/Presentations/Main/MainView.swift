@@ -22,12 +22,6 @@ final class FloatingButtonButtonView: BaseFloatingButton {
     func showButton(with addresss: String) {
         
         self.descriptionView.text = addresss
-        self.roundView.updateLayer()
-        
-        self.isHidden = false
-        self.alpha = 0.0
-        self.transform = CGAffineTransform(scaleX: 0.5, y: 1.0)
-        
         self.showButtonWithAnimation()
     }
     

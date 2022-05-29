@@ -20,6 +20,9 @@ open class BaseFloatingButton: BaseUIView, Presenting {
     fileprivate let backgroundButton = UIButton()
     
     public func showButtonWithAnimation() {
+        
+        self.roundView.updateLayer()
+        
         self.isHidden = false
         self.alpha = 0.0
         self.transform = CGAffineTransform(scaleX: 0.5, y: 1.0)

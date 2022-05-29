@@ -15,8 +15,8 @@ import Domain
 open class StubReadingOptionUsecase: ReadingOptionUsecase {
     
     public struct Scenario {
-        public var loadLastReadPositionResult: Result<Float?, Error> = .success(nil)
-        public var updateLastReadPositionResult: Result<Bool, Error> = .success(true)
+        public var loadLastReadPositionResult: Result<ReadPosition?, Error> = .success(nil)
+        public var updateLastReadPositionResult: Result<ReadPosition, Error> = .success(ReadPosition(itemID: "some", position: 30))
         public var isEnableLastReadPositionSaveOption = true
         public init() {}
     }
@@ -27,13 +27,12 @@ open class StubReadingOptionUsecase: ReadingOptionUsecase {
         self.scenario = scenario ?? .init()
     }
     
-    public func lastReadPosition(for itemID: String) -> Maybe<Float?> {
+    public func lastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
         return self.scenario.loadLastReadPositionResult.asMaybe()
     }
     
-    public var didSavedReadPosiiton: Float?
-    
-    public func updateLastReadPositionIsPossible(for itemID: String, position: Float) -> Maybe<Bool> {
+    public var didSavedReadPosiiton: Double?
+    public func updateLastReadPositionIsPossible(for itemID: String, position: Double) -> Maybe<ReadPosition> {
         self.didSavedReadPosiiton = position
         return self.scenario.updateLastReadPositionResult.asMaybe()
     }

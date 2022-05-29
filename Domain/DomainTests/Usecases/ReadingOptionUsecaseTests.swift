@@ -30,11 +30,11 @@ class ReadingOptionUsecaseTests: BaseTestCase, WaitObservableEvents {
         self.spyStore = nil
     }
     
-    private func makeUsecase(_ lastPosition: Float? = nil,
+    private func makeUsecase(_ lastPosition: Double? = nil,
                              isLastReadPositionSaveOptionIsOn: Bool = true) -> ReadingOptionUsecase {
         
         let repository = StubRepository()
-        repository.lastReadPosition = lastPosition
+        repository.lastReadPosition = lastPosition.map { ReadPosition(itemID: "some", position: $0) }
         repository.isOptionOn = isLastReadPositionSaveOptionIsOn
         
         let store = SharedDataStoreServiceImple()
@@ -57,7 +57,7 @@ extension ReadingOptionUsecaseTests {
         let saved = self.waitFirstElement(expect, for: updating.asObservable())
         
         // then
-        XCTAssertEqual(saved, true)
+        XCTAssertNotNil(saved)
     }
     
     func testUsecase_whenOptionIsOff_notUpdateLastReadPosition() {
@@ -67,10 +67,10 @@ extension ReadingOptionUsecaseTests {
         
         // when
         let updating = usecase.updateLastReadPositionIsPossible(for: "some", position: 13)
-        let saved = self.waitFirstElement(expect, for: updating.asObservable())
+        let error = self.waitError(expect, for: updating.asObservable())
         
         // then
-        XCTAssertEqual(saved, false)
+        XCTAssertNotNil(error)
     }
     
     func testUsecase_loadLastReadPosition() {
@@ -83,7 +83,7 @@ extension ReadingOptionUsecaseTests {
         let position = self.waitFirstElement(expect, for: loading.asObservable())
         
         // then
-        XCTAssertEqual(position, 200)
+        XCTAssertEqual(position?.position, 200)
     }
     
     func testUsecase_whenOptionIsOff_snotLoadLastReadPosition() {
@@ -124,13 +124,13 @@ extension ReadingOptionUsecaseTests {
     
     private class StubRepository: ReadingOptionRepository {
         
-        var lastReadPosition: Float?
-        func fetchLastReadPosition(for itemID: String) -> Maybe<Float?> {
+        var lastReadPosition: ReadPosition?
+        func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
             return .just(self.lastReadPosition)
         }
         
-        func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void> {
-            return .just()
+        func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition> {
+            return .just(.init(itemID: "some", position: 11))
         }
         
         var isOptionOn = true

@@ -16,9 +16,9 @@ import RxSwiftDoNotation
 
 public protocol ReadingOptionUsecase: AnyObject {
     
-    func lastReadPosition(for itemID: String) -> Maybe<Float?>
+    func lastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
     
-    func updateLastReadPositionIsPossible(for itemID: String, position: Float) -> Maybe<Bool>
+    func updateLastReadPositionIsPossible(for itemID: String, position: Double) -> Maybe<ReadPosition>
     
     func updateEnableLastReadPositionSaveOption(_ isOn: Bool)
     
@@ -49,7 +49,7 @@ public final class ReadingOptionUsecaseImple: ReadingOptionUsecase {
 
 extension ReadingOptionUsecaseImple {
     
-    public func lastReadPosition(for itemID: String) -> Maybe<Float?> {
+    public func lastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
         
         guard self.prepareLastReadPositionOption() == true
         else {
@@ -59,14 +59,14 @@ extension ReadingOptionUsecaseImple {
         return self.readingOptionRepository.fetchLastReadPosition(for: itemID)
     }
     
-    public func updateLastReadPositionIsPossible(for itemID: String, position: Float) -> Maybe<Bool> {
+    public func updateLastReadPositionIsPossible(for itemID: String,
+                                                 position: Double) -> Maybe<ReadPosition> {
         guard self.prepareLastReadPositionOption() == true
         else {
-            return .just(false)
+            return .error(RuntimeError("save last read position option is disabled"))
         }
         logger.print(level: .debug, "will update last read position: \(itemID) at: \(position)")
         return self.readingOptionRepository.updateLastReadPosition(for: itemID, position)
-            .map { true }
     }
     
     public func updateEnableLastReadPositionSaveOption(_ isOn: Bool) {

@@ -409,12 +409,12 @@ class MockLocal: LocalStorage, Mocking {
         return .just()
     }
     
-    func fetchLastReadPosition(for itemID: String) -> Maybe<Float?> {
+    func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
         return .just(nil)
     }
     
-    func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void> {
-        return .just()
+    func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition> {
+        return .empty()
     }
     
     func updateEnableLastReadPositionSaveOption(_ isOn: Bool) {
