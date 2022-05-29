@@ -117,6 +117,7 @@
 		F6D2BD28278C99AC00420837 /* FeedbackImapctStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */; };
 		F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */; };
 		F6D8731928420E45009CAD55 /* BaseFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8731828420E45009CAD55 /* BaseFloatingButton.swift */; };
+		F6D8731E28433E3B009CAD55 /* HandlerToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8731D28433E3B009CAD55 /* HandlerToggle.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
 		F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9275268B815A00EA67EE /* UIView+Extension.swift */; };
@@ -270,6 +271,7 @@
 		F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackImapctStyle.swift; sourceTree = "<group>"; };
 		F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContext+Decorating.swift"; sourceTree = "<group>"; };
 		F6D8731828420E45009CAD55 /* BaseFloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFloatingButton.swift; sourceTree = "<group>"; };
+		F6D8731D28433E3B009CAD55 /* HandlerToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlerToggle.swift; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
 		F6DA564126889A6000032348 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		F6DA9275268B815A00EA67EE /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */,
 				F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */,
 				F6D8731828420E45009CAD55 /* BaseFloatingButton.swift */,
+				F6D8731D28433E3B009CAD55 /* HandlerToggle.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -871,6 +874,7 @@
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F6A3A0BC27521D8F00336E4F /* ReadItemCells.swift in Sources */,
+				F6D8731E28433E3B009CAD55 /* HandlerToggle.swift in Sources */,
 				F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */,
 				F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */,
 				F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */,

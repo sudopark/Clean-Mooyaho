@@ -129,6 +129,10 @@ struct SettingItemCellView: View {
             return Text(value)
                 .listItemAccentText()
                 .asAny()
+            
+        case let .toggle(isOn, handler):
+            return Views.HandlerToggle(initialState: isOn, handler)
+                .asAny()
         }
     }
 }
@@ -139,7 +143,7 @@ struct SettingItemCellView_Previews: PreviewProvider {
     static var previews: some View {
         let model = SettingItemCellViewModel(
             itemID: "some", title: "title",
-            isEnable: false, accessory: .disclosure
+            isEnable: false, accessory: .toggle(false, { _ in })
         )
         SettingItemCellView(cellViewModel: model)
             .previewLayout(.fixed(width: 300, height: 70))
@@ -155,6 +159,7 @@ extension SettingItemCellViewModel.Accessory: Hashable {
         switch self {
         case .disclosure: hasher.combine("disclosure")
         case let .accentValue(value): hasher.combine("accent:\(value)")
+        case let .toggle(isOn, _): hasher.combine("toggle:\(isOn)")
         }
     }
 }

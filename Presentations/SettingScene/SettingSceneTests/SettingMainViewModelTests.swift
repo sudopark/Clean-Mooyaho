@@ -51,8 +51,14 @@ class SettingMainViewModelTests: BaseTestCase, WaitObservableEvents {
         let stubMemberUsecase = BaseStubMemberUsecase(scenario: scenario)
         self.stubMemberUsecase = stubMemberUsecase
         
+        let optionScenario = StubReadingOptionUsecase.Scenario()
+            |> \.isEnableLastReadPositionSaveOption .~ true
+        let readingOptionUsecase = StubReadingOptionUsecase(scenario: optionScenario)
+        
+        
         return SettingMainViewModelImple(appID: "dummy",
                                          memberUsecase: stubMemberUsecase,
+                                         readingOptionUsecase: readingOptionUsecase,
                                          deviceInfoService: StubDeviceInfoService(),
                                          router: self.spyRouter,
                                          listener: self.spyListener)
@@ -79,10 +85,13 @@ extension SettingMainViewModelTests {
         let accountSectionItemIDs = accountSection?.cellViewModels.map { $0.itemID }
         let itemSection = sections?.first(where: { $0.sectionID == Section.items.rawValue })
         let itemSectionItemIDs = itemSection?.cellViewModels.map { $0.itemID }
+        let readingSection = sections?.first(where: { $0.sectionID == Section.reading.rawValue })
+        let readingSectionIDs = readingSection?.cellViewModels.map { $0.itemID }
         let serviceSection = sections?.first(where: { $0.sectionID == Section.service.rawValue })
         let serviceSectionItemIDs = serviceSection?.cellViewModels.map { $0.itemID }
         XCTAssertEqual(accountSectionItemIDs, [Item.signIn.typeName])
         XCTAssertEqual(itemSectionItemIDs, [Item.editCategories.typeName, Item.userDataMigration.typeName])
+        XCTAssertEqual(readingSectionIDs, [Item.lastReadPosition(true, { _ in }).typeName])
         XCTAssertEqual(serviceSectionItemIDs, [
             Item.appVersion("").typeName, Item.feedback.typeName, Item.sourceCode.typeName
         ])
@@ -94,7 +103,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        let sections = self.waitFirstElement(expect, for: viewModel.sections, skip: 1) {
+        let sections = self.waitFirstElement(expect, for: viewModel.sections) {
             viewModel.refresh()
         }
         
@@ -103,10 +112,13 @@ extension SettingMainViewModelTests {
         let accountSectionItemIDs = accountSection?.cellViewModels.map { $0.itemID }
         let itemSection = sections?.first(where: { $0.sectionID == Section.items.rawValue })
         let itemSectionItemIDs = itemSection?.cellViewModels.map { $0.itemID }
+        let readingSection = sections?.first(where: { $0.sectionID == Section.reading.rawValue })
+        let readingSectionIDs = readingSection?.cellViewModels.map { $0.itemID }
         let serviceSection = sections?.first(where: { $0.sectionID == Section.service.rawValue })
         let serviceSectionItemIDs = serviceSection?.cellViewModels.map { $0.itemID }
         XCTAssertEqual(accountSectionItemIDs, [Item.editProfile.typeName, Item.manageAccount.typeName])
         XCTAssertEqual(itemSectionItemIDs, [Item.editCategories.typeName, Item.userDataMigration.typeName])
+        XCTAssertEqual(readingSectionIDs, [Item.lastReadPosition(true, { _ in }).typeName])
         XCTAssertEqual(serviceSectionItemIDs, [
             Item.appVersion("").typeName, Item.feedback.typeName, Item.sourceCode.typeName
         ])
@@ -141,7 +153,7 @@ extension SettingMainViewModelTests {
         let viewModel = self.makeViewModel(with: Member(uid: "some", nickName: nil, icon: nil))
         
         // when
-        let sectionLists = self.waitElements(expect, for: viewModel.sections, skip: 1) {
+        let sectionLists = self.waitElements(expect, for: viewModel.sections) {
             self.stubMemberUsecase.currentMemberMocking.onNext(nil)
         }
         
