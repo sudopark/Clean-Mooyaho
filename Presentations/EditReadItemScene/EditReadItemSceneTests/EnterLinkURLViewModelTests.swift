@@ -74,6 +74,28 @@ extension EnterLinkURLViewModelTests {
         self.wait(for: [expect], timeout: self.timeout)
     }
     
+    func testViewModel_whenTryToConfirmEnterURL_trimWhiteSpaceAndNewLine() {
+        // given
+        let expect = expectation(description: "입력 확인시에 공백 등 trim")
+        let viewModel = self.makeViewModel()
+        var confirmedURL: String?
+        
+        self.isURLEntered = { entered in
+            confirmedURL = entered
+            expect.fulfill()
+        }
+        
+        // when
+        let validAddress = "https://www.naver.com"
+        let addressWithWhiteSpace = "  \n \(validAddress) \n   \n"
+        viewModel.enterURL(addressWithWhiteSpace)
+        viewModel.confirmEnter()
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // then
+        XCTAssertEqual(confirmedURL, validAddress)
+    }
+    
     func testViewModel_whenStartWithURLExists_updateURLAndRouteToNext() {
         // given
         let expect = expectation(description: "start with url 존재시 바로 다음화면으로 이동")

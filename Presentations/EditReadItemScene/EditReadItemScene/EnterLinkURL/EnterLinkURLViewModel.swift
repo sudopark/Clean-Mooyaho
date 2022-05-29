@@ -78,7 +78,10 @@ extension EnterLinkURLViewModelImple {
     
     public func confirmEnter() {
         
-        guard let url = self.subjects.inputURLAddress.value else { return }
+        guard let url = self.subjects.inputURLAddress
+            .value?.trimmingCharacters(in: .whitespacesAndNewlines)
+        else { return }
+        
         self.callback(url)
     }
 }
