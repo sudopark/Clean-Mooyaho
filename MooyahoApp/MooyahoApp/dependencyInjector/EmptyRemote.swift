@@ -191,13 +191,6 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail> {
-        return .empty()
-    }
-    
-    func requestLoadHooray(_ id: String) -> Maybe<Hooray?> {
-        return .empty()
-    }
     
     func requestSignInAnonymously() -> Maybe<Auth> {
         return .empty()
@@ -211,67 +204,9 @@ final class EmptyRemote: Remote {
         return .empty()
     }
     
-    func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
-        return .empty()
-    }
-    
     func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void> {
         return .empty()
     }
-    
-    func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
-        return .empty()
-    }
-    
-    func requesUpload(_ location: UserLocation) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    func requestLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult> {
-        return .empty()
-    }
-    
-    func requestSuggestPlace(_ query: String, in location: UserLocation, cursor: String?) -> Maybe<SuggestPlaceResult> {
-        return .empty()
-    }
-    
-    func requestSearchNewPlace(_ query: String, in location: UserLocation, of pageIndex: Int?) -> Maybe<SearchingPlaceCollection> {
-        return .empty()
-    }
-    
-    func requestRegister(new place: NewPlaceForm) -> Maybe<Place> {
-        return .empty()
-    }
-    
-    func requestLoadPlace(_ placeID: String) -> Maybe<Place> {
-        return .empty()
-    }
-    
-    func requestRegisterTag(_ tag: Tag) -> Maybe<Void> {
-        return .empty()
-    }
-    
-    func requestLoadPlaceCommnetTags(_ keyword: String, cursor: String?) -> Maybe<SuggestTagResultCollection> {
-        return .empty()
-    }
-    
-    func requestLoadUserFeelingTags(_ keyword: String, cursor: String?) -> Maybe<SuggestTagResultCollection> {
-        return .empty()
-    }
-    
-    func requestLoadLatestHooray(_ memberID: String) -> Maybe<Hooray?> {
-        return .empty()
-    }
-    
-    func requestPublishHooray(_ newForm: NewHoorayForm, withNewPlace: NewPlaceForm?) -> Maybe<Hooray> {
-        return .empty()
-    }
-    
-    func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]> {
-        return .empty()
-    }
-    
-    func requestAckHooray(_ acks: [HoorayAckMessage]) { }
     
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void> {
         return .empty()

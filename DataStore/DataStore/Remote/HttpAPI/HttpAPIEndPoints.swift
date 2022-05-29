@@ -35,37 +35,6 @@ extension HttpAPIEndPoint {
 }
 
 
-// MARK: - naver place http endpoint
-
-
-public enum NaverMapPlaceAPIEndPoint: HttpAPIEndPoint {
-    
-    case places
-    
-    public var path: String {
-        return "https://map.naver.com/v5/api/search"
-    }
-    
-    public var method: HttpAPIMethods {
-        return .get
-    }
-    
-    public var customHeader: [String : String]? {
-        return [
-            "Content-Type": "application/json;charset=UTF-8"
-        ]
-    }
-    
-    public var defaultParams: [String : Any]? {
-        return [
-            "lang": "ko",
-            "caller": "pcweb",
-            "types": "place"
-        ]
-    }
-}
-
-
 // MARK: - Firebase Cloud Message request API
 
 public struct FcmAPIEndPoint: HttpAPIEndPoint {
