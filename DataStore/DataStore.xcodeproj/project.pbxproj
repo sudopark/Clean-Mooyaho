@@ -278,12 +278,12 @@
 				F625EDC626821E3B000C87F0 /* LocalStorageImple+Member.swift */,
 				F6913F0E26F38E6700C6E105 /* LocalStorageImple+ReadItem.swift */,
 				F6E279DA26F856BA00957AC4 /* LocalStorageImple+ReadItemOptions.swift */,
+				F6D873122842004A009CAD55 /* LocalStorageImple+ReadingOption.swift */,
 				F601725326FEFB7000E47B75 /* LocalStorageImple+LinkPreview.swift */,
 				F6B6B420271163D9000652E0 /* LocalStorageImple+ItemCategory.swift */,
 				F6C1C8E127255878007277A5 /* LocalStorageImple+ReadLinkMemo.swift */,
 				F6BD48042740F63A00D2B2C9 /* LocalStorageImple+SharedItem.swift */,
 				F6260916274D3D11003C9577 /* LocalStorageImple+Search.swift */,
-				F6D873122842004A009CAD55 /* LocalStorageImple+ReadingOption.swift */,
 				F640618A2735CF8F00902787 /* UserDataMigratableLocalStorage.swift */,
 				2B9F27772633E79800FEBCE3 /* Storages+Implements */,
 			);
@@ -325,6 +325,7 @@
 				F6A72A3C26483C8A006BE4BD /* RepositoryImple+Tags.swift */,
 				F6913F0A26F38AE400C6E105 /* RepositoryImple+ReadItem.swift */,
 				F6E279D826F84F6F00957AC4 /* RepositoryImple+ReadItemOptions.swift */,
+				F6D873102841FFC2009CAD55 /* RepositoryImple+ReadingOptions.swift */,
 				F601724F26FEFA1600E47B75 /* RepositoryImple+LinkPreview.swift */,
 				F6B6B41C271160B4000652E0 /* RepositoryImple+ItemCategory.swift */,
 				F6C1C8DF272557FB007277A5 /* RepositoryImple+ReadLinkMemo.swift */,
@@ -332,7 +333,6 @@
 				F6BD48002740DA8C00D2B2C9 /* RepositoryImple+ShareItem.swift */,
 				F6260914274D3C15003C9577 /* RepositoryImple+IntegratedSearch.swift */,
 				F617F1072768E93300D88F9C /* RepositoryImple+Help.swift */,
-				F6D873102841FFC2009CAD55 /* RepositoryImple+ReadingOptions.swift */,
 				F6913F0826F38AA400C6E105 /* Deprecated */,
 			);
 			path = "Repository+Implements";

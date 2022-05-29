@@ -147,6 +147,7 @@
 "Enter a memo" = "메모를 입력하세요.";
 "Item address has been copied." = "아이템 주소가 복사 되었습니다.";
 "reading-option-ask-last-position" = "마지막 읽음 위치로 이동";
+"reading-option-last-saved-time" = "%@에 저장됨";
 
 
 // diccovery

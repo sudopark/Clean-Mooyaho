@@ -38,8 +38,20 @@ public enum LinkItemSource {
 }
 
 public struct WebPageLoadParams {
+    
+    public struct LastReadPositionInfo {
+        public let position: Double
+        public let savedAt: String
+        
+        public init(_ readPosition: ReadPosition) {
+            self.position = readPosition.position
+            let timeText = readPosition.saved.dateText(formText: "MMM d, H:mm")
+            self.savedAt = "reading-option-last-saved-time".localized(with: timeText)
+        }
+    }
+    
     public let urlPath: String
-    public let lastReadPosition: Float?
+    public var lastReadPosition: LastReadPositionInfo?
 }
 
 public protocol InnerWebViewViewModel: AnyObject {
@@ -52,7 +64,7 @@ public protocol InnerWebViewViewModel: AnyObject {
     func toggleMarkAsRed()
     func jumpToCollection()
     func pageLoaded(for url: String)
-    func saveLastReadPositionIfNeed(_ position: Float)
+    func saveLastReadPositionIfNeed(_ position: Double)
     
     // presenter
     var isEditable: Bool { get }
@@ -106,7 +118,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate typealias ItemAndLastReadInfo = (ReadLink, Float?)
+    fileprivate typealias ItemAndLastReadInfo = (ReadLink, WebPageLoadParams.LastReadPositionInfo?)
     
     fileprivate final class Subjects {
         let itemAndLastReadInfo = BehaviorRelay<ItemAndLastReadInfo?>(value: nil)
@@ -125,8 +137,11 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
         
         let thenLoadLastReadInfo: (ReadLink) async throws -> ItemAndLastReadInfo? = { [weak self] item in
             guard let self = self else { return nil }
-            async let lastReadPosition = self.readingOptionUsecase.lastReadPosition(for: item.uid).value
-            return try await lastReadPosition.map { (item, $0) } ?? nil
+            let lastReadPosition = try await self.readingOptionUsecase
+                .lastReadPosition(for: item.uid).value ?? nil
+            return lastReadPosition
+                .map { WebPageLoadParams.LastReadPositionInfo($0) }
+                .map { (item, $0) } ?? (item, nil)
         }
         
         let updateItem: (ItemAndLastReadInfo) -> Void = { [weak self] info in
@@ -218,7 +233,7 @@ extension InnerWebViewViewModelImple {
         self.subjects.currentPageURL.accept(url)
     }
     
-    public func saveLastReadPositionIfNeed(_ position: Float) {
+    public func saveLastReadPositionIfNeed(_ position: Double) {
         guard let item = self.subjects.itemAndLastReadInfo.value?.0,
               let encodedURL = item.link.asURL()?.absoluteString,
               encodedURL == self.subjects.currentPageURL.value

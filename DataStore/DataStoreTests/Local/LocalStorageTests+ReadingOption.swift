@@ -28,13 +28,13 @@ extension LocalStorageTests_ReadingOption {
         let expect = expectation(description: "저장된 읽기 위치 로드")
         // when
         let save = self.local.updateLastReadPosition(for: "some", 233)
-        let saveAndLoad = save.flatMap {
+        let saveAndLoad = save.flatMap { _ in
             self.local.fetchLastReadPosition(for: "some")
         }
         let position = self.waitFirstElement(expect, for: saveAndLoad.asObservable())
         
         // then
-        XCTAssertEqual(position, 233)
+        XCTAssertEqual(position?.position, 233)
     }
     
     func testStorage_saveAndLoadReadPositionSaveOptionIsOn() {

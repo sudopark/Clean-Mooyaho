@@ -58,7 +58,7 @@ public final class InnerWebViewViewController: BaseViewController, InnerWebViewS
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        let currentY = Float(self.webView.scrollView.contentOffset.y)
+        let currentY = Double(self.webView.scrollView.contentOffset.y)
         self.viewModel.saveLastReadPositionIfNeed(currentY)
     }
 }
@@ -224,7 +224,7 @@ extension InnerWebViewViewController {
             .disposed(by: self.disposeBag)
     }
     
-    private func bindWebview(with lastReadPosition: Float?) {
+    private func bindWebview(with lastReadPosition: WebPageLoadParams.LastReadPositionInfo?) {
         
         let loadProgess = self.webView.rx
             .observeWeakly(Double.self, "estimatedProgress", options: .new)
@@ -270,22 +270,22 @@ extension InnerWebViewViewController {
         self.toolBar.updateNavigationButton(isBack: false, enable: forwardCount > 0)
     }
     
-    private func askShouldMovetoLastReadPositionIsNeed(_ preivousPosition: Float?) {
+    private func askShouldMovetoLastReadPositionIsNeed(_ position: WebPageLoadParams.LastReadPositionInfo?) {
         
-        guard let previous = preivousPosition else { return }
+        guard let position = position else { return }
        
         self.bottomMoveBinding?.dispose()
         self.bottomMoveBinding = nil
         
         let moveScroll: () -> Void = { [weak self] in
             guard let self = self else { return }
-            logger.print(level: .debug, "will move focus to last read position: \(previous)")
-            let startPoint = CGPoint(x: 0, y: CGFloat(previous))
+            logger.print(level: .debug, "will move focus to last read position: \(position.position)")
+            let startPoint = CGPoint(x: 0, y: position.position)
             self.webView.scrollView.setContentOffset(startPoint, animated: false)
             
             self.moveFloatingButton.hideButonWithAniation()
         }
-        
+        self.moveFloatingButton.descriptionView.text = position.savedAt
         self.moveFloatingButton.showButtonWithAnimation()
         self.bottomMoveBinding = self.moveFloatingButton.rx.throttleTap()
             .subscribe(onNext: moveScroll)
@@ -346,7 +346,6 @@ extension InnerWebViewViewController: Presenting {
             $0.widthAnchor.constraint(equalTo: $1.widthAnchor, multiplier: 0.7)
         }
         moveFloatingButton.setupLayout()
-        moveFloatingButton.titleLabel.text = ""
         self.view.bringSubviewToFront(moveFloatingButton)
     }
     

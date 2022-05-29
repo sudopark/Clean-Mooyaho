@@ -21,11 +21,11 @@ public protocol ReadingOptionsRepositoryDefImpleDependency: AnyObject {
 
 extension ReadingOptionRepository where Self: ReadingOptionsRepositoryDefImpleDependency {
     
-    public func fetchLastReadPosition(for itemID: String) -> Maybe<Float?> {
+    public func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
         return self.readingOptionLocal.fetchLastReadPosition(for: itemID)
     }
     
-    public func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void> {
+    public func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition> {
         return self.readingOptionLocal.updateLastReadPosition(for: itemID, position)
     }
     

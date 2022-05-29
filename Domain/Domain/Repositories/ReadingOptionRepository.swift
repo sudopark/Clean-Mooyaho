@@ -13,9 +13,9 @@ import RxSwift
 
 public protocol ReadingOptionRepository: AnyObject {
     
-    func fetchLastReadPosition(for itemID: String) -> Maybe<Float?>
+    func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
     
-    func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void>
+    func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition>
     
     func updateEnableLastReadPositionSaveOption(_ isOn: Bool)
     

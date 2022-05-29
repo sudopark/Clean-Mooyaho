@@ -15,14 +15,14 @@ import Domain
 
 extension LocalStorageImple {
     
-    public func fetchLastReadPosition(for itemID: String) -> Maybe<Float?> {
+    public func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
         return storage.fetchLastReadPosition(for: itemID)
     }
     
-    public func updateLastReadPosition(for itemID: String, _ position: Float) -> Maybe<Void> {
+    public func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition> {
         guard let storage = self.dataModelStorage else {
             return .error(LocalErrors.localStorageNotReady)
         }
