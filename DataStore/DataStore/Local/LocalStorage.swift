@@ -56,61 +56,6 @@ public protocol MemberLocalStorage {
     func saveMembers(_ members: [Member]) -> Maybe<Void>
 }
 
-public protocol TagLocalStorage {
-    
-    func fetchRecentSelectTags(_ type: Tag.TagType, query: String) -> Maybe<[Tag]>
-    
-    func updateRecentSelect(tag: Tag) -> Maybe<Void>
-    
-    func removeRecentSelect(tag: Tag) -> Maybe<Void>
-    
-    func saveTags(_ tag: [Tag]) -> Maybe<Void>
-}
-
-
-public protocol PlaceLocalStorage {
-    
-    func fetchRegisterPendingNewPlaceForm(_ memberID: String) -> Maybe<PendingRegisterNewPlaceForm?>
-    
-    func savePendingRegister(newPlace form: NewPlaceForm) -> Maybe<Void>
-    
-    func removePendingRegisterForm(_ memberID: String) -> Maybe<Void>
-    
-    func savePlace(_ place: Place) -> Maybe<Void>
-    
-    func fetchPlace(_ placeID: String) -> Maybe<Place?>
-}
-
-
-public protocol HoorayLocalStorage {
-
-    func fetchLatestHoorays(for memberID: String, limit: Int) -> Maybe<[Hooray]>
-    
-    func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void>
-    
-    func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]>
-    
-    func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void>
-    
-    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?>
-}
-
-extension HoorayLocalStorage {
-    
-    public func saveHooray(_ hooray: Hooray) -> Maybe<Void> {
-        return self.saveHoorays([hooray])
-    }
-    
-    public func fetchHooray(_ id: String) -> Maybe<Hooray?> {
-        return self.fetchHoorays([id]).map{ $0.first }
-    }
-    
-    public func fetchLatestHooray(for memberID: String) -> Maybe<Hooray?> {
-        return self.fetchLatestHoorays(for: memberID, limit: 1).map{ $0.first }
-    }
-}
-
-
 public protocol ReadItemLocalStorage {
     
     func fetchMyItems(memberID: String?) -> Maybe<[ReadItem]>
@@ -178,6 +123,16 @@ public protocol ReadItemOptionsLocalStorage {
     func updateDidWelcomeItemAdded()
 }
 
+public protocol ReadingOptionLocalStorage {
+    
+    func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
+    
+    func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition>
+    
+    func updateEnableLastReadPositionSaveOption(_ isOn: Bool)
+    
+    func isEnabledLastReadPositionSaveOption() -> Bool
+}
 
 public protocol LinkPreviewCacheStorage {
     
@@ -251,7 +206,7 @@ public protocol SearchLocalStorage {
 
 // MARK: - LocalStorage
 
-public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, TagLocalStorage, PlaceLocalStorage, HoorayLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage, SearchLocalStorage { }
+public protocol LocalStorage: DataModelStorageSwitchable, AuthLocalStorage, MemberLocalStorage, ReadItemLocalStorage, ReadItemOptionsLocalStorage, ReadingOptionLocalStorage, LinkPreviewCacheStorage, ItemCategoryLocalStorage, ReadLinkMemoLocalStorage, UserDataMigratableLocalStorage, ShareItemLocalStorage, SearchLocalStorage { }
 
 
 // MARK: - LocalStorageImple

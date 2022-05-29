@@ -54,29 +54,6 @@ extension AppRepository: MemberRepository, MemberRepositoryDefImpleDependency {
     }
 }
 
-extension AppRepository: PlaceRepository, PlaceRepositoryDefImpleDependency {
-    
-    public var placeRemote: PlaceRemote {
-        return self.remote
-    }
-    
-    public var placeLocal: PlaceLocalStorage {
-        return self.local
-    }
-}
-
-
-extension AppRepository: HoorayRepository, HoorayRepositoryDefImpleDependency {
-    
-    public var hoorayRemote: HoorayRemote {
-        return self.remote
-    }
-    
-    public var hoorayLocal: HoorayLocalStorage {
-        return self.local
-    }
-}
-
 extension AppRepository: ReadItemRepository, ReadItemRepositryDefImpleDependency {
     
     public var readItemRemote: ReadItemRemote {
@@ -168,5 +145,13 @@ extension AppRepository: HelpRepository, HelpReposiotryDefImpleDependency {
     
     public var helpRemote: HelpRemote {
         return self.remote
+    }
+}
+
+
+extension AppRepository: ReadingOptionRepository, ReadingOptionsRepositoryDefImpleDependency {
+    
+    public var readingOptionLocal: ReadingOptionLocalStorage {
+        return self.local
     }
 }

@@ -13,16 +13,7 @@ import DataStore
 
 enum FireStoreCollectionType: String {
     case member = "members"
-    case userLocation = "userlocations"
     case userDevice = "userdevice"
-    case placeSnippet = "placesnpts"
-    case place = "places"
-    case commentTag = "comments"
-    case feelingTag = "feelings"
-    case hooray = "hoorays"
-    case hoorayIndex = "hoorayindexes"
-    case hoorayAcks = "hoorayacks"
-    case hoorayReactions = "hoorayreactions"
     case readCollection
     case readLinks
     case readCollectionCustomOrders
@@ -46,8 +37,8 @@ extension Firestore {
 }
 
 
-public protocol FirebaseRemote: AuthRemote, MemberRemote, PlaceRemote, TagRemote,
-                                HoorayRemote, MessagingRemote, ReadItemRemote, ReadItemOptionsRemote,
+public protocol FirebaseRemote: AuthRemote, MemberRemote, MessagingRemote,
+                                ReadItemRemote, ReadItemOptionsRemote,
                                 ItemCategoryRemote, ReadLinkMemoRemote, BatchUploadRemote, ShareItemRemote,
                                 HelpRemote { }
 

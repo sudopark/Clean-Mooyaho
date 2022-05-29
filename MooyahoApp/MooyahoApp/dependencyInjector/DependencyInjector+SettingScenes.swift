@@ -21,6 +21,7 @@ extension DependencyInjector: SettingMainSceneBuilable {
         let router = SettingMainRouter(nextSceneBuilders: self)
         let viewModel = SettingMainViewModelImple(appID: AppEnvironment.appID,
                                                   memberUsecase: self.memberUsecase,
+                                                  readingOptionUsecase: self.readingOptionUsecase,
                                                   deviceInfoService: self.deviceInfoService,
                                                   router: router, listener: listener)
         let viewController = SettingMainViewController(viewModel: viewModel)

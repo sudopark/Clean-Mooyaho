@@ -146,6 +146,8 @@
 "Memo" = "메모";
 "Enter a memo" = "메모를 입력하세요.";
 "Item address has been copied." = "아이템 주소가 복사 되었습니다.";
+"reading-option-ask-last-position" = "마지막 읽음 위치로 이동";
+"reading-option-last-saved-time" = "%@에 저장됨";
 
 
 // diccovery
@@ -205,6 +207,7 @@
 "Contact" = "연락처";
 "Please leave your email address to be contacted." = "연락받을 수 있는 이메일 주소를 입력해 주세요.";
 "A category with the same name already exists." = "동일한 이름의 카테고리가 이미 존재합니다.";
+"lastReadPosition" = "마지막 읽음 위치 저장";
 
 
 // suggest

@@ -34,7 +34,6 @@
 		F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */; };
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
 		F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518D272771E9009CA975 /* SimpleReadItemCells.swift */; };
-		F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62202BD269972FE00B26B50 /* MapCameramovement.swift */; };
 		F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */; };
 		F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */; };
 		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
@@ -48,15 +47,9 @@
 		F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */; };
 		F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */; };
 		F63A520E27B7569E008542E2 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A520D27B7569E008542E2 /* Combine+Extensions.swift */; };
-		F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6572690B52200E04D29 /* InfoSectionView.swift */; };
 		F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A6592690BA8E00E04D29 /* Attribute.swift */; };
-		F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F645A65D26934F5700E04D29 /* WordTokensView.swift */; };
 		F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */; };
 		F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBD2669DF800027800F /* Scenes+Member.swift */; };
-		F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DBF2669DF950027800F /* Scenes+Place.swift */; };
-		F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC12669DF9E0027800F /* Scenes+Location.swift */; };
-		F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DC7266A0CC40027800F /* TextTagInputField.swift */; };
-		F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */; };
 		F6502DE9266CB3A00027800F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DE8266CB3A00027800F /* LoadingView.swift */; };
 		F6502DEB266CB6F80027800F /* ConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DEA266CB6F80027800F /* ConfirmButton.swift */; };
 		F65215832674A395000CAB4B /* TextInputRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F652157E2674A395000CAB4B /* TextInputRouter.swift */; };
@@ -73,15 +66,8 @@
 		F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */; };
 		F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */; };
 		F665A65026FB674C00E866B7 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64F26FB674C00E866B7 /* UICollectionView+Extension.swift */; };
-		F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F667E28A26E1254E0046B9FB /* ReactionView.swift */; };
 		F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F667E28E26E1367D0046B9FB /* MemberInfo.swift */; };
 		F66B7D7126C5DD8C00D31FAC /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */; };
-		F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9312671062A0031EEC5 /* SearchBar.swift */; };
-		F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */; };
-		F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9552673CBB20031EEC5 /* SelectTagViewController.swift */; };
-		F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9562673CBB20031EEC5 /* SelectTagBuilder.swift */; };
-		F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */; };
-		F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */; };
 		F66CD95F2673CD990031EEC5 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */; };
 		F66E09A127187A410012B76E /* ReadItemContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E09A027187A410012B76E /* ReadItemContentView.swift */; };
 		F66EF6AF2719EFD000AC0DAB /* RoundImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */; };
@@ -105,7 +91,6 @@
 		F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */; };
 		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
 		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
-		F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
 		F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43442713560900F26508 /* ColorSelectRouter.swift */; };
@@ -116,10 +101,11 @@
 		F6CB434F271358EC00F26508 /* ColorSelectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */; };
 		F6D2BD28278C99AC00420837 /* FeedbackImapctStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */; };
 		F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */; };
+		F6D8731928420E45009CAD55 /* BaseFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8731828420E45009CAD55 /* BaseFloatingButton.swift */; };
+		F6D8731E28433E3B009CAD55 /* HandlerToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D8731D28433E3B009CAD55 /* HandlerToggle.swift */; };
 		F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */; };
 		F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA564126889A6000032348 /* Notification+Extensions.swift */; };
 		F6DA9276268B815A00EA67EE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9275268B815A00EA67EE /* UIView+Extension.swift */; };
-		F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */; };
 		F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */; };
 		F6E30E1E270B4BBD0012A2A0 /* ReadPriority+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */; };
 		F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E30E25270B5A180012A2A0 /* EmptyListener.swift */; };
@@ -187,7 +173,6 @@
 		F610147E26578D6700D32E38 /* PushSlideTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSlideTransitionManager.swift; sourceTree = "<group>"; };
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		F620518D272771E9009CA975 /* SimpleReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleReadItemCells.swift; sourceTree = "<group>"; };
-		F62202BD269972FE00B26B50 /* MapCameramovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCameramovement.swift; sourceTree = "<group>"; };
 		F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionInverseNavigationCoordinator.swift; sourceTree = "<group>"; };
 		F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputView.swift; sourceTree = "<group>"; };
 		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
@@ -200,15 +185,9 @@
 		F638A5FB273C7401005A7EA9 /* Builders+Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+Setting.swift"; sourceTree = "<group>"; };
 		F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		F63A520D27B7569E008542E2 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
-		F645A6572690B52200E04D29 /* InfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSectionView.swift; sourceTree = "<group>"; };
 		F645A6592690BA8E00E04D29 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
-		F645A65D26934F5700E04D29 /* WordTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTokensView.swift; sourceTree = "<group>"; };
 		F64B12B3270AC309000B6AD2 /* UIWIndow+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWIndow+Extensions.swift"; sourceTree = "<group>"; };
 		F6502DBD2669DF800027800F /* Scenes+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Member.swift"; sourceTree = "<group>"; };
-		F6502DBF2669DF950027800F /* Scenes+Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Place.swift"; sourceTree = "<group>"; };
-		F6502DC12669DF9E0027800F /* Scenes+Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Location.swift"; sourceTree = "<group>"; };
-		F6502DC7266A0CC40027800F /* TextTagInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTagInputField.swift; sourceTree = "<group>"; };
-		F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+Hooray.swift"; sourceTree = "<group>"; };
 		F6502DE8266CB3A00027800F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F6502DEA266CB6F80027800F /* ConfirmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmButton.swift; sourceTree = "<group>"; };
 		F652157E2674A395000CAB4B /* TextInputRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputRouter.swift; sourceTree = "<group>"; };
@@ -225,15 +204,8 @@
 		F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
 		F665A64D26FB66B100E866B7 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		F665A64F26FB674C00E866B7 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
-		F667E28A26E1254E0046B9FB /* ReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionView.swift; sourceTree = "<group>"; };
 		F667E28E26E1367D0046B9FB /* MemberInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfo.swift; sourceTree = "<group>"; };
 		F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
-		F66CD9312671062A0031EEC5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagRouter.swift; sourceTree = "<group>"; };
-		F66CD9552673CBB20031EEC5 /* SelectTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewController.swift; sourceTree = "<group>"; };
-		F66CD9562673CBB20031EEC5 /* SelectTagBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagBuilder.swift; sourceTree = "<group>"; };
-		F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagScene.swift; sourceTree = "<group>"; };
-		F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModel.swift; sourceTree = "<group>"; };
 		F66CD95E2673CD990031EEC5 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		F66E09A027187A410012B76E /* ReadItemContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemContentView.swift; sourceTree = "<group>"; };
 		F66EF6AE2719EFD000AC0DAB /* RoundImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageButton.swift; sourceTree = "<group>"; };
@@ -257,7 +229,6 @@
 		F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
-		F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagViewModelImpleTests.swift; sourceTree = "<group>"; };
 		F6C97B1627091D2500990019 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAndLabeledValueView.swift; sourceTree = "<group>"; };
 		F6CB43442713560900F26508 /* ColorSelectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectRouter.swift; sourceTree = "<group>"; };
@@ -268,10 +239,11 @@
 		F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewModelTests.swift; sourceTree = "<group>"; };
 		F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackImapctStyle.swift; sourceTree = "<group>"; };
 		F6D48EA427036B1F005D4BD7 /* UIContext+Decorating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContext+Decorating.swift"; sourceTree = "<group>"; };
+		F6D8731828420E45009CAD55 /* BaseFloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFloatingButton.swift; sourceTree = "<group>"; };
+		F6D8731D28433E3B009CAD55 /* HandlerToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlerToggle.swift; sourceTree = "<group>"; };
 		F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyboardHandlable.swift; sourceTree = "<group>"; };
 		F6DA564126889A6000032348 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		F6DA9275268B815A00EA67EE /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extension.swift"; sourceTree = "<group>"; };
 		F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+ReadItem.swift"; sourceTree = "<group>"; };
 		F6E30E1D270B4BBD0012A2A0 /* ReadPriority+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadPriority+Extensions.swift"; sourceTree = "<group>"; };
 		F6E30E25270B5A180012A2A0 /* EmptyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListener.swift; sourceTree = "<group>"; };
@@ -363,7 +335,6 @@
 			children = (
 				2B39E25F26387B6A003EE954 /* Info.plist */,
 				F610146E2657122300D32E38 /* AutoLayoutTests.swift */,
-				F6C693C52674769200ECCCB7 /* SelectTagViewModelImpleTests.swift */,
 				F6CB434E271358EC00F26508 /* ColorSelectViewModelTests.swift */,
 			);
 			path = CommonPresentingTests;
@@ -414,7 +385,6 @@
 				F610146B26570B7B00D32E38 /* AutoLayout */,
 				F610146A26570B6F00D32E38 /* LeakDetector */,
 				F6F29592266D166700CDF980 /* ImagePickPermissionCheckService.swift */,
-				F62202BD269972FE00B26B50 /* MapCameramovement.swift */,
 				F667E28E26E1367D0046B9FB /* MemberInfo.swift */,
 				F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */,
 				F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */,
@@ -475,7 +445,6 @@
 				F6DA564126889A6000032348 /* Notification+Extensions.swift */,
 				F6DA563F26889A4100032348 /* InputKeyboardHandlable.swift */,
 				F6DA9275268B815A00EA67EE /* UIView+Extension.swift */,
-				F6DA9277268B8BB300EA67EE /* MKMapView+Extension.swift */,
 				F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */,
 				F66B7D7026C5DD8C00D31FAC /* Time+Extension.swift */,
 				F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */,
@@ -493,9 +462,6 @@
 			isa = PBXGroup;
 			children = (
 				F6502DBD2669DF800027800F /* Scenes+Member.swift */,
-				F6502DC12669DF9E0027800F /* Scenes+Location.swift */,
-				F6502DBF2669DF950027800F /* Scenes+Place.swift */,
-				F6502DE2266CA7B10027800F /* Scenes+Hooray.swift */,
 				F6E279C226F6E82600957AC4 /* Scenes+ReadItem.swift */,
 				F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */,
 				F6851A2E270B21120048197B /* Scenes+Viewer.swift */,
@@ -516,7 +482,6 @@
 		F6502DC6266A0CA20027800F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				F6C910D62788A7CD003E91B0 /* Deprecated */,
 				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
 				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
@@ -537,6 +502,8 @@
 				F6FE769427B926B1007959EC /* Views.swift */,
 				F603F46127B949E30096D8C1 /* BackButton+SwiftUI.swift */,
 				F60CCE6A27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift */,
+				F6D8731828420E45009CAD55 /* BaseFloatingButton.swift */,
+				F6D8731D28433E3B009CAD55 /* HandlerToggle.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -557,25 +524,12 @@
 			isa = PBXGroup;
 			children = (
 				F6F295A6266D26F000CDF980 /* ImagePicker */,
-				F66CD9532673CB8D0031EEC5 /* TagInputs */,
 				F65215732674A363000CAB4B /* TextInputs */,
 				F6CB4343271355EE00F26508 /* ColorSelect */,
 				F66E099F27187A020012B76E /* ReadItem */,
 				F6E51B70273F629500CBE310 /* SelectEmoji */,
 			);
 			path = CommonScenes;
-			sourceTree = "<group>";
-		};
-		F66CD9532673CB8D0031EEC5 /* TagInputs */ = {
-			isa = PBXGroup;
-			children = (
-				F66CD9542673CBB20031EEC5 /* SelectTagRouter.swift */,
-				F66CD9552673CBB20031EEC5 /* SelectTagViewController.swift */,
-				F66CD9562673CBB20031EEC5 /* SelectTagBuilder.swift */,
-				F66CD9572673CBB20031EEC5 /* SelectTagScene.swift */,
-				F66CD9582673CBB20031EEC5 /* SelectTagViewModel.swift */,
-			);
-			path = TagInputs;
 			sourceTree = "<group>";
 		};
 		F66E099F27187A020012B76E /* ReadItem */ = {
@@ -598,18 +552,6 @@
 				F6A3A0AC275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift */,
 			);
 			path = ViewUsecases;
-			sourceTree = "<group>";
-		};
-		F6C910D62788A7CD003E91B0 /* Deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				F667E28A26E1254E0046B9FB /* ReactionView.swift */,
-				F66CD9312671062A0031EEC5 /* SearchBar.swift */,
-				F6502DC7266A0CC40027800F /* TextTagInputField.swift */,
-				F645A65D26934F5700E04D29 /* WordTokensView.swift */,
-				F645A6572690B52200E04D29 /* InfoSectionView.swift */,
-			);
-			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		F6CB4343271355EE00F26508 /* ColorSelect */ = {
@@ -773,17 +715,15 @@
 				F6A3A0BA27521D2A00336E4F /* ReadItemCellViewModels.swift in Sources */,
 				F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
-				F62202BE269972FE00B26B50 /* MapCameramovement.swift in Sources */,
 				F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */,
 				F6CB434A2713560900F26508 /* ColorSelectViewController.swift in Sources */,
-				F66CD9322671062A0031EEC5 /* SearchBar.swift in Sources */,
+				F6D8731928420E45009CAD55 /* BaseFloatingButton.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
 				F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */,
 				F6E51B78273F62B500CBE310 /* SelectEmojiBuilder.swift in Sources */,
 				F61014762657211200D32E38 /* Theme.swift in Sources */,
 				2B39E27A26387BCB003EE954 /* Routable.swift in Sources */,
 				F66248FC2759424F00D4FC74 /* BaseTableViewHeaderView.swift in Sources */,
-				F66CD95C2673CBB20031EEC5 /* SelectTagScene.swift in Sources */,
 				F637205D266511570089D0B3 /* String+Extension.swift in Sources */,
 				F610147B2657854E00D32E38 /* SIdebarTransitionAnimationManager.swift in Sources */,
 				F6ED41EF2743F4870082DE18 /* ReadCollectionTtile+SectionHeaderView.swift in Sources */,
@@ -795,11 +735,7 @@
 				F6F6563B274049420069F253 /* Builders+Discovery.swift in Sources */,
 				F610147D26578CAE00D32E38 /* GestureDismissInteractors.swift in Sources */,
 				F6732F4827A8E46F00288701 /* BaseHeaderView.swift in Sources */,
-				F6502DE3266CA7B10027800F /* Scenes+Hooray.swift in Sources */,
 				F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */,
-				F645A6582690B52200E04D29 /* InfoSectionView.swift in Sources */,
-				F66CD9592673CBB20031EEC5 /* SelectTagRouter.swift in Sources */,
-				F6502DC22669DF9E0027800F /* Scenes+Location.swift in Sources */,
 				F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */,
 				F6F295A3266D26EA00CDF980 /* ImagePickerBuilder.swift in Sources */,
 				F6788C4F27E47A3800610ACB /* NavigationEmbedSheetViewController.swift in Sources */,
@@ -820,7 +756,6 @@
 				F6775B282781FA0F00D2DCD2 /* EasyTipView..swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */,
-				F6DA9278268B8BB300EA67EE /* MKMapView+Extension.swift in Sources */,
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
 				F6BA7DC327815DA60020B430 /* OAuthSignInButtonBuildable.swift in Sources */,
 				F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */,
@@ -828,7 +763,6 @@
 				F68B670D2707EB45004A255A /* BottomSlideViewSupporatble.swift in Sources */,
 				F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */,
 				F6E51B79273F62B500CBE310 /* SelectEmojiScene.swift in Sources */,
-				F645A65E26934F5700E04D29 /* WordTokensView.swift in Sources */,
 				F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */,
 				F6851A31270B21200048197B /* Builders+Viewer.swift in Sources */,
 				F6F29593266D166700CDF980 /* ImagePickPermissionCheckService.swift in Sources */,
@@ -839,9 +773,6 @@
 				F667E28F26E1367D0046B9FB /* MemberInfo.swift in Sources */,
 				F6CB434C2713560900F26508 /* ColorSelectScene.swift in Sources */,
 				F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */,
-				F66CD95A2673CBB20031EEC5 /* SelectTagViewController.swift in Sources */,
-				F66CD95B2673CBB20031EEC5 /* SelectTagBuilder.swift in Sources */,
-				F66CD95D2673CBB20031EEC5 /* SelectTagViewModel.swift in Sources */,
 				F60CCE6B27C0CA6900EC4BC0 /* CoordinatedScrollView+SwiftUI.swift in Sources */,
 				F64B12B4270AC309000B6AD2 /* UIWIndow+Extensions.swift in Sources */,
 				F6E30E26270B5A180012A2A0 /* EmptyListener.swift in Sources */,
@@ -856,8 +787,6 @@
 				F688F9C626BD99CA00DBB10A /* AutoCompletable.swift in Sources */,
 				F68A8809274BFAAC004DADE4 /* Scenes+Suggest.swift in Sources */,
 				F6502DBE2669DF800027800F /* Scenes+Member.swift in Sources */,
-				F667E28B26E1254E0046B9FB /* ReactionView.swift in Sources */,
-				F6502DC02669DF950027800F /* Scenes+Place.swift in Sources */,
 				F645A65A2690BA8E00E04D29 /* Attribute.swift in Sources */,
 				F6D48EA527036B1F005D4BD7 /* UIContext+Decorating.swift in Sources */,
 				F6E51B7C273F637C00CBE310 /* EmojiListView.swift in Sources */,
@@ -867,6 +796,7 @@
 				F65215872674A395000CAB4B /* TextInputViewModel.swift in Sources */,
 				F6E8312A265FFF4100C91F3B /* BottomSlideTransitionManager.swift in Sources */,
 				F6A3A0BC27521D8F00336E4F /* ReadItemCells.swift in Sources */,
+				F6D8731E28433E3B009CAD55 /* HandlerToggle.swift in Sources */,
 				F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */,
 				F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */,
 				F665A64E26FB66B100E866B7 /* BaseCollectionViewCell.swift in Sources */,
@@ -876,7 +806,6 @@
 				F6ED41F32743F71A0082DE18 /* ItemCategory+Extensions.swift in Sources */,
 				F665A65026FB674C00E866B7 /* UICollectionView+Extension.swift in Sources */,
 				F6502DEB266CB6F80027800F /* ConfirmButton.swift in Sources */,
-				F6502DC8266A0CC40027800F /* TextTagInputField.swift in Sources */,
 				F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */,
 				F638A5FC273C7401005A7EA9 /* Builders+Setting.swift in Sources */,
 				F6851A2F270B21120048197B /* Scenes+Viewer.swift in Sources */,
@@ -894,7 +823,6 @@
 			files = (
 				F610146F2657122300D32E38 /* AutoLayoutTests.swift in Sources */,
 				F6CB434F271358EC00F26508 /* ColorSelectViewModelTests.swift in Sources */,
-				F6C693C62674769200ECCCB7 /* SelectTagViewModelImpleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

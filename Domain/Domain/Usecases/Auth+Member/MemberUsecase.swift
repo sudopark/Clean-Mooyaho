@@ -39,8 +39,6 @@ public protocol MemberUsecase {
     
     func reloadCurrentMember() -> Maybe<Member>
     
-    func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool)
-    
     func updatePushToken(_ userID: String, deviceID: String, newToken: String)
     
     func refreshMembers(_ ids: [String])
@@ -50,8 +48,6 @@ public protocol MemberUsecase {
     func updateCurrent(memberID: String,
                        updateFields: [MemberUpdateField],
                        with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus>
-    
-    func loadCurrentMembership() -> Maybe<MemberShip>
     
     var currentMember: Observable<Member?> { get }
     
@@ -108,11 +104,6 @@ extension MemberUsecaseImple {
             .do(onNext: thenUpdateStore)
     }
     
-    public func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {
-        self.memberRepository.requestUpdateUserPresence(userID, deviceID: deviceID, isOnline: isOnline)
-            .subscribe()
-            .disposed(by: self.disposeBag)
-    }
     
     public func updatePushToken(_ userID: String, deviceID: String, newToken: String) {
         self.memberRepository.requestUpdatePushToken(userID, deviceID: deviceID, newToken: newToken)
@@ -183,22 +174,6 @@ extension MemberUsecaseImple {
             .flatMap(thenUpdateFieldOrBypassEvent)
             .startWith(.pending)
             .catch(errorthenJustUpdateFields)
-    }
-    
-    
-//    public func loadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {
-//        return self.memberRepository
-//            .requestLoadNearbyUsers(at: location)
-//    }
-    
-    public func loadCurrentMembership() -> Maybe<MemberShip> {
-        
-        if let existing = self.sharedDataStoreService.fetch(MemberShip.self, key: .membership) {
-            return .just(existing)
-        }
-        
-        guard let curent = self.fetchCurrentMember() else { return .error(ApplicationErrors.sigInNeed) }
-        return self.memberRepository.requestLoadMembership(for: curent.uid)
     }
     
     public func refreshMembers(_ ids: [String]) {

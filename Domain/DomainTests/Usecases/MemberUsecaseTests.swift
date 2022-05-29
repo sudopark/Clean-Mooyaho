@@ -42,24 +42,6 @@ class MemberUsecaseTests: BaseTestCase, WaitObservableEvents {
 
 extension MemberUsecaseTests {
     
-    func testUsecase_updateUserIsOnlneStatus() {
-        // given
-        let expect = expectation(description: "유저 온라인 여부 업데이트")
-        
-        self.mockRepository.called(key: "requestUpdateUserPresence") { args in
-            if let isOnline = args as? Bool, isOnline {
-                expect.fulfill()
-            }
-        }
-        
-        
-        // when
-        self.usecase.updateUserIsOnline("some", deviceID: "dev_id", isOnline: true)
-        
-        // then
-        self.wait(for: [expect], timeout: self.timeout)
-    }
-    
     func testUsecase_updatePushToken() {
         // given
         let expect = expectation(description: "push token 업데이트")
@@ -73,51 +55,6 @@ extension MemberUsecaseTests {
         
         // then
         self.wait(for: [expect], timeout: self.timeout)
-    }
-    
-//    func testUsecase_loadNearbyUserPresences() {
-//        // given
-//        let expect = expectation(description: "주변에 존재하는 유저 조회")
-//
-//        self.stubRepository.register(key: "requestLoadNearbyUsers") {
-//            return Maybe<[UserPresence]>.just([UserPresence(userID: "dummy", lastLocation: .init(lattitude: 0, longitude: 0, timeStamp: 0))])
-//        }
-//
-//        // when
-//        let requestLoad = self.usecase.loadNearbyUsers(at: .init(latt: 0, long: 0))
-//        let presences = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
-//
-//        // then
-//        XCTAssertEqual(presences?.count, 1)
-//    }
-    
-    func testUsecase_whenLoadCurrentMemberShip_existOnSharedStore() {
-        // given
-        let expect = expectation(description: "공유 저장소에 멤버쉽 존재하는 경우 로드")
-        self.store.save(MemberShip.self, key: .membership, MemberShip())
-        
-        // when
-        let requestLoad = self.usecase.loadCurrentMembership()
-        let membership = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
-        
-        // then
-        XCTAssertNotNil(membership)
-    }
-    
-    func testUsecase_whenLoadCurrentMemberShip_notExistOnSharedStore() {
-        // given
-        let expect = expectation(description: "공유 저장소에 멤버쉽 존재 안하는 경우 로드")
-        self.store.save(Member.self, key: .currentMember, Member(uid: "dummy"))
-        self.mockRepository.register(key: "requestLoadMembership") {
-            return Maybe<MemberShip>.just(.init())
-        }
-        
-        // when
-        let requestLoad = self.usecase.loadCurrentMembership()
-        let membership = self.waitFirstElement(expect, for: requestLoad.asObservable()) { }
-        
-        // then
-        XCTAssertNotNil(membership)
     }
     
     func testUsecase_observeCurrentMember() {

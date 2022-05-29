@@ -15,16 +15,6 @@ import DataStore
 
 extension FirebaseServiceImple {
     
-    public func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
-        typealias Key = UserDeviceMappingKey
-        let updating: JSON = [
-            Key.userID.rawValue: userID,
-            Key.isOnline.rawValue: isOnline,
-            Key.platform.rawValue: UserDevices.Platform.ios.rawValue,
-        ]
-        return self.update(docuID: userID, newFields: updating, at: .userDevice)
-    }
-    
     public func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void> {
         typealias Key = UserDeviceMappingKey
         let updating: JSON = [
@@ -33,11 +23,6 @@ extension FirebaseServiceImple {
             Key.platform.rawValue: UserDevices.Platform.ios.rawValue,
         ]
         return self.update(docuID: userID, newFields: updating, at: .userDevice)
-    }
-    
-    public func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
-        // TOOD: implement needs
-        return .empty()
     }
     
     public func requestUploadMemberProfileImage(_ memberID: String,

@@ -26,15 +26,6 @@
          location = "group:Presentations/DiscoveryScene/DiscoveryScene.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Presentations/MapScenes/MapScenes.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:Presentations/HoorayScene/HoorayScene.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:Presentations/PlaceScenes/PlaceScenes.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:Presentations/SettingScene/SettingScene.xcodeproj">
       </FileRef>
       <FileRef

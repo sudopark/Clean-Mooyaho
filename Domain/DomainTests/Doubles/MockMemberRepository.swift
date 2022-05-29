@@ -17,22 +17,9 @@ import UnitTestHelpKit
 
 class MockMemberRepository: MemberRepository, Mocking {
     
-    func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void> {
-        self.verify(key: "requestUpdateUserPresence", with: isOnline)
-        return self.resolve(key: "requestUpdateUserPresence") ?? .empty()
-    }
-    
     func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void> {
         self.verify(key: "requestUpdatePushToken")
         return self.resolve(key: "requestUpdatePushToken") ?? .empty()
-    }
-    
-//    func requestLoadNearbyUsers(at location: Coordinate) -> Maybe<[UserPresence]> {
-//        return self.resolve(key: "requestLoadNearbyUsers") ?? .empty()
-//    }
-    
-    func requestLoadMembership(for memberID: String) -> Maybe<MemberShip> {
-        return self.resolve(key: "requestLoadMembership") ?? .empty()
     }
     
     let uploadStatus = PublishSubject<MemberProfileUploadStatus>()

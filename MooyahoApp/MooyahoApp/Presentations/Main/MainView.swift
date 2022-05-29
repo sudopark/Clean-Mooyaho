@@ -17,120 +17,23 @@ import CommonPresenting
 
 // MARK: - FloatingButtonButtonView
 
-final class FloatingButtonButtonView: BaseUIView, Presenting {
-    
-    fileprivate let closeImageView = UIImageView()
-    private let roundView = RoundShadowView()
-    private let titleLabel = UILabel()
-    private let addressLabel = UILabel()
-    fileprivate let backgroundButton = UIButton()
+final class FloatingButtonButtonView: BaseFloatingButton {
     
     func showButton(with addresss: String) {
         
-        self.addressLabel.text = addresss
-        self.roundView.updateLayer()
-        
-        self.isHidden = false
-        self.alpha = 0.0
-        self.transform = CGAffineTransform(scaleX: 0.5, y: 1.0)
-        
-        UIView.animate(withDuration: 0.1, delay: 0, options: .overrideInheritedCurve, animations: { [weak self] in
-            self?.alpha = 1.0
-            self?.transform = .identity
-        })
+        self.descriptionView.text = addresss
+        self.showButtonWithAnimation()
+    }
+    
+    override func setupStyling() {
+        super.setupStyling()
+        self.titleLabel.text = "Add item form clipboard".localized
     }
     
     func hideButton() {
-        UIView.animate(withDuration: 0.1, delay: 0, options: .overrideInheritedCurve, animations: { [weak self] in
-            self?.alpha = 0.0
-            self?.transform = CGAffineTransform(scaleX: 0.1, y: 1.0)
-        }, completion: { [weak self] _ in
-            self?.isHidden = true
-        })
-    }
-    
-    func setupLayout() {
-        
-        self.addSubview(roundView)
-        roundView.autoLayout.fill(self)
-        
-        self.addSubview(closeImageView)
-        closeImageView.autoLayout.active(with: self) {
-            $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor, constant: -8)
-            $0.widthAnchor.constraint(equalToConstant: 15)
-            $0.heightAnchor.constraint(equalToConstant: 15)
-        }
-        
-        let containerView = UIView()
-        self.addSubview(containerView)
-        containerView.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor, constant: 12)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor, constant: 8)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor, constant: -8)
-            $0.trailingAnchor.constraint(equalTo: closeImageView.leadingAnchor, constant: -12)
-        }
-        
-        containerView.addSubview(titleLabel)
-        titleLabel.autoLayout.active(with: containerView) {
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.trailingAnchor.constraint(lessThanOrEqualTo: $1.trailingAnchor)
-            $0.leadingAnchor.constraint(greaterThanOrEqualTo: $1.leadingAnchor)
-            $0.centerXAnchor.constraint(equalTo: $1.centerXAnchor)
-        }
-        
-        containerView.addSubview(addressLabel)
-        addressLabel.autoLayout.active(with: containerView) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.trailingAnchor.constraint(equalTo: $1.trailingAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-            $0.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5)
-        }
-        
-        self.addSubview(backgroundButton)
-        backgroundButton.autoLayout.active(with: self) {
-            $0.leadingAnchor.constraint(equalTo: $1.leadingAnchor)
-            $0.topAnchor.constraint(equalTo: $1.topAnchor)
-            $0.bottomAnchor.constraint(equalTo: $1.bottomAnchor)
-            $0.trailingAnchor.constraint(equalTo: closeImageView.leadingAnchor, constant: -12)
-        }
-    }
-    
-    func setupStyling() {
-        
-        self.roundView.cornerRadius = 15
-        self.roundView.fillColor = self.uiContext.colors.appSecondBackground
-        self.roundView.shadowOpacity = 0.9
-        
-        self.closeImageView.image = UIImage(systemName: "xmark")
-        self.closeImageView.tintColor = self.uiContext.colors.text
-        self.closeImageView.contentMode = .scaleAspectFit
-        
-        self.titleLabel.font = self.uiContext.fonts.get(15, weight: .medium)
-        self.titleLabel.textColor = self.uiContext.colors.text
-        self.titleLabel.textAlignment = .center
-        self.titleLabel.text = "Add item form clipboard".localized
-        
-        self.addressLabel.font = self.uiContext.fonts.get(12, weight: .regular)
-        self.addressLabel.textColor = self.uiContext.colors.secondaryTitle
-        self.addressLabel.textAlignment = .center
-        self.addressLabel.numberOfLines = 1
+        self.hideButonWithAniation()
     }
 }
-
-extension Reactive where Base == FloatingButtonButtonView {
-    
-    func throttleTap() -> Observable<Void> {
-        return base.backgroundButton.rx.tap.throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-    }
-    
-    func closeTap() -> Observable<Void> {
-        return base.closeImageView.rx.addTapgestureRecognizer()
-            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-            .map { _ in }
-    }
-}
-
 
 // MARK: - MainView
 

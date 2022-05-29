@@ -44,27 +44,6 @@ class RepositoryTests_Member: BaseTestCase, WaitObservableEvents {
 }
 
 
-extension RepositoryTests_Member {
-    
-    func testRepository_updateUserPresence() {
-        // given
-        let expect = expectation(description: "user presence 업데이트")
-        
-        self.mockRemote.register(key: "requestUpdateUserPresence") {
-            return Maybe<Void>.just()
-        }
-        
-        // when
-        let requestUpdate = self.repository
-            .requestUpdateUserPresence("som", deviceID: "dev_id", isOnline: true)
-        let void: Void? = self.waitFirstElement(expect, for: requestUpdate.asObservable()) { }
-        
-        // then
-        XCTAssertNotNil(void)
-    }
-}
-
-
 // MARK: - test update member profile
 
 extension RepositoryTests_Member {

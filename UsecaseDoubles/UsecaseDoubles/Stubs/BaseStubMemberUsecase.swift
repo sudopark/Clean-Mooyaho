@@ -42,10 +42,6 @@ open class BaseStubMemberUsecase: MemberUsecase {
         return self.scenario.reloadedMember.map { .just($0) } ?? .empty()
     }
     
-    open func updateUserIsOnline(_ userID: String, deviceID: String, isOnline: Bool) {
-
-    }
-    
     public func updatePushToken(_ userID: String, deviceID: String, newToken: String) {
         
     }
@@ -62,11 +58,7 @@ open class BaseStubMemberUsecase: MemberUsecase {
     public func updateCurrent(memberID: String, updateFields: [MemberUpdateField], with profile: ImageUploadReqParams?) -> Observable<UpdateMemberProfileStatus> {
         return .empty()
     }
-    
-    public func loadCurrentMembership() -> Maybe<MemberShip> {
-        return .empty()
-    }
-    
+
     public let currentMemberMocking = PublishSubject<Member?>()
     public var currentMember: Observable<Member?> {
         return self.currentMemberMocking

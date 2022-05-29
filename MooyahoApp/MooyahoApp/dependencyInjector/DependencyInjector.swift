@@ -6,7 +6,7 @@
 //  Copyright © 2021 ParkHyunsoo. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 
@@ -187,6 +187,13 @@ extension DependencyInjector {
                                     sharedEventService: self.shared.sharedEventService,
                                     remindMessagingService: self.readRemindMessagingService,
                                     shareURLScheme: AppEnvironment.shareScheme)
+    }
+    
+    var readingOptionUsecase: ReadingOptionUsecase {
+        return ReadingOptionUsecaseImple(
+            readingOptionRepository: self.appReposiotry,
+            sharedDataStore: self.shared.dataStore
+        )
     }
     
     var categoryUsecase: ReadItemCategoryUsecase {

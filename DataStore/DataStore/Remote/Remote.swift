@@ -40,8 +40,7 @@ public protocol AuthorizationNeed: AnyObject {
 
 // MARK: - Remote Protocol
 
-public protocol Remote: AuthRemote, MemberRemote,
-                        PlaceRemote, TagRemote, HoorayRemote, MessagingRemote,
+public protocol Remote: AuthRemote, MemberRemote, MessagingRemote,
                         ReadItemRemote, ReadItemOptionsRemote, LinkPreviewRemote, ItemCategoryRemote,
                         ReadLinkMemoRemote, BatchUploadRemote,
                         ShareItemRemote, HelpRemote { }
@@ -72,12 +71,8 @@ public protocol OAuthRemote {
 // MARK: - Member remote
 
 public protocol MemberRemote {
-    
-    func requestUpdateUserPresence(_ userID: String, deviceID: String, isOnline: Bool) -> Maybe<Void>
-    
+
     func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void>
-    
-    func requestLoadMembership(for memberID: String) -> Maybe<MemberShip>
     
     func requestUploadMemberProfileImage(_ memberID: String,
                                          data: Data, ext: String,
@@ -92,60 +87,6 @@ public protocol MemberRemote {
                                           thumbnail: MemberThumbnail?) -> Maybe<Member>
     
     func requestLoadMember(_ ids: [String]) -> Maybe<[Member]>
-}
-
-
-// MARK: - place remote
-
-public protocol PlaceRemote {
-    
-    func requesUpload(_ location: UserLocation) -> Maybe<Void>
-    
-    func requestLoadDefaultPlaceSuggest(in location: UserLocation) -> Maybe<SuggestPlaceResult>
-    
-    func requestSuggestPlace(_ query: String,
-                             in location: UserLocation,
-                             cursor: String?) -> Maybe<SuggestPlaceResult>
-    
-    func requestSearchNewPlace(_ query: String, in location: UserLocation,
-                               of pageIndex: Int?) -> Maybe<SearchingPlaceCollection>
-    
-    func requestRegister(new place: NewPlaceForm) -> Maybe<Place>
-    
-    func requestLoadPlace(_ placeID: String) -> Maybe<Place>
-}
-
-
-// MARK: - Tag remote
-
-public protocol TagRemote {
-    
-    func requestRegisterTag(_ tag: Tag) -> Maybe<Void>
-    
-    func requestLoadPlaceCommnetTags(_ keyword: String,
-                                     cursor: String?) -> Maybe<SuggestTagResultCollection>
-    
-    func requestLoadUserFeelingTags(_ keyword: String,
-                                    cursor: String?) -> Maybe<SuggestTagResultCollection>
-}
-
-
-// MARK: - Hooray
-
-public protocol HoorayRemote {
-    
-    func requestLoadLatestHooray(_ memberID: String) -> Maybe<Hooray?>
-    
-    func requestPublishHooray(_ newForm: NewHoorayForm,
-                              withNewPlace: NewPlaceForm?) -> Maybe<Hooray>
-    
-    func requestLoadNearbyRecentHoorays(at location: Coordinate) -> Maybe<[Hooray]>
-    
-    func requestAckHooray(_ acks: [HoorayAckMessage])
-    
-    func requestLoadHooray(_ id: String) -> Maybe<Hooray?>
-    
-    func requestLoadHoorayDetail(_ id: String) -> Maybe<HoorayDetail>
 }
 
 

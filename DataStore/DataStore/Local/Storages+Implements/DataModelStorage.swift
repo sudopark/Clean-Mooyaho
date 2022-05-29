@@ -37,20 +37,6 @@ public protocol DataModelStorage {
     
     func updateMember(_ member: Member) -> Maybe<Void>
     
-    func savePlace(_ place: Place) -> Maybe<Void>
-    
-    func fetchPlace(_ placeID: String) -> Maybe<Place?>
-    
-    func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void>
-    
-    func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]>
-    
-    func fetchLatestHoorays(for memberID: String, limit count: Int) -> Maybe<[Hooray]>
-    
-    func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void>
-    
-    func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?>
-    
     func fetchMyReadItems() -> Maybe<[ReadItem]>
     
     func removeMyReadItems() -> Maybe<Void>
@@ -136,6 +122,10 @@ public protocol DataModelStorage {
     func fetchAllSuggestableQueries() -> Maybe<[String]>
     
     func insertSuggestableQueries(_ queries: [String]) -> Maybe<Void>
+    
+    func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
+    
+    func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition>
 }
 
 
@@ -326,188 +316,6 @@ extension DataModelStorageImple {
     }
 }
 
-
-// MARK: - place
-
-extension DataModelStorageImple {
-    
-    public func savePlace(_ place: Place) -> Maybe<Void> {
-        
-        let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
-        
-        let placeInfo = places.EntityType(place: place)
-        let savePlace = self.sqliteService.rx.run{ try $0.insert(places, entities: [placeInfo]) }
-        let thenSaveThumbnails: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let imageModel = ImageSourceTable.Entity(place.uid, source: place.thumbnail)
-            return self.sqliteService.rx.run { try $0.insert(images, entities: [imageModel]) }
-                .catchAndReturn(())
-        }
-        let thenSaveTags: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            return self.sqliteService.rx.run { try $0.insert(tags, entities: place.placeCategoryTags) }
-                .catchAndReturn(())
-        }
-        
-        return savePlace
-            .flatMap(thenSaveThumbnails)
-            .flatMap(thenSaveTags)
-    }
-    
-    public func fetchPlace(_ placeID: String) -> Maybe<Place?> {
-        
-        typealias PlaceInfo = PlaceInfoTable.Entity
-        
-        let (places, images, tags) = (PlaceInfoTable.self, ImageSourceTable.self, TagTable.self)
-        
-        let placeQuery = places.selectAll{ $0.uid == placeID }
-        let imageQuery = images.selectAll()
-        let joinQuery = placeQuery.outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
-       
-        let fetchPlaceInfo = self.sqliteService.rx
-            .run{ try $0.loadOne(joinQuery, mapping: CursorIterator.makePlaceInfoAndThumbnail) }
-        
-        let appendCategoryTagsOrNot: ((PlaceInfo, ImageSource?)?) -> Maybe<Place?> = { [weak self] pair in
-            guard let self = self else { return .empty() }
-            guard let pair = pair else { return .just(nil) }
-            let tagsQuery = tags.selectAll{ $0.keyword.in(pair.0.categoryIDs) }
-            let fetchTags = self.sqliteService.rx.run { try $0.load(tags, query: tagsQuery) }.catchAndReturn([])
-            return fetchTags
-                .map{ Place(info: pair.0, thumbnail: pair.1, tags: $0) }
-        }
-        
-        return fetchPlaceInfo
-            .flatMap(appendCategoryTagsOrNot)
-    }
-}
-
-
-// MARK: - DataModelStorageImpl + Hooray
-
-extension DataModelStorageImple {
-    
-    public func saveHoorays(_ hoorays: [Hooray]) -> Maybe<Void> {
-        
-        let hoorayEntities = hoorays.map{ HoorayTable.Entity($0) }
-        let saveHoorays = self.sqliteService.rx.run { try $0.insert(HoorayTable.self, entities: hoorayEntities) }
-        
-        let thenSaveAdditionalInfos: () -> Void = { [weak self] in
-            self?.saveHoorayImage(hoorays)
-        }
-        return saveHoorays
-            .do(onNext: thenSaveAdditionalInfos)
-    }
-    
-    private func saveHoorayImage(_ hoorays: [Hooray]) {
-        let entities = hoorays.map{ ImageSourceTable.Entity($0.uid, source: $0.image) }
-        self.sqliteService.rx.run { try $0.insert(ImageSourceTable.self, entities: entities) }
-            .subscribe()
-            .disposed(by: self.disposeBag)
-    }
-
-    public func fetchHoorays(_ ids: [String]) -> Maybe<[Hooray]> {
-        
-        let hooraysQuery = HoorayTable.selectAll { $0.uid.in(ids) }
-        let imagesQuery = ImageSourceTable.selectAll { $0.ownerID.in(ids) }
-        let joinQuery = hooraysQuery.outerJoin(with: imagesQuery, on: { ($0.uid, $1.ownerID) })
-        return self.fetchHoorays(with: joinQuery)
-    }
-    
-    public func fetchLatestHoorays(for memberID: String, limit count: Int) -> Maybe<[Hooray]> {
-        let hoorayQuery = HoorayTable.selectAll { $0.publisherID == memberID }
-            .orderBy(isAscending: false) { $0.timeStamp }
-            .limit(count)
-        let imageQuery = ImageSourceTable.selectAll()
-        let joinQuery = hoorayQuery
-            .outerJoin(with: imageQuery, on: { ($0.uid, $1.ownerID) })
-        
-        return self.fetchHoorays(with: joinQuery)
-    }
-    
-    private func fetchHoorays(with joinQuery: JoinQuery<HoorayTable>) -> Maybe<[Hooray]> {
-        let loadHoorays = self.sqliteService.rx.run { try $0.load(joinQuery, mapping: Hooray.fromImageSource(_:)) }
-        return loadHoorays
-    }
-    
-    public func saveHoorayDetail(_ detail: HoorayDetail) -> Maybe<Void> {
-        
-        let saveHoorayInfo = self.saveHoorays([detail.hoorayInfo])
-        let thenSaveAcks: () -> Maybe<Void> = { [weak self] in
-            return self?.saveHoorayAcks(detail.acks).catchAndReturn(()) ?? .empty()
-        }
-        let thenSaveReactions: () -> Maybe<Void> = { [weak self] in
-            return self?.saveHoorayReactions(detail.reactions).catchAndReturn(()) ?? .empty()
-        }
-        
-        return saveHoorayInfo
-            .flatMap(thenSaveAcks)
-            .flatMap(thenSaveReactions)
-    }
-    
-    private func saveHoorayAcks(_ acks: [HoorayAckInfo]) -> Maybe<Void> {
-        
-        guard acks.isNotEmpty else { return .just() }
-        
-        let entities: [HoorayAckUserTable.Entity] = acks.map{ .init($0) }
-        return self.sqliteService.rx.run {
-            try $0.insert(HoorayAckUserTable.self, entities: entities)
-        }
-    }
-    
-    private func saveHoorayReactions(_ reactions: [HoorayReaction]) -> Maybe<Void> {
-        
-        guard reactions.isNotEmpty else { return .just() }
-        
-        let reactionEntities: [HoorayReactionTable.Entity] = reactions.map{ .init($0) }
-        let saveReactions = self.sqliteService.rx.run {
-            try $0.insert(HoorayReactionTable.self, entities: reactionEntities)
-        }
-        
-        let thenSaveIcons: () -> Maybe<Void> = { [weak self] in
-            guard let self = self else { return .empty() }
-            let iconEntities: [ThumbnailTable.Entity] = reactions.map{ .init($0.reactionID, thumbnail: $0.icon) }
-            return self.sqliteService.rx.run{ try $0.insert(ThumbnailTable.self, entities: iconEntities) }
-        }
-        return saveReactions
-            .flatMap(thenSaveIcons)
-    }
-    
-    public func fetchHoorayDetail(_ id: String) -> Maybe<HoorayDetail?> {
-        
-        let hoorayInfo = self.fetchHoorays([id]).map{ $0.first }
-        let thenAppendAcks: (Hooray?) -> Maybe<HoorayDetail?> = { [weak self] hooray in
-            guard let hooray = hooray else { return .just(nil) }
-            return self?.fetchHoorayAcks(id).catchAndReturn([])
-                .map { HoorayDetail(info: hooray, acks: $0, reactions: []) } ?? .empty()
-        }
-        let thenAppendReactions: (HoorayDetail?) -> Maybe<HoorayDetail?> = { [weak self] detail in
-            guard let detail = detail else { return .just(nil) }
-            return self?.fetchHoorayReactions(id).catchAndReturn([])
-                .map{ .init(info: detail.hoorayInfo, acks: detail.acks, reactions: $0) } ?? .empty()
-        }
-        return hoorayInfo
-            .flatMap(thenAppendAcks)
-            .flatMap(thenAppendReactions)
-    }
-    
-    private func fetchHoorayAcks(_ id: String) -> Maybe<[HoorayAckInfo]> {
-        let acks = HoorayAckUserTable.self
-        let query = acks.selectAll { $0.hoorayID == id }
-        return self.sqliteService.rx.run{ try $0.load(acks, query: query) }
-            .map{ $0.asAcks() }
-    }
-    
-    private func fetchHoorayReactions(_ id: String) -> Maybe<[HoorayReaction]> {
-        let (reactions, images) = (HoorayReactionTable.self, ThumbnailTable.self)
-        let reactionQuery = reactions.selectAll { $0.hoorayID == id }
-        let iconsQuery = images.selectAll()
-        let joinQuery = reactionQuery.outerJoin(with: iconsQuery, on: { ($0.reactionID, $1.ownerID) })
-        
-        return self.sqliteService.rx
-            .run { try $0.load(joinQuery, mapping: HoorayReaction.mapWithIcon(_:)) }
-            .map{ $0.sorted(by: { $0.reactAt < $1.reactAt })}
-    }
-}
 
 // MARK: - Read Item
 
@@ -885,7 +693,24 @@ extension DataModelStorageImple {
     }
 }
 
-// MARK; - shared item
+// MARK: - ReadingOption
+
+extension DataModelStorageImple {
+    
+    public func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?> {
+        let query = ReadPositionTable.selectAll { $0.itemID == itemID }
+        return self.sqliteService.rx.run { try $0.loadOne(query) }
+    }
+    
+    public func updateLastReadPosition(for itemID: String, _ position: Double) -> Maybe<ReadPosition> {
+        let position = ReadPosition(itemID: itemID, position: position)
+        return self.sqliteService.rx
+            .run { try $0.insert(ReadPositionTable.self, entities: [position], shouldReplace: true) }
+            .map { position }
+    }
+}
+
+// MARK: - shared item
 
 extension DataModelStorageImple {
     
@@ -986,27 +811,6 @@ extension DataModelStorageImple {
     }
 }
 
-private extension CursorIterator {
-    
-    static func makePlaceInfoAndThumbnail(_ cursor: CursorIterator) throws -> (PlaceInfoTable.Entity, ImageSource?) {
-        let placeInfo = try PlaceInfoTable.Entity(cursor)
-        let thumbnail = try? ImageSourceTable.Entity(cursor).source
-        return (placeInfo, thumbnail)
-    }
-}
-
-private extension Place {
-    
-    init?(info: PlaceInfoTable.Entity, thumbnail: ImageSource?, tags: [Tag]) {
-        self.init(uid: info.uid, title: info.title, thumbnail: thumbnail,
-                  externalSearchID: info.externalSearchID, detailLink: info.detailLink,
-                  coordinate: .init(latt: info.latt, long: info.long),
-                  address: info.address, contact: info.contact, categoryTags: tags,
-                  reporterID: info.reporterID, infoProvider: info.infoProvider,
-                  createdAt: info.createAt, pickCount: info.placePickCount, lastPickedAt: info.lastPickedAt)
-    }
-}
-
 extension Member {
     
     func asEntity() -> MemberTable.Entity {
@@ -1017,43 +821,6 @@ extension Member {
         
         let ownerID = self.uid
         return self.icon.map{ ThumbnailTable.Entity(ownerID, thumbnail: $0) }
-    }
-}
-
-private extension Hooray {
-    
-    static func fromImageSource(_ cursor: CursorIterator) throws -> Hooray {
-        let entity = try HoorayTable.Entity(cursor)
-        let imageEntity = try? ImageSourceTable.Entity(cursor)
-        return Hooray(uid: entity.uid, placeID: entity.placeID, publisherID: entity.publisherID,
-                      hoorayKeyword: .init(uid: entity.keywordID, text: entity.keywordText, soundSource: entity.keywordSource),
-                      message: entity.message, tags: entity.tags, image: imageEntity?.source,
-                      location: entity.coordinate, timestamp: entity.timeStamp,
-                      spreadDistance: entity.spreadDistance, aliveDuration: entity.aliveTime)
-    }
-}
-
-private extension Array where Element == HoorayAckUserTable.Entity {
-
-    func asAcks() -> [HoorayAckInfo] {
-        return self.map { entity in
-            return .init(hoorayID: entity.hoorayID, ackUserID: entity.ackUserID, ackAt: entity.ackAt)
-        }
-    }
-}
-
-private extension HoorayReaction {
-    
-    static func mapWithIcon(_ cusrosr: CursorIterator) throws -> HoorayReaction {
-        
-        let entity = try HoorayReactionTable.Entity(cusrosr)
-        guard let icon = try ThumbnailTable.Entity(cusrosr).thumbnail else {
-            throw LocalErrors.deserializeFail(nil)
-        }
-        
-        return .init(hoorayID: entity.hoorayID,
-                     reactionID: entity.reactionID, reactMemberID: entity.memberID,
-                     icon: icon, reactAt: entity.reactAt)
     }
 }
 

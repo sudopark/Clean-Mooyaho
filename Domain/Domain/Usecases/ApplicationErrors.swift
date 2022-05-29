@@ -21,3 +21,13 @@ public enum ApplicationErrors: Error {
     case noUserInfo
     case notActivated
 }
+
+
+public struct RuntimeError: Error {
+    
+    public let message: String
+    
+    public init(_ message: String) {
+        self.message = message
+    }
+}

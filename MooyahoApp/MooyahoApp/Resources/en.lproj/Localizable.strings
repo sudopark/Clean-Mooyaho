@@ -144,6 +144,8 @@
 "Memo" = "Memo";
 "Enter a memo" = "Enter a memo";
 "Item address has been copied." = "Item address has been copied.";
+"reading-option-ask-last-position" = "Go to last read position";
+"reading-option-last-saved-time" = "saved at: %@";
 
 
 // diccovery
@@ -202,6 +204,7 @@
 "Contact" = "Contact";
 "Please leave your email address to be contacted." = "Please leave your email address to be contacted.";
 "A category with the same name already exists." = "A category with the same name already exists.";
+"lastReadPosition" = "Save last read position";
 
 
 // suggest

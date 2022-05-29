@@ -15,7 +15,6 @@ import CommonPresenting
 
 // MARK: - InnerWebViewBottomToolBar
 
-
 final class InnerWebViewBottomToolBar: BaseUIView {
     
     struct Metric {
