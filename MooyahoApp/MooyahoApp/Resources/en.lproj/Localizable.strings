@@ -204,6 +204,7 @@
 "Contact" = "Contact";
 "Please leave your email address to be contacted." = "Please leave your email address to be contacted.";
 "A category with the same name already exists." = "A category with the same name already exists.";
+"lastReadPosition" = "Save last read position";
 
 
 // suggest

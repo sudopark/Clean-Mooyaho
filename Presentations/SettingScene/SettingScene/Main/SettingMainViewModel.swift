@@ -22,6 +22,16 @@ public struct SettingItemCellViewModel: Equatable {
     enum Accessory: Equatable {
         case disclosure
         case accentValue(_ value: String)
+        case toggle(_ isOn: Bool, _ toggled: (Bool) -> Void)
+        
+        static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.disclosure, .disclosure): return true
+            case (.accentValue(let v1), .accentValue(let v2)): return v1 == v2
+            case (.toggle(let isOn1, _), .toggle(let isOn2, _)): return isOn1 == isOn2
+            default: return false
+            }
+        }
     }
     
     let itemID: String
@@ -57,18 +67,21 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
     
     private let appID: String
     private let memberUsecase: MemberUsecase
+    private let readingOptionUsecase: ReadingOptionUsecase
     private let deviceInfoService: DeviceInfoService
     private let router: SettingMainRouting
     private weak var listener: SettingMainSceneListenable?
     
     public init(appID: String,
                 memberUsecase: MemberUsecase,
+                readingOptionUsecase: ReadingOptionUsecase,
                 deviceInfoService: DeviceInfoService,
                 router: SettingMainRouting,
                 listener: SettingMainSceneListenable?) {
         
         self.appID = appID
         self.memberUsecase = memberUsecase
+        self.readingOptionUsecase = readingOptionUsecase
         self.deviceInfoService = deviceInfoService
         self.router = router
         self.listener = listener
@@ -84,6 +97,7 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
     enum Section: String {
         case account
         case items
+        case reading
         case service
     }
     
@@ -93,6 +107,7 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
         case signIn
         case editCategories
         case userDataMigration
+        case lastReadPosition(_ isOn: Bool, _ toggled: (Bool) -> Void)
         case appVersion(String)
         case feedback
         case sourceCode
@@ -168,22 +183,28 @@ extension SettingMainViewModelImple {
     
     public var sections: Observable<[SettingItemSection]> {
         
-        let asSections: (Member?) -> [SettingItemSection]?
-        asSections = { [weak self] member in
+        let asSections: (Member?, Bool) -> [SettingItemSection]?
+        asSections = { [weak self] member, isLastReadSaveOn in
             guard let self = self else { return nil }
             let accountSection = self.accountSection(for: member)
             let itemSection = self.itemSection(for: member)
+            let readingSectoin = self.readingSection(isLastReadOptionOn: isLastReadSaveOn)
             let serviceSection = self.serviceSection()
             return [
-                accountSection, itemSection, serviceSection
+                accountSection, itemSection, readingSectoin, serviceSection
             ]
         }
         
-        return self.memberUsecase.currentMember
-            .startWith(nil)
-            .map(asSections)
-            .compactMap { $0 }
-            .distinctUntilChanged()
+        let currentMember = self.memberUsecase.currentMember.startWith(nil)
+        let isLastReadSaveOn = self.readingOptionUsecase.isEnabledLastReadPositionSaveOption()
+        
+        return Observable.combineLatest(
+            currentMember,
+            isLastReadSaveOn,
+            resultSelector: asSections
+        )
+        .compactMap { $0 }
+        .distinctUntilChanged()
     }
     
     private func accountSection(for currentMember: Member?) -> SettingItemSection {
@@ -198,6 +219,17 @@ extension SettingMainViewModelImple {
             Item.userDataMigration.asCellViewModel(isEnable: currentMember != nil)
         ]
         return SettingItemSection(section: .items, with: cells)
+    }
+    
+    private func readingSection(isLastReadOptionOn: Bool) -> SettingItemSection {
+     
+        let toggled: (Bool) -> Void = { [weak self] isOn in
+            self?.readingOptionUsecase.updateEnableLastReadPositionSaveOption(isOn)
+        }
+        let cells: [SettingItemCellViewModel] = [
+            Item.lastReadPosition(isLastReadOptionOn, toggled).asCellViewModel()
+        ]
+        return SettingItemSection(section: .reading, with: cells)
     }
     
     private func serviceSection() -> SettingItemSection {
@@ -230,6 +262,7 @@ extension SettingMainViewModelImple.Item {
         case .signIn: return "signIn"
         case .editCategories: return "editCategories"
         case .userDataMigration: return "userDataMigration"
+        case .lastReadPosition: return "lastReadPosition"
         case .appVersion: return "appVersion"
         case .feedback: return "feedback"
         case .sourceCode: return "sourceCode"
@@ -243,6 +276,7 @@ extension SettingMainViewModelImple.Item {
         case .signIn: return "Signin".localized
         case .editCategories: return "Manage item category".localized
         case .userDataMigration: return "Manage temporary user data migration".localized
+        case .lastReadPosition: return "lastReadPosition".localized
         case .appVersion: return "App version".localized
         case .feedback: return "Feedback".localized
         case .sourceCode: return "Source code".localized
@@ -252,6 +286,7 @@ extension SettingMainViewModelImple.Item {
     private var accessory: SettingItemCellViewModel.Accessory {
         switch self {
         case let .appVersion(version): return .accentValue(version)
+        case let .lastReadPosition(isOn, toggled): return .toggle(isOn, toggled)
         default: return .disclosure
         }
     }
@@ -269,6 +304,7 @@ extension SettingMainViewModelImple.Section {
         switch self {
         case .account: return "Account"
         case .items: return "Items"
+        case .reading: return "Reading"
         case .service: return "Service"
         }
     }
