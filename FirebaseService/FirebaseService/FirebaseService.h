@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Firebase.h"
 
 //! Project version number for FirebaseService.
 FOUNDATION_EXPORT double FirebaseServiceVersionNumber;

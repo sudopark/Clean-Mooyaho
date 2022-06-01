@@ -8,6 +8,8 @@
 import Foundation
 
 import RxSwift
+import FirebaseAuth
+import FirebaseFirestore
 
 import Domain
 import DataStore

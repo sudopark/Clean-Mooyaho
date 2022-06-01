@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import Prelude
 import Optics
+import FirebaseFirestore
 
 import Domain
 import DataStore

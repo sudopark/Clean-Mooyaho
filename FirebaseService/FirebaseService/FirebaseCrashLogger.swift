@@ -7,6 +7,8 @@
 
 import Foundation
 
+import FirebaseCrashlytics
+
 import Domain
 
 

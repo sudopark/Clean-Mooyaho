@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import FirebaseMessaging
 
 import Domain
 
