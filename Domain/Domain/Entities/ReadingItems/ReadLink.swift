@@ -46,14 +46,18 @@ public struct ReadLink: ReadItem {
 
 extension ReadLink {
     
-    private static var welcomeItemIdentifier: String { "welcome-item"}
+    private static var welcomeItemIdentifierPrefix: String { "welcome-item"}
     
     public var isWelcomeItem: Bool {
-        return self.uid == Self.welcomeItemIdentifier
+        return self.uid.starts(with: Self.welcomeItemIdentifierPrefix)
     }
-
+    
     public static func makeWelcomeItem(_ urlPath: String) -> ReadLink {
-        return ReadLink(uid: self.welcomeItemIdentifier, link: urlPath,
+        
+        let newUid = "\(welcomeItemIdentifierPrefix)_\(UUID().uuidString)"
+        
+        return ReadLink(uid: newUid,
+                        link: urlPath,
                         createAt: .now(), lastUpdated: .now())
         |> \.customName .~ pure("welcome item custom name".localized)
         |> \.priority .~ .afterAWhile
