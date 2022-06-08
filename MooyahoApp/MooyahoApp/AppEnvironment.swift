@@ -106,7 +106,11 @@ struct AppEnvironment {
     }
     
     static var welcomeItemURLPath: String {
-        return "https://breadroad-af5c0.web.app/welcome"
+        if self.buildMode == .debug {
+            return "http://www.readmind.app/welcome"
+        } else {
+            return "https://breadroad-af5c0.web.app/welcome"
+        }
     }
 }
 
