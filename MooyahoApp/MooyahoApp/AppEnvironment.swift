@@ -107,7 +107,7 @@ struct AppEnvironment {
     
     static var welcomeItemURLPath: String {
         if self.buildMode == .debug {
-            return "http://localhost:3000/welcome"
+            return "http://www.readmind.app/welcome"
         } else {
             return "https://breadroad-af5c0.web.app/welcome"
         }
