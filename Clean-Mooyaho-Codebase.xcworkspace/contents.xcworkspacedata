@@ -34,6 +34,13 @@
    </Group>
    <Group
       location = "container:"
+      name = "Services">
+      <FileRef
+         location = "group:Services/ReadingList/ReadingList.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
       name = "Supports">
       <FileRef
          location = "group:Supports/Extensions/Extensions.xcodeproj">
