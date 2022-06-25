@@ -32,6 +32,13 @@
          location = "group:Presentations/SuggestScene/SuggestScene.xcodeproj">
       </FileRef>
    </Group>
+   <Group
+      location = "container:"
+      name = "Supports">
+      <FileRef
+         location = "group:Supports/Extensions/Extensions.xcodeproj">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:Domain/Domain.xcodeproj">
    </FileRef>
