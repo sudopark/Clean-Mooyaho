@@ -13,7 +13,9 @@
 		F69E2D1E2867723D006CFA3C /* ReadingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69E2D1D2867723D006CFA3C /* ReadingList.swift */; };
 		F69E2D202867735B006CFA3C /* ReadLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69E2D1F2867735B006CFA3C /* ReadLinkItem.swift */; };
 		F69E2D58286777F7006CFA3C /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D57286777F7006CFA3C /* Extensions.framework */; };
-		F69E2D59286777F7006CFA3C /* Extensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D57286777F7006CFA3C /* Extensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F6E39C60286809CB00DE9E75 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E39C5F286809CB00DE9E75 /* Common3rdParty.framework */; };
+		F6E39C68286CAE9100DE9E75 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E39C67286CAE9100DE9E75 /* Extensions.framework */; };
+		F6E39C6A286CAF2800DE9E75 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E39C69286CAF2800DE9E75 /* Common3rdParty.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,20 +28,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		F69E2D5A286777F7006CFA3C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F69E2D59286777F7006CFA3C /* Extensions.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		F69E2D002866CC7E006CFA3C /* ReadingList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadingList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69E2D032866CC7E006CFA3C /* ReadingList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadingList.h; sourceTree = "<group>"; };
@@ -48,6 +36,9 @@
 		F69E2D1D2867723D006CFA3C /* ReadingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingList.swift; sourceTree = "<group>"; };
 		F69E2D1F2867735B006CFA3C /* ReadLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkItem.swift; sourceTree = "<group>"; };
 		F69E2D57286777F7006CFA3C /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E39C5F286809CB00DE9E75 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E39C67286CAE9100DE9E75 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E39C69286CAF2800DE9E75 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E39C60286809CB00DE9E75 /* Common3rdParty.framework in Frameworks */,
 				F69E2D58286777F7006CFA3C /* Extensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +55,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6E39C6A286CAF2800DE9E75 /* Common3rdParty.framework in Frameworks */,
+				F6E39C68286CAE9100DE9E75 /* Extensions.framework in Frameworks */,
 				F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,8 +107,8 @@
 		F69E2D182866CCFA006CFA3C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				F69E2D1D2867723D006CFA3C /* ReadingList.swift */,
-				F69E2D1F2867735B006CFA3C /* ReadLinkItem.swift */,
+				F6E39C642868116B00DE9E75 /* ReadingList */,
+				F6E39C652868117400DE9E75 /* FavoriteItems */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -150,9 +144,28 @@
 		F69E2D56286777F7006CFA3C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6E39C69286CAF2800DE9E75 /* Common3rdParty.framework */,
+				F6E39C67286CAE9100DE9E75 /* Extensions.framework */,
+				F6E39C5F286809CB00DE9E75 /* Common3rdParty.framework */,
 				F69E2D57286777F7006CFA3C /* Extensions.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6E39C642868116B00DE9E75 /* ReadingList */ = {
+			isa = PBXGroup;
+			children = (
+				F69E2D1D2867723D006CFA3C /* ReadingList.swift */,
+				F69E2D1F2867735B006CFA3C /* ReadLinkItem.swift */,
+			);
+			path = ReadingList;
+			sourceTree = "<group>";
+		};
+		F6E39C652868117400DE9E75 /* FavoriteItems */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FavoriteItems;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,7 +190,6 @@
 				F69E2CFC2866CC7E006CFA3C /* Sources */,
 				F69E2CFD2866CC7E006CFA3C /* Frameworks */,
 				F69E2CFE2866CC7E006CFA3C /* Resources */,
-				F69E2D5A286777F7006CFA3C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
