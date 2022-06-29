@@ -18,6 +18,7 @@
 		F69E2D53286777D0006CFA3C /* Expression+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69E2D4C286777D0006CFA3C /* Expression+Extensions.swift */; };
 		F69E2D54286777D0006CFA3C /* Time+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69E2D4D286777D0006CFA3C /* Time+Extension.swift */; };
 		F69E2D55286777D0006CFA3C /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69E2D4E286777D0006CFA3C /* Rx+Extensions.swift */; };
+		F6E39C632868109400DE9E75 /* RuntimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E39C622868109400DE9E75 /* RuntimeError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		F69E2D4C286777D0006CFA3C /* Expression+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Expression+Extensions.swift"; sourceTree = "<group>"; };
 		F69E2D4D286777D0006CFA3C /* Time+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Time+Extension.swift"; sourceTree = "<group>"; };
 		F69E2D4E286777D0006CFA3C /* Rx+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
+		F6E39C622868109400DE9E75 /* RuntimeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				F69E2D49286777D0006CFA3C /* String+Extensions.swift */,
 				F69E2D4D286777D0006CFA3C /* Time+Extension.swift */,
 				F69E2D48286777D0006CFA3C /* Units.swift */,
+				F6E39C622868109400DE9E75 /* RuntimeError.swift */,
 				F69E2D2E2867777E006CFA3C /* Extensions.h */,
 			);
 			path = Extensions;
@@ -228,6 +231,7 @@
 				F69E2D54286777D0006CFA3C /* Time+Extension.swift in Sources */,
 				F69E2D50286777D0006CFA3C /* String+Extensions.swift in Sources */,
 				F69E2D4F286777D0006CFA3C /* Units.swift in Sources */,
+				F6E39C632868109400DE9E75 /* RuntimeError.swift in Sources */,
 				F69E2D55286777D0006CFA3C /* Rx+Extensions.swift in Sources */,
 				F69E2D51286777D0006CFA3C /* RxCocoa+Extensions.swift in Sources */,
 				F69E2D52286777D0006CFA3C /* Array+Extensions.swift in Sources */,
