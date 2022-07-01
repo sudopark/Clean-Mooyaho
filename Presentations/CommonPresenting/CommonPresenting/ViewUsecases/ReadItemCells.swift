@@ -14,6 +14,7 @@ import Optics
 import ValidationSemigroup
 
 import Domain
+import Extensions
 
 
 // MARK: - DefaultReadCollectionCell

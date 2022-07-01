@@ -13,6 +13,8 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
+
 
 struct ReadCollectionTable: Table {
     

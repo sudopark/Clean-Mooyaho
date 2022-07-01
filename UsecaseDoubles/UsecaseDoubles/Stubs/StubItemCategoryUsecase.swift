@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 
 import Domain
+import Extensions
 
 
 open class StubItemCategoryUsecase: ReadItemCategoryUsecase {

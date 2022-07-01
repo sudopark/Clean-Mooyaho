@@ -41,6 +41,7 @@
 		F626091B274D4027003C9577 /* LatestSearchQueryTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */; };
 		F626091D274D420E003C9577 /* LocalStorageTests+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */; };
 		F62DEFCB27538968008D50D1 /* FavoriteItemIDTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DEFCA27538968008D50D1 /* FavoriteItemIDTable.swift */; };
+		F6311A1E28700367005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A1D28700367005C8FCB /* Extensions.framework */; };
 		F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212626557873000D7456 /* RepositoryImple+Member.swift */; };
 		F633212926557924000D7456 /* RepositoryTests+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212826557924000D7456 /* RepositoryTests+Member.swift */; };
 		F64061892735C64E00902787 /* RepositoryImple+UserDataMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64061882735C64E00902787 /* RepositoryImple+UserDataMigration.swift */; };
@@ -141,6 +142,8 @@
 		F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestSearchQueryTable.swift; sourceTree = "<group>"; };
 		F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Search.swift"; sourceTree = "<group>"; };
 		F62DEFCA27538968008D50D1 /* FavoriteItemIDTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemIDTable.swift; sourceTree = "<group>"; };
+		F6311A1B2870035E005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6311A1D28700367005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F633212626557873000D7456 /* RepositoryImple+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+Member.swift"; sourceTree = "<group>"; };
 		F633212826557924000D7456 /* RepositoryTests+Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Member.swift"; sourceTree = "<group>"; };
 		F64061882735C64E00902787 /* RepositoryImple+UserDataMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryImple+UserDataMigration.swift"; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 			files = (
 				F601724C26FEF85000E47B75 /* SwiftLinkPreview in Frameworks */,
 				F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */,
+				F6311A1E28700367005C8FCB /* Extensions.framework in Frameworks */,
 				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
 				F6D0A24627F20D4B006A0AEC /* SQLiteService in Frameworks */,
@@ -272,6 +276,8 @@
 		2BA406CA26315E48000CC122 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A1D28700367005C8FCB /* Extensions.framework */,
+				F6311A1B2870035E005C8FCB /* Extensions.framework */,
 				2BD54F68263D4C3D004B3EB0 /* Common3rdParty.framework */,
 				2BD54F66263D4C33004B3EB0 /* UnitTestHelpKit.framework */,
 				2BD54F62263D4C29004B3EB0 /* Domain.framework */,

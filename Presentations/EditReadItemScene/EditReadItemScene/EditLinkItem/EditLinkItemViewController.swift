@@ -15,6 +15,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 class CollectionPathView: BaseUIView, Presenting {

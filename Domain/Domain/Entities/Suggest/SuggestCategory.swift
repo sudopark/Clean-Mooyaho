@@ -8,6 +8,8 @@
 
 import Foundation
 
+import Extensions
+
 
 public struct SuggestCategory {
     

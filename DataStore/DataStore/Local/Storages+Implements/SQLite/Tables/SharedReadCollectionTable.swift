@@ -13,7 +13,7 @@ import Prelude
 import Optics
 
 import Domain
-
+import Extensions
 
 
 struct SharedRootReadCollectionTable: Table {

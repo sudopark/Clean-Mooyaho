@@ -8,6 +8,7 @@
 import UIKit
 
 import Domain
+import Extensions
 
 
 public protocol CollectionInverseParentMakeParameter { }

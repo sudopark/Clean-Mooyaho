@@ -32,9 +32,12 @@
          location = "group:Presentations/SuggestScene/SuggestScene.xcodeproj">
       </FileRef>
    </Group>
+   <FileRef
+      location = "group:Domain/Domain.xcodeproj">
+   </FileRef>
    <Group
       location = "container:"
-      name = "Services">
+      name = "Repositories">
       <FileRef
          location = "group:Services/ReadingList/ReadingList.xcodeproj">
       </FileRef>
@@ -46,9 +49,6 @@
          location = "group:Supports/Extensions/Extensions.xcodeproj">
       </FileRef>
    </Group>
-   <FileRef
-      location = "group:Domain/Domain.xcodeproj">
-   </FileRef>
    <FileRef
       location = "group:DataStore/DataStore.xcodeproj">
    </FileRef>

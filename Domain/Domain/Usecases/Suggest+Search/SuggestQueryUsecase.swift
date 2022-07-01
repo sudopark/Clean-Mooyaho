@@ -10,6 +10,7 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Extensions
 
 
 // MARK: - SuggestQueryUsecase

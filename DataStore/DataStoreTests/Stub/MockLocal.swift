@@ -12,6 +12,7 @@ import RxSwift
 
 import UnitTestHelpKit
 import Domain
+import Extensions
 
 @testable import DataStore
 

@@ -14,6 +14,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 import MemberScenes
 import UsecaseDoubles
 import UnitTestHelpKit

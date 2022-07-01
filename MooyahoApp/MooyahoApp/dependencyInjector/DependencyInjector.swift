@@ -12,6 +12,7 @@ import RxSwift
 
 import Domain
 import CommonPresenting
+import Extensions
 import DataStore
 import FirebaseService
 

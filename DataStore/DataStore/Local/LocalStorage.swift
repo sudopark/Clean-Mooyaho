@@ -11,6 +11,8 @@ import Foundation
 import RxSwift
 
 import Domain
+import Extensions
+
 
 public enum LocalErrors: Error {
     case invalidData(_ reason: String?)

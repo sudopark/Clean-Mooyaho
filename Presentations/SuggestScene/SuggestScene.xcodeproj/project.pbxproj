@@ -13,6 +13,7 @@
 		F626090E274D2E59003C9577 /* SuggestQueryScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260909274D2E59003C9577 /* SuggestQueryScene.swift */; };
 		F626090F274D2E59003C9577 /* SuggestQueryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626090A274D2E59003C9577 /* SuggestQueryViewModel.swift */; };
 		F6260911274D367F003C9577 /* SuggestQueryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260910274D367F003C9577 /* SuggestQueryViewModelTests.swift */; };
+		F6311A422870075D005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A412870075D005C8FCB /* Extensions.framework */; };
 		F65CC284274BF95F005B819E /* SuggestScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65CC27B274BF95F005B819E /* SuggestScene.framework */; };
 		F65CC289274BF95F005B819E /* SuggestSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65CC288274BF95F005B819E /* SuggestSceneTests.swift */; };
 		F65CC28A274BF95F005B819E /* SuggestScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F65CC27E274BF95F005B819E /* SuggestScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -52,6 +53,7 @@
 		F6260909274D2E59003C9577 /* SuggestQueryScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryScene.swift; sourceTree = "<group>"; };
 		F626090A274D2E59003C9577 /* SuggestQueryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryViewModel.swift; sourceTree = "<group>"; };
 		F6260910274D367F003C9577 /* SuggestQueryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestQueryViewModelTests.swift; sourceTree = "<group>"; };
+		F6311A412870075D005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F65CC27B274BF95F005B819E /* SuggestScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SuggestScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F65CC27E274BF95F005B819E /* SuggestScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuggestScene.h; sourceTree = "<group>"; };
 		F65CC283274BF95F005B819E /* SuggestSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuggestSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6311A422870075D005C8FCB /* Extensions.framework in Frameworks */,
 				F65CC299274BF97F005B819E /* CommonPresenting.framework in Frameworks */,
 				F65CC295274BF97A005B819E /* Domain.framework in Frameworks */,
 				F65CC29C274BF98F005B819E /* Common3rdParty.framework in Frameworks */,
@@ -156,6 +159,7 @@
 		F65CC293274BF97A005B819E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A412870075D005C8FCB /* Extensions.framework */,
 				F65CC2A3274BF9B0005B819E /* UnitTestHelpKit.framework */,
 				F65CC2A1274BF9A9005B819E /* UsecaseDoubles.framework */,
 				F65CC29F274BF99F005B819E /* Common3rdParty.framework */,
