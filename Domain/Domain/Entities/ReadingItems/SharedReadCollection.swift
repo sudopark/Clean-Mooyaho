@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Extensions
+
 
 public protocol SharedReadItem: ReadItem { }
 

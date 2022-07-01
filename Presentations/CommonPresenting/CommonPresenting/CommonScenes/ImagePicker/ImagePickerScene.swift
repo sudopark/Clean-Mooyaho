@@ -13,6 +13,7 @@ import RxSwift
 import RxCocoa
 
 import Domain
+import Extensions
 
 
 // MARK: - ImagePickerScene Interactor & Presenter

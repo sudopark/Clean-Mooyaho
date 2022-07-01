@@ -13,6 +13,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 import UnitTestHelpKit
 import UsecaseDoubles
 

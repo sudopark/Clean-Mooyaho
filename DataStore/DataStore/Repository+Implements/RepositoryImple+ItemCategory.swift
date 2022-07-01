@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 
 import Domain
+import Extensions
 
 
 public protocol ItemCategoryRepositoryDefImpleDependency: AnyObject {

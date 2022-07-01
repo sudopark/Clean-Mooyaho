@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 
 import Domain
+import Extensions
 
 
 public protocol BaseViewControllable: UIViewController { }

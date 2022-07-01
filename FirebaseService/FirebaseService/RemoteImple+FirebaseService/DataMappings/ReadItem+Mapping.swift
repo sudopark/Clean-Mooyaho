@@ -8,6 +8,7 @@
 import Foundation
 
 import Domain
+import Extensions
 
 
 enum ReadItemMappingKey: String, JSONMappingKeys {

@@ -13,6 +13,7 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
 
 
 public protocol AuthRepositoryDefImpleDependency: AnyObject {

@@ -28,6 +28,7 @@
 		F62271EE273C726A00AF76C1 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271ED273C726A00AF76C1 /* Common3rdParty.framework */; };
 		F62271F0273C727300AF76C1 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271EF273C727300AF76C1 /* UnitTestHelpKit.framework */; };
 		F62271F2273C727B00AF76C1 /* UsecaseDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271F1273C727B00AF76C1 /* UsecaseDoubles.framework */; };
+		F6311A3E28700732005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A3D28700732005C8FCB /* Extensions.framework */; };
 		F638A5F4273C7388005A7EA9 /* SettingMainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5EF273C7388005A7EA9 /* SettingMainRouter.swift */; };
 		F638A5F5273C7388005A7EA9 /* SettingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F0273C7388005A7EA9 /* SettingMainViewController.swift */; };
 		F638A5F7273C7388005A7EA9 /* SettingMainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */; };
@@ -90,6 +91,7 @@
 		F62271ED273C726A00AF76C1 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62271EF273C727300AF76C1 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62271F1273C727B00AF76C1 /* UsecaseDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UsecaseDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6311A3D28700732005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F638A5EF273C7388005A7EA9 /* SettingMainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainRouter.swift; sourceTree = "<group>"; };
 		F638A5F0273C7388005A7EA9 /* SettingMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainViewController.swift; sourceTree = "<group>"; };
 		F638A5F2273C7388005A7EA9 /* SettingMainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMainScene.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6311A3E28700732005C8FCB /* Extensions.framework in Frameworks */,
 				F62271E4273C722F00AF76C1 /* CommonPresenting.framework in Frameworks */,
 				F62271E0273C722800AF76C1 /* Domain.framework in Frameworks */,
 				F62271E8273C724400AF76C1 /* Common3rdParty.framework in Frameworks */,
@@ -215,6 +218,7 @@
 		F62271DE273C722800AF76C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A3D28700732005C8FCB /* Extensions.framework */,
 				F62271F1273C727B00AF76C1 /* UsecaseDoubles.framework */,
 				F62271EF273C727300AF76C1 /* UnitTestHelpKit.framework */,
 				F62271ED273C726A00AF76C1 /* Common3rdParty.framework */,

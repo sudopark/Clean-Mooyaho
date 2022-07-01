@@ -14,6 +14,7 @@ import Optics
 
 import Domain
 import UnitTestHelpKit
+import Extensions
 
 import DataStore
 

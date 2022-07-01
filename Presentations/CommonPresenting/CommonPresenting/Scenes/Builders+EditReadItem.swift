@@ -8,6 +8,7 @@
 import Foundation
 
 import Domain
+import Extensions
 
 
 // MARK: - Builder + DependencyInjector Extension

@@ -13,6 +13,7 @@ import Optics
 
 import Domain
 import DataStore
+import Extensions
 
 
 extension FirebaseServiceImple {

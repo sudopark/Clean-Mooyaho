@@ -13,6 +13,7 @@ import RxRelay
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 // MARK: - RecoverAccountViewModel

@@ -1,8 +1,9 @@
 //
 //  ReadLinkItem.swift
-//  ReadingList
+//  Domain
 //
-//  Created by sudo.park on 2022/06/26.
+//  Created by sudo.park on 2022/07/01.
+//  Copyright © 2022 ParkHyunsoo. All rights reserved.
 //
 
 import Foundation

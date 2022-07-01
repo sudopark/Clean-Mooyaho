@@ -13,6 +13,7 @@
 		F62692C22725638A00841B40 /* LinkMemoScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BD2725638A00841B40 /* LinkMemoScene.swift */; };
 		F62692C32725638A00841B40 /* LinkMemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692BE2725638A00841B40 /* LinkMemoViewModel.swift */; };
 		F62692C5272565EC00841B40 /* LinkMemoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62692C4272565EC00841B40 /* LinkMemoViewModelTests.swift */; };
+		F6311A3628700626005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A3528700626005C8FCB /* Extensions.framework */; };
 		F64B12C8270B1FB8000B6AD2 /* ViewerScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64B12BF270B1FB8000B6AD2 /* ViewerScene.framework */; };
 		F64B12CD270B1FB8000B6AD2 /* ViewerSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64B12CC270B1FB8000B6AD2 /* ViewerSceneTests.swift */; };
 		F64B12CE270B1FB8000B6AD2 /* ViewerScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F64B12C2270B1FB8000B6AD2 /* ViewerScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -47,6 +48,7 @@
 		F62692BD2725638A00841B40 /* LinkMemoScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoScene.swift; sourceTree = "<group>"; };
 		F62692BE2725638A00841B40 /* LinkMemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoViewModel.swift; sourceTree = "<group>"; };
 		F62692C4272565EC00841B40 /* LinkMemoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkMemoViewModelTests.swift; sourceTree = "<group>"; };
+		F6311A3528700626005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64B12BF270B1FB8000B6AD2 /* ViewerScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ViewerScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64B12C2270B1FB8000B6AD2 /* ViewerScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewerScene.h; sourceTree = "<group>"; };
 		F64B12C7270B1FB8000B6AD2 /* ViewerSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ViewerSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6311A3628700626005C8FCB /* Extensions.framework in Frameworks */,
 				F64B12E0270B1FD5000B6AD2 /* CommonPresenting.framework in Frameworks */,
 				F64B12DD270B1FD0000B6AD2 /* Common3rdParty.framework in Frameworks */,
 				F64B12D9270B1FCC000B6AD2 /* Domain.framework in Frameworks */,
@@ -144,6 +147,7 @@
 		F64B12D7270B1FCC000B6AD2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A3528700626005C8FCB /* Extensions.framework */,
 				F64B12E6270B2014000B6AD2 /* UnitTestHelpKit.framework */,
 				F64B12E4270B200D000B6AD2 /* UsecaseDoubles.framework */,
 				F64B12E2270B1FF0000B6AD2 /* Common3rdParty.framework */,

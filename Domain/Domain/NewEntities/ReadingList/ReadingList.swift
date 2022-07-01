@@ -7,10 +7,6 @@
 
 import Foundation
 
-import Prelude
-import Optics
-import Extensions
-
 
 // MARK: - ReadingListItem
 
@@ -65,46 +61,5 @@ extension ReadingList {
     
     public static func makeMyRootList(_ ownerID: String) -> ReadingList {
         return .init(uuid: self.rootListID, name: self.rootListName, ownerID: ownerID, isRootList: true)
-    }
-}
-
-
-// MARK: - update list item
-
-extension ReadingList {
-    
-    public func appendItem(_ item: ReadingListItem) -> ReadingList {
-        return self
-            |> \.items %~ { $0 + [item] }
-    }
-    
-    public func updateItem(_ newItem: ReadingListItem) throws -> ReadingList {
-        guard let index = self.items.firstIndex(where: { $0.uuid == newItem.uuid })
-        else {
-            throw RuntimeError("item not exists on list")
-        }
-        let newList = self.items |> ix(index) .~ newItem
-        return self |> \.items .~ newList
-    }
-    
-    public func updateItem(itemID: String,
-                           _ mutating: (ReadingListItem) -> ReadingListItem) throws -> ReadingList {
-        guard let index = self.items.firstIndex(where: { $0.uuid == itemID })
-        else {
-            throw RuntimeError("item not exists on list")
-        }
-        let newItem = mutating(self.items[index])
-        let newList = self.items |> ix(index) .~ newItem
-        return self |> \.items .~ newList
-    }
-    
-    public func removeItem(_ itemID: String) throws -> ReadingList {
-        guard let index = self.items.firstIndex(where: { $0.uuid == itemID })
-        else {
-            throw RuntimeError("item not exists on list")
-        }
-        var newList = self.items
-        newList.remove(at: index)
-        return self |> \.items .~ newList
     }
 }

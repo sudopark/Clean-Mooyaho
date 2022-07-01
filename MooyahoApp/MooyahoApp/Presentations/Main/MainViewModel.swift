@@ -14,6 +14,7 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
 import MemberScenes
 import CommonPresenting
 

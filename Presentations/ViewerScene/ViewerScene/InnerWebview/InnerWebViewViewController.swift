@@ -15,6 +15,7 @@ import Prelude
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 // MARK: - InnerWebViewViewController

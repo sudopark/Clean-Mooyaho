@@ -11,6 +11,7 @@ import XCTest
 import RxSwift
 
 import Domain
+import Extensions
 import UnitTestHelpKit
 import UsecaseDoubles
 
