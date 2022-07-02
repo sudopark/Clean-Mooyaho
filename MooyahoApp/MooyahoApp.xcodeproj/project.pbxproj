@@ -42,6 +42,8 @@
 		F617F10F2768F37E00D88F9C /* IOSDeviceInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */; };
 		F62271F4273C728D00AF76C1 /* SettingScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271F3273C728D00AF76C1 /* SettingScene.framework */; };
 		F62271F5273C728D00AF76C1 /* SettingScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62271F3273C728D00AF76C1 /* SettingScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F6279EB02870189C00B970C9 /* Local.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EAF2870189C00B970C9 /* Local.framework */; };
+		F6279EB12870189C00B970C9 /* Local.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EAF2870189C00B970C9 /* Local.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
 		F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
@@ -164,6 +166,7 @@
 				F62271F5273C728D00AF76C1 /* SettingScene.framework in Embed Frameworks */,
 				F6ECE4DB26FAF8B3008D7ECA /* FirebaseService.framework in Embed Frameworks */,
 				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
+				F6279EB12870189C00B970C9 /* Local.framework in Embed Frameworks */,
 				F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
 				F6851A22270B20640048197B /* ViewerScene.framework in Embed Frameworks */,
@@ -229,6 +232,7 @@
 		F6101483265792C400D32E38 /* MainSlideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSlideMenuViewModel.swift; sourceTree = "<group>"; };
 		F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSDeviceInfoService.swift; sourceTree = "<group>"; };
 		F62271F3273C728D00AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6279EAF2870189C00B970C9 /* Local.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Local.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
 		F6311A4528700786005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -312,6 +316,7 @@
 				F6BBF17A2708523000420A49 /* EditReadItemScene.framework in Frameworks */,
 				2BE9786F263961F10000C0C6 /* DataStore.framework in Frameworks */,
 				2B8AC409263C5D7F002BA1AC /* GoogleMobileAds.xcframework in Frameworks */,
+				F6279EB02870189C00B970C9 /* Local.framework in Frameworks */,
 				F62271F4273C728D00AF76C1 /* SettingScene.framework in Frameworks */,
 				F6851A21270B20640048197B /* ViewerScene.framework in Frameworks */,
 				2BE97875263961FF0000C0C6 /* CommonPresenting.framework in Frameworks */,
@@ -522,6 +527,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6279EAF2870189C00B970C9 /* Local.framework */,
 				F6311A4528700786005C8FCB /* Extensions.framework */,
 				F6811324276B8722005065E9 /* UsecaseDoubles.framework */,
 				F6811322276B871B005065E9 /* UnitTestHelpKit.framework */,
