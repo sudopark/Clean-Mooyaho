@@ -10,7 +10,7 @@ jobs:
     # runs-on: macOS-latest
     strategy:
         matrix:
-          xcode: [13.4]
+          xcode: [13.4.1]
           destination: ["platform=iOS Simulator,name=iPhone 11,OS=15.5"]
     
     steps:
@@ -45,7 +45,7 @@ jobs:
           -scheme Mooyaho\ iOS \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -57,7 +57,7 @@ jobs:
           -scheme MemberScenes \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -69,7 +69,7 @@ jobs:
           -scheme ReadItemScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -81,7 +81,7 @@ jobs:
           -scheme EditReadItemScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -93,7 +93,7 @@ jobs:
           -scheme ViewerScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -105,7 +105,7 @@ jobs:
           -scheme DiscoveryScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -117,7 +117,7 @@ jobs:
           -scheme SettingScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -129,7 +129,7 @@ jobs:
           -scheme SuggestScene \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -141,31 +141,31 @@ jobs:
           -scheme Domain \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
-        env: 
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env:
           destination: ${{ matrix.destination }}
 
       - name: Local Unit Tests
         id: test_local
         run: |
-          xcodebuild test \
+          xcodebuild clean test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme Local \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
       - name: ReadingList Unit Tests
         id: test_reading_list
         run: |
-          xcodebuild test \
+          xcodebuild clean test \
           -workspace Clean-Mooyaho-Codebase.xcworkspace \
           -scheme ReadingList \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
           
@@ -177,19 +177,7 @@ jobs:
           -scheme DataStore \
           -destination "${destination}" \
           -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
-        env: 
-          destination: ${{ matrix.destination }}
-
-      - name: FirebaseService Unit Tests
-        id: test_fb
-        run: |
-          xcodebuild test \
-          -workspace Clean-Mooyaho-Codebase.xcworkspace \
-          -scheme FirebaseService \
-          -destination "${destination}" \
-          -configuration Debug \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
 
@@ -250,10 +238,5 @@ jobs:
           
       - name: Check Tests DataStore
         if: steps.test_data_store.outputs.result != 0
-        run: |
-          echo "Tests Failed"; exit 1
-
-      - name: Check Tests FirebaseService
-        if: steps.test_fb.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
