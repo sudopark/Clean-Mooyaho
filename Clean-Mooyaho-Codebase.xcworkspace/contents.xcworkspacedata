@@ -48,6 +48,9 @@
       <FileRef
          location = "group:Supports/Extensions/Extensions.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:Supports/Local/Local.xcodeproj">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:DataStore/DataStore.xcodeproj">
