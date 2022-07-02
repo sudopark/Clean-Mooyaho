@@ -144,7 +144,30 @@ jobs:
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
         env: 
           destination: ${{ matrix.destination }}
-          
+
+      - name: Local Unit Tests
+        id: test_local
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme Local \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
+
+      - name: ReadingList Unit Tests
+        id: test_reading_list
+        run: |
+          xcodebuild test \
+          -workspace Clean-Mooyaho-Codebase.xcworkspace \
+          -scheme ReadingList \
+          -destination "${destination}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO | xcpretty -c; echo "::set-output name=result::${PIPESTATUS[0]}"; echo "${PIPESTATUS[0]}"
+        env: 
+          destination: ${{ matrix.destination }}
           
       - name: DataStore Unit Tests
         id: test_data_store
@@ -212,6 +235,16 @@ jobs:
       
       - name: Check Tests Domain
         if: steps.test_domain.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests Local
+        if: steps.test_local.outputs.result != 0
+        run: |
+          echo "Tests Failed"; exit 1
+
+      - name: Check Tests ReadingList
+        if: steps.test_reading_list.outputs.result != 0
         run: |
           echo "Tests Failed"; exit 1
           
