@@ -39,7 +39,7 @@
       location = "container:"
       name = "Repositories">
       <FileRef
-         location = "group:Services/ReadingList/ReadingList.xcodeproj">
+         location = "group:Repositories/ReadingList/ReadingList.xcodeproj">
       </FileRef>
    </Group>
    <Group

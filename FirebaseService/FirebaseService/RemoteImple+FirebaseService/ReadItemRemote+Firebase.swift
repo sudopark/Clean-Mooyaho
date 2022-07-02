@@ -87,7 +87,9 @@ extension FirebaseServiceImple {
             return .empty()
         }
         let loading: Maybe<ReadCollection?> = self.load(docuID: collectionID, in: .readCollection)
-        return loading.map { try $0.unwrap() }
+        return loading.map {
+            try $0.unwrap(or: RuntimeError("can not find read collection for : \(collectionID)"))
+        }
     }
     
     public func requestLoadReadLink(linkID: String) -> Maybe<ReadLink> {
@@ -95,7 +97,9 @@ extension FirebaseServiceImple {
             return .empty()
         }
         let loading: Maybe<ReadLink?> = self.load(docuID: linkID, in: .readLinks)
-        return loading.map { try $0.unwrap() }
+        return loading.map {
+            try $0.unwrap(or: RuntimeError("can not fund readlink for: \(linkID)"))
+        }
     }
     
     public func requestUpdateItem(_ params: ReadItemUpdateParams) -> Maybe<Void> {
@@ -307,5 +311,15 @@ private extension FirebaseServiceImple {
         self.delete(item.uid, at: .suggestReadItemIndexes)
             .subscribe()
             .disposed(by: self.disposeBag)
+    }
+}
+
+extension Optional {
+    
+    func unwrap(or throwing: @autoclosure () -> Error?) throws -> Wrapped {
+        guard let value = self else {
+            throw throwing() ?? RuntimeError("unwrap fail")
+        }
+        return value
     }
 }

@@ -8,10 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		F6279E9728700E9400B970C9 /* Local.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279E8E28700E9400B970C9 /* Local.framework */; };
-		F6279E9C28700E9400B970C9 /* LocalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279E9B28700E9400B970C9 /* LocalTests.swift */; };
 		F6279E9D28700E9400B970C9 /* Local.h in Headers */ = {isa = PBXBuildFile; fileRef = F6279E9128700E9400B970C9 /* Local.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6279EA828700EA700B970C9 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EA728700EA700B970C9 /* Extensions.framework */; };
 		F6279EAC28700EB200B970C9 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EAB28700EB200B970C9 /* Common3rdParty.framework */; };
+		F6279EB328708EF800B970C9 /* SQLiteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EB228708EF800B970C9 /* SQLiteStorage.swift */; };
+		F6279EB62870939100B970C9 /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F6279EB52870939100B970C9 /* SQLiteService */; };
+		F6279EB8287093B400B970C9 /* SQLiteStorageImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */; };
+		F6279EBA2870940800B970C9 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EB92870940800B970C9 /* Extensions.framework */; };
+		F6279EBD28709A8C00B970C9 /* SQLiteStorageImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */; };
+		F6279EC6287872B500B970C9 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC5287872B500B970C9 /* Common3rdParty.framework */; };
+		F6279EC8287872C900B970C9 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,9 +34,14 @@
 		F6279E8E28700E9400B970C9 /* Local.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Local.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279E9128700E9400B970C9 /* Local.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Local.h; sourceTree = "<group>"; };
 		F6279E9628700E9400B970C9 /* LocalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6279E9B28700E9400B970C9 /* LocalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTests.swift; sourceTree = "<group>"; };
 		F6279EA728700EA700B970C9 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279EAB28700EB200B970C9 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6279EB228708EF800B970C9 /* SQLiteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStorage.swift; sourceTree = "<group>"; };
+		F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStorageImpleTests.swift; sourceTree = "<group>"; };
+		F6279EB92870940800B970C9 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStorageImple.swift; sourceTree = "<group>"; };
+		F6279EC5287872B500B970C9 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +51,7 @@
 			files = (
 				F6279EAC28700EB200B970C9 /* Common3rdParty.framework in Frameworks */,
 				F6279EA828700EA700B970C9 /* Extensions.framework in Frameworks */,
+				F6279EB62870939100B970C9 /* SQLiteService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +59,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6279EC8287872C900B970C9 /* UnitTestHelpKit.framework in Frameworks */,
+				F6279EC6287872B500B970C9 /* Common3rdParty.framework in Frameworks */,
+				F6279EBA2870940800B970C9 /* Extensions.framework in Frameworks */,
 				F6279E9728700E9400B970C9 /* Local.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,6 +91,7 @@
 		F6279E9028700E9400B970C9 /* Local */ = {
 			isa = PBXGroup;
 			children = (
+				F6279EBB28709A7800B970C9 /* SQL */,
 				F6279E9128700E9400B970C9 /* Local.h */,
 			);
 			path = Local;
@@ -84,7 +100,7 @@
 		F6279E9A28700E9400B970C9 /* LocalTests */ = {
 			isa = PBXGroup;
 			children = (
-				F6279E9B28700E9400B970C9 /* LocalTests.swift */,
+				F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */,
 			);
 			path = LocalTests;
 			sourceTree = "<group>";
@@ -92,10 +108,22 @@
 		F6279EA628700EA700B970C9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */,
+				F6279EC5287872B500B970C9 /* Common3rdParty.framework */,
+				F6279EB92870940800B970C9 /* Extensions.framework */,
 				F6279EAB28700EB200B970C9 /* Common3rdParty.framework */,
 				F6279EA728700EA700B970C9 /* Extensions.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6279EBB28709A7800B970C9 /* SQL */ = {
+			isa = PBXGroup;
+			children = (
+				F6279EB228708EF800B970C9 /* SQLiteStorage.swift */,
+				F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */,
+			);
+			path = SQL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,6 +154,9 @@
 			dependencies = (
 			);
 			name = Local;
+			packageProductDependencies = (
+				F6279EB52870939100B970C9 /* SQLiteService */,
+			);
 			productName = Local;
 			productReference = F6279E8E28700E9400B970C9 /* Local.framework */;
 			productType = "com.apple.product-type.framework";
@@ -160,9 +191,11 @@
 				TargetAttributes = {
 					F6279E8D28700E9400B970C9 = {
 						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 					F6279E9528700E9400B970C9 = {
 						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -175,6 +208,9 @@
 				Base,
 			);
 			mainGroup = F6279E8428700E9400B970C9;
+			packageReferences = (
+				F6279EB42870939100B970C9 /* XCRemoteSwiftPackageReference "SQLiteService" */,
+			);
 			productRefGroup = F6279E8F28700E9400B970C9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -207,6 +243,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6279EB328708EF800B970C9 /* SQLiteStorage.swift in Sources */,
+				F6279EBD28709A8C00B970C9 /* SQLiteStorageImple.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,7 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6279E9C28700E9400B970C9 /* LocalTests.swift in Sources */,
+				F6279EB8287093B400B970C9 /* SQLiteStorageImpleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +390,7 @@
 		F6279EA128700E9400B970C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -372,6 +411,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -380,6 +420,7 @@
 		F6279EA228700E9400B970C9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -408,14 +449,22 @@
 		F6279EA428700E9400B970C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.LocalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -424,10 +473,17 @@
 		F6279EA528700E9400B970C9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.LocalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -468,6 +524,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F6279EB42870939100B970C9 /* XCRemoteSwiftPackageReference "SQLiteService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/SQLiteService";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F6279EB52870939100B970C9 /* SQLiteService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6279EB42870939100B970C9 /* XCRemoteSwiftPackageReference "SQLiteService" */;
+			productName = SQLiteService;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F6279E8528700E9400B970C9 /* Project object */;
 }

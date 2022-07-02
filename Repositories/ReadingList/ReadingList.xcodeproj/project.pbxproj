@@ -12,6 +12,8 @@
 		F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D002866CC7E006CFA3C /* ReadingList.framework */; };
 		F69E2D0F2866CC7E006CFA3C /* ReadingList.h in Headers */ = {isa = PBXBuildFile; fileRef = F69E2D032866CC7E006CFA3C /* ReadingList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F69E2D58286777F7006CFA3C /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D57286777F7006CFA3C /* Extensions.framework */; };
+		F69F16AD287885FC00DF2481 /* LocalReadingListRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F16AC287885FC00DF2481 /* LocalReadingListRepositoryTests.swift */; };
+		F69F16AF2878861400DF2481 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69F16AE2878861400DF2481 /* UnitTestHelpKit.framework */; };
 		F6E39C60286809CB00DE9E75 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E39C5F286809CB00DE9E75 /* Common3rdParty.framework */; };
 		F6E39C68286CAE9100DE9E75 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E39C67286CAE9100DE9E75 /* Extensions.framework */; };
 		F6E39C6A286CAF2800DE9E75 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6E39C69286CAF2800DE9E75 /* Common3rdParty.framework */; };
@@ -35,6 +37,8 @@
 		F69E2D032866CC7E006CFA3C /* ReadingList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadingList.h; sourceTree = "<group>"; };
 		F69E2D082866CC7E006CFA3C /* ReadingListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadingListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69E2D57286777F7006CFA3C /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F69F16AC287885FC00DF2481 /* LocalReadingListRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalReadingListRepositoryTests.swift; sourceTree = "<group>"; };
+		F69F16AE2878861400DF2481 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E39C5F286809CB00DE9E75 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E39C67286CAE9100DE9E75 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E39C69286CAF2800DE9E75 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F69F16AF2878861400DF2481 /* UnitTestHelpKit.framework in Frameworks */,
 				F6E39C6A286CAF2800DE9E75 /* Common3rdParty.framework in Frameworks */,
 				F6E39C68286CAE9100DE9E75 /* Extensions.framework in Frameworks */,
 				F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */,
@@ -95,6 +100,7 @@
 		F69E2D0C2866CC7E006CFA3C /* ReadingListTests */ = {
 			isa = PBXGroup;
 			children = (
+				F69F16AC287885FC00DF2481 /* LocalReadingListRepositoryTests.swift */,
 			);
 			path = ReadingListTests;
 			sourceTree = "<group>";
@@ -110,6 +116,7 @@
 		F69E2D56286777F7006CFA3C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F69F16AE2878861400DF2481 /* UnitTestHelpKit.framework */,
 				F6311A13286F6036005C8FCB /* Domain.framework */,
 				F6311A11286F6021005C8FCB /* Domain.framework */,
 				F6E39C69286CAF2800DE9E75 /* Common3rdParty.framework */,
@@ -186,6 +193,7 @@
 					};
 					F69E2D072866CC7E006CFA3C = {
 						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -238,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F69F16AD287885FC00DF2481 /* LocalReadingListRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,14 +444,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.ReadingListTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -452,10 +468,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.ReadingListTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
