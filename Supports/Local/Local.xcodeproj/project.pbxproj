@@ -16,8 +16,11 @@
 		F6279EB8287093B400B970C9 /* SQLiteStorageImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */; };
 		F6279EBA2870940800B970C9 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EB92870940800B970C9 /* Extensions.framework */; };
 		F6279EBD28709A8C00B970C9 /* SQLiteStorageImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */; };
+		F6279EC028711C3A00B970C9 /* EnvironmentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EBF28711C3A00B970C9 /* EnvironmentStorage.swift */; };
+		F6279EC428711D4C00B970C9 /* EnvironmentStorageImples.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */; };
 		F6279EC6287872B500B970C9 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC5287872B500B970C9 /* Common3rdParty.framework */; };
 		F6279EC8287872C900B970C9 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */; };
+		F69F16B52878939300DF2481 /* EnvironmentStorageImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +43,11 @@
 		F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStorageImpleTests.swift; sourceTree = "<group>"; };
 		F6279EB92870940800B970C9 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStorageImple.swift; sourceTree = "<group>"; };
+		F6279EBF28711C3A00B970C9 /* EnvironmentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorage.swift; sourceTree = "<group>"; };
+		F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorageImples.swift; sourceTree = "<group>"; };
 		F6279EC5287872B500B970C9 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorageImpleTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				F6279EBB28709A7800B970C9 /* SQL */,
+				F6279EBE28711C1F00B970C9 /* Environment */,
 				F6279E9128700E9400B970C9 /* Local.h */,
 			);
 			path = Local;
@@ -101,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */,
+				F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */,
 			);
 			path = LocalTests;
 			sourceTree = "<group>";
@@ -124,6 +132,15 @@
 				F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */,
 			);
 			path = SQL;
+			sourceTree = "<group>";
+		};
+		F6279EBE28711C1F00B970C9 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				F6279EBF28711C3A00B970C9 /* EnvironmentStorage.swift */,
+				F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,8 +260,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6279EC028711C3A00B970C9 /* EnvironmentStorage.swift in Sources */,
 				F6279EB328708EF800B970C9 /* SQLiteStorage.swift in Sources */,
 				F6279EBD28709A8C00B970C9 /* SQLiteStorageImple.swift in Sources */,
+				F6279EC428711D4C00B970C9 /* EnvironmentStorageImples.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F69F16B52878939300DF2481 /* EnvironmentStorageImpleTests.swift in Sources */,
 				F6279EB8287093B400B970C9 /* SQLiteStorageImpleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
