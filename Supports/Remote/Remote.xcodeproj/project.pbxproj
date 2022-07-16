@@ -14,6 +14,11 @@
 		F6B42A9D287C7A5800AF41CB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B42A9C287C7A5800AF41CB /* Extensions.framework */; };
 		F6B42AA1287C7A7700AF41CB /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B42AA0287C7A7700AF41CB /* Common3rdParty.framework */; };
 		F6B42AA3287C7A7D00AF41CB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B42AA2287C7A7D00AF41CB /* Extensions.framework */; };
+		F6B42AA5287C7BFD00AF41CB /* RestAPIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42AA4287C7BFD00AF41CB /* RestAPIEndpoints.swift */; };
+		F6B42AA8287C7CBD00AF41CB /* RestRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42AA7287C7CBD00AF41CB /* RestRemote.swift */; };
+		F6B42AAA287C7D5200AF41CB /* JsonMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42AA9287C7D5200AF41CB /* JsonMappable.swift */; };
+		F6B42AAE28827B7C00AF41CB /* HttpAPIMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42AAD28827B7C00AF41CB /* HttpAPIMethod.swift */; };
+		F6B42AB128827C5000AF41CB /* RemoteFileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42AB028827C5000AF41CB /* RemoteFileStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +40,11 @@
 		F6B42A9C287C7A5800AF41CB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B42AA0287C7A7700AF41CB /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B42AA2287C7A7D00AF41CB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6B42AA4287C7BFD00AF41CB /* RestAPIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestAPIEndpoints.swift; sourceTree = "<group>"; };
+		F6B42AA7287C7CBD00AF41CB /* RestRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestRemote.swift; sourceTree = "<group>"; };
+		F6B42AA9287C7D5200AF41CB /* JsonMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonMappable.swift; sourceTree = "<group>"; };
+		F6B42AAD28827B7C00AF41CB /* HttpAPIMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpAPIMethod.swift; sourceTree = "<group>"; };
+		F6B42AB028827C5000AF41CB /* RemoteFileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFileStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +92,9 @@
 		F64622D2287C79DF00E428CE /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				F6B42AAD28827B7C00AF41CB /* HttpAPIMethod.swift */,
+				F6B42AA6287C7CA000AF41CB /* Rest */,
+				F6B42AAF28827C3900AF41CB /* FileStorage */,
 				F64622D3287C79DF00E428CE /* Remote.h */,
 			);
 			path = Remote;
@@ -104,6 +117,32 @@
 				F6B42A98287C7A5200AF41CB /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6B42AA6287C7CA000AF41CB /* Rest */ = {
+			isa = PBXGroup;
+			children = (
+				F6B42AAB287C7DE500AF41CB /* Mapping */,
+				F6B42AA4287C7BFD00AF41CB /* RestAPIEndpoints.swift */,
+				F6B42AA7287C7CBD00AF41CB /* RestRemote.swift */,
+			);
+			path = Rest;
+			sourceTree = "<group>";
+		};
+		F6B42AAB287C7DE500AF41CB /* Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				F6B42AA9287C7D5200AF41CB /* JsonMappable.swift */,
+			);
+			path = Mapping;
+			sourceTree = "<group>";
+		};
+		F6B42AAF28827C3900AF41CB /* FileStorage */ = {
+			isa = PBXGroup;
+			children = (
+				F6B42AB028827C5000AF41CB /* RemoteFileStorage.swift */,
+			);
+			path = FileStorage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +207,7 @@
 				TargetAttributes = {
 					F64622CF287C79DF00E428CE = {
 						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 					F64622D7287C79DF00E428CE = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -215,6 +255,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6B42AA5287C7BFD00AF41CB /* RestAPIEndpoints.swift in Sources */,
+				F6B42AAE28827B7C00AF41CB /* HttpAPIMethod.swift in Sources */,
+				F6B42AB128827C5000AF41CB /* RemoteFileStorage.swift in Sources */,
+				F6B42AA8287C7CBD00AF41CB /* RestRemote.swift in Sources */,
+				F6B42AAA287C7D5200AF41CB /* JsonMappable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +405,7 @@
 		F64622E3287C79DF00E428CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -380,6 +426,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -388,6 +435,7 @@
 		F64622E4287C79DF00E428CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -416,6 +464,7 @@
 		F64622E6287C79DF00E428CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -432,6 +481,7 @@
 		F64622E7287C79DF00E428CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;

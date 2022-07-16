@@ -11,7 +11,11 @@ import Foundation
 public struct RuntimeError: Error {
     
     public let message: String
-    public init(_ message: String) {
-        self.message = message
+    public init(
+        _ message: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        self.message = "\(file):\(line) - \(message)"
     }
 }
