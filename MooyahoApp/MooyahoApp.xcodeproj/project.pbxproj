@@ -113,6 +113,7 @@
 		F6B42AB528827EB200AF41CB /* Remote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B42AB428827EB200AF41CB /* Remote.framework */; };
 		F6B42AB628827EB300AF41CB /* Remote.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6B42AB428827EB200AF41CB /* Remote.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6B42AB828828B0500AF41CB /* FirebaseQueryConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42AB728828B0500AF41CB /* FirebaseQueryConverter.swift */; };
+		F6B42ADC2885D49000AF41CB /* FirebaseFileStorageImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B42ADB2885D49000AF41CB /* FirebaseFileStorageImple.swift */; };
 		F6BA7DC527815E240020B430 /* OAuthSignInButonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BA7DC427815E240020B430 /* OAuthSignInButonBuilder.swift */; };
 		F6BBF17A2708523000420A49 /* EditReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF1792708523000420A49 /* EditReadItemScene.framework */; };
 		F6BBF17B2708523000420A49 /* EditReadItemScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6BBF1792708523000420A49 /* EditReadItemScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -289,6 +290,7 @@
 		F6B42AB228827D9E00AF41CB /* FirebaseRestRemoteImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRestRemoteImple.swift; sourceTree = "<group>"; };
 		F6B42AB428827EB200AF41CB /* Remote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Remote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B42AB728828B0500AF41CB /* FirebaseQueryConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseQueryConverter.swift; sourceTree = "<group>"; };
+		F6B42ADB2885D49000AF41CB /* FirebaseFileStorageImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFileStorageImple.swift; sourceTree = "<group>"; };
 		F6BA7DC427815E240020B430 /* OAuthSignInButonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OAuthSignInButonBuilder.swift; path = MooyahoApp/dependencyInjector/OAuthSignInButonBuilder.swift; sourceTree = SOURCE_ROOT; };
 		F6BBF14927083EDB00420A49 /* AddItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AddItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BBF1792708523000420A49 /* EditReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EditReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -626,6 +628,7 @@
 			children = (
 				F6B42AB228827D9E00AF41CB /* FirebaseRestRemoteImple.swift */,
 				F6B42AB728828B0500AF41CB /* FirebaseQueryConverter.swift */,
+				F6B42ADB2885D49000AF41CB /* FirebaseFileStorageImple.swift */,
 			);
 			path = "RestAPI+FireStore";
 			sourceTree = "<group>";
@@ -908,6 +911,7 @@
 				F6B42AB828828B0500AF41CB /* FirebaseQueryConverter.swift in Sources */,
 				F6101485265792C400D32E38 /* MainSlideMenuViewController.swift in Sources */,
 				F6BA7DC527815E240020B430 /* OAuthSignInButonBuilder.swift in Sources */,
+				F6B42ADC2885D49000AF41CB /* FirebaseFileStorageImple.swift in Sources */,
 				F6F24915265587E700AE7A8B /* MainViewController.swift in Sources */,
 				F6F8732626593F9600FDB24E /* DependencyInjector+Scenes.swift in Sources */,
 				F6AC569D266157FA0009B0CE /* KakaoOAuthRemote.swift in Sources */,
