@@ -73,8 +73,6 @@ extension FirebaseRestRemoteImple {
     }
     
     func requestBatchSaves(_ endpoint: RestAPIEndpoint, _ entities: [[String : Any]]) async throws {
-        
-        
         let (db, collectionRef) = try self.collectionRef(endpoint)
         return try await withCheckedThrowingContinuation { continuation in
             let batch = db.batch()
