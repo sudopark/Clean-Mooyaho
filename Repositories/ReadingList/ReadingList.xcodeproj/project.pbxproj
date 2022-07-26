@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F60B9A212887109C0000BA16 /* Local.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60B9A202887109C0000BA16 /* Local.framework */; };
+		F60B9A25288710A20000BA16 /* Remote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60B9A24288710A20000BA16 /* Remote.framework */; };
+		F60B9A2D288711610000BA16 /* ReadingListTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B9A2C288711610000BA16 /* ReadingListTable.swift */; };
+		F60B9A2F288711680000BA16 /* ReadLinkItemTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */; };
 		F6311A14286F6036005C8FCB /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A13286F6036005C8FCB /* Domain.framework */; };
-		F66036B8286F574900C72D08 /* LocalReadingListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B7286F574900C72D08 /* LocalReadingListRepository.swift */; };
+		F66036B8286F574900C72D08 /* LocalReadingListRepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */; };
 		F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D002866CC7E006CFA3C /* ReadingList.framework */; };
 		F69E2D0F2866CC7E006CFA3C /* ReadingList.h in Headers */ = {isa = PBXBuildFile; fileRef = F69E2D032866CC7E006CFA3C /* ReadingList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F69E2D58286777F7006CFA3C /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D57286777F7006CFA3C /* Extensions.framework */; };
@@ -30,9 +34,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F60B9A1E288710900000BA16 /* Local.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Local.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F60B9A202887109C0000BA16 /* Local.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Local.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F60B9A24288710A20000BA16 /* Remote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Remote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F60B9A2C288711610000BA16 /* ReadingListTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListTable.swift; sourceTree = "<group>"; };
+		F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkItemTable.swift; sourceTree = "<group>"; };
 		F6311A11286F6021005C8FCB /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6311A13286F6036005C8FCB /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F66036B7286F574900C72D08 /* LocalReadingListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalReadingListRepository.swift; sourceTree = "<group>"; };
+		F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalReadingListRepositoryImple.swift; sourceTree = "<group>"; };
 		F69E2D002866CC7E006CFA3C /* ReadingList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadingList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69E2D032866CC7E006CFA3C /* ReadingList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadingList.h; sourceTree = "<group>"; };
 		F69E2D082866CC7E006CFA3C /* ReadingListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadingListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,7 +60,9 @@
 			files = (
 				F6311A14286F6036005C8FCB /* Domain.framework in Frameworks */,
 				F6E39C60286809CB00DE9E75 /* Common3rdParty.framework in Frameworks */,
+				F60B9A212887109C0000BA16 /* Local.framework in Frameworks */,
 				F69E2D58286777F7006CFA3C /* Extensions.framework in Frameworks */,
+				F60B9A25288710A20000BA16 /* Remote.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +80,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F60B9A28288711020000BA16 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				F60B9A29288711130000BA16 /* Tables */,
+				F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		F60B9A29288711130000BA16 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				F60B9A2C288711610000BA16 /* ReadingListTable.swift */,
+				F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */,
+			);
+			path = Tables;
+			sourceTree = "<group>";
+		};
 		F69E2CF62866CC7E006CFA3C = {
 			isa = PBXGroup;
 			children = (
@@ -108,7 +137,7 @@
 		F69E2D1A2866CD06006CFA3C /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				F66036B7286F574900C72D08 /* LocalReadingListRepository.swift */,
+				F60B9A28288711020000BA16 /* Local */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -116,6 +145,9 @@
 		F69E2D56286777F7006CFA3C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F60B9A24288710A20000BA16 /* Remote.framework */,
+				F60B9A202887109C0000BA16 /* Local.framework */,
+				F60B9A1E288710900000BA16 /* Local.framework */,
 				F69F16AE2878861400DF2481 /* UnitTestHelpKit.framework */,
 				F6311A13286F6036005C8FCB /* Domain.framework */,
 				F6311A11286F6021005C8FCB /* Domain.framework */,
@@ -238,7 +270,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F66036B8286F574900C72D08 /* LocalReadingListRepository.swift in Sources */,
+				F66036B8286F574900C72D08 /* LocalReadingListRepositoryImple.swift in Sources */,
+				F60B9A2D288711610000BA16 /* ReadingListTable.swift in Sources */,
+				F60B9A2F288711680000BA16 /* ReadLinkItemTable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

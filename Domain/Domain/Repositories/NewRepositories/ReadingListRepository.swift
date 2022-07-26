@@ -11,9 +11,12 @@ import Foundation
 
 public protocol ReadingListRepository {
     
-    func loadMyList(for ownerID: String) async throws -> ReadingList
+    func loadMyList(for ownerID: String?) async throws -> ReadingList
     
     func loadList(_ listID: String) async throws -> ReadingList
+    
+    func saveList(_ readingList: ReadingList,
+                  at parentListID: String) async throws -> ReadingList
     
     func updateList(_ readingList: ReadingList) async throws -> ReadingList
     
