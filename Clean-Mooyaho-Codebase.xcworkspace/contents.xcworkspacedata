@@ -54,6 +54,13 @@
       <FileRef
          location = "group:Supports/Local/Local.xcodeproj">
       </FileRef>
+      <Group
+         location = "container:"
+         name = "Tests">
+         <FileRef
+            location = "group:Supports/Tests/LocalDoubles/LocalDoubles.xcodeproj">
+         </FileRef>
+      </Group>
    </Group>
    <FileRef
       location = "group:DataStore/DataStore.xcodeproj">
