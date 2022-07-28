@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6257DE12892F20300A9D2DA /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6257DE02892F20300A9D2DA /* Sequence+Extensions.swift */; };
 		F6311A0A286F5E0B005C8FCB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6311A09286F5E0B005C8FCB /* Logger.swift */; };
 		F6311A0C286F5E8B005C8FCB /* CrashLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6311A0B286F5E8B005C8FCB /* CrashLogger.swift */; };
 		F6311A0E286F5EC7005C8FCB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6311A0D286F5EC7005C8FCB /* Rx+Extensions.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F6257DE02892F20300A9D2DA /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		F6311A09286F5E0B005C8FCB /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F6311A0B286F5E8B005C8FCB /* CrashLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashLogger.swift; sourceTree = "<group>"; };
 		F6311A0D286F5EC7005C8FCB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				F6311A0D286F5EC7005C8FCB /* Rx+Extensions.swift */,
 				F69E2D4D286777D0006CFA3C /* Time+Extension.swift */,
 				F69E2D48286777D0006CFA3C /* Units.swift */,
+				F6257DE02892F20300A9D2DA /* Sequence+Extensions.swift */,
 			);
 			path = "Type+Extensions";
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				F6311A0E286F5EC7005C8FCB /* Rx+Extensions.swift in Sources */,
 				F6E39C632868109400DE9E75 /* RuntimeError.swift in Sources */,
 				F6311A0A286F5E0B005C8FCB /* Logger.swift in Sources */,
+				F6257DE12892F20300A9D2DA /* Sequence+Extensions.swift in Sources */,
 				F69E2D52286777D0006CFA3C /* Array+Extensions.swift in Sources */,
 				F69E2D53286777D0006CFA3C /* Expression+Extensions.swift in Sources */,
 				F6311A10286F5FA1005C8FCB /* Builder.swift in Sources */,

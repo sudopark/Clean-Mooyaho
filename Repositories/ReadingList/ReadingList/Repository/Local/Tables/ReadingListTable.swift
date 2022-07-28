@@ -63,8 +63,8 @@ extension ReadingListTable {
             self.createdAt = try cursor.next().unwrap()
             self.lastUpdatedAt = try cursor.next().unwrap()
             self.priorityID = cursor.next()
-            let idText: String = try cursor.next().unwrap()
-            self.categoryIDs = try idText.toArray()
+            let idText: String = (try? cursor.next().unwrap()) ?? ""
+            self.categoryIDs = (try? idText.toArray()) ?? []
             
             // remind  정보는 제외되었지만 interation을 하기위해 필요?
             let _ : TimeStamp? = cursor.next()
@@ -116,8 +116,10 @@ extension ReadingListTable {
 extension ReadingListTable.Entity {
     
     func asList() -> ReadingList {
-        return .init(uuid: self.uid, name: self.name, isRootList: self.parentID == nil)
+        return .init(uuid: self.uid, name: self.name, isRootList: self.uid == ReadingList.rootListID)
         |> \.ownerID .~ self.ownerID
+        |> \.createdAt .~ self.createdAt
+        |> \.lastUpdatedAt .~ self.lastUpdatedAt
         |> \.description .~ self.collectionDescription
         |> \.priorityID .~ self.priorityID
         |> \.categoryIds .~ self.categoryIDs

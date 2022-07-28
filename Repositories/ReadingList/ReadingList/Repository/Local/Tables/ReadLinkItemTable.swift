@@ -122,7 +122,9 @@ extension ReadLinkItemTable {
 extension ReadLinkItemTable.Entity {
     
     func asLinkItem() -> ReadLinkItem {
-        return .init(uuid: self.uid, link: self.link, createAt: self.createdAt, lastUpdatedAt: self.lastUpdatedAt)
+        return .init(uuid: self.uid, link: self.link)
+            |> \.createdAt .~ self.createdAt
+            |> \.lastUpdatedAt .~ self.lastUpdatedAt
             |> \.customName .~ self.customName
             |> \.priorityID .~ self.priorityID
             |> \.categoryIds .~ self.categoryIDs

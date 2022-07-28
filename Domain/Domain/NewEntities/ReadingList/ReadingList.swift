@@ -55,7 +55,7 @@ public struct ReadingList: ReadingListItem {
 extension ReadingList {
     
     private static let uidPrefix = "rc"
-    private static var rootListID: String { "root_collection" }
+    public static var rootListID: String { "root_collection" }
     private static var rootListName: String { "root_collection" }
     
     public static func makeList(_ name: String, ownerID: String) -> ReadingList {
