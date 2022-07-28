@@ -40,4 +40,3 @@ extension Array {
         .filter{ $0.isNotEmpty }
     }
 }
-

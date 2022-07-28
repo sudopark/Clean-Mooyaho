@@ -16,7 +16,7 @@ public protocol ReadingListRepository {
     func loadList(_ listID: String) async throws -> ReadingList
     
     func saveList(_ readingList: ReadingList,
-                  at parentListID: String) async throws -> ReadingList
+                  at parentListID: String?) async throws -> ReadingList
     
     func updateList(_ readingList: ReadingList) async throws -> ReadingList
     

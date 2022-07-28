@@ -27,14 +27,12 @@ public struct ReadLinkItem: ReadingListItem {
     
     public init(
         uuid: String,
-        link: String,
-        createAt: TimeStamp,
-        lastUpdatedAt: TimeStamp
+        link: String
     ) {
         self.uuid = uuid
         self.link = link
-        self.createdAt = createAt
-        self.lastUpdatedAt = lastUpdatedAt
+        self.createdAt = .now()
+        self.lastUpdatedAt = .now()
     }
 }
 
@@ -50,12 +48,12 @@ extension ReadLinkItem {
     
     public static func make(_ link: String) -> ReadLinkItem {
         let uuid = "\(self.uidPrefix):\(UUID().uuidString)"
-        return ReadLinkItem(uuid: uuid, link: link, createAt: .now(), lastUpdatedAt: .now())
+        return ReadLinkItem(uuid: uuid, link: link)
     }
     
     public static func makeWelcomeItem(_ urlPath: String) -> ReadLinkItem {
         let newUid = "\(welcomeItemIdentifierPrefix)_\(UUID().uuidString)"
-        return ReadLinkItem(uuid: newUid, link: urlPath, createAt: .now(), lastUpdatedAt: .now())
+        return ReadLinkItem(uuid: newUid, link: urlPath)
             |> \.customName .~ pure("welcome item custom name".localized)
             |> \.priorityID .~ ReadPriority.afterAWhile.rawValue
     }

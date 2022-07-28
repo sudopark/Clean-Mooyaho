@@ -13,6 +13,7 @@ import Local
 import SQLiteService
 import Prelude
 import Optics
+import SQLiteService
 
 
 public final class LocalReadingListRepositoryImple: ReadingListRepository {
@@ -76,7 +77,7 @@ extension LocalReadingListRepositoryImple {
 extension LocalReadingListRepositoryImple {
     
     public func saveList(_ readingList: ReadingList,
-                         at parentListID: String) async throws -> ReadingList {
+                         at parentListID: String?) async throws -> ReadingList {
         let entity = Lists.Entity(list: readingList, parentID: parentListID)
         try await self.storage
             .run { try $0.insertOne(Lists.self, entity: entity, shouldReplace: true) }
@@ -84,14 +85,16 @@ extension LocalReadingListRepositoryImple {
     }
     
     public func updateList(_ readingList: ReadingList) async throws -> ReadingList {
-        let query = Lists.update {[
+        let query: UpdateQuery<Lists> = Lists.update {[
             $0.ownerID == readingList.ownerID,
             $0.name == readingList.name,
             $0.description == readingList.description,
+            $0.createdAt == readingList.createdAt,
             $0.lastUpdatedAt == readingList.lastUpdatedAt,
             $0.pritority == readingList.priorityID,
-            $0.categoryIDs == readingList.categoryIds
+            $0.categoryIDs == (try? readingList.categoryIds.asArrayText()) ?? ""
         ]}
+        .where { $0.uid == readingList.uuid }
         try await self.storage.run { try $0.update(Lists.self, query: query)}
         return readingList
     }

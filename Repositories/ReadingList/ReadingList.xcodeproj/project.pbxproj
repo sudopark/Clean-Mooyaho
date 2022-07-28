@@ -11,6 +11,7 @@
 		F60B9A25288710A20000BA16 /* Remote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F60B9A24288710A20000BA16 /* Remote.framework */; };
 		F60B9A2D288711610000BA16 /* ReadingListTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B9A2C288711610000BA16 /* ReadingListTable.swift */; };
 		F60B9A2F288711680000BA16 /* ReadLinkItemTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */; };
+		F6257DDF28905EC100A9D2DA /* LocalDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6257DDE28905EC100A9D2DA /* LocalDoubles.framework */; };
 		F6311A14286F6036005C8FCB /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A13286F6036005C8FCB /* Domain.framework */; };
 		F66036B8286F574900C72D08 /* LocalReadingListRepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */; };
 		F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D002866CC7E006CFA3C /* ReadingList.framework */; };
@@ -39,6 +40,7 @@
 		F60B9A24288710A20000BA16 /* Remote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Remote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F60B9A2C288711610000BA16 /* ReadingListTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListTable.swift; sourceTree = "<group>"; };
 		F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkItemTable.swift; sourceTree = "<group>"; };
+		F6257DDE28905EC100A9D2DA /* LocalDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LocalDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6311A11286F6021005C8FCB /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6311A13286F6036005C8FCB /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalReadingListRepositoryImple.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6257DDF28905EC100A9D2DA /* LocalDoubles.framework in Frameworks */,
 				F69F16AF2878861400DF2481 /* UnitTestHelpKit.framework in Frameworks */,
 				F6E39C6A286CAF2800DE9E75 /* Common3rdParty.framework in Frameworks */,
 				F6E39C68286CAE9100DE9E75 /* Extensions.framework in Frameworks */,
@@ -145,6 +148,7 @@
 		F69E2D56286777F7006CFA3C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6257DDE28905EC100A9D2DA /* LocalDoubles.framework */,
 				F60B9A24288710A20000BA16 /* Remote.framework */,
 				F60B9A202887109C0000BA16 /* Local.framework */,
 				F60B9A1E288710900000BA16 /* Local.framework */,
