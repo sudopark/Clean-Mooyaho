@@ -12,6 +12,7 @@
 		F6311A0C286F5E8B005C8FCB /* CrashLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6311A0B286F5E8B005C8FCB /* CrashLogger.swift */; };
 		F6311A0E286F5EC7005C8FCB /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6311A0D286F5EC7005C8FCB /* Rx+Extensions.swift */; };
 		F6311A10286F5FA1005C8FCB /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6311A0F286F5FA1005C8FCB /* Builder.swift */; };
+		F6383D352894F14B001AF38B /* Result+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6383D342894F14B001AF38B /* Result+Extensions.swift */; };
 		F69E2D342867777E006CFA3C /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D2B2867777E006CFA3C /* Extensions.framework */; };
 		F69E2D392867777E006CFA3C /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69E2D382867777E006CFA3C /* ExtensionsTests.swift */; };
 		F69E2D3A2867777E006CFA3C /* Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F69E2D2E2867777E006CFA3C /* Extensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -40,6 +41,7 @@
 		F6311A0B286F5E8B005C8FCB /* CrashLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashLogger.swift; sourceTree = "<group>"; };
 		F6311A0D286F5EC7005C8FCB /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		F6311A0F286F5FA1005C8FCB /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		F6383D342894F14B001AF38B /* Result+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Extensions.swift"; sourceTree = "<group>"; };
 		F69E2D2B2867777E006CFA3C /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69E2D2E2867777E006CFA3C /* Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Extensions.h; sourceTree = "<group>"; };
 		F69E2D332867777E006CFA3C /* ExtensionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExtensionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +85,7 @@
 				F69E2D4D286777D0006CFA3C /* Time+Extension.swift */,
 				F69E2D48286777D0006CFA3C /* Units.swift */,
 				F6257DE02892F20300A9D2DA /* Sequence+Extensions.swift */,
+				F6383D342894F14B001AF38B /* Result+Extensions.swift */,
 			);
 			path = "Type+Extensions";
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6383D352894F14B001AF38B /* Result+Extensions.swift in Sources */,
 				F69E2D54286777D0006CFA3C /* Time+Extension.swift in Sources */,
 				F6311A0C286F5E8B005C8FCB /* CrashLogger.swift in Sources */,
 				F69E2D50286777D0006CFA3C /* String+Extensions.swift in Sources */,
