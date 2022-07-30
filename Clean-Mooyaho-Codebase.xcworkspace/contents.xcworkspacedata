@@ -60,6 +60,9 @@
          <FileRef
             location = "group:Supports/Tests/LocalDoubles/LocalDoubles.xcodeproj">
          </FileRef>
+         <FileRef
+            location = "group:Supports/Tests/RemoteDoubles/RemoteDoubles/RemoteDoubles.xcodeproj">
+         </FileRef>
       </Group>
    </Group>
    <FileRef
