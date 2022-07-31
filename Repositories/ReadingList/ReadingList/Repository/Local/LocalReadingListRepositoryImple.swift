@@ -49,6 +49,15 @@ extension LocalReadingListRepositoryImple {
             |> \.items .~ self.loadListSubItems(listID)
     }
     
+    public func loadLinkItem(_ itemID: String) async throws -> ReadLinkItem {
+        let query = LinkItem.selectAll { $0.uid == itemID }
+        guard let item = try await self.loadLinkItems(query).first
+        else {
+            throw RuntimeError("link item not exists")
+        }
+        return item
+    }
+    
     private func loadListSubItems(_ listID: String?) async throws -> [ReadingListItem] {
         let subListsQuery: SelectQuery<Lists> = listID
             .map { id in Lists.selectAll { $0.parentID == id }} ?? Lists.selectAll { $0.parentID.isNull() }
@@ -102,5 +111,35 @@ extension LocalReadingListRepositoryImple {
     public func removeList(_ id: String) async throws {
         let query = Lists.delete().where { $0.uid == id }
         try await self.storage.run { try $0.delete(ReadingListTable.self, query: query) }
+    }
+    
+    public func saveLinkItem(_ item: ReadLinkItem, to listID: String?) async throws -> ReadLinkItem {
+        let item = item |> \.listID .~ listID
+        let entity = LinkItem.Entity(item: item)
+        try await self.storage
+            .run { try $0.insertOne(LinkItem.self, entity: entity, shouldReplace: true) }
+        return item
+    }
+    
+    public func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem {
+        let query: UpdateQuery<LinkItem> = LinkItem.update{[
+            $0.ownerID == item.ownerID,
+            $0.parentID == item.listID,
+            $0.link == item.link,
+            $0.createdAt == item.createdAt,
+            $0.lastUpdatedAt == item.lastUpdatedAt,
+            $0.customName == item.customName,
+            $0.pritority == item.priorityID,
+            $0.categoryIDs == (try? item.categoryIds.asArrayText()) ?? "",
+            $0.isRed == item.isRead
+        ]}
+        .where { $0.uid == item.uuid }
+        try await self.storage.run { try $0.update(LinkItem.self, query: query) }
+        return item
+    }
+    
+    public func removeLinkItem(_ id: String) async throws {
+        let query = LinkItem.delete().where { $0.uid == id }
+        try await self.storage.run { try $0.delete(LinkItem.self, query: query) }
     }
 }

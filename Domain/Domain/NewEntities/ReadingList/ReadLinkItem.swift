@@ -17,6 +17,7 @@ public struct ReadLinkItem: ReadingListItem {
     
     public let uuid: String
     public let link: String
+    public var listID: String?
     public var ownerID: String?
     public var createdAt: TimeStamp
     public var lastUpdatedAt: TimeStamp

@@ -26,13 +26,15 @@ enum ReadLinkItemMappingKey: String {
 }
 
 
-extension ReadLinkItem: JsonMappable {
+extension ReadLinkItem: JsonConvertable {
     
     private typealias Keys = ReadLinkItemMappingKey
     
     public static var identifierKey: String {
         return Keys.uid.rawValue
     }
+    
+    public var identifier: String { self.uuid }
     
     public init(json: [String : Any]) throws {
         let uid: String = try json.value(Keys.uid)
@@ -47,5 +49,20 @@ extension ReadLinkItem: JsonMappable {
         self.priorityID = try? json.value(Keys.priority)
         self.customName = try? json.value(Keys.customName)
         self.isRead = (try? json.value(Keys.isRed)) ?? false
+    }
+    
+    public func asJson() -> [String : Any] {
+        var sender: [String: Any] = [:]
+        sender[Keys.uid.rawValue] = self.uuid
+        sender[Keys.ownerID.rawValue] = self.ownerID
+        sender[Keys.parentID.rawValue] = self.listID
+        sender[Keys.createdAt.rawValue] = self.createdAt
+        sender[Keys.lastUpdatedAt.rawValue] = self.lastUpdatedAt
+        sender[Keys.priority.rawValue] = self.priorityID
+        sender[Keys.categoryIDs.rawValue] = self.categoryIds
+        sender[Keys.link.rawValue] = self.link
+        sender[Keys.customName.rawValue] = self.customName
+        sender[Keys.isRed.rawValue] = self.isRead
+        return sender
     }
 }
