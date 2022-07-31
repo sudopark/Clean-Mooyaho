@@ -176,6 +176,30 @@ extension RemoteReadingListRepositoryImpleTests {
 }
 
 
+// MARK: - load link item
+
+extension RemoteReadingListRepositoryImpleTests {
+    
+    func testRepository_loadLinkItem() async {
+        // given
+        let repository = self.makeRepository()
+        
+        // when
+        let link = try? await repository.loadLinkItem("some")
+        
+        // then
+        XCTAssertNotNil(link)
+        XCTAssertEqual(self.stubRemote.didRequestedFindByID, "some")
+        XCTAssertEqual(self.stubRemote.didRequestedFindByIdEndpoints.map { $0.path },[
+            "reading_list/link_item/some"
+        ])
+        XCTAssertEqual(self.stubRemote.didRequestedFindByIdEndpoints.map { $0.method },[
+            .get
+        ])
+    }
+}
+
+
 // MARK: - save + update List
 
 extension RemoteReadingListRepositoryImpleTests {
@@ -268,7 +292,77 @@ extension RemoteReadingListRepositoryImpleTests {
 }
 
 
-// MARK: remove list
+// MARK: - save and update link item
+
+extension RemoteReadingListRepositoryImpleTests {
+    
+    private var dummyLink: ReadLinkItem {
+        return ReadLinkItem.make("some")
+            |> \.ownerID .~ "owner"
+            |> \.createdAt .~ 100
+            |> \.lastUpdatedAt .~ 200
+            |> \.categoryIds .~ ["c1", "c2"]
+            |> \.priorityID .~ 1
+            |> \.customName .~ "custom"
+            |> \.isRead .~ true
+    }
+    
+    func testRepository_saveLinkItemAtMyList() async {
+        // given
+        let repository = self.makeRepository()
+        let link = self.dummyLink
+        
+        // when
+        let newLink = try? await repository.saveLinkItem(link, to: nil)
+        
+        // then
+        XCTAssertNotNil(newLink)
+        XCTAssertEqual(self.stubRemote.didRequestedSaveEndpoint?.path, "reading_list/link_items")
+        XCTAssertEqual(self.stubRemote.didRequestedSaveEndpoint?.method, .post)
+        
+        let entities = self.stubRemote.didRequestedSaveEntities ?? [:]
+        XCTAssertEqual(entities["uid"] as? String, link.uuid)
+        XCTAssertEqual(entities["oid"] as? String, "owner")
+        XCTAssertEqual(entities["pid"] as? String, nil)
+        XCTAssertEqual(entities["crt_at"] as? TimeInterval, 100)
+        XCTAssertEqual(entities["lst_up_at"] as? TimeInterval, 200)
+        XCTAssertEqual(entities["priority"] as? Int, 1)
+        XCTAssertEqual(entities["cate_ids"] as? [String], ["c1", "c2"])
+        XCTAssertEqual(entities["custom_nm"] as? String, "custom")
+        XCTAssertEqual(entities["is_red"] as? Bool, true)
+    }
+    
+    func testRepository_saveLinkAtSomeList() async {
+        // given
+        let repository = self.makeRepository()
+        let link = self.dummyLink
+        
+        // when
+        let newLink = try? await repository.saveLinkItem(link, to: "parent_list")
+        
+        // then
+        XCTAssertNotNil(newLink)
+        XCTAssertEqual(self.stubRemote.didRequestedSaveEntities?["pid"] as? String, "parent_list")
+    }
+    
+    func testRepository_updateLinkItem() async {
+        // given
+        let repository = self.makeRepository()
+        let oldLink = self.dummyLink
+        let newLink = oldLink |> \.customName .~ "new name"
+        
+        // when
+        let updatedLink = try? await repository.updateLinkItem(newLink)
+        
+        // then
+        XCTAssertNotNil(updatedLink)
+        XCTAssertNotNil(self.stubRemote.didUpdatedProperties)
+        XCTAssertEqual(self.stubRemote.didUpdatedProperties?["uid"] as? String, nil)
+    }
+}
+
+
+// MARK: remove list + link item
 
 extension RemoteReadingListRepositoryImpleTests {
     
@@ -284,6 +378,21 @@ extension RemoteReadingListRepositoryImpleTests {
             XCTFail("should not throw error")
         }
         XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.path, "reading_list/some")
+        XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.method, .delete)
+    }
+    
+    func testRepository_removeLinkItem() async {
+        // given
+        let repository = self.makeRepository()
+        
+        // when + then
+        do {
+            try await repository.removeLinkItem("some")
+            XCTAssert(true)
+        } catch {
+            XCTFail("should not throw error")
+        }
+        XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.path, "reading_list/link_item/some")
         XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.method, .delete)
     }
     
@@ -312,11 +421,19 @@ private extension RemoteReadingListRepositoryImpleTests {
         override func requestFind<J>(_ endpoint: RestAPIEndpoint, byID: String) async throws -> J where J : JsonMappable {
             self.didRequestedFindByID = byID
             self.didRequestedFindByIdEndpoints.append(endpoint)
-            guard shouldFailFindSubListById == false
-            else {
+            
+            switch J.self {
+            case is ReadingList.Type where self.shouldFailFindSubListById == true:
                 throw RuntimeError("failed")
+                
+            case is ReadingList.Type:
+                return ReadingList.makeList("sub", ownerID: "owner") as! J
+                
+            case is ReadLinkItem.Type:
+                return ReadLinkItem.make("sub") as! J
+                
+            default: throw RuntimeError("failed")
             }
-            return ReadingList.makeList("sub", ownerID: "owner") as! J
         }
         
         var shouldFailLoadSubLists: Bool = false
@@ -333,7 +450,7 @@ private extension RemoteReadingListRepositoryImpleTests {
                 return [ReadingList.makeList("some", ownerID: "owner")] as! [J]
                 
             case is ReadLinkItem.Type:
-                return []
+                return [ReadLinkItem.make("some")] as! [J]
                 
             default: throw RuntimeError("failed")
             }
@@ -345,11 +462,19 @@ private extension RemoteReadingListRepositoryImpleTests {
         override func requestSave<J>(_ endpoint: RestAPIEndpoint, _ entities: [String : Any]) async throws -> J where J : JsonMappable {
             self.didRequestedSaveEndpoint = endpoint
             self.didRequestedSaveEntities = entities
-            guard self.shouldFailSaveList == false
-            else {
+            
+            switch J.self {
+            case is ReadingList.Type where self.shouldFailSaveList == true:
                 throw RuntimeError("failed")
+                
+            case is ReadingList.Type:
+                return ReadingList.makeList("new", ownerID: "owner") as! J
+                
+            case is ReadLinkItem.Type:
+                return ReadLinkItem.make("some") as! J
+                
+            default: throw RuntimeError("failed")
             }
-            return ReadingList.makeList("new", ownerID: "owner") as! J
         }
         
         var shouldFailUpdateList: Bool = false
@@ -358,11 +483,19 @@ private extension RemoteReadingListRepositoryImpleTests {
         override func requestUpdate<J>(_ endpoint: RestAPIEndpoint, id: String, to: [String : Any]) async throws -> J where J : JsonMappable {
             self.didUpdatedProperties = to
             self.didRequestedUpdateEndpoint = endpoint
-            guard self.shouldFailUpdateList == false
-            else {
+            
+            switch J.self {
+            case is ReadingList.Type where self.shouldFailUpdateList == true:
                 throw RuntimeError("failed")
+                
+            case is ReadingList.Type:
+                return ReadingList.makeList("updated", ownerID: "owner") as! J
+                
+            case is ReadLinkItem.Type:
+                return ReadLinkItem.make("updated") as! J
+                
+            default: throw RuntimeError("failed")
             }
-            return ReadingList.makeList("updated", ownerID: "owner") as! J
         }
         
         var shouldFailDeleteList: Bool = false
