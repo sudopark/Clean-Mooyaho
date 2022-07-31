@@ -60,6 +60,11 @@ extension RemoteReadingListRepositoryImple {
             |> \.items .~ self.loadSubItems(listQuery, linksQuery)
     }
     
+    public func loadLinkItem(_ itemID: String) async throws -> ReadLinkItem {
+        let endpoint = ReadingListEndpoints.linkItem(itemID)
+        return try await self.restRemote.requestFind(endpoint, byID: itemID)
+    }
+    
     private func loadSubItems(_ listQuery: LoadQuery,
                               _ linkQuery: LoadQuery) async -> [ReadingListItem] {
         let listEndpoint = ReadingListEndpoints.lists
@@ -87,8 +92,27 @@ extension RemoteReadingListRepositoryImple {
         return try await self.restRemote.requestUpdate(endpoint, id: readingList.uuid, to: json)
     }
     
-    public func removeList(_ id: String) async throws -> Void {
+    public func removeList(_ id: String) async throws {
         let endpoint = ReadingListEndpoints.removeList(id)
         return try await self.restRemote.requestDelete(endpoint, byId: id)
+    }
+    
+    public func saveLinkItem(_ item: ReadLinkItem, to listID: String?) async throws -> ReadLinkItem {
+        let endpoint = ReadingListEndpoints.saveLinkItem
+        let json = item.asJson()
+            |> key(LinkKey.parentID.rawValue) .~ listID
+        return try await self.restRemote.requestSave(endpoint, json)
+    }
+    
+    public func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem {
+        let endpoint = ReadingListEndpoints.updateLinkItem(item.uuid)
+        let json = item.asJson()
+            |> key(LinkKey.uid.rawValue) .~ nil
+        return try await self.restRemote.requestUpdate(endpoint, id: item.uuid, to: json)
+    }
+    
+    public func removeLinkItem(_ id: String) async throws {
+        let endpoint = ReadingListEndpoints.removeLinkItem(id)
+        try await self.restRemote.requestDelete(endpoint, byId: id)
     }
 }

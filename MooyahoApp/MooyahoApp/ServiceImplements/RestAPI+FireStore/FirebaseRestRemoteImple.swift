@@ -13,6 +13,7 @@ import FirebaseService
 import FirebaseFirestore
 
 import Extensions
+import ReadingList
 
 
 final class FirebaseRestRemoteImple: RestRemote {
@@ -25,7 +26,7 @@ final class FirebaseRestRemoteImple: RestRemote {
             throw RuntimeError("firestore not setup")
         }
         
-        guard let lastPath = endpoint.path.lastPathComponent
+        guard let lastPath = endpoint.collectionPath()
         else {
             throw RuntimeError("invalid endpoint: \(endpoint)")
         }
@@ -244,5 +245,26 @@ private extension Query {
     func objects<J: JsonMappable>() async throws -> [J] {
         let jsons = try await self.documents().map { $0.data() }
         return jsons.compactMap { try? J.init(json: $0) }
+    }
+}
+
+
+extension RestAPIEndpoint {
+    
+    func collectionPath() -> String? {
+        switch self {
+        case let readingList as ReadingListEndpoints:
+            return self.readingListCollectionNames(readingList)
+        default: return nil
+        }
+    }
+    
+    private func readingListCollectionNames(_ list: ReadingListEndpoints) -> String {
+        switch list {
+        case .list, .lists, .saveList, .updateList, .removeList:
+            return "readCollection"
+        case .linkItem, .linkItems, .saveLinkItem, .updateLinkItem, .removeLinkItem:
+            return "readLinks"
+        }
     }
 }

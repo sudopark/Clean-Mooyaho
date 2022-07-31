@@ -65,17 +65,17 @@ extension ReadLinkItemTable {
             self.lastUpdatedAt = try cursor.next().unwrap()
             self.customName = cursor.next()
             self.priorityID = cursor.next()
-            let idText: String = try cursor.next().unwrap()
-            self.categoryIDs = try idText.toArray()
+            let idText: String = (try? cursor.next().unwrap()) ?? ""
+            self.categoryIDs = (try? idText.toArray()) ?? []
             // remind  정보는 제외되었지만 interation을 하기위해 필요?
             let _ : TimeStamp? = cursor.next()
             self.isRed = try cursor.next().unwrap()
         }
         
-        init(item: ReadLinkItem, parentID: String?) {
+        init(item: ReadLinkItem) {
             self.uid = item.uuid
             self.ownerID = item.ownerID
-            self.parentID = parentID
+            self.parentID = item.listID
             self.link = item.link
             self.createdAt = item.createdAt
             self.lastUpdatedAt = item.lastUpdatedAt
@@ -123,6 +123,8 @@ extension ReadLinkItemTable.Entity {
     
     func asLinkItem() -> ReadLinkItem {
         return .init(uuid: self.uid, link: self.link)
+            |> \.ownerID .~ self.ownerID
+            |> \.listID .~ self.parentID
             |> \.createdAt .~ self.createdAt
             |> \.lastUpdatedAt .~ self.lastUpdatedAt
             |> \.customName .~ self.customName
