@@ -8,6 +8,7 @@
 import Foundation
 import Prelude
 import Optics
+import Extensions
 
 
 public protocol JsonPresentable {
@@ -26,3 +27,15 @@ public protocol JsonMappable {
 
 public protocol JsonConvertable: JsonPresentable, JsonMappable { }
 
+
+
+extension Dictionary where Self.Key == String, Self.Value == Any {
+    
+    public func value<R: RawRepresentable, T>(_ key: R) throws -> T where R.RawValue == String {
+        guard let value = self[key.rawValue] as? T
+        else {
+            throw RuntimeError("mapping fail, value not exists for key: \(key)")
+        }
+        return value
+    }
+}

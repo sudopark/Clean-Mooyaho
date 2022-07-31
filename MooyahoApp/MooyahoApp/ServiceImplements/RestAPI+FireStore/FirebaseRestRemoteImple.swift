@@ -67,8 +67,9 @@ extension FirebaseRestRemoteImple {
     
     func requestSave<J>(_ endpoint: RestAPIEndpoint, _ entities: [String : Any]) async throws -> J where J : JsonMappable {
         
+        let id = entities[J.identifierKey] as? String
         let (_, collectionRef) = try self.collectionRef(endpoint)
-        let document = collectionRef.document()
+        let document = id.map { collectionRef.document($0) } ?? collectionRef.document()
         return try await document.saveNew(entities)
     }
     

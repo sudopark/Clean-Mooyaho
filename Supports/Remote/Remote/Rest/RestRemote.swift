@@ -122,3 +122,28 @@ public protocol RestRemote {
         byQuery: MatcingQuery
     ) async throws
 }
+
+
+
+private extension MatcingQuery.Relateion {
+    
+    var stringValue: String {
+        switch self {
+        case .equal: return "="
+        case .notEqual: return "!="
+        case .greaterThan: return ">"
+        case .greaterThanOrEqual: return ">="
+        case .lessThan: return "<"
+        case .lessThanOrEqual: return "<="
+        case .in: return "in"
+        case .notIn: return "not in"
+        }
+    }
+}
+
+extension MatcingQuery.Condition {
+    
+    public var stringValue: String {
+        return "\(field) \(relatation.stringValue) \(value)"
+    }
+}

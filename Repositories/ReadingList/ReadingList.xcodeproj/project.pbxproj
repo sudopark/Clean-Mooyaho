@@ -13,6 +13,12 @@
 		F60B9A2F288711680000BA16 /* ReadLinkItemTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */; };
 		F6257DDF28905EC100A9D2DA /* LocalDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6257DDE28905EC100A9D2DA /* LocalDoubles.framework */; };
 		F6311A14286F6036005C8FCB /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A13286F6036005C8FCB /* Domain.framework */; };
+		F6383D392894F499001AF38B /* RemoteDoubles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6383D382894F499001AF38B /* RemoteDoubles.framework */; };
+		F6383D3D2894F4D1001AF38B /* RemoteReadingListRepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6383D3C2894F4D1001AF38B /* RemoteReadingListRepositoryImple.swift */; };
+		F6383D3F2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6383D3E2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift */; };
+		F6383D422894FE2C001AF38B /* ReadingList+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6383D412894FE2C001AF38B /* ReadingList+Mapping.swift */; };
+		F6383D44289621C1001AF38B /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6383D43289621C1001AF38B /* Endpoints.swift */; };
+		F6383D462896287B001AF38B /* ReadLinkItem+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6383D452896287B001AF38B /* ReadLinkItem+Mapping.swift */; };
 		F66036B8286F574900C72D08 /* LocalReadingListRepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */; };
 		F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D002866CC7E006CFA3C /* ReadingList.framework */; };
 		F69E2D0F2866CC7E006CFA3C /* ReadingList.h in Headers */ = {isa = PBXBuildFile; fileRef = F69E2D032866CC7E006CFA3C /* ReadingList.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -43,6 +49,12 @@
 		F6257DDE28905EC100A9D2DA /* LocalDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LocalDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6311A11286F6021005C8FCB /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6311A13286F6036005C8FCB /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6383D382894F499001AF38B /* RemoteDoubles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RemoteDoubles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6383D3C2894F4D1001AF38B /* RemoteReadingListRepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteReadingListRepositoryImple.swift; sourceTree = "<group>"; };
+		F6383D3E2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteReadingListRepositoryImpleTests.swift; sourceTree = "<group>"; };
+		F6383D412894FE2C001AF38B /* ReadingList+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingList+Mapping.swift"; sourceTree = "<group>"; };
+		F6383D43289621C1001AF38B /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
+		F6383D452896287B001AF38B /* ReadLinkItem+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadLinkItem+Mapping.swift"; sourceTree = "<group>"; };
 		F66036B7286F574900C72D08 /* LocalReadingListRepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalReadingListRepositoryImple.swift; sourceTree = "<group>"; };
 		F69E2D002866CC7E006CFA3C /* ReadingList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadingList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69E2D032866CC7E006CFA3C /* ReadingList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadingList.h; sourceTree = "<group>"; };
@@ -72,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6383D392894F499001AF38B /* RemoteDoubles.framework in Frameworks */,
 				F6257DDF28905EC100A9D2DA /* LocalDoubles.framework in Frameworks */,
 				F69F16AF2878861400DF2481 /* UnitTestHelpKit.framework in Frameworks */,
 				F6E39C6A286CAF2800DE9E75 /* Common3rdParty.framework in Frameworks */,
@@ -99,6 +112,25 @@
 				F60B9A2E288711680000BA16 /* ReadLinkItemTable.swift */,
 			);
 			path = Tables;
+			sourceTree = "<group>";
+		};
+		F6383D3B2894F4B9001AF38B /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				F6383D402894FE21001AF38B /* Mapping */,
+				F6383D43289621C1001AF38B /* Endpoints.swift */,
+				F6383D3C2894F4D1001AF38B /* RemoteReadingListRepositoryImple.swift */,
+			);
+			path = Remote;
+			sourceTree = "<group>";
+		};
+		F6383D402894FE21001AF38B /* Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				F6383D412894FE2C001AF38B /* ReadingList+Mapping.swift */,
+				F6383D452896287B001AF38B /* ReadLinkItem+Mapping.swift */,
+			);
+			path = Mapping;
 			sourceTree = "<group>";
 		};
 		F69E2CF62866CC7E006CFA3C = {
@@ -133,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				F69F16AC287885FC00DF2481 /* LocalReadingListRepositoryTests.swift */,
+				F6383D3E2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift */,
 			);
 			path = ReadingListTests;
 			sourceTree = "<group>";
@@ -141,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				F60B9A28288711020000BA16 /* Local */,
+				F6383D3B2894F4B9001AF38B /* Remote */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -148,6 +182,7 @@
 		F69E2D56286777F7006CFA3C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6383D382894F499001AF38B /* RemoteDoubles.framework */,
 				F6257DDE28905EC100A9D2DA /* LocalDoubles.framework */,
 				F60B9A24288710A20000BA16 /* Remote.framework */,
 				F60B9A202887109C0000BA16 /* Local.framework */,
@@ -276,7 +311,11 @@
 			files = (
 				F66036B8286F574900C72D08 /* LocalReadingListRepositoryImple.swift in Sources */,
 				F60B9A2D288711610000BA16 /* ReadingListTable.swift in Sources */,
+				F6383D3D2894F4D1001AF38B /* RemoteReadingListRepositoryImple.swift in Sources */,
 				F60B9A2F288711680000BA16 /* ReadLinkItemTable.swift in Sources */,
+				F6383D44289621C1001AF38B /* Endpoints.swift in Sources */,
+				F6383D422894FE2C001AF38B /* ReadingList+Mapping.swift in Sources */,
+				F6383D462896287B001AF38B /* ReadLinkItem+Mapping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6383D3F2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift in Sources */,
 				F69F16AD287885FC00DF2481 /* LocalReadingListRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
