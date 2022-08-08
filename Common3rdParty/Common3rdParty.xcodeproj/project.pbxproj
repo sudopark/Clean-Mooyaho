@@ -22,12 +22,12 @@
 		F60B35FD2799CFD400F5CB97 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FC2799CFD400F5CB97 /* RxCocoa */; };
 		F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FE2799CFD400F5CB97 /* RxRelay */; };
 		F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F60B36002799CFD400F5CB97 /* RxSwift */; };
-		F61ED3EC27F76A1B00F424F9 /* RxSwiftDoNotation in Frameworks */ = {isa = PBXBuildFile; productRef = F61ED3EB27F76A1B00F424F9 /* RxSwiftDoNotation */; };
 		F63A520827B2D094008542E2 /* RxCombine in Frameworks */ = {isa = PBXBuildFile; productRef = F63A520727B2D094008542E2 /* RxCombine */; };
 		F69F099927CB35E00058CB6B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099827CB35E00058CB6B /* Alamofire */; };
 		F69F099C27CB36020058CB6B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099B27CB36020058CB6B /* KakaoSDKAuth */; };
 		F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099D27CB36020058CB6B /* KakaoSDKCommon */; };
 		F69F09A027CB36020058CB6B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099F27CB36020058CB6B /* KakaoSDKUser */; };
+		F6EE736928A1713200B3BBCF /* RxSwiftDoNotation in Frameworks */ = {isa = PBXBuildFile; productRef = F6EE736828A1713200B3BBCF /* RxSwiftDoNotation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,7 +56,7 @@
 				F69F099927CB35E00058CB6B /* Alamofire in Frameworks */,
 				F603CCA12667D3D500FE6A8A /* RxDataSources in Frameworks */,
 				F60A5845270D499200E39AE0 /* State in Frameworks */,
-				F61ED3EC27F76A1B00F424F9 /* RxSwiftDoNotation in Frameworks */,
+				F6EE736928A1713200B3BBCF /* RxSwiftDoNotation in Frameworks */,
 				F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */,
 				F60A5843270D499200E39AE0 /* Reader in Frameworks */,
 				F60A583D270D499200E39AE0 /* Either in Frameworks */,
@@ -140,7 +140,7 @@
 				F69F099B27CB36020058CB6B /* KakaoSDKAuth */,
 				F69F099D27CB36020058CB6B /* KakaoSDKCommon */,
 				F69F099F27CB36020058CB6B /* KakaoSDKUser */,
-				F61ED3EB27F76A1B00F424F9 /* RxSwiftDoNotation */,
+				F6EE736828A1713200B3BBCF /* RxSwiftDoNotation */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -175,7 +175,7 @@
 				F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */,
 				F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */,
 				F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				F61ED3EA27F76A1B00F424F9 /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */,
+				F6EE736728A1713200B3BBCF /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -515,14 +515,6 @@
 				minimumVersion = 6.5.0;
 			};
 		};
-		F61ED3EA27F76A1B00F424F9 /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sudopark/RxSwift-do-notation.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.2;
-			};
-		};
 		F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CombineCommunity/RxCombine.git";
@@ -543,8 +535,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.11.1;
+			};
+		};
+		F6EE736728A1713200B3BBCF /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/RxSwift-do-notation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -620,11 +620,6 @@
 			package = F60B35FB2799CFD400F5CB97 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
-		F61ED3EB27F76A1B00F424F9 /* RxSwiftDoNotation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F61ED3EA27F76A1B00F424F9 /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */;
-			productName = RxSwiftDoNotation;
-		};
 		F63A520727B2D094008542E2 /* RxCombine */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */;
@@ -649,6 +644,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		F6EE736828A1713200B3BBCF /* RxSwiftDoNotation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6EE736728A1713200B3BBCF /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */;
+			productName = RxSwiftDoNotation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

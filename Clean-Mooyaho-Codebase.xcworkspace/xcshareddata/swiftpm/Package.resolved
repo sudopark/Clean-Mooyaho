@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
-        "branch" : "master",
-        "revision" : "b7f3cbb82e188c8d5effb12328d2b0d2ea02023d"
+        "revision" : "8a68442660d411031888e6e42c4f628933f62401",
+        "version" : "2.11.1"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sudopark/RxSwift-do-notation.git",
       "state" : {
-        "revision" : "7ec334fae41f0aa612569d6ed165a68d7a6ca1b6",
-        "version" : "0.0.2"
+        "revision" : "07d96269ab61d7b120505736b2da3e47f762dbcf",
+        "version" : "0.0.5"
       }
     },
     {
