@@ -10,6 +10,7 @@ import UIKit
 import GoogleSignIn
 
 
+@MainActor
 public struct GoogleSignInButtonBuilder {
     
     public init() { }
