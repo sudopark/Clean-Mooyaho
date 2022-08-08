@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxSwiftDoNotation
 
 import Domain
 import GoogleSignIn
@@ -21,7 +22,7 @@ public protocol GoggleSignInService: OAuthService, OAuthServiceProviderTypeRepre
 }
 
 
-public final class GoggleSignInServiceImple: GoggleSignInService {
+public final class GoggleSignInServiceImple: GoggleSignInService, Sendable {
     
     public init() {}
     
@@ -33,33 +34,41 @@ public final class GoggleSignInServiceImple: GoggleSignInService {
 extension GoggleSignInServiceImple {
     
     public func requestSignIn() -> Maybe<Domain.OAuthCredential> {
-        guard let clientID = FirebaseApp.app()?.options.clientID else {
-            return .error(AuthErrors.noFirebaseClientID)
-        }
-        return Maybe.create { [weak self] callback in
-            guard let topViewController = self?.topViewController()
-            else {
-                callback(.completed)
-                return Disposables.create()
+        return Maybe<Domain.OAuthCredential>.create { [weak self] in
+            guard let credential = try await self?.requestSignIn() else{
+                throw AuthErrors.signInError(nil)
             }
-            
+            return credential
+        }
+    }
+    
+    private func requestSignIn() async throws -> Domain.OAuthCredential {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            throw AuthErrors.noFirebaseClientID
+        }
+        
+        guard let topViewController = await self.topViewController() else {
+            throw AuthErrors.signInError(nil)
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
             let configure = GIDConfiguration(clientID: clientID)
             GIDSignIn.sharedInstance.signIn(with: configure, presenting: topViewController) { user, error in
                 guard error == nil,
                       let authToken = user?.authentication,
                       let idToken = authToken.idToken
                 else {
-                    callback(.error(AuthErrors.oauth2Fail(error)))
+                    continuation.resume(throwing: AuthErrors.oauth2Fail(error))
                     return
                 }
                 
                 let credential = GoogleAuthCredential(idToken: idToken, accessToken: authToken.accessToken)
-                callback(.success(credential))
+                continuation.resume(returning: credential)
             }
-            return Disposables.create()
         }
     }
     
+    @MainActor
     private func topViewController() -> UIViewController? {
         return UIApplication.shared.windows.first?.rootViewController?.topPresentedViewController()
     }
