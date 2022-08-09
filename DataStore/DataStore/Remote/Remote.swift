@@ -48,7 +48,7 @@ public protocol Remote: AuthRemote, MemberRemote, MessagingRemote,
 
 // MARK: - Auth remote
 
-public protocol AuthRemote {
+public protocol AuthRemote: Sendable {
     
     func requestSignInAnonymously() -> Maybe<Auth>
     
@@ -63,7 +63,7 @@ public protocol AuthRemote {
     func requestRecoverAccount() -> Maybe<Member>
 }
 
-public protocol OAuthRemote {
+public protocol OAuthRemote: Sendable {
     
     func requestCustomToken(_ uniqID: String) -> Maybe<String>
 }
@@ -71,7 +71,7 @@ public protocol OAuthRemote {
 
 // MARK: - Member remote
 
-public protocol MemberRemote {
+public protocol MemberRemote: Sendable {
 
     func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void>
     
@@ -93,7 +93,7 @@ public protocol MemberRemote {
 
 // MARK: - Messaging
 
-public protocol MessagingRemote {
+public protocol MessagingRemote: Sendable {
     
     func requestSendForground(message: Message, to userID: String) -> Maybe<Void>
 }
@@ -101,7 +101,7 @@ public protocol MessagingRemote {
 
 // MARK: - ReadItem
 
-public protocol ReadItemRemote: AuthorizationNeed {
+public protocol ReadItemRemote: Sendable, AuthorizationNeed {
     
     func requestLoadMyItems(for memberID: String) -> Maybe<[ReadItem]>
     
@@ -134,7 +134,7 @@ public protocol ReadItemRemote: AuthorizationNeed {
     func requestToggleFavoriteItemID(_ id: String, isOn: Bool) -> Maybe<Void>
 }
 
-public protocol ReadItemOptionsRemote: AuthorizationNeed {
+public protocol ReadItemOptionsRemote: Sendable, AuthorizationNeed {
     
     func requestLoadReadItemCustomOrder(for collectionID: String) -> Maybe<[String]?>
     
@@ -152,14 +152,14 @@ public protocol ReadLinkMemoRemote: AuthorizationNeed {
 
 // MARK: - link preview
 
-public protocol LinkPreviewRemote {
+public protocol LinkPreviewRemote: Sendable {
     
     func requestLoadPreview(_ url: String) -> Maybe<LinkPreview>
 }
 
 // MARK: - item category
 
-public protocol ItemCategoryRemote: AuthorizationNeed {
+public protocol ItemCategoryRemote: Sendable, AuthorizationNeed {
     
     func requestLoadCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
     
@@ -180,7 +180,7 @@ public protocol ItemCategoryRemote: AuthorizationNeed {
 
 // MARK: - BatchUploadRemote
 
-public protocol BatchUploadRemote {
+public protocol BatchUploadRemote: Sendable {
     
     func requestBatchUpload<T>(_ type: T.Type, data: [T]) -> Maybe<Void>
 }
@@ -188,7 +188,7 @@ public protocol BatchUploadRemote {
 
 // MARK: - Item share
 
-public protocol ShareItemRemote: AuthorizationNeed {
+public protocol ShareItemRemote: Sendable, AuthorizationNeed {
     
     func requestShare(collectionID: String) -> Maybe<SharedReadCollection>
     
@@ -216,7 +216,7 @@ public protocol ShareItemRemote: AuthorizationNeed {
 }
 
 
-public protocol HelpRemote {
+public protocol HelpRemote: Sendable {
     
     func requestLeaveFeedback(_ feedback: Feedback) -> Maybe<Void>
 }

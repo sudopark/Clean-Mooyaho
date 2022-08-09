@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ShareItemRepository {
+public protocol ShareItemRepository: Sendable {
     
     func requestShareCollection(_ collectionID: String) -> Maybe<SharedReadCollection>
     

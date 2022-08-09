@@ -12,7 +12,7 @@ import RxSwift
 import Extensions
 
 
-public protocol ItemCategoryRepository {
+public protocol ItemCategoryRepository: Sendable {
     
     func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
     

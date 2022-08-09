@@ -25,7 +25,7 @@ enum EncrytedDataKeys: String {
     case auth
 }
 
-public protocol EncryptedStorage {
+public protocol EncryptedStorage: Sendable {
     
     func setupSharedGroup(_ identifier: String)
     
@@ -37,7 +37,9 @@ public protocol EncryptedStorage {
 }
 
 
-public class EncryptedStorageImple: EncryptedStorage {
+extension KeychainSwift: @unchecked Sendable {  }
+
+public final class EncryptedStorageImple: EncryptedStorage {
     
     private let keychain: KeychainSwift
     

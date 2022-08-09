@@ -64,7 +64,7 @@ public struct GoogleAuthCredential: OAuthCredential {
 
 // MARK: OAuthServiceProviderType
 
-public protocol OAuthServiceProviderType {
+public protocol OAuthServiceProviderType: Sendable {
     var uniqueIdentifier: String { get }
 }
 

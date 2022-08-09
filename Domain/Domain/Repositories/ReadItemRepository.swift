@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadItemRepository {
+public protocol ReadItemRepository: Sendable {
     
     func requestLoadMyItems(for memberID: String?) -> Observable<[ReadItem]>
     

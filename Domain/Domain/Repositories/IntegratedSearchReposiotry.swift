@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol IntegratedSearchReposiotry {
+public protocol IntegratedSearchReposiotry: Sendable {
     
     func requestSearchReadItem(by keyword: String) -> Maybe<[SearchReadItemIndex]>
     

@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadItemOptionsRepository {
+public protocol ReadItemOptionsRepository: Sendable {
     
     func fetchLastestsIsShrinkModeOn() -> Maybe<Bool?>
     
