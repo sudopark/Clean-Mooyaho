@@ -25,7 +25,7 @@ public struct EmailBaseSecret {
 
 // MARK: OAuthCredential protocol
 
-public protocol OAuthCredential { }
+public protocol OAuthCredential: Sendable { }
 
 
 public struct CustomTokenCredential: OAuthCredential {
