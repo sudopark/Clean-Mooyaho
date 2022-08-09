@@ -52,18 +52,20 @@ extension GoggleSignInServiceImple {
         }
         
         return try await withCheckedThrowingContinuation { continuation in
-            let configure = GIDConfiguration(clientID: clientID)
-            GIDSignIn.sharedInstance.signIn(with: configure, presenting: topViewController) { user, error in
-                guard error == nil,
-                      let authToken = user?.authentication,
-                      let idToken = authToken.idToken
-                else {
-                    continuation.resume(throwing: AuthErrors.oauth2Fail(error))
-                    return
+            DispatchQueue.main.async {
+                let configure = GIDConfiguration(clientID: clientID)
+                GIDSignIn.sharedInstance.signIn(with: configure, presenting: topViewController) { user, error in
+                    guard error == nil,
+                          let authToken = user?.authentication,
+                          let idToken = authToken.idToken
+                    else {
+                        continuation.resume(throwing: AuthErrors.oauth2Fail(error))
+                        return
+                    }
+                    
+                    let credential = GoogleAuthCredential(idToken: idToken, accessToken: authToken.accessToken)
+                    continuation.resume(returning: credential)
                 }
-                
-                let credential = GoogleAuthCredential(idToken: idToken, accessToken: authToken.accessToken)
-                continuation.resume(returning: credential)
             }
         }
     }
