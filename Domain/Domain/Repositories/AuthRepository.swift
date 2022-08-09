@@ -10,7 +10,7 @@ import Foundation
 
 import RxSwift
 
-public protocol AuthRepository {
+public protocol AuthRepository: Sendable {
     
     func fetchLastSignInAccountInfo() -> Maybe<(Auth, Member?)>
     

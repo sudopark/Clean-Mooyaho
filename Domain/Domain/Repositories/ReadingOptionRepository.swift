@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadingOptionRepository: AnyObject {
+public protocol ReadingOptionRepository: Sendable, AnyObject {
     
     func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
     

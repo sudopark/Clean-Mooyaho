@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol LinkPreviewRepository {
+public protocol LinkPreviewRepository: Sendable {
     
     func loadLinkPreview(_ url: String) -> Maybe<LinkPreview>
 }
