@@ -13,7 +13,7 @@ import Optics
 import Extensions
 
 
-public struct ItemCategory: Equatable {
+public struct ItemCategory: Equatable, Sendable {
     
     private static var categoryPrefix: String { "item_cate" }
     

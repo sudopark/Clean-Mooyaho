@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadLinkPreviewLoadUsecase {
+public protocol ReadLinkPreviewLoadUsecase: Sendable {
     
     func loadLinkPreview(_ url: String) -> Observable<LinkPreview>
 }

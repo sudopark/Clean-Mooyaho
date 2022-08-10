@@ -87,3 +87,12 @@ extension Result {
         }
     }
 }
+
+
+import RxRelay
+
+extension PublishSubject: @unchecked Sendable { }
+extension BehaviorSubject: @unchecked Sendable { }
+extension PublishRelay: @unchecked Sendable { }
+extension BehaviorRelay: @unchecked Sendable { }
+extension DisposeBag: @unchecked Sendable { }

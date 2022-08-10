@@ -15,7 +15,7 @@ import Extensions
 
 // MARK: - ReadingOptionUsecase
 
-public protocol ReadingOptionUsecase: AnyObject {
+public protocol ReadingOptionUsecase: Sendable, AnyObject {
     
     func lastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
     

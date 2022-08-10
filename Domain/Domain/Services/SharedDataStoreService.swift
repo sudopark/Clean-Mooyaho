@@ -99,7 +99,7 @@ extension SharedDataStoreService {
 
 // MARK: - SharedDataStoreServiceImple
 
-public class SharedDataStoreServiceImple: SharedDataStoreService {
+public class SharedDataStoreServiceImple: SharedDataStoreService, @unchecked Sendable {
     
     private let updatedKey = BehaviorSubject<String?>(value: nil)
     private let internalStore: BehaviorRelay<[String: Any]> = .init(value: [:])

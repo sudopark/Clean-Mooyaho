@@ -14,7 +14,7 @@ import RxRelay
 
 // MARK: - suggest request parms and result type
 
-public protocol SuggestReqParamType {
+public protocol SuggestReqParamType: Sendable {
     
     associatedtype Cursor: Equatable
     
@@ -23,7 +23,7 @@ public protocol SuggestReqParamType {
     func updateNextPageCursor(_ cursor: Cursor) -> Self
 }
 
-public protocol SuggestResultCollectionType {
+public protocol SuggestResultCollectionType: Sendable {
     
     associatedtype Cursor: Equatable
     
@@ -40,7 +40,7 @@ public protocol SuggestResultCollectionType {
 // MARK: - generic suggest usecase
 
 open class SuggestUsecase<ReqType: SuggestReqParamType, ResultType: SuggestResultCollectionType>
-    where ReqType.Cursor == ResultType.Cursor {
+    where ReqType.Cursor == ResultType.Cursor  {
     
     public typealias API = (ReqType) -> Observable<ResultType>
     private let api: API

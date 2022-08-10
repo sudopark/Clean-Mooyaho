@@ -13,7 +13,7 @@ import RxSwift
 
 // MARK: - MessagingService
 
-public protocol MessagingService {
+public protocol MessagingService: Sendable {
     
     func prepareNotificationPermission() -> Maybe<Bool>
     

@@ -15,7 +15,7 @@ public enum Feature: String, CaseIterable {
     case welcomeItem
 }
 
-public protocol FeatureFlagType {
+public protocol FeatureFlagType: Sendable {
     
     func enable(_ feature: Feature)
     
@@ -27,7 +27,7 @@ public protocol FeatureFlagType {
 
 // MARK: - FeatureFlags
 
-public final class FeatureFlags: FeatureFlagType {
+public final class FeatureFlags: FeatureFlagType, @unchecked Sendable {
     
     private var enableFeatures = Set<Feature>()
     

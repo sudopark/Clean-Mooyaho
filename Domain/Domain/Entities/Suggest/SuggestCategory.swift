@@ -11,7 +11,7 @@ import Foundation
 import Extensions
 
 
-public struct SuggestCategory {
+public struct SuggestCategory: Sendable {
     
     public let ownerID: String?
     public let category: ItemCategory
@@ -25,7 +25,7 @@ public struct SuggestCategory {
 }
 
 
-public struct SuggestCategoryCollection {
+public struct SuggestCategoryCollection: Sendable {
     
     public let query: String
     public let categories: [SuggestCategory]

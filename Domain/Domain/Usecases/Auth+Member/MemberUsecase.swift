@@ -33,7 +33,7 @@ public enum UpdateMemberProfileStatus: Equatable {
 
 // MARK: - MemberUsecase
 
-public protocol MemberUsecase {
+public protocol MemberUsecase: Sendable {
     
     func fetchCurrentMember() -> Member?
     
