@@ -22,7 +22,7 @@ public enum ReadCollectionItemSortOrder: Equatable {
 }
 
 
-public protocol ReadItemOptionsUsecase {
+public protocol ReadItemOptionsUsecase: Sendable {
     
     var isShrinkModeOn: Observable<Bool> { get }
     

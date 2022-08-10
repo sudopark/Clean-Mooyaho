@@ -9,7 +9,7 @@
 import Foundation
 
 
-public protocol DeviceInfoService {
+public protocol DeviceInfoService: Sendable {
     
     func osVersion() -> String
     func appVersion() -> String

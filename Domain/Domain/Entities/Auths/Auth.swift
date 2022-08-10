@@ -12,7 +12,7 @@ import Foundation
 
 // MARK: - Auth
 
-public struct Auth: Equatable {
+public struct Auth: Equatable, Sendable {
     
     public let userID: String
     

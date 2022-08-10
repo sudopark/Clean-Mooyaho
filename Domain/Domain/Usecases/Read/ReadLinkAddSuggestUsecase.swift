@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadLinkAddSuggestUsecase {
+public protocol ReadLinkAddSuggestUsecase: Sendable {
     
     func loadSuggestAddNewItemByURLExists() -> Maybe<String?>
 }

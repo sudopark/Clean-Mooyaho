@@ -54,7 +54,7 @@ public struct ReadItemUpdateParams {
 
 // MARK: - ReadItemUpdateUsecase
 
-public protocol ReadItemUpdateUsecase {
+public protocol ReadItemUpdateUsecase: Sendable {
     
     func updateCollection(_ newCollection: ReadCollection) -> Maybe<Void>
     

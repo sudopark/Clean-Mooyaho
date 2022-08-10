@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol OAuthService {
+public protocol OAuthService: Sendable {
     
     func requestSignIn() -> Maybe<OAuthCredential>
 }

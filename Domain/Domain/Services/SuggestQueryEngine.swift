@@ -15,7 +15,7 @@ import Optics
 
 // MARK: - SearchableQueryTokenStoreService
 
-public protocol SuggestQueryEngine {
+public protocol SuggestQueryEngine: Sendable {
     
     func insertTokens(_ texts: [String])
     
@@ -27,7 +27,7 @@ public protocol SuggestQueryEngine {
 }
 
 
-public final class SuggestQueryEngineImple: SuggestQueryEngine {
+public final class SuggestQueryEngineImple: SuggestQueryEngine, @unchecked Sendable {
     
     private let workName = "manage.search.queries"
     private var tokens: Set<String> = []

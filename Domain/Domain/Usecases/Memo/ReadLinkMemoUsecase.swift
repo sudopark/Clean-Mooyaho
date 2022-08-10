@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadLinkMemoUsecase {
+public protocol ReadLinkMemoUsecase: Sendable {
     
     func loadMemo(for linkItemID: String) -> Observable<ReadLinkMemo?>
     

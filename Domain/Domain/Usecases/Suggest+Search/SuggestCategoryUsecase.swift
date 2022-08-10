@@ -15,7 +15,7 @@ import Optics
 
 // MARK: - SuggestCategoryUsecase
 
-public protocol SuggestCategoryUsecase {
+public protocol SuggestCategoryUsecase: Sendable {
     
     func startSuggestCategories(query: String)
     
@@ -70,7 +70,7 @@ extension SuggestCategoryCollection: SuggestResultCollectionType {
 
 // MARK: - SuggestCategoryUsecaseImple
 
-public final class SuggestCategoryUsecaseImple: SuggestCategoryUsecase {
+public final class SuggestCategoryUsecaseImple: SuggestCategoryUsecase,  @unchecked Sendable {
     
     typealias ReqParama = SuggestCategoryReqParams
     typealias ResultCollection = SuggestCategoryCollection

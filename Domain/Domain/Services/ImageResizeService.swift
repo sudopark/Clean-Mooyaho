@@ -13,7 +13,7 @@ import Prelude
 import Optics
 
 
-public protocol ImageResizeService {
+public protocol ImageResizeService: Sendable {
     
     func resize(_ image: UIImage) -> Maybe<UIImage>
 }
