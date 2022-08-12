@@ -74,12 +74,12 @@ extension DescriptionTipsView.TipView: Presenting {
     func setupStyling() {
         
         _ = dotLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.numberOfLines .~ 1
             |> \.text .~ "•"
         
         _ = self.descriptionLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.numberOfLines .~ 0
             |> \.textAlignment .~ .left
     }

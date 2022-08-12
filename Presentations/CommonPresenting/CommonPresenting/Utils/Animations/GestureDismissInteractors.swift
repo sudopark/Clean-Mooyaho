@@ -191,6 +191,7 @@ extension BottomPullPangestureDismissalInteractor: UIGestureRecognizerDelegate {
 
 // MARK: - PangestureDismissableScene
 
+@MainActor
 public protocol PangestureDismissableScene {
     
     func setupDismissGesture(_ dismissInteractor: PangestureDismissalInteractor)

@@ -81,6 +81,7 @@ public struct ReadCollectionItemSection {
 
 // MARK: - ReadItemCells
 
+@MainActor
 public protocol ReadItemCells: BaseTableViewCell {
     
     associatedtype CellViewModel: ReadItemCellViewModel

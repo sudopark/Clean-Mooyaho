@@ -17,7 +17,7 @@ public protocol FirebaseService {
     func setupService()
 }
 
-public final class FirebaseServiceImple: NSObject, FirebaseService {
+public final class FirebaseServiceImple: NSObject, FirebaseService, @unchecked Sendable {
     
     let httpAPI: HttpAPI
     var fireStoreDB: Firestore!

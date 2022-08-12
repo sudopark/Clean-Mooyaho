@@ -10,6 +10,7 @@ import UIKit
 
 // MARK: PushSlide animation constants
 
+@MainActor
 public protocol PushSlideAnimationConstants { }
 
 extension PushSlideAnimationConstants {

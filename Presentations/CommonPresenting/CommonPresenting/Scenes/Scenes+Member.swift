@@ -15,13 +15,16 @@ import Domain
 
 // MARK: - SignInScene
 
+@MainActor
 public protocol SignInSceneInteractable { }
 
+@MainActor
 public protocol SignInSceneListenable: AnyObject {
     
     func signIn(didCompleted member: Member)
 }
 
+@MainActor
 public protocol SignInScene: Scenable, PangestureDismissableScene {
     
     var interactor: SignInSceneInteractable? { get }
@@ -30,8 +33,10 @@ public protocol SignInScene: Scenable, PangestureDismissableScene {
 
 // MARK: - EditProfileScene
 
+@MainActor
 public protocol EditProfileSceneInteractable: ImagePickerSceneListenable, SelectEmojiSceneListenable { }
 
+@MainActor
 public protocol EditProfileScene: Scenable {
     
     var interactor: EditProfileSceneInteractable? { get }
@@ -40,13 +45,16 @@ public protocol EditProfileScene: Scenable {
 
 // MARK: - MemberProfileScene Interactable & Listenable
 
+@MainActor
 public protocol MemberProfileSceneInteractable { }
 
+@MainActor
 public protocol MemberProfileSceneListenable: AnyObject { }
 
 
 // MARK: - MemberProfileScene
 
+@MainActor
 public protocol MemberProfileScene: Scenable {
     
     var interactor: MemberProfileSceneInteractable? { get }
@@ -55,8 +63,10 @@ public protocol MemberProfileScene: Scenable {
 
 // MARK: - RecoverAccountScene Interactable & Listenable
 
+@MainActor
 public protocol RecoverAccountSceneInteractable { }
 
+@MainActor
 public protocol RecoverAccountSceneListenable: AnyObject {
     
     func recoverAccount(didCompleted recoveredMember: Member)
@@ -65,6 +75,7 @@ public protocol RecoverAccountSceneListenable: AnyObject {
 
 // MARK: - RecoverAccountScene
 
+@MainActor
 public protocol RecoverAccountScene: Scenable {
     
     var interactor: RecoverAccountSceneInteractable? { get }

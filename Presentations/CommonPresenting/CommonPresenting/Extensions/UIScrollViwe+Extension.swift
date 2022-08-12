@@ -21,6 +21,7 @@ extension UIScrollView {
 
 extension Reactive where Base: UIScrollView {
     
+    @MainActor
     public func scrollBottomHit(wait: Observable<Void>,
                                 threshold: CGFloat = 0,
                                 throttleTimeMillis: Int = 1000) -> Observable<Void> {

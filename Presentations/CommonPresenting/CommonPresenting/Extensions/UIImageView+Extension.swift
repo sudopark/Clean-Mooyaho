@@ -149,6 +149,7 @@ private extension KFImage {
         self.init(URL(string: path))
     }
     
+    @MainActor
     func downSamplingIfNeed(_ resize: CGSize?) -> KFImage {
         guard let resize = resize else { return self }
         let scale = UIScreen.main.scale

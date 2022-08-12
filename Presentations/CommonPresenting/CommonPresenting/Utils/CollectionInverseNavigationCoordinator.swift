@@ -17,6 +17,7 @@ extension String: CollectionInverseParentMakeParameter { }
 extension ReadCollection: CollectionInverseParentMakeParameter { }
 
 
+@MainActor
 public protocol CollectionInverseNavigationCoordinating: AnyObject {
     
     func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter)

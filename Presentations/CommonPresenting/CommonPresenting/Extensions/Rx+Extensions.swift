@@ -14,34 +14,42 @@ import RxCocoa
 
 extension Reactive where Base: UIViewController {
     
+    @MainActor
     public var viewDidLoad: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewDidLoad))
     }
     
+    @MainActor
     public var viewWillAppear: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewWillAppear(_:)))
     }
     
+    @MainActor
     public var viewDidAppear: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewDidAppear(_:)))
     }
     
+    @MainActor
     public var viewWillLayoutSubviews: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewWillLayoutSubviews))
     }
     
+    @MainActor
     public var viewDidLayoutSubviews: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewDidLayoutSubviews))
     }
     
+    @MainActor
     public var viewWillTransition: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewWillTransition(to:with:)))
     }
     
+    @MainActor
     public var viewWillDisappear: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewWillDisappear(_:)))
     }
     
+    @MainActor
     public var viewDidDisappear: Observable<[Any]> {
         return sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
     }
@@ -50,6 +58,7 @@ extension Reactive where Base: UIViewController {
 
 extension Reactive where Base: UIView {
     
+    @MainActor
     public func addTapgestureRecognizer(count: Int = 1,
                                         with impactStyle: FeedbackImapctStyle? = nil) -> Observable<UITapGestureRecognizer> {
         self.base.isUserInteractionEnabled = true

@@ -27,6 +27,7 @@ public struct KeyboardFrameChanges {
 
 extension Reactive where Base == NotificationCenter {
     
+    @MainActor
     public var keyboardFrameWillChanges: Observable<KeyboardFrameChanges> {
         
         let willShow = base.rx.notification(UIResponder.keyboardWillShowNotification)
@@ -49,6 +50,7 @@ extension Reactive where Base == NotificationCenter {
 
 private extension Notification {
     
+    @MainActor
     func keyboardChanges(_ type: KeyboardFrameChanges.EventType) -> KeyboardFrameChanges? {
         
         guard let from = self.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? CGRect,

@@ -9,7 +9,7 @@ import UIKit
 
 import Domain
 
-
+@MainActor
 public protocol SignInButton: UIView {
     
     func updateAppearance(by isDarkMode: Bool)

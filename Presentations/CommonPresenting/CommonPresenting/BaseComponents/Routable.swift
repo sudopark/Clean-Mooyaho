@@ -19,6 +19,7 @@ import Extensions
 
 // MARK: Routing and Router
 
+@MainActor
 public protocol Routing: AnyObject {
     
     func alertError(_ error: Error)
@@ -36,7 +37,7 @@ public protocol Routing: AnyObject {
     func openURL(_ path: String)
 }
 extension Routing {
-    
+ 
     public func alertError(_ error: Error) { }
     
     public func showToast(_ message: String) { }
