@@ -33,6 +33,7 @@ final class ShadowView: BaseUIView {
 
 // MARK: - Sidebar animation constants
 
+@MainActor
 public protocol SidebarAnimationConstants { }
 
 extension SidebarAnimationConstants {

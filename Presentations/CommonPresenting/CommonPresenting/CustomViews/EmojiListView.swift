@@ -28,7 +28,7 @@ extension EmojiListView: EmojiViewDelegate {
         self.emojiView = EmojiView(keyboardSettings: setting)
         self.emojiView.delegate = self
     }
-    
+
     public func emojiViewDidSelectEmoji(_ emoji: String, emojiView: EmojiView) {
         self.selectedEmojiSubjct.onNext(emoji)
     }

@@ -21,6 +21,7 @@ public struct ColorCellViewMdoel: Equatable {
 
 // MARK: - ColorSelectViewModel
 
+@MainActor
 public protocol ColorSelectViewModel: AnyObject {
 
     // interactor

@@ -9,6 +9,7 @@
 import Foundation
 
 
+@MainActor
 public protocol Presenting {
     
     func setupLayout()

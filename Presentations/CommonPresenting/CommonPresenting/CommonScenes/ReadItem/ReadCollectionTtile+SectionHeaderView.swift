@@ -46,13 +46,14 @@ open class ReadCollectionSectionHeaderView: BaseTableViewSectionHeaderFooterView
         _ = self
             |> \.backgroundColor .~ self.uiContext.colors.appBackground
             |> \.tintColor .~ self.uiContext.colors.appBackground
-        _ = self.titleLabel |> self.uiContext.decorating.listSectionTitle(_:)
+        _ = self.titleLabel |> { self.uiContext.decorating.listSectionTitle($0) }
     }
 }
 
 
 extension ReadCollectionItemSectionType {
     
+    @MainActor
     public func makeSectionHeaderIfPossible() -> ReadCollectionSectionHeaderView? {
         guard self != .attribute else { return nil }
         let header = ReadCollectionSectionHeaderView()
@@ -62,7 +63,7 @@ extension ReadCollectionItemSectionType {
 }
 
 
-
+@MainActor
 public protocol ShrinkableTtileHeaderViewSupporting: BaseViewController {
     
     var titleHeaderView: BaseTableViewHeaderView { get }

@@ -102,7 +102,7 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         self.iconImageView.contentMode = .scaleAspectFit
         
         _ = nameLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
         
         self.favoriteImageVIew.image = UIImage(systemName: "star.fill")
         self.favoriteImageVIew.tintColor = UIColor.systemYellow
@@ -110,11 +110,11 @@ public class ReadItemShrinkContentView: BaseUIView, Presenting {
         self.favoriteImageVIew.contentMode = .scaleAspectFit
         
         _ = addressLabel
-            |> self.uiContext.decorating.listItemSubDescription(_:)
+            |> { self.uiContext.decorating.listItemSubDescription($0) }
             |> \.isHidden .~ true
         
         _ = descriptionLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.isHidden .~ true
     }
 }
@@ -168,7 +168,7 @@ extension OwnerInfoView {
     public func setupStyling() {
         
         _ = self.sharedLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> {self.uiContext.decorating.listItemDescription($0) }
             |> \.text .~ pure("shared by".localized)
             |> \.numberOfLines .~ 1
         
@@ -177,7 +177,7 @@ extension OwnerInfoView {
         self.shareMemberProfileImageView.clipsToBounds = true
 
         _ = self.shareMemberNameLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.font .~ self.uiContext.fonts.get(12, weight: .medium)
             |> \.numberOfLines .~ 1
     }

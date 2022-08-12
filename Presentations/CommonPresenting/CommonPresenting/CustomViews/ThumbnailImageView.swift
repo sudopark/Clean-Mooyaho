@@ -122,7 +122,7 @@ extension Views {
             GeometryReader { geometry in
                 Text(value)
                     .font(
-                        self.uiContext.fonts.get(geometry.size.width * 0.75, weight: .regular).asFont
+                        self.theme.fonts.get(geometry.size.width * 0.75, weight: .regular).asFont
                     )
                     .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }

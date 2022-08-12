@@ -251,7 +251,7 @@ extension Views {
         private var messageLabel: some View {
             Text("Wait please..".localized)
                 .foregroundColor(.white.opacity(0.8))
-                .font(self.uiContext.fonts.get(15, weight: .medium).asFont)
+                .font(self.theme.fonts.get(15, weight: .medium).asFont)
         }
         
         private var loadingView: some View {

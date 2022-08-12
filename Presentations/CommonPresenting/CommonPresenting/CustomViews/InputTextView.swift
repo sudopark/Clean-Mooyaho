@@ -136,6 +136,7 @@ extension InputTextView: UITextFieldDelegate, UITextViewDelegate {
 
 extension Reactive where Base == InputTextView {
     
+    @MainActor
     public var text: ControlProperty<String?> {
         return base.isSingleLine ? base.singleLineTextField.rx.text
             : base.textInputView.rx.text

@@ -14,8 +14,10 @@ import RxCocoa
 
 // MARK: - ColorSelectScene Interactable & Listenable
 
+@MainActor
 public protocol ColorSelectSceneInteractable { }
 
+@MainActor
 public protocol ColorSelectSceneListenable: AnyObject {
     
     func colorSelect(didSeelctColor hexCode: String)
@@ -24,6 +26,7 @@ public protocol ColorSelectSceneListenable: AnyObject {
 
 // MARK: - ColorSelectScene
 
+@MainActor
 public protocol ColorSelectScene: Scenable, PangestureDismissableScene {
     
     var interactor: ColorSelectSceneInteractable? { get }

@@ -10,6 +10,10 @@ import UIKit
 import RxSwift
 
 
+
+// MARK: - UIContext
+
+@MainActor
 public struct UIContext {
     
     private let theme: Theme
@@ -45,6 +49,7 @@ extension UIContext {
 }
 
 
+@MainActor
 public protocol UIContextAccessable {
     
     var uiContext: UIContext { get }
@@ -58,11 +63,21 @@ extension UIContextAccessable {
 }
 
 
-// MARK: - UIContext + SwiftUI View
+
+// MARK: - SwiftUITheme
+
+public final class SwiftUITheme: @unchecked Sendable {
+    
+    public static var theme: Theme = DefaultTheme()
+}
 
 import SwiftUI
 
 public extension View {
     
+    @preconcurrency
+    @MainActor
     var uiContext: UIContext { UIContext.currentContext }
+    
+    var theme: Theme { SwiftUITheme.theme }
 }

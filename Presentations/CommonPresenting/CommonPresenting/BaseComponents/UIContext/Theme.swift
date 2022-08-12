@@ -8,7 +8,7 @@
 import UIKit
 
 
-public protocol ColorSet {
+public protocol ColorSet: Sendable {
     
     var accentColor: UIColor { get }
     var secondaryAccentColor: UIColor { get }
@@ -51,13 +51,13 @@ extension ColorSet {
     }
 }
 
-public protocol FontSet {
+public protocol FontSet: Sendable {
     
     func get(_ size: CGFloat, weight: UIFont.Weight?) -> UIFont
 }
 
 
-public protocol Theme {
+public protocol Theme: Sendable {
     
     var colors: ColorSet { get }
     var fonts: FontSet { get }

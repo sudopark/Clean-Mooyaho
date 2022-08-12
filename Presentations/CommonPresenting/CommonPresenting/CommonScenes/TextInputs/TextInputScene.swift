@@ -14,8 +14,10 @@ import RxCocoa
 
 // MARK: - TextInputScene Interactor & Presenter
 
+@MainActor
 public protocol TextInputSceneInteractable { }
 
+@MainActor
 public protocol TextInputSceneListenable: AnyObject {
     
     func textInput(didEntered text: String?)

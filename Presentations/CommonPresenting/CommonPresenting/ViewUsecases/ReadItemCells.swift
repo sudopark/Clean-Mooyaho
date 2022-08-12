@@ -45,19 +45,19 @@ public final class DefaultReadCollectionCell: BaseTableViewCell, ReadItemCells, 
         
         let priority = cellViewModel.priority
         self.expandView.priorityLabel.isHidden = priority == nil
-        priority.do <| self.expandView.priorityLabel.setupPriority
+        priority.do <| { self.expandView.priorityLabel.setupPriority($0) }
             
         self.updateCategories(cellViewModel.categories)
             
         let remindtime = cellViewModel.remindTime
         self.expandView.remindView.isHidden = remindtime == nil
-        remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
+        remindtime.do <| { self.expandView.remindView.setupRemindWithIcon($0) }
     }
     
     public func updateCategories(_ categories: [ItemCategory]) {
         let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
-        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
+        validCategory.do <| { self.expandView.categoriesView.updateCategories($0) }
     }
     
     public func setupLayout() {
@@ -136,13 +136,13 @@ public final class DefaultReadLinkCell: BaseTableViewCell, ReadItemCells, Presen
         
         let priority = cellViewModel.priority
         self.expandView.priorityLabel.isHidden = priority == nil
-        priority.do <| self.expandView.priorityLabel.setupPriority
+        priority.do <| { self.expandView.priorityLabel.setupPriority($0) }
                 
         self.updateCategories(cellViewModel.categories)
             
         let remindtime = cellViewModel.remindTime
         self.expandView.remindView.isHidden = remindtime == nil
-        remindtime.do <| expandView.remindView.setupRemindWithIcon(_:)
+        remindtime.do <| { self.expandView.remindView.setupRemindWithIcon($0) }
     }
     
     func updateIsRed(_ isRed: Bool) {
@@ -157,7 +157,7 @@ public final class DefaultReadLinkCell: BaseTableViewCell, ReadItemCells, Presen
     public func updateCategories(_ categories: [ItemCategory]) {
         let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
-        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
+        validCategory.do <| { self.expandView.categoriesView.updateCategories($0) }
     }
     
     public func bindPreview(_ source: Observable<LinkPreview>, customTitle: String?) {
@@ -238,4 +238,3 @@ public final class DefaultReadLinkCell: BaseTableViewCell, ReadItemCells, Presen
         self.underLineView.backgroundColor = self.uiContext.colors.lineColor
     }
 }
-
