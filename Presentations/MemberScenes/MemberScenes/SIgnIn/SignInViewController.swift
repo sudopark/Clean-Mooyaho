@@ -79,7 +79,7 @@ extension SignInViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let types = self.viewModel.supportingOAuthProviderTypes
-                types.forEach(self.appendAndBindButtons(_:))
+                types.forEach { self.appendAndBindButtons($0) }
                 
                 self.bindIsSigning()
             })

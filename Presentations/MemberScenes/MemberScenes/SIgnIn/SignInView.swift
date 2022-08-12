@@ -137,7 +137,7 @@ extension GudieView: Presenting {
         self.emojiLabel.text = "🧐"
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.text .~ pure("Log in to use the following services".localized)
             |> \.numberOfLines .~ 0
             |> \.textAlignment .~ .center

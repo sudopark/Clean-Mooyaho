@@ -18,6 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
+@MainActor
 public protocol EditProfileRouting: Routing {
     
     func editText(mode: TextInputMode, listener: TextInputSceneListenable)
@@ -45,7 +46,7 @@ extension EditProfileRouter {
     private var currentInteractor: EditProfileSceneInteractable? {
         return (self.currentScene as? EditProfileScene)?.interactor
     }
-    
+
     // EditProfileRouting implements
     public func editText(mode: TextInputMode, listener: TextInputSceneListenable) {
         guard let next = self.nextScenesBuilder?.makeTextInputScene(mode, listener: listener)

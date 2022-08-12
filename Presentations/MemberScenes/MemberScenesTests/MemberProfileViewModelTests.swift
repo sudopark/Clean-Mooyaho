@@ -20,6 +20,7 @@ import UsecaseDoubles
 @testable import MemberScenes
 
 
+@MainActor
 class MemberProfileViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!

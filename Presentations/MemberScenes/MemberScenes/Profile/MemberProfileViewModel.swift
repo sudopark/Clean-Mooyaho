@@ -60,6 +60,7 @@ public struct MemberCellSection: Equatable {
 
 // MARK: - MemberProfileViewModel
 
+@MainActor
 public protocol MemberProfileViewModel: AnyObject {
 
     // interactor

@@ -18,7 +18,7 @@ import UsecaseDoubles
 
 import MemberScenes
 
-
+@MainActor
 class RecoverAccountViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
