@@ -32,6 +32,7 @@ public struct EditProfileCellViewModel: Equatable {
     var isRequire = false
 }
 
+@MainActor
 public protocol EditProfileViewModel: AnyObject {
 
     // interactor

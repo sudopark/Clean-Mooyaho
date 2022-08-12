@@ -173,7 +173,7 @@ extension RecoverAccountViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader(_:)
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ "Welcome back!"
             |> \.textAlignment .~ .center
         
@@ -187,13 +187,13 @@ extension RecoverAccountViewController: Presenting {
         self.borderView.clipsToBounds = true
         
         _ = self.nameLabel
-            |> self.uiContext.decorating.listItemTitle
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 0
             |> \.font .~ self.uiContext.fonts.get(16, weight: .medium)
             |> \.textAlignment .~ .center
         
         _ = self.deactivateDateLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.textAlignment .~ .center
         
         let explains = "recover_account_descriptions".localized.components(separatedBy: "\n")

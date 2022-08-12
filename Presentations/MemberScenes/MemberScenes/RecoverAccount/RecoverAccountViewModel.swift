@@ -18,6 +18,7 @@ import Extensions
 
 // MARK: - RecoverAccountViewModel
 
+@MainActor
 public protocol RecoverAccountViewModel: AnyObject {
 
     // interactor

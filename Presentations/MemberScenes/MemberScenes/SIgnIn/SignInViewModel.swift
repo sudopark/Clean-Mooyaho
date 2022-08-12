@@ -18,6 +18,7 @@ import Extensions
 
 // MARK: - SignInViewModel
 
+@MainActor
 public protocol SignInViewModel: AnyObject {
 
     // interactor

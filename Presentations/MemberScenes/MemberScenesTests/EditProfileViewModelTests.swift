@@ -18,7 +18,7 @@ import UsecaseDoubles
 
 @testable import MemberScenes
 
-
+@MainActor
 class EditProfileViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
