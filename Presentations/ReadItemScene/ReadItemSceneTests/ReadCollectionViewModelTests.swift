@@ -1139,7 +1139,7 @@ extension ReadCollectionViewModelTests {
 
 extension ReadCollectionViewModelTests {
     
-    class FakeRouter: ReadCollectionRouting, Mocking {
+    final class FakeRouter: ReadCollectionRouting, Mocking, @unchecked Sendable {
         
         func alertError(_ error: Error) {
             self.verify(key: "alertError")
@@ -1215,7 +1215,7 @@ extension ReadCollectionViewModelTests {
         }
     }
     
-    class SpyInverseNavigationCoorditator: CollectionInverseNavigationCoordinating {
+    final class SpyInverseNavigationCoorditator: CollectionInverseNavigationCoordinating, @unchecked Sendable {
         
         var didPrepareParentRequested: Bool = false
         func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
@@ -1277,7 +1277,7 @@ private extension ReadPriority {
 
 extension ReadCollectionViewModelTests {
     
-    class SpyNavigationListener: ReadCollectionNavigateListenable {
+    final class SpyNavigationListener: ReadCollectionNavigateListenable, @unchecked Sendable {
         
         var didShowMyReadCollectionID: String?
         func readCollection(didShowMy subCollectionID: String?) {

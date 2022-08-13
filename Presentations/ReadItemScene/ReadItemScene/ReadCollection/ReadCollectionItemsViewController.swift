@@ -311,6 +311,7 @@ private extension ReadCollectionItemSectionType {
         }
     }
     
+    @MainActor
     func makeSectionHeaderIfPossible() -> ReadCollectionSectionHeaderView? {
         guard self != .attribute else { return nil }
         let header = ReadCollectionSectionHeaderView()
@@ -351,6 +352,7 @@ private extension ReadCollectionItemSwipeContextAction {
         }
     }
     
+    @MainActor
     func asUIContextAction(_ handler: @escaping (Self) -> Void) -> UIContextualAction {
         
         let action = UIContextualAction(style: .normal, title: self.title) { _, _, completionHandler in

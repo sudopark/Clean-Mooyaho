@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - ReadCollectionMainViewModel
 
-public protocol ReadCollectionMainViewModel: AnyObject {
+public protocol ReadCollectionMainViewModel: AnyObject, Sendable {
 
     // interactor
     func setupSubCollections()
@@ -30,7 +30,7 @@ public protocol ReadCollectionMainViewModel: AnyObject {
 
 // MARK: - ReadCollectionMainViewModelImple
 
-public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel {
+public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel, @unchecked Sendable {
     
     private let router: ReadCollectionMainRouting
     private weak var navigationListener: ReadCollectionNavigateListenable?
@@ -46,7 +46,7 @@ public final class ReadCollectionMainViewModelImple: ReadCollectionMainViewModel
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let currentCollectionRoot = BehaviorRelay<CollectionRoot>(value: .myCollections)
     }
     

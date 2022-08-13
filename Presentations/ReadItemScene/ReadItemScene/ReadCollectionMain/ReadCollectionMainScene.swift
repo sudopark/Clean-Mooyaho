@@ -24,7 +24,7 @@ extension ReadCollectionMainViewModelImple: ReadCollectionMainSceneInteractable 
 
 extension ReadCollectionMainViewController {
 
-    public var interactor: ReadCollectionMainSceneInteractable? {
+    public nonisolated var interactor: ReadCollectionMainSceneInteractable? {
         return self.viewModel as? ReadCollectionMainSceneInteractable
     }
 }

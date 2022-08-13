@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol FavoriteItemsRouting: Routing {
+public protocol FavoriteItemsRouting: Routing, Sendable {
     
     func showLinkDetail(_ link: ReadLink)
 }
@@ -41,12 +41,14 @@ extension FavoriteItemsRouter {
     
     public func showLinkDetail(_ link: ReadLink) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeInnerWebViewScene(link: link, isEditable: true,
-                                       isJumpable: true, listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeInnerWebViewScene(link: link, isEditable: true,
+                                           isJumpable: true, listener: self.currentInteractor)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

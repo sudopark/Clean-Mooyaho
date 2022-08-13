@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol ReadCollectionMainRouting: Routing {
+public protocol ReadCollectionMainRouting: Routing, Sendable {
     
     func setupSubCollections()
     
@@ -55,26 +55,30 @@ extension ReadCollectionMainRouter {
     
     public func setupSubCollections() {
         
-        guard let current = self.currentScene as? UINavigationController,
-              let nextScene = self.nextScenesBuilder?
-                .makeReadCollectionItemScene(collectionID: nil, navigationListener: self.navigationListener)
-        else {
-            return
+        Task { @MainActor in
+            guard let current = self.currentScene as? UINavigationController,
+                  let nextScene = self.nextScenesBuilder?
+                    .makeReadCollectionItemScene(collectionID: nil, navigationListener: self.navigationListener)
+            else {
+                return
+            }
+            
+            current.viewControllers = [nextScene]
         }
-        
-        current.viewControllers = [nextScene]
     }
     
     public func switchToSharedCollection(root: SharedReadCollection) {
-        guard let current = self.currentScene as? UINavigationController,
-              let sharedRoot = self.nextScenesBuilder?
-                .makeSharedCollectionItemsScene(currentCollection: root,
-                                                listener: nil,
-                                                navigationListener: self.navigationListener)
-        else {
-            return
+        Task { @MainActor in
+            guard let current = self.currentScene as? UINavigationController,
+                  let sharedRoot = self.nextScenesBuilder?
+                    .makeSharedCollectionItemsScene(currentCollection: root,
+                                                    listener: nil,
+                                                    navigationListener: self.navigationListener)
+            else {
+                return
+            }
+            current.viewControllers = [sharedRoot]
         }
-        current.viewControllers = [sharedRoot]
     }
     
     public func switchToMyReadCollection() {
@@ -82,15 +86,20 @@ extension ReadCollectionMainRouter {
     }
     
     public func addNewColelctionAtCurrentCollection() {
-        guard let currentCollection = self.findCurrentCollectionScene() else { return }
-        currentCollection.interactor?.addNewCollectionItem()
+        Task { @MainActor in
+            guard let currentCollection = self.findCurrentCollectionScene() else { return }
+            currentCollection.interactor?.addNewCollectionItem()
+        }
     }
     
     public func addNewReadLinkItemAtCurrentCollection() {
-        guard let currentCollection = self.findCurrentCollectionScene() else { return }
-        currentCollection.interactor?.addNewReadLinkItem()
+        Task { @MainActor in
+            guard let currentCollection = self.findCurrentCollectionScene() else { return }
+            currentCollection.interactor?.addNewReadLinkItem()
+        }
     }
     
+    @MainActor
     private func findCurrentCollectionScene() -> ReadCollectionScene? {
         guard let childViewControllers = (self.currentScene as? BaseNavigationController)?.viewControllers else {
             return nil
@@ -100,48 +109,56 @@ extension ReadCollectionMainRouter {
     }
     
     public func addNewReadLinkItem(using url: String) {
-        guard let currentCollection = self.findCurrentCollectionScene() else { return }
-        currentCollection.interactor?.addNewReadLinkItem(using: url)
+        Task { @MainActor in
+            guard let currentCollection = self.findCurrentCollectionScene() else { return }
+            currentCollection.interactor?.addNewReadLinkItem(using: url)
+        }
     }
     
     public func moveToRootCollection() {
-        self.currentScene?.navigationController?.popToRootViewController(animated: true)
+        Task { @MainActor in
+            self.currentScene?.navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     public func jumpToCollection(_ collectionID: String) {
         
-        self.prepareInverseCoordinatorIfNotExists()
-        
-        guard let navigationController = self.currentScene as? UINavigationController,
-              let root = self.nextScenesBuilder?
-                .makeReadCollectionItemScene(collectionID: nil, navigationListener: self.navigationListener),
-              let dest = self.nextScenesBuilder?
-                .makeReadCollectionItemScene(collectionID: collectionID,
-                                             navigationListener: self.navigationListener,
-                                             withInverse: self.collectionInverseNavigationCoordinator)
-        else {
-            return
+        Task { @MainActor in
+            self.prepareInverseCoordinatorIfNotExists()
+            
+            guard let navigationController = self.currentScene as? UINavigationController,
+                  let root = self.nextScenesBuilder?
+                    .makeReadCollectionItemScene(collectionID: nil, navigationListener: self.navigationListener),
+                  let dest = self.nextScenesBuilder?
+                    .makeReadCollectionItemScene(collectionID: collectionID,
+                                                 navigationListener: self.navigationListener,
+                                                 withInverse: self.collectionInverseNavigationCoordinator)
+            else {
+                return
+            }
+            
+            navigationController.viewControllers = [root, dest]
         }
-        
-        navigationController.viewControllers = [root, dest]
     }
     
     private func prepareInverseCoordinatorIfNotExists() {
-        guard self.collectionInverseNavigationCoordinator == nil else { return }
-        let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
-        makeParent = { [weak self] parameter in
-            guard let collectionID = parameter as? String else { return nil }
-            
-            let parent = self?.nextScenesBuilder?.makeReadCollectionItemScene(
-                collectionID: collectionID,
-                navigationListener: self?.navigationListener,
-                withInverse: self?.collectionInverseNavigationCoordinator
-            )
-            return parent
-        }
+        Task { @MainActor in
+            guard self.collectionInverseNavigationCoordinator == nil else { return }
+            let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
+            makeParent = { [weak self] parameter in
+                guard let collectionID = parameter as? String else { return nil }
+                
+                let parent = self?.nextScenesBuilder?.makeReadCollectionItemScene(
+                    collectionID: collectionID,
+                    navigationListener: self?.navigationListener,
+                    withInverse: self?.collectionInverseNavigationCoordinator
+                )
+                return parent
+            }
 
-        let navigation = self.currentScene as? UINavigationController
-        self.collectionInverseNavigationCoordinator = .init(navigationController: navigation,
-                                                            makeParent: makeParent)
+            let navigation = self.currentScene as? UINavigationController
+            self.collectionInverseNavigationCoordinator = .init(navigationController: navigation,
+                                                                makeParent: makeParent)
+        }
     }
 }

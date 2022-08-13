@@ -33,7 +33,7 @@ public struct NavigateCollectionCellViewModel: Equatable {
 
 // MARK: - NavigateCollectionViewModel
 
-public protocol NavigateCollectionViewModel: AnyObject {
+public protocol NavigateCollectionViewModel: AnyObject, Sendable {
 
     // interactor
     func reloadCollections()
@@ -51,7 +51,7 @@ public protocol NavigateCollectionViewModel: AnyObject {
 
 // MARK: - NavigateCollectionViewModelImple
 
-public class NavigateCollectionViewModelImple: NavigateCollectionViewModel {
+public class NavigateCollectionViewModelImple: NavigateCollectionViewModel, @unchecked Sendable {
     
     let readItemUsecase: ReadItemUsecase
     let router: NavigateCollectionRouting
@@ -80,7 +80,7 @@ public class NavigateCollectionViewModelImple: NavigateCollectionViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let currentCollection = BehaviorRelay<ReadCollection?>(value: nil)
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
