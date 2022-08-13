@@ -11,7 +11,7 @@ import Foundation
 
 public let logger: Logger = Logger()
 
-public final class Logger {
+public final class Logger: @unchecked Sendable {
     
     public enum Level {
         

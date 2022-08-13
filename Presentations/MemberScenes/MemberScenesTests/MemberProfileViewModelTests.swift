@@ -20,7 +20,6 @@ import UsecaseDoubles
 @testable import MemberScenes
 
 
-@MainActor
 class MemberProfileViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
@@ -148,7 +147,7 @@ extension MemberProfileViewModelTests {
 
 extension MemberProfileViewModelTests {
     
-    class SpyRouter: MemberProfileRouting {
+    final class SpyRouter: MemberProfileRouting, @unchecked Sendable {
         
         var didAlertForConfirm: Bool?
         func alertForConfirm(_ form: AlertForm) {

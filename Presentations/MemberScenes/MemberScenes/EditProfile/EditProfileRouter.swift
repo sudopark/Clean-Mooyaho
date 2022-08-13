@@ -18,8 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-@MainActor
-public protocol EditProfileRouting: Routing {
+public protocol EditProfileRouting: Routing, Sendable {
     
     func editText(mode: TextInputMode, listener: TextInputSceneListenable)
     
@@ -37,7 +36,7 @@ public typealias EditProfileRouterBuildables = TextInputSceneBuilable & ImagePic
 
 public final class EditProfileRouter: Router<EditProfileRouterBuildables>, EditProfileRouting {
     
-    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    @MainActor private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
 }
 
 
@@ -49,14 +48,17 @@ extension EditProfileRouter {
 
     // EditProfileRouting implements
     public func editText(mode: TextInputMode, listener: TextInputSceneListenable) {
-        guard let next = self.nextScenesBuilder?.makeTextInputScene(mode, listener: listener)
-        else {
-            return
+        
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeTextInputScene(mode, listener: listener)
+            else {
+                return
+            }
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func chooseProfileImageSource(_ form: ActionSheetForm) {
@@ -64,19 +66,23 @@ extension EditProfileRouter {
     }
     
     public func selectEmoji() {
-        guard let next = self.nextScenesBuilder?.makeSelectEmojiScene(listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeSelectEmojiScene(listener: self.currentInteractor)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func selectPhoto() {
-        guard let next = self.nextScenesBuilder?
-                .makeImagePickerScene(isCamera: false, listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeImagePickerScene(isCamera: false, listener: self.currentInteractor)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

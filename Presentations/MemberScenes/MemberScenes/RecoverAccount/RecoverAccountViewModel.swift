@@ -18,8 +18,7 @@ import Extensions
 
 // MARK: - RecoverAccountViewModel
 
-@MainActor
-public protocol RecoverAccountViewModel: AnyObject {
+public protocol RecoverAccountViewModel: AnyObject, Sendable {
 
     // interactor
     func confirmRecover()
@@ -33,7 +32,7 @@ public protocol RecoverAccountViewModel: AnyObject {
 
 // MARK: - RecoverAccountViewModelImple
 
-public final class RecoverAccountViewModelImple: RecoverAccountViewModel {
+public final class RecoverAccountViewModelImple: RecoverAccountViewModel, @unchecked Sendable {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
@@ -58,7 +57,7 @@ public final class RecoverAccountViewModelImple: RecoverAccountViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let member = BehaviorRelay<Member?>(value: nil)
         let isRecovering = BehaviorRelay<Bool>(value: false)
