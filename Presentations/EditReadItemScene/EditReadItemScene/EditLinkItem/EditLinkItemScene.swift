@@ -24,7 +24,7 @@ extension EditLinkItemViewModelImple: EditLinkItemSceneInteractable {
 
 extension EditLinkItemViewController {
 
-    public var interactor: EditLinkItemSceneInteractable? {
+    public nonisolated var interactor: EditLinkItemSceneInteractable? {
         return self.viewModel as? EditLinkItemSceneInteractable
     }
 }

@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - SelectAddItemTypeViewModel
 
-public protocol SelectAddItemTypeViewModel: AnyObject {
+public protocol SelectAddItemTypeViewModel: AnyObject, Sendable {
 
     // interactor
     func requestAddNewCollection()
@@ -30,7 +30,7 @@ public protocol SelectAddItemTypeViewModel: AnyObject {
 
 // MARK: - SelectAddItemTypeViewModelImple
 
-public final class SelectAddItemTypeViewModelImple: SelectAddItemTypeViewModel {
+public final class SelectAddItemTypeViewModelImple: SelectAddItemTypeViewModel, @unchecked Sendable {
     
     private let router: SelectAddItemTypeRouting
     private var completed: ((Bool) -> Void)?
@@ -46,7 +46,7 @@ public final class SelectAddItemTypeViewModelImple: SelectAddItemTypeViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
     }
     
@@ -71,7 +71,7 @@ extension SelectAddItemTypeViewModelImple {
         }
     }
     
-    private func close(and routing: @escaping () -> Void) {
+    private func close(and routing: @escaping @Sendable () -> Void) {
         self.router.closeScene(animated: true, completed: routing)
     }
     

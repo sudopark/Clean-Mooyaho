@@ -31,7 +31,7 @@ public struct ReadPriorityCellViewMdoel {
 
 // MARK: - EditReadPriorityViewModel
 
-public protocol EditReadPriorityViewModel: AnyObject {
+public protocol EditReadPriorityViewModel: AnyObject, Sendable {
     
     // interactor
     func showPriorities()
@@ -46,7 +46,7 @@ public protocol EditReadPriorityViewModel: AnyObject {
 
 // MARK: - EditReadPriorityViewModelImple
 
-public class BaseEditReadPriorityViewModelImple: EditReadPriorityViewModel {
+public class BaseEditReadPriorityViewModelImple: EditReadPriorityViewModel, @unchecked Sendable {
     
     let router: EditReadPriorityRouting
     weak var listener: EditReadPrioritySceneListenable?
@@ -62,7 +62,7 @@ public class BaseEditReadPriorityViewModelImple: EditReadPriorityViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    final class Subjects {
+    final class Subjects: Sendable {
         let priorities = BehaviorRelay<[ReadPriority]>(value: [])
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)

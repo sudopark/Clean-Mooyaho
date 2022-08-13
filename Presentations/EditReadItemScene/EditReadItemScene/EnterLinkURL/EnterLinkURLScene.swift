@@ -28,11 +28,11 @@ extension EnterLinkURLViewModelImple: EnterLinkURLSceneOutput {
 
 extension EnterLinkURLViewController {
 
-    public var input: EnterLinkURLSceneInput? {
+    public nonisolated var input: EnterLinkURLSceneInput? {
         return self.viewModel as? EnterLinkURLSceneInput
     }
 
-    public var output: EnterLinkURLSceneOutput? {
+    public nonisolated var output: EnterLinkURLSceneOutput? {
         return self.viewModel as? EnterLinkURLSceneOutput
     }
 }

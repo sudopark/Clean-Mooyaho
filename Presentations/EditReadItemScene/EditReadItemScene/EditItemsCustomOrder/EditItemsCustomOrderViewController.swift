@@ -229,7 +229,7 @@ extension EditItemsCustomOrderViewController: Presenting, UITableViewDelegate {
         self.headerView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Change items order".localized)
             |> \.textAlignment .~ .left
         

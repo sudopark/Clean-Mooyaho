@@ -302,7 +302,7 @@ extension EditCategoryViewController: Presenting {
         self.view.backgroundColor = self.uiContext.colors.appBackground
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Choose a category".localized)
         
         self.inputField.setupStyling()

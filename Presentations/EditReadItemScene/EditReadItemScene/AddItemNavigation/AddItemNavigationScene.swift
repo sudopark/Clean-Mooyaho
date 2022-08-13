@@ -24,7 +24,7 @@ extension AddItemNavigationViewModelImple: AddItemNavigationSceneInteractable {
 
 extension AddItemNavigationViewController {
 
-    public var interactor: AddItemNavigationSceneInteractable? {
+    public nonisolated var interactor: AddItemNavigationSceneInteractable? {
         return self.viewModel as? AddItemNavigationSceneInteractable
     }
 }

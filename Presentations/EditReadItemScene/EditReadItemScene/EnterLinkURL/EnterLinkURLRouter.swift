@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EnterLinkURLRouting: Routing { }
+public protocol EnterLinkURLRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

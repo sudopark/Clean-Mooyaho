@@ -19,6 +19,7 @@ import CommonPresenting
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol EditCategorySceneBuilable {
     
     func makeEditCategoryScene(startWith select: [ItemCategory],

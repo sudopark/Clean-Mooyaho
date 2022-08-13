@@ -25,7 +25,7 @@ extension EditCategoryViewModelImple: EditCategorySceneInteractable {
 
 extension EditCategoryViewController {
 
-    public var interactor: EditCategorySceneInteractable? {
+    public nonisolated var interactor: EditCategorySceneInteractable? {
         return self.viewModel as? EditCategorySceneInteractable
     }
 }
