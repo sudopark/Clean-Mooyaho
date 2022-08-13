@@ -25,7 +25,7 @@ extension NavigateCollectionViewModelImple: NavigateCollectionSceneInteractable 
 
 extension NavigateCollectionViewController {
 
-    public var interactor: NavigateCollectionSceneInteractable? {
+    public nonisolated var interactor: NavigateCollectionSceneInteractable? {
         return self.viewModel as? NavigateCollectionSceneInteractable
     }
 }

@@ -333,7 +333,7 @@ class NavigateAndChageItemParentViewModelImpleTests: NavigateCollectionViewModel
 
 extension NavigateCollectionViewModelTests {
     
-    class SpyInverseNavigationCoordinator: CollectionInverseNavigationCoordinating {
+    final class SpyInverseNavigationCoordinator: CollectionInverseNavigationCoordinating, @unchecked Sendable {
         
         var didRequestedPrepareParentParams: CollectionInverseParentMakeParameter?
         func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {

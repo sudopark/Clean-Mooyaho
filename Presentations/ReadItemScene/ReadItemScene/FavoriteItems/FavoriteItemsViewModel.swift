@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - FavoriteItemsViewModel
 
-public protocol FavoriteItemsViewModel: AnyObject {
+public protocol FavoriteItemsViewModel: AnyObject, Sendable {
 
     // interactor
     func refreshList()
@@ -36,7 +36,7 @@ public protocol FavoriteItemsViewModel: AnyObject {
 
 // MARK: - FavoriteItemsViewModelImple
 
-public final class FavoriteItemsViewModelImple: FavoriteItemsViewModel {
+public final class FavoriteItemsViewModelImple: FavoriteItemsViewModel, @unchecked Sendable {
     
     private let pagingUsecase: FavoriteItemsPagingUsecase
     private let previewLoadUsecase: ReadLinkPreviewLoadUsecase
@@ -65,7 +65,7 @@ public final class FavoriteItemsViewModelImple: FavoriteItemsViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let items = BehaviorRelay<[ReadItem]?>(value: nil)
         let categoriesMap = BehaviorRelay<[String: ItemCategory]>(value: [:])
     }

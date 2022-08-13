@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol NavigateCollectionRouting: Routing {
+public protocol NavigateCollectionRouting: Routing, Sendable {
     
     func moveToSubCollection(_ collection: ReadCollection,
                              with unSelectableCollectionID: String?,
@@ -45,12 +45,14 @@ extension NavigateCollectionRouter {
                                     with unSelectableCollectionID: String?,
                                     listener: NavigateCollectionSceneListenable?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeNavigateCollectionScene(collection: collection,
-                                             withoutSelect: unSelectableCollectionID,
-                                             listener: listener)
-        else { return }
-        
-        self.currentScene?.navigationController?.pushViewController(next, animated: true)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeNavigateCollectionScene(collection: collection,
+                                                 withoutSelect: unSelectableCollectionID,
+                                                 listener: listener)
+            else { return }
+            
+            self.currentScene?.navigationController?.pushViewController(next, animated: true)
+        }
     }
 }

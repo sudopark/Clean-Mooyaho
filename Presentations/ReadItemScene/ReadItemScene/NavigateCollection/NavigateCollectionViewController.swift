@@ -171,7 +171,7 @@ extension NavigateCollectionViewController: Presenting {
             $0.centerYAnchor.constraint(equalTo: $1.centerYAnchor, constant: 10)
         }
         _ = self.emptyLabel
-            |> self.uiContext.decorating.placeHolder
+            |> { self.uiContext.decorating.placeHolder($0) }
             |> \.text .~ pure("Sub reading list does not exist.".localized)
             |> \.textAlignment .~ .center
         self.emptyView.isHidden = true
