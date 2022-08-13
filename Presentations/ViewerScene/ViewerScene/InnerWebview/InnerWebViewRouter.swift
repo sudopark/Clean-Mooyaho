@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol InnerWebViewRouting: Routing {
+public protocol InnerWebViewRouting: Routing, Sendable {
     
     func openSafariBrowser(_ address: String)
     
@@ -35,7 +35,7 @@ public typealias InnerWebViewRouterBuildables = EditLinkItemSceneBuilable & Link
 
 public final class InnerWebViewRouter: Router<InnerWebViewRouterBuildables>, InnerWebViewRouting {
     
-    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    @MainActor private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
 }
 
 
@@ -47,30 +47,36 @@ extension InnerWebViewRouter {
     
     // InnerWebViewRouting implements
     public func openSafariBrowser(_ address: String) {
-        guard let url = address.asURL() else { return }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        Task { @MainActor in
+            guard let url = address.asURL() else { return }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     
     public func editReadLink(_ item: ReadLink) {
-        guard let next = self.nextScenesBuilder?
-                .makeEditLinkItemScene(.edit(item: item), collectionID: item.parentID, listener: nil)
-        else { return }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditLinkItemScene(.edit(item: item), collectionID: item.parentID, listener: nil)
+            else { return }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func editMemo(_ memo: ReadLinkMemo) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeLinkMemoScene(memo: memo, listener: self.currentSceneInteractor)
-        else { return }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeLinkMemoScene(memo: memo, listener: self.currentSceneInteractor)
+            else { return }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
 }

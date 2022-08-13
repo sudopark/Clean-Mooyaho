@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - LinkMemoViewModel
 
-public protocol LinkMemoViewModel: AnyObject {
+public protocol LinkMemoViewModel: AnyObject, Sendable {
 
     // interactor
     func updateContent(_ text: String)
@@ -34,7 +34,7 @@ public protocol LinkMemoViewModel: AnyObject {
 
 // MARK: - LinkMemoViewModelImple
 
-public final class LinkMemoViewModelImple: LinkMemoViewModel {
+public final class LinkMemoViewModelImple: LinkMemoViewModel, @unchecked Sendable {
     
     private let memo: ReadLinkMemo
     private let memoUsecase: ReadLinkMemoUsecase
@@ -59,7 +59,7 @@ public final class LinkMemoViewModelImple: LinkMemoViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let inputText = BehaviorRelay<String?>(value: nil)
     }
     
@@ -80,7 +80,7 @@ extension LinkMemoViewModelImple {
         
         let itemID = self.memo.linkItemID
         let deleted: () -> Void = { [weak self] in
-            self?.router.closeScene(animated: true) {
+            self?.router.closeScene(animated: true) { [weak self] in
                 self?.listener?.linkMemo(didRemoved: itemID)
             }
         }
