@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SelectAddItemTypeRouting: Routing { }
+public protocol SelectAddItemTypeRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

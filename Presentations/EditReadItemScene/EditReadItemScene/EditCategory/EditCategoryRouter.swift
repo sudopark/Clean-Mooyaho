@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditCategoryRouting: Routing {
+public protocol EditCategoryRouting: Routing, Sendable {
     
     func showColorPicker(startWith select: String?, sources: [String])
 }
@@ -42,14 +42,16 @@ extension EditCategoryRouter {
     }
     
     public func showColorPicker(startWith select: String?, sources: [String]) {
-        let dependency = SelectColorDepedency(startWithSelect: select, colorSources: sources)
-        guard let next = self.nextScenesBuilder?.makeColorSelectScene(dependency, listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            let dependency = SelectColorDepedency(startWithSelect: select, colorSources: sources)
+            guard let next = self.nextScenesBuilder?.makeColorSelectScene(dependency, listener: self.currentInteractor) else {
+                return
+            }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

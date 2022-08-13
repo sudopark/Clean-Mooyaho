@@ -25,7 +25,7 @@ extension EditItemsCustomOrderViewModelImple: EditItemsCustomOrderSceneInteracta
 
 extension EditItemsCustomOrderViewController {
 
-    public var interactor: EditItemsCustomOrderSceneInteractable? {
+    public nonisolated var interactor: EditItemsCustomOrderSceneInteractable? {
         return self.viewModel as? EditItemsCustomOrderSceneInteractable
     }
 }

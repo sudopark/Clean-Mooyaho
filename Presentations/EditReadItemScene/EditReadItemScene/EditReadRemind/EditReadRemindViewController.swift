@@ -144,7 +144,7 @@ extension EditReadRemindViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Select a remind time".localized)
         
         self.clearButton.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)

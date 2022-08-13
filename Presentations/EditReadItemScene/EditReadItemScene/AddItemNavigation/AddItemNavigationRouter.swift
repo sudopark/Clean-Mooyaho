@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol AddItemNavigationRouting: Routing {
+public protocol AddItemNavigationRouting: Routing, Sendable {
     
     func prepareNavigation()
     
@@ -36,8 +36,8 @@ public typealias AddItemNavigationRouterBuildables = EnterLinkURLSceneBuilable &
 
 public final class AddItemNavigationRouter: Router<AddItemNavigationRouterBuildables>, AddItemNavigationRouting {
     
-    private weak var embedNavigationController: BaseNavigationController?
-    private var embedNavigationHeightConstranit: NSLayoutConstraint?
+    @MainActor private weak var embedNavigationController: BaseNavigationController?
+    @MainActor private var embedNavigationHeightConstranit: NSLayoutConstraint?
 }
 
 
@@ -52,44 +52,52 @@ extension AddItemNavigationRouter {
     }
     
     public func prepareNavigation() {
-        guard let scene = self.currentScene as? AddItemNavigationScene else { return }
-        let containerView = scene.navigationdContainerView
-        
-        let navigationController = BaseNavigationController(shouldHideNavigation: false)
-        
-        scene.addChild(navigationController)
-        containerView.addSubview(navigationController.view)
-        navigationController.view.autoLayout.fill(containerView)
-        self.embedNavigationHeightConstranit = navigationController.view.heightAnchor
-            .constraint(equalToConstant: childSceneHeight)
-        self.embedNavigationHeightConstranit?.isActive = true
-        navigationController.didMove(toParent: scene)
-        self.embedNavigationController = navigationController
+        Task { @MainActor in
+            guard let scene = self.currentScene as? AddItemNavigationScene else { return }
+            let containerView = scene.navigationdContainerView
+            
+            let navigationController = BaseNavigationController(shouldHideNavigation: false)
+            
+            scene.addChild(navigationController)
+            containerView.addSubview(navigationController.view)
+            navigationController.view.autoLayout.fill(containerView)
+            self.embedNavigationHeightConstranit = navigationController.view.heightAnchor
+                .constraint(equalToConstant: childSceneHeight)
+            self.embedNavigationHeightConstranit?.isActive = true
+            navigationController.didMove(toParent: scene)
+            self.embedNavigationController = navigationController
+        }
     }
     
     // AddItemNavigationRouting implements
     public func pushToEnterURLScene(startWith url: String?, _ entered: @escaping (String) -> Void) {
         
-        guard let navigationController = self.embedNavigationController,
-              let next = self.nextScenesBuilder?.makeEnterLinkURLScene(startWith: url, entered) else {
-                  return
-              }
-        navigationController.pushViewController(next, animated: false)
+        Task { @MainActor in
+            guard let navigationController = self.embedNavigationController,
+                  let next = self.nextScenesBuilder?.makeEnterLinkURLScene(startWith: url, entered) else {
+                      return
+                  }
+            navigationController.pushViewController(next, animated: false)
+        }
     }
     
     public func pushConfirmAddLinkItemScene(at collectionID: String?, url: String) {
         
-        guard let navigationController = self.embedNavigationController,
-              let next = self.nextScenesBuilder?.makeEditLinkItemScene(.makeNew(url: url),
-                                                                       collectionID: collectionID,
-                                                                       listener: self.currentInteractor) else {
-                  return
-              }
-        navigationController.pushViewController(next, animated: true)
+        Task { @MainActor in
+            guard let navigationController = self.embedNavigationController,
+                  let next = self.nextScenesBuilder?.makeEditLinkItemScene(.makeNew(url: url),
+                                                                           collectionID: collectionID,
+                                                                           listener: self.currentInteractor) else {
+                      return
+                  }
+            navigationController.pushViewController(next, animated: true)
+        }
     }
     
     public func popToEnrerURLScene() {
         
-        self.embedNavigationController?.popViewController(animated: true)
+        Task { @MainActor in
+            self.embedNavigationController?.popViewController(animated: true)
+        }
     }
 }

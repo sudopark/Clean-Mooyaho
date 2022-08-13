@@ -289,7 +289,7 @@ extension EditReadCollectionViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Add a new collection".localized)
         
         _ = self.textField

@@ -96,17 +96,17 @@ final class LinkPreviewView: BaseUIView, Presenting {
             |> flip(curry(self.uiContext.decorating.roundedThumbnail(_:radius:)))(3)
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.listSectionTitle
+            |> { self.uiContext.decorating.listSectionTitle($0) }
             |> \.numberOfLines .~ 1
             |> \.alpha .~ 0.8
         
         _ = self.descriptionLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.numberOfLines .~ 2
         
         _ = self.addressLabel
-            |> self.uiContext.decorating.listItemSubDescription(_:)
-            |> self.uiContext.decorating.underLineText
+            |> { self.uiContext.decorating.listItemSubDescription($0) }
+            |> { self.uiContext.decorating.underLineText($0) }
             |> \.numberOfLines .~ 1
     }
 }

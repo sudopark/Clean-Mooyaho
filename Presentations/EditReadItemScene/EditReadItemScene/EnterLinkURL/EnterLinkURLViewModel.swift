@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - EnterLinkURLViewModel
 
-public protocol EnterLinkURLViewModel: AnyObject {
+public protocol EnterLinkURLViewModel: AnyObject, Sendable {
 
     // interactor
     func enterURL(_ address: String)
@@ -32,15 +32,15 @@ public protocol EnterLinkURLViewModel: AnyObject {
 
 // MARK: - EnterLinkURLViewModelImple
 
-public final class EnterLinkURLViewModelImple: EnterLinkURLViewModel {
+public final class EnterLinkURLViewModelImple: EnterLinkURLViewModel, @unchecked Sendable {
     
     public let startWithURL: String?
-    private let callback: (String) -> Void
+    private let callback: @Sendable (String) -> Void
     private let router: EnterLinkURLRouting
     
     public init(startWith url: String?,
                 router: EnterLinkURLRouting,
-                callback: @escaping (String) -> Void) {
+                callback: @escaping @Sendable (String) -> Void) {
         
         self.startWithURL = url
         self.router = router
@@ -52,7 +52,7 @@ public final class EnterLinkURLViewModelImple: EnterLinkURLViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let inputURLAddress = BehaviorRelay<String?>(value: nil)
     }
     

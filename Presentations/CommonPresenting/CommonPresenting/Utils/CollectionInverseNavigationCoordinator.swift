@@ -11,19 +11,18 @@ import Domain
 import Extensions
 
 
-public protocol CollectionInverseParentMakeParameter { }
+public protocol CollectionInverseParentMakeParameter: Sendable { }
 
 extension String: CollectionInverseParentMakeParameter { }
 extension ReadCollection: CollectionInverseParentMakeParameter { }
 
 
-@MainActor
-public protocol CollectionInverseNavigationCoordinating: AnyObject {
+public protocol CollectionInverseNavigationCoordinating: Sendable, AnyObject {
     
     func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter)
 }
 
-public final class CollectionInverseNavigationCoordinator {
+public final class CollectionInverseNavigationCoordinator: @unchecked Sendable {
     
     private weak var navigationController: UINavigationController?
     private let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?
@@ -38,18 +37,20 @@ public final class CollectionInverseNavigationCoordinator {
 extension CollectionInverseNavigationCoordinator: CollectionInverseNavigationCoordinating {
     
     public func inverseNavigating(prepareParent parameter: CollectionInverseParentMakeParameter) {
-        guard let navigationController = self.navigationController,
-              navigationController.viewControllers.count > 1,
-              let parentController = self.makeParent(parameter)
-        else {
-            logger.print(level: .debug, "prepare parent called, but not this time, ")
-            return
+        Task { @MainActor in
+            guard let navigationController = self.navigationController,
+                  navigationController.viewControllers.count > 1,
+                  let parentController = self.makeParent(parameter)
+            else {
+                logger.print(level: .debug, "prepare parent called, but not this time, ")
+                return
+            }
+            
+            let lastIndex = navigationController.viewControllers.count
+            var newControllers = navigationController.viewControllers + [parentController]
+            newControllers.swapAt(lastIndex, lastIndex-1)
+            logger.print(level: .debug, "inverse navigating prepare parent: \(parameter), append parent totalCount: \(newControllers.count)")
+            self.navigationController?.viewControllers = newControllers
         }
-        
-        let lastIndex = navigationController.viewControllers.count
-        var newControllers = navigationController.viewControllers + [parentController]
-        newControllers.swapAt(lastIndex, lastIndex-1)
-        logger.print(level: .debug, "inverse navigating prepare parent: \(parameter), append parent totalCount: \(newControllers.count)")
-        self.navigationController?.viewControllers = newControllers
     }
 }

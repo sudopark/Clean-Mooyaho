@@ -24,7 +24,7 @@ extension BaseEditReadPriorityViewModelImple: EditReadPrioritySceneInteractable 
 
 extension EditReadPriorityViewController {
 
-    public var interactor: EditReadPrioritySceneInteractable? {
+    public nonisolated var interactor: EditReadPrioritySceneInteractable? {
         return self.viewModel as? EditReadPrioritySceneInteractable
     }
 }

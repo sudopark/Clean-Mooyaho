@@ -49,7 +49,7 @@ public protocol EditLinkItemSceneBuilable {
 
 // MARK: - EditCollectionCase
 
-public enum EditCollectionCase {
+public enum EditCollectionCase: Sendable {
     case makeNew
     case edit(ReadCollection)
 }

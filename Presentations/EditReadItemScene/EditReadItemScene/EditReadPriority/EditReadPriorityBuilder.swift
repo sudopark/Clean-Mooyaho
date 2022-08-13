@@ -19,6 +19,7 @@ import CommonPresenting
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol EditReadPrioritySceneBuilable {
     
     func makeSelectPriorityScene(startWithSelected: ReadPriority?,

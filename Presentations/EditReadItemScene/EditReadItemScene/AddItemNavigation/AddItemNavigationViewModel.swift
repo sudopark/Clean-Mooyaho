@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - AddItemNavigationViewModel
 
-public protocol AddItemNavigationViewModel: AnyObject {
+public protocol AddItemNavigationViewModel: AnyObject, Sendable {
 
     // interactor
     func prepareNavigation()
@@ -29,7 +29,7 @@ public protocol AddItemNavigationViewModel: AnyObject {
 
 // MARK: - AddItemNavigationViewModelImple
 
-public final class AddItemNavigationViewModelImple: AddItemNavigationViewModel {
+public final class AddItemNavigationViewModelImple: AddItemNavigationViewModel, @unchecked Sendable {
     
     private let startWithURL: String?
     private let targetCollectionID: String?
@@ -54,7 +54,7 @@ public final class AddItemNavigationViewModelImple: AddItemNavigationViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
     }
     

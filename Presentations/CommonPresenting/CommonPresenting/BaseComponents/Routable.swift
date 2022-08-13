@@ -41,7 +41,7 @@ extension Routing {
     
     public func showToast(_ message: String) { }
     
-    public func closeScene(animated: Bool, completed: (() -> Void)?) { }
+    public func closeScene(animated: Bool, completed: ( @Sendable () -> Void)?) { }
     
     public func alertForConfirm(_ form: AlertForm) { }
     

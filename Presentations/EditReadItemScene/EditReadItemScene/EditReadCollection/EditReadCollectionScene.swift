@@ -24,7 +24,7 @@ extension EditReadCollectionViewModelImple: EditReadCollectionSceneInteractable 
 
 extension EditReadCollectionViewController {
 
-    public var interactor: EditReadCollectionSceneInteractable? {
+    public nonisolated var interactor: EditReadCollectionSceneInteractable? {
         return self.viewModel as? EditReadCollectionSceneInteractable
     }
 }

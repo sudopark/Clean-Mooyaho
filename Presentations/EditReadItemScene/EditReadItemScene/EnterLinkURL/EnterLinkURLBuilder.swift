@@ -18,6 +18,7 @@ import CommonPresenting
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol EnterLinkURLSceneBuilable {
     
     func makeEnterLinkURLScene(startWith: String?,
