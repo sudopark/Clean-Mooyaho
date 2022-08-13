@@ -15,59 +15,49 @@ import Domain
 
 // MARK: - SignInScene
 
-@MainActor
-public protocol SignInSceneInteractable { }
+public protocol SignInSceneInteractable: Sendable { }
 
-@MainActor
 public protocol SignInSceneListenable: AnyObject {
     
     func signIn(didCompleted member: Member)
 }
 
-@MainActor
 public protocol SignInScene: Scenable, PangestureDismissableScene {
     
-    var interactor: SignInSceneInteractable? { get }
+    nonisolated var interactor: SignInSceneInteractable? { get }
 }
 
 
 // MARK: - EditProfileScene
 
-@MainActor
-public protocol EditProfileSceneInteractable: ImagePickerSceneListenable, SelectEmojiSceneListenable { }
+public protocol EditProfileSceneInteractable: Sendable, ImagePickerSceneListenable, SelectEmojiSceneListenable { }
 
-@MainActor
 public protocol EditProfileScene: Scenable {
     
-    var interactor: EditProfileSceneInteractable? { get }
+    nonisolated var interactor: EditProfileSceneInteractable? { get }
 }
 
 
 // MARK: - MemberProfileScene Interactable & Listenable
 
-@MainActor
-public protocol MemberProfileSceneInteractable { }
+public protocol MemberProfileSceneInteractable: Sendable { }
 
-@MainActor
-public protocol MemberProfileSceneListenable: AnyObject { }
+public protocol MemberProfileSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - MemberProfileScene
 
-@MainActor
 public protocol MemberProfileScene: Scenable {
     
-    var interactor: MemberProfileSceneInteractable? { get }
+    nonisolated var interactor: MemberProfileSceneInteractable? { get }
 }
 
 
 // MARK: - RecoverAccountScene Interactable & Listenable
 
-@MainActor
-public protocol RecoverAccountSceneInteractable { }
+public protocol RecoverAccountSceneInteractable: Sendable { }
 
-@MainActor
-public protocol RecoverAccountSceneListenable: AnyObject {
+public protocol RecoverAccountSceneListenable: Sendable, AnyObject {
     
     func recoverAccount(didCompleted recoveredMember: Member)
 }
@@ -75,8 +65,7 @@ public protocol RecoverAccountSceneListenable: AnyObject {
 
 // MARK: - RecoverAccountScene
 
-@MainActor
 public protocol RecoverAccountScene: Scenable {
-    
-    var interactor: RecoverAccountSceneInteractable? { get }
+
+   nonisolated var interactor: RecoverAccountSceneInteractable? { get }
 }

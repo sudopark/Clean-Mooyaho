@@ -20,7 +20,7 @@ import Extensions
 
 //public protocol ImagePickerSceneInteractor { }
 //
-public protocol ImagePickerSceneListenable: AnyObject {
+public protocol ImagePickerSceneListenable: Sendable, AnyObject {
     
     func imagePicker(didSelect imagePath: String, imageSize: ImageSize)
     func imagePicker(didFail selectError: Error)

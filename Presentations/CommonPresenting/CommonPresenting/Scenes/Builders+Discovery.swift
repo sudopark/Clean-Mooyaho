@@ -12,6 +12,7 @@ import Domain
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol DiscoveryMainSceneBuilable {
     
     func makeDiscoveryMainScene(currentShareCollectionID: String?,
@@ -22,6 +23,7 @@ public protocol DiscoveryMainSceneBuilable {
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol StopShareCollectionSceneBuilable {
     
     func makeStopShareCollectionScene(_ collectionID: String,
@@ -31,6 +33,7 @@ public protocol StopShareCollectionSceneBuilable {
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol SharedCollectionItemsSceneBuilable {
     
     func makeSharedCollectionItemsScene(currentCollection: SharedReadCollection,
@@ -41,6 +44,7 @@ public protocol SharedCollectionItemsSceneBuilable {
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol SharedCollectionInfoDialogSceneBuilable {
     
     func makeSharedCollectionInfoDialogScene(collection: SharedReadCollection,

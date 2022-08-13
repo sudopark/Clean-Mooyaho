@@ -12,6 +12,7 @@ import Domain
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol NavigateCollectionSceneBuilable {
     
     func makeNavigateCollectionScene(
@@ -42,6 +43,7 @@ extension NavigateCollectionSceneBuilable {
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol FavoriteItemsSceneBuilable {
     
     func makeFavoriteItemsScene(listener: FavoriteItemsSceneListenable?) -> FavoriteItemsScene

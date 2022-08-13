@@ -85,6 +85,7 @@ import RxCocoa
 
 extension Reactive where Base: ConfirmButton {
     
+    @MainActor
     public func throttleTap() -> Observable<Void> {
         
         let runFeedback: () -> Void = { [weak base] in
@@ -95,6 +96,7 @@ extension Reactive where Base: ConfirmButton {
             .do(onNext: runFeedback)
     }
     
+    @MainActor
     public var isLoading: Binder<Bool> {
         Binder(base) { base, isLoading in
             base.updateIsLoading(isLoading)

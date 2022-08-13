@@ -16,6 +16,7 @@ import UIKit
 
 // MARK: - Builder + DI Container Extension
 
+@MainActor
 public protocol TextInputSceneBuilable {
     
     func makeTextInputScene(_ inputMode: TextInputMode,

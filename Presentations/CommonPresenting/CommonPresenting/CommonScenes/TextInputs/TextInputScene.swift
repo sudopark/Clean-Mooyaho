@@ -14,16 +14,14 @@ import RxCocoa
 
 // MARK: - TextInputScene Interactor & Presenter
 
-@MainActor
-public protocol TextInputSceneInteractable { }
+public protocol TextInputSceneInteractable: Sendable { }
 
-@MainActor
-public protocol TextInputSceneListenable: AnyObject {
+public protocol TextInputSceneListenable: Sendable, AnyObject {
     
     func textInput(didEntered text: String?)
 }
 
-public class DefaultTextInputListener: TextInputSceneListenable {
+public final class DefaultTextInputListener: TextInputSceneListenable, Sendable {
     
     private let didEnterText = PublishSubject<String?>()
     public func textInput(didEntered text: String?) {
@@ -47,7 +45,7 @@ public class DefaultTextInputListener: TextInputSceneListenable {
 
 public protocol TextInputScene: Scenable, PangestureDismissableScene {
     
-    var interactor: TextInputSceneInteractable? { get }
+    nonisolated var interactor: TextInputSceneInteractable? { get }
 }
 
 
@@ -61,7 +59,7 @@ extension TextInputViewModelImple: TextInputSceneInteractable {
 
 extension TextInputViewController {
 
-    public var interactor: TextInputSceneInteractable? {
+    public nonisolated var interactor: TextInputSceneInteractable? {
         return self.viewModel as? TextInputSceneInteractable
     }
 }

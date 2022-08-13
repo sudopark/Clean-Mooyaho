@@ -43,7 +43,7 @@ public struct TextInputMode {
 
 // MARK: - TextInputViewModel
 
-public protocol TextInputViewModel: AnyObject {
+public protocol TextInputViewModel: AnyObject, Sendable {
 
     // interactor
     func updateInput(text: String)
@@ -58,7 +58,7 @@ public protocol TextInputViewModel: AnyObject {
 
 // MARK: - TextInputViewModelImple
 
-public final class TextInputViewModelImple: TextInputViewModel {
+public final class TextInputViewModelImple: TextInputViewModel, @unchecked Sendable {
     
     private let inputMode: TextInputMode
     private let router: TextInputRouting

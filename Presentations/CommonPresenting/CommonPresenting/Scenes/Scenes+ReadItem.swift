@@ -19,7 +19,7 @@ public enum CollectionRoot {
     case sharedCollection(SharedReadCollection)
 }
 
-public protocol ReadCollectionNavigateListenable: AnyObject {
+public protocol ReadCollectionNavigateListenable: Sendable, AnyObject {
     
     func readCollection(didChange root: CollectionRoot)
     
@@ -39,7 +39,7 @@ extension ReadCollectionNavigateListenable {
 
 // MARK: - ReadCollectionMainScene Input & Output
 
-public protocol ReadCollectionMainSceneInteractable: AnyObject {
+public protocol ReadCollectionMainSceneInteractable: Sendable, AnyObject {
     
     func addNewCollectionItem()
     
@@ -56,20 +56,20 @@ public protocol ReadCollectionMainSceneInteractable: AnyObject {
     var rootType: CollectionRoot { get }
 }
 
-public protocol ReadCollectionMainSceneListenable { }
+public protocol ReadCollectionMainSceneListenable: Sendable { }
 
 
 // MARK: - ReadCollectionMainScene
 
 public protocol ReadCollectionMainScene: Scenable {
     
-    var interactor: ReadCollectionMainSceneInteractable? { get }
+    nonisolated var interactor: ReadCollectionMainSceneInteractable? { get }
 }
 
 
 // MARK: - ReadCollectionScene
 
-public protocol ReadCollectionItemsSceneInteractable: EditReadCollectionSceneListenable, AddItemNavigationSceneListenable, EditLinkItemSceneListenable, EditReadRemindSceneListenable {
+public protocol ReadCollectionItemsSceneInteractable: Sendable, EditReadCollectionSceneListenable, AddItemNavigationSceneListenable, EditLinkItemSceneListenable, EditReadRemindSceneListenable {
     
     func addNewCollectionItem()
     
@@ -82,32 +82,32 @@ public protocol ReadCollectionItemsSceneInteractable: EditReadCollectionSceneLis
 
 public protocol ReadCollectionScene: Scenable {
     
-    var interactor: ReadCollectionItemsSceneInteractable? { get }
+    nonisolated var interactor: ReadCollectionItemsSceneInteractable? { get }
 }
 
 
 // MARK: - SelectAddItemTypeScene Input & Output
 
-public protocol SelectAddItemTypeSceneInput { }
+public protocol SelectAddItemTypeSceneInput: Sendable { }
 
-public protocol SelectAddItemTypeSceneOutput { }
+public protocol SelectAddItemTypeSceneOutput: Sendable { }
 
 
 // MARK: - SelectAddItemTypeScene
 
 public protocol SelectAddItemTypeScene: Scenable, PangestureDismissableScene {
     
-    var input: SelectAddItemTypeSceneInput? { get }
+    nonisolated var input: SelectAddItemTypeSceneInput? { get }
 
-    var output: SelectAddItemTypeSceneOutput? { get }
+    nonisolated var output: SelectAddItemTypeSceneOutput? { get }
 }
 
 
 // MARK: - NavigateCollectionScene Interactable & Listenable
 
-public protocol NavigateCollectionSceneInteractable { }
+public protocol NavigateCollectionSceneInteractable: Sendable { }
 
-public protocol NavigateCollectionSceneListenable: AnyObject {
+public protocol NavigateCollectionSceneListenable: Sendable, AnyObject {
     
     func navigateCollection(didSelectCollection collection: ReadCollection?)
 }
@@ -122,15 +122,15 @@ extension NavigateCollectionSceneListenable {
 
 public protocol NavigateCollectionScene: Scenable {
     
-    var interactor: NavigateCollectionSceneInteractable? { get }
+    nonisolated var interactor: NavigateCollectionSceneInteractable? { get }
 }
 
 
 // MARK: - FavoriteItemsScene Interactable & Listenable
 
-public protocol FavoriteItemsSceneInteractable: InnerWebViewSceneListenable { }
+public protocol FavoriteItemsSceneInteractable: Sendable, InnerWebViewSceneListenable { }
 
-public protocol FavoriteItemsSceneListenable: AnyObject {
+public protocol FavoriteItemsSceneListenable: Sendable, AnyObject {
     
     func favoriteItemsScene(didRequestJump collectionID: String?)
 }
@@ -140,5 +140,5 @@ public protocol FavoriteItemsSceneListenable: AnyObject {
 
 public protocol FavoriteItemsScene: Scenable {
     
-    var interactor: FavoriteItemsSceneInteractable? { get }
+    nonisolated var interactor: FavoriteItemsSceneInteractable? { get }
 }
