@@ -125,7 +125,7 @@ extension SignInViewModelTests {
 
 extension SignInViewModelTests {
     
-    class SpyRouter: SignInRouting, Mocking {
+    final class SpyRouter: SignInRouting, Mocking {
         
         func alertError(_ error: Error) {
             self.verify(key: "alertError")

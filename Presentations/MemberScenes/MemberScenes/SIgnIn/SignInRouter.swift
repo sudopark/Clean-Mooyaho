@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SignInRouting: Routing { }
+public protocol SignInRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

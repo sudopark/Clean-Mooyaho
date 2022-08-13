@@ -18,8 +18,7 @@ import Extensions
 
 // MARK: - SignInViewModel
 
-@MainActor
-public protocol SignInViewModel: AnyObject {
+public protocol SignInViewModel: AnyObject, Sendable {
 
     // interactor
     func requestSignIn(_ type: OAuthServiceProviderType)
@@ -33,7 +32,7 @@ public protocol SignInViewModel: AnyObject {
 
 // MARK: - SignInViewModelImple
 
-public final class SignInViewModelImple: SignInViewModel {
+public final class SignInViewModelImple: SignInViewModel, @unchecked Sendable {
         
     private let authUsecase: AuthUsecase
     private let router: SignInRouting

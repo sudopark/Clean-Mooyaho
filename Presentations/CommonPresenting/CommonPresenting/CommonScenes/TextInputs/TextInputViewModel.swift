@@ -14,7 +14,7 @@ import RxRelay
 import Domain
 
 
-public struct TextInputMode {
+public struct TextInputMode: Sendable {
     
     public let isSingleLine: Bool
     public let title: String

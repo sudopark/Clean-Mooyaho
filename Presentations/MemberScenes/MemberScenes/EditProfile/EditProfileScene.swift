@@ -17,7 +17,7 @@ extension EditProfileViewModelImple: EditProfileSceneInteractable { }
 
 extension EditProfileViewController {
     
-    public var interactor: EditProfileSceneInteractable? {
+    public nonisolated var interactor: EditProfileSceneInteractable? {
         return self.viewModel as? EditProfileSceneInteractable
     }
 }

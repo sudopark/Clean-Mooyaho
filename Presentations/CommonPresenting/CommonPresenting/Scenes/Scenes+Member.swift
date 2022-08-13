@@ -17,7 +17,7 @@ import Domain
 
 public protocol SignInSceneInteractable: Sendable { }
 
-public protocol SignInSceneListenable: AnyObject {
+public protocol SignInSceneListenable: Sendable, AnyObject {
     
     func signIn(didCompleted member: Member)
 }
