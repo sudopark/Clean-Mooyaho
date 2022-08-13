@@ -16,7 +16,7 @@ extension UIView {
         decorating(subTypeView)
     }
     
-    public func decorate<S: UIView>(_ decorating: (S) -> S) {
+    public func decorate<S: UIView>(_ decorating: @MainActor (S) -> S) {
         guard let subTypeView = self as? S else { return }
         _ = decorating(subTypeView)
     }

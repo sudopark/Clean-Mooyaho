@@ -10,6 +10,7 @@ import UIKit
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol SettingMainSceneBuilable {
     
     func makeSettingMainScene(listener: SettingMainSceneListenable?) -> SettingMainScene
@@ -18,6 +19,7 @@ public protocol SettingMainSceneBuilable {
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol WaitMigrationSceneBuilable {
     
     func makeWaitMigrationScene(userID: String,

@@ -14,11 +14,9 @@ import RxCocoa
 
 // MARK: - ColorSelectScene Interactable & Listenable
 
-@MainActor
-public protocol ColorSelectSceneInteractable { }
+public protocol ColorSelectSceneInteractable: Sendable { }
 
-@MainActor
-public protocol ColorSelectSceneListenable: AnyObject {
+public protocol ColorSelectSceneListenable: AnyObject, Sendable {
     
     func colorSelect(didSeelctColor hexCode: String)
 }
@@ -26,10 +24,9 @@ public protocol ColorSelectSceneListenable: AnyObject {
 
 // MARK: - ColorSelectScene
 
-@MainActor
 public protocol ColorSelectScene: Scenable, PangestureDismissableScene {
     
-    var interactor: ColorSelectSceneInteractable? { get }
+    nonisolated var interactor: ColorSelectSceneInteractable? { get }
 }
 
 
@@ -44,7 +41,7 @@ extension ColorSelectViewModelImple: ColorSelectSceneInteractable {
 
 extension ColorSelectViewController {
 
-    public var interactor: ColorSelectSceneInteractable? {
+    public nonisolated var interactor: ColorSelectSceneInteractable? {
         return self.viewModel as? ColorSelectSceneInteractable
     }
 }

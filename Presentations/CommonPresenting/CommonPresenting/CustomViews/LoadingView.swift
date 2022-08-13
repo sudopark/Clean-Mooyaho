@@ -25,21 +25,12 @@ public final class LoadingView: BaseUIView {
         if isLoading {
             self.showIsLoading()
         } else {
-            self.removeAllAnimation()
             self.isHidden = true
         }
-    }
-    
-    deinit {
-        self.removeAllAnimation()
     }
 }
 
 extension LoadingView: CAAnimationDelegate {
-    
-    private func removeAllAnimation() {
-        
-    }
     
     private func setupLoadinLayer() {
         
@@ -62,7 +53,6 @@ extension LoadingView: CAAnimationDelegate {
     }
     
     private func showIsLoading() {
-        self.removeAllAnimation()
         self.setupLoadinLayer()
         
         self.isHidden = false

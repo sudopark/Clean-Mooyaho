@@ -14,7 +14,7 @@ import RxCocoa
 
 // MARK: - SelectEmojiScene Interactable & Listenable
 
-public protocol SelectEmojiSceneListenable: AnyObject {
+public protocol SelectEmojiSceneListenable: Sendable, AnyObject {
     
     func selectEmoji(didSelect emoji: String)
 }

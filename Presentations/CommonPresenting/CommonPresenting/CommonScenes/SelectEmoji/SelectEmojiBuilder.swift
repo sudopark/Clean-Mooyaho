@@ -16,6 +16,7 @@ import UIKit
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol SelectEmojiSceneBuilable {
     
     func makeSelectEmojiScene(listener: SelectEmojiSceneListenable?) -> SelectEmojiScene

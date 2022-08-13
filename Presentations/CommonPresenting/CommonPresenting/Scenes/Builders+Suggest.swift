@@ -10,6 +10,7 @@ import Foundation
 
 // MARK: - IntegratedSearchSceneBuilable
 
+@MainActor
 public protocol IntegratedSearchSceneBuilable {
     
     func makeIntegratedSearchScene(listener: IntegratedSearchSceneListenable?,
@@ -18,6 +19,7 @@ public protocol IntegratedSearchSceneBuilable {
 
 // MARK: - SuggestReadSceneBuilable
 
+@MainActor
 public protocol SuggestReadSceneBuilable {
     
     func makeSuggestReadScene(

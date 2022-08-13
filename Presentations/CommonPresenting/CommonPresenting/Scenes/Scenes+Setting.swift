@@ -12,29 +12,29 @@ import Domain
 
 // MARK: - SettingMainScene Interactable & Listenable
 
-public protocol SettingMainSceneInteractable { }
+public protocol SettingMainSceneInteractable: Sendable { }
 
-public protocol SettingMainSceneListenable: AnyObject { }
+public protocol SettingMainSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - SettingMainScene
 
 public protocol SettingMainScene: Scenable {
     
-    var interactor: SettingMainSceneInteractable? { get }
+    nonisolated var interactor: SettingMainSceneInteractable? { get }
 }
 
 
 // MARK: - WaitMigrationScene Interactable & Listenable
 
-public protocol WaitMigrationSceneInteractable { }
+public protocol WaitMigrationSceneInteractable: Sendable { }
 
-public protocol WaitMigrationSceneListenable: AnyObject { }
+public protocol WaitMigrationSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - WaitMigrationScene
 
 public protocol WaitMigrationScene: Scenable {
     
-    var interactor: WaitMigrationSceneInteractable? { get }
+    nonisolated var interactor: WaitMigrationSceneInteractable? { get }
 }

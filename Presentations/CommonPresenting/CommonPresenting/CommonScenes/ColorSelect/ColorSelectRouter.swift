@@ -16,7 +16,7 @@ import UIKit
 
 // MARK: - Routing
 
-public protocol ColorSelectRouting: Routing { }
+public protocol ColorSelectRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

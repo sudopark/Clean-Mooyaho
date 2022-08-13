@@ -21,8 +21,7 @@ public struct ColorCellViewMdoel: Equatable {
 
 // MARK: - ColorSelectViewModel
 
-@MainActor
-public protocol ColorSelectViewModel: AnyObject {
+public protocol ColorSelectViewModel: AnyObject, Sendable {
 
     // interactor
     func selectColor(_ code: String)
@@ -35,7 +34,7 @@ public protocol ColorSelectViewModel: AnyObject {
 
 // MARK: - ColorSelectViewModelImple
 
-public final class ColorSelectViewModelImple: ColorSelectViewModel {
+public final class ColorSelectViewModelImple: ColorSelectViewModel, @unchecked Sendable {
     
     private let router: ColorSelectRouting
     private weak var listener: ColorSelectSceneListenable?
@@ -56,7 +55,7 @@ public final class ColorSelectViewModelImple: ColorSelectViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let colorCodes = BehaviorSubject<[String]>(value: [])
         let selectColor = BehaviorRelay<String?>(value: nil)
     }

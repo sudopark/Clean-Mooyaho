@@ -16,7 +16,7 @@ import UIKit
 
 // MARK: - Routing
 
-public protocol TextInputRouting: Routing { }
+public protocol TextInputRouting: Routing, Sendable { }
 
 // MARK: - Routers
 
