@@ -139,7 +139,7 @@ extension LinkMemoViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+        |> { self.uiContext.decorating.smallHeader($0) }
         |> \.text .~ pure("Memo".localized)
         
         self.deleteButton.setTitle("Delete".localized, for: .normal)

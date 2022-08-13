@@ -24,7 +24,7 @@ extension InnerWebViewViewModelImple: InnerWebViewSceneInteractable {
 
 extension InnerWebViewViewController {
 
-    public var interactor: InnerWebViewSceneInteractable? {
+    public nonisolated var interactor: InnerWebViewSceneInteractable? {
         return self.viewModel as? InnerWebViewSceneInteractable
     }
 }

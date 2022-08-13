@@ -25,7 +25,7 @@ extension LinkMemoViewModelImple: LinkMemoSceneInteractable {
 
 extension LinkMemoViewController {
 
-    public var interactor: LinkMemoSceneInteractable? {
+    public nonisolated var interactor: LinkMemoSceneInteractable? {
         return self.viewModel as? LinkMemoSceneInteractable
     }
 }
