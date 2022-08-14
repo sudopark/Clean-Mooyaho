@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SharedMemberListRouting: Routing {
+public protocol SharedMemberListRouting: Routing, Sendable {
     
     func showMemberProfile(_ memberID: String)
 }
@@ -39,15 +39,17 @@ extension SharedMemberListRouter {
     }
     
     public func showMemberProfile(_ memberID: String) {
-        guard let next = self.nextScenesBuilder?.makeMemberProfileScene(memberID: memberID, listener: nil)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeMemberProfileScene(memberID: memberID, listener: nil)
+            else {
+                return
+            }
+            let navigationController = BaseNavigationController(
+                rootViewController: next,
+                shouldHideNavigation: false,
+                shouldShowCloseButtonIfNeed: true
+            )
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
         }
-        let navigationController = BaseNavigationController(
-            rootViewController: next,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
-        )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
     }
 }

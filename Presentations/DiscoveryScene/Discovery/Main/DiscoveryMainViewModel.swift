@@ -42,7 +42,7 @@ public enum SharedListIsEmpty: Equatable {
     case empty(signInNeed: Bool)
 }
 
-public protocol DiscoveryMainViewModel: AnyObject {
+public protocol DiscoveryMainViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -61,7 +61,7 @@ public protocol DiscoveryMainViewModel: AnyObject {
 
 // MARK: - DiscoveryMainViewModelImple
 
-public final class DiscoveryMainViewModelImple: DiscoveryMainViewModel {
+public final class DiscoveryMainViewModelImple: DiscoveryMainViewModel, @unchecked Sendable {
     
     private let currentSharedCollectionShareID: String?
     private let sharedReadCollectionLoadUsecase: SharedReadCollectionLoadUsecase
@@ -89,7 +89,7 @@ public final class DiscoveryMainViewModelImple: DiscoveryMainViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let sharedCollections = BehaviorRelay<[SharedReadCollection]>(value: [])
         let ownersMap = BehaviorRelay<[String: Member]>(value: [:])

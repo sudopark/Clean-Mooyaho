@@ -37,7 +37,7 @@ public struct SharedMemberCellViewModel: Equatable {
 
 // MARK: - SharedMemberListViewModel
 
-public protocol SharedMemberListViewModel: AnyObject {
+public protocol SharedMemberListViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -53,7 +53,7 @@ public protocol SharedMemberListViewModel: AnyObject {
 
 // MARK: - SharedMemberListViewModelImple
 
-public final class SharedMemberListViewModelImple: SharedMemberListViewModel {
+public final class SharedMemberListViewModelImple: SharedMemberListViewModel, @unchecked Sendable {
     
     private let sharedCollection: SharedReadCollection
     private let memberUsecase: MemberUsecase
@@ -101,7 +101,7 @@ public final class SharedMemberListViewModelImple: SharedMemberListViewModel {
         }
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let pagingIDs = BehaviorRelay<PagingCursor?>(value: nil)
         let memberMap = BehaviorRelay<[String: Member]>(value: [:])

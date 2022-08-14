@@ -39,7 +39,7 @@ final class SharedCollectionAttrCell: BaseTableViewCell, ReadItemCells, Presenti
     func updateCategories(_ categories: [ItemCategory]) {
         let validCategories = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.categoryView.isHidden = validCategories == nil
-        validCategories.do <| categoryView.labelView.updateCategories
+        validCategories.do <| { self.categoryView.labelView.updateCategories($0) }
     }
     
     override func afterViewInit() {
@@ -131,7 +131,7 @@ final class SharedCollectionExpandCell: BaseTableViewCell, ReadItemCells, Presen
     func updateCategories(_ categories: [ItemCategory]) {
         let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
-        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
+        validCategory.do <| { self.expandView.categoriesView.updateCategories($0) }
     }
     
     func setupLayout() {
@@ -211,7 +211,7 @@ final class SharedLinkExpandCell: BaseTableViewCell, ReadItemCells, Presenting {
     func updateCategories(_ categories: [ItemCategory]) {
         let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
-        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
+        validCategory.do <| { self.expandView.categoriesView.updateCategories($0) }
     }
     
     func bindPreview(_ source: Observable<LinkPreview>, customTitle: String?) {

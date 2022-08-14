@@ -25,7 +25,7 @@ extension SharedMemberListViewModelImple: SharedMemberListSceneInteractable {
 
 extension SharedMemberListViewController {
 
-    public var interactor: SharedMemberListSceneInteractable? {
+    public nonisolated var interactor: SharedMemberListSceneInteractable? {
         return self.viewModel as? SharedMemberListSceneInteractable
     }
 }

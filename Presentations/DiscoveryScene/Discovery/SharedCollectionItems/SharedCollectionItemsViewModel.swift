@@ -130,7 +130,7 @@ public struct SharedLinkCellViewModel: ReadItemCellViewModelType, ShrinkableCell
 
 // MARK: - SharedCollectionItemsViewModel
 
-public protocol SharedCollectionItemsViewModel: AnyObject {
+public protocol SharedCollectionItemsViewModel: AnyObject, Sendable {
 
     // interactor
     func reloadCollectionSubItems()
@@ -146,7 +146,7 @@ public protocol SharedCollectionItemsViewModel: AnyObject {
 
 // MARK: - SharedCollectionItemsViewModelImple
 
-public final class SharedCollectionItemsViewModelImple: SharedCollectionItemsViewModel {
+public final class SharedCollectionItemsViewModelImple: SharedCollectionItemsViewModel, @unchecked Sendable {
     
     private let loadSharedCollectionUsecase: SharedReadCollectionLoadUsecase
     private let linkPreviewLoadUsecase: ReadLinkPreviewLoadUsecase
@@ -182,7 +182,7 @@ public final class SharedCollectionItemsViewModelImple: SharedCollectionItemsVie
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let currentCollection: BehaviorRelay<SharedReadCollection>
         let collections = BehaviorRelay<[SharedReadCollection]?>(value: nil)
         let links = BehaviorRelay<[SharedReadLink]?>(value: nil)

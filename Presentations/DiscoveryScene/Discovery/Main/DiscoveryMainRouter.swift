@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol DiscoveryMainRouting: Routing {
+public protocol DiscoveryMainRouting: Routing, Sendable {
     
     func viewAllSharedCollections()
     
@@ -48,18 +48,20 @@ extension DiscoveryMainRouter {
     
     public func viewAllSharedCollections() {
         
-        guard let next = self.nextScenesBuilder?
-                .makeAllSharedCollectionsScene(listener: nil,
-                                               collectionMainInteractor: self.collectionMainInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeAllSharedCollectionsScene(listener: nil,
+                                                   collectionMainInteractor: self.collectionMainInteractor)
+            else {
+                return
+            }
+            let navigationController = BaseNavigationController(
+                rootViewController: next,
+                shouldHideNavigation: false,
+                shouldShowCloseButtonIfNeed: true
+            )
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
         }
-        let navigationController = BaseNavigationController(
-            rootViewController: next,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
-        )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
     }
     
     public func routeToSharedCollection(_ collection: SharedReadCollection) {
