@@ -25,7 +25,7 @@ extension WaitMigrationViewModelImple: WaitMigrationSceneInteractable {
 
 extension WaitMigrationViewController {
 
-    public var interactor: WaitMigrationSceneInteractable? {
+    public nonisolated var interactor: WaitMigrationSceneInteractable? {
         return self.viewModel as? WaitMigrationSceneInteractable
     }
 }

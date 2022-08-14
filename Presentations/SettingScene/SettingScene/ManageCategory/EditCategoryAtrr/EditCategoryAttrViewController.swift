@@ -227,7 +227,7 @@ extension EditCategoryAttrViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Edit category".localized)
         
         _ = self.nameField
@@ -247,7 +247,7 @@ extension EditCategoryAttrViewController: Presenting {
             |> \.tintColor .~ self.uiContext.colors.secondaryTitle
         
         _ = self.colorLabel
-            |> self.uiContext.decorating.listSectionTitle
+            |> { self.uiContext.decorating.listSectionTitle($0) }
             |> \.text .~ pure("Change a color".localized)
         
         self.colorPreviewView.layer.cornerRadius = 10

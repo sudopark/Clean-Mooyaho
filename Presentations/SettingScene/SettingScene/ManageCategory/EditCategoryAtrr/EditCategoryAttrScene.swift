@@ -17,9 +17,9 @@ import CommonPresenting
 
 // MARK: - EditCategoryAttrScene Interactable & Listenable
 
-public protocol EditCategoryAttrSceneInteractable: ColorSelectSceneListenable { }
+public protocol EditCategoryAttrSceneInteractable: ColorSelectSceneListenable, Sendable { }
 
-public protocol EditCategoryAttrSceneListenable: AnyObject {
+public protocol EditCategoryAttrSceneListenable: AnyObject, Sendable {
     
     func editCategory(didDeleted categoryID: String)
     
@@ -31,7 +31,7 @@ public protocol EditCategoryAttrSceneListenable: AnyObject {
 
 public protocol EditCategoryAttrScene: Scenable {
     
-    var interactor: EditCategoryAttrSceneInteractable? { get }
+    nonisolated var interactor: EditCategoryAttrSceneInteractable? { get }
 }
 
 
@@ -46,7 +46,7 @@ extension EditCategoryAttrViewModelImple: EditCategoryAttrSceneInteractable {
 
 extension EditCategoryAttrViewController {
 
-    public var interactor: EditCategoryAttrSceneInteractable? {
+    public nonisolated var interactor: EditCategoryAttrSceneInteractable? {
         return self.viewModel as? EditCategoryAttrSceneInteractable
     }
 }

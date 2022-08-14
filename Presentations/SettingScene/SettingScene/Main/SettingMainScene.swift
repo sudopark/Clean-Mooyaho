@@ -25,7 +25,7 @@ extension SettingMainViewModelImple: SettingMainSceneInteractable {
 
 extension SettingMainViewController {
 
-    public var interactor: SettingMainSceneInteractable? {
+    public nonisolated var interactor: SettingMainSceneInteractable? {
         return self.viewModel as? SettingMainSceneInteractable
     }
 }

@@ -34,7 +34,7 @@ public enum MigrationProcessAndResult {
     }
 }
 
-public protocol WaitMigrationViewModel: AnyObject {
+public protocol WaitMigrationViewModel: AnyObject, Sendable {
 
     // interactor
     func startMigration()
@@ -49,7 +49,7 @@ public protocol WaitMigrationViewModel: AnyObject {
 
 // MARK: - WaitMigrationViewModelImple
 
-public final class WaitMigrationViewModelImple: WaitMigrationViewModel {
+public final class WaitMigrationViewModelImple: WaitMigrationViewModel, @unchecked Sendable {
     
     private let userID: String
     private let shouldResume: Bool
@@ -77,7 +77,7 @@ public final class WaitMigrationViewModelImple: WaitMigrationViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let status = BehaviorSubject<UserDataMigrationStatus?>(value: nil)
         let migratedItemCount = BehaviorRelay<Int>(value: 0)

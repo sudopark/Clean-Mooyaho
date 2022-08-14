@@ -49,7 +49,7 @@ public struct SettingItemSection: Equatable {
 
 // MARK: - SettingMainViewModel
 
-public protocol SettingMainViewModel: AnyObject {
+public protocol SettingMainViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -63,7 +63,7 @@ public protocol SettingMainViewModel: AnyObject {
 
 // MARK: - SettingMainViewModelImple
 
-public final class SettingMainViewModelImple: SettingMainViewModel {
+public final class SettingMainViewModelImple: SettingMainViewModel, @unchecked Sendable {
     
     private let appID: String
     private let memberUsecase: MemberUsecase
@@ -113,7 +113,7 @@ public final class SettingMainViewModelImple: SettingMainViewModel {
         case sourceCode
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let currentMember = BehaviorRelay<Member?>(value: nil)
     }

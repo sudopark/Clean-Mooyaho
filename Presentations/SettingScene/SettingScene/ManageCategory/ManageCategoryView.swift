@@ -20,6 +20,7 @@ import CommonPresenting
 
 // MARK: - ManageCategoryViewController
 
+@MainActor
 public final class ManageCategoryViewStateObject: ObservableObject {
     
     @Published var cellViewModels :[CategoryCellViewModel] = []

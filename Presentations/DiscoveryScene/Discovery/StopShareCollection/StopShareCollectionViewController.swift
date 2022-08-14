@@ -224,6 +224,7 @@ final class CollectionInfoView: BaseUIView, Presenting {
 
 extension Reactive where Base == CollectionInfoView {
     
+    @MainActor
     var throttleTap: Observable<Void> {
         let viewtap = base.rx.addTapgestureRecognizer()
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)

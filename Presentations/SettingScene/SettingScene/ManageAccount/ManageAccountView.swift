@@ -20,6 +20,7 @@ import CommonPresenting
 
 // MARK: - ManageAccountViewController
 
+@MainActor
 public final class ManageAccountViewStateObject: ObservableObject {
     
     @Published var sections: [ManageAccountCellViewModel.Section] = []

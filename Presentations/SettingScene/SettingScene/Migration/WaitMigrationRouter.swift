@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol WaitMigrationRouting: Routing { }
+public protocol WaitMigrationRouting: Routing, Sendable { }
 
 // MARK: - Routers
 
