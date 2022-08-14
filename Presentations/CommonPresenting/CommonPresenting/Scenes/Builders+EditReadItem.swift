@@ -16,7 +16,7 @@ import Extensions
 @MainActor
 public protocol SelectAddItemTypeSceneBuilable {
     
-    func makeSelectAddItemTypeScene(_ completed: @escaping (Bool) -> Void) -> SelectAddItemTypeScene
+    func makeSelectAddItemTypeScene(_ completed: @Sendable @escaping (Bool) -> Void) -> SelectAddItemTypeScene
 }
 
 

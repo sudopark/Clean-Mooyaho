@@ -146,20 +146,25 @@ extension ApplicationViewModelTests {
     
     func testViewModel_whenHandleRemindMessage_showDetail() {
         // given
+        let expect = expectation(description: "handle remind messsage and show")
         self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
             return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
         }
-        self.viewModel.appDidLaunched()
         
         // when
+        self.spyRouter.didShowRemindDetailRequested = {
+            expect.fulfill()
+        }
+        self.viewModel.appDidLaunched()
         self.stubFCMService.mockPushMessages.onNext(ReadRemindMessage(itemID: "some", scheduledTime: .now()))
         
         // then
-        XCTAssertEqual(self.spyRouter.didShowRemindDetailRequested, true)
+        self.wait(for: [expect], timeout: self.timeout)
     }
     
     func testViewModel_whenHandleRemindMessageBeforeSetupInitialScene_showAfterSetupInitialScenes() {
         // given
+        let expect = expectation(description: "handle remind messsage and show")
         self.mockUsecase.register(key: "loadLastSignInAccountInfo") {
             return Maybe<(auth: Auth, member: Member?)>.just((Auth(userID: "some"), nil))
         }
@@ -167,19 +172,22 @@ extension ApplicationViewModelTests {
         self.spyRouter.handleRemindResult = false
         
         // when
+        self.spyRouter.didShowRemindDetailRequested = {
+            expect.fulfill()
+        }
         self.stubFCMService.mockPushMessages.onNext(ReadRemindMessage(itemID: "some", scheduledTime: .now()))
         self.spyRouter.handleRemindResult = true
         self.viewModel.appDidLaunched()
         
         // then
-        XCTAssertEqual(self.spyRouter.didShowRemindDetailRequested, true)
+        self.wait(for: [expect], timeout: self.timeout)
     }
 }
 
 
 extension ApplicationViewModelTests {
     
-    class SpyRouter: ApplicationRootRouting, Mocking {
+    final class SpyRouter: ApplicationRootRouting, Mocking, @unchecked Sendable {
         
         func routeMain(auth: Auth) {
             self.verify(key: "routeMain", with: auth)
@@ -195,11 +203,13 @@ extension ApplicationViewModelTests {
         }
         
         var handleRemindResult: Bool = true
-        var didShowRemindDetailRequested: Bool?
+        var didShowRemindDetailRequested: (() -> Void)?
         func showRemindItem(_ itemID: String) -> Bool {
             let result = self.handleRemindResult
-            if result{
-                self.didShowRemindDetailRequested = true
+            defer {
+                if result {
+                    self.didShowRemindDetailRequested?()
+                }
             }
             return result
         }

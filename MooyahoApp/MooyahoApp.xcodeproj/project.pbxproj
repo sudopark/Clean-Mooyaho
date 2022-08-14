@@ -1184,6 +1184,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1215,6 +1216,7 @@
 				PRODUCT_NAME = Readmind;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1291,6 +1293,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1322,6 +1325,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.sudo.park.Mooyaho-iOS.ReadReminderShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

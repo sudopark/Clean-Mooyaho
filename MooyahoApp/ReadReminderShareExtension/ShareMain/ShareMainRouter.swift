@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol ShareMainRouting: Routing {
+public protocol ShareMainRouting: Routing, Sendable {
     
     func showEditScene(_ url: String)
 }
@@ -35,17 +35,19 @@ public final class ShareMainRouter: Router<ShareMainRouterBuildables>, ShareMain
 extension ShareMainRouter {
     
     // ShareMainRouting implements
-    private var currentInteractor: ShareMainSceneInteractable? {
+    @MainActor private var currentInteractor: ShareMainSceneInteractable? {
         return (self.currentScene as? ShareMainScene)?.interactor
     }
     
     public func showEditScene(_ url: String) {
         
-        let editCase: EditLinkItemCase = .makeNew(url: url)
-        guard let next = self.nextScenesBuilder?
-                .makeEditLinkItemScene(editCase, collectionID: nil, listener: self.currentInteractor)
-        else { return }
-        next.setupUIForShareExtension()
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            let editCase: EditLinkItemCase = .makeNew(url: url)
+            guard let next = self.nextScenesBuilder?
+                    .makeEditLinkItemScene(editCase, collectionID: nil, listener: self.currentInteractor)
+            else { return }
+            next.setupUIForShareExtension()
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
 }

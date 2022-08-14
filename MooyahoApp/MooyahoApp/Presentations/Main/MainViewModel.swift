@@ -26,7 +26,7 @@ public enum ActivationStatus: Equatable {
     case activated
 }
 
-public protocol MainViewModel: AnyObject {
+public protocol MainViewModel: AnyObject, Sendable {
 
     // interactor
     func setupSubScenes()
@@ -59,7 +59,7 @@ public protocol MainViewModel: AnyObject {
 
 // MARK: - MainViewModelImple
 
-public final class MainViewModelImple: MainViewModel {
+public final class MainViewModelImple: MainViewModel, @unchecked Sendable {
     
     enum CurrentSubCollectionID: Equatable {
         case mine(String?)
@@ -155,8 +155,10 @@ public final class MainViewModelImple: MainViewModel {
 extension MainViewModelImple {
     
     public func setupSubScenes() {
-        self.readCollectionMainSceneInteractor = self.router.addReadCollectionScene()
-        self.suggestReadSceneInteractor = self.router.addSuggestReadScene()
+        Task { @MainActor in
+            self.readCollectionMainSceneInteractor = self.router.addReadCollectionScene()
+            self.suggestReadSceneInteractor = self.router.addSuggestReadScene()
+        }
     }
     
     public func requestOpenSlideMenu() {
@@ -326,7 +328,9 @@ extension MainViewModelImple: MainSceneInteractable {
     }
     
     private func replaceCollectionAfterSignIn() {
-        self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
+        Task { @MainActor in
+            self.readCollectionMainSceneInteractor = self.router.replaceReadCollectionScene()
+        }
     }
     
     private func runMigrationOrActivateAccount(_ auth: Auth, isDeactivated: Bool) {
@@ -385,8 +389,10 @@ extension MainViewModelImple {
     public func didUpdateBottomSearchAreaShowing(isShow: Bool) {
         
         func addSearch() {
-            guard self.integratedSearchSceneInteractor == nil else { return }
-            self.integratedSearchSceneInteractor = self.router.addSaerchScene()
+            Task { @MainActor in
+                guard self.integratedSearchSceneInteractor == nil else { return }
+                self.integratedSearchSceneInteractor = self.router.addSaerchScene()
+            }
         }
         
         func removeSearch() {
@@ -409,14 +415,14 @@ extension MainViewModelImple {
         self.subjects.isIntegratedSearching.accept(didUpdateSearching)
     }
     
-    public func finishIntegratedSearch(_ completed: @escaping () -> Void) {
+    public func finishIntegratedSearch(_ completed: @Sendable @escaping () -> Void) {
         self.router.closeScene(animated: true) { [weak self] in
             self?.subjects.finishSearch.onNext()
             completed()
         }
     }
     
-    public func finishSuggesting(_ completed: @escaping () -> Void) {
+    public func finishSuggesting(_ completed: @escaping @Sendable () -> Void) {
         self.router.closeScene(animated: true) { [weak self] in
             self?.subjects.finishSearch.onNext()
             completed()

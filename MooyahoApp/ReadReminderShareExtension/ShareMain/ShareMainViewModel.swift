@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - ShareMainViewModel
 
-public protocol ShareMainViewModel: AnyObject {
+public protocol ShareMainViewModel: AnyObject, Sendable {
 
     // interactor
     func showEditScene(_ url: String)
@@ -29,7 +29,7 @@ public protocol ShareMainViewModel: AnyObject {
 
 // MARK: - ShareMainViewModelImple
 
-public final class ShareMainViewModelImple: ShareMainViewModel {
+public final class ShareMainViewModelImple: ShareMainViewModel, @unchecked Sendable {
     
     private let authUsecase: AuthUsecase
     private let readItemSyncUsecase: ReadItemSyncUsecase

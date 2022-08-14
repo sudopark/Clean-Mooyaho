@@ -18,7 +18,7 @@ import CommonPresenting
 import Extensions
 
 
-public protocol ApplicationUsecase {
+public protocol ApplicationUsecase: Sendable {
     
     func updateApplicationActiveStatus(_ newStatus: ApplicationStatus)
     
@@ -33,7 +33,7 @@ public protocol ApplicationUsecase {
 
 // MARK: - ApplicationUsecaseImple
 
-public final class ApplicationUsecaseImple: ApplicationUsecase {
+public final class ApplicationUsecaseImple: ApplicationUsecase, @unchecked Sendable {
     
     private let authUsecase: AuthUsecase
     private let memberUsecase: MemberUsecase
@@ -184,7 +184,7 @@ extension ApplicationUsecaseImple {
         
         let loadMyItems = self.readItemUsecase.loadMyItems().take(1).asMaybe()
 
-        let saveWelcomeItemIfNeedWithMarking: ([ReadItem]) async throws -> Void?
+        let saveWelcomeItemIfNeedWithMarking: @Sendable ([ReadItem]) async throws -> Void?
         saveWelcomeItemIfNeedWithMarking = { [weak self] items in
             guard let self = self else { return nil }
             guard items.isEmpty else {

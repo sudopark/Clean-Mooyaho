@@ -28,7 +28,8 @@ extension IOSDeviceInfoService {
     }
     
     func osVersion() -> String {
-        return UIDevice.current.systemVersion
+        return ""
+//        return UIDevice.current.systemVersion
     }
     
     func deviceModel() -> String {

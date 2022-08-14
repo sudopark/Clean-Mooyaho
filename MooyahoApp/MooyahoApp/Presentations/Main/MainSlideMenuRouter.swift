@@ -20,7 +20,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol MainSlideMenuRouting: Routing {
+public protocol MainSlideMenuRouting: Routing, Sendable {
     
     func closeMenu()
     
@@ -50,44 +50,52 @@ extension MainSlideMenuRouter {
     
     // MainSlideMenuRouting implements
     public func closeMenu() {
-        self.currentScene?.dismiss(animated: true, completion: nil)
+        Task { @MainActor in
+            self.currentScene?.dismiss(animated: true, completion: nil)
+        }
     }
     
     public func setupDiscoveryScene() {
-        let shareID = self.collectionMainInteractor?.rootType.sharedCollectionShareID
-        guard let sliderScene = self.currentScene as? MainSlideMenuScene,
-              let next = self.nextScenesBuilder?
-                .makeDiscoveryMainScene(currentShareCollectionID: shareID,
-                                        listener: self.currentInteractor,
-                                        collectionMainInteractor: self.collectionMainInteractor)
-        else {
-            return
+        Task { @MainActor in
+            let shareID = self.collectionMainInteractor?.rootType.sharedCollectionShareID
+            guard let sliderScene = self.currentScene as? MainSlideMenuScene,
+                  let next = self.nextScenesBuilder?
+                    .makeDiscoveryMainScene(currentShareCollectionID: shareID,
+                                            listener: self.currentInteractor,
+                                            collectionMainInteractor: self.collectionMainInteractor)
+            else {
+                return
+            }
+            next.view.frame = CGRect(origin: .zero,
+                                     size: sliderScene.discoveryContainerView.frame.size)
+            next.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            sliderScene.addChild(next)
+            sliderScene.discoveryContainerView.addSubview(next.view)
+            next.didMove(toParent: sliderScene)
         }
-        next.view.frame = CGRect(origin: .zero,
-                                 size: sliderScene.discoveryContainerView.frame.size)
-        next.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        sliderScene.addChild(next)
-        sliderScene.discoveryContainerView.addSubview(next.view)
-        next.didMove(toParent: sliderScene)
     }
     
     public func editProfile() {
-        guard let next = self.nextScenesBuilder?.makeEditProfileScene() else { return }
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(next, animated: true)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeEditProfileScene() else { return }
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(next, animated: true)
+        }
     }
     
     public func openSetting() {
-        guard let next = self.nextScenesBuilder?
-                .makeSettingMainScene(listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeSettingMainScene(listener: self.currentInteractor)
+            else {
+                return
+            }
+            let navigtionController = BaseNavigationController(
+                rootViewController: next,
+                shouldHideNavigation: true,
+                shouldShowCloseButtonIfNeed: false
+            )
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigtionController, animated: true)
         }
-        let navigtionController = BaseNavigationController(
-            rootViewController: next,
-            shouldHideNavigation: true,
-            shouldShowCloseButtonIfNeed: false
-        )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigtionController, animated: true)
     }
 }
 
