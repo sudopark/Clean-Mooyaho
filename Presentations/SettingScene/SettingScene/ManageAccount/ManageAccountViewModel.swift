@@ -24,7 +24,7 @@ public enum ManageAccountCellViewModel: String {
 
 // MARK: - ManageAccountViewModel
 
-public protocol ManageAccountViewModel: AnyObject {
+public protocol ManageAccountViewModel: AnyObject, Sendable {
 
     // interactor
     func signout()
@@ -39,7 +39,7 @@ public protocol ManageAccountViewModel: AnyObject {
 
 // MARK: - ManageAccountViewModelImple
 
-public final class ManageAccountViewModelImple: ManageAccountViewModel {
+public final class ManageAccountViewModelImple: ManageAccountViewModel, @unchecked Sendable {
     
     private let authUsecase: AuthUsecase
     private let router: ManageAccountRouting
@@ -59,7 +59,7 @@ public final class ManageAccountViewModelImple: ManageAccountViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let isProcessing = BehaviorRelay<Bool>(value: false)
     }
     

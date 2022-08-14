@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - EditCategoryAttrViewModel
 
-public protocol EditCategoryAttrViewModel: AnyObject {
+public protocol EditCategoryAttrViewModel: AnyObject, Sendable {
 
     // interactor
     func enter(name: String)
@@ -36,7 +36,7 @@ public protocol EditCategoryAttrViewModel: AnyObject {
 
 // MARK: - EditCategoryAttrViewModelImple
 
-public final class EditCategoryAttrViewModelImple: EditCategoryAttrViewModel {
+public final class EditCategoryAttrViewModelImple: EditCategoryAttrViewModel, @unchecked Sendable {
     
     private let category: ItemCategory
     private let categoryUsecase: ReadItemCategoryUsecase
@@ -59,7 +59,7 @@ public final class EditCategoryAttrViewModelImple: EditCategoryAttrViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let pendingNewName = BehaviorRelay<String?>(value: nil)
         let pendingNewColorCode = BehaviorRelay<String?>(value: nil)

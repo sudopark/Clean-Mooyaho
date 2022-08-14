@@ -16,16 +16,16 @@ import CommonPresenting
 
 // MARK: - ManageCategoryScene Interactable & Listenable
 
-public protocol ManageCategorySceneInteractable: EditCategoryAttrSceneListenable { }
+public protocol ManageCategorySceneInteractable: EditCategoryAttrSceneListenable, Sendable { }
 
-public protocol ManageCategorySceneListenable: AnyObject { }
+public protocol ManageCategorySceneListenable: AnyObject, Sendable { }
 
 
 // MARK: - ManageCategoryScene
 
 public protocol ManageCategoryScene: Scenable {
     
-    var interactor: ManageCategorySceneInteractable? { get }
+    nonisolated var interactor: ManageCategorySceneInteractable? { get }
 }
 
 
@@ -40,7 +40,7 @@ extension ManageCategoryViewModelImple: ManageCategorySceneInteractable {
 
 extension ManageCategoryViewController {
 
-    public var interactor: ManageCategorySceneInteractable? {
+    public nonisolated var interactor: ManageCategorySceneInteractable? {
         return self.viewModel as? ManageCategorySceneInteractable
     }
 }

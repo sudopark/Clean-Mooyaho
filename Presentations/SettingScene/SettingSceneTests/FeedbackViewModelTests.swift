@@ -78,7 +78,7 @@ extension FeedbackViewModelTests {
 
 extension FeedbackViewModelTests {
     
-    class SpyRouter: FeedbackRouting {
+    final class SpyRouter: FeedbackRouting, @unchecked Sendable {
         
         var didClsoe: Bool?
         func closeScene(animated: Bool, completed: (() -> Void)?) {

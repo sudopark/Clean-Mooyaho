@@ -224,7 +224,7 @@ extension EditCategoryAttrViewModelTests {
 
 extension EditCategoryAttrViewModelTests {
     
-    class SpyRouter: EditCategoryAttrRouting {
+    final class SpyRouter: EditCategoryAttrRouting, @unchecked Sendable {
         
         var didRequestSelectNewColor: Bool?
         func selectNewColor(_ stratWith: String) {
@@ -253,7 +253,7 @@ extension EditCategoryAttrViewModelTests {
         }
     }
     
-    class SpyListner: EditCategoryAttrSceneListenable {
+    final class SpyListner: EditCategoryAttrSceneListenable, @unchecked Sendable {
         
         var didRemoveNotified: Bool?
         func editCategory(didDeleted categoryID: String) {

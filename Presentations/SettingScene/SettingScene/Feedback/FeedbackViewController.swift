@@ -148,7 +148,7 @@ extension FeedbackViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Feedback".localized)
         
         self.messageInputView.setupMultilineStyling(120)
@@ -156,7 +156,7 @@ extension FeedbackViewController: Presenting {
         self.uiContext.decorating.placeHolder(self.messageInputView.placeHolderLabel)
         
         _ = self.contactLabel
-            |> self.uiContext.decorating.listSectionTitle(_:)
+            |> { self.uiContext.decorating.listSectionTitle($0) }
             |> \.text .~ pure("Contact".localized)
         
         self.contactInputView.setupSingleLineStyling()

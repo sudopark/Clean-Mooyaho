@@ -155,7 +155,7 @@ extension ManageCategoryViewModelTests {
 
 extension ManageCategoryViewModelTests {
     
-    class SpyRouter: ManageCategoryRouting {
+    final class SpyRouter: ManageCategoryRouting, @unchecked Sendable {
 
         var didMoveToEditCategory: Bool?
         func moveToEditCategory(_ category: ItemCategory) {

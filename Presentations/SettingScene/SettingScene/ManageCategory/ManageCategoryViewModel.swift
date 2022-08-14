@@ -26,7 +26,7 @@ public struct CategoryCellViewModel: Equatable {
     let colorCode: String
 }
 
-public protocol ManageCategoryViewModel: AnyObject {
+public protocol ManageCategoryViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -42,7 +42,7 @@ public protocol ManageCategoryViewModel: AnyObject {
 
 // MARK: - ManageCategoryViewModelImple
 
-public final class ManageCategoryViewModelImple: ManageCategoryViewModel {
+public final class ManageCategoryViewModelImple: ManageCategoryViewModel, @unchecked Sendable {
     
     private let categoryUsecase: ReadItemCategoryUsecase
     private let router: ManageCategoryRouting
@@ -64,7 +64,7 @@ public final class ManageCategoryViewModelImple: ManageCategoryViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let requestTime = PublishSubject<TimeStamp>()
         let categories = BehaviorRelay<[ItemCategory]?>(value: nil)

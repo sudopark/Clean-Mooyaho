@@ -278,7 +278,7 @@ extension SettingMainViewModelTests {
 
 extension SettingMainViewModelTests {
     
-    class SpyRouterAndListenable: SettingMainRouting, SettingMainSceneListenable {
+    final class SpyRouterAndListenable: SettingMainRouting, SettingMainSceneListenable, @unchecked Sendable {
         
         var didMoveToEditProfile = false
         func editProfile() {
@@ -323,7 +323,7 @@ extension SettingMainViewModelTests {
         func settingMain(didCompleteSignedIn member: Member) { }
     }
     
-    class StubDeviceInfoService: DeviceInfoService {
+    final class StubDeviceInfoService: DeviceInfoService {
         
         func osVersion() -> String {
             return "os version"
