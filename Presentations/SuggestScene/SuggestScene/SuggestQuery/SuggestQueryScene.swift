@@ -25,7 +25,7 @@ extension SuggestQueryViewModelImple: SuggestQuerySceneInteractable {
 
 extension SuggestQueryViewController {
 
-    public var interactor: SuggestQuerySceneInteractable? {
+    public nonisolated var interactor: SuggestQuerySceneInteractable? {
         return self.viewModel as? SuggestQuerySceneInteractable
     }
 }

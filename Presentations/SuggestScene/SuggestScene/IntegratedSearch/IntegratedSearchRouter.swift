@@ -19,8 +19,9 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol IntegratedSearchRouting: Routing {
+public protocol IntegratedSearchRouting: Routing, Sendable {
     
+    @MainActor
     func setupSuggestScene() -> SuggestQuerySceneInteractable?
     
     func showLinkDetail(_ linkID: String)
@@ -45,6 +46,7 @@ extension IntegratedSearchRouter {
         return (self.currentScene as? IntegratedSearchScene)?.interactor
     }
     
+    @MainActor
     public func setupSuggestScene() -> SuggestQuerySceneInteractable? {
         
         guard let searchScene = self.currentScene as? IntegratedSearchScene,
@@ -67,14 +69,16 @@ extension IntegratedSearchRouter {
     
     public func showLinkDetail(_ linkID: String) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeInnerWebViewScene(linkID: linkID,
-                                       isEditable: true,
-                                       isJumpable: true,
-                                       listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeInnerWebViewScene(linkID: linkID,
+                                           isEditable: true,
+                                           isJumpable: true,
+                                           listener: self.currentInteractor)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

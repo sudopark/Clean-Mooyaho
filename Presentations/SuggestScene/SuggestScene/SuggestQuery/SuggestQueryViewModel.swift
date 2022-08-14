@@ -29,7 +29,7 @@ public struct SuggestQueryCellViewModel {
     }
 }
 
-public protocol SuggestQueryViewModel: AnyObject {
+public protocol SuggestQueryViewModel: AnyObject, Sendable {
 
     // interactor
     func suggest(with text: String)
@@ -44,7 +44,7 @@ public protocol SuggestQueryViewModel: AnyObject {
 
 // MARK: - SuggestQueryViewModelImple
 
-public final class SuggestQueryViewModelImple: SuggestQueryViewModel {
+public final class SuggestQueryViewModelImple: SuggestQueryViewModel, @unchecked Sendable {
     
     private let suggestQueryUsecase: SuggestQueryUsecase
     private let router: SuggestQueryRouting
@@ -66,7 +66,7 @@ public final class SuggestQueryViewModelImple: SuggestQueryViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let cellViewModels = BehaviorSubject<[SuggestQueryCellViewModel]?>(value: [])
     }

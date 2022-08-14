@@ -300,11 +300,11 @@ extension SuggestReadEmptyCell {
     func setupStyling() {
         
         _ = self.emojiView
-            |> self.uiContext.decorating.header
+            |> { self.uiContext.decorating.header($0) }
             |> \.numberOfLines .~ 1
         
         _ = self.messageLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 0
             |> \.textAlignment .~ .center
             |> \.textColor .~ self.uiContext.colors.descriptionText
@@ -338,6 +338,7 @@ private extension SuggestReadSection.SuggestType {
         }
     }
     
+    @MainActor
     func makeHeaderView() -> SuggestReadSectionHeaderView {
         let header = SuggestReadSectionHeaderView()
         header.setupTitle(self.title)

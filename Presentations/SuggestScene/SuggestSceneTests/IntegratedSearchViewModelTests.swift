@@ -91,23 +91,32 @@ extension IntegratedSearchViewModelTests {
     
     func testViewModel_setupSuggestScene() {
         // given
+        let expect = expectation(description: "setup suggest scene")
         let viewModel = self.makeViewModel()
         
         // when
+        self.spyRouter.didSetupSuggestScene = {
+            expect.fulfill()
+        }
         viewModel.setupSubScene()
         
         // then
-        XCTAssertEqual(self.spyRouter.didSetupSuggestScene, true)
+        self.wait(for: [expect], timeout: self.timeout)
     }
     
     func testViewModel_whenSetupSuggest_startSuggestWithEmptyQuery() {
         // given
+        let expect = expectation(description: "setup suggest scene")
         let viewModel = self.makeViewModel()
         
         // when
+        self.spyRouter.didSetupSuggestScene = {
+            expect.fulfill()
+        }
         viewModel.setupSubScene()
         
         // then
+        self.wait(for: [expect], timeout: self.timeout)
         XCTAssertEqual(self.spyRouter.spySuggestSceneInteractor?.didSuggestRequestedText, "")
     }
     
@@ -148,18 +157,24 @@ extension IntegratedSearchViewModelTests {
     func testViewModel_hideSuggestAfterSearch() {
         // given
         let expect = expectation(description: "검색 완료 이후에 서제스트 영역 숨김")
-        expect.expectedFulfillmentCount = 3
+        expect.expectedFulfillmentCount = 2
+        let expectSetup = expectation(description: "setup suggest scene")
         let viewModel = self.makeViewModel()
+        
+        self.spyRouter.didSetupSuggestScene = {
+            expectSetup.fulfill()
+        }
+        viewModel.setupSubScene()
+        self.wait(for: [expectSetup], timeout: self.timeout)
         
         // when
         let isShowings = self.waitElements(expect, for: viewModel.showSuggestScene) {
-            viewModel.setupSubScene()
             viewModel.requestSuggest(with: "some")
             viewModel.requestSearchItems(with: "some")
         }
         
         // then
-        XCTAssertEqual(isShowings, [false, true, false])
+        XCTAssertEqual(isShowings, [true, false])
     }
     
     // 검색 실패 이후에 에러 알림
@@ -290,12 +305,14 @@ extension IntegratedSearchViewModelTests {
 
 extension IntegratedSearchViewModelTests {
     
-    class SpyRouterAndListener: IntegratedSearchRouting, IntegratedSearchSceneListenable {
+    final class SpyRouterAndListener: IntegratedSearchRouting, IntegratedSearchSceneListenable, @unchecked Sendable {
         
         var spySuggestSceneInteractor: SpySuggestSceneInteractor?
-        var didSetupSuggestScene: Bool?
+        var didSetupSuggestScene: (() -> Void)?
         func setupSuggestScene() -> SuggestQuerySceneInteractable? {
-            self.didSetupSuggestScene = true
+            defer {
+                self.didSetupSuggestScene?()
+            }
             self.spySuggestSceneInteractor = .init()
             return self.spySuggestSceneInteractor
         }
@@ -323,7 +340,7 @@ extension IntegratedSearchViewModelTests {
         }
     }
     
-    class SpySuggestSceneInteractor: SuggestQuerySceneInteractable {
+    final class SpySuggestSceneInteractor: SuggestQuerySceneInteractable, @unchecked Sendable {
         
         var didSuggestRequestedText: String?
         func suggest(with text: String) {
@@ -331,7 +348,7 @@ extension IntegratedSearchViewModelTests {
         }
     }
     
-    class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable {
+    final class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable, @unchecked Sendable {
         
         func addNewCollectionItem() { }
         
