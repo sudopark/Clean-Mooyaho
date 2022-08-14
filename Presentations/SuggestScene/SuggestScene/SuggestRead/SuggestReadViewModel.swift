@@ -51,7 +51,7 @@ public struct SuggestEmptyCellViewModel: ReadItemCellViewModel {
 
 // MARK: - SuggestReadViewModel
 
-public protocol SuggestReadViewModel: AnyObject {
+public protocol SuggestReadViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -68,7 +68,7 @@ public protocol SuggestReadViewModel: AnyObject {
 
 // MARK: - SuggestReadViewModelImple
 
-public final class SuggestReadViewModelImple: SuggestReadViewModel {
+public final class SuggestReadViewModelImple: SuggestReadViewModel, @unchecked Sendable {
     
     private let readItemUsecase: ReadItemUsecase
     private let categoriesUsecase: ReadItemCategoryUsecase
@@ -99,7 +99,7 @@ public final class SuggestReadViewModelImple: SuggestReadViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let todoReadItems = BehaviorRelay<[ReadItem]?>(value: nil)
         let favoriteItemIDs = BehaviorRelay<[String]?>(value: nil)
         let continueReadLinks = BehaviorRelay<[ReadLink]?>(value: nil)

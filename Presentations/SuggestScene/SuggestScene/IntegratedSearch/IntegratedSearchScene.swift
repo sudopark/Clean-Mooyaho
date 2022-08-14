@@ -25,7 +25,7 @@ extension IntegratedSearchViewModelImple: IntegratedSearchSceneInteractable {
 
 extension IntegratedSearchViewController {
 
-    public var interactor: IntegratedSearchSceneInteractable? {
+    public nonisolated var interactor: IntegratedSearchSceneInteractable? {
         return self.viewModel as? IntegratedSearchSceneInteractable
     }
 }
