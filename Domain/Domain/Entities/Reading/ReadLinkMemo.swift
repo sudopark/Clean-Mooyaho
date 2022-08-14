@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct ReadLinkMemo {
+public struct ReadLinkMemo: Sendable {
     
     public let linkItemID: String
     public var ownerID: String?

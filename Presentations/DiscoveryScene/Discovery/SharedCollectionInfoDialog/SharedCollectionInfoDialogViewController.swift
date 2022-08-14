@@ -143,7 +143,7 @@ extension SharedCollectionInfoDialogViewController: Presenting {
         self.ownerInfoView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Shared Reading List".localized)
         
         self.collectionInfoView.setupStyling()

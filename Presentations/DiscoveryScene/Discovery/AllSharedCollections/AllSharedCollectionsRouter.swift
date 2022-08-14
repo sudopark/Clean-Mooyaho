@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol AllSharedCollectionsRouting: Routing {
+public protocol AllSharedCollectionsRouting: Routing, Sendable {
     
     func switchToSharedCollection(_ collection: SharedReadCollection)
 }

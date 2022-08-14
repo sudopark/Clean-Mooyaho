@@ -186,14 +186,14 @@ extension StopShareCollectionViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Sharing Reading List".localized)
         
         self.collectionInfoView.setupStyling()
         self.collectionInfoView.actionButton.setImage(UIImage(systemName: "square.and.arrow.up.fill"), for: .normal)
         
         _ = self.sharedMemberCountLabel
-            |> self.uiContext.decorating.listItemAccentText
+            |> { self.uiContext.decorating.listItemAccentText($0) }
             |> \.font .~ self.uiContext.fonts.get(15, weight: .regular)
             |> \.numberOfLines .~ 1
             |> \.isHidden .~ true
@@ -255,7 +255,7 @@ extension CollectionInfoView {
     func setupStyling() {
         
         _ = self.collectionNameLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.font .~ self.uiContext.fonts.get(15, weight: .medium)
             |> \.numberOfLines .~ 1
         

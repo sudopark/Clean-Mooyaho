@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - StopShareCollectionViewModel
 
-public protocol StopShareCollectionViewModel: AnyObject {
+public protocol StopShareCollectionViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -34,7 +34,7 @@ public protocol StopShareCollectionViewModel: AnyObject {
 
 // MARK: - StopShareCollectionViewModelImple
 
-public final class StopShareCollectionViewModelImple: StopShareCollectionViewModel {
+public final class StopShareCollectionViewModelImple: StopShareCollectionViewModel, @unchecked Sendable {
     
     private let shareURLScheme: String
     private let collectionID: String
@@ -59,7 +59,7 @@ public final class StopShareCollectionViewModelImple: StopShareCollectionViewMod
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let collection = BehaviorRelay<SharedReadCollection?>(value: nil)
         let isStopSharing = BehaviorRelay<Bool>(value: false)
         let sharedMemberIDs = BehaviorRelay<[String]?>(value: nil)

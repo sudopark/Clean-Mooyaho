@@ -37,7 +37,7 @@ public struct AllSharedCollectionCellViewModel: Equatable {
 
 // MARK: - AllSharedCollectionsViewModel
 
-public protocol AllSharedCollectionsViewModel: AnyObject {
+public protocol AllSharedCollectionsViewModel: AnyObject, Sendable {
 
     // interactor
     func reloadCollections()
@@ -53,7 +53,7 @@ public protocol AllSharedCollectionsViewModel: AnyObject {
 
 // MARK: - AllSharedCollectionsViewModelImple
 
-public final class AllSharedCollectionsViewModelImple: AllSharedCollectionsViewModel {
+public final class AllSharedCollectionsViewModelImple: AllSharedCollectionsViewModel, @unchecked Sendable {
     
     private let pagingUsecase: SharedReadCollectionPagingUsecase
     private let updateUsecase: SharedReadCollectionUpdateUsecase
@@ -86,7 +86,7 @@ public final class AllSharedCollectionsViewModelImple: AllSharedCollectionsViewM
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let collections = BehaviorRelay<[SharedReadCollection]?>(value: nil)
         let removedIDSet = BehaviorRelay<Set<String>>(value: [])
         let categoryMap = BehaviorRelay<[String: ItemCategory]>(value: [:])

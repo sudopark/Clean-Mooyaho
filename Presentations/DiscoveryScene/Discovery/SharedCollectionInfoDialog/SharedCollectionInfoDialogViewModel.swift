@@ -17,7 +17,7 @@ import CommonPresenting
 
 // MARK: - SharedCollectionInfoDialogViewModel
 
-public protocol SharedCollectionInfoDialogViewModel: AnyObject {
+public protocol SharedCollectionInfoDialogViewModel: AnyObject, Sendable {
 
     // interactor
     func removeFromSharedList()
@@ -33,7 +33,7 @@ public protocol SharedCollectionInfoDialogViewModel: AnyObject {
 
 // MARK: - SharedCollectionInfoDialogViewModelImple
 
-public final class SharedCollectionInfoDialogViewModelImple: SharedCollectionInfoDialogViewModel {
+public final class SharedCollectionInfoDialogViewModelImple: SharedCollectionInfoDialogViewModel, @unchecked Sendable {
     
     private let collection: SharedReadCollection
     private let shareItemsUsecase: SharedReadCollectionLoadUsecase & SharedReadCollectionUpdateUsecase
@@ -60,7 +60,7 @@ public final class SharedCollectionInfoDialogViewModelImple: SharedCollectionInf
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let isRemoving = BehaviorRelay<Bool>(value: false)
         let collection = BehaviorRelay<SharedReadCollection?>(value: nil)

@@ -312,7 +312,7 @@ final class SharedCollectionsHeaderView: BaseTableViewSectionHeaderFooterView, P
         self.tintColor = UIColor(red: 30/255, green: 34/255, blue: 40/255, alpha: 1)
         
         _ = self.messageLabel
-            |> self.uiContext.decorating.listSectionTitle(_:)
+            |> { self.uiContext.decorating.listSectionTitle($0) }
             |> \.numberOfLines .~ 1
             |> \.textColor .~ UIColor.white.withAlphaComponent(0.8)
             |> \.text .~ pure("Shared read collections".localized)
@@ -450,18 +450,18 @@ extension LatestSharedCollectionCell {
         self.iconImageView.tintColor = UIColor.white
         
         _ = self.nameLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.textColor .~ UIColor.white
             |> \.numberOfLines .~ 1
         
         _ = self.descriptionLabel
-            |> self.uiContext.decorating.listItemSubDescription(_:)
+            |> { self.uiContext.decorating.listItemSubDescription($0) }
             |> \.textColor .~ UIColor.white.withAlphaComponent(0.5)
             |> \.text .~ pure("shared by".localized)
             |> \.numberOfLines .~ 1
         
         _ = self.sharedLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.textColor .~ UIColor.white.withAlphaComponent(0.5)
             |> \.text .~ pure("shared by".localized)
             |> \.numberOfLines .~ 1
@@ -504,7 +504,7 @@ final class EmptyLatestSharedView: BaseUIView, Presenting {
         self.backgroundColor = UIColor(red: 30/255, green: 34/255, blue: 40/255, alpha: 1)
         
         _ = self.descriptionLabel
-            |> self.uiContext.decorating.listItemTitle
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.textColor .~ UIColor.white.withAlphaComponent(0.8)
             |> \.textAlignment .~ .center
             |> \.numberOfLines .~ 0

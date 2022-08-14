@@ -25,7 +25,7 @@ extension StopShareCollectionViewModelImple: StopShareCollectionSceneInteractabl
 
 extension StopShareCollectionViewController {
 
-    public var interactor: StopShareCollectionSceneInteractable? {
+    public nonisolated var interactor: StopShareCollectionSceneInteractable? {
         return self.viewModel as? StopShareCollectionSceneInteractable
     }
 }
