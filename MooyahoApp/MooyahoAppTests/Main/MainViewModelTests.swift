@@ -99,21 +99,28 @@ extension MainViewModelTests {
     
     func testViewModel_whenAfterSignIn_replaceReadCollectionMainAndStartMigration() {
         // given
+        let expect = expectation(description: "replace collection main")
         self.mockMemberUsecase.currentMemberSubject.onNext(nil)
         
         // when
+        self.spyRouter.didReadCollectionMainReplaced = {
+            expect.fulfill()
+        }
         self.viewModel.requestOpenSlideMenu()
         self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: false))
         
         // then
-        XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
+        self.wait(for: [expect], timeout: self.timeout)
         XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
     }
     
     func testViewModel_whenAfterSignIn_removeSearchSceneAndRefreshSuggestRead() {
         // given
+        let expect = expectation(description: "wait setup suggest read scene")
         self.mockMemberUsecase.currentMemberSubject.onNext(nil)
+        self.spyRouter.didSuggestReadSceneSetup = { expect.fulfill() }
         self.viewModel.setupSubScenes()
+        self.wait(for: [expect], timeout: self.timeout)
         
         // when
         self.viewModel.requestOpenSlideMenu()
@@ -126,29 +133,37 @@ extension MainViewModelTests {
     
     func testViewModel_whenAfterSignInAndDeactivatedMember_replaceReadCollectionAndPresentActivateAccountScene() {
         // given
+        let expect = expectation(description: "replace collection main")
         self.mockMemberUsecase.currentMemberSubject.onNext(nil)
         
         // when
+        self.spyRouter.didReadCollectionMainReplaced = {
+            expect.fulfill()
+        }
         self.viewModel.requestOpenSlideMenu()
         self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: true))
         
         // then
-        XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
+        self.wait(for: [expect], timeout: self.timeout)
         XCTAssertEqual(self.spyRouter.didShowActivateAccount, true)
         XCTAssertEqual(self.spyRouter.didPresentMigrationScene, false)
     }
     
     func testViewModel_whenAfterActivateMember_showToastAndRunMigration() {
         // given
+        let expect = expectation(description: "replace collection main")
         self.mockMemberUsecase.currentMemberSubject.onNext(nil)
         
         // when
+        self.spyRouter.didReadCollectionMainReplaced = {
+            expect.fulfill()
+        }
         self.viewModel.requestOpenSlideMenu()
         self.mockAUthUsecase.usersignInStatusMocking.onNext(.signIn(.init(userID: "some"), isDeactivated: true))
         self.viewModel.recoverAccount(didCompleted: Member(uid: "some", nickName: nil, icon: nil))
         
         // then
-        XCTAssertEqual(self.spyRouter.didReadCollectionMainReplaced, true)
+        self.wait(for: [expect], timeout: self.timeout)
         XCTAssertEqual(self.spyRouter.didShowActivateAccount, true)
         XCTAssertEqual(self.spyRouter.didPresentMigrationScene, true)
         XCTAssertEqual(self.spyRouter.didShowToast, true)
@@ -393,9 +408,12 @@ extension MainViewModelTests {
     
     func testViiewModel_returnToMyReadCollection() {
         // given
+        let expect = expectation(description: "wait setup")
         let spyMainSceneInteractor = SpyReadCollectionMainInteractor()
         self.spyRouter.spyCollectionMainSceneInput = spyMainSceneInteractor
+        self.spyRouter.called(key: "addReadCollectionScene") { _ in expect.fulfill() }
         self.viewModel.setupSubScenes()
+        self.wait(for: [expect], timeout: self.timeout)
         self.viewModel.readCollection(didChange: .sharedCollection(.dummy(0)))
         
         // when
@@ -421,9 +439,12 @@ extension MainViewModelTests {
     
     func testViewModel_switchToMyReadCollection_afterRemoveSharedCollectionFromList() {
         // given
+        let expect = expectation(description: "wait setup")
         let spyMainSceneInteractor = SpyReadCollectionMainInteractor()
         self.spyRouter.spyCollectionMainSceneInput = spyMainSceneInteractor
+        self.spyRouter.called(key: "addReadCollectionScene") { _ in expect.fulfill() }
         self.viewModel.setupSubScenes()
+        self.wait(for: [expect], timeout: self.timeout)
         self.viewModel.readCollection(didChange: .sharedCollection(.dummy(0)))
         
         // when
@@ -438,8 +459,12 @@ extension MainViewModelTests {
     
     func testViewModel_startSearch() {
         // given
-        // when
+        let expect = expectation(description: "wait setup search scene")
+        self.spyRouter.didAddSearchScene = { expect.fulfill() }
         self.viewModel.didUpdateBottomSearchAreaShowing(isShow: true)
+        self.wait(for: [expect], timeout: self.timeout)
+        
+        // when
         self.viewModel.didUpdateSearchText("some")
         self.viewModel.didRequestSearch(with: "search")
         
@@ -485,7 +510,7 @@ extension MainViewModelTests {
 
 extension MainViewModelTests {
     
-    class SpyRouter: MainRouting, Mocking {
+    final class SpyRouter: MainRouting, Mocking, @unchecked Sendable {
         
         var didShowToast: Bool?
         func showToast(_ message: String) {
@@ -506,13 +531,17 @@ extension MainViewModelTests {
             return spyCollectionMainSceneInput
         }
         
+        var didSuggestReadSceneSetup: (() -> Void)?
         func addSuggestReadScene() -> SuggestReadSceneInteractable? {
+            defer { self.didSuggestReadSceneSetup?() }
             return self.spySuggestReadInteractor
         }
         
-        var didReadCollectionMainReplaced: Bool = false
+        var didReadCollectionMainReplaced: (() -> Void)?
         func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
-            self.didReadCollectionMainReplaced = true
+            defer {
+                self.didReadCollectionMainReplaced?()
+            }
             return self.spyCollectionMainSceneInput
         }
         
@@ -574,8 +603,10 @@ extension MainViewModelTests {
             self.didAlertConfirmForm = form
         }
         
+        var didAddSearchScene: (() -> Void)?
         func addSaerchScene() -> IntegratedSearchSceneInteractable? {
             self.spySearchInteractor = SpyIntegratedSearchInteractor()
+            defer { self.didAddSearchScene?() }
             return self.spySearchInteractor
         }
         
@@ -595,7 +626,7 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable  {
+    final class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable, @unchecked Sendable  {
         
         func switchToSharedCollection(_ collection: SharedReadCollection) { }
         
@@ -637,7 +668,7 @@ extension MainViewModelTests {
         }
     }
     
-    class SpyIntegratedSearchInteractor: IntegratedSearchSceneInteractable {
+    final class SpyIntegratedSearchInteractor: IntegratedSearchSceneInteractable, @unchecked Sendable {
         
         var didSuggestRequested: Bool?
         func requestSuggest(with text: String) {
@@ -654,7 +685,7 @@ extension MainViewModelTests {
         func innerWebView(reqeustJumpTo collectionID: String?) { }
     }
     
-    class SpySuggestReadSceneInteractor: SuggestReadSceneInteractable {
+    final class SpySuggestReadSceneInteractor: SuggestReadSceneInteractable, @unchecked Sendable {
         
         var didRefreshed: Bool?
         func refresh() {

@@ -15,6 +15,7 @@ import CommonPresenting
 
 extension UIControl: SignInButton { }
 
+@MainActor
 final class OAuthSignInButonBuilder: OAuthSignInButtonBuildable {
     
     private let googleSignInButtonBuilding: () -> SignInButton?

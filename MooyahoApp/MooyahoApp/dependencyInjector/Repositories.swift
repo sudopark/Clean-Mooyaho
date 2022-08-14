@@ -15,7 +15,7 @@ import DataStore
 import FirebaseService
 
 
-public class AppRepository {
+public final class AppRepository {
     
     private let remote: Remote
     private let local: LocalStorage

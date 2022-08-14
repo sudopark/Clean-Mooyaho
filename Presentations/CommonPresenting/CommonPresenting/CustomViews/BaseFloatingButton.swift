@@ -113,10 +113,12 @@ open class BaseFloatingButton: BaseUIView, Presenting {
 
 public extension Reactive where Base: BaseFloatingButton {
     
+    @MainActor
     func throttleTap() -> Observable<Void> {
         return base.backgroundButton.rx.tap.throttle(.milliseconds(500), scheduler: MainScheduler.instance)
     }
     
+    @MainActor
     func closeTap() -> Observable<Void> {
         return base.closeImageView.rx.addTapgestureRecognizer()
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)

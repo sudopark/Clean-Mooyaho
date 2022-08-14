@@ -11,7 +11,7 @@ import Foundation
 import Domain
 
 
-class StubClipBoardService: ClipboardServie {
+final class StubClipBoardService: ClipboardServie, @unchecked Sendable {
     
     var copiedString: String?
     

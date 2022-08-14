@@ -20,6 +20,7 @@ import CommonPresenting
 
 // MARK: - Builder + DI Container Extension
 
+@MainActor
 public protocol MainSceneBuilable {
     
     func makeMainScene(auth: Auth) -> MainScene

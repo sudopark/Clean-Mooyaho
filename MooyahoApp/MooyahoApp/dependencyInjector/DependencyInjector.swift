@@ -21,6 +21,7 @@ import FirebaseService
 
 class HttpAPIImple: HttpAPI { }
 
+@MainActor
 final class DependencyInjector {
     
     class Shared {

@@ -121,7 +121,7 @@ extension FirebaseServiceImple: ReadRemindMessagingService {
 
 public protocol FCMService {
     
-    @MainActor func setupFCMService()
+    func setupFCMService()
     
     func apnsTokenUpdated(_ token: Data)
 
@@ -136,16 +136,18 @@ public protocol FCMService {
 
 extension FirebaseServiceImple: FCMService {
     
-    @MainActor public func setupFCMService() {
-        Messaging.messaging().delegate = self
-        UNUserNotificationCenter.current().delegate = self
-        self.prepareNotificationPermission()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] grant in
-                self?.notificationAuthorizationGranted.onNext(grant)
-                UIApplication.shared.registerForRemoteNotifications()
-            })
-            .disposed(by: self.disposeBag)
+    public func setupFCMService() {
+        Task { @MainActor in
+            Messaging.messaging().delegate = self
+            UNUserNotificationCenter.current().delegate = self
+            self.prepareNotificationPermission()
+                .observe(on: MainScheduler.instance)
+                .subscribe(onSuccess: { [weak self] grant in
+                    self?.notificationAuthorizationGranted.onNext(grant)
+                    UIApplication.shared.registerForRemoteNotifications()
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
     
     public func apnsTokenUpdated(_ token: Data) {

@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                               kakaoService: self.dependencyInjector.shared.kakaoService,
                                                               router: router)
         UIContext.register(UIContext(theme: DefaultTheme()))
+        SwiftUITheme.theme = DefaultTheme()
         UIContext.updateApp(status: .launched)
         
         super.init()

@@ -21,7 +21,7 @@ public protocol IntegratedSearchSceneListenable: Sendable, AnyObject {
     
     func integratedSearch(didUpdateSearching: Bool)
     
-    func finishIntegratedSearch(_ completed: @escaping () -> Void)
+    func finishIntegratedSearch(_ completed: @Sendable @escaping () -> Void)
 }
 
 

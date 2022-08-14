@@ -23,10 +23,12 @@ import ReadItemScene
 
 // MARK: - Routing
 
-public protocol MainRouting: Routing {
+public protocol MainRouting: Routing, Sendable {
 
+    @MainActor
     func addReadCollectionScene() -> ReadCollectionMainSceneInteractable?
     
+    @MainActor
     func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable?
     
     func openSlideMenu()
@@ -39,7 +41,7 @@ public protocol MainRouting: Routing {
     
     func presentEditProfileScene()
     
-    func askAddNewitemType(_ completed: @escaping (Bool) -> Void)
+    func askAddNewitemType(_ completed: @Sendable @escaping (Bool) -> Void)
     
     func presentShareSheet(with url: String)
     
@@ -49,8 +51,10 @@ public protocol MainRouting: Routing {
     
     func showSharedCollectionDialog(for collection: SharedReadCollection)
     
+    @MainActor
     func addSuggestReadScene() -> SuggestReadSceneInteractable?
     
+    @MainActor
     func addSaerchScene() -> IntegratedSearchSceneInteractable?
     
     func removeSearchScene()
@@ -71,8 +75,8 @@ public typealias MainRouterBuildables = MainSlideMenuSceneBuilable
 
 public final class MainRouter: Router<MainRouterBuildables>, MainRouting {
     
-    private let pushSlideTransitionManager = PushslideTransitionAnimationManager()
-    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    @MainActor private let pushSlideTransitionManager = PushslideTransitionAnimationManager()
+    @MainActor private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
     
     private weak var collectionMainInteractor: ReadCollectionMainSceneInteractable?
 }
@@ -84,6 +88,7 @@ extension MainRouter {
         return (self.currentScene as? MainScene)?.interactor
     }
     
+    @MainActor
     public func addReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
@@ -104,6 +109,7 @@ extension MainRouter {
         return collectionMainScene.interactor
     }
     
+    @MainActor
     public func replaceReadCollectionScene() -> ReadCollectionMainSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
@@ -121,32 +127,37 @@ extension MainRouter {
     
     public func openSlideMenu() {
         
-        guard let menuScene = self.nextScenesBuilder?
-                .makeMainSlideMenuScene(listener: self.currentInteractor,
-                                        collectionMainInteractor: self.collectionMainInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let menuScene = self.nextScenesBuilder?
+                    .makeMainSlideMenuScene(listener: self.currentInteractor,
+                                            collectionMainInteractor: self.collectionMainInteractor)
+            else {
+                return
+            }
+            
+            menuScene.modalPresentationStyle = .custom
+            menuScene.transitioningDelegate = self.pushSlideTransitionManager
+            menuScene.setupDismissGesture(self.pushSlideTransitionManager.dismissalInteractor)
+            self.currentScene?.present(menuScene, animated: true, completion: nil)
         }
-        
-        menuScene.modalPresentationStyle = .custom
-        menuScene.transitioningDelegate = self.pushSlideTransitionManager
-        menuScene.setupDismissGesture(self.pushSlideTransitionManager.dismissalInteractor)
-        self.currentScene?.present(menuScene, animated: true, completion: nil)
     }
     
     public func presentSignInScene() {
         
-        guard let scene = self.nextScenesBuilder?.makeSignInScene(nil) else { return }
-        
-        scene.modalPresentationStyle = .custom
-        scene.transitioningDelegate = self.bottomSliderTransitionManager
-        self.currentScene?.present(scene, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let scene = self.nextScenesBuilder?.makeSignInScene(nil) else { return }
+            
+            scene.modalPresentationStyle = .custom
+            scene.transitioningDelegate = self.bottomSliderTransitionManager
+            self.currentScene?.present(scene, animated: true, completion: nil)
+        }
     }
     
     public func presentActivateAccountScene(_ userID: String) {
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self = self else { return }
+        Task { @MainActor in
+            try await Task.sleep(nanoseconds: 500 * 1_000_000)
+            
             guard let scene = self.nextScenesBuilder?.makeRecoverAccountScene(listener: self.currentInteractor)
             else {
                 return
@@ -159,43 +170,53 @@ extension MainRouter {
     
     public func presentUserDataMigrationScene(_ userID: String) {
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let next = self?.nextScenesBuilder?
+        Task { @MainActor in
+            try await Task.sleep(nanoseconds: 500 * 1_000_000)
+            
+            guard let next = self.nextScenesBuilder?
                     .makeWaitMigrationScene(userID: userID, shouldResume: false, listener: nil)
             else { return }
             
             next.isModalInPresentation = true
-            self?.currentScene?.present(next, animated: true, completion: nil)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
     }
     
     public func presentEditProfileScene() {
         
-        guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return }
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(scene, animated: true)
+        Task { @MainActor in
+            guard let scene = self.nextScenesBuilder?.makeEditProfileScene() else { return }
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(scene, animated: true)
+        }
     }
     
-    public func askAddNewitemType(_ completed: @escaping (Bool) -> Void) {
-        guard let next = self.nextScenesBuilder?.makeSelectAddItemTypeScene(completed) else { return }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+    public func askAddNewitemType(_ completed: @Sendable @escaping (Bool) -> Void) {
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeSelectAddItemTypeScene(completed) else { return }
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func presentShareSheet(with url: String) {
-        guard let url = URL(string: url) else { return }
-        let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        self.currentScene?.present(activity, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let url = URL(string: url) else { return }
+            let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            self.currentScene?.present(activity, animated: true, completion: nil)
+        }
     }
     
     public func showSharingCollectionInfo(_ collectionID: String) {
-        guard let next = self.nextScenesBuilder?
-                .makeStopShareCollectionScene(collectionID, listener: nil)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeStopShareCollectionScene(collectionID, listener: nil)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func showSharedCollection(_ collection: SharedReadCollection) {
@@ -207,14 +228,17 @@ extension MainRouter {
     
     public func showSharedCollectionDialog(for collection: SharedReadCollection) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeSharedCollectionInfoDialogScene(collection: collection, listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeSharedCollectionInfoDialogScene(collection: collection, listener: self.currentInteractor)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
+    @MainActor
     public func addSuggestReadScene() -> SuggestReadSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
@@ -235,6 +259,7 @@ extension MainRouter {
         return next.interactor
     }
     
+    @MainActor
     public func addSaerchScene() -> IntegratedSearchSceneInteractable? {
         
         guard let mainScene = self.currentScene as? MainScene,
@@ -255,27 +280,31 @@ extension MainRouter {
     }
     
     public func removeSearchScene() {
-        
-        guard let mainScene = self.currentScene as? MainScene,
-              let presentingSearchScene = mainScene.children
-                .compactMap ({ $0 as? IntegratedSearchScene }).first
-        else {
-            return
+    
+        Task { @MainActor in
+            guard let mainScene = self.currentScene as? MainScene,
+                  let presentingSearchScene = mainScene.children
+                    .compactMap ({ $0 as? IntegratedSearchScene }).first
+            else {
+                return
+            }
+            presentingSearchScene.willMove(toParent: nil)
+            presentingSearchScene.removeFromParent()
+            presentingSearchScene.view.removeFromSuperview()
         }
-        presentingSearchScene.willMove(toParent: nil)
-        presentingSearchScene.removeFromParent()
-        presentingSearchScene.view.removeFromSuperview()
     }
     
     public func showRemindDetail(_ itemID: String) {
-        guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(
-            linkID: itemID,
-            isEditable: true,
-            isJumpable: true,
-            listener: self.currentInteractor
-        ) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeInnerWebViewScene(
+                linkID: itemID,
+                isEditable: true,
+                isJumpable: true,
+                listener: self.currentInteractor
+            ) else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }
