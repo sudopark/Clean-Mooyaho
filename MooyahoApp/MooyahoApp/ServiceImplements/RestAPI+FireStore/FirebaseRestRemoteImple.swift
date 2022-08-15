@@ -113,9 +113,10 @@ extension FirebaseRestRemoteImple {
     
     func requestUpdate<J>(_ endpoint: RestAPIEndpoint, id: String, to: [String : Any]) async throws -> J where J : JsonMappable {
      
+        let toJson = to.replaceUpdateListObject()
         let (_, collectionRef) = try self.collectionRef(endpoint)
         let docRef = collectionRef.document(id)
-        try await docRef.update(to)
+        try await docRef.update(toJson)
         guard let object: J = try await docRef.object() else {
             throw RuntimeError("update fail: object not exists: \(endpoint), id: \(id)")
         }
@@ -265,6 +266,22 @@ extension RestAPIEndpoint {
             return "readCollection"
         case .linkItem, .linkItems, .saveLinkItem, .updateLinkItem, .removeLinkItem:
             return "readLinks"
+        case .favoriteItemIDs, .updateFavoriteItemIDs:
+            return "memberFavoriteItems"
+        }
+    }
+}
+
+
+private extension Dictionary where Key == String, Value == Any {
+    
+    func replaceUpdateListObject() -> Dictionary {
+        return self.mapValues { value -> Any in
+            switch value as? UpdateList {
+            case .union(let elements): return FieldValue.arrayUnion(elements)
+            case .remove(let elements): return FieldValue.arrayRemove(elements)
+            default: return value
+            }
         }
     }
 }

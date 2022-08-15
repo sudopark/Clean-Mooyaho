@@ -21,6 +21,8 @@ public enum ReadingListEndpoints: RestAPIEndpoint {
     case saveLinkItem
     case updateLinkItem(_ id: String)
     case removeLinkItem(_ id: String)
+    case favoriteItemIDs
+    case updateFavoriteItemIDs
     
     public var path: String {
         switch self {
@@ -40,15 +42,20 @@ public enum ReadingListEndpoints: RestAPIEndpoint {
         case .linkItems,
              .saveLinkItem:
             return "reading_list/link_items"
+            
+        case .favoriteItemIDs,
+             .updateFavoriteItemIDs:
+            return "reading_list/favorites"
         }
     }
     
     public var method: HttpAPIMethod {
         switch self {
-        case .list, .lists, .linkItem, .linkItems: return .get
+        case .list, .lists, .linkItem, .linkItems, .favoriteItemIDs: return .get
         case .saveList, .saveLinkItem: return .post
         case .updateList, .updateLinkItem: return .put
         case .removeList, .removeLinkItem: return .delete
+        case .updateFavoriteItemIDs: return .patch
         }
     }
 }

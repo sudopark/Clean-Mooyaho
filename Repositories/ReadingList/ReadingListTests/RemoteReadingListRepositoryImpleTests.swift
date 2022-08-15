@@ -437,7 +437,6 @@ private extension RemoteReadingListRepositoryImpleTests {
         }
         
         var shouldFailLoadSubLists: Bool = false
-        var didRequestedFindByQueryEndpoints: [RestAPIEndpoint] = []
         var didRequestedQueries: [LoadQuery] = []
         override func requestFind<J>(_ endpoint: RestAPIEndpoint, byQuery: LoadQuery) async throws -> [J] where J : JsonMappable {
             self.didRequestedFindByQueryEndpoints.append(endpoint)

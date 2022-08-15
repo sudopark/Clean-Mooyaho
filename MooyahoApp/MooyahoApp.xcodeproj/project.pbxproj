@@ -51,6 +51,8 @@
 		F6311A4728700786005C8FCB /* Extensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A4528700786005C8FCB /* Extensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F643D40F278210C0006793A9 /* appicon-readmind.png in Resources */ = {isa = PBXBuildFile; fileRef = F643D40E278210C0006793A9 /* appicon-readmind.png */; };
 		F64E7AF32762CB8000961C38 /* AppleLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64E7AF22762CB8000961C38 /* AppleLoginService.swift */; };
+		F653A6CF28AA162800423EA2 /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F653A6CE28AA162800423EA2 /* ReadingList.framework */; };
+		F653A6D028AA162800423EA2 /* ReadingList.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F653A6CE28AA162800423EA2 /* ReadingList.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6624CD4273F8E5600A9B7AF /* DiscoveryScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; };
 		F6624CD5273F8E5600A9B7AF /* DiscoveryScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F663E6D82763C21800EE8152 /* DependencyInjector+MemberScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6D72763C21800EE8152 /* DependencyInjector+MemberScenes.swift */; };
@@ -172,6 +174,7 @@
 				F6B42AB628827EB300AF41CB /* Remote.framework in Embed Frameworks */,
 				F6ECE4DB26FAF8B3008D7ECA /* FirebaseService.framework in Embed Frameworks */,
 				F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */,
+				F653A6D028AA162800423EA2 /* ReadingList.framework in Embed Frameworks */,
 				F6279EB12870189C00B970C9 /* Local.framework in Embed Frameworks */,
 				F6E279C626F6E8AA00957AC4 /* ReadItemScene.framework in Embed Frameworks */,
 				2BE9787B263962110000C0C6 /* Common3rdParty.framework in Embed Frameworks */,
@@ -245,6 +248,7 @@
 		F643D40E278210C0006793A9 /* appicon-readmind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appicon-readmind.png"; sourceTree = "<group>"; };
 		F64E7AF22762CB8000961C38 /* AppleLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginService.swift; sourceTree = "<group>"; };
 		F6502DB42669D6BB0027800F /* HoorayScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = HoorayScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F653A6CE28AA162800423EA2 /* ReadingList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReadingList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6624CD3273F8E5600A9B7AF /* DiscoveryScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DiscoveryScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F663E6D72763C21800EE8152 /* DependencyInjector+MemberScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+MemberScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+MemberScenes.swift"; sourceTree = SOURCE_ROOT; };
 		F663E6D92763C27200EE8152 /* DependencyInjector+ReadItemScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DependencyInjector+ReadItemScenes.swift"; path = "MooyahoApp/dependencyInjector/DependencyInjector+ReadItemScenes.swift"; sourceTree = SOURCE_ROOT; };
@@ -337,6 +341,7 @@
 				F6032583265940E600E4E769 /* UserMessagingPlatform.xcframework in Frameworks */,
 				F68A87FB274BFA61004DADE4 /* SuggestScene.framework in Frameworks */,
 				F6311A4628700786005C8FCB /* Extensions.framework in Frameworks */,
+				F653A6CF28AA162800423EA2 /* ReadingList.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +544,7 @@
 		2BF00BF9262B872A00E235C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F653A6CE28AA162800423EA2 /* ReadingList.framework */,
 				F6B42AB428827EB200AF41CB /* Remote.framework */,
 				F6279EAF2870189C00B970C9 /* Local.framework */,
 				F6311A4528700786005C8FCB /* Extensions.framework */,

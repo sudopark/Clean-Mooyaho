@@ -12,7 +12,6 @@
 		F6279EA828700EA700B970C9 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EA728700EA700B970C9 /* Extensions.framework */; };
 		F6279EAC28700EB200B970C9 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EAB28700EB200B970C9 /* Common3rdParty.framework */; };
 		F6279EB328708EF800B970C9 /* SQLiteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EB228708EF800B970C9 /* SQLiteStorage.swift */; };
-		F6279EB62870939100B970C9 /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F6279EB52870939100B970C9 /* SQLiteService */; };
 		F6279EB8287093B400B970C9 /* SQLiteStorageImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EB7287093B400B970C9 /* SQLiteStorageImpleTests.swift */; };
 		F6279EBA2870940800B970C9 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EB92870940800B970C9 /* Extensions.framework */; };
 		F6279EBD28709A8C00B970C9 /* SQLiteStorageImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EBC28709A8C00B970C9 /* SQLiteStorageImple.swift */; };
@@ -20,9 +19,9 @@
 		F6279EC428711D4C00B970C9 /* EnvironmentStorageImples.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */; };
 		F6279EC6287872B500B970C9 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC5287872B500B970C9 /* Common3rdParty.framework */; };
 		F6279EC8287872C900B970C9 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */; };
+		F653A6DA28ABD9E500423EA2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6D928ABD9E500423EA2 /* Extensions.swift */; };
 		F69F16B52878939300DF2481 /* EnvironmentStorageImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */; };
 		F6AD85DB2878988300B01D32 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AD85DA2878988300B01D32 /* SecureStorage.swift */; };
-		F6AD85DE2878992C00B01D32 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F6AD85DD2878992C00B01D32 /* KeychainSwift */; };
 		F6AD85E228789B6D00B01D32 /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AD85E128789B6D00B01D32 /* Dummies.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +49,7 @@
 		F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorageImples.swift; sourceTree = "<group>"; };
 		F6279EC5287872B500B970C9 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F653A6D928ABD9E500423EA2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorageImpleTests.swift; sourceTree = "<group>"; };
 		F6AD85DA2878988300B01D32 /* SecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorage.swift; sourceTree = "<group>"; };
 		F6AD85E128789B6D00B01D32 /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
@@ -62,8 +62,6 @@
 			files = (
 				F6279EAC28700EB200B970C9 /* Common3rdParty.framework in Frameworks */,
 				F6279EA828700EA700B970C9 /* Extensions.framework in Frameworks */,
-				F6AD85DE2878992C00B01D32 /* KeychainSwift in Frameworks */,
-				F6279EB62870939100B970C9 /* SQLiteService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +105,7 @@
 				F6279EBE28711C1F00B970C9 /* EnvironmentStorage */,
 				F6AD85D92878985A00B01D32 /* SecureStorage */,
 				F6279E9128700E9400B970C9 /* Local.h */,
+				F653A6D928ABD9E500423EA2 /* Extensions.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -188,8 +187,6 @@
 			);
 			name = Local;
 			packageProductDependencies = (
-				F6279EB52870939100B970C9 /* SQLiteService */,
-				F6AD85DD2878992C00B01D32 /* KeychainSwift */,
 			);
 			productName = Local;
 			productReference = F6279E8E28700E9400B970C9 /* Local.framework */;
@@ -243,8 +240,6 @@
 			);
 			mainGroup = F6279E8428700E9400B970C9;
 			packageReferences = (
-				F6279EB42870939100B970C9 /* XCRemoteSwiftPackageReference "SQLiteService" */,
-				F6AD85DC2878992C00B01D32 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = F6279E8F28700E9400B970C9 /* Products */;
 			projectDirPath = "";
@@ -279,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6279EC028711C3A00B970C9 /* EnvironmentStorage.swift in Sources */,
+				F653A6DA28ABD9E500423EA2 /* Extensions.swift in Sources */,
 				F6279EB328708EF800B970C9 /* SQLiteStorage.swift in Sources */,
 				F6279EBD28709A8C00B970C9 /* SQLiteStorageImple.swift in Sources */,
 				F6AD85DB2878988300B01D32 /* SecureStorage.swift in Sources */,
@@ -452,6 +448,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -481,6 +478,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -564,38 +562,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F6279EB42870939100B970C9 /* XCRemoteSwiftPackageReference "SQLiteService" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sudopark/SQLiteService";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
-			};
-		};
-		F6AD85DC2878992C00B01D32 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 19.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F6279EB52870939100B970C9 /* SQLiteService */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6279EB42870939100B970C9 /* XCRemoteSwiftPackageReference "SQLiteService" */;
-			productName = SQLiteService;
-		};
-		F6AD85DD2878992C00B01D32 /* KeychainSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6AD85DC2878992C00B01D32 /* XCRemoteSwiftPackageReference "keychain-swift" */;
-			productName = KeychainSwift;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F6279E8528700E9400B970C9 /* Project object */;
 }

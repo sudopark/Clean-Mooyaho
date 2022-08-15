@@ -51,7 +51,6 @@
 		F640619327367F7700902787 /* LocalStorageTests+UserDataMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640619227367F7700902787 /* LocalStorageTests+UserDataMigration.swift */; };
 		F6419BF626822FB000C7919B /* LocalStorageTests+Auth&Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6419BF526822FB000C7919B /* LocalStorageTests+Auth&Member.swift */; };
 		F64CCB072742A3A10015EE9B /* SharingCollectionIDsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64CCB062742A3A10015EE9B /* SharingCollectionIDsTable.swift */; };
-		F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F66BB88E2684F64F00B46A99 /* KeychainSwift */; };
 		F66BB8912686E7F400B46A99 /* BaseLocalStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66BB8902686E7F400B46A99 /* BaseLocalStorageTests.swift */; };
 		F66BB8942686EF3E00B46A99 /* SQLiteStorage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66BB8932686EF3E00B46A99 /* SQLiteStorage+Extension.swift */; };
 		F66C133126E3AEBC00940CF3 /* MemberThumbnailTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66C133026E3AEBC00940CF3 /* MemberThumbnailTable.swift */; };
@@ -80,7 +79,6 @@
 		F6CEF8BB26F4F0ED00061097 /* ItemCategoriesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CEF8BA26F4F0ED00061097 /* ItemCategoriesTable.swift */; };
 		F6CEF8BD26F4F89600061097 /* ReadCollectionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CEF8BC26F4F89600061097 /* ReadCollectionTable.swift */; };
 		F6CEF8BF26F508FD00061097 /* LocalStorageTests+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CEF8BE26F508FD00061097 /* LocalStorageTests+ReadItem.swift */; };
-		F6D0A24627F20D4B006A0AEC /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F6D0A24527F20D4B006A0AEC /* SQLiteService */; };
 		F6D401B1268223C6003647C3 /* MemberTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D401B0268223C6003647C3 /* MemberTable.swift */; };
 		F6D401B3268224C8003647C3 /* ImageSourceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D401B2268224C8003647C3 /* ImageSourceTable.swift */; };
 		F6D873112841FFC2009CAD55 /* RepositoryImple+ReadingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D873102841FFC2009CAD55 /* RepositoryImple+ReadingOptions.swift */; };
@@ -199,11 +197,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F601724C26FEF85000E47B75 /* SwiftLinkPreview in Frameworks */,
-				F66BB88F2684F64F00B46A99 /* KeychainSwift in Frameworks */,
 				F6311A1E28700367005C8FCB /* Extensions.framework in Frameworks */,
 				2BD54F63263D4C29004B3EB0 /* Domain.framework in Frameworks */,
 				2BA4070626315F21000CC122 /* Common3rdParty.framework in Frameworks */,
-				F6D0A24627F20D4B006A0AEC /* SQLiteService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,9 +458,7 @@
 			);
 			name = DataStore;
 			packageProductDependencies = (
-				F66BB88E2684F64F00B46A99 /* KeychainSwift */,
 				F601724B26FEF85000E47B75 /* SwiftLinkPreview */,
-				F6D0A24527F20D4B006A0AEC /* SQLiteService */,
 			);
 			productName = DataStore;
 			productReference = 2BF00BDF262B7E1300E235C0 /* DataStore.framework */;
@@ -517,9 +511,7 @@
 			);
 			mainGroup = 2BF00BD5262B7E1300E235C0;
 			packageReferences = (
-				F66BB88D2684F64F00B46A99 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				F601724A26FEF85000E47B75 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */,
-				F6D0A24427F20D4B006A0AEC /* XCRemoteSwiftPackageReference "SQLiteService" */,
 			);
 			productRefGroup = 2BF00BE0262B7E1300E235C0 /* Products */;
 			projectDirPath = "";
@@ -902,22 +894,6 @@
 				kind = branch;
 			};
 		};
-		F66BB88D2684F64F00B46A99 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 19.0.0;
-			};
-		};
-		F6D0A24427F20D4B006A0AEC /* XCRemoteSwiftPackageReference "SQLiteService" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sudopark/SQLiteService";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -925,16 +901,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F601724A26FEF85000E47B75 /* XCRemoteSwiftPackageReference "SwiftLinkPreview" */;
 			productName = SwiftLinkPreview;
-		};
-		F66BB88E2684F64F00B46A99 /* KeychainSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F66BB88D2684F64F00B46A99 /* XCRemoteSwiftPackageReference "keychain-swift" */;
-			productName = KeychainSwift;
-		};
-		F6D0A24527F20D4B006A0AEC /* SQLiteService */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F6D0A24427F20D4B006A0AEC /* XCRemoteSwiftPackageReference "SQLiteService" */;
-			productName = SQLiteService;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
