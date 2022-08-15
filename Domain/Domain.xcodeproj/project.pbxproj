@@ -75,6 +75,7 @@
 		F64061842735B58C00902787 /* StubUserDataMigrateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64061832735B58C00902787 /* StubUserDataMigrateRepository.swift */; };
 		F64061872735B7E200902787 /* UserDataMigrationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64061862735B7E200902787 /* UserDataMigrationUsecaseTests.swift */; };
 		F6502DD5266CA4D50027800F /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD4266CA4D50027800F /* Dummies.swift */; };
+		F653A6C128A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6C028A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift */; };
 		F66036AF286F3EB700C72D08 /* ReadingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036AE286F3EB700C72D08 /* ReadingList.swift */; };
 		F66036B1286F3EC000C72D08 /* ReadLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B0286F3EC000C72D08 /* ReadLinkItem.swift */; };
 		F66036B4286F3F5A00C72D08 /* ReadingListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B3286F3F5A00C72D08 /* ReadingListRepository.swift */; };
@@ -211,6 +212,7 @@
 		F64061832735B58C00902787 /* StubUserDataMigrateRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUserDataMigrateRepository.swift; sourceTree = "<group>"; };
 		F64061862735B7E200902787 /* UserDataMigrationUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataMigrationUsecaseTests.swift; sourceTree = "<group>"; };
 		F6502DD4266CA4D50027800F /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
+		F653A6C028A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteReadingListItemRepository.swift; sourceTree = "<group>"; };
 		F66036AE286F3EB700C72D08 /* ReadingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingList.swift; sourceTree = "<group>"; };
 		F66036B0286F3EC000C72D08 /* ReadLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadLinkItem.swift; sourceTree = "<group>"; };
 		F66036B3286F3F5A00C72D08 /* ReadingListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListRepository.swift; sourceTree = "<group>"; };
@@ -579,6 +581,15 @@
 			path = Migration;
 			sourceTree = "<group>";
 		};
+		F653A6BF28A9ED0300423EA2 /* ReadingList */ = {
+			isa = PBXGroup;
+			children = (
+				F66036B3286F3F5A00C72D08 /* ReadingListRepository.swift */,
+				F653A6C028A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift */,
+			);
+			path = ReadingList;
+			sourceTree = "<group>";
+		};
 		F66036AC286F3E9D00C72D08 /* NewEntities */ = {
 			isa = PBXGroup;
 			children = (
@@ -599,7 +610,7 @@
 		F66036B2286F3F4400C72D08 /* NewRepositories */ = {
 			isa = PBXGroup;
 			children = (
-				F66036B3286F3F5A00C72D08 /* ReadingListRepository.swift */,
+				F653A6BF28A9ED0300423EA2 /* ReadingList */,
 			);
 			path = NewRepositories;
 			sourceTree = "<group>";
@@ -847,6 +858,7 @@
 				F6152969265017E5003BCB59 /* AuthInfoProvider.swift in Sources */,
 				F6B6B4152710733B000652E0 /* ItemCategoryRepository.swift in Sources */,
 				F66036B4286F3F5A00C72D08 /* ReadingListRepository.swift in Sources */,
+				F653A6C128A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift in Sources */,
 				F615293F264ED95A003BCB59 /* MemberRepository.swift in Sources */,
 				F6319869272E6FAD00E66417 /* ReadLinkAddSuggestUsecase.swift in Sources */,
 				2B9F27932633F0E300FEBCE3 /* Credentials.swift in Sources */,

@@ -75,7 +75,7 @@ public struct LoadQuery {
 
 // MARK: - RestRemote
 
-public protocol RestRemote {
+public protocol RestRemote: Sendable {
     
     // id로 조회
     func requestFind<J: JsonMappable>(

@@ -15,7 +15,7 @@ import Optics
 import SQLiteService
 
 
-public final class RemoteReadingListRepositoryImple: ReadingListRepository {
+public final class RemoteReadingListRepositoryImple: ReadingListRepository, Sendable {
     
     private let restRemote: RestRemote
     public init(restRemote: RestRemote) {
