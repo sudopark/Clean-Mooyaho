@@ -23,6 +23,8 @@
 		F60B35FF2799CFD400F5CB97 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = F60B35FE2799CFD400F5CB97 /* RxRelay */; };
 		F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F60B36002799CFD400F5CB97 /* RxSwift */; };
 		F63A520827B2D094008542E2 /* RxCombine in Frameworks */ = {isa = PBXBuildFile; productRef = F63A520727B2D094008542E2 /* RxCombine */; };
+		F653A6D328AA17EF00423EA2 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F653A6D228AA17EF00423EA2 /* KeychainSwift */; };
+		F653A6D628AA180600423EA2 /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F653A6D528AA180600423EA2 /* SQLiteService */; };
 		F69F099927CB35E00058CB6B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099827CB35E00058CB6B /* Alamofire */; };
 		F69F099C27CB36020058CB6B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099B27CB36020058CB6B /* KakaoSDKAuth */; };
 		F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099D27CB36020058CB6B /* KakaoSDKCommon */; };
@@ -44,10 +46,12 @@
 				F60A5847270D499200E39AE0 /* Tuple in Frameworks */,
 				F60A5849270D499200E39AE0 /* ValidationNearSemiring in Frameworks */,
 				F60A5841270D499200E39AE0 /* Prelude in Frameworks */,
+				F653A6D328AA17EF00423EA2 /* KeychainSwift in Frameworks */,
 				F69F09A027CB36020058CB6B /* KakaoSDKUser in Frameworks */,
 				F60A584D270D499200E39AE0 /* Writer in Frameworks */,
 				F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */,
 				F63A520827B2D094008542E2 /* RxCombine in Frameworks */,
+				F653A6D628AA180600423EA2 /* SQLiteService in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
 				F60A583F270D499200E39AE0 /* Optics in Frameworks */,
 				F60B36012799CFD400F5CB97 /* RxSwift in Frameworks */,
@@ -141,6 +145,8 @@
 				F69F099D27CB36020058CB6B /* KakaoSDKCommon */,
 				F69F099F27CB36020058CB6B /* KakaoSDKUser */,
 				F6EE736828A1713200B3BBCF /* RxSwiftDoNotation */,
+				F653A6D228AA17EF00423EA2 /* KeychainSwift */,
+				F653A6D528AA180600423EA2 /* SQLiteService */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -176,6 +182,8 @@
 				F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */,
 				F69F099A27CB36020058CB6B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				F6EE736728A1713200B3BBCF /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */,
+				F653A6D128AA17EF00423EA2 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				F653A6D428AA180600423EA2 /* XCRemoteSwiftPackageReference "SQLiteService" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -523,6 +531,22 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		F653A6D128AA17EF00423EA2 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 19.0.0;
+			};
+		};
+		F653A6D428AA180600423EA2 /* XCRemoteSwiftPackageReference "SQLiteService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/SQLiteService";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
 		F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -624,6 +648,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F63A520627B2D094008542E2 /* XCRemoteSwiftPackageReference "RxCombine" */;
 			productName = RxCombine;
+		};
+		F653A6D228AA17EF00423EA2 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F653A6D128AA17EF00423EA2 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+		F653A6D528AA180600423EA2 /* SQLiteService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F653A6D428AA180600423EA2 /* XCRemoteSwiftPackageReference "SQLiteService" */;
+			productName = SQLiteService;
 		};
 		F69F099827CB35E00058CB6B /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

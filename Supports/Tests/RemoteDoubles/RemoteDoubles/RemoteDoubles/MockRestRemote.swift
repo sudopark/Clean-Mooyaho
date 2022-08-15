@@ -10,12 +10,18 @@ import Foundation
 import Remote
 import Extensions
 
-open class MockRestRemote: RestRemote {
+open class MockRestRemote: RestRemote, @unchecked Sendable {
     
     public init() { }
     
     public var findByIdResult: Result<Any, Error>?
+    public var didRequestedFindByIds: [String] = []
+    public var didRequestedFindByIDEndpoints: [RestAPIEndpoint] = []
     open func requestFind<J>(_ endpoint: RestAPIEndpoint, byID: String) async throws -> J where J : JsonMappable {
+        
+        self.didRequestedFindByIds.append(byID)
+        self.didRequestedFindByIDEndpoints.append(endpoint)
+        
         guard let result = self.findByIdResult,
               let value: J = try result.unwrapSuccessOrThrow()
         else {
@@ -25,7 +31,13 @@ open class MockRestRemote: RestRemote {
     }
     
     public var findByQueryResult: Result<Any, Error>?
+    public var didRequestedFindByQuerys: [LoadQuery] = []
+    public var didRequestedFindByQueryEndpoints: [RestAPIEndpoint] = []
     open func requestFind<J>(_ endpoint: RestAPIEndpoint, byQuery: LoadQuery) async throws -> [J] where J : JsonMappable {
+        
+        self.didRequestedFindByQuerys.append(byQuery)
+        self.didRequestedFindByQueryEndpoints.append(endpoint)
+        
         guard let result = self.findByQueryResult,
               let values: [J] = try result.unwrapSuccessOrThrow()
         else {
@@ -55,7 +67,15 @@ open class MockRestRemote: RestRemote {
     }
     
     public var updateResult: Result<Any, Error>?
+    public var didRequestedUpdateIDs: [String] = []
+    public var didRequestedUpdateTOJsons: [[String: Any]] = []
+    public var didRequestedUpdateEndpoints: [RestAPIEndpoint] = []
     open func requestUpdate<J>(_ endpoint: RestAPIEndpoint, id: String, to: [String : Any]) async throws -> J where J : JsonMappable {
+        
+        self.didRequestedUpdateIDs.append(id)
+        self.didRequestedUpdateTOJsons.append(to)
+        self.didRequestedUpdateEndpoints.append(endpoint)
+        
         guard let result = self.updateResult,
               let value: J = try result.unwrapSuccessOrThrow()
         else {

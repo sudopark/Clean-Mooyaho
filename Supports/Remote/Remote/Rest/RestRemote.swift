@@ -72,6 +72,11 @@ public struct LoadQuery {
     public init() {}
 }
 
+public enum UpdateList {
+    case union(elements: [Any])
+    case remove(elements: [Any])
+}
+
 
 // MARK: - RestRemote
 
