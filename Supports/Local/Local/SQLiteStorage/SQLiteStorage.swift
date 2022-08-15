@@ -12,7 +12,7 @@ import SQLiteService
 
 // NARK: - SQLiteStorage
 
-public protocol SQLiteStorage {
+public protocol SQLiteStorage: Sendable {
     
     func open() async throws
     

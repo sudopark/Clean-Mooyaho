@@ -13,10 +13,9 @@ import Local
 import SQLiteService
 import Prelude
 import Optics
-import SQLiteService
 
 
-public final class LocalReadingListRepositoryImple: ReadingListRepository {
+public final class LocalReadingListRepositoryImple: ReadingListRepository, Sendable {
     
     private let storage: SQLiteStorage
     public init(storage: SQLiteStorage) {

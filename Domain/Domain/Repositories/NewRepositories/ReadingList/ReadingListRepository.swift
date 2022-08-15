@@ -9,7 +9,7 @@
 import Foundation
 
 
-public protocol ReadingListRepository {
+public protocol ReadingListRepository: Sendable {
     
     func loadMyList(for ownerID: String?) async throws -> ReadingList
     
