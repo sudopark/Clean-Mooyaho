@@ -13,9 +13,10 @@ import Optics
 
 // MARK: - ReadingListItem
 
-public protocol ReadingListItem  {
+public protocol ReadingListItem: Sendable  {
     
     var uuid: String { get }
+    var parentID: String? { get set }
 }
 
 
@@ -26,6 +27,7 @@ public struct ReadingList: ReadingListItem {
     
     public let uuid: String
     public var ownerID: String?
+    public var parentID: String?
     public let isRootList: Bool
     public var name: String
     public var createdAt: TimeInterval
@@ -54,7 +56,7 @@ public struct ReadingList: ReadingListItem {
 
 extension ReadingList {
     
-    private static let uidPrefix = "rc"
+    static let uidPrefix = "rc"
     public static var rootListID: String { "root_collection" }
     private static var rootListName: String { "root_collection" }
     
@@ -67,5 +69,12 @@ extension ReadingList {
     public static func makeMyRootList(_ ownerID: String?) -> ReadingList {
         return .init(uuid: self.rootListID, name: self.rootListName, isRootList: true)
             |> \.ownerID .~ ownerID
+    }
+}
+
+extension String {
+    
+    public var isListID: Bool {
+        return self.starts(with: ReadingList.uidPrefix)
     }
 }

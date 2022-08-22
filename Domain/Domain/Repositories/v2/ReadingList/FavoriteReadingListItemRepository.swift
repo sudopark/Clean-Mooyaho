@@ -7,13 +7,12 @@
 //
 
 import Foundation
+import RxSwift
 
 
 public protocol FavoriteReadingListItemRepository: Sendable {
     
-    func loadFavoriteItemIDs(for ownerID: String?) async throws -> [String]
+    func loadFavoriteItemIDs() -> Observable<[String]>
     
-    func loadFavoriteItems(for ownerID: String?) async throws -> [ReadingListItem]
-    
-    func toggleIsFavorite(for ownerID: String?, _ id: String, isOn: Bool) async throws
+    func toggleIsFavorite(_ id: String, isOn: Bool) async throws
 }

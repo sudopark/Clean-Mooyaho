@@ -26,6 +26,11 @@ public struct ReadLinkItem: ReadingListItem {
     public var priorityID: Int?
     public var isRead: Bool = false
     
+    public var parentID: String? {
+        get { self.listID }
+        set { self.listID = newValue }
+    }
+    
     public init(
         uuid: String,
         link: String
