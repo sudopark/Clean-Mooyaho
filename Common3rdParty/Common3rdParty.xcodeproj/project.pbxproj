@@ -25,6 +25,7 @@
 		F63A520827B2D094008542E2 /* RxCombine in Frameworks */ = {isa = PBXBuildFile; productRef = F63A520727B2D094008542E2 /* RxCombine */; };
 		F653A6D328AA17EF00423EA2 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F653A6D228AA17EF00423EA2 /* KeychainSwift */; };
 		F653A6D628AA180600423EA2 /* SQLiteService in Frameworks */ = {isa = PBXBuildFile; productRef = F653A6D528AA180600423EA2 /* SQLiteService */; };
+		F653A6EF28AC061100423EA2 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = F653A6EE28AC061100423EA2 /* AsyncAlgorithms */; };
 		F69F099927CB35E00058CB6B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099827CB35E00058CB6B /* Alamofire */; };
 		F69F099C27CB36020058CB6B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099B27CB36020058CB6B /* KakaoSDKAuth */; };
 		F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = F69F099D27CB36020058CB6B /* KakaoSDKCommon */; };
@@ -51,6 +52,7 @@
 				F60A584D270D499200E39AE0 /* Writer in Frameworks */,
 				F69F099E27CB36020058CB6B /* KakaoSDKCommon in Frameworks */,
 				F63A520827B2D094008542E2 /* RxCombine in Frameworks */,
+				F653A6EF28AC061100423EA2 /* AsyncAlgorithms in Frameworks */,
 				F653A6D628AA180600423EA2 /* SQLiteService in Frameworks */,
 				F603CCA32667D3D500FE6A8A /* Differentiator in Frameworks */,
 				F60A583F270D499200E39AE0 /* Optics in Frameworks */,
@@ -147,6 +149,7 @@
 				F6EE736828A1713200B3BBCF /* RxSwiftDoNotation */,
 				F653A6D228AA17EF00423EA2 /* KeychainSwift */,
 				F653A6D528AA180600423EA2 /* SQLiteService */,
+				F653A6EE28AC061100423EA2 /* AsyncAlgorithms */,
 			);
 			productName = Common3rdParty;
 			productReference = 2BA406A926315DF2000CC122 /* Common3rdParty.framework */;
@@ -184,6 +187,7 @@
 				F6EE736728A1713200B3BBCF /* XCRemoteSwiftPackageReference "RxSwift-do-notation" */,
 				F653A6D128AA17EF00423EA2 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				F653A6D428AA180600423EA2 /* XCRemoteSwiftPackageReference "SQLiteService" */,
+				F653A6ED28AC061100423EA2 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 			);
 			productRefGroup = 2BA406AA26315DF2000CC122 /* Products */;
 			projectDirPath = "";
@@ -547,6 +551,14 @@
 				minimumVersion = 0.2.0;
 			};
 		};
+		F653A6ED28AC061100423EA2 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-async-algorithms";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
 		F69F099727CB35E00058CB6B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -658,6 +670,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F653A6D428AA180600423EA2 /* XCRemoteSwiftPackageReference "SQLiteService" */;
 			productName = SQLiteService;
+		};
+		F653A6EE28AC061100423EA2 /* AsyncAlgorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F653A6ED28AC061100423EA2 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
+			productName = AsyncAlgorithms;
 		};
 		F69F099827CB35E00058CB6B /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
