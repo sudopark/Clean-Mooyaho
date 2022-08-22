@@ -14,6 +14,7 @@ import FirebaseFirestore
 
 import Extensions
 import ReadingList
+import AsyncAlgorithms
 
 
 final class FirebaseRestRemoteImple: RestRemote {
@@ -56,8 +57,34 @@ extension FirebaseRestRemoteImple {
         
         let (_, collectionRef) = try self.collectionRef(endpoint)
         let queryConverter = FirebaseQueryConverter(collectionRef: collectionRef)
-        let query = try queryConverter.convert(byQuery)
-        return try await query.objects()
+        
+        if let slicedInQueries = try byQuery.slicedInQueries() {
+            return try await requestFindWithInQueryWithSlicing(
+                collectionRef,
+                queryConverter,
+                queries: slicedInQueries
+            )
+        } else {
+            let query = try queryConverter.convert(byQuery)
+            return try await query.objects()
+        }
+    }
+    
+    private func requestFindWithInQueryWithSlicing<J: JsonMappable>(
+        _ collectionRef: CollectionReference,
+        _ queryConverter: FirebaseQueryConverter,
+        queries: [LoadQuery]
+    ) async throws -> [J] {
+        
+        func requestFindBySingleInQuery(_ loadQuery: LoadQuery) async throws -> [J] {
+            let query = try queryConverter.convert(loadQuery)
+            return try await query.objects()
+        }
+        
+        let totalValue = try await queries.async.reduce([J]()) { acc, query in
+            return acc + (try await requestFindBySingleInQuery(query))
+        }
+        return totalValue
     }
 }
 
@@ -283,5 +310,33 @@ private extension Dictionary where Key == String, Value == Any {
             default: return value
             }
         }
+    }
+}
+
+
+private extension LoadQuery {
+    
+    func slicedInQueries() throws -> [LoadQuery]? {
+        let inConditions = self.matchingQuery.conditions.filter { $0.relatation == .in }
+        guard let condition = inConditions.first,
+              let values = condition.value as? [Any]
+        else {
+            return nil
+        }
+        guard inConditions.count == 1
+        else {
+            throw RuntimeError("invalid query requested: multiple in query is not support")
+        }
+        
+        let slicedValue = values.slice(by: 10)
+        var newQuery = self
+        newQuery.matchingQuery.conditions = self.matchingQuery.conditions.filter { $0.relatation != .in }
+        
+        let slicedQueries = slicedValue.map { values in
+            let newCondition = MatcingQuery.Condition(condition.field, .in, values)
+            return newQuery.where(newCondition)
+        }
+        
+        return slicedQueries
     }
 }
