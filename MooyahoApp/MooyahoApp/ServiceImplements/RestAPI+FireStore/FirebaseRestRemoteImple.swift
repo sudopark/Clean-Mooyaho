@@ -266,7 +266,7 @@ extension RestAPIEndpoint {
             return "readCollection"
         case .linkItem, .linkItems, .saveLinkItem, .updateLinkItem, .removeLinkItem:
             return "readLinks"
-        case .favoriteItemIDs, .updateFavoriteItemIDs:
+        case .favoriteItemIDs, .updateFavoriteItemIDs, .saveFavoriteItemIDs:
             return "memberFavoriteItems"
         }
     }

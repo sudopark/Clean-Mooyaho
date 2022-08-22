@@ -1,5 +1,5 @@
 //
-//  RemoteReadingListRepositoryImpleTests.swift
+//  ReadingListRemoteImpleTests.swift
 //  ReadingListTests
 //
 //  Created by sudo.park on 2022/07/30.
@@ -19,21 +19,21 @@ import RemoteDoubles
 @testable import ReadingList
 
 
-class RemoteReadingListRepositoryImpleTests: BaseTestCase {
+class ReadingListRemoteImpleTests: BaseTestCase {
     
-    private var stubRemote: StubRemote!
+    private var stubRestRemote: StubRemote!
     
     override func tearDownWithError() throws {
-        self.stubRemote = nil
+        self.stubRestRemote = nil
     }
     
-    private func makeRepository(
+    private func makeRemote(
         shouldFaildLoadMyList: Bool = false,
         shouldFailLoadListById: Bool = false,
         shouldFailSaveList: Bool = false,
         shouldFailUpdateList: Bool = false,
         shouldFailRemoveList: Bool = false
-    ) -> RemoteReadingListRepositoryImple {
+    ) -> ReadingListRemoteImple {
         
         let remote = StubRemote()
         remote.shouldFailLoadSubLists = shouldFaildLoadMyList
@@ -41,53 +41,39 @@ class RemoteReadingListRepositoryImpleTests: BaseTestCase {
         remote.shouldFailSaveList = shouldFailSaveList
         remote.shouldFailUpdateList = shouldFailUpdateList
         remote.shouldFailDeleteList = shouldFailRemoveList
-        self.stubRemote = remote
-        return RemoteReadingListRepositoryImple(restRemote: remote)
+        self.stubRestRemote = remote
+        return ReadingListRemoteImple(restRemote: remote)
     }
 }
 
 
 // MARK: - load my list
 
-extension RemoteReadingListRepositoryImpleTests {
-    
-    // 내 목록 로드시에 ownerID 없으면 에러
-    func testRepository_whenLoadMyListWithoutOwnerID_error() async {
-        // given
-        let repository = self.makeRepository()
-        
-        // when + then
-        do {
-            let _ = try await repository.loadMyList(for: nil)
-            XCTFail("should throw error")
-        } catch {
-            XCTAssert(true)
-        }
-    }
+extension ReadingListRemoteImpleTests {
     
     // 내 목록 로드
-    func testRepository_loadMyList() async {
+    func testRemote_loadMyList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when
-        let list = try? await repository.loadMyList(for: "some")
+        let list = try? await remote.loadMyList(for: "some")
         
         // then
         XCTAssertNotNil(list)
     }
 
     // 내 목록 로드 요청시에 쿼리 검증
-    func testRepository_whenLoadMyList_loadSubListsAndItems() async {
+    func testRemote_whenLoadMyList_loadSubListsAndItems() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when
-        let _ = try? await repository.loadMyList(for: "owner_id")
+        let _ = try? await remote.loadMyList(for: "owner_id")
         
         // then
-        let endpoints = self.stubRemote.didRequestedFindByQueryEndpoints
-        let queries = self.stubRemote.didRequestedQueries
+        let endpoints = self.stubRestRemote.didRequestedFindByQueryEndpoints
+        let queries = self.stubRestRemote.didRequestedQueries
         XCTAssertEqual(endpoints.map { $0.path }, ["reading_list", "reading_list/link_items"])
         XCTAssertEqual(endpoints.map { $0.method }, [.get, .get])
         XCTAssertEqual(queries.map { $0.matchingQuery.conditions.map { $0.stringValue } }, [
@@ -97,12 +83,12 @@ extension RemoteReadingListRepositoryImpleTests {
     }
     
     // 내목록 - 서브목록 로드 실패해도 무시
-    func testRepository_failToLoadMyListsSubList_ignoreError() async {
+    func testRemote_failToLoadMyListsSubList_ignoreError() async {
         // given
-        let repository = self.makeRepository(shouldFaildLoadMyList: true)
+        let remote = self.makeRemote(shouldFaildLoadMyList: true)
         
         // when
-        let list = try? await repository.loadMyList(for: "owner_id")
+        let list = try? await remote.loadMyList(for: "owner_id")
         
         // then
         XCTAssertEqual(list?.items.compactMap{ $0 as? ReadingList }.isEmpty, true)
@@ -112,36 +98,36 @@ extension RemoteReadingListRepositoryImpleTests {
 
 // MARK: - load list
 
-extension RemoteReadingListRepositoryImpleTests {
+extension ReadingListRemoteImpleTests {
     
     // 내 목록 로드
-    func testRepository_loadList() async {
+    func testRemote_loadList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when
-        let list = try? await repository.loadList("some")
+        let list = try? await remote.loadList("some")
         
         // then
         XCTAssertNotNil(list)
     }
 
     // 내 목록 로드 요청시에 쿼리 검증
-    func testRepository_whenLoadList_loadSubListsAndItems() async {
+    func testRemote_whenLoadList_loadSubListsAndItems() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when
-        let _ = try? await repository.loadList("some")
+        let _ = try? await remote.loadList("some")
         
         // then
-        let endpoints = self.stubRemote.didRequestedFindByIdEndpoints
+        let endpoints = self.stubRestRemote.didRequestedFindByIdEndpoints
         XCTAssertEqual(endpoints.map { $0.path }, ["reading_list/some"])
         XCTAssertEqual(endpoints.map { $0.method }, [.get])
-        XCTAssertEqual(self.stubRemote.didRequestedFindByID, "some")
+        XCTAssertEqual(self.stubRestRemote.didRequestedFindByID, "some")
         
-        let subEndpoints = self.stubRemote.didRequestedFindByQueryEndpoints
-        let subQueries = self.stubRemote.didRequestedQueries
+        let subEndpoints = self.stubRestRemote.didRequestedFindByQueryEndpoints
+        let subQueries = self.stubRestRemote.didRequestedQueries
         XCTAssertEqual(subEndpoints.map { $0.path }, ["reading_list", "reading_list/link_items"])
         XCTAssertEqual(subEndpoints.map { $0.method }, [.get, .get])
         XCTAssertEqual(subQueries.map { $0.matchingQuery.conditions.map { $0.stringValue } }, [
@@ -150,24 +136,24 @@ extension RemoteReadingListRepositoryImpleTests {
     }
     
     // 내목록 - 서브목록 로드 실패해도 무시
-    func testRepository_failToLoadSubList_ignoreError() async {
+    func testRemote_failToLoadSubList_ignoreError() async {
         // given
-        let repository = self.makeRepository(shouldFaildLoadMyList: true)
+        let remote = self.makeRemote(shouldFaildLoadMyList: true)
         
         // when
-        let list = try? await repository.loadList("some")
+        let list = try? await remote.loadList("some")
         
         // then
         XCTAssertEqual(list?.items.compactMap{ $0 as? ReadingList }.isEmpty, true)
     }
     
-    func testRepository_whenLoadListFail_throwError() async {
+    func testRemote_whenLoadListFail_throwError() async {
         // given
-        let repository = self.makeRepository(shouldFailLoadListById: true)
+        let remote = self.makeRemote(shouldFailLoadListById: true)
         
         // when + then
         do {
-            let _ = try await repository.loadList("some")
+            let _ = try await remote.loadList("some")
             XCTFail("should throw error")
         } catch {
             XCTAssert(true)
@@ -178,22 +164,22 @@ extension RemoteReadingListRepositoryImpleTests {
 
 // MARK: - load link item
 
-extension RemoteReadingListRepositoryImpleTests {
+extension ReadingListRemoteImpleTests {
     
-    func testRepository_loadLinkItem() async {
+    func testRemote_loadLinkItem() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when
-        let link = try? await repository.loadLinkItem("some")
+        let link = try? await remote.loadLinkItem("some")
         
         // then
         XCTAssertNotNil(link)
-        XCTAssertEqual(self.stubRemote.didRequestedFindByID, "some")
-        XCTAssertEqual(self.stubRemote.didRequestedFindByIdEndpoints.map { $0.path },[
+        XCTAssertEqual(self.stubRestRemote.didRequestedFindByID, "some")
+        XCTAssertEqual(self.stubRestRemote.didRequestedFindByIdEndpoints.map { $0.path },[
             "reading_list/link_item/some"
         ])
-        XCTAssertEqual(self.stubRemote.didRequestedFindByIdEndpoints.map { $0.method },[
+        XCTAssertEqual(self.stubRestRemote.didRequestedFindByIdEndpoints.map { $0.method },[
             .get
         ])
     }
@@ -202,7 +188,7 @@ extension RemoteReadingListRepositoryImpleTests {
 
 // MARK: - save + update List
 
-extension RemoteReadingListRepositoryImpleTests {
+extension ReadingListRemoteImpleTests {
     
     private var dummyList: ReadingList {
         return ReadingList.makeList("some", ownerID: "owner")
@@ -213,20 +199,20 @@ extension RemoteReadingListRepositoryImpleTests {
             |> \.priorityID .~ 1
     }
     
-    func testRepository_saveListAtMyList() async {
+    func testRemote_saveListAtMyList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         let list = self.dummyList
         
         // when
-        let newList = try? await repository.saveList(list, at: nil)
+        let newList = try? await remote.saveList(list, at: nil)
         
         // then
         XCTAssertNotNil(newList)
-        XCTAssertEqual(self.stubRemote.didRequestedSaveEndpoint?.path, "reading_list")
-        XCTAssertEqual(self.stubRemote.didRequestedSaveEndpoint?.method, .post)
+        XCTAssertEqual(self.stubRestRemote.didRequestedSaveEndpoint?.path, "reading_list")
+        XCTAssertEqual(self.stubRestRemote.didRequestedSaveEndpoint?.method, .post)
         
-        let entities = self.stubRemote.didRequestedSaveEntities ?? [:]
+        let entities = self.stubRestRemote.didRequestedSaveEntities ?? [:]
         XCTAssertEqual(entities["uid"] as? String, list.uuid)
         XCTAssertEqual(entities["oid"] as? String, "owner")
         XCTAssertEqual(entities["pid"] as? String, nil)
@@ -238,53 +224,53 @@ extension RemoteReadingListRepositoryImpleTests {
         XCTAssertEqual(entities["cllc_desc"] as? String, "desc")
     }
     
-    func testRepository_saveListAtSomeList() async {
+    func testRemote_saveListAtSomeList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         let list = ReadingList.makeList("some", ownerID: "owner")
         
         // when
-        let newList = try? await repository.saveList(list, at: "parent_list")
+        let newList = try? await remote.saveList(list, at: "parent_list")
         
         // then
         XCTAssertNotNil(newList)
-        XCTAssertEqual(self.stubRemote.didRequestedSaveEntities?["pid"] as? String, "parent_list")
+        XCTAssertEqual(self.stubRestRemote.didRequestedSaveEntities?["pid"] as? String, "parent_list")
     }
     
-    func testRepository_saveListFail() async {
+    func testRemote_saveListFail() async {
         // given
-        let repository = self.makeRepository(shouldFailSaveList: true)
+        let remote = self.makeRemote(shouldFailSaveList: true)
         let list = ReadingList.makeList("some", ownerID: "owner")
         
         // when
-        let newList = try? await repository.saveList(list, at: nil)
+        let newList = try? await remote.saveList(list, at: nil)
         
         // then
         XCTAssertNil(newList)
     }
     
-    func testRepository_updateList() async {
+    func testRemote_updateList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         let oldList = self.dummyList
         let newList = oldList |> \.name .~ "new name"
         
         // when
-        let updatedList = try? await repository.updateList(newList)
+        let updatedList = try? await remote.updateList(newList)
         
         // then
         XCTAssertNotNil(updatedList)
-        XCTAssertNotNil(self.stubRemote.didUpdatedProperties)
-        XCTAssertEqual(self.stubRemote.didUpdatedProperties?["uid"] as? String, nil)
+        XCTAssertNotNil(self.stubRestRemote.didUpdatedProperties)
+        XCTAssertEqual(self.stubRestRemote.didUpdatedProperties?["uid"] as? String, nil)
     }
     
-    func testRepository_updateListFail() async {
+    func testRemote_updateListFail() async {
         // given
-        let repository = self.makeRepository(shouldFailUpdateList: true)
+        let remote = self.makeRemote(shouldFailUpdateList: true)
         let newList = self.dummyList |> \.name .~ "new name"
         
         // when
-        let updatedList = try? await repository.updateList(newList)
+        let updatedList = try? await remote.updateList(newList)
         
         // then
         XCTAssertNil(updatedList)
@@ -294,7 +280,7 @@ extension RemoteReadingListRepositoryImpleTests {
 
 // MARK: - save and update link item
 
-extension RemoteReadingListRepositoryImpleTests {
+extension ReadingListRemoteImpleTests {
     
     private var dummyLink: ReadLinkItem {
         return ReadLinkItem.make("some")
@@ -307,20 +293,20 @@ extension RemoteReadingListRepositoryImpleTests {
             |> \.isRead .~ true
     }
     
-    func testRepository_saveLinkItemAtMyList() async {
+    func testRemote_saveLinkItemAtMyList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         let link = self.dummyLink
         
         // when
-        let newLink = try? await repository.saveLinkItem(link, to: nil)
+        let newLink = try? await remote.saveLinkItem(link, to: nil)
         
         // then
         XCTAssertNotNil(newLink)
-        XCTAssertEqual(self.stubRemote.didRequestedSaveEndpoint?.path, "reading_list/link_items")
-        XCTAssertEqual(self.stubRemote.didRequestedSaveEndpoint?.method, .post)
+        XCTAssertEqual(self.stubRestRemote.didRequestedSaveEndpoint?.path, "reading_list/link_items")
+        XCTAssertEqual(self.stubRestRemote.didRequestedSaveEndpoint?.method, .post)
         
-        let entities = self.stubRemote.didRequestedSaveEntities ?? [:]
+        let entities = self.stubRestRemote.didRequestedSaveEntities ?? [:]
         XCTAssertEqual(entities["uid"] as? String, link.uuid)
         XCTAssertEqual(entities["oid"] as? String, "owner")
         XCTAssertEqual(entities["pid"] as? String, nil)
@@ -332,77 +318,77 @@ extension RemoteReadingListRepositoryImpleTests {
         XCTAssertEqual(entities["is_red"] as? Bool, true)
     }
     
-    func testRepository_saveLinkAtSomeList() async {
+    func testRemote_saveLinkAtSomeList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         let link = self.dummyLink
         
         // when
-        let newLink = try? await repository.saveLinkItem(link, to: "parent_list")
+        let newLink = try? await remote.saveLinkItem(link, to: "parent_list")
         
         // then
         XCTAssertNotNil(newLink)
-        XCTAssertEqual(self.stubRemote.didRequestedSaveEntities?["pid"] as? String, "parent_list")
+        XCTAssertEqual(self.stubRestRemote.didRequestedSaveEntities?["pid"] as? String, "parent_list")
     }
     
-    func testRepository_updateLinkItem() async {
+    func testRemote_updateLinkItem() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         let oldLink = self.dummyLink
         let newLink = oldLink |> \.customName .~ "new name"
         
         // when
-        let updatedLink = try? await repository.updateLinkItem(newLink)
+        let updatedLink = try? await remote.updateLinkItem(newLink)
         
         // then
         XCTAssertNotNil(updatedLink)
-        XCTAssertNotNil(self.stubRemote.didUpdatedProperties)
-        XCTAssertEqual(self.stubRemote.didUpdatedProperties?["uid"] as? String, nil)
+        XCTAssertNotNil(self.stubRestRemote.didUpdatedProperties)
+        XCTAssertEqual(self.stubRestRemote.didUpdatedProperties?["uid"] as? String, nil)
     }
 }
 
 
 // MARK: remove list + link item
 
-extension RemoteReadingListRepositoryImpleTests {
+extension ReadingListRemoteImpleTests {
     
-    func testRepository_removeList() async {
+    func testRemote_removeList() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when + then
         do {
-            try await repository.removeList("some")
+            try await remote.removeList("some")
             XCTAssert(true)
         } catch {
             XCTFail("should not throw error")
         }
-        XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.path, "reading_list/some")
-        XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.method, .delete)
+        XCTAssertEqual(self.stubRestRemote.didDeleteRequestedEndpoint?.path, "reading_list/some")
+        XCTAssertEqual(self.stubRestRemote.didDeleteRequestedEndpoint?.method, .delete)
     }
     
-    func testRepository_removeLinkItem() async {
+    func testRemote_removeLinkItem() async {
         // given
-        let repository = self.makeRepository()
+        let remote = self.makeRemote()
         
         // when + then
         do {
-            try await repository.removeLinkItem("some")
+            try await remote.removeLinkItem("some")
             XCTAssert(true)
         } catch {
             XCTFail("should not throw error")
         }
-        XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.path, "reading_list/link_item/some")
-        XCTAssertEqual(self.stubRemote.didDeleteRequestedEndpoint?.method, .delete)
+        XCTAssertEqual(self.stubRestRemote.didDeleteRequestedEndpoint?.path, "reading_list/link_item/some")
+        XCTAssertEqual(self.stubRestRemote.didDeleteRequestedEndpoint?.method, .delete)
     }
     
-    func testRepository_failToRemoveList() async {
+    func testRemote_failToRemoveList() async {
         // given
-        let repository = self.makeRepository(shouldFailRemoveList: true)
+        let remote = self.makeRemote(shouldFailRemoveList: true)
         
         // when + then
         do {
-            try await repository.removeList("some")
+            try await remote.removeList("some")
             XCTFail("should throw error")
         } catch {
             XCTAssert(true)
@@ -411,7 +397,7 @@ extension RemoteReadingListRepositoryImpleTests {
 }
 
 
-private extension RemoteReadingListRepositoryImpleTests {
+private extension ReadingListRemoteImpleTests {
     
     class StubRemote: MockRestRemote {
         

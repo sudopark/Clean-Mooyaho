@@ -15,7 +15,36 @@ import Prelude
 import Optics
 
 
-public final class LocalReadingListRepositoryImple: ReadingListRepository, Sendable {
+public protocol ReadingListLocal: Sendable {
+    
+    func loadMyList() async throws -> ReadingList
+    
+    func updateMyList(_ list: ReadingList) async throws
+    
+    func loadList(_ listID: String) async throws -> ReadingList
+    
+    func loadLinkItem(_ itemID: String) async throws -> ReadLinkItem
+    
+    func saveList(_ readingList: ReadingList,
+                  at parentListID: String?) async throws -> ReadingList
+    
+    func updateList(
+        _ readingList: ReadingList,
+        withItems subItems: [ReadingListItem]?
+    ) async throws -> ReadingList
+    
+    func saveLinkItem(_ item: ReadLinkItem,
+                      to listID: String?) async throws -> ReadLinkItem
+    
+    func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem
+    
+    func removeList(_ id: String) async throws
+    
+    func removeLinkItem(_ id: String) async throws
+}
+
+
+public final class ReadingListLocalImple: ReadingListLocal, Sendable {
     
     private let storage: SQLiteStorage
     public init(storage: SQLiteStorage) {
@@ -26,14 +55,18 @@ public final class LocalReadingListRepositoryImple: ReadingListRepository, Senda
 
 // MARK: - Load
 
-extension LocalReadingListRepositoryImple {
+extension ReadingListLocalImple {
     
     private typealias Lists = ReadingListTable
     private typealias LinkItem = ReadLinkItemTable
     
-    public func loadMyList(for ownerID: String?) async throws -> ReadingList {
-        return try await ReadingList.makeMyRootList(ownerID)
+    public func loadMyList() async throws -> ReadingList {
+        return try await ReadingList.makeMyRootList(nil)
             |> \.items .~ self.loadListSubItems(nil)
+    }
+    
+    public func updateMyList(_ list: ReadingList) async throws {
+        try await self.updateListSubItems(list.items, for: nil)
     }
     
     public func loadList(_ listID: String) async throws -> ReadingList {
@@ -82,17 +115,21 @@ extension LocalReadingListRepositoryImple {
 
 // MARK: - update
 
-extension LocalReadingListRepositoryImple {
+extension ReadingListLocalImple {
     
     public func saveList(_ readingList: ReadingList,
                          at parentListID: String?) async throws -> ReadingList {
-        let entity = Lists.Entity(list: readingList, parentID: parentListID)
+        let list = readingList |> \.parentID .~ parentListID
+        let entity = Lists.Entity(list: list)
         try await self.storage
             .run { try $0.insertOne(Lists.self, entity: entity, shouldReplace: true) }
         return readingList
     }
     
-    public func updateList(_ readingList: ReadingList) async throws -> ReadingList {
+    public func updateList(
+        _ readingList: ReadingList,
+        withItems subItems: [ReadingListItem]?
+    ) async throws -> ReadingList {
         let query: UpdateQuery<Lists> = Lists.update {[
             $0.ownerID == readingList.ownerID,
             $0.name == readingList.name,
@@ -104,7 +141,33 @@ extension LocalReadingListRepositoryImple {
         ]}
         .where { $0.uid == readingList.uuid }
         try await self.storage.run { try $0.update(Lists.self, query: query)}
+        
+        if let subItem = subItems {
+            try await self.updateListSubItems(subItem, for: readingList.uuid)
+        }
+        
         return readingList
+    }
+    
+    private func updateListSubItems(_ items: [ReadingListItem], for parentID: String?) async throws {
+        let deleteListsQuery = Lists.delete().where { column in
+            return parentID.map { column.parentID == $0 } ?? column.parentID.isNull()
+        }
+        try await self.storage.run { try $0.delete(Lists.self, query: deleteListsQuery) }
+        
+        let deleteLinksQuery = LinkItem.delete().where { column in
+            return parentID.map { column.parentID == $0 } ?? column.parentID.isNull()
+        }
+        try await self.storage.run { try $0.delete(LinkItem.self, query: deleteLinksQuery) }
+        
+        let subLists = items.compactMap { $0 as? ReadingList }.map { Lists.Entity(list: $0) }
+        let subLinks = items.compactMap { $0 as? ReadLinkItem }.map { LinkItem.Entity(item: $0) }
+        try? await self.storage.run {
+            try $0.insert(Lists.self, entities: subLists)
+        }
+        try? await self.storage.run {
+            try $0.insert(LinkItem.self, entities: subLinks)
+        }
     }
     
     public func removeList(_ id: String) async throws {

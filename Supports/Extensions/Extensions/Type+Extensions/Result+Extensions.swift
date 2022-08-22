@@ -29,3 +29,14 @@ extension Result where Success == Any {
         }
     }
 }
+
+
+extension Result {
+    
+    public func unwrapSuccessOrThrowWithoutCasting() throws -> Success {
+        switch self {
+        case .success(let s): return s
+        case .failure(let error): throw error
+        }
+    }
+}

@@ -1,5 +1,5 @@
 //
-//  LocalReadingListRepositoryTests.swift
+//  ReadingListLocalImpleTests.swift
 //  ReadingListTests
 //
 //  Created by sudo.park on 2022/07/09.
@@ -17,7 +17,7 @@ import UnitTestHelpKit
 import ReadingList
 
 
-class LocalReadingListRepositoryTests: BaseTestCase {
+class ReadingListLocalImpleTests: BaseTestCase {
     
     private var storage: SQLiteStorage!
     
@@ -30,13 +30,13 @@ class LocalReadingListRepositoryTests: BaseTestCase {
         SQLiteStorageImple.clearStorage("readingList")
     }
     
-    func makeRepository() -> LocalReadingListRepositoryImple {
-        return LocalReadingListRepositoryImple(storage: self.storage)
+    func makeLocal() -> ReadingListLocalImple {
+        return ReadingListLocalImple(storage: self.storage)
     }
 }
 
 
-extension LocalReadingListRepositoryTests {
+extension ReadingListLocalImpleTests {
     
     private func dummyItems(size: Int = 5) -> [ReadingListItem] {
         let lists: [ReadingList] = (0..<size).map { int in
@@ -63,14 +63,14 @@ extension LocalReadingListRepositoryTests {
     func testStorage_saveAndLoadMyLists() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let lists = self.dummyItems().compactMap { $0 as? ReadingList }
         let links = self.dummyItems().compactMap { $0 as? ReadLinkItem }
         
         // when
-        try? await lists.asyncForEach { _ = try await repository.saveList($0, at: nil) }
-        try? await links.asyncForEach { _ = try await repository.saveLinkItem($0, to: nil) }
-        let myList = try? await repository.loadMyList(for: nil)
+        try? await lists.asyncForEach { _ = try await local.saveList($0, at: nil) }
+        try? await links.asyncForEach { _ = try await local.saveLinkItem($0, to: nil) }
+        let myList = try? await local.loadMyList()
         
         // then
         XCTAssertEqual(myList?.items.map { $0.uuid }, lists.map { $0.uuid } + links.map { $0.uuid })
@@ -79,16 +79,16 @@ extension LocalReadingListRepositoryTests {
     func testStorage_saveNormalListAndLoad() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let lists = self.dummyItems().compactMap { $0 as? ReadingList }
         let links = self.dummyItems().compactMap { $0 as? ReadLinkItem }
         let dummyList = ReadingList(uuid: "some", name: "sub list", isRootList: false)
         
         // when
-        _ = try? await repository.saveList(dummyList, at: nil)
-        try? await lists.asyncForEach { _ = try await repository.saveList($0, at: dummyList.uuid) }
-        try? await links.asyncForEach { _ = try await repository.saveLinkItem($0, to: dummyList.uuid) }
-        let list = try? await repository.loadList(dummyList.uuid)
+        _ = try? await local.saveList(dummyList, at: nil)
+        try? await lists.asyncForEach { _ = try await local.saveList($0, at: dummyList.uuid) }
+        try? await links.asyncForEach { _ = try await local.saveLinkItem($0, to: dummyList.uuid) }
+        let list = try? await local.loadList(dummyList.uuid)
         
         // then
         XCTAssertEqual(list?.uuid, "some")
@@ -99,13 +99,13 @@ extension LocalReadingListRepositoryTests {
     func testStorage_assertSavedList() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let dummyList = self.dummyItems().first as! ReadingList
             |> \.ownerID .~ "owner"
         
         // when
-        _ = try? await repository.saveList(dummyList, at: nil)
-        let list = try? await repository.loadList(dummyList.uuid)
+        _ = try? await local.saveList(dummyList, at: nil)
+        let list = try? await local.loadList(dummyList.uuid)
         
         // then
         XCTAssertEqual(list?.uuid, "list:0")
@@ -122,13 +122,13 @@ extension LocalReadingListRepositoryTests {
     func testStorage_assertSavedLinkItem() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let dummyItem = self.dummyItems().compactMap{ $0 as? ReadLinkItem }.first!
             |> \.ownerID .~ "owner"
         
         // when
-        _ = try? await repository.saveLinkItem(dummyItem, to: "parent_list")
-        let link = try? await repository.loadLinkItem(dummyItem.uuid)
+        _ = try? await local.saveLinkItem(dummyItem, to: "parent_list")
+        let link = try? await local.loadLinkItem(dummyItem.uuid)
         
         // then
         XCTAssertEqual(link?.uuid, "item:0")
@@ -145,12 +145,12 @@ extension LocalReadingListRepositoryTests {
 }
 
 
-extension LocalReadingListRepositoryTests {
+extension ReadingListLocalImpleTests {
     
     func testStorage_updateSavedList() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let dummyList = self.dummyItems().first as! ReadingList
         let newList = dummyList
             |> \.ownerID .~ "new_owner"
@@ -162,9 +162,9 @@ extension LocalReadingListRepositoryTests {
             |> \.priorityID .~ nil
         
         // when
-        _ = try? await repository.saveList(dummyList, at: nil)
-        _ = try? await repository.updateList(newList)
-        let list = try? await repository.loadList(newList.uuid)
+        _ = try? await local.saveList(dummyList, at: nil)
+        _ = try? await local.updateList(newList, withItems: nil)
+        let list = try? await local.loadList(newList.uuid)
         
         // then
         XCTAssertEqual(list?.uuid, "list:0")
@@ -181,7 +181,7 @@ extension LocalReadingListRepositoryTests {
     func testStorage_updateLinkItem() async {
         // given
         try? await self.storage.open()
-        let repostiory = self.makeRepository()
+        let local = self.makeLocal()
         let dummyItem = self.dummyItems().compactMap { $0 as? ReadLinkItem }.first!
         let newItem = dummyItem
             |> \.ownerID .~ "new_owner"
@@ -194,9 +194,9 @@ extension LocalReadingListRepositoryTests {
             |> \.isRead .~ false
         
         // when
-        _ = try? await repostiory.saveLinkItem(dummyItem, to: nil)
-        _ = try? await repostiory.updateLinkItem(newItem)
-        let link = try? await repostiory.loadLinkItem(newItem.uuid)
+        _ = try? await local.saveLinkItem(dummyItem, to: nil)
+        _ = try? await local.updateLinkItem(newItem)
+        let link = try? await local.loadLinkItem(newItem.uuid)
         
         // then
         XCTAssertEqual(link?.uuid, "item:0")
@@ -214,13 +214,13 @@ extension LocalReadingListRepositoryTests {
     func testStorage_deleteSavedList() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let dummyList = self.dummyItems().first as! ReadingList
         
         // when
-        _ = try? await repository.saveList(dummyList, at: nil)
-        try? await repository.removeList(dummyList.uuid)
-        let list = try? await repository.loadList(dummyList.uuid)
+        _ = try? await local.saveList(dummyList, at: nil)
+        try? await local.removeList(dummyList.uuid)
+        let list = try? await local.loadList(dummyList.uuid)
         
         // then
         XCTAssertNil(list)
@@ -229,13 +229,13 @@ extension LocalReadingListRepositoryTests {
     func testStorage_deleteLinkItem() async {
         // given
         try? await self.storage.open()
-        let repository = self.makeRepository()
+        let local = self.makeLocal()
         let dummyItem = ReadLinkItem.make("some")
         
         // when
-        _ = try? await repository.saveLinkItem(dummyItem, to: nil)
-        try? await repository.removeLinkItem(dummyItem.uuid)
-        let link = try? await repository.loadLinkItem(dummyItem.uuid)
+        _ = try? await local.saveLinkItem(dummyItem, to: nil)
+        try? await local.removeLinkItem(dummyItem.uuid)
+        let link = try? await local.loadLinkItem(dummyItem.uuid)
         
         // then
         XCTAssertNil(link)

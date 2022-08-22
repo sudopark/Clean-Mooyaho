@@ -78,8 +78,6 @@
 		F64061872735B7E200902787 /* UserDataMigrationUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64061862735B7E200902787 /* UserDataMigrationUsecaseTests.swift */; };
 		F6502DD5266CA4D50027800F /* Dummies.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6502DD4266CA4D50027800F /* Dummies.swift */; };
 		F653A6C128A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6C028A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift */; };
-		F653A6E128ABE55C00423EA2 /* FavoriteReadingListItemUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6E028ABE55C00423EA2 /* FavoriteReadingListItemUsecase.swift */; };
-		F653A6E328ABE69E00423EA2 /* SharedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6E228ABE69E00423EA2 /* SharedState.swift */; };
 		F653A6E628ABE87B00423EA2 /* AuthInfoProviderV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6E528ABE87B00423EA2 /* AuthInfoProviderV2.swift */; };
 		F653A6F128AC0AA700423EA2 /* ReadingListItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6F028AC0AA700423EA2 /* ReadingListItemRepository.swift */; };
 		F66036AF286F3EB700C72D08 /* ReadingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036AE286F3EB700C72D08 /* ReadingList.swift */; };
@@ -221,8 +219,6 @@
 		F64061862735B7E200902787 /* UserDataMigrationUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataMigrationUsecaseTests.swift; sourceTree = "<group>"; };
 		F6502DD4266CA4D50027800F /* Dummies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummies.swift; sourceTree = "<group>"; };
 		F653A6C028A9ED1B00423EA2 /* FavoriteReadingListItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteReadingListItemRepository.swift; sourceTree = "<group>"; };
-		F653A6E028ABE55C00423EA2 /* FavoriteReadingListItemUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteReadingListItemUsecase.swift; sourceTree = "<group>"; };
-		F653A6E228ABE69E00423EA2 /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
 		F653A6E528ABE87B00423EA2 /* AuthInfoProviderV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInfoProviderV2.swift; sourceTree = "<group>"; };
 		F653A6F028AC0AA700423EA2 /* ReadingListItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListItemRepository.swift; sourceTree = "<group>"; };
 		F66036AE286F3EB700C72D08 /* ReadingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingList.swift; sourceTree = "<group>"; };
@@ -320,7 +316,6 @@
 			isa = PBXGroup;
 			children = (
 				F60D3FB3283E65C900E584F2 /* FeatureFlags.swift */,
-				F653A6E228ABE69E00423EA2 /* SharedState.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -618,17 +613,8 @@
 			isa = PBXGroup;
 			children = (
 				F653A6E428ABE86D00423EA2 /* Auth */,
-				F653A6DF28ABE1A000423EA2 /* ReadingList */,
 			);
 			path = v2;
-			sourceTree = "<group>";
-		};
-		F653A6DF28ABE1A000423EA2 /* ReadingList */ = {
-			isa = PBXGroup;
-			children = (
-				F653A6E028ABE55C00423EA2 /* FavoriteReadingListItemUsecase.swift */,
-			);
-			path = ReadingList;
 			sourceTree = "<group>";
 		};
 		F653A6E428ABE86D00423EA2 /* Auth */ = {
@@ -855,7 +841,6 @@
 			files = (
 				F6391C6D271DBD350000F927 /* ReadRemindMessage.swift in Sources */,
 				F6913F0326EE5CA300C6E105 /* ReadItemRepository.swift in Sources */,
-				F653A6E328ABE69E00423EA2 /* SharedState.swift in Sources */,
 				F6260913274D3789003C9577 /* SuggestQuery.swift in Sources */,
 				F64061812735B15E00902787 /* UserDataMigrateRepository.swift in Sources */,
 				F612BDF027406EDB0017FD77 /* SharedReadCollectionLoadUsecase.swift in Sources */,
@@ -892,7 +877,6 @@
 				F6907F18274FD657007805EA /* SuggestQueryUsecase.swift in Sources */,
 				F6913EEF26EC65BA00C6E105 /* ReadPriority.swift in Sources */,
 				F653A6E628ABE87B00423EA2 /* AuthInfoProviderV2.swift in Sources */,
-				F653A6E128ABE55C00423EA2 /* FavoriteReadingListItemUsecase.swift in Sources */,
 				F6A8CE3C271174F900CA6D3D /* SuggestCategory.swift in Sources */,
 				F6391C6F271DBF650000F927 /* ReadRemindMessagingService.swift in Sources */,
 				F631986B272E71D500E66417 /* ClipboardService.swift in Sources */,

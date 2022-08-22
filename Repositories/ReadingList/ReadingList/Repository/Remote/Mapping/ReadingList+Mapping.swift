@@ -46,6 +46,7 @@ extension ReadingList: JsonConvertable {
             isRootList: uid == ReadingList.rootListID
         )
         self.ownerID = try? json.value(Keys.ownerID)
+        self.parentID = try? json.value(Keys.parentID)
         self.createdAt = try json.value(Keys.createdAt)
         self.lastUpdatedAt = try json.value(Keys.lastUpdatedAt)
         self.description = try? json.value(Keys.collectionDescription)
@@ -57,6 +58,7 @@ extension ReadingList: JsonConvertable {
         var sender: [String: Any] = [:]
         sender[Keys.uid.rawValue] = self.uuid
         sender[Keys.ownerID.rawValue] = self.ownerID
+        sender[Keys.parentID.rawValue] = self.parentID
         sender[Keys.createdAt.rawValue] = self.createdAt
         sender[Keys.lastUpdatedAt.rawValue] = self.lastUpdatedAt
         sender[Keys.priority.rawValue] = self.priorityID

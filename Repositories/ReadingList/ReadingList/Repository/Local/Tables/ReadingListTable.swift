@@ -70,10 +70,10 @@ extension ReadingListTable {
             let _ : TimeStamp? = cursor.next()
         }
         
-        init(list: ReadingList, parentID: String?) {
+        init(list: ReadingList) {
             self.uid = list.uuid
             self.ownerID = list.ownerID
-            self.parentID = parentID
+            self.parentID = list.parentID
             self.name = list.name
             self.collectionDescription = list.description
             self.createdAt = list.createdAt
@@ -118,6 +118,7 @@ extension ReadingListTable.Entity {
     func asList() -> ReadingList {
         return .init(uuid: self.uid, name: self.name, isRootList: self.uid == ReadingList.rootListID)
         |> \.ownerID .~ self.ownerID
+        |> \.parentID .~ self.parentID
         |> \.createdAt .~ self.createdAt
         |> \.lastUpdatedAt .~ self.lastUpdatedAt
         |> \.description .~ self.collectionDescription
