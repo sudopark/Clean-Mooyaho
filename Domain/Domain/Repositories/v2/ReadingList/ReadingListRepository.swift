@@ -7,15 +7,15 @@
 //
 
 import Foundation
-
+import RxSwift
 
 public protocol ReadingListRepository: Sendable {
     
-    func loadMyList(for ownerID: String?) async throws -> ReadingList
+    func loadMyList() -> Observable<ReadingList>
     
-    func loadList(_ listID: String) async throws -> ReadingList
+    func loadList(_ listID: String) -> Observable<ReadingList>
     
-    func loadLinkItem(_ itemID: String) async throws -> ReadLinkItem
+    func loadLinkItem(_ itemID: String) -> Observable<ReadLinkItem>
     
     func saveList(_ readingList: ReadingList,
                   at parentListID: String?) async throws -> ReadingList
