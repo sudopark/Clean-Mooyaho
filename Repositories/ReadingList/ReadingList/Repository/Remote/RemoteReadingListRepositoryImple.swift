@@ -15,7 +15,31 @@ import Optics
 import SQLiteService
 
 
-public final class RemoteReadingListRepositoryImple: ReadingListRepository, Sendable {
+public protocol ReadingListRemote: Sendable {
+    
+    func loadMyList(for ownerID: String) async throws -> ReadingList
+    
+    func loadList(_ listID: String) async throws -> ReadingList
+    
+    func loadLinkItem(_ itemID: String) async throws -> ReadLinkItem
+    
+    func saveList(_ readingList: ReadingList,
+                  at parentListID: String?) async throws -> ReadingList
+    
+    func updateList(_ readingList: ReadingList) async throws -> ReadingList
+    
+    func saveLinkItem(_ item: ReadLinkItem,
+                      to listID: String?) async throws -> ReadLinkItem
+    
+    func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem
+    
+    func removeList(_ id: String) async throws
+    
+    func removeLinkItem(_ id: String) async throws
+}
+
+
+public final class ReadingListRemoteImple: ReadingListRemote, Sendable {
     
     private let restRemote: RestRemote
     public init(restRemote: RestRemote) {
@@ -23,15 +47,12 @@ public final class RemoteReadingListRepositoryImple: ReadingListRepository, Send
     }
 }
 
-extension RemoteReadingListRepositoryImple {
+extension ReadingListRemoteImple {
     
     private typealias ListKey = ReadingListMappingKey
     private typealias LinkKey = ReadLinkItemMappingKey
     
-    public func loadMyList(for ownerID: String?) async throws -> ReadingList {
-        guard let ownerID = ownerID else {
-            throw RuntimeError("owner id not exists")
-        }
+    public func loadMyList(for ownerID: String) async throws -> ReadingList {
         
         let listQuery = LoadQuery()
             .where(.init(ListKey.parentID.rawValue, .equal, ListKey.rootListID))
@@ -75,7 +96,7 @@ extension RemoteReadingListRepositoryImple {
     }
 }
 
-extension RemoteReadingListRepositoryImple {
+extension ReadingListRemoteImple {
     
     public func saveList(_ readingList: ReadingList,
                          at parentListID: String?) async throws -> ReadingList {

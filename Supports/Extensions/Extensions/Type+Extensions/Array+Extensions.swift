@@ -39,4 +39,8 @@ extension Array {
         }
         .filter{ $0.isNotEmpty }
     }
+    
+    public func asDictionary<H: Hashable>(_ keySelector: (Element) -> H) -> [H: Element] {
+        return self.reduce(into: [H: Element]()) { $0[keySelector($1)] = $1 }
+    }
 }
