@@ -11,16 +11,6 @@ import Prelude
 import Optics
 
 
-// MARK: - ReadingListItem
-
-public protocol ReadingListItem: Sendable  {
-    
-    var uuid: String { get }
-    var parentID: String? { get set }
-}
-
-
-
 // MARK: - ReadingList
 
 public struct ReadingList: ReadingListItem {
