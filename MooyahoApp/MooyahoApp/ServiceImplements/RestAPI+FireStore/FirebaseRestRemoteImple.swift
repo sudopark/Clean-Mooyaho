@@ -295,6 +295,8 @@ extension RestAPIEndpoint {
             return "readLinks"
         case .favoriteItemIDs, .updateFavoriteItemIDs, .saveFavoriteItemIDs:
             return "memberFavoriteItems"
+        case .categories, .saveCategories, .updateCategory, .removeCategory:
+            return "itemCategory"
         }
     }
 }

@@ -21,9 +21,7 @@ public protocol ReadingListItemCategoryRepository: Sendable {
         pageSize: Int
     ) async throws -> [ReadingListItemCategory]
     
-    func loadCategory(by name: String) async throws -> ReadingListItemCategory
-    
-    func loadLatestCategories() async throws -> [ReadingListItemCategory]
+    func loadCategory(by name: String) async throws -> ReadingListItemCategory?
     
     func saveCategories(_ categories: [ReadingListItemCategory]) async throws
     

@@ -46,7 +46,7 @@ extension ReadingListItemCategoryRepositoryImple {
         throw RuntimeError("failed")
     }
     
-    public func loadCategory(by name: String) async throws -> ReadingListItemCategory {
+    public func loadCategory(by name: String) async throws -> ReadingListItemCategory? {
         throw RuntimeError("failed")
     }
     

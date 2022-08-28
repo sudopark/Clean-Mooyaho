@@ -32,6 +32,8 @@
 		F653A6F328AC0B1000423EA2 /* ReadingListItemsLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6F228AC0B1000423EA2 /* ReadingListItemsLocal.swift */; };
 		F653A6F528AC103700423EA2 /* ReadingListItemsLocalImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6F428AC103700423EA2 /* ReadingListItemsLocalImpleTests.swift */; };
 		F66036B8286F574900C72D08 /* ReadingListLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66036B7286F574900C72D08 /* ReadingListLocal.swift */; };
+		F696891928BBC4B900880775 /* ReadingListItemCategory+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = F696891828BBC4B900880775 /* ReadingListItemCategory+Mapping.swift */; };
+		F696891B28BBCAD800880775 /* ReadingListItemCategoryRemoteImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F696891A28BBCAD800880775 /* ReadingListItemCategoryRemoteImpleTests.swift */; };
 		F69E2D092866CC7E006CFA3C /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D002866CC7E006CFA3C /* ReadingList.framework */; };
 		F69E2D0F2866CC7E006CFA3C /* ReadingList.h in Headers */ = {isa = PBXBuildFile; fileRef = F69E2D032866CC7E006CFA3C /* ReadingList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F69E2D58286777F7006CFA3C /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69E2D57286777F7006CFA3C /* Extensions.framework */; };
@@ -85,6 +87,8 @@
 		F653A6F228AC0B1000423EA2 /* ReadingListItemsLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListItemsLocal.swift; sourceTree = "<group>"; };
 		F653A6F428AC103700423EA2 /* ReadingListItemsLocalImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListItemsLocalImpleTests.swift; sourceTree = "<group>"; };
 		F66036B7286F574900C72D08 /* ReadingListLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListLocal.swift; sourceTree = "<group>"; };
+		F696891828BBC4B900880775 /* ReadingListItemCategory+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingListItemCategory+Mapping.swift"; sourceTree = "<group>"; };
+		F696891A28BBCAD800880775 /* ReadingListItemCategoryRemoteImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListItemCategoryRemoteImpleTests.swift; sourceTree = "<group>"; };
 		F69E2D002866CC7E006CFA3C /* ReadingList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadingList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69E2D032866CC7E006CFA3C /* ReadingList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadingList.h; sourceTree = "<group>"; };
 		F69E2D082866CC7E006CFA3C /* ReadingListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadingListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,6 +178,7 @@
 				F6383D412894FE2C001AF38B /* ReadingList+Mapping.swift */,
 				F6383D452896287B001AF38B /* ReadLinkItem+Mapping.swift */,
 				F653A6CA28AA05DC00423EA2 /* FavoriteReadingListItem+Mapping.swift */,
+				F696891828BBC4B900880775 /* ReadingListItemCategory+Mapping.swift */,
 			);
 			path = Mapping;
 			sourceTree = "<group>";
@@ -183,6 +188,7 @@
 			children = (
 				F6383D3E2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift */,
 				F653A6CC28AA0D1000423EA2 /* FavoriteReadingListItemRemoteImpleTests.swift */,
+				F696891A28BBCAD800880775 /* ReadingListItemCategoryRemoteImpleTests.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -392,6 +398,7 @@
 				F6383D3D2894F4D1001AF38B /* RemoteReadingListRepositoryImple.swift in Sources */,
 				F653A6C328A9ED8100423EA2 /* FavoriteReadingListItemLocal.swift in Sources */,
 				F60B9A2F288711680000BA16 /* ReadLinkItemTable.swift in Sources */,
+				F696891928BBC4B900880775 /* ReadingListItemCategory+Mapping.swift in Sources */,
 				F6383D44289621C1001AF38B /* Endpoints.swift in Sources */,
 				F653A6F328AC0B1000423EA2 /* ReadingListItemsLocal.swift in Sources */,
 				F653A6CB28AA05DC00423EA2 /* FavoriteReadingListItem+Mapping.swift in Sources */,
@@ -406,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6383D3F2894F5A9001AF38B /* RemoteReadingListRepositoryImpleTests.swift in Sources */,
+				F696891B28BBCAD800880775 /* ReadingListItemCategoryRemoteImpleTests.swift in Sources */,
 				F653A6F528AC103700423EA2 /* ReadingListItemsLocalImpleTests.swift in Sources */,
 				F653A6CD28AA0D1000423EA2 /* FavoriteReadingListItemRemoteImpleTests.swift in Sources */,
 				F653A6C728A9F45A00423EA2 /* FavoriteReadingListItemRepositoryImpleTests.swift in Sources */,

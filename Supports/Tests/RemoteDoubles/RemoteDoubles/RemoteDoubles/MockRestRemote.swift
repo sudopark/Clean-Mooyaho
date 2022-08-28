@@ -57,7 +57,11 @@ open class MockRestRemote: RestRemote, @unchecked Sendable {
     }
     
     public var batchSaveResult: Result<Void, Error> = .success(())
+    public var didRequestedBatchSaveEndpoints: [RestAPIEndpoint] = []
+    public var didRequestedBatchSaveEntities: [[[String: Any]]] = []
     open func requestBatchSaves(_ endpoint: RestAPIEndpoint, _ entities: [[String : Any]]) async throws {
+        self.didRequestedBatchSaveEndpoints.append(endpoint)
+        self.didRequestedBatchSaveEntities.append(entities)
         try self.batchSaveResult.throwOrNot()
     }
     
@@ -85,15 +89,20 @@ open class MockRestRemote: RestRemote, @unchecked Sendable {
     }
     
     public var deleteResult: Result<Void, Error> = .success(())
+    public var didRequestDeleteByIDEndpoints: [RestAPIEndpoint] = []
+    public var didRequestDeleteByIDs: [String] = []
     open func requestDelete(_ endpoint: RestAPIEndpoint, byId: String) async throws {
+        self.didRequestDeleteByIDEndpoints.append(endpoint)
+        self.didRequestDeleteByIDs.append(byId)
         try self.deleteResult.throwOrNot()
     }
     
     public var deleteByQueryResult: Result<Void, Error> = .success(())
+    public var didRequestDeleteByQueryEndpoints: [RestAPIEndpoint] = []
+    public var didRequestDeleteQueries: [MatcingQuery] = []
     open func requestDelete(_ endpoint: RestAPIEndpoint, byQuery: MatcingQuery) async throws {
+        self.didRequestDeleteByQueryEndpoints.append(endpoint)
+        self.didRequestDeleteQueries.append(byQuery)
         try self.deleteByQueryResult.throwOrNot()
     }
-    
-    
-    
 }

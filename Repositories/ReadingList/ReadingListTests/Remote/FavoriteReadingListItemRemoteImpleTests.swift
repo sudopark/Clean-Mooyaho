@@ -31,8 +31,7 @@ class FavoriteReadingListItemRemoteImpleTests: BaseTestCase {
         self.spyRestRemote = nil
     }
     
-    private func makeRemote(withSignIn: Bool = true) -> FavoriteReadingListItemRemoteImple {
-        let auth = withSignIn ? Auth(userID: "some") : nil
+    private func makeRemote() -> FavoriteReadingListItemRemoteImple {
         return .init(restRemote: self.spyRestRemote)
     }
 }
