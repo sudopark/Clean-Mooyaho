@@ -27,7 +27,7 @@ public struct LoadWithCache<Local: Sendable, Remote: Sendable>: Sendable {
     
     public func `do`<T: Sendable>(
         _ localFetching: @Sendable @escaping (Local) async throws -> [T],
-        thenLoadFromRemote: (@Sendable (Remote, String, [T]) async throws -> [T])? = nil,
+        thenLoadFromRemote: @Sendable @escaping (Remote, String, [T]) async throws -> [T],
         andUpdateLocal: (@Sendable (Local, [T]) async throws -> Void)? = nil
     ) async throws -> [T] {
         
@@ -38,17 +38,16 @@ public struct LoadWithCache<Local: Sendable, Remote: Sendable>: Sendable {
     
     private func loadFromRemoteIfNeed<T: Sendable>(
         localData: [T],
-        _ loadFromRemote: (@Sendable (Remote, String, [T]) async throws -> [T])?,
+        _ loadFromRemote: @Sendable @escaping (Remote, String, [T]) async throws -> [T],
         _ updateLocal: (@Sendable (Local, [T]) async throws -> Void)?
     ) async throws -> [T]? {
         
-        guard let remoteLoading = loadFromRemote,
-              let ownerID = await authInfoProvider.signInMemberID()
+        guard let ownerID = await authInfoProvider.signInMemberID()
         else {
             return nil
         }
         
-        let remoteData = try await remoteLoading(self.remote, ownerID, localData)
+        let remoteData = try await loadFromRemote(self.remote, ownerID, localData)
         if let refreshing = updateLocal, remoteData.isNotEmpty {
             Task.detached { try await refreshing(self.local, remoteData) }
         }
