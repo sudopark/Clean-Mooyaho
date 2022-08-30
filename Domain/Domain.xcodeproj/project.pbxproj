@@ -104,6 +104,7 @@
 		F6913F0326EE5CA300C6E105 /* ReadItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0226EE5CA300C6E105 /* ReadItemRepository.swift */; };
 		F6913F0526EE5EB000C6E105 /* StubReadItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0426EE5EB000C6E105 /* StubReadItemRepository.swift */; };
 		F6913F0726EE637300C6E105 /* ReadItemUsecaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6913F0626EE637300C6E105 /* ReadItemUsecaseTests.swift */; };
+		F6962E3328BE871F00508771 /* SwitchUpdatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6962E3228BE871F00508771 /* SwitchUpdatingTests.swift */; };
 		F696891D28BBD38100880775 /* LoadWithCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F696891C28BBD38100880775 /* LoadWithCache.swift */; };
 		F696892128BBD67200880775 /* SwitchLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = F696892028BBD67200880775 /* SwitchLoading.swift */; };
 		F696892628BE7B1800880775 /* ConcatLoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F696892528BE7B1800880775 /* ConcatLoadingTests.swift */; };
@@ -251,6 +252,7 @@
 		F6913F0226EE5CA300C6E105 /* ReadItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemRepository.swift; sourceTree = "<group>"; };
 		F6913F0426EE5EB000C6E105 /* StubReadItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubReadItemRepository.swift; sourceTree = "<group>"; };
 		F6913F0626EE637300C6E105 /* ReadItemUsecaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadItemUsecaseTests.swift; sourceTree = "<group>"; };
+		F6962E3228BE871F00508771 /* SwitchUpdatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchUpdatingTests.swift; sourceTree = "<group>"; };
 		F696891C28BBD38100880775 /* LoadWithCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadWithCache.swift; sourceTree = "<group>"; };
 		F696892028BBD67200880775 /* SwitchLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchLoading.swift; sourceTree = "<group>"; };
 		F696892528BE7B1800880775 /* ConcatLoadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConcatLoadingTests.swift; path = ../../../Repositories/ReadingList/ReadingListTests/ConcatLoadingTests.swift; sourceTree = "<group>"; };
@@ -704,6 +706,7 @@
 			isa = PBXGroup;
 			children = (
 				F696892528BE7B1800880775 /* ConcatLoadingTests.swift */,
+				F6962E3228BE871F00508771 /* SwitchUpdatingTests.swift */,
 			);
 			path = "Repository+Usage";
 			sourceTree = "<group>";
@@ -992,6 +995,7 @@
 				F6E279D726F71DA000957AC4 /* StubReadItemOptionsRepository.swift in Sources */,
 				F6B6B41727107414000652E0 /* StubItemCategoryRepository.swift in Sources */,
 				F631986D272E725500E66417 /* StubClipboardService.swift in Sources */,
+				F6962E3328BE871F00508771 /* SwitchUpdatingTests.swift in Sources */,
 				F6C1C8DE27255711007277A5 /* ReadLinkMemoUsecaseTests.swift in Sources */,
 				F6913F0526EE5EB000C6E105 /* StubReadItemRepository.swift in Sources */,
 			);
