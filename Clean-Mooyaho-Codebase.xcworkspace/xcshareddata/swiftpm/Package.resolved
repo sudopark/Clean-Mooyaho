@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sudopark/RxSwift-do-notation.git",
       "state" : {
-        "revision" : "07d96269ab61d7b120505736b2da3e47f762dbcf",
-        "version" : "0.0.5"
+        "revision" : "f8bc8f0f266e2b80246f1465633bb31e2384d31f",
+        "version" : "0.0.6"
       }
     },
     {
