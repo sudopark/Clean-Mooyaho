@@ -33,12 +33,15 @@ public struct ConcatLoading<Local: Sendable, Remote: Sendable>: Sendable {
         andRefreshCache: (@Sendable (Local, T) async throws -> Void)? = nil
     ) -> Observable<T> {
         
-        let loadFromLocal: Observable<T> = .create { try await loadFromCache(local) }
-        let loadFromRemote: Observable<T> = .create {
+        let loadFromLocal: Observable<T?> = .create { try await loadFromCache(local) }
+        let loadFromRemote: Observable<T?> = .create {
             try await self.loadFromRemoteIfNeedAndRefreshCache(thenRemoteIfNeed, andRefreshCache)
         }
+        .ifEmpty(default: nil)
+        
         return loadFromLocal
             .concat(loadFromRemote)
+            .compactMap { $0 }
     }
     
     private func loadFromRemoteIfNeedAndRefreshCache<T: Sendable>(
