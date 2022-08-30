@@ -99,7 +99,7 @@ extension ReadingListItemCategoryRemoteImpleTests {
         let remote = self.makeRemote()
         
         // when
-        let category = try? await remote.loadCategory(for: "some", by: "name")
+        let category = try? await remote.findCategory(for: "some", by: "name")
         
         // then
         XCTAssertNotNil(category)
