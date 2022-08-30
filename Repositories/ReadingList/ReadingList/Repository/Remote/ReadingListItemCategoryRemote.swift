@@ -24,7 +24,7 @@ public protocol ReadingListItemCategoryRemote: Sendable {
         pageSize: Int
     ) async throws -> [ReadingListItemCategory]
     
-    func loadCategory(
+    func findCategory(
         for ownerID: String,
         by name: String
     ) async throws -> ReadingListItemCategory?
@@ -79,7 +79,7 @@ extension ReadingListItemCategoryRemoteImple {
         return memberCategories.map { $0.category }
     }
     
-    public func loadCategory(for ownerID: String, by name: String) async throws -> ReadingListItemCategory? {
+    public func findCategory(for ownerID: String, by name: String) async throws -> ReadingListItemCategory? {
         let endpoint = ReadingListEndpoints.categories
         let query = LoadQuery()
             .where(.init(Keys.ownerID.rawValue, .equal, ownerID))

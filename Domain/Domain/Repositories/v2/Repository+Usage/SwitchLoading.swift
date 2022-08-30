@@ -27,10 +27,10 @@ public struct SwitchLoading<Local: Sendable, Remote: Sendable>: Sendable {
     
     
     public func `do`<T: Sendable>(
-        _ loadFromRemote: @Sendable @escaping (Remote, String) async throws -> [T],
-        andUpdateCache: (@Sendable (Local, [T]) async throws -> Void)? = nil,
-        orLoadFromLocal: @Sendable @escaping (Local) async throws -> [T]
-    ) async throws -> [T] {
+        _ loadFromRemote: @Sendable @escaping (Remote, String) async throws -> T,
+        andUpdateCache: (@Sendable (Local, T) async throws -> Void)? = nil,
+        orLoadFromLocal: @Sendable @escaping (Local) async throws -> T
+    ) async throws -> T {
         
         guard let ownerID = await self.authInfoProvider.signInMemberID()
         else {
