@@ -166,13 +166,11 @@ extension Views {
     
     public struct LoadingView: View {
         
-        @Binding var isLoading: Bool
         @State private var percent: CGFloat = 0
         private let layerColor: Color
         
-        public init(_ layerColor: Color, isLoading: Binding<Bool>) {
+        public init(_ layerColor: Color) {
             self.layerColor = layerColor
-            self._isLoading = isLoading
         }
         
         public var body: some View {
@@ -245,7 +243,7 @@ extension Views {
         }
         
         private var loadingView: some View {
-            Views.LoadingView(.white, isLoading: $isLoading)
+            Views.LoadingView(.white)
                 .frame(width: 50, height: 50)
         }
     }
