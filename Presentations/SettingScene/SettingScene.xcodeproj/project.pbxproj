@@ -19,6 +19,7 @@
 		F617F1182768F77300D88F9C /* FeedbackScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1132768F77300D88F9C /* FeedbackScene.swift */; };
 		F617F1192768F77300D88F9C /* FeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F1142768F77300D88F9C /* FeedbackViewModel.swift */; };
 		F617F11B2769005E00D88F9C /* FeedbackViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617F11A2769005E00D88F9C /* FeedbackViewModelTests.swift */; };
+		F61EFA5929175A6C00721082 /* EditCategoryAttrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EFA5829175A6C00721082 /* EditCategoryAttrView.swift */; };
 		F62271CF273C720100AF76C1 /* SettingScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62271C6273C720100AF76C1 /* SettingScene.framework */; };
 		F62271D4273C720100AF76C1 /* SettingSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62271D3273C720100AF76C1 /* SettingSceneTests.swift */; };
 		F62271D5273C720100AF76C1 /* SettingScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F62271C9273C720100AF76C1 /* SettingScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -80,6 +81,7 @@
 		F617F1132768F77300D88F9C /* FeedbackScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackScene.swift; sourceTree = "<group>"; };
 		F617F1142768F77300D88F9C /* FeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModel.swift; sourceTree = "<group>"; };
 		F617F11A2769005E00D88F9C /* FeedbackViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModelTests.swift; sourceTree = "<group>"; };
+		F61EFA5829175A6C00721082 /* EditCategoryAttrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryAttrView.swift; sourceTree = "<group>"; };
 		F62271C6273C720100AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62271C9273C720100AF76C1 /* SettingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingScene.h; sourceTree = "<group>"; };
 		F62271CE273C720100AF76C1 /* SettingSceneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SettingSceneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,6 +265,7 @@
 				F66CDF5B275B3892009CF185 /* EditCategoryAttrBuilder.swift */,
 				F66CDF5C275B3892009CF185 /* EditCategoryAttrScene.swift */,
 				F66CDF5D275B3892009CF185 /* EditCategoryAttrViewModel.swift */,
+				F61EFA5829175A6C00721082 /* EditCategoryAttrView.swift */,
 			);
 			path = EditCategoryAtrr;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				F617F1192768F77300D88F9C /* FeedbackViewModel.swift in Sources */,
 				F6F7297B27DDE019003F8E14 /* WaitMigrationViewController.swift in Sources */,
 				F60CCE6827BF8BAD00EC4BC0 /* ManageCategoryView.swift in Sources */,
+				F61EFA5929175A6C00721082 /* EditCategoryAttrView.swift in Sources */,
 				F617F1172768F77300D88F9C /* FeedbackBuilder.swift in Sources */,
 				F65F003F275DD33E0022F987 /* ManageAccountRouter.swift in Sources */,
 			);
