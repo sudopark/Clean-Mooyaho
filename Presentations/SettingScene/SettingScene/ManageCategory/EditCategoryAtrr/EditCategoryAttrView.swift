@@ -100,6 +100,8 @@ public struct EditCategoryAttrView: View {
             .onAppear {
                 self.state.bind(self.viewModel)
             }
+        } outsideTap: {
+            self.viewModel.close()
         }
     }
     

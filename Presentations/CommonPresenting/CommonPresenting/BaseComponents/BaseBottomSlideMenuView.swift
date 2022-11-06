@@ -100,14 +100,22 @@ extension Views {
     public struct BaseBottomSlideMenuView<Content: View>: View {
         
         private let content: () -> Content
-        public init(_ content: @escaping () -> Content) {
+        private let outsideTap: (() -> Void)?
+        public init(
+            _ content: @escaping () -> Content,
+            outsideTap: (() -> Void)? = nil
+        ) {
             self.content = content
+            self.outsideTap = outsideTap
         }
         
         public var body: some View {
             
             VStack {
                 Spacer()
+                    .backgroundSpaceTapGesture {
+                        self.outsideTap?()
+                    }
                 VStack(spacing: 0) {
                     
                     Views.PullGuideView()
