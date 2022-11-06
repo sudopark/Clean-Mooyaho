@@ -114,11 +114,14 @@ extension Views {
     public struct ConfirmButton: View {
         
         @Binding var isLoading: Bool
+        @Binding var isEnabled: Bool
         private let confirmed: () -> Void
         
-        public init(_ isLoading: Binding<Bool> = .constant(false),
+        public init(isLoading: Binding<Bool> = .constant(false),
+                    isEnabled: Binding<Bool> = .constant(true),
                     confirmed: @escaping () -> Void) {
             self._isLoading = isLoading
+            self._isEnabled = isEnabled
             self.confirmed = confirmed
         }
         
@@ -129,12 +132,17 @@ extension Views {
                 } else {
                     Text("Confirm".localized)
                         .font(self.uiContext.fonts.get(16, weight: .medium).asFont)
-                        .foregroundColor(.white)
+                        .foregroundColor(
+                            .white.opacity(isEnabled ? 1.0 : 0.7)
+                        )
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 50, alignment: .center)
-            .background(self.uiContext.colors.accentColor.asColor)
+            .background(
+                self.uiContext.colors.accentColor.asColor.opacity(isEnabled ? 1.0 : 0.7)
+            )
             .cornerRadius(5)
+            .disabled(!self.isEnabled)
         }
     }
 }
