@@ -127,22 +127,36 @@ extension Views {
         
         public var body: some View {
             Button(action: self.confirmed) {
+                
                 if self.isLoading {
-                    LoadingView(.white, isLoading: self._isLoading)
+                    HStack {
+                        Spacer()
+                        Views.LoadingView(.white)
+                            .frame(width: 40, height: 40)
+                        Spacer()
+                    }
                 } else {
                     Text("Confirm".localized)
-                        .font(self.uiContext.fonts.get(16, weight: .medium).asFont)
+                        .font(theme.fonts.get(16, weight: .medium).asFont)
                         .foregroundColor(
                             .white.opacity(isEnabled ? 1.0 : 0.7)
                         )
+                        .frame(maxWidth: .infinity, minHeight: 50, alignment: .center)
                 }
             }
-            .frame(maxWidth: .infinity, minHeight: 50, alignment: .center)
             .background(
-                self.uiContext.colors.accentColor.asColor.opacity(isEnabled ? 1.0 : 0.7)
+                theme.colors.accentColor.asColor.opacity(isEnabled ? 1.0 : 0.7)
             )
             .cornerRadius(5)
             .disabled(!self.isEnabled)
         }
+    }
+}
+
+
+struct ConfirmButtonPreview: PreviewProvider {
+    
+    static var previews: some View {
+        Views.ConfirmButton(isLoading: .constant(false)) { }
     }
 }
