@@ -43,3 +43,14 @@ public extension View {
         )
     }
 }
+
+
+public extension Spacer {
+    
+    func backgroundSpaceTapGesture(_ tapped: @escaping () -> Void) -> some View {
+        ZStack {
+            Color.black.opacity(0.001).onTapGesture(perform: tapped)
+            Spacer()
+        }
+    }
+}

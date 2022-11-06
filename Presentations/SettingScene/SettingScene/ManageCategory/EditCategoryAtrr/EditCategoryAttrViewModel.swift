@@ -26,6 +26,7 @@ public protocol EditCategoryAttrViewModel: AnyObject, Sendable {
     func selectNewColor()
     func delete()
     func confirmSaveChange()
+    func close()
     
     // presenter
     var initialName: String { get }
@@ -150,6 +151,10 @@ extension EditCategoryAttrViewModelImple {
         return UpdateCategoryAttrParams(uid: self.category.uid)
             |> \.newName .~ newName
             |> \.newColorCode .~ self.subjects.pendingNewColorCode.value
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 
