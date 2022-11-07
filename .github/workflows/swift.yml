@@ -10,8 +10,8 @@ jobs:
     # runs-on: macOS-latest
     strategy:
         matrix:
-          xcode: [13.4.1]
-          destination: ["platform=iOS Simulator,name=iPhone 11,OS=15.5"]
+          xcode: [14.1]
+          destination: ["platform=iOS Simulator,name=iPhone 14,OS=16.1"]
     
     steps:
       - run: swift --version
