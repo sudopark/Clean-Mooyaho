@@ -73,11 +73,13 @@ public struct EditCategoryAttrView: View {
                 .padding(.bottom, 16)
                 .padding(.top, 20)
                 
-                TextField("Enter a name".localized, text: $state.enteredName)
-                    .font(theme.fonts.get(14, weight: .regular).asFont)
-                    .padding(.vertical, 12)
-                    .autocorrectionDisabled(true)
-                
+                TextField("Enter a name".localized, text: $state.enteredName) {
+                    self.endEditing()
+                }
+                .font(theme.fonts.get(14, weight: .regular).asFont)
+                .padding(.vertical, 12)
+                .autocorrectionDisabled(true)
+            
                 Divider()
                 
                 ColorSelectRow(selectedColorCode: state.selectedColorCode)
