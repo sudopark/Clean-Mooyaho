@@ -99,6 +99,8 @@ extension Views {
     
     public struct BaseBottomSlideMenuView<Content: View>: View {
         
+        @ObservedObject private var keyboardHeightObserver = KeyboardHeightObserver()
+        
         private let content: () -> Content
         private let outsideTap: (() -> Void)?
         public init(
@@ -127,6 +129,8 @@ extension Views {
                 .background(self.uiContext.colors.appBackground.asColor)
                 .cornerRadius(10, corners: [.topLeft, .topRight])
             }
+            .offset(y: -keyboardHeightObserver.showingKeyboardHeight)
+            .animation(.easeInOut(duration: 0.25))
             .edgesIgnoringSafeArea(.bottom)
         }
     }
