@@ -51,8 +51,6 @@ extension ManageCategoryRouter {
                 return
             }
             
-            next.modalPresentationStyle = .custom
-            next.transitioningDelegate = self.bottomSliderTransitionManager
             self.currentScene?.present(next, animated: true, completion: nil)
         }
     }
