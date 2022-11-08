@@ -23,6 +23,7 @@ public protocol FeedbackViewModel: AnyObject, Sendable {
     func enterMessage(_ message: String)
     func enterContact(_ contact: String)
     func register()
+    func close()
     
     // presenter
     var isConfirmable: Observable<Bool> { get }
@@ -94,6 +95,10 @@ extension FeedbackViewModelImple {
             .subscribe(onSuccess: registered,
                        onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 
