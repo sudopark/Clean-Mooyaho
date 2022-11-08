@@ -99,7 +99,7 @@ extension Views {
     
     public struct BaseBottomSlideMenuView<Content: View>: View {
         
-        @ObservedObject private var keyboardHeightObserver = KeyboardHeightObserver()
+        @StateObject private var keyboardHeightObserver = KeyboardHeightObserver()
         
         private let content: () -> Content
         private let outsideTap: (() -> Void)?
