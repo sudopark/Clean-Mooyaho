@@ -92,6 +92,7 @@
 		F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */; };
 		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
 		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
+		F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B1291D56BE005E4393 /* ProgressLineView.swift */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
 		F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */; };
@@ -232,6 +233,7 @@
 		F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
+		F6C252B1291D56BE005E4393 /* ProgressLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressLineView.swift; sourceTree = "<group>"; };
 		F6C97B1627091D2500990019 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAndLabeledValueView.swift; sourceTree = "<group>"; };
 		F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHeightObserver.swift; sourceTree = "<group>"; };
@@ -489,6 +491,7 @@
 		F6502DC6266A0CA20027800F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F6C252B0291D56AC005E4393 /* Components+SwiftUI */,
 				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
 				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
@@ -559,6 +562,14 @@
 				F6A3A0AC275211ED00336E4F /* ReadItemCategoryUsecase+Extension.swift */,
 			);
 			path = ViewUsecases;
+			sourceTree = "<group>";
+		};
+		F6C252B0291D56AC005E4393 /* Components+SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				F6C252B1291D56BE005E4393 /* ProgressLineView.swift */,
+			);
+			path = "Components+SwiftUI";
 			sourceTree = "<group>";
 		};
 		F6CB4343271355EE00F26508 /* ColorSelect */ = {
@@ -721,6 +732,7 @@
 				F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */,
 				F6A3A0BA27521D2A00336E4F /* ReadItemCellViewModels.swift in Sources */,
 				F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */,
+				F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
 				F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */,
 				F6CB434A2713560900F26508 /* ColorSelectViewController.swift in Sources */,
