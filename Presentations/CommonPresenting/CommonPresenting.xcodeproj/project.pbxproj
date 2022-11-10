@@ -93,6 +93,7 @@
 		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
 		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
 		F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B1291D56BE005E4393 /* ProgressLineView.swift */; };
+		F6C252B6291D5916005E4393 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B5291D5916005E4393 /* View+Extension.swift */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
 		F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */; };
@@ -234,6 +235,7 @@
 		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
 		F6C252B1291D56BE005E4393 /* ProgressLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressLineView.swift; sourceTree = "<group>"; };
+		F6C252B5291D5916005E4393 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		F6C97B1627091D2500990019 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAndLabeledValueView.swift; sourceTree = "<group>"; };
 		F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHeightObserver.swift; sourceTree = "<group>"; };
@@ -463,6 +465,7 @@
 				F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */,
 				F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */,
 				F63A520D27B7569E008542E2 /* Combine+Extensions.swift */,
+				F6C252B5291D5916005E4393 /* View+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				F66EF6AF2719EFD000AC0DAB /* RoundImageButton.swift in Sources */,
 				F67DDE9D26FE1E63004BC542 /* ItemLabelView.swift in Sources */,
 				F6775B282781FA0F00D2DCD2 /* EasyTipView..swift in Sources */,
+				F6C252B6291D5916005E4393 /* View+Extension.swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */,
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
