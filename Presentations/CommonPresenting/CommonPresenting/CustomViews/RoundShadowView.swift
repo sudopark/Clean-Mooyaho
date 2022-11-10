@@ -47,3 +47,34 @@ public class RoundShadowView: BaseUIView {
         self.updateLayer()
     }
 }
+
+
+
+import SwiftUI
+
+extension Views {
+    
+    public struct RoundShadowView: View {
+        
+        @Environment(\.colorScheme) private var colorScheme: ColorScheme
+        private let customBackgroundColor: Color?
+        private let cornerRadidus: CGFloat
+        public init(
+            customBackgroundColor: Color? = nil,
+            cornerRadidus: CGFloat
+        ) {
+            self.customBackgroundColor = customBackgroundColor
+            self.cornerRadidus = cornerRadidus
+        }
+        
+        public var body: some View {
+            let shadowAlpha: CGFloat = colorScheme == .light ? 0.4 : 0.1
+            let shadowColor = UIColor.label.withAlphaComponent(shadowAlpha).asColor
+            let backgroundColor = self.customBackgroundColor ?? theme.colors.appBackground.asColor
+            return RoundedRectangle(cornerRadius: self.cornerRadidus)
+                .fill(backgroundColor)
+                .shadow(color: shadowColor, radius: 0.1, y: 0.1)
+        }
+    }
+
+}
