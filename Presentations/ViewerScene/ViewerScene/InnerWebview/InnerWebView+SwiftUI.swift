@@ -29,6 +29,9 @@ private struct InnertWebViewToolbarInfoSection: View {
     @Binding var progress: CGFloat
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
+    var editHandler: (() -> Void)?
+    var refreshHandler: (() -> Void)?
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             HStack {
@@ -43,7 +46,7 @@ private struct InnertWebViewToolbarInfoSection: View {
                     .foregroundColor(self.theme.colors.text.withAlphaComponent(0.8).asColor)
                     .font(self.theme.fonts.get(12, weight: .regular).asFont)
                     .onTapGesture {
-                        // TODO: handle tap - edit event
+                        self.editHandler?()
                     }
                 Spacer()
                 
@@ -61,7 +64,7 @@ private struct InnertWebViewToolbarInfoSection: View {
     
     private var editButton: some View {
         Button {
-            // TODO: handle edit event
+            self.editHandler?()
         } label: {
             Image(systemName: "square.and.pencil")
                 .foregroundColor(self.theme.colors.secondaryTitle.asColor)
@@ -71,7 +74,7 @@ private struct InnertWebViewToolbarInfoSection: View {
     
     private var refreshButton: some View {
         Button {
-            // TODO: handle refresh event
+            self.refreshHandler?()
         } label: {
             Image(systemName: "arrow.clockwise.circle.fill")
                 .foregroundColor(self.theme.colors.secondaryTitle.asColor)
@@ -90,11 +93,18 @@ private struct InnertWebViewToolbarInfoSection: View {
 }
 
 struct InnerWebView_SwiftUI_Previews: PreviewProvider {
+    
     static var previews: some View {
         InnertWebViewToolbarInfoSection(
-            title: "This is a title",
+            title: "Title",
             isEditable: .constant(true),
             progress: .constant(0.5)
         )
+        .eventHandler(\.editHandler) {
+            print("edit called")
+        }
+        .eventHandler(\.refreshHandler) {
+            print("refresh called")
+        }
     }
 }
