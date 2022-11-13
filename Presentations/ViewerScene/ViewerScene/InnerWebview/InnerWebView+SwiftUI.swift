@@ -25,7 +25,7 @@ struct InnerWebView_SwiftUI: View {
 private struct InnertWebViewToolbarInfoSection: View {
     
     let title: String
-    @Binding var isEditable: Bool
+    let isEditable: Bool
     @Binding var progress: CGFloat
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
@@ -92,19 +92,124 @@ private struct InnertWebViewToolbarInfoSection: View {
     }
 }
 
+private struct InnerWebViewToolbarControlSection: View {
+    
+    let isEditable: Bool
+    let isJumpable: Bool
+    @Binding var isRewindable: Bool
+    @Binding var isForwardable: Bool
+    @Binding var isMarkAsRead: Bool
+    @Binding var hasNote: Bool
+    
+    var backwardHandler: () -> Void = { }
+    var forwardHandler: () -> Void = { }
+    var markAsReadHandler: () -> Void = { }
+    var noteHandler: () -> Void = { }
+    var jumpHandler: () -> Void = { }
+    var safariHandler: () -> Void = { }
+    
+    var body: some View {
+        HStack {
+            self.backButton
+            Spacer()
+            self.forwardButton
+            Spacer()
+            if isEditable {
+                self.readMarkButton
+            } else {
+                Spacer()
+            }
+            Spacer()
+            if isEditable {
+                self.memoButton
+            } else {
+                Spacer()
+            }
+            Spacer()
+            if isJumpable {
+                self.jumpButton
+            }
+            self.safariButton
+        }
+        .padding(.horizontal, 16)
+    }
+    
+    private var backButton: some View {
+        return Button {
+            
+        } label: {
+            Image(systemName: "chevron.backward")
+                .foregroundColor(isRewindable ? theme.colors.accentColor.asColor : theme.colors.raw.lightGray.asColor)
+        }
+        .disabled(!self.isRewindable)
+        .frame(width: 40, height: 40)
+    }
+    
+    private var forwardButton: some View {
+        return Button {
+            
+        } label: {
+            Image(systemName: "chevron.right")
+                .foregroundColor(isForwardable ? theme.colors.accentColor.asColor : theme.colors.raw.lightGray.asColor)
+        }
+        .disabled(!self.isForwardable)
+        .frame(width: 40, height: 40)
+    }
+    
+    private var readMarkButton: some View {
+        return Button {
+            
+        } label: {
+            Image(systemName: isMarkAsRead ? "checkmark.circle.fill" : "checkmark.circle")
+        }
+        .frame(width: 40, height: 40)
+    }
+    
+    private var jumpButton: some View {
+        return Button {
+            
+        } label: {
+            Image(systemName: "folder")
+        }
+        .frame(width: 40, height: 40)
+    }
+    
+    private var memoButton: some View {
+        return Button {
+            
+        } label: {
+            Image(systemName: hasNote ? "note.text" : "note.text.badge.plus")
+        }
+        .frame(width: 40, height: 40)
+    }
+    
+    private var safariButton: some View {
+        return Button {
+            
+        } label: {
+            Image(systemName: "safari")
+        }
+        .frame(width: 40, height: 40)
+    }
+}
+
 struct InnerWebView_SwiftUI_Previews: PreviewProvider {
     
     static var previews: some View {
-        InnertWebViewToolbarInfoSection(
-            title: "Title",
-            isEditable: .constant(true),
-            progress: .constant(0.5)
-        )
-        .eventHandler(\.editHandler) {
-            print("edit called")
-        }
-        .eventHandler(\.refreshHandler) {
-            print("refresh called")
+        VStack {
+            InnertWebViewToolbarInfoSection(
+                title: "Title",
+                isEditable: true,
+                progress: .constant(0.5)
+            )
+            InnerWebViewToolbarControlSection(
+                isEditable: true,
+                isJumpable: true,
+                isRewindable: .constant(true),
+                isForwardable: .constant(false),
+                isMarkAsRead: .constant(true),
+                hasNote: .constant(true)
+            )
         }
     }
 }
