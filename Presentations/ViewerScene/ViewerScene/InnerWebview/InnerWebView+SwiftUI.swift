@@ -7,25 +7,109 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 import RxSwift
 import RxCocoa
 
 import Domain
 import CommonPresenting
+import WebView
+import WebKit
 
 
-struct InnerWebView_SwiftUI: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+final class InnerWebViewState: ObservableObject {
+    
+    @Published var isBackwardable: Bool = false
+    @Published var isForwardable: Bool = false
+    @Published var isEditable = false
+    @Published var isJumpable = false
+    @Published var startLoadWebPage: WebPageLoadParams? = .init(urlPath: "https://www.naver.com")
+    @Published var urlPageTitle: String = ""
+    @Published var isMarkAsRead: Bool = false
+    @Published var hasMemo: Bool = false
+    
+    @Published var progress: CGFloat = 0.0
+    func updatProgress(_ progress: CGFloat) {
+        self.progress = progress >= 1.0 ? 0.0 : progress
     }
 }
 
 
-private struct InnertWebViewToolbarInfoSection: View {
+struct InnerWebView_SwiftUI: View {
     
-    let title: String
-    let isEditable: Bool
+    @StateObject private var state: InnerWebViewState = .init()
+    @StateObject private var webviewStore: WebViewStore = .init()
+    
+    var body: some View {
+        
+        VStack(spacing: 0) {
+            
+            Views.PullGuideView()
+                
+            ZStack {
+                
+                WebView(webView: webviewStore.webView)
+                    .onReceive(state.$startLoadWebPage) { params in
+                        guard let params = params,
+                              let url = URL(string: params.urlPath)
+                        else { return }
+                        self.webviewStore.webView.load(URLRequest(url: url))
+                    }
+                    .onReceive(webviewStore.webView.publisher(for: \.estimatedProgress)) { progress in
+                        self.state.updatProgress(progress)
+                    }
+                    .onReceive(webviewStore.webView.publisher(for: \.estimatedProgress)
+                        .map { $0 >= 1 || self.webviewStore.webView.isLoading == false}
+                        .filter { $0 }.first()) { _ in
+                        // TODO: handle is first load
+                    }
+                    .onReceive(webviewStore.webView.publisher(for: \.url)) { url in
+                        // TODO: notify is loaded
+                        let forwardCount = self.webviewStore.webView.backForwardList.forwardList.count
+                        let backwardCount = self.webviewStore.webView.backForwardList.backList.count
+                        self.state.isBackwardable = backwardCount > 0
+                        self.state.isForwardable = forwardCount > 0
+                    }
+                
+                VStack {
+                    Spacer()
+                    
+                    VStack {
+                        Divider()
+                        
+                        InnerWebViewToolbarInfoSection(
+                            title: $state.urlPageTitle,
+                            isEditable: $state.isEditable,
+                            progress: $state.progress
+                        )
+                        .padding(.top, 4)
+                        .padding(.horizontal, 16)
+                        
+                        InnerWebViewToolbarControlSection(
+                            isEditable: $state.isEditable,
+                            isJumpable: $state.isJumpable,
+                            isRewindable: $state.isBackwardable,
+                            isForwardable: $state.isForwardable,
+                            isMarkAsRead: $state.isMarkAsRead,
+                            hasNote: $state.hasMemo
+                        )
+                    }
+                    .background(VisualEffectView().ignoresSafeArea(edges: .bottom))
+                }
+            }
+                .padding(.top, 4)
+        }
+        .background(theme.colors.appBackground.asColor)
+        .cornerRadius(10, corners: [.topLeft, .topRight])
+    }
+}
+
+
+private struct InnerWebViewToolbarInfoSection: View {
+    
+    @Binding var title: String
+    @Binding var isEditable: Bool
     @Binding var progress: CGFloat
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
@@ -94,8 +178,8 @@ private struct InnertWebViewToolbarInfoSection: View {
 
 private struct InnerWebViewToolbarControlSection: View {
     
-    let isEditable: Bool
-    let isJumpable: Bool
+    @Binding var isEditable: Bool
+    @Binding var isJumpable: Bool
     @Binding var isRewindable: Bool
     @Binding var isForwardable: Bool
     @Binding var isMarkAsRead: Bool
@@ -196,20 +280,6 @@ private struct InnerWebViewToolbarControlSection: View {
 struct InnerWebView_SwiftUI_Previews: PreviewProvider {
     
     static var previews: some View {
-        VStack {
-            InnertWebViewToolbarInfoSection(
-                title: "Title",
-                isEditable: true,
-                progress: .constant(0.5)
-            )
-            InnerWebViewToolbarControlSection(
-                isEditable: true,
-                isJumpable: true,
-                isRewindable: .constant(true),
-                isForwardable: .constant(false),
-                isMarkAsRead: .constant(true),
-                hasNote: .constant(true)
-            )
-        }
+        InnerWebView_SwiftUI()
     }
 }

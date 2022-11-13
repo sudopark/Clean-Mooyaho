@@ -94,6 +94,8 @@
 		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
 		F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B1291D56BE005E4393 /* ProgressLineView.swift */; };
 		F6C252B6291D5916005E4393 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B5291D5916005E4393 /* View+Extension.swift */; };
+		F6C252B8292139CE005E4393 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B7292139CE005E4393 /* VisualEffectView.swift */; };
+		F6C252BD292141F7005E4393 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = F6C252BC292141F7005E4393 /* WebView */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
 		F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */; };
@@ -236,6 +238,7 @@
 		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
 		F6C252B1291D56BE005E4393 /* ProgressLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressLineView.swift; sourceTree = "<group>"; };
 		F6C252B5291D5916005E4393 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		F6C252B7292139CE005E4393 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		F6C97B1627091D2500990019 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAndLabeledValueView.swift; sourceTree = "<group>"; };
 		F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHeightObserver.swift; sourceTree = "<group>"; };
@@ -286,6 +289,7 @@
 				F6311A262870048B005C8FCB /* Extensions.framework in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				F6E51B6F273F628800CBE310 /* ISEmojiView in Frameworks */,
+				F6C252BD292141F7005E4393 /* WebView in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				F6C252B1291D56BE005E4393 /* ProgressLineView.swift */,
+				F6C252B7292139CE005E4393 /* VisualEffectView.swift */,
 			);
 			path = "Components+SwiftUI";
 			sourceTree = "<group>";
@@ -638,6 +643,7 @@
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
 				F6E51B6E273F628800CBE310 /* ISEmojiView */,
 				F6E9F7812781718800FF992F /* Toaster */,
+				F6C252BC292141F7005E4393 /* WebView */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -692,6 +698,7 @@
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */,
 				F6E9F7802781718800FF992F /* XCRemoteSwiftPackageReference "Toaster" */,
+				F6C252BB292141F7005E4393 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -742,6 +749,7 @@
 				F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */,
 				F6D8731928420E45009CAD55 /* BaseFloatingButton.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
+				F6C252B8292139CE005E4393 /* VisualEffectView.swift in Sources */,
 				F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */,
 				F6E51B78273F62B500CBE310 /* SelectEmojiBuilder.swift in Sources */,
 				F61014762657211200D32E38 /* Theme.swift in Sources */,
@@ -1119,6 +1127,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		F6C252BB292141F7005E4393 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kylehickinson/SwiftUI-WebView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/isaced/ISEmojiView.git";
@@ -1142,6 +1158,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		F6C252BC292141F7005E4393 /* WebView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6C252BB292141F7005E4393 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */;
+			productName = WebView;
 		};
 		F6E51B6E273F628800CBE310 /* ISEmojiView */ = {
 			isa = XCSwiftPackageProductDependency;
