@@ -156,11 +156,12 @@ public struct InnerWebView_SwiftUI: View {
                     .background(VisualEffectView().ignoresSafeArea(edges: .bottom))
                 }
             }
-                .padding(.top, 4)
+            .padding(.top, 4)
         }
         .background(theme.colors.appBackground.asColor)
         .cornerRadius(10, corners: [.topLeft, .topRight])
         .onAppear {
+            self.state.bind(viewModel)
             viewModel.prepareLinkData()
         }
     }
@@ -342,5 +343,47 @@ private struct InnerWebViewToolbarControlSection: View {
             Image(systemName: "safari")
         }
         .frame(width: 40, height: 40)
+    }
+}
+
+
+// MARK: - preview
+
+final class DummyInnerWebViewModel: InnerWebViewViewModel {
+    
+    func prepareLinkData() {}
+    
+    func openPageInSafari() { }
+    
+    func managePageDetail(withCopyURL: Bool) { }
+    
+    func editMemo() { }
+    
+    func toggleMarkAsRed() { }
+    
+    func jumpToCollection() { }
+    
+    func pageLoaded(for url: String) { }
+    
+    func saveLastReadPositionIfNeed(_ position: Double) { }
+    
+    var isEditable: Bool { true }
+    
+    var isJumpable: Bool { false }
+    
+    var startLoadWebPage: Observable<WebPageLoadParams> { .just(.init(urlPath: "https://www.naver.com")) }
+    
+    var urlPageTitle: Observable<String> { .just("Test title") }
+    
+    var isRed: Observable<Bool> { .just(true) }
+    
+    var hasMemo: Observable<Bool> { .just(false) }
+}
+
+struct InnerWebViewPreview: PreviewProvider {
+    
+    static var previews: some View {
+        let viewModel = DummyInnerWebViewModel()
+        return InnerWebView_SwiftUI(viewModel: viewModel)
     }
 }
