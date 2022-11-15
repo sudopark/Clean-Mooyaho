@@ -15,7 +15,6 @@ import RxCocoa
 import Domain
 import CommonPresenting
 import WebView
-import WebKit
 
 
 final class InnerWebViewState: ObservableObject {
@@ -24,7 +23,7 @@ final class InnerWebViewState: ObservableObject {
     @Published var isForwardable: Bool = false
     @Published var isEditable = false
     @Published var isJumpable = false
-    @Published var startLoadWebPage: WebPageLoadParams? = .init(urlPath: "https://www.naver.com")
+    @Published var startLoadWebPage: WebPageLoadParams?
     @Published var urlPageTitle: String = ""
     @Published var isMarkAsRead: Bool = false
     @Published var hasMemo: Bool = false
@@ -33,15 +32,59 @@ final class InnerWebViewState: ObservableObject {
     func updatProgress(_ progress: CGFloat) {
         self.progress = progress >= 1.0 ? 0.0 : progress
     }
+    
+    private let disposeBag = DisposeBag()
+    private var didBind = false
+    
+    func bind(_ viewModel: InnerWebViewViewModel) {
+        guard self.didBind == false else { return }
+        self.didBind = true
+        
+        isEditable = viewModel.isEditable
+        isJumpable = viewModel.isJumpable
+        
+        viewModel.startLoadWebPage
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] params in
+                self?.startLoadWebPage = params
+            })
+            .disposed(by: self.disposeBag)
+        
+        viewModel.urlPageTitle
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] title in
+                self?.urlPageTitle = title
+            })
+            .disposed(by: self.disposeBag)
+        
+        viewModel.isRed
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] isMarkAsRead in
+                self?.isMarkAsRead = isMarkAsRead
+            })
+            .disposed(by: self.disposeBag)
+        
+        viewModel.hasMemo
+            .asDriver(onErrorDriveWith: .never())
+            .drive(onNext: { [weak self] hasMemo in
+                self?.hasMemo = hasMemo
+            })
+            .disposed(by: self.disposeBag)
+    }
 }
 
 
-struct InnerWebView_SwiftUI: View {
+public struct InnerWebView_SwiftUI: View {
     
+    private let viewModel: InnerWebViewViewModel
     @StateObject private var state: InnerWebViewState = .init()
     @StateObject private var webviewStore: WebViewStore = .init()
     
-    var body: some View {
+    public init(viewModel: InnerWebViewViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    public var body: some View {
         
         VStack(spacing: 0) {
             
@@ -63,13 +106,11 @@ struct InnerWebView_SwiftUI: View {
                         .map { $0 >= 1 || self.webviewStore.webView.isLoading == false}
                         .filter { $0 }.first()) { _ in
                         // TODO: handle is first load
+                            
                     }
                     .onReceive(webviewStore.webView.publisher(for: \.url)) { url in
-                        // TODO: notify is loaded
-                        let forwardCount = self.webviewStore.webView.backForwardList.forwardList.count
-                        let backwardCount = self.webviewStore.webView.backForwardList.backList.count
-                        self.state.isBackwardable = backwardCount > 0
-                        self.state.isForwardable = forwardCount > 0
+                        if let urlPath = url?.absoluteString { self.viewModel.pageLoaded(for: urlPath) }
+                        self.updateWebViewNavigationButtons()
                     }
                 
                 VStack {
@@ -83,6 +124,11 @@ struct InnerWebView_SwiftUI: View {
                             isEditable: $state.isEditable,
                             progress: $state.progress
                         )
+                        .eventHandler(\.editHandlerWithCopyURL, viewModel.managePageDetail(withCopyURL:))
+                        .eventHandler(\.refreshHandler) {
+                            guard self.webviewStore.webView.isLoading == false else { return }
+                            self.webviewStore.webView.reload()
+                        }
                         .padding(.top, 4)
                         .padding(.horizontal, 16)
                         
@@ -94,6 +140,18 @@ struct InnerWebView_SwiftUI: View {
                             isMarkAsRead: $state.isMarkAsRead,
                             hasNote: $state.hasMemo
                         )
+                        .eventHandler(\.backwardHandler) {
+                            guard self.webviewStore.webView.canGoBack == true else { return }
+                            self.webviewStore.webView.goBack()
+                        }
+                        .eventHandler(\.forwardHandler) {
+                            guard self.webviewStore.canGoForward == true else { return }
+                            self.webviewStore.webView.goForward()
+                        }
+                        .eventHandler(\.markAsReadHandler, viewModel.toggleMarkAsRed)
+                        .eventHandler(\.noteHandler, viewModel.editMemo)
+                        .eventHandler(\.jumpHandler, viewModel.jumpToCollection)
+                        .eventHandler(\.safariHandler, viewModel.openPageInSafari)
                     }
                     .background(VisualEffectView().ignoresSafeArea(edges: .bottom))
                 }
@@ -102,6 +160,16 @@ struct InnerWebView_SwiftUI: View {
         }
         .background(theme.colors.appBackground.asColor)
         .cornerRadius(10, corners: [.topLeft, .topRight])
+        .onAppear {
+            viewModel.prepareLinkData()
+        }
+    }
+    
+    private func updateWebViewNavigationButtons() {
+        let forwardCount = self.webviewStore.webView.backForwardList.forwardList.count
+        let backwardCount = self.webviewStore.webView.backForwardList.backList.count
+        self.state.isBackwardable = backwardCount > 0
+        self.state.isForwardable = forwardCount > 0
     }
 }
 
@@ -113,8 +181,8 @@ private struct InnerWebViewToolbarInfoSection: View {
     @Binding var progress: CGFloat
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
-    var editHandler: (() -> Void)?
-    var refreshHandler: (() -> Void)?
+    var editHandlerWithCopyURL: (Bool) -> Void = { _ in }
+    var refreshHandler: () -> Void = { }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -130,7 +198,7 @@ private struct InnerWebViewToolbarInfoSection: View {
                     .foregroundColor(self.theme.colors.text.withAlphaComponent(0.8).asColor)
                     .font(self.theme.fonts.get(12, weight: .regular).asFont)
                     .onTapGesture {
-                        self.editHandler?()
+                        self.editHandlerWithCopyURL(true)
                     }
                 Spacer()
                 
@@ -148,7 +216,7 @@ private struct InnerWebViewToolbarInfoSection: View {
     
     private var editButton: some View {
         Button {
-            self.editHandler?()
+            self.editHandlerWithCopyURL(false)
         } label: {
             Image(systemName: "square.and.pencil")
                 .foregroundColor(self.theme.colors.secondaryTitle.asColor)
@@ -158,7 +226,7 @@ private struct InnerWebViewToolbarInfoSection: View {
     
     private var refreshButton: some View {
         Button {
-            self.refreshHandler?()
+            self.refreshHandler()
         } label: {
             Image(systemName: "arrow.clockwise.circle.fill")
                 .foregroundColor(self.theme.colors.secondaryTitle.asColor)
@@ -220,7 +288,7 @@ private struct InnerWebViewToolbarControlSection: View {
     
     private var backButton: some View {
         return Button {
-            
+            self.backwardHandler()
         } label: {
             Image(systemName: "chevron.backward")
                 .foregroundColor(isRewindable ? theme.colors.accentColor.asColor : theme.colors.raw.lightGray.asColor)
@@ -231,7 +299,7 @@ private struct InnerWebViewToolbarControlSection: View {
     
     private var forwardButton: some View {
         return Button {
-            
+            self.forwardHandler()
         } label: {
             Image(systemName: "chevron.right")
                 .foregroundColor(isForwardable ? theme.colors.accentColor.asColor : theme.colors.raw.lightGray.asColor)
@@ -242,7 +310,7 @@ private struct InnerWebViewToolbarControlSection: View {
     
     private var readMarkButton: some View {
         return Button {
-            
+            self.markAsReadHandler()
         } label: {
             Image(systemName: isMarkAsRead ? "checkmark.circle.fill" : "checkmark.circle")
         }
@@ -251,7 +319,7 @@ private struct InnerWebViewToolbarControlSection: View {
     
     private var jumpButton: some View {
         return Button {
-            
+            self.jumpHandler()
         } label: {
             Image(systemName: "folder")
         }
@@ -260,7 +328,7 @@ private struct InnerWebViewToolbarControlSection: View {
     
     private var memoButton: some View {
         return Button {
-            
+            self.noteHandler()
         } label: {
             Image(systemName: hasNote ? "note.text" : "note.text.badge.plus")
         }
@@ -269,17 +337,10 @@ private struct InnerWebViewToolbarControlSection: View {
     
     private var safariButton: some View {
         return Button {
-            
+            self.safariHandler()
         } label: {
             Image(systemName: "safari")
         }
         .frame(width: 40, height: 40)
-    }
-}
-
-struct InnerWebView_SwiftUI_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        InnerWebView_SwiftUI()
     }
 }
