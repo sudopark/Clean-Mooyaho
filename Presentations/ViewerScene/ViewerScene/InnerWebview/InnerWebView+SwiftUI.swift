@@ -89,6 +89,7 @@ public struct InnerWebView_SwiftUI: View {
         VStack(spacing: 0) {
             
             Views.PullGuideView()
+                .cornerRadius(10, corners: [.topLeft, .topRight])
                 
             ZStack {
                 
@@ -153,13 +154,12 @@ public struct InnerWebView_SwiftUI: View {
                         .eventHandler(\.jumpHandler, viewModel.jumpToCollection)
                         .eventHandler(\.safariHandler, viewModel.openPageInSafari)
                     }
-                    .background(VisualEffectView().ignoresSafeArea(edges: .bottom))
+                    .background(VisualEffectView().ignoresSafeArea(edges: [.bottom]))
                 }
             }
             .padding(.top, 4)
         }
         .background(theme.colors.appBackground.asColor)
-        .cornerRadius(10, corners: [.topLeft, .topRight])
         .onAppear {
             self.state.bind(viewModel)
             viewModel.prepareLinkData()
