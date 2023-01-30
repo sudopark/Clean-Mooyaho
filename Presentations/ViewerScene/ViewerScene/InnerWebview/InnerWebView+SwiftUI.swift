@@ -33,7 +33,15 @@ final class InnerWebViewState: ObservableObject {
         self.progress = progress >= 1.0 ? 0.0 : progress
     }
     
+    @ObservedObject var webviewStore: WebViewStore = .init()
+    @Published var scrollContentOffset: CGPoint = .zero
+    @Published var isScrollDown: Bool = false
+    var toolbarBottomOffset: CGFloat {
+        return self.isScrollDown ? 74 : 0
+    }
+    
     private let disposeBag = DisposeBag()
+    private var bindScrolling: AnyCancellable?
     private var didBind = false
     
     func bind(_ viewModel: InnerWebViewViewModel) {
@@ -70,6 +78,24 @@ final class InnerWebViewState: ObservableObject {
                 self?.hasMemo = hasMemo
             })
             .disposed(by: self.disposeBag)
+        
+        let scrollingY = self.$scrollContentOffset.map { $0.y }
+            .movingAverageFilter(10)
+            .share()
+        let scrollYChanges = Publishers.Zip(scrollingY, scrollingY.dropFirst())
+        let filterWhenEnoughScrollDown: (CGFloat, CGFloat) -> Bool? = { [weak self] old, new in
+            let isDown = (new - old) > 0
+            let threshold: CGFloat = 104
+            let isDragging = self?.webviewStore.webView.scrollView.isDragging == true
+            return isDragging && new > threshold ? isDown : nil
+        }
+        
+        self.bindScrolling = scrollYChanges
+            .compactMap(filterWhenEnoughScrollDown)
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] isDown in
+                self?.isScrollDown = isDown
+            })
     }
 }
 
@@ -78,7 +104,6 @@ public struct InnerWebView_SwiftUI: View {
     
     private let viewModel: InnerWebViewViewModel
     @StateObject private var state: InnerWebViewState = .init()
-    @StateObject private var webviewStore: WebViewStore = .init()
     
     public init(viewModel: InnerWebViewViewModel) {
         self.viewModel = viewModel
@@ -93,23 +118,20 @@ public struct InnerWebView_SwiftUI: View {
                 
             ZStack {
                 
-                WebView(webView: webviewStore.webView)
+                WebView(webView: state.webviewStore.webView)
                     .onReceive(state.$startLoadWebPage) { params in
                         guard let params = params,
                               let url = URL(string: params.urlPath)
                         else { return }
-                        self.webviewStore.webView.load(URLRequest(url: url))
+                        self.state.webviewStore.webView.load(URLRequest(url: url))
                     }
-                    .onReceive(webviewStore.webView.publisher(for: \.estimatedProgress)) { progress in
+                    .onReceive(state.webviewStore.webView.publisher(for: \.scrollView.contentOffset)) { offset in
+                        self.state.scrollContentOffset = offset
+                    }
+                    .onReceive(state.webviewStore.webView.publisher(for: \.estimatedProgress)) { progress in
                         self.state.updatProgress(progress)
                     }
-                    .onReceive(webviewStore.webView.publisher(for: \.estimatedProgress)
-                        .map { $0 >= 1 || self.webviewStore.webView.isLoading == false}
-                        .filter { $0 }.first()) { _ in
-                        // TODO: handle is first load
-                            
-                    }
-                    .onReceive(webviewStore.webView.publisher(for: \.url)) { url in
+                    .onReceive(state.webviewStore.webView.publisher(for: \.url)) { url in
                         if let urlPath = url?.absoluteString { self.viewModel.pageLoaded(for: urlPath) }
                         self.updateWebViewNavigationButtons()
                     }
@@ -123,12 +145,13 @@ public struct InnerWebView_SwiftUI: View {
                         InnerWebViewToolbarInfoSection(
                             title: $state.urlPageTitle,
                             isEditable: $state.isEditable,
-                            progress: $state.progress
+                            progress: $state.progress,
+                            isShrinkMode: $state.isScrollDown
                         )
                         .eventHandler(\.editHandlerWithCopyURL, viewModel.managePageDetail(withCopyURL:))
                         .eventHandler(\.refreshHandler) {
-                            guard self.webviewStore.webView.isLoading == false else { return }
-                            self.webviewStore.webView.reload()
+                            guard self.state.webviewStore.webView.isLoading == false else { return }
+                            self.state.webviewStore.webView.reload()
                         }
                         .padding(.top, 4)
                         .padding(.horizontal, 16)
@@ -142,12 +165,12 @@ public struct InnerWebView_SwiftUI: View {
                             hasNote: $state.hasMemo
                         )
                         .eventHandler(\.backwardHandler) {
-                            guard self.webviewStore.webView.canGoBack == true else { return }
-                            self.webviewStore.webView.goBack()
+                            guard self.state.webviewStore.webView.canGoBack == true else { return }
+                            self.state.webviewStore.webView.goBack()
                         }
                         .eventHandler(\.forwardHandler) {
-                            guard self.webviewStore.canGoForward == true else { return }
-                            self.webviewStore.webView.goForward()
+                            guard self.state.webviewStore.canGoForward == true else { return }
+                            self.state.webviewStore.webView.goForward()
                         }
                         .eventHandler(\.markAsReadHandler, viewModel.toggleMarkAsRed)
                         .eventHandler(\.noteHandler, viewModel.editMemo)
@@ -155,6 +178,8 @@ public struct InnerWebView_SwiftUI: View {
                         .eventHandler(\.safariHandler, viewModel.openPageInSafari)
                     }
                     .background(VisualEffectView().ignoresSafeArea(edges: [.bottom]))
+                    .offset(.init(width: 0, height: self.state.toolbarBottomOffset))
+                    .animation(.easeIn(duration: 0.4), value: self.state.toolbarBottomOffset)
                 }
             }
             .padding(.top, 4)
@@ -167,8 +192,8 @@ public struct InnerWebView_SwiftUI: View {
     }
     
     private func updateWebViewNavigationButtons() {
-        let forwardCount = self.webviewStore.webView.backForwardList.forwardList.count
-        let backwardCount = self.webviewStore.webView.backForwardList.backList.count
+        let forwardCount = state.webviewStore.webView.backForwardList.forwardList.count
+        let backwardCount = state.webviewStore.webView.backForwardList.backList.count
         self.state.isBackwardable = backwardCount > 0
         self.state.isForwardable = forwardCount > 0
     }
@@ -180,6 +205,7 @@ private struct InnerWebViewToolbarInfoSection: View {
     @Binding var title: String
     @Binding var isEditable: Bool
     @Binding var progress: CGFloat
+    @Binding var isShrinkMode: Bool
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
     var editHandlerWithCopyURL: (Bool) -> Void = { _ in }
@@ -191,6 +217,7 @@ private struct InnerWebViewToolbarInfoSection: View {
                 
                 if self.isEditable {
                     self.editButton
+                        .opacity(self.isShrinkMode ? 0.0 : 1.0)
                 }
                 
                 Spacer()
@@ -201,18 +228,22 @@ private struct InnerWebViewToolbarInfoSection: View {
                     .onTapGesture {
                         self.editHandlerWithCopyURL(true)
                     }
+                    .offset(.init(width: 0, height: self.isShrinkMode ? -12 : 0))
                 Spacer()
                 
                 self.refreshButton
+                    .opacity(self.isShrinkMode ? 0.0 : 1.0)
             }
             .padding([.horizontal], 16)
             .padding([.vertical], 7)
             
             ProgressLineView($progress)
                 .padding(.horizontal, 16)
-                .frame(width: .infinity, height: 2)
+                .frame(height: 2)
         }
-        .background(Views.RoundShadowView(cornerRadidus: 18))
+        .background(
+            Views.RoundShadowView(cornerRadidus: 18).opacity(self.isShrinkMode ? 0.0 : 1.0)
+        )
     }
     
     private var editButton: some View {
@@ -343,6 +374,27 @@ private struct InnerWebViewToolbarControlSection: View {
             Image(systemName: "safari")
         }
         .frame(width: 40, height: 40)
+    }
+}
+
+private struct Buffer {
+    let outputs: [CGFloat]
+    var averaged: CGFloat? {
+        guard outputs.isNotEmpty else { return nil }
+        return outputs.reduce(0, +) / CGFloat(outputs.count)
+    }
+    
+    func appended(_ newOutput: CGFloat, size: Int) -> Buffer {
+        return Buffer(outputs: (self.outputs + [newOutput]).suffix(size))
+    }
+}
+
+private extension Publisher where Output == CGFloat {
+    
+    func movingAverageFilter(_ size: Int) -> some Publisher<Output, Failure> {
+        let buffered = self.scan(Buffer(outputs: [])) { acc, output in acc.appended(output, size: size) }
+        return buffered
+            .compactMap { $0.averaged }
     }
 }
 
