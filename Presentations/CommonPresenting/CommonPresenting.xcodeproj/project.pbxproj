@@ -62,6 +62,7 @@
 		F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AC26755626000CAB4B /* ApplicationStatus.swift */; };
 		F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248F9275940C100D4FC74 /* CategoryLabelView.swift */; };
 		F66248FC2759424F00D4FC74 /* BaseTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */; };
+		F6627E112981881700D45155 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = F6627E102981881700D45155 /* WebView */; };
 		F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6E52763C7FE00EE8152 /* Builders+Member.swift */; };
 		F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */; };
 		F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */; };
@@ -95,7 +96,6 @@
 		F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B1291D56BE005E4393 /* ProgressLineView.swift */; };
 		F6C252B6291D5916005E4393 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B5291D5916005E4393 /* View+Extension.swift */; };
 		F6C252B8292139CE005E4393 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B7292139CE005E4393 /* VisualEffectView.swift */; };
-		F6C252BD292141F7005E4393 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = F6C252BC292141F7005E4393 /* WebView */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
 		F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */; };
@@ -289,7 +289,7 @@
 				F6311A262870048B005C8FCB /* Extensions.framework in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				F6E51B6F273F628800CBE310 /* ISEmojiView in Frameworks */,
-				F6C252BD292141F7005E4393 /* WebView in Frameworks */,
+				F6627E112981881700D45155 /* WebView in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -643,7 +643,7 @@
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
 				F6E51B6E273F628800CBE310 /* ISEmojiView */,
 				F6E9F7812781718800FF992F /* Toaster */,
-				F6C252BC292141F7005E4393 /* WebView */,
+				F6627E102981881700D45155 /* WebView */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -698,7 +698,7 @@
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */,
 				F6E9F7802781718800FF992F /* XCRemoteSwiftPackageReference "Toaster" */,
-				F6C252BB292141F7005E4393 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */,
+				F6627E0F2981881700D45155 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -1127,12 +1127,12 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		F6C252BB292141F7005E4393 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */ = {
+		F6627E0F2981881700D45155 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kylehickinson/SwiftUI-WebView.git";
+			repositoryURL = "https://github.com/sudopark/SwiftUI-WebView.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 		F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */ = {
@@ -1159,9 +1159,9 @@
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		F6C252BC292141F7005E4393 /* WebView */ = {
+		F6627E102981881700D45155 /* WebView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F6C252BB292141F7005E4393 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */;
+			package = F6627E0F2981881700D45155 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */;
 			productName = WebView;
 		};
 		F6E51B6E273F628800CBE310 /* ISEmojiView */ = {
