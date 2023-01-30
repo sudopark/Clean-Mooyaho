@@ -28,7 +28,6 @@
 		F6851A2C270B20FB0048197B /* InnerWebViewScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A27270B20FB0048197B /* InnerWebViewScene.swift */; };
 		F6851A2D270B20FB0048197B /* InnerWebViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6851A28270B20FB0048197B /* InnerWebViewViewModel.swift */; };
 		F6C252AE291D4878005E4393 /* InnerWebView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252AD291D4878005E4393 /* InnerWebView+SwiftUI.swift */; };
-		F6EAC61B271A1203005C0C2F /* InnerWebViewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EAC61A271A1203005C0C2F /* InnerWebViewView.swift */; };
 		F6EAC61F271AC553005C0C2F /* InnerWebViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EAC61E271AC553005C0C2F /* InnerWebViewViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +64,6 @@
 		F6851A27270B20FB0048197B /* InnerWebViewScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewScene.swift; sourceTree = "<group>"; };
 		F6851A28270B20FB0048197B /* InnerWebViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewViewModel.swift; sourceTree = "<group>"; };
 		F6C252AD291D4878005E4393 /* InnerWebView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InnerWebView+SwiftUI.swift"; sourceTree = "<group>"; };
-		F6EAC61A271A1203005C0C2F /* InnerWebViewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewView.swift; sourceTree = "<group>"; };
 		F6EAC61E271AC553005C0C2F /* InnerWebViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerWebViewViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,7 +165,6 @@
 				F6851A25270B20FB0048197B /* InnerWebViewViewController.swift */,
 				F6851A27270B20FB0048197B /* InnerWebViewScene.swift */,
 				F6851A28270B20FB0048197B /* InnerWebViewViewModel.swift */,
-				F6EAC61A271A1203005C0C2F /* InnerWebViewView.swift */,
 				F6C252AD291D4878005E4393 /* InnerWebView+SwiftUI.swift */,
 			);
 			path = InnerWebview;
@@ -292,7 +289,6 @@
 				F6851A2C270B20FB0048197B /* InnerWebViewScene.swift in Sources */,
 				F62692C22725638A00841B40 /* LinkMemoScene.swift in Sources */,
 				F6851A29270B20FB0048197B /* InnerWebViewRouter.swift in Sources */,
-				F6EAC61B271A1203005C0C2F /* InnerWebViewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

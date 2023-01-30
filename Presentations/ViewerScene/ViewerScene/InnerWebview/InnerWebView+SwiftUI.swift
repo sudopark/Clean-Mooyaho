@@ -79,6 +79,9 @@ final class InnerWebViewState: ObservableObject {
             })
             .disposed(by: self.disposeBag)
         
+        self.isEditable = viewModel.isEditable
+        self.isJumpable = viewModel.isJumpable
+        
         let scrollingY = self.$scrollContentOffset.map { $0.y }
             .movingAverageFilter(10)
             .share()
