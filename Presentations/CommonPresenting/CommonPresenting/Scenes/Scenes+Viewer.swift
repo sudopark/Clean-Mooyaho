@@ -42,7 +42,7 @@ public protocol LinkMemoSceneListenable: Sendable, AnyObject {
 
 // MARK: - LinkMemoScene
 
-public protocol LinkMemoScene: Scenable, PangestureDismissableScene {
+public protocol LinkMemoScene: Scenable {
     
     nonisolated var interactor: LinkMemoSceneInteractable? { get }
 }

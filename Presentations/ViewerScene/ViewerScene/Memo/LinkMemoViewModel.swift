@@ -25,6 +25,7 @@ public protocol LinkMemoViewModel: AnyObject, Sendable {
     func updateContent(_ text: String)
     func deleteMemo()
     func confirmSave()
+    func close()
     
     // presenter
     var initialText: String? { get }
@@ -105,10 +106,14 @@ extension LinkMemoViewModelImple {
             .disposed(by: self.disposeBag)
     }
     
-    func handleError() -> (Error) -> Void {
+    private func handleError() -> (Error) -> Void {
         return { [weak self] error in
             self?.router.alertError(error)
         }
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 
