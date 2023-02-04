@@ -73,9 +73,6 @@ extension InnerWebViewRouter {
                     .makeLinkMemoScene(memo: memo, listener: self.currentSceneInteractor)
             else { return }
             
-            next.modalPresentationStyle = .custom
-            next.transitioningDelegate = self.bottomSliderTransitionManager
-            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
             self.currentScene?.present(next, animated: true, completion: nil)
         }
     }

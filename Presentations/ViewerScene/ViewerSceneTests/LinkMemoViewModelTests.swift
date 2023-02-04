@@ -101,4 +101,15 @@ extension LinkMemoViewModelTests {
         XCTAssertEqual(self.didClose, true)
         XCTAssertEqual(self.didUpdatedMemo?.content, "some value")
     }
+    
+    func testViewModel_close() {
+        // given
+        let viewModel = self.makeViewModel()
+        
+        // when
+        viewModel.close()
+        
+        // then
+        XCTAssertEqual(self.didClose, true)
+    }
 }
