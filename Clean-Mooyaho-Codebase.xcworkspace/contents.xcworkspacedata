@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Repository/Repository.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:MooyahoApp/MooyahoApp.xcodeproj">
    </FileRef>
    <Group
