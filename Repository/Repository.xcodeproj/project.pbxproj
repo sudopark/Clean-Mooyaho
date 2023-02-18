@@ -13,6 +13,11 @@
 		F6F6C9A729A0A6D50068D415 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9A629A0A6D50068D415 /* Common3rdParty.framework */; };
 		F6F6C9AB29A0A6DD0068D415 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9AA29A0A6DD0068D415 /* Domain.framework */; };
 		F6F6C9AF29A0A6E60068D415 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9AE29A0A6E60068D415 /* Extensions.framework */; };
+		F6F6C9B629A0A97C0068D415 /* ReadingListRepositoryImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9B529A0A97C0068D415 /* ReadingListRepositoryImple.swift */; };
+		F6F6C9B929A0AB4B0068D415 /* ConcatLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9B829A0AB4B0068D415 /* ConcatLoader.swift */; };
+		F6F6C9BC29A0B0780068D415 /* ConcatLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */; };
+		F6F6C9BE29A0B0A30068D415 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9BD29A0B0A30068D415 /* Common3rdParty.framework */; };
+		F6F6C9C029A0B0A90068D415 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9BF29A0B0A90068D415 /* UnitTestHelpKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +38,11 @@
 		F6F6C9A629A0A6D50068D415 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F6C9AA29A0A6DD0068D415 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F6C9AE29A0A6E60068D415 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6F6C9B529A0A97C0068D415 /* ReadingListRepositoryImple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListRepositoryImple.swift; sourceTree = "<group>"; };
+		F6F6C9B829A0AB4B0068D415 /* ConcatLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcatLoader.swift; sourceTree = "<group>"; };
+		F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcatLoaderTests.swift; sourceTree = "<group>"; };
+		F6F6C9BD29A0B0A30068D415 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6F6C9BF29A0B0A90068D415 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F6C9C029A0B0A90068D415 /* UnitTestHelpKit.framework in Frameworks */,
+				F6F6C9BE29A0B0A30068D415 /* Common3rdParty.framework in Frameworks */,
 				F6F6C99629A0A6B00068D415 /* Repository.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +91,8 @@
 		F6F6C98F29A0A6B00068D415 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				F6F6C9B729A0AAF20068D415 /* Usage+Pattern */,
+				F6F6C9B429A0A9350068D415 /* ReadingList */,
 				F6F6C99029A0A6B00068D415 /* Repository.h */,
 			);
 			path = Repository;
@@ -87,6 +101,7 @@
 		F6F6C99929A0A6B00068D415 /* RepositoryTests */ = {
 			isa = PBXGroup;
 			children = (
+				F6F6C9BA29A0B0660068D415 /* Usage+Pattern */,
 				F6F6C99A29A0A6B00068D415 /* RepositoryTests.swift */,
 			);
 			path = RepositoryTests;
@@ -95,11 +110,37 @@
 		F6F6C9A529A0A6D50068D415 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6F6C9BF29A0B0A90068D415 /* UnitTestHelpKit.framework */,
+				F6F6C9BD29A0B0A30068D415 /* Common3rdParty.framework */,
 				F6F6C9AE29A0A6E60068D415 /* Extensions.framework */,
 				F6F6C9AA29A0A6DD0068D415 /* Domain.framework */,
 				F6F6C9A629A0A6D50068D415 /* Common3rdParty.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6F6C9B429A0A9350068D415 /* ReadingList */ = {
+			isa = PBXGroup;
+			children = (
+				F6F6C9B529A0A97C0068D415 /* ReadingListRepositoryImple.swift */,
+			);
+			path = ReadingList;
+			sourceTree = "<group>";
+		};
+		F6F6C9B729A0AAF20068D415 /* Usage+Pattern */ = {
+			isa = PBXGroup;
+			children = (
+				F6F6C9B829A0AB4B0068D415 /* ConcatLoader.swift */,
+			);
+			path = "Usage+Pattern";
+			sourceTree = "<group>";
+		};
+		F6F6C9BA29A0B0660068D415 /* Usage+Pattern */ = {
+			isa = PBXGroup;
+			children = (
+				F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */,
+			);
+			path = "Usage+Pattern";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +253,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F6C9B929A0AB4B0068D415 /* ConcatLoader.swift in Sources */,
+				F6F6C9B629A0A97C0068D415 /* ReadingListRepositoryImple.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F6C9BC29A0B0780068D415 /* ConcatLoaderTests.swift in Sources */,
 				F6F6C99B29A0A6B00068D415 /* RepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,6 +460,7 @@
 		F6F6C9A329A0A6B00068D415 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
@@ -432,6 +477,7 @@
 		F6F6C9A429A0A6B00068D415 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2ABNASUGL6;
