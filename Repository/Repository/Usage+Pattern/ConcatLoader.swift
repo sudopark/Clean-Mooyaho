@@ -27,13 +27,9 @@ struct ConcatLoader<MainStorage: Sendable, CacheStorage: Sendable>: Sendable {
         and refreshCache: (@Sendable (CacheStorage?, T) async throws -> Void)? = nil
     ) -> Observable<T> {
         let loadFromCache: Observable<T?> = .create {
-            guard let loading = fromCache
+            guard let loading = fromCache, let cache = self.cacheStorage
             else {
                 return nil
-            }
-            guard let cache = self.cacheStorage
-            else {
-                throw RuntimeError("invalid usage: cache storage needs")
             }
             return try? await loading(cache)
         }

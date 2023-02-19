@@ -18,6 +18,8 @@
 		F6F6C9BC29A0B0780068D415 /* ConcatLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */; };
 		F6F6C9BE29A0B0A30068D415 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9BD29A0B0A30068D415 /* Common3rdParty.framework */; };
 		F6F6C9C029A0B0A90068D415 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F6C9BF29A0B0A90068D415 /* UnitTestHelpKit.framework */; };
+		F6F6C9C229A20B7B0068D415 /* BaseConcatLoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9C129A20B7B0068D415 /* BaseConcatLoadingTests.swift */; };
+		F6F6C9C429A210680068D415 /* ReadingListRepositoryImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9C329A210680068D415 /* ReadingListRepositoryImpleTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,8 @@
 		F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcatLoaderTests.swift; sourceTree = "<group>"; };
 		F6F6C9BD29A0B0A30068D415 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6F6C9BF29A0B0A90068D415 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6F6C9C129A20B7B0068D415 /* BaseConcatLoadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseConcatLoadingTests.swift; sourceTree = "<group>"; };
+		F6F6C9C329A210680068D415 /* ReadingListRepositoryImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListRepositoryImpleTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,7 @@
 			children = (
 				F6F6C9BA29A0B0660068D415 /* Usage+Pattern */,
 				F6F6C99A29A0A6B00068D415 /* RepositoryTests.swift */,
+				F6F6C9C329A210680068D415 /* ReadingListRepositoryImpleTests.swift */,
 			);
 			path = RepositoryTests;
 			sourceTree = "<group>";
@@ -139,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */,
+				F6F6C9C129A20B7B0068D415 /* BaseConcatLoadingTests.swift */,
 			);
 			path = "Usage+Pattern";
 			sourceTree = "<group>";
@@ -262,7 +268,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F6C9C429A210680068D415 /* ReadingListRepositoryImpleTests.swift in Sources */,
 				F6F6C9BC29A0B0780068D415 /* ConcatLoaderTests.swift in Sources */,
+				F6F6C9C229A20B7B0068D415 /* BaseConcatLoadingTests.swift in Sources */,
 				F6F6C99B29A0A6B00068D415 /* RepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

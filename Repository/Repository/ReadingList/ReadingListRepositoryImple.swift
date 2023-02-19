@@ -14,10 +14,13 @@ import Extensions
 
 public protocol ReadingListStorage: Sendable {
     
+    func loadMyList() async throws -> ReadingList
 }
 
 public protocol ReadingListCacheStorage: Sendable {
     
+    func loadMyList() async throws -> ReadingList
+    func updateMyList(_ list: ReadingList) async throws
 }
 
 public final class ReadingListRepositoryImple: ReadingListRepository, Sendable {
@@ -38,10 +41,14 @@ public final class ReadingListRepositoryImple: ReadingListRepository, Sendable {
 extension ReadingListRepositoryImple {
     
     public func loadMyList() -> Observable<ReadingList> {
-        // 1. cache에서 로드
-        // 2. main에서 로드
-        // 3. cache 업데이트
-        return .empty()
+        let loader = ConcatLoader(mainStroage: self.mainStorage, cacheStorage: self.cacheStorage)
+        return loader.load {
+            try await $0.loadMyList()
+        } fromMain: {
+            try await $0.loadMyList()
+        } and: {
+            try await $0?.updateMyList($1)
+        }
     }
     
     public func loadList(_ listID: String) -> Observable<ReadingList> {
