@@ -16,14 +16,19 @@ public protocol ReadingListStorage: Sendable {
     
     func loadMyList() async throws -> ReadingList
     func loadList(_ listId: String) async throws -> ReadingList
+    func loadLinkItem(_ itemId: String) async throws -> ReadLinkItem
 }
 
 public protocol ReadingListCacheStorage: Sendable {
     
     func loadMyList() async throws -> ReadingList
     func updateMyList(_ list: ReadingList) async throws
+    
     func loadList(_ listId: String) async throws -> ReadingList?
     func updateList(_ list: ReadingList) async throws
+    
+    func loadLinkItem(_ itemId: String) async throws -> ReadLinkItem?
+    func updateLinkItem(_ item: ReadLinkItem) async throws
 }
 
 public final class ReadingListRepositoryImple: ReadingListRepository, Sendable {
@@ -70,7 +75,14 @@ extension ReadingListRepositoryImple {
     }
     
     public func loadLinkItem(_ itemID: String) -> Observable<ReadLinkItem> {
-        return .empty()
+        let loader = self.makeConcatLoader()
+        return loader.load {
+            try await $0.loadLinkItem(itemID)
+        } fromMain: {
+            try await $0.loadLinkItem(itemID)
+        } and: {
+            try await $0?.updateLinkItem($1)
+        }
     }
 }
 

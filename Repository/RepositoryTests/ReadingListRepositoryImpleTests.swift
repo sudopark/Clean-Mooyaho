@@ -220,6 +220,9 @@ class ReadingListRepositoryImple_DualStorageTests_loadListTests: BaseDualStorage
             super.testLoader_whenDual_loadFromCacheAndRemote()
         }
         try self.runTest {
+            super.testLoader_whenDualAndCacheNotExists_justReturnMain()
+        }
+        try self.runTest {
             super.testLoader_whenDualAndFailToLoadFromCache_ignore()
         }
         try self.runTest {
@@ -234,6 +237,120 @@ class ReadingListRepositoryImple_DualStorageTests_loadListTests: BaseDualStorage
     }
 }
 
+
+// MARK: - Load Link item
+
+class ReadingListRepositoryImple_SingleStorage_loadLinkItemTests: BaseSingleConcacatLoadingTests<ReadLinkItem> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubLoadFail() {
+        self.stubStorage.shouldFailLoadLinkItem = true
+    }
+    
+    override func loading() -> Observable<ReadLinkItem> {
+        return self.repository.loadLinkItem("some")
+    }
+    
+    override func assertResult(_ result: ReadLinkItem?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() throws {
+        try runTest {
+            super.testLoader_load()
+        }
+        try runTest {
+            super.testLoader_loadFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_loadLinkItemTests: BaseDualStorageConcatLoadingTests<ReadLinkItem> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+        self.stubCacheStorage.didUpdateLinkItem = {
+            super.didCacheUpdated?()
+        }
+    }
+    
+    override func tearDownWithError() throws {
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+        try super.tearDownWithError()
+    }
+    
+    override func stubCacheFail() {
+        self.stubCacheStorage.shouldFailLoadLinkItem = true
+    }
+    
+    override func stubNullCache() {
+        self.stubCacheStorage.itemisNotExists = true
+    }
+    
+    override func stubLoadFail() {
+        self.stubStorage.shouldFailLoadLinkItem = true
+    }
+    
+    override func stubUpdateCacheFail() {
+        self.stubCacheStorage.shouldFailUpdateLinkItem = true
+    }
+    
+    override func loading() -> Observable<ReadLinkItem> {
+        return self.repository.loadLinkItem("some")
+    }
+    
+    override func assertResults(_ results: [ReadLinkItem]) -> Bool {
+        return results.map { $0.link } == ["cache", "main"]
+    }
+    
+    override func assertNoCacheResults(_ results: [ReadLinkItem]) -> Bool {
+        return results.map { $0.link } == ["main"]
+    }
+    
+    func testUsage() throws {
+        try self.runTest {
+            super.testLoader_whenDual_loadFromCacheAndRemote()
+        }
+        try self.runTest {
+            super.testLoader_whenDualAndCacheNotExists_justReturnMain()
+        }
+        try self.runTest {
+            super.testLoader_whenDualAndFailToLoadFromCache_ignore()
+        }
+        try self.runTest {
+            super.testLoader_whenDualAndFailToLoadFromMain_fail()
+        }
+        try self.runTest {
+            super.testLoader_whenDualAndRefreshCacheNeed_refresh()
+        }
+        try self.runTest {
+            super.testLoader_whenRefreshCacheFail_ignore()
+        }
+    }
+}
 
 private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
     
@@ -252,6 +369,15 @@ private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
              throw RuntimeError("failed")
         } else {
             return ReadingList(uuid: listId, name: "main")
+        }
+    }
+    
+    var shouldFailLoadLinkItem: Bool = false
+    func loadLinkItem(_ itemId: String) async throws -> ReadLinkItem {
+        if shouldFailLoadLinkItem {
+            throw RuntimeError("failed")
+        } else {
+            return ReadLinkItem(uuid: itemId, link: "main")
         }
     }
 }
@@ -293,6 +419,27 @@ private class StubCacheStorage: ReadingListCacheStorage, @unchecked Sendable {
     func updateList(_ list: ReadingList) async throws {
         self.didListUpdated?(list.uuid)
         if shouldFailUpdateList {
+            throw RuntimeError("failed")
+        }
+    }
+    
+    var shouldFailLoadLinkItem: Bool = false
+    var itemisNotExists: Bool = false
+    func loadLinkItem(_ itemId: String) async throws -> ReadLinkItem? {
+        if shouldFailLoadLinkItem {
+            throw RuntimeError("failed")
+        } else if itemisNotExists {
+            return nil
+        } else {
+            return ReadLinkItem(uuid: itemId, link: "cache")
+        }
+    }
+    
+    var didUpdateLinkItem: (() -> Void)?
+    var shouldFailUpdateLinkItem: Bool = false
+    func updateLinkItem(_ item: ReadLinkItem) async throws {
+        self.didUpdateLinkItem?()
+        if shouldFailUpdateLinkItem {
             throw RuntimeError("failed")
         }
     }
