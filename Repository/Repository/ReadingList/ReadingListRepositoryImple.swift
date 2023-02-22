@@ -19,6 +19,8 @@ public protocol ReadingListStorage: Sendable {
     func loadLinkItem(_ itemId: String) async throws -> ReadLinkItem
     func saveList(_ list: ReadingList, at parentId: String?) async throws -> ReadingList
     func saveLinkItem(_ item: ReadLinkItem, at listId: String?) async throws -> ReadLinkItem
+    func updateList(_ list: ReadingList) async throws -> ReadingList
+    func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem
 }
 
 public protocol ReadingListCacheStorage: Sendable {
@@ -115,11 +117,21 @@ extension ReadingListRepositoryImple {
     }
     
     public func updateList(_ readingList: ReadingList) async throws -> ReadingList {
-        throw RuntimeError("some")
+        let updater = SwitchUpdater(mainStorage: self.mainStorage, cacheStorage: self.cacheStorage)
+        return try await updater.update {
+            try await $0.updateList(readingList)
+        } and: {
+            try await $0?.updateList($1)
+        }
     }
     
     public func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem {
-        throw RuntimeError("some")
+        let updater = SwitchUpdater(mainStorage: self.mainStorage, cacheStorage: self.cacheStorage)
+        return try await updater.update {
+            try await $0.updateLinkItem(item)
+        } and: {
+            try await $0?.updateLinkItem($1)
+        }
     }
 }
 

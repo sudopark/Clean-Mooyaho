@@ -537,6 +537,188 @@ class ReadingListRepositoryImple_DualStorageTests_SaveLinkItemTests: BaseDualSwi
     }
 }
 
+// MARK: - Update List
+
+class ReadingListRepositoryImple_SingleStorage_UpdateListTests: BaseSingleSwitchUpdatingTests<ReadingList> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubFail() {
+        self.stubStorage.shouldFailUpdateList = true
+    }
+    
+    override func updating() async throws -> ReadingList {
+        return try await self.repository.updateList(.init(uuid: "some", name: "main"))
+    }
+    
+    override func assertResult(_ result: ReadingList?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        try await self.runAsyncTest {
+            await super.testUpdater_save()
+        }
+        try await self.runAsyncTest {
+            await super.testUpdater_saveFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_UpdateListTests: BaseDualSwitchUpdatingTests<ReadingList> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+    }
+    
+    override func stubFailUpdate() {
+        self.stubStorage.shouldFailUpdateList = true
+    }
+    
+    override func stubCacheFailUpdate() {
+        self.stubCacheStorage.shouldFailUpdateList = true
+    }
+    
+    override func updating() async throws -> ReadingList {
+        return try await self.repository.updateList(.init(uuid: "some", name: "main"))
+    }
+    
+    override func assertResult(_ result: ReadingList?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        
+        try await runAsyncTest {
+            await super.testUpdater_update()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateMainStorageFail_fail()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateCacheFail_ignore()
+        }
+    }
+}
+
+// MARK: - Update LinkItem
+
+class ReadingListRepositoryImple_SingleStorage_UpdateLinkItemTests: BaseSingleSwitchUpdatingTests<ReadLinkItem> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubFail() {
+        self.stubStorage.shouldFailUpdateItem = true
+    }
+    
+    override func updating() async throws -> ReadLinkItem {
+        return try await self.repository.updateLinkItem(.init(uuid: "some", link: "link"))
+    }
+    
+    override func assertResult(_ result: ReadLinkItem?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        try await self.runAsyncTest {
+            await super.testUpdater_save()
+        }
+        try await self.runAsyncTest {
+            await super.testUpdater_saveFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_UpdateLinkItemTests: BaseDualSwitchUpdatingTests<ReadLinkItem> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+    }
+    
+    override func stubFailUpdate() {
+        self.stubStorage.shouldFailUpdateItem = true
+    }
+    
+    override func stubCacheFailUpdate() {
+        self.stubCacheStorage.shouldFailUpdateLinkItem = true
+    }
+    
+    override func updating() async throws -> ReadLinkItem {
+        return try await self.repository.updateLinkItem(.init(uuid: "some", link: "link"))
+    }
+    
+    override func assertResult(_ result: ReadLinkItem?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        
+        try await runAsyncTest {
+            await super.testUpdater_update()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateMainStorageFail_fail()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateCacheFail_ignore()
+        }
+    }
+}
+
 private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
     
     var shouldFailLoadMyList: Bool = false
@@ -581,6 +763,24 @@ private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
             throw RuntimeError("failed")
         } else {
             return item
+        }
+    }
+    
+    var shouldFailUpdateList: Bool = false
+    func updateList(_ list: ReadingList) async throws -> ReadingList {
+        if shouldFailUpdateList {
+            throw RuntimeError("failed")
+        } else {
+            return .init(uuid: "some", name: "list")
+        }
+    }
+    
+    var shouldFailUpdateItem: Bool = false
+    func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem {
+        if shouldFailUpdateItem {
+            throw RuntimeError("failed")
+        } else {
+            return .init(uuid: "some", link: "link")
         }
     }
 }
