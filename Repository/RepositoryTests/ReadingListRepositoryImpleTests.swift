@@ -352,6 +352,100 @@ class ReadingListRepositoryImple_DualStorageTests_loadLinkItemTests: BaseDualSto
     }
 }
 
+// MARK: - Save List
+
+class ReadingListRepositoryImple_SingleStorage_SaveListTests: BaseSingleSwitchUpdatingTests<ReadingList> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubFail() {
+        self.stubStorage.shouldFailSaveList = true
+    }
+    
+    override func updating() async throws -> ReadingList {
+        return try await self.repository.saveList(.init(uuid: "some", name: "main"), at: "parent")
+    }
+    
+    override func assertResult(_ result: ReadingList?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        try await self.runAsyncTest {
+            await super.testUpdater_save()
+        }
+        try await self.runAsyncTest {
+            await super.testUpdater_saveFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_SaveListTests: BaseDualSwitchUpdatingTests<ReadingList> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+        self.stubCacheStorage.didSaveList = {
+            super.didCacheUpdated?()
+        }
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+    }
+    
+    override func stubFailUpdate() {
+        self.stubStorage.shouldFailSaveList = true
+    }
+    
+    override func stubCacheFailUpdate() {
+        self.stubCacheStorage.shouldFailSaveList = true
+    }
+    
+    override func updating() async throws -> ReadingList {
+        return try await self.repository.saveList(.init(uuid: "some", name: "name"), at: "parent")
+    }
+    
+    override func assertResult(_ result: ReadingList?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        
+        try await runAsyncTest {
+            await super.testUpdater_update()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateMainStorageFail_fail()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateCacheFail_ignore()
+        }
+    }
+}
+
 private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
     
     var shouldFailLoadMyList: Bool = false
@@ -378,6 +472,15 @@ private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
             throw RuntimeError("failed")
         } else {
             return ReadLinkItem(uuid: itemId, link: "main")
+        }
+    }
+    
+    var shouldFailSaveList: Bool = false
+    func saveList(_ list: ReadingList, at parentId: String?) async throws -> ReadingList {
+        if self.shouldFailSaveList {
+            throw RuntimeError("failed")
+        } else {
+            return list
         }
     }
 }
@@ -440,6 +543,15 @@ private class StubCacheStorage: ReadingListCacheStorage, @unchecked Sendable {
     func updateLinkItem(_ item: ReadLinkItem) async throws {
         self.didUpdateLinkItem?()
         if shouldFailUpdateLinkItem {
+            throw RuntimeError("failed")
+        }
+    }
+    
+    var shouldFailSaveList: Bool = false
+    var didSaveList: (() -> Void)?
+    func saveList(_ list: ReadingList, at parentId: String?) async throws  {
+        self.didSaveList?()
+        if self.shouldFailSaveList {
             throw RuntimeError("failed")
         }
     }

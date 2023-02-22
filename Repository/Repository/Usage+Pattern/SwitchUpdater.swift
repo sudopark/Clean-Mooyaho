@@ -21,19 +21,14 @@ struct SwitchUpdater<MainStorage: Sendable, CacheStorage: Sendable>: Sendable {
     
     func update<T: Sendable>(
         _ updateOnMainStorage: @Sendable @escaping (MainStorage) async throws -> T,
-        and updateOnCache: (@Sendable (CacheStorage, T) async throws -> T)? = nil
+        and updateOnCache: (@Sendable (CacheStorage?, T) async throws -> Void)? = nil
     ) async throws -> T {
         
         let updateResult = try await updateOnMainStorage(self.mainStorage)
         
-        guard let cacheUpdate = updateOnCache
+        guard let cacheUpdate = updateOnCache, let cacheStorage = self.cacheStorage
         else {
             return updateResult
-        }
-        
-        guard let cacheStorage = self.cacheStorage
-        else {
-            throw RuntimeError("cache storage not exists")
         }
         
         Task.detached {

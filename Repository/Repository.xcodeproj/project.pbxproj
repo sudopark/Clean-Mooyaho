@@ -22,6 +22,8 @@
 		F6F6C9C429A210680068D415 /* ReadingListRepositoryImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9C329A210680068D415 /* ReadingListRepositoryImpleTests.swift */; };
 		F6F6C9C629A3D0560068D415 /* SwitchUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9C529A3D0560068D415 /* SwitchUpdater.swift */; };
 		F6F6C9C829A3D37E0068D415 /* SwitchUpdaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9C729A3D37E0068D415 /* SwitchUpdaterTests.swift */; };
+		F6F6C9CA29A65A760068D415 /* BaseSwitchUpdaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9C929A65A760068D415 /* BaseSwitchUpdaterTests.swift */; };
+		F6F6C9CC29A65AD40068D415 /* BaseRepositoryUsageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6C9CB29A65AD40068D415 /* BaseRepositoryUsageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,8 @@
 		F6F6C9C329A210680068D415 /* ReadingListRepositoryImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListRepositoryImpleTests.swift; sourceTree = "<group>"; };
 		F6F6C9C529A3D0560068D415 /* SwitchUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchUpdater.swift; sourceTree = "<group>"; };
 		F6F6C9C729A3D37E0068D415 /* SwitchUpdaterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchUpdaterTests.swift; sourceTree = "<group>"; };
+		F6F6C9C929A65A760068D415 /* BaseSwitchUpdaterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSwitchUpdaterTests.swift; sourceTree = "<group>"; };
+		F6F6C9CB29A65AD40068D415 /* BaseRepositoryUsageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRepositoryUsageTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,9 +152,11 @@
 		F6F6C9BA29A0B0660068D415 /* Usage+Pattern */ = {
 			isa = PBXGroup;
 			children = (
+				F6F6C9CB29A65AD40068D415 /* BaseRepositoryUsageTests.swift */,
 				F6F6C9BB29A0B0780068D415 /* ConcatLoaderTests.swift */,
 				F6F6C9C129A20B7B0068D415 /* BaseConcatLoadingTests.swift */,
 				F6F6C9C729A3D37E0068D415 /* SwitchUpdaterTests.swift */,
+				F6F6C9C929A65A760068D415 /* BaseSwitchUpdaterTests.swift */,
 			);
 			path = "Usage+Pattern";
 			sourceTree = "<group>";
@@ -277,8 +283,10 @@
 			files = (
 				F6F6C9C429A210680068D415 /* ReadingListRepositoryImpleTests.swift in Sources */,
 				F6F6C9BC29A0B0780068D415 /* ConcatLoaderTests.swift in Sources */,
+				F6F6C9CA29A65A760068D415 /* BaseSwitchUpdaterTests.swift in Sources */,
 				F6F6C9C229A20B7B0068D415 /* BaseConcatLoadingTests.swift in Sources */,
 				F6F6C9C829A3D37E0068D415 /* SwitchUpdaterTests.swift in Sources */,
+				F6F6C9CC29A65AD40068D415 /* BaseRepositoryUsageTests.swift in Sources */,
 				F6F6C99B29A0A6B00068D415 /* RepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

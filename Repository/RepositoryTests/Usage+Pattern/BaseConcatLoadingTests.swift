@@ -15,7 +15,7 @@ import UnitTestHelpKit
 
 // MARK: - BaseSingleConcacatLoadingTests
 
-class BaseSingleConcacatLoadingTests<Result>: BaseTestCase, WaitObservableEvents {
+class BaseSingleConcacatLoadingTests<Result>: BaseRepositoryUsageTests, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     
@@ -32,12 +32,6 @@ class BaseSingleConcacatLoadingTests<Result>: BaseTestCase, WaitObservableEvents
     func stubLoadFail() { }
     func loading() -> Observable<Result> { .empty() }
     func assertResult(_ result: Result?) -> Bool { return true }
-    
-    func runTest(_ action: @escaping () -> Void) throws {
-        try self.setUpWithError()
-        action()
-        try self.tearDownWithError()
-    }
 }
 
 
@@ -72,7 +66,7 @@ extension BaseSingleConcacatLoadingTests {
 
 // MARK: - BaseDualStorageConcatLoadingTests
 
-class BaseDualStorageConcatLoadingTests<Result>: BaseTestCase, WaitObservableEvents {
+class BaseDualStorageConcatLoadingTests<Result>: BaseRepositoryUsageTests, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var didCacheUpdated: (() -> Void)?
@@ -98,12 +92,6 @@ class BaseDualStorageConcatLoadingTests<Result>: BaseTestCase, WaitObservableEve
     
     func assertResults(_ results: [Result]) -> Bool { return true }
     func assertNoCacheResults(_ results: [Result]) -> Bool { return true }
-    
-    func runTest(_ action: @escaping () -> Void) throws {
-        try self.setUpWithError()
-        action()
-        try self.tearDownWithError()
-    }
 }
 
 

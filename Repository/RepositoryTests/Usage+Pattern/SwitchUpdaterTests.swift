@@ -88,7 +88,7 @@ extension SwitchUpdaterTests {
             try await updater.update {
                 try await $0.update(100)
             } and: {
-                try await $0.update($1)
+                _ = try await $0?.update($1)
             }
         }
         let result = self.waitFirstElement(expect, for: updating)
@@ -123,7 +123,7 @@ extension SwitchUpdaterTests {
         let result = try? await updater.update { _ in
             throw RuntimeError("some")
         } and: {
-            try await $0.update($1)
+            _ = try await $0?.update($1)
         }
         
         // then
