@@ -446,6 +446,97 @@ class ReadingListRepositoryImple_DualStorageTests_SaveListTests: BaseDualSwitchU
     }
 }
 
+// MARK: - Save LinkItem
+
+class ReadingListRepositoryImple_SingleStorage_SaveLinkItemTests: BaseSingleSwitchUpdatingTests<ReadLinkItem> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubFail() {
+        self.stubStorage.shouldFailSaveLinkItem = true
+    }
+    
+    override func updating() async throws -> ReadLinkItem {
+        return try await self.repository.saveLinkItem(.init(uuid: "some", link: "link"), to: "some")
+    }
+    
+    override func assertResult(_ result: ReadLinkItem?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        try await self.runAsyncTest {
+            await super.testUpdater_save()
+        }
+        try await self.runAsyncTest {
+            await super.testUpdater_saveFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_SaveLinkItemTests: BaseDualSwitchUpdatingTests<ReadLinkItem> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+    }
+    
+    override func stubFailUpdate() {
+        self.stubStorage.shouldFailSaveLinkItem = true
+    }
+    
+    override func stubCacheFailUpdate() {
+        self.stubCacheStorage.shouldFailSaveLinkItem = true
+    }
+    
+    override func updating() async throws -> ReadLinkItem {
+        return try await self.repository.saveLinkItem(.init(uuid: "some", link: "link"), to: "some")
+    }
+    
+    override func assertResult(_ result: ReadLinkItem?) -> Bool {
+        return result?.uuid == "some"
+    }
+    
+    func testUsage() async throws {
+        
+        try await runAsyncTest {
+            await super.testUpdater_update()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateMainStorageFail_fail()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateCacheFail_ignore()
+        }
+    }
+}
+
 private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
     
     var shouldFailLoadMyList: Bool = false
@@ -481,6 +572,15 @@ private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
             throw RuntimeError("failed")
         } else {
             return list
+        }
+    }
+    
+    var shouldFailSaveLinkItem: Bool = false
+    func saveLinkItem(_ item: ReadLinkItem, at listId: String?) async throws -> ReadLinkItem {
+        if self.shouldFailSaveLinkItem {
+            throw RuntimeError("failed")
+        } else {
+            return item
         }
     }
 }
@@ -552,6 +652,13 @@ private class StubCacheStorage: ReadingListCacheStorage, @unchecked Sendable {
     func saveList(_ list: ReadingList, at parentId: String?) async throws  {
         self.didSaveList?()
         if self.shouldFailSaveList {
+            throw RuntimeError("failed")
+        }
+    }
+    
+    var shouldFailSaveLinkItem: Bool = false
+    func saveLinkItem(_ item: ReadLinkItem, at listId: String?) async throws {
+        if self.shouldFailSaveLinkItem {
             throw RuntimeError("failed")
         }
     }
