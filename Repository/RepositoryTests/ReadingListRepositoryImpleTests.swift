@@ -719,6 +719,189 @@ class ReadingListRepositoryImple_DualStorageTests_UpdateLinkItemTests: BaseDualS
     }
 }
 
+
+// MARL: - Remove List
+
+class ReadingListRepositoryImple_SingleStorage_RemoveListTests: BaseSingleSwitchUpdatingTests<Void> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubFail() {
+        self.stubStorage.shouldFailRemoveList = true
+    }
+    
+    override func updating() async throws {
+        return try await self.repository.removeList("some")
+    }
+    
+    override func assertResult(_ result: Void?) -> Bool {
+        return result != nil
+    }
+    
+    func testUsage() async throws {
+        try await self.runAsyncTest {
+            await super.testUpdater_save()
+        }
+        try await self.runAsyncTest {
+            await super.testUpdater_saveFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_RemoveListTests: BaseDualSwitchUpdatingTests<Void> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+    }
+    
+    override func stubFailUpdate() {
+        self.stubStorage.shouldFailRemoveList = true
+    }
+    
+    override func stubCacheFailUpdate() {
+        self.stubCacheStorage.shouldFailRemoveList = true
+    }
+    
+    override func updating() async throws {
+        return try await self.repository.removeList("some")
+    }
+    
+    override func assertResult(_ result: Void?) -> Bool {
+        return result != nil
+    }
+    
+    func testUsage() async throws {
+        
+        try await runAsyncTest {
+            await super.testUpdater_update()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateMainStorageFail_fail()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateCacheFail_ignore()
+        }
+    }
+}
+
+// MARL: - Remove Item
+
+class ReadingListRepositoryImple_SingleStorage_RemoveLinkItemTests: BaseSingleSwitchUpdatingTests<Void> {
+    
+    private var stubStorage: StubMainStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.repository = .init(self.stubStorage, nil)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.stubStorage = nil
+        self.repository = nil
+    }
+    
+    override func stubFail() {
+        self.stubStorage.shouldFailRemoveLinkItem = true
+    }
+    
+    override func updating() async throws {
+        return try await self.repository.removeLinkItem("some")
+    }
+    
+    override func assertResult(_ result: Void?) -> Bool {
+        return result != nil
+    }
+    
+    func testUsage() async throws {
+        try await self.runAsyncTest {
+            await super.testUpdater_save()
+        }
+        try await self.runAsyncTest {
+            await super.testUpdater_saveFail()
+        }
+    }
+}
+
+class ReadingListRepositoryImple_DualStorageTests_RemoveLinkItemTests: BaseDualSwitchUpdatingTests<Void> {
+    
+    private var stubStorage: StubMainStorage!
+    private var stubCacheStorage: StubCacheStorage!
+    private var repository: ReadingListRepositoryImple!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        self.stubStorage = .init()
+        self.stubCacheStorage = .init()
+        self.repository = .init(self.stubStorage, self.stubCacheStorage)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        self.repository = nil
+        self.stubStorage = nil
+        self.stubCacheStorage = nil
+    }
+    
+    override func stubFailUpdate() {
+        self.stubStorage.shouldFailRemoveLinkItem = true
+    }
+    
+    override func stubCacheFailUpdate() {
+        self.stubCacheStorage.shouldFailRemoveLinkItem = true
+    }
+    
+    override func updating() async throws {
+        return try await self.repository.removeLinkItem("some")
+    }
+    
+    override func assertResult(_ result: Void?) -> Bool {
+        return result != nil
+    }
+    
+    func testUsage() async throws {
+        
+        try await runAsyncTest {
+            await super.testUpdater_update()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateMainStorageFail_fail()
+        }
+        try await runAsyncTest {
+            await super.testUpdater_whenUpdateCacheFail_ignore()
+        }
+    }
+}
+
 private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
     
     var shouldFailLoadMyList: Bool = false
@@ -781,6 +964,20 @@ private class StubMainStorage: ReadingListStorage, @unchecked Sendable {
             throw RuntimeError("failed")
         } else {
             return .init(uuid: "some", link: "link")
+        }
+    }
+    
+    var shouldFailRemoveList: Bool = false
+    func removeList(_ id: String) async throws {
+        if shouldFailRemoveList {
+            throw RuntimeError("failed")
+        }
+    }
+    
+    var shouldFailRemoveLinkItem: Bool = false
+    func removeLinkItem(_ id: String) async throws {
+        if shouldFailRemoveLinkItem {
+            throw RuntimeError("failed")
         }
     }
 }
@@ -859,6 +1056,20 @@ private class StubCacheStorage: ReadingListCacheStorage, @unchecked Sendable {
     var shouldFailSaveLinkItem: Bool = false
     func saveLinkItem(_ item: ReadLinkItem, at listId: String?) async throws {
         if self.shouldFailSaveLinkItem {
+            throw RuntimeError("failed")
+        }
+    }
+    
+    var shouldFailRemoveList: Bool = false
+    func removeList(_ id: String) async throws {
+        if shouldFailRemoveList {
+            throw RuntimeError("failed")
+        }
+    }
+    
+    var shouldFailRemoveLinkItem: Bool = false
+    func removeLinkItem(_ id: String) async throws {
+        if shouldFailRemoveLinkItem {
             throw RuntimeError("failed")
         }
     }

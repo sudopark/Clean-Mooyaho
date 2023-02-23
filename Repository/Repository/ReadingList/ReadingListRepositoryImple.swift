@@ -21,6 +21,8 @@ public protocol ReadingListStorage: Sendable {
     func saveLinkItem(_ item: ReadLinkItem, at listId: String?) async throws -> ReadLinkItem
     func updateList(_ list: ReadingList) async throws -> ReadingList
     func updateLinkItem(_ item: ReadLinkItem) async throws -> ReadLinkItem
+    func removeList(_ id: String) async throws
+    func removeLinkItem(_ id: String) async throws
 }
 
 public protocol ReadingListCacheStorage: Sendable {
@@ -36,6 +38,9 @@ public protocol ReadingListCacheStorage: Sendable {
     
     func saveList(_ list: ReadingList, at parentId: String?) async throws
     func saveLinkItem(_ item: ReadLinkItem, at listId: String?) async throws
+    
+    func removeList(_ id: String) async throws
+    func removeLinkItem(_ id: String) async throws
 }
 
 public final class ReadingListRepositoryImple: ReadingListRepository, Sendable {
@@ -139,10 +144,20 @@ extension ReadingListRepositoryImple {
 extension ReadingListRepositoryImple {
     
     public func removeList(_ id: String) async throws {
-        throw RuntimeError("some")
+        let remover = SwitchUpdater(mainStorage: self.mainStorage, cacheStorage: self.cacheStorage)
+        return try await remover.update {
+            try await $0.removeList(id)
+        } and: { cache, _ in
+            try await cache?.removeList(id)
+        }
     }
     
     public func removeLinkItem(_ id: String) async throws {
-        throw RuntimeError("some")
+        let remover = SwitchUpdater(mainStorage: self.mainStorage, cacheStorage: self.cacheStorage)
+        return try await remover.update {
+            try await $0.removeLinkItem(id)
+        } and: { cache, _ in
+            try await cache?.removeLinkItem(id)
+        }
     }
 }
