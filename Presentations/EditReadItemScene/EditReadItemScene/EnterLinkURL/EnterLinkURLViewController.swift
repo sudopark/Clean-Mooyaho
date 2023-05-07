@@ -155,7 +155,7 @@ extension EnterLinkURLViewController: Presenting {
     public func setupStyling() {
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Add a read link item".localized)
         
         _ = self.textField

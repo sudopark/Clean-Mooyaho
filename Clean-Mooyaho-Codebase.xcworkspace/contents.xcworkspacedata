@@ -35,6 +35,36 @@
    <FileRef
       location = "group:Domain/Domain.xcodeproj">
    </FileRef>
+   <Group
+      location = "container:"
+      name = "Repositories">
+      <FileRef
+         location = "group:Repositories/ReadingList/ReadingList.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Supports">
+      <FileRef
+         location = "group:Supports/Extensions/Extensions.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Supports/Remote/Remote.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Supports/Local/Local.xcodeproj">
+      </FileRef>
+      <Group
+         location = "container:"
+         name = "Tests">
+         <FileRef
+            location = "group:Supports/Tests/LocalDoubles/LocalDoubles.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:Supports/Tests/RemoteDoubles/RemoteDoubles/RemoteDoubles.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
    <FileRef
       location = "group:DataStore/DataStore.xcodeproj">
    </FileRef>

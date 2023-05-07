@@ -9,7 +9,7 @@
 import UIKit
 
 
-public protocol ClipboardServie {
+public protocol ClipboardServie: Sendable {
     
     func getCopedString() -> String?
     

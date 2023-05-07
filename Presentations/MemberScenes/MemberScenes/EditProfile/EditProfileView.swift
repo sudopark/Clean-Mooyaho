@@ -20,6 +20,7 @@ import CommonPresenting
 
 // MARK: - EditProfileViewController
 
+@MainActor
 public final class EditProfileViewStateObject: ObservableObject {
     
     @Published var thumbnail: Thumbnail?

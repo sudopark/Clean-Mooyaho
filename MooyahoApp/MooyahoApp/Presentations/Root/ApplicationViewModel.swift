@@ -12,10 +12,11 @@ import RxSwift
 import RxRelay
 
 import Domain
+import Extensions
 import FirebaseService
 
 
-public protocol ApplicationViewModel {
+public protocol ApplicationViewModel: Sendable {
     
     func appDidLaunched()
     func handleOpenURL(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]?) -> Bool
@@ -30,7 +31,7 @@ public protocol ApplicationViewModel {
 }
 
 
-public final class ApplicationViewModelImple: ApplicationViewModel {
+public final class ApplicationViewModelImple: ApplicationViewModel, @unchecked Sendable {
     
     
     private let applicationUsecase: ApplicationUsecase
@@ -185,15 +186,19 @@ extension ApplicationViewModelImple {
 extension ApplicationViewModelImple {
     
     private func handleRemindMessage(_ message: ReadRemindMessage) {
-        let handleed = self.router.showRemindItem(message.itemID)
-        guard handleed == false else { return }
-        self.pendingShowRemindMessage = message
+        Task { @MainActor in
+            let handleed = self.router.showRemindItem(message.itemID)
+            guard handleed == false else { return }
+            self.pendingShowRemindMessage = message
+        }
     }
     
     private func showDetailIfNeed() {
-        guard let pending = self.pendingShowRemindMessage else { return }
-        _ = self.router.showRemindItem(pending.itemID)
-        self.pendingShowRemindMessage = nil
+        Task { @MainActor in
+            guard let pending = self.pendingShowRemindMessage else { return }
+            _ = self.router.showRemindItem(pending.itemID)
+            self.pendingShowRemindMessage = nil
+        }
     }
 }
 

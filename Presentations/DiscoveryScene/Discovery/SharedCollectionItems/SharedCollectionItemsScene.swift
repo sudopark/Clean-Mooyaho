@@ -25,7 +25,7 @@ extension SharedCollectionItemsViewModelImple: SharedCollectionItemsSceneInterac
 
 extension SharedCollectionItemsViewController {
 
-    public var interactor: SharedCollectionItemsSceneInteractable? {
+    public nonisolated var interactor: SharedCollectionItemsSceneInteractable? {
         return self.viewModel as? SharedCollectionItemsSceneInteractable
     }
 }

@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditReadPriorityRouting: Routing { }
+public protocol EditReadPriorityRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

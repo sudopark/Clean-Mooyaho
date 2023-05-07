@@ -44,7 +44,7 @@ final class SearchReadItemCell: BaseTableViewCell, Presenting {
     func updateCategories(_ categories: [ItemCategory]) {
         let validCategory = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.expandView.categoriesView.isHidden = validCategory == nil
-        validCategory.do <| self.expandView.categoriesView.updateCategories(_:)
+        validCategory.do <| { self.expandView.categoriesView.updateCategories($0) }
     }
 }
 

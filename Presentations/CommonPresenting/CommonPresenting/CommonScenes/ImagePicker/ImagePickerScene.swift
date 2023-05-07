@@ -13,13 +13,14 @@ import RxSwift
 import RxCocoa
 
 import Domain
+import Extensions
 
 
 // MARK: - ImagePickerScene Interactor & Presenter
 
 //public protocol ImagePickerSceneInteractor { }
 //
-public protocol ImagePickerSceneListenable: AnyObject {
+public protocol ImagePickerSceneListenable: Sendable, AnyObject {
     
     func imagePicker(didSelect imagePath: String, imageSize: ImageSize)
     func imagePicker(didFail selectError: Error)

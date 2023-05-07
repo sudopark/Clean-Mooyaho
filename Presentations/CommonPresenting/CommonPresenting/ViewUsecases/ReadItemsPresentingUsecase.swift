@@ -12,6 +12,7 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
 
 
 // MARK: - ReadItemCellViewModel
@@ -80,6 +81,7 @@ public struct ReadCollectionItemSection {
 
 // MARK: - ReadItemCells
 
+@MainActor
 public protocol ReadItemCells: BaseTableViewCell {
     
     associatedtype CellViewModel: ReadItemCellViewModel

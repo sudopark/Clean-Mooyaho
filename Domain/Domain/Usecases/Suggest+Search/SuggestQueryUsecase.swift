@@ -10,11 +10,12 @@ import Foundation
 
 import RxSwift
 import RxRelay
+import Extensions
 
 
 // MARK: - SuggestQueryUsecase
 
-public protocol SuggestQueryUsecase: AnyObject {
+public protocol SuggestQueryUsecase: Sendable, AnyObject {
     
     func startSuggest(query: String)
     
@@ -26,7 +27,7 @@ public protocol SuggestQueryUsecase: AnyObject {
 
 // MARK: - SuggestableQuerySyncUsecase
 
-public protocol SuggestableQuerySyncUsecase {
+public protocol SuggestableQuerySyncUsecase: Sendable {
 
     func insertSuggestableQueries(_ queries: [String])
     

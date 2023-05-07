@@ -47,7 +47,7 @@ extension SelectAddItemTypeViewModelTests {
         
         // when
         viewModel.requestAddNewCollection()
-        self.wait(for: [expect], timeout: self.timeout)
+        self.wait(for: [expect], timeout: 1)
         
         // then
         XCTAssertEqual(isCollectionSelected, true)
@@ -76,7 +76,7 @@ extension SelectAddItemTypeViewModelTests {
 
 extension SelectAddItemTypeViewModelTests: SelectAddItemTypeRouting {
     
-    func closeScene(animated: Bool, completed: (() -> Void)?) {
+    func closeScene(animated: Bool, completed: ( @Sendable () -> Void)?) {
         completed?()
     }
 }

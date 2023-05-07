@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditItemsCustomOrderRouting: Routing { }
+public protocol EditItemsCustomOrderRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

@@ -19,6 +19,7 @@ import CommonPresenting
 
 // MARK: - Builder + DI Container Extension
 
+@MainActor
 public protocol MainSlideMenuSceneBuilable {
     
     func makeMainSlideMenuScene(listener: MainSlideMenuSceneListenable?,

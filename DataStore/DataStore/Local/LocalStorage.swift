@@ -11,6 +11,8 @@ import Foundation
 import RxSwift
 
 import Domain
+import Extensions
+
 
 public enum LocalErrors: Error {
     case invalidData(_ reason: String?)
@@ -19,7 +21,7 @@ public enum LocalErrors: Error {
     case localStorageNotReady
 }
 
-public protocol DataModelStorageSwitchable {
+public protocol DataModelStorageSwitchable: Sendable {
     
     func openStorage(for auth: Auth) -> Maybe<Void>
     
@@ -34,7 +36,7 @@ public protocol DataModelStorageSwitchable {
     func removeUserStorage() -> Maybe<Void>
 }
 
-public protocol AuthLocalStorage {
+public protocol AuthLocalStorage: Sendable {
 
     func fetchCurrentAuth() -> Maybe<Auth?>
     func fetchCurrentMember() -> Maybe<Member?>
@@ -43,7 +45,7 @@ public protocol AuthLocalStorage {
     func clearUserEnvironment()
 }
 
-public protocol MemberLocalStorage {
+public protocol MemberLocalStorage: Sendable {
     
     func saveMember(_ member: Member) -> Maybe<Void>
     
@@ -56,7 +58,7 @@ public protocol MemberLocalStorage {
     func saveMembers(_ members: [Member]) -> Maybe<Void>
 }
 
-public protocol ReadItemLocalStorage {
+public protocol ReadItemLocalStorage: Sendable {
     
     func fetchMyItems(memberID: String?) -> Maybe<[ReadItem]>
     
@@ -100,7 +102,7 @@ public protocol ReadItemLocalStorage {
 }
 
 
-public protocol ReadItemOptionsLocalStorage {
+public protocol ReadItemOptionsLocalStorage: Sendable {
     
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?>
     
@@ -123,7 +125,7 @@ public protocol ReadItemOptionsLocalStorage {
     func updateDidWelcomeItemAdded()
 }
 
-public protocol ReadingOptionLocalStorage {
+public protocol ReadingOptionLocalStorage: Sendable {
     
     func fetchLastReadPosition(for itemID: String) -> Maybe<ReadPosition?>
     
@@ -134,14 +136,14 @@ public protocol ReadingOptionLocalStorage {
     func isEnabledLastReadPositionSaveOption() -> Bool
 }
 
-public protocol LinkPreviewCacheStorage {
+public protocol LinkPreviewCacheStorage: Sendable {
     
     func fetchPreview(_ url: String) -> Maybe<LinkPreview?>
     
     func saveLinkPreview(for url: String, preview: LinkPreview) -> Maybe<Void>
 }
 
-public protocol ItemCategoryLocalStorage {
+public protocol ItemCategoryLocalStorage: Sendable {
     
     func fetchCategories(_ ids: [String]) -> Maybe<[ItemCategory]>
     
@@ -160,7 +162,7 @@ public protocol ItemCategoryLocalStorage {
     func findCategory(by name: String) -> Maybe<ItemCategory?>
 }
 
-public protocol ReadLinkMemoLocalStorage {
+public protocol ReadLinkMemoLocalStorage: Sendable {
     
     func fetchMemo(for linkItemID: String) -> Maybe<ReadLinkMemo?>
     
@@ -169,14 +171,14 @@ public protocol ReadLinkMemoLocalStorage {
     func deleteMemo(for linkItemID: String) -> Maybe<Void>
 }
 
-public protocol UserDataMigratableLocalStorage {
+public protocol UserDataMigratableLocalStorage: Sendable {
     
     func fetchFromAnonymousStorage<T>(_ type: T.Type, size: Int) -> Maybe<[T]>
     func removeFromAnonymousStorage<T>(_ type: T.Type, in ids: [String]) -> Maybe<Void>
     func saveToUserStorage<T>(_ type: T.Type, _ models: [T]) -> Maybe<Void>
 }
 
-public protocol ShareItemLocalStorage {
+public protocol ShareItemLocalStorage: Sendable {
     
     func fetchLatestSharedCollections() -> Maybe<[SharedReadCollection]>
     
@@ -191,7 +193,7 @@ public protocol ShareItemLocalStorage {
     func updateMySharingItemIDs(_ ids: [String]) -> Maybe<Void>
 }
 
-public protocol SearchLocalStorage {
+public protocol SearchLocalStorage: Sendable {
     
     func fetchLatestSearchedQueries() -> Maybe<[LatestSearchedQuery]>
     

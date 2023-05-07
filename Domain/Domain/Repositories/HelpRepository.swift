@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol HelpRepository {
+public protocol HelpRepository: Sendable {
     
     func leaveFeedback(_ feedback: Feedback) -> Maybe<Void>
 }

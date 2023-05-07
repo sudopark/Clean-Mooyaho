@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - EditReadRemindViewModel
 
-public protocol EditReadRemindViewModel: AnyObject {
+public protocol EditReadRemindViewModel: AnyObject, Sendable {
 
     // interactor
     func checkPermission()
@@ -38,7 +38,7 @@ public protocol EditReadRemindViewModel: AnyObject {
 
 // MARK: - EditReadRemindViewModelImple
 
-public final class EditReadRemindViewModelImple: EditReadRemindViewModel {
+public final class EditReadRemindViewModelImple: EditReadRemindViewModel, @unchecked Sendable {
     
     private let editCase: EditRemindCase
     private let remindUsecase: ReadRemindUsecase
@@ -159,7 +159,7 @@ extension EditReadRemindViewModelImple {
         
         let handleScheduled: () -> Void = { [weak self] in
             self?.subjects.isUpdating.accept(false)
-            self?.router.closeScene(animated: true) {
+            self?.router.closeScene(animated: true) { [weak self] in
                 let newItem = item |> \.remindTime .~ newTime?.timeIntervalSince1970
                 self?.listener?.editReadRemind(didUpdate: newItem)
             }

@@ -220,11 +220,11 @@ extension SuggestQueryCell {
         self.backgroundColor = .clear
         
         _ = self.queryLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 1
         
         _ = self.timeLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.numberOfLines .~ 1
             |> \.isHidden .~ true
         
@@ -255,7 +255,7 @@ final class EmptyResultView: BaseUIView, Presenting {
         self.backgroundColor = self.uiContext.colors.appSecondBackground
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.listSectionTitle(_:)
+            |> { self.uiContext.decorating.listSectionTitle($0) }
             |> \.numberOfLines .~ 0
             |> \.text .~ pure("No result found".localized)
     }

@@ -15,6 +15,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 class CollectionPathView: BaseUIView, Presenting {
@@ -57,7 +58,7 @@ class CollectionPathView: BaseUIView, Presenting {
             |> \.contentMode .~ .scaleAspectFit
         
         _ = nameLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 1
             |> \.textColor .~ self.uiContext.colors.buttonBlue
         

@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 
+@MainActor
 public protocol InputKeyboardHandlable: AnyObject {
     
     var bottomOffset: CGFloat { get }

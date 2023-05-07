@@ -15,6 +15,7 @@
 		F60A585827103A8D00E39AE0 /* EditCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A585327103A8D00E39AE0 /* EditCategoryViewModel.swift */; };
 		F60A585A27103BA500E39AE0 /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A585927103BA500E39AE0 /* EditCategoryView.swift */; };
 		F627A9EC27128F3600722BDD /* EditCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F627A9EB27128F3600722BDD /* EditCategoryViewModelTests.swift */; };
+		F6311A3228700540005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A3128700540005C8FCB /* Extensions.framework */; };
 		F6391C7E2721C8B00000F927 /* EditReadRemindRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C792721C8B00000F927 /* EditReadRemindRouter.swift */; };
 		F6391C7F2721C8B00000F927 /* EditReadRemindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C7A2721C8B00000F927 /* EditReadRemindViewController.swift */; };
 		F6391C812721C8B00000F927 /* EditReadRemindScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6391C7C2721C8B00000F927 /* EditReadRemindScene.swift */; };
@@ -88,6 +89,7 @@
 		F60A585327103A8D00E39AE0 /* EditCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewModel.swift; sourceTree = "<group>"; };
 		F60A585927103BA500E39AE0 /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
 		F627A9EB27128F3600722BDD /* EditCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewModelTests.swift; sourceTree = "<group>"; };
+		F6311A3128700540005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6391C792721C8B00000F927 /* EditReadRemindRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindRouter.swift; sourceTree = "<group>"; };
 		F6391C7A2721C8B00000F927 /* EditReadRemindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindViewController.swift; sourceTree = "<group>"; };
 		F6391C7C2721C8B00000F927 /* EditReadRemindScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReadRemindScene.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6311A3228700540005C8FCB /* Extensions.framework in Frameworks */,
 				F6D8DE0127083DE200B4D817 /* CommonPresenting.framework in Frameworks */,
 				F6D8DDFD27083DCD00B4D817 /* Domain.framework in Frameworks */,
 				F6D8DE0527083E0300B4D817 /* Common3rdParty.framework in Frameworks */,
@@ -310,6 +313,7 @@
 		F6D8DDFB27083DCD00B4D817 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A3128700540005C8FCB /* Extensions.framework */,
 				F6D8DE0C27083E2B00B4D817 /* Common3rdParty.framework */,
 				F6D8DE0A27083E2000B4D817 /* UsecaseDoubles.framework */,
 				F6D8DE0827083E1900B4D817 /* UnitTestHelpKit.framework */,
@@ -738,6 +742,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.EditReadItemSceneTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -760,6 +765,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.EditReadItemSceneTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

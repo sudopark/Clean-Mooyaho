@@ -15,6 +15,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 public enum LoadPreviewStatus: Equatable {
@@ -50,7 +51,7 @@ enum ParentCollection {
 
 // MARK: - EditLinkItemViewModel
 
-public protocol EditLinkItemViewModel: AnyObject {
+public protocol EditLinkItemViewModel: AnyObject, Sendable {
 
     // interactor
     func preparePreview()
@@ -79,7 +80,7 @@ public protocol EditLinkItemViewModel: AnyObject {
 
 // MARK: - EditLinkItemViewModelImple
 
-public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
+public final class EditLinkItemViewModelImple: EditLinkItemViewModel, @unchecked Sendable {
     
     private let collectionID: String?
     private let editCase: EditLinkItemCase
@@ -113,7 +114,7 @@ public final class EditLinkItemViewModelImple: EditLinkItemViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let previewLoadStatus = PublishSubject<LoadPreviewStatus>()
         let selectedPriority = BehaviorRelay<ReadPriority?>(value: nil)
         let selectedCategories = BehaviorRelay<[ItemCategory]>(value: [])

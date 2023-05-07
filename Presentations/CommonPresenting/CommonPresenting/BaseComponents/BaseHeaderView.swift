@@ -69,3 +69,44 @@ extension BaseHeaderView: Presenting {
         self.closeButton?.setTitleColor(self.uiContext.colors.buttonBlue, for: .normal)
     }
 }
+
+
+import SwiftUI
+
+extension Views {
+    
+    public struct BaseHeaderView: View {
+        
+        private var isDesktop: Bool {
+            return ProcessInfo.processInfo.isiOSAppOnMac
+        }
+        
+        public var body: some View {
+            if isDesktop {
+                self.headerViewForMacOsDevice
+            } else {
+                self.headerViewForIosDevice
+            }
+        }
+        
+        private var headerViewForIosDevice: some View {
+            Views.PullGuideView()
+        }
+        
+        private var headerViewForMacOsDevice: some View {
+            HStack(spacing: 20) {
+                Button {
+                    
+                } label: {
+                    Text("Close")
+                        .foregroundColor(theme.colors.buttonBlue.asColor)
+                }
+                
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 4)
+        }
+    }
+}
+

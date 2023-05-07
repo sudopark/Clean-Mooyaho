@@ -64,7 +64,7 @@ public struct EditOrderItemsSection: Equatable {
 
 // MARK: - EditItemsCustomOrderViewModel
 
-public protocol EditItemsCustomOrderViewModel: AnyObject {
+public protocol EditItemsCustomOrderViewModel: AnyObject, Sendable {
 
     // interactor
     func loadCollectionItemsWithCustomOrder()
@@ -81,7 +81,7 @@ public protocol EditItemsCustomOrderViewModel: AnyObject {
 
 // MARK: - EditItemsCustomOrderViewModelImple
 
-public final class EditItemsCustomOrderViewModelImple: EditItemsCustomOrderViewModel {
+public final class EditItemsCustomOrderViewModelImple: EditItemsCustomOrderViewModel, @unchecked Sendable {
     
     private let currentCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
@@ -111,7 +111,7 @@ public final class EditItemsCustomOrderViewModelImple: EditItemsCustomOrderViewM
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)
         let links = BehaviorRelay<[ReadLink]?>(value: nil)
         let isSaving = BehaviorRelay<Bool>(value: false)

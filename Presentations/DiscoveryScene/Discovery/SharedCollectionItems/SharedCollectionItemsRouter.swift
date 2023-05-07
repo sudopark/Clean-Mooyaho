@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SharedCollectionItemsRouting: Routing {
+public protocol SharedCollectionItemsRouting: Routing, Sendable {
     
     func moveToSubCollection(collection: SharedReadCollection)
     
@@ -45,21 +45,25 @@ extension SharedCollectionItemsRouter {
     }
     
     public func moveToSubCollection(collection: SharedReadCollection) {
-        guard let next = self.nextScenesBuilder?
-                .makeSharedCollectionItemsScene(currentCollection: collection,
-                                                 listener: nil,
-                                                 navigationListener: self.navigationListener)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeSharedCollectionItemsScene(currentCollection: collection,
+                                                     listener: nil,
+                                                     navigationListener: self.navigationListener)
+            else {
+                return
+            }
+            self.currentScene?.navigationController?.pushViewController(next, animated: true)
         }
-        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func showLinkDetail(_ link: SharedReadLink) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeInnerWebViewScene(link: link.asReadLink(), isEditable: false,
-                                       listener: nil) else { return }
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeInnerWebViewScene(link: link.asReadLink(), isEditable: false,
+                                           listener: nil) else { return }
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
 }

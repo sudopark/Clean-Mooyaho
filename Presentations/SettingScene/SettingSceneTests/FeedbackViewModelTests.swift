@@ -20,6 +20,7 @@ class FeedbackViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
     var spyRouter: SpyRouter!
+    private var viewModelRef: FeedbackViewModel?
     
     override func setUpWithError() throws {
         self.disposeBag = .init()
@@ -28,6 +29,7 @@ class FeedbackViewModelTests: BaseTestCase, WaitObservableEvents {
     override func tearDownWithError() throws {
         self.disposeBag = nil
         self.spyRouter = nil
+        self.viewModelRef = nil
     }
     
     private func makeViewModel() -> FeedbackViewModel {
@@ -35,9 +37,13 @@ class FeedbackViewModelTests: BaseTestCase, WaitObservableEvents {
         let usecase = StubFeedbackUsecase()
         let router = SpyRouter()
         self.spyRouter = router
-        return FeedbackViewModelImple(feedbackUsecase: usecase,
-                                      router: router,
-                                      listener: nil)
+        let viewModel = FeedbackViewModelImple(
+            feedbackUsecase: usecase,
+            router: router,
+            listener: nil
+        )
+        self.viewModelRef = viewModel
+        return viewModel
     }
 }
 
@@ -78,7 +84,7 @@ extension FeedbackViewModelTests {
 
 extension FeedbackViewModelTests {
     
-    class SpyRouter: FeedbackRouting {
+    final class SpyRouter: FeedbackRouting, @unchecked Sendable {
         
         var didClsoe: Bool?
         func closeScene(animated: Bool, completed: (() -> Void)?) {

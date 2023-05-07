@@ -14,16 +14,18 @@ import Optics
 import Toaster
 
 import Domain
+import Extensions
+
 
 // MARK: Routing and Router
 
-public protocol Routing: AnyObject {
+public protocol Routing: AnyObject, Sendable {
     
     func alertError(_ error: Error)
     
     func showToast(_ message: String)
     
-    func closeScene(animated: Bool, completed: (() -> Void)?)
+    func closeScene(animated: Bool, completed: ( @Sendable () -> Void)?)
     
     func alertForConfirm(_ form: AlertForm)
     
@@ -34,12 +36,12 @@ public protocol Routing: AnyObject {
     func openURL(_ path: String)
 }
 extension Routing {
-    
+ 
     public func alertError(_ error: Error) { }
     
     public func showToast(_ message: String) { }
     
-    public func closeScene(animated: Bool, completed: (() -> Void)?) { }
+    public func closeScene(animated: Bool, completed: ( @Sendable () -> Void)?) { }
     
     public func alertForConfirm(_ form: AlertForm) { }
     
@@ -51,7 +53,7 @@ extension Routing {
 }
 
 
-open class Router<Buildables>: Routing {
+open class Router<Buildables>: Routing, @unchecked Sendable {
     
     public final let nextScenesBuilder: Buildables?
     public weak var currentScene: Scenable?
@@ -70,13 +72,15 @@ open class Router<Buildables>: Routing {
 extension Router {
     
     public func alertError(_ error: Error) {
-        let errorDescrition = (error as NSError).description
-        let form = AlertForm()
-            |> \.title .~ pure("The operation failed.".localized)
-            |> \.message .~ pure("The requested operation has failed. Please try again later. (error: %@)".localized(with: errorDescrition))
-            |> \.isSingleConfirmButton .~ true
-        self.alertForConfirm(form)
-        logger.print(level: .debug, "alert error: \(error)")
+        Task { @MainActor in
+            let errorDescrition = (error as NSError).description
+            let form = AlertForm()
+                |> \.title .~ pure("The operation failed.".localized)
+                |> \.message .~ pure("The requested operation has failed. Please try again later. (error: %@)".localized(with: errorDescrition))
+                |> \.isSingleConfirmButton .~ true
+            self.alertForConfirm(form)
+            logger.print(level: .debug, "alert error: \(error)")
+        }
     }
     
     public func showToast(_ message: String) {
@@ -85,69 +89,74 @@ extension Router {
         toast.show()
     }
     
-    public func closeScene(animated: Bool, completed: (() -> Void)?) {
-        DispatchQueue.main.async { [weak self] in
-            let target = self?.currentScene?.presentingViewController ?? self?.currentScene
+    public func closeScene(animated: Bool, completed: ( @Sendable () -> Void)?) {
+        Task { @MainActor in
+            let target = self.currentScene?.presentingViewController ?? self.currentScene
             target?.dismiss(animated: true, completion: completed)
         }
     }
     
     public func rewind(animated: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.currentScene?.navigationController?.popViewController(animated: animated)
+        Task { @MainActor in
+            self.currentScene?.navigationController?.popViewController(animated: animated)
         }
     }
     
     public func alertForConfirm(_ form: AlertForm) {
         
-        
-        let alert = UIAlertController(title: form.title, message: form.message, preferredStyle: .alert)
-        
-        let confirmAction = UIAlertAction(title: form.customConfirmText ?? "Confirm".localized,
-                                          style: .default) { _ in
-            form.confirmed?()
-        }
-        alert.addAction(confirmAction)
-        
-        if form.isSingleConfirmButton == false {
-            let cancelAction = UIAlertAction(title: form.customCloseText ?? "Cancel".localized,
-                                             style: .cancel) { _ in
-                form.canceled?()
+        Task { @MainActor in
+            let alert = UIAlertController(title: form.title, message: form.message, preferredStyle: .alert)
+            
+            let confirmAction = UIAlertAction(title: form.customConfirmText ?? "Confirm".localized,
+                                              style: .default) { _ in
+                form.confirmed?()
             }
-            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+            
+            if form.isSingleConfirmButton == false {
+                let cancelAction = UIAlertAction(title: form.customCloseText ?? "Cancel".localized,
+                                                 style: .cancel) { _ in
+                    form.canceled?()
+                }
+                alert.addAction(cancelAction)
+            }
+            self.currentScene?.present(alert, animated: true, completion: nil)
         }
-        self.currentScene?.present(alert, animated: true, completion: nil)
     }
     
     public func alertActionSheet(_ form: ActionSheetForm) {
         assert(form.actions.isNotEmpty)
         
-        let sheet = UIAlertController(title: form.title, message: form.message, preferredStyle: .actionSheet)
-        form.actions.forEach { actionFrom in
-            let action = UIAlertAction(title: actionFrom.text,
-                                       style: actionFrom.isCancel ? .cancel : .default) { _ in
-                actionFrom.selected?()
+        Task { @MainActor in
+            let sheet = UIAlertController(title: form.title, message: form.message, preferredStyle: .actionSheet)
+            form.actions.forEach { actionFrom in
+                let action = UIAlertAction(title: actionFrom.text,
+                                           style: actionFrom.isCancel ? .cancel : .default) { _ in
+                    actionFrom.selected?()
+                }
+                sheet.addAction(action)
             }
-            sheet.addAction(action)
+            
+            self.currentScene?.present(sheet, animated: true, completion: nil)
         }
-        
-        self.currentScene?.present(sheet, animated: true, completion: nil)
     }
     
     public func openURL(_ path: String) {
-        guard let url = URL(string: path),
-              UIApplication.shared.canOpenURL(url)
-        else {
-            return
+        Task { @MainActor in
+            guard let url = URL(string: path),
+                  UIApplication.shared.canOpenURL(url)
+            else {
+                return
+            }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 
 
 // MARK: - AlertBuilder
 
-public final class AlertForm {
+public final class AlertForm: @unchecked Sendable {
     
     public var title: String?
     public var message: String?
@@ -180,9 +189,9 @@ extension AlertBuilder {
 
 // MARK: - ActionSheetForm
 
-public class ActionSheetForm {
+public final class ActionSheetForm: @unchecked Sendable {
     
-    public class Action {
+    public final class Action: @unchecked Sendable {
         public let text: String
         public var isCancel: Bool
         public let selected: (() -> Void)?
@@ -205,33 +214,5 @@ public class ActionSheetForm {
     
     public func append(_ action: Action) {
         self.actions.append(action)
-    }
-}
-
-
-
-import RxSwift
-import RxCocoa
-
-
-extension Routing {
-    
-    public func close(animated: Bool) -> Observable<Void> {
-        return Observable.create { [weak self] observer in
-            self?.closeScene(animated: true) {
-                observer.onNext(())
-                observer.onCompleted()
-            }
-            return Disposables.create()
-        }
-    }
-    
-    public func waitEventAndClosePresented<E>(_ eventSource: Observable<E>) -> Observable<E> {
-        
-        return eventSource
-            .observe(on: MainScheduler.instance)
-            .flatMap{ [weak self] element -> Observable<E> in
-                return self?.close(animated: true).map{ element } ?? .empty()
-            }
     }
 }

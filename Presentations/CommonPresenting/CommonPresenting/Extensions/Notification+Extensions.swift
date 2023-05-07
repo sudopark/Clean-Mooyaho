@@ -10,9 +10,9 @@ import UIKit
 import RxSwift
 
 
-public struct KeyboardFrameChanges {
+public struct KeyboardFrameChanges: Equatable {
     
-    public enum EventType {
+    public enum EventType:Equatable {
         case show
 //        case change
         case hide
@@ -27,6 +27,7 @@ public struct KeyboardFrameChanges {
 
 extension Reactive where Base == NotificationCenter {
     
+    @MainActor
     public var keyboardFrameWillChanges: Observable<KeyboardFrameChanges> {
         
         let willShow = base.rx.notification(UIResponder.keyboardWillShowNotification)
@@ -35,20 +36,18 @@ extension Reactive where Base == NotificationCenter {
             .compactMap{ $0.keyboardChanges(.show) }
         let willHide = base.rx.notification(UIResponder.keyboardWillHideNotification)
             .compactMap{ $0.keyboardChanges(.hide) }
-        
-        let compareShow: (KeyboardFrameChanges, KeyboardFrameChanges) -> Bool = {
-            return $0.from == $1.from && $0.to == $1.to
-        }
+
         return Observable.merge(
-            Observable.merge(willShow, willChangeAsShow).distinctUntilChanged(compareShow),
+            Observable.merge(willShow, willChangeAsShow).distinctUntilChanged(),
             willHide
         )
     }
 }
 
 
-private extension Notification {
+extension Notification {
     
+    @MainActor
     func keyboardChanges(_ type: KeyboardFrameChanges.EventType) -> KeyboardFrameChanges? {
         
         guard let from = self.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? CGRect,

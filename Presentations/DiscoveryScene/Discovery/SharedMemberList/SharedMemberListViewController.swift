@@ -255,12 +255,12 @@ extension SharedMemberCell {
         self.borderView.clipsToBounds = true
         
         _ = self.nameLabel
-            |> self.uiContext.decorating.listItemTitle
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 1
             |> \.text .~ pure("-".localized)
         
         _ = self.introLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.numberOfLines .~ 1
             |> \.text .~ pure("-".localized)
             |> \.isHidden .~ true

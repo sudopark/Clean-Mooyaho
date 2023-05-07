@@ -195,7 +195,7 @@ extension EditReadPriorityViewController: Presenting {
         self.bottomSlideMenuView.containerView.backgroundColor = UIColor.systemGroupedBackground
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ "Set a priority"
         
         self.tableView.rowHeight = UITableView.automaticDimension

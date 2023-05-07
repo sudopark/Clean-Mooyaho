@@ -9,11 +9,12 @@
 import Foundation
 
 import RxSwift
+import Extensions
 
 
 // MARK: - ReadRemindUsecase
 
-public protocol ReadRemindUsecase {
+public protocol ReadRemindUsecase: Sendable {
     
     func preparePermission() -> Maybe<Bool>
     

@@ -239,7 +239,7 @@ extension SuggestReadViewModelTests {
 
 extension SuggestReadViewModelTests {
     
-    class SpyRouter: SuggestReadRouting {
+    final class SpyRouter: SuggestReadRouting, @unchecked Sendable {
      
         var didShowLinkDetail: Bool?
         func showLinkDetail(_ linkID: String) {
@@ -263,7 +263,7 @@ extension SuggestReadViewModelTests {
     }
     
     
-    class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable {
+    final class SpyReadCollectionMainInteractor: ReadCollectionMainSceneInteractable, @unchecked Sendable {
         func addNewCollectionItem() { }
         
         func addNewReadLinkItem() { }
@@ -282,7 +282,7 @@ extension SuggestReadViewModelTests {
         var rootType: CollectionRoot = .myCollections
     }
     
-    class DummyListener: SuggestReadSceneListenable {
+    final class DummyListener: SuggestReadSceneListenable, @unchecked Sendable {
         
         func finishSuggesting(_ completed: @escaping () -> Void) {
             completed()

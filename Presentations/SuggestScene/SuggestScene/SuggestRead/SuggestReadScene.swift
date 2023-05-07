@@ -25,7 +25,7 @@ extension SuggestReadViewModelImple: SuggestReadSceneInteractable {
 
 extension SuggestReadViewController {
 
-    public var interactor: SuggestReadSceneInteractable? {
+    public nonisolated var interactor: SuggestReadSceneInteractable? {
         return self.viewModel as? SuggestReadSceneInteractable
     }
 }

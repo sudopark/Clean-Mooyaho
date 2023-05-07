@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol AuthInfoProvider: AnyObject {
+public protocol AuthInfoProvider: Sendable, AnyObject {
     
     func currentAuth() -> Auth?
     

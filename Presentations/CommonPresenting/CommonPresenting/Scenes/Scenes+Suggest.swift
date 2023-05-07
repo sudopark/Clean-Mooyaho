@@ -10,18 +10,18 @@ import UIKit
 
 // MARK: - IntegratedSearchScene Interactable & Listenable
 
-public protocol IntegratedSearchSceneInteractable: SuggestQuerySceneListenable, InnerWebViewSceneListenable {
+public protocol IntegratedSearchSceneInteractable: Sendable, SuggestQuerySceneListenable, InnerWebViewSceneListenable {
     
     func requestSuggest(with text: String)
     
     func requestSearchItems(with text: String)
 }
 
-public protocol IntegratedSearchSceneListenable: AnyObject {
+public protocol IntegratedSearchSceneListenable: Sendable, AnyObject {
     
     func integratedSearch(didUpdateSearching: Bool)
     
-    func finishIntegratedSearch(_ completed: @escaping () -> Void)
+    func finishIntegratedSearch(_ completed: @Sendable @escaping () -> Void)
 }
 
 
@@ -29,7 +29,7 @@ public protocol IntegratedSearchSceneListenable: AnyObject {
 
 public protocol IntegratedSearchScene: Scenable {
     
-    var interactor: IntegratedSearchSceneInteractable? { get }
+    nonisolated var interactor: IntegratedSearchSceneInteractable? { get }
     
     var suggestSceneContainer: UIView { get }
 }
@@ -37,12 +37,12 @@ public protocol IntegratedSearchScene: Scenable {
 
 // MARK: - SuggestQueryScene Interactable & Listenable
 
-public protocol SuggestQuerySceneInteractable: AnyObject {
+public protocol SuggestQuerySceneInteractable: Sendable, AnyObject {
     
     func suggest(with text: String)
 }
 
-public protocol SuggestQuerySceneListenable: AnyObject {
+public protocol SuggestQuerySceneListenable: Sendable, AnyObject {
     
     func suggestQuery(didSelect searchQuery: String)
 }
@@ -52,20 +52,20 @@ public protocol SuggestQuerySceneListenable: AnyObject {
 
 public protocol SuggestQueryScene: Scenable {
     
-    var interactor: SuggestQuerySceneInteractable? { get }
+    nonisolated var interactor: SuggestQuerySceneInteractable? { get }
 }
 
 
 // MARK: - SuggestReadScene Interactable & Listenable
 
-public protocol SuggestReadSceneInteractable: InnerWebViewSceneListenable & FavoriteItemsSceneListenable {
+public protocol SuggestReadSceneInteractable: Sendable, InnerWebViewSceneListenable & FavoriteItemsSceneListenable {
     
     func refresh()
 }
 
-public protocol SuggestReadSceneListenable: AnyObject {
+public protocol SuggestReadSceneListenable: Sendable, AnyObject {
     
-    func finishSuggesting(_ completed: @escaping () -> Void)
+    func finishSuggesting(_ completed: @escaping @Sendable () -> Void)
 }
 
 
@@ -73,5 +73,5 @@ public protocol SuggestReadSceneListenable: AnyObject {
 
 public protocol SuggestReadScene: Scenable {
     
-    var interactor: SuggestReadSceneInteractable? { get }
+    nonisolated var interactor: SuggestReadSceneInteractable? { get }
 }

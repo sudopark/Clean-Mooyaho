@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - MainScene
 
-public protocol MainSceneInteractable: MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable & InnerWebViewSceneListenable & RecoverAccountSceneListenable {
+public protocol MainSceneInteractable: Sendable, MainSlideMenuSceneListenable, ReadCollectionNavigateListenable, SharedCollectionInfoDialogSceneListenable, IntegratedSearchSceneListenable & SuggestReadSceneListenable & InnerWebViewSceneListenable & RecoverAccountSceneListenable {
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
     
@@ -28,9 +28,9 @@ public protocol MainSceneInteractable: MainSlideMenuSceneListenable, ReadCollect
 
 public protocol MainScene: Scenable {
     
-    var interactor: MainSceneInteractable? { get }
-    var childContainerView: UIView { get }
-    var childBottomSlideContainerView: UIView { get }
+    nonisolated var interactor: MainSceneInteractable? { get }
+    @MainActor var childContainerView: UIView { get }
+    @MainActor var childBottomSlideContainerView: UIView { get }
 }
 
 
@@ -45,11 +45,11 @@ public final class MainViewController: BaseViewController, MainScene {
         return self.viewModel as? MainSceneInteractable
     }
     
-    public var childContainerView: UIView {
+    @MainActor public var childContainerView: UIView {
         return self.mainView.mainContainerView
     }
     
-    public var childBottomSlideContainerView: UIView {
+    @MainActor public var childBottomSlideContainerView: UIView {
         return self.mainView.bottomSlideEmbedView
     }
     
@@ -447,6 +447,7 @@ extension MainViewController: Presenting {
 
 private extension Observable where Element == UIPanGestureRecognizer {
     
+    @MainActor
     func calculateDy(in view: UIView) -> Observable<CGFloat> {
         return self.compactMap { [weak view] gestureRecognizer -> CGFloat? in
             guard let view = view else { return nil }
@@ -456,6 +457,7 @@ private extension Observable where Element == UIPanGestureRecognizer {
         }
     }
     
+    @MainActor
     func velocity(in view: UIView) -> Observable<CGFloat> {
         return self.compactMap { [weak view] gestureRecognizer -> CGFloat? in
             guard let view = view else { return nil }

@@ -49,7 +49,7 @@ final class ColorCell: BaseTableViewCell, Presenting {
         self.tintColor = .white
         
         _ = self.codeLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.textColor .~ UIColor.white
     }
 }
@@ -138,7 +138,7 @@ extension ColorSelectViewController: UITableViewDataSource, UITableViewDelegate 
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ColorCell = tableView.dequeueCell()
-        self.cellViewModels[safe: indexPath.row].do <| cell.setupCell(_:)
+        cell.setupCell(self.cellViewModels[indexPath.row])
         return cell
     }
     
@@ -184,7 +184,7 @@ extension ColorSelectViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |> { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Select a color".localized)
         
         self.tableView.rowHeight = 75

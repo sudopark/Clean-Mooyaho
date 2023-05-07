@@ -99,15 +99,25 @@ extension Views {
     
     public struct BaseBottomSlideMenuView<Content: View>: View {
         
+        @StateObject private var keyboardHeightObserver = KeyboardHeightObserver()
+        
         private let content: () -> Content
-        public init(_ content: @escaping () -> Content) {
+        private let outsideTap: (() -> Void)?
+        public init(
+            _ content: @escaping () -> Content,
+            outsideTap: (() -> Void)? = nil
+        ) {
             self.content = content
+            self.outsideTap = outsideTap
         }
         
         public var body: some View {
             
             VStack {
                 Spacer()
+                    .backgroundSpaceTapGesture {
+                        self.outsideTap?()
+                    }
                 VStack(spacing: 0) {
                     
                     Views.PullGuideView()
@@ -119,6 +129,8 @@ extension Views {
                 .background(self.uiContext.colors.appBackground.asColor)
                 .cornerRadius(10, corners: [.topLeft, .topRight])
             }
+            .offset(y: -keyboardHeightObserver.showingKeyboardHeight)
+            .animation(.easeInOut(duration: 0.25))
             .edgesIgnoringSafeArea(.bottom)
         }
     }

@@ -64,6 +64,7 @@ extension RoundImageButton {
 
 extension Reactive where Base == RoundImageButton {
     
+    @MainActor
     public func throttleTap() -> Observable<Void> {
         
         let runFeedback: () -> Void = { [weak base] in

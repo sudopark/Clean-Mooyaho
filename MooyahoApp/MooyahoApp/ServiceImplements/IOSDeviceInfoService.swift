@@ -28,7 +28,9 @@ extension IOSDeviceInfoService {
     }
     
     func osVersion() -> String {
-        return UIDevice.current.systemVersion
+        return ""
+        // TODO: UIDevice 접근 시도시 MainActor 이여야함 -> 추후 수정 필요
+//        return UIDevice.current.systemVersion
     }
     
     func deviceModel() -> String {

@@ -194,12 +194,12 @@ extension MemberProfileInfoCell {
         self.backgroundColor = self.uiContext.colors.appBackground
         
         _ = self.nameLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.numberOfLines .~ 1
             |> \.text .~ pure("Name".localized)
         
         _ = self.nameValueLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 0
             |> \.text .~ pure("Unnamed member".localized)
         
@@ -251,11 +251,11 @@ extension MemberIntroCell {
         self.backgroundColor = self.uiContext.colors.appSecondBackground
         
         _ = self.introLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.text .~ pure("Introduction".localized)
         
         _ = self.introValueLabel
-            |> self.uiContext.decorating.listItemDescription
+            |> { self.uiContext.decorating.listItemDescription($0) }
             |> \.textColor .~ self.uiContext.colors.text.withAlphaComponent(0.75)
             |> \.numberOfLines .~ 0
     }

@@ -85,6 +85,7 @@ import RxCocoa
 
 extension Reactive where Base: ConfirmButton {
     
+    @MainActor
     public func throttleTap() -> Observable<Void> {
         
         let runFeedback: () -> Void = { [weak base] in
@@ -95,6 +96,7 @@ extension Reactive where Base: ConfirmButton {
             .do(onNext: runFeedback)
     }
     
+    @MainActor
     public var isLoading: Binder<Bool> {
         Binder(base) { base, isLoading in
             base.updateIsLoading(isLoading)
@@ -112,27 +114,49 @@ extension Views {
     public struct ConfirmButton: View {
         
         @Binding var isLoading: Bool
+        @Binding var isEnabled: Bool
         private let confirmed: () -> Void
         
-        public init(_ isLoading: Binding<Bool> = .constant(false),
+        public init(isLoading: Binding<Bool> = .constant(false),
+                    isEnabled: Binding<Bool> = .constant(true),
                     confirmed: @escaping () -> Void) {
             self._isLoading = isLoading
+            self._isEnabled = isEnabled
             self.confirmed = confirmed
         }
         
         public var body: some View {
             Button(action: self.confirmed) {
+                
                 if self.isLoading {
-                    LoadingView(.white, isLoading: self._isLoading)
+                    HStack {
+                        Spacer()
+                        Views.LoadingView(.white)
+                            .frame(width: 40, height: 40)
+                        Spacer()
+                    }
                 } else {
                     Text("Confirm".localized)
-                        .font(self.uiContext.fonts.get(16, weight: .medium).asFont)
-                        .foregroundColor(.white)
+                        .font(theme.fonts.get(16, weight: .medium).asFont)
+                        .foregroundColor(
+                            .white.opacity(isEnabled ? 1.0 : 0.7)
+                        )
+                        .frame(maxWidth: .infinity, minHeight: 50, alignment: .center)
                 }
             }
-            .frame(maxWidth: .infinity, minHeight: 50, alignment: .center)
-            .background(self.uiContext.colors.accentColor.asColor)
+            .background(
+                theme.colors.accentColor.asColor.opacity(isEnabled ? 1.0 : 0.7)
+            )
             .cornerRadius(5)
+            .disabled(!self.isEnabled)
         }
+    }
+}
+
+
+struct ConfirmButtonPreview: PreviewProvider {
+    
+    static var previews: some View {
+        Views.ConfirmButton(isLoading: .constant(false)) { }
     }
 }

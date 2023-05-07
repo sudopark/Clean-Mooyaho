@@ -13,9 +13,9 @@ import RxSwift
 
 // MARK: - SharedEventService
 
-public protocol SharedEvent { }
+public protocol SharedEvent: Sendable { }
 
-public protocol SharedEventService {
+public protocol SharedEventService: Sendable {
 
     func notify(event: SharedEvent)
     

@@ -13,6 +13,8 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
+
 
 struct ReadCollectionTable: Table {
     
@@ -61,8 +63,8 @@ extension ReadCollectionTable {
             self.createdAt = try cursor.next().unwrap()
             self.lastUpdatedAt = try cursor.next().unwrap()
             self.priority = cursor.next().flatMap{ ReadPriority.init(rawValue: $0) }
-            let idText: String = try cursor.next().unwrap()
-            self.categoryIDs = try idText.toArray()
+            let idText: String = (try? cursor.next().unwrap()) ?? ""
+            self.categoryIDs = (try? idText.toArray()) ?? []
             self.remindTime = cursor.next()
         }
         

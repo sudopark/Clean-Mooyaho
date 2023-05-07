@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import Extensions
 
 
-public struct Member {
+public struct Member: Sendable {
     
     public let uid: String
     

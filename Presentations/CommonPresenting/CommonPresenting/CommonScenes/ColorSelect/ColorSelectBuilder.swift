@@ -27,6 +27,7 @@ public struct SelectColorDepedency {
     }
 }
 
+@MainActor
 public protocol ColorSelectSceneBuilable {
     
     func makeColorSelectScene(_ dependency: SelectColorDepedency,

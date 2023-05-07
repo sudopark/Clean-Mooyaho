@@ -20,6 +20,7 @@ import CommonPresenting
 
 // MARK: - WaitMigrationViewController
 
+@MainActor
 public final class WaitMigrationViewStateObject: ObservableObject {
     
     @Published var migrationProcessAndResult: MigrationProcessAndResult?

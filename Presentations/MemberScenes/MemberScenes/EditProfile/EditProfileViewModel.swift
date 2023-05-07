@@ -15,6 +15,8 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
+
 
 // MARK: - EditProfileViewModel
 
@@ -30,7 +32,7 @@ public struct EditProfileCellViewModel: Equatable {
     var isRequire = false
 }
 
-public protocol EditProfileViewModel: AnyObject {
+public protocol EditProfileViewModel: Sendable, AnyObject {
 
     // interactor
     func requestChangeThumbnail()
@@ -48,7 +50,7 @@ public protocol EditProfileViewModel: AnyObject {
 
 // MARK: - EditProfileViewModelImple
 
-public final class EditProfileViewModelImple: EditProfileViewModel {
+public final class EditProfileViewModelImple: EditProfileViewModel, @unchecked Sendable {
     
     private let usecase: MemberUsecase
     private let router: EditProfileRouting

@@ -9,7 +9,7 @@
 import Foundation
 
 
-public protocol ReadItemSyncUsecase: AnyObject {
+public protocol ReadItemSyncUsecase: Sendable, AnyObject {
     
     var reloadNeedCollectionIDs: [String] { get set }
 }

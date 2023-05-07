@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 import Prelude
 import Optics
+import Extensions
 
 
 // MARK: - ReadItemCategoryUsecase
@@ -34,7 +35,7 @@ public struct UpdateCategoryAttrParams {
     }
 }
 
-public protocol ReadItemCategoryUsecase: AnyObject {
+public protocol ReadItemCategoryUsecase: Sendable, AnyObject {
     
     func categories(for ids: [String]) -> Observable<[ItemCategory]>
     

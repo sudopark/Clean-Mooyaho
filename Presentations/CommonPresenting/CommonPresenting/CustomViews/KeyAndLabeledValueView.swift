@@ -67,7 +67,7 @@ public final class KeyAndLabeledValueView: BaseUIView, Presenting {
         self.iconView.tintColor = self.uiContext.colors.descriptionText
         
         _ = self.keyLabel
-            |> self.uiContext.decorating.listItemDescription(_:)
+            |> { self.uiContext.decorating.listItemDescription($0)}
             |> \.numberOfLines .~ 1
         
         self.labelView.font = self.uiContext.fonts.get(13, weight: .regular)

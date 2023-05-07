@@ -25,7 +25,7 @@ extension FavoriteItemsViewModelImple: FavoriteItemsSceneInteractable {
 
 extension FavoriteItemsViewController {
 
-    public var interactor: FavoriteItemsSceneInteractable? {
+    public nonisolated var interactor: FavoriteItemsSceneInteractable? {
         return self.viewModel as? FavoriteItemsSceneInteractable
     }
 }

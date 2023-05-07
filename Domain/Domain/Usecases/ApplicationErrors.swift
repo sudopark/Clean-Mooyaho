@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Extensions
 
 
 public enum ApplicationErrors: Error {
@@ -20,14 +21,4 @@ public enum ApplicationErrors: Error {
     case userDataMigrationFail(_ error: Error)
     case noUserInfo
     case notActivated
-}
-
-
-public struct RuntimeError: Error {
-    
-    public let message: String
-    
-    public init(_ message: String) {
-        self.message = message
-    }
 }

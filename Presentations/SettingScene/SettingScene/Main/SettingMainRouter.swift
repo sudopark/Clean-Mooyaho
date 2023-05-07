@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SettingMainRouting: Routing {
+public protocol SettingMainRouting: Routing, Sendable {
     
     func editProfile()
     
@@ -49,48 +49,60 @@ extension SettingMainRouter {
     }
     
     public func editProfile() {
-        guard let next = self.nextScenesBuilder?.makeEditProfileScene() else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeEditProfileScene() else {
+                return
+            }
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(next, animated: true)
         }
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(next, animated: true)
     }
     
     public func manageAccount() {
-        guard let next = self.nextScenesBuilder?.makeManageAccountScene(listener: nil)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeManageAccountScene(listener: nil)
+            else {
+                return
+            }
+            self.currentScene?.navigationController?.navigationBar.isHidden = false
+            self.currentScene?.navigationController?.pushViewController(next, animated: true)
         }
-        self.currentScene?.navigationController?.navigationBar.isHidden = false
-        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func requestSignIn() {
-        guard let next = self.nextScenesBuilder?.makeSignInScene(nil) else { return }
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeSignInScene(nil) else { return }
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func editItemsCategory() {
         
-        guard let next = self.nextScenesBuilder?.makeManageCategoryScene(listener: nil) else { return }
-        
-        self.currentScene?.navigationController?.navigationBar.isHidden = false
-        self.currentScene?.navigationController?.pushViewController(next, animated: true)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeManageCategoryScene(listener: nil) else { return }
+            
+            self.currentScene?.navigationController?.navigationBar.isHidden = false
+            self.currentScene?.navigationController?.pushViewController(next, animated: true)
+        }
     }
     
     public func resumeUserDataMigration(for userID: String) {
-        guard let next = self.nextScenesBuilder?
-                .makeWaitMigrationScene(userID: userID, shouldResume: true, listener: nil)
-        else { return }
-        
-        next.isModalInPresentation = true
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeWaitMigrationScene(userID: userID, shouldResume: true, listener: nil)
+            else { return }
+            
+            next.isModalInPresentation = true
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func routeToEnterFeedback() {
-        guard let next = self.nextScenesBuilder?.makeFeedbackScene(listener: nil)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeFeedbackScene(listener: nil)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

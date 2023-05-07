@@ -28,11 +28,11 @@ extension SelectAddItemTypeViewModelImple: SelectAddItemTypeSceneOutput {
 
 extension SelectAddItemTypeViewController {
 
-    public var input: SelectAddItemTypeSceneInput? {
+    public nonisolated var input: SelectAddItemTypeSceneInput? {
         return self.viewModel as? SelectAddItemTypeSceneInput
     }
 
-    public var output: SelectAddItemTypeSceneOutput? {
+    public nonisolated var output: SelectAddItemTypeSceneOutput? {
         return self.viewModel as? SelectAddItemTypeSceneOutput
     }
 }

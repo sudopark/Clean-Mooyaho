@@ -64,7 +64,7 @@ final class ItemTypeView: BaseUIView, Presenting {
         self.addIconView.tintColor = self.uiContext.colors.buttonBlue
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.listItemTitle(_:)
+            |> { self.uiContext.decorating.listItemTitle($0) }
             |> \.numberOfLines .~ 1
             |> \.textColor .~ self.uiContext.colors.buttonBlue
         
@@ -177,7 +177,7 @@ extension SelectAddItemTypeViewController: Presenting {
         self.bottomSlideMenuView.setupStyling()
         
         _ = self.titleLabel
-            |> self.uiContext.decorating.smallHeader
+            |>  { self.uiContext.decorating.smallHeader($0) }
             |> \.text .~ pure("Select a new item type".localized)
         
         self.addCollectionButtonView.setupStyling()

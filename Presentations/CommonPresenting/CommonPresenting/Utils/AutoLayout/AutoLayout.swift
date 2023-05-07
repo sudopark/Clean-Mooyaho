@@ -8,6 +8,7 @@
 import UIKit
 
 
+@MainActor
 public struct AutoLayout {
     
     private let wrappedView: UIView

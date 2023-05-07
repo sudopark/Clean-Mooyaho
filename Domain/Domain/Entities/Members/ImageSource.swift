@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - ImageSource
 
-public struct ImageSize: Equatable {
+public struct ImageSize: Equatable, Sendable {
     
     public let width: Double
     public let height: Double
@@ -22,7 +22,7 @@ public struct ImageSize: Equatable {
     }
 }
 
-public struct ImageSource {
+public struct ImageSource: Sendable {
     
     public let path: String
     public let size: ImageSize?
@@ -52,7 +52,7 @@ public enum ImageUploadReqParams: Equatable {
 
 // MARK: - Thumbnail
 
-public enum Thumbnail {
+public enum Thumbnail: Sendable {
     
     case imageSource(ImageSource)
     case emoji(_ value: String)

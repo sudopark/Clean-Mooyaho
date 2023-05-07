@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import Extensions
 
 
-public protocol ReadItem {
+public protocol ReadItem: Sendable {
     
     var uid: String { get }
     var ownerID: String? { get set }

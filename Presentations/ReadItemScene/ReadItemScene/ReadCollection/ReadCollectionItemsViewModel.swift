@@ -15,6 +15,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 public enum ReadCollectionItemSwipeContextAction: Equatable {
@@ -28,7 +29,7 @@ public enum ReadCollectionItemSwipeContextAction: Equatable {
 
 // MARK: - ReadCollectionViewModel
 
-public protocol ReadCollectionItemsViewModel: AnyObject {
+public protocol ReadCollectionItemsViewModel: AnyObject, Sendable {
     
     var currentCollectionID: String? { get }
 
@@ -62,7 +63,7 @@ public protocol ReadCollectionItemsViewModel: AnyObject {
 
 // MARK: - ReadCollectionViewModelImple
 
-public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewModel {
+public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewModel, @unchecked Sendable {
     
     public let currentCollectionID: String?
     private let readItemUsecase: ReadItemUsecase
@@ -109,7 +110,7 @@ public final class ReadCollectionViewItemsModelImple: ReadCollectionItemsViewMod
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let currentCollection = BehaviorSubject<ReadCollection?>(value: nil)
         let sortOrder = BehaviorRelay<ReadCollectionItemSortOrder?>(value: nil)
         let collections = BehaviorRelay<[ReadCollection]?>(value: nil)

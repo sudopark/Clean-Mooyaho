@@ -16,6 +16,7 @@ import FirebaseService
 
 // MARK: - ShareMainViewController
 
+@MainActor
 final class ShareExtensionRoot {
     
     let injector = SharedDependencyInjecttor()
@@ -47,7 +48,7 @@ final class ShareExtensionRoot {
     }
 }
 
-let extensionRoot = ShareExtensionRoot()
+@MainActor let extensionRoot = ShareExtensionRoot()
 
 @objc(ShareMainViewController)
 public final class ShareMainViewController: BaseViewController, ShareMainScene {
@@ -89,13 +90,14 @@ public final class ShareMainViewController: BaseViewController, ShareMainScene {
             return
         }
         
-        provider.loadItem(forTypeIdentifier: "public.url") { [weak self] string, error in
-            guard let urlAddress = (string as? URL)?.absoluteString ?? (string as? String) else {
-                self?.finishShare()
-                return
-            }
-            DispatchQueue.main.async {
-                self?.viewModel.showEditScene(urlAddress)
+        provider.loadItem(forTypeIdentifier: "public.url") { string, error in
+            let urlAddress = (string as? URL)?.absoluteString ?? (string as? String)
+            Task { @MainActor in
+                guard let url = urlAddress else {
+                    self.finishShare()
+                    return
+                }
+                self.viewModel.showEditScene(url)
             }
         }
     }

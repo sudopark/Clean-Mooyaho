@@ -13,10 +13,12 @@ import RxRelay
 
 import Domain
 import CommonPresenting
+import Extensions
+
 
 // MARK: - SignInViewModel
 
-public protocol SignInViewModel: AnyObject {
+public protocol SignInViewModel: AnyObject, Sendable {
 
     // interactor
     func requestSignIn(_ type: OAuthServiceProviderType)
@@ -30,7 +32,7 @@ public protocol SignInViewModel: AnyObject {
 
 // MARK: - SignInViewModelImple
 
-public final class SignInViewModelImple: SignInViewModel {
+public final class SignInViewModelImple: SignInViewModel, @unchecked Sendable {
         
     private let authUsecase: AuthUsecase
     private let router: SignInRouting
@@ -80,9 +82,9 @@ extension SignInViewModelImple {
             logger.print(level: .warning, "signin fail.. reason: \(error)")
         }
         
-        let closeScene: (Member) -> Void = { [weak self] member in
+        let closeScene: @Sendable (Member) -> Void = { [weak self] member in
             self?.subjects.isProcessing.accept(false)
-            self?.router.closeScene(animated: true) {
+            self?.router.closeScene(animated: true) { [weak self] in
                 self?.listener?.signIn(didCompleted: member)
             }
         }

@@ -25,7 +25,7 @@ extension MemberProfileViewModelImple: MemberProfileSceneInteractable {
 
 extension MemberProfileViewController {
 
-    public var interactor: MemberProfileSceneInteractable? {
+    public nonisolated var interactor: MemberProfileSceneInteractable? {
         return self.viewModel as? MemberProfileSceneInteractable
     }
 }

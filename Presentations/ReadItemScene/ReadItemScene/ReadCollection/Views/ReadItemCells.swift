@@ -38,19 +38,19 @@ final class ReadCollcetionAttrCell: BaseTableViewCell, ReadItemCells, Presenting
         
         let priotiry = cellViewModel.priority
         self.priorityView.isHidden = priotiry == nil
-        priotiry.do <| priorityView.labelView.setupPriority
+        priotiry.do <| { self.priorityView.labelView.setupPriority($0) }
             
         self.updateCategories(cellViewModel.categories)
             
         let remindtime = cellViewModel.remindTime
         self.remindView.isHidden = remindtime == nil
-        remindtime.do <| remindView.labelView.setupRemind(_:)
+        remindtime.do <| { self.remindView.labelView.setupRemind($0) }
     }
     
     func updateCategories(_ categories: [ItemCategory]) {
         let validCategories = pure(categories).flatMap{ $0.isNotEmpty ? $0 : nil }
         self.categoryView.isHidden = validCategories == nil
-        validCategories.do <| categoryView.labelView.updateCategories
+        validCategories.do <| { self.categoryView.labelView.updateCategories($0) } 
     }
     
     override func afterViewInit() {

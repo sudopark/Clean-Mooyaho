@@ -12,9 +12,9 @@ import Domain
 
 // MARK: - DiscoveryMainScene Interactable & Listenable
 
-public protocol DiscoveryMainSceneInteractable { }
+public protocol DiscoveryMainSceneInteractable: Sendable { }
 
-public protocol DiscoveryMainSceneListenable: AnyObject {
+public protocol DiscoveryMainSceneListenable: Sendable, AnyObject {
     
     func switchCollectionRequested()
 }
@@ -24,45 +24,45 @@ public protocol DiscoveryMainSceneListenable: AnyObject {
 
 public protocol DiscoveryMainScene: Scenable {
     
-    var interactor: DiscoveryMainSceneInteractable? { get }
+    nonisolated var interactor: DiscoveryMainSceneInteractable? { get }
 }
 
 
 // MARK: - StopShareCollectionScene Interactable & Listenable
 
-public protocol StopShareCollectionSceneInteractable: SharedMemberListSceneListenable { }
+public protocol StopShareCollectionSceneInteractable: Sendable, SharedMemberListSceneListenable { }
 
-public protocol StopShareCollectionSceneListenable: AnyObject { }
+public protocol StopShareCollectionSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - StopShareCollectionScene
 
 public protocol StopShareCollectionScene: Scenable {
     
-    var interactor: StopShareCollectionSceneInteractable? { get }
+    nonisolated var interactor: StopShareCollectionSceneInteractable? { get }
 }
 
 
 // MARK: - SharedCollectionItemsScene Interactable & Listenable
 
-public protocol SharedCollectionItemsSceneInteractable { }
+public protocol SharedCollectionItemsSceneInteractable: Sendable { }
 
-public protocol SharedCollectionItemsSceneListenable: AnyObject { }
+public protocol SharedCollectionItemsSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - SharedCollectionItemsScene
 
 public protocol SharedCollectionItemsScene: Scenable {
     
-    var interactor: SharedCollectionItemsSceneInteractable? { get }
+    nonisolated var interactor: SharedCollectionItemsSceneInteractable? { get }
 }
 
 
 // MARK: - SharedCollectionInfoDialogScene Interactable & Listenable
 
-public protocol SharedCollectionInfoDialogSceneInteractable { }
+public protocol SharedCollectionInfoDialogSceneInteractable: Sendable { }
 
-public protocol SharedCollectionInfoDialogSceneListenable: AnyObject {
+public protocol SharedCollectionInfoDialogSceneListenable: Sendable, AnyObject {
     
     func sharedCollectionDidRemoved(_ sharedID: String)
 }
@@ -71,15 +71,15 @@ public protocol SharedCollectionInfoDialogSceneListenable: AnyObject {
 
 public protocol SharedCollectionInfoDialogScene: Scenable {
     
-    var interactor: SharedCollectionInfoDialogSceneInteractable? { get }
+    nonisolated var interactor: SharedCollectionInfoDialogSceneInteractable? { get }
 }
 
 
 // MARK: - SharedMemberListScene Interactable & Listenable
 
-public protocol SharedMemberListSceneInteractable { }
+public protocol SharedMemberListSceneInteractable: Sendable { }
 
-public protocol SharedMemberListSceneListenable: AnyObject {
+public protocol SharedMemberListSceneListenable: Sendable, AnyObject {
     
     func sharedMemberListDidExcludeMember(_ memberID: String)
 }
@@ -89,5 +89,5 @@ public protocol SharedMemberListSceneListenable: AnyObject {
 
 public protocol SharedMemberListScene: Scenable {
     
-    var interactor: SharedMemberListSceneInteractable? { get }
+    nonisolated var interactor: SharedMemberListSceneInteractable? { get }
 }

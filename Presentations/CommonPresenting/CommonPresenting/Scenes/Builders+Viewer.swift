@@ -12,6 +12,7 @@ import Domain
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol InnerWebViewSceneBuilable {
     
     func makeInnerWebViewScene(link: ReadLink,

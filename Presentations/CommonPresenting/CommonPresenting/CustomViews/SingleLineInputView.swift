@@ -38,6 +38,7 @@ public final class SingleLineInputView: BaseUIView {
 extension Reactive where Base == SingleLineInputView {
     
     
+    @MainActor
     public var text: Observable<String> {
         
         let updateViews: (String) -> Void = { [weak base] text in
@@ -49,6 +50,7 @@ extension Reactive where Base == SingleLineInputView {
             .do(onNext: updateViews)
     }
     
+    @MainActor
     public var clear: Observable<Void> {
         return base.cleaerButton.rx.tap
             .do(onNext: { [weak base] in
@@ -57,11 +59,13 @@ extension Reactive where Base == SingleLineInputView {
             })
     }
     
+    @MainActor
     public var didEditBegin: Observable<Void> {
         return base.textField.rx.controlEvent(.editingDidBegin)
             .asObservable()
     }
     
+    @MainActor
     public var didEnterEnd: Observable<Void> {
         return base.textField.rx.controlEvent(.editingDidEndOnExit)
             .asObservable()

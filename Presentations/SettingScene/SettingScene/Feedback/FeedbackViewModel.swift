@@ -17,12 +17,13 @@ import CommonPresenting
 
 // MARK: - FeedbackViewModel
 
-public protocol FeedbackViewModel: AnyObject {
+public protocol FeedbackViewModel: AnyObject, Sendable {
 
     // interactor
     func enterMessage(_ message: String)
     func enterContact(_ contact: String)
     func register()
+    func close()
     
     // presenter
     var isConfirmable: Observable<Bool> { get }
@@ -32,7 +33,7 @@ public protocol FeedbackViewModel: AnyObject {
 
 // MARK: - FeedbackViewModelImple
 
-public final class FeedbackViewModelImple: FeedbackViewModel {
+public final class FeedbackViewModelImple: FeedbackViewModel, @unchecked Sendable {
     
     private let feedbackUsecase: FeedbackUsecase
     private let router: FeedbackRouting
@@ -52,7 +53,7 @@ public final class FeedbackViewModelImple: FeedbackViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let message = BehaviorRelay<String>(value: "")
         let emailAddress = BehaviorRelay<String>(value: "")
         let isRegistering = BehaviorRelay<Bool>(value: false)
@@ -94,6 +95,10 @@ extension FeedbackViewModelImple {
             .subscribe(onSuccess: registered,
                        onError: handleError)
             .disposed(by: self.disposeBag)
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 

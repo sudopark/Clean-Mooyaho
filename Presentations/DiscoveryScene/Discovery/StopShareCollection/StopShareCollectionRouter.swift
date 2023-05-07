@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol StopShareCollectionRouting: Routing {
+public protocol StopShareCollectionRouting: Routing, Sendable {
     
     func presentShareSheet(with url: String)
     
@@ -43,27 +43,31 @@ extension StopShareCollectionRouter {
     }
     
     public func presentShareSheet(with url: String) {
-        guard let url = URL(string: url) else { return }
-        let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        self.currentScene?.present(activity, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let url = URL(string: url) else { return }
+            let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            self.currentScene?.present(activity, animated: true, completion: nil)
+        }
     }
     
     public func findWhoSharedReadCollection(_ sharedCollection: SharedReadCollection,
                                             memberIDs: [String]) {
         
-        guard let next = self.nextScenesBuilder?.makeSharedMemberListScene(
-            sharedCollection: sharedCollection,
-            memberIDs: memberIDs,
-            listener: self.currentInteractor
-        )
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeSharedMemberListScene(
+                sharedCollection: sharedCollection,
+                memberIDs: memberIDs,
+                listener: self.currentInteractor
+            )
+            else {
+                return
+            }
+            let navigationController = BaseNavigationController(
+                rootViewController: next,
+                shouldHideNavigation: false,
+                shouldShowCloseButtonIfNeed: true
+            )
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
         }
-        let navigationController = BaseNavigationController(
-            rootViewController: next,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
-        )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
     }
 }

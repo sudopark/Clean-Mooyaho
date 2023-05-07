@@ -25,7 +25,7 @@ extension RecoverAccountViewModelImple: RecoverAccountSceneInteractable {
 
 extension RecoverAccountViewController {
 
-    public var interactor: RecoverAccountSceneInteractable? {
+    public nonisolated var interactor: RecoverAccountSceneInteractable? {
         return self.viewModel as? RecoverAccountSceneInteractable
     }
 }

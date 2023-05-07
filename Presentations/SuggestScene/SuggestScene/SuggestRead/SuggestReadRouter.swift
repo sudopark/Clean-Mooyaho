@@ -20,7 +20,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SuggestReadRouting: Routing { 
+public protocol SuggestReadRouting: Routing, Sendable { 
     
     func showLinkDetail(_ linkID: String)
     
@@ -44,31 +44,35 @@ extension SuggestReadRouter {
     
     public func showLinkDetail(_ linkID: String) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeInnerWebViewScene(linkID: linkID,
-                                       isEditable: true,
-                                       isJumpable: true,
-                                       listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeInnerWebViewScene(linkID: linkID,
+                                           isEditable: true,
+                                           isJumpable: true,
+                                           listener: self.currentInteractor)
+            else {
+                return
+            }
+            
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func showAllFavoriteItemList() {
         
-        guard let next = self.nextScenesBuilder?
-                .makeFavoriteItemsScene(listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeFavoriteItemsScene(listener: self.currentInteractor)
+            else {
+                return
+            }
+            (next as? BaseViewController)?.isKeyCommandCloseEnabled = true
+            let navigationController = BaseNavigationController(
+                rootViewController: next,
+                shouldHideNavigation: false,
+                shouldShowCloseButtonIfNeed: true
+            )
+            self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
         }
-        (next as? BaseViewController)?.isKeyCommandCloseEnabled = true
-        let navigationController = BaseNavigationController(
-            rootViewController: next,
-            shouldHideNavigation: false,
-            shouldShowCloseButtonIfNeed: true
-        )
-        self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(navigationController, animated: true)
     }
 }

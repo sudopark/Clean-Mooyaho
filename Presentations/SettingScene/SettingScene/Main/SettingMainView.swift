@@ -18,6 +18,7 @@ import CommonPresenting
 
 // MARK: - SettingMainViewStateObject
 
+@MainActor
 public final class SettingMainViewStateObject: ObservableObject {
     
     @Published var sections: [SettingItemSection] = []
@@ -122,7 +123,7 @@ struct SettingItemCellView: View {
         switch cellViewModel.accessory {
         case .disclosure:
             return Image(systemName: "chevron.right")
-                .foregroundColor(self.uiContext.colors.hintText.asColor)
+                .foregroundColor(self.theme.colors.hintText.asColor)
                 .asAny()
             
         case let .accentValue(value):

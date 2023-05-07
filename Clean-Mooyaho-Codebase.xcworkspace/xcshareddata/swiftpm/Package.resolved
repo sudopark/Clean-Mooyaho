@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
-        "branch" : "master",
-        "revision" : "b7f3cbb82e188c8d5effb12328d2b0d2ea02023d"
+        "revision" : "8a68442660d411031888e6e42c4f628933f62401",
+        "version" : "2.11.1"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher.git",
       "state" : {
-        "revision" : "8c65ddf756c633d01d9ae01092bf72f0c66dfc60",
-        "version" : "7.0.0"
+        "revision" : "af4be924ad984cf4d16f4ae4df424e79a443d435",
+        "version" : "7.6.2"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sudopark/RxSwift-do-notation.git",
       "state" : {
-        "revision" : "7ec334fae41f0aa612569d6ed165a68d7a6ca1b6",
-        "version" : "0.0.2"
+        "revision" : "f8bc8f0f266e2b80246f1465633bb31e2384d31f",
+        "version" : "0.0.6"
       }
     },
     {
@@ -88,6 +88,15 @@
       "state" : {
         "revision" : "be79b222f720be445f3cc7260480697c468e1b10",
         "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-async-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-async-algorithms",
+      "state" : {
+        "revision" : "cca423ff03ab657062f3781847e65a867b51bb01",
+        "version" : "0.0.3"
       }
     },
     {
@@ -106,6 +115,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "34b66f76de89965cea9c7bfb3c0d7ddd3abfe649"
+      }
+    },
+    {
+      "identity" : "swiftui-webview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sudopark/SwiftUI-WebView.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7e1c8d0946675ccc2836d71933f85a48434b8897"
       }
     },
     {

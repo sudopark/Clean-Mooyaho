@@ -12,6 +12,7 @@ import RxSwift
 
 import Domain
 import CommonPresenting
+import Extensions
 import DataStore
 import FirebaseService
 
@@ -20,6 +21,7 @@ import FirebaseService
 
 class HttpAPIImple: HttpAPI { }
 
+@MainActor
 final class DependencyInjector {
     
     class Shared {

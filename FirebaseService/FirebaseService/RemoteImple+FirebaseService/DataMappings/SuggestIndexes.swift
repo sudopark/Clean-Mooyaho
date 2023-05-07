@@ -11,6 +11,8 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
+
 
 enum IndexType: String {
     case category = "cate"

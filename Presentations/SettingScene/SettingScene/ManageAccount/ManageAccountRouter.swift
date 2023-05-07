@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol ManageAccountRouting: Routing { }
+public protocol ManageAccountRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

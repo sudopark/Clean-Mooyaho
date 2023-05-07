@@ -15,11 +15,12 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 // MARK: - EditReadCollectionViewModel
 
-public protocol EditReadCollectionViewModel: AnyObject {
+public protocol EditReadCollectionViewModel: AnyObject, Sendable {
 
     // interactor
     func closeScene()
@@ -44,7 +45,7 @@ public protocol EditReadCollectionViewModel: AnyObject {
 
 // MARK: - EditReadCollectionViewModelImple
 
-public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel {
+public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel, @unchecked Sendable {
     
     private let parentID: String?
     private let editCase: EditCollectionCase
@@ -79,7 +80,7 @@ public final class EditReadCollectionViewModelImple: EditReadCollectionViewModel
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let collectionName = BehaviorRelay<String?>(value: nil)
         let description = BehaviorRelay<String?>(value: nil)
         let isProcessing = BehaviorRelay<Bool>(value: false)

@@ -18,7 +18,7 @@ extension SignInViewModelImple: SignInSceneInteractable { }
 
 extension SignInViewController {
     
-    public var interactor: SignInSceneInteractable? {
+    public nonisolated var interactor: SignInSceneInteractable? {
         return self.viewModel as? SignInSceneInteractable
     }
 }

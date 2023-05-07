@@ -16,7 +16,7 @@ public enum MemberProfileUploadStatus {
     case completed(_ source: MemberThumbnail?)
 }
 
-public protocol MemberRepository: AnyObject {
+public protocol MemberRepository: Sendable, AnyObject {
     
     func requestUpdatePushToken(_ userID: String, deviceID: String, newToken: String) -> Maybe<Void>
     

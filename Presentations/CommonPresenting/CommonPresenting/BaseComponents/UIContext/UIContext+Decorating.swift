@@ -12,6 +12,7 @@ import Optics
 
 extension UIContext {
     
+    @MainActor
     public enum Decorating {
         
         static var uiContext: UIContext { UIContext.currentContext }
@@ -42,7 +43,6 @@ extension UIContext.Decorating {
             |> \.textColor .~ self.uiContext.colors.title
             |> \.numberOfLines .~ 1
     }
-    
     
     @discardableResult
     public static func listSectionTitle(_ label: UILabel) -> UILabel {
@@ -127,59 +127,59 @@ public extension Text {
     
     func header() -> some View {
         return self
-            .font(self.uiContext.fonts.get(22, weight: .heavy).asFont)
-            .foregroundColor(self.uiContext.colors.title.asColor)
+            .font(self.theme.fonts.get(22, weight: .heavy).asFont)
+            .foregroundColor(self.theme.colors.title.asColor)
             .lineLimit(1)
     }
     
     func smallHeader() -> some View {
         return self
-            .font(self.uiContext.fonts.get(18, weight: .bold).asFont)
-            .foregroundColor(self.uiContext.colors.title.asColor)
+            .font(self.theme.fonts.get(18, weight: .bold).asFont)
+            .foregroundColor(self.theme.colors.title.asColor)
             .lineLimit(1)
     }
     
     func listSectionTitle() -> some View {
         return self
-            .font(self.uiContext.fonts.get(13, weight: .bold).asFont)
-            .foregroundColor(self.uiContext.colors.secondaryTitle.asColor)
+            .font(self.theme.fonts.get(13, weight: .bold).asFont)
+            .foregroundColor(self.theme.colors.secondaryTitle.asColor)
             .lineLimit(1)
     }
     
     func listItemTitle() -> some View {
         return self
-            .font(self.uiContext.fonts.get(15, weight: .medium).asFont)
-            .foregroundColor(self.uiContext.colors.title.asColor)
+            .font(self.theme.fonts.get(15, weight: .medium).asFont)
+            .foregroundColor(self.theme.colors.title.asColor)
     }
     
     func listItemDescription() -> some View {
         return self
-            .font(self.uiContext.fonts.get(12, weight: .medium).asFont)
-            .foregroundColor(self.uiContext.colors.descriptionText.asColor)
+            .font(self.theme.fonts.get(12, weight: .medium).asFont)
+            .foregroundColor(self.theme.colors.descriptionText.asColor)
     }
     
     func listItemSubDescription() -> some View {
         return self
-            .font(self.uiContext.fonts.get(11, weight: .medium).asFont)
-            .foregroundColor(self.uiContext.colors.descriptionText.asColor)
+            .font(self.theme.fonts.get(11, weight: .medium).asFont)
+            .foregroundColor(self.theme.colors.descriptionText.asColor)
     }
     
     func listItemAccentText() -> some View {
         return self
-            .font(self.uiContext.fonts.get(12, weight: .medium).asFont)
-            .foregroundColor(self.uiContext.colors.accentColor.asColor)
+            .font(self.theme.fonts.get(12, weight: .medium).asFont)
+            .foregroundColor(self.theme.colors.accentColor.asColor)
     }
     
     func placeHolder() -> some View {
         return self
-            .font(self.uiContext.fonts.get(14, weight: .regular).asFont)
-            .foregroundColor(self.uiContext.colors.hintText.asColor)
+            .font(self.theme.fonts.get(14, weight: .regular).asFont)
+            .foregroundColor(self.theme.colors.hintText.asColor)
     }
     
     func title() -> some View {
         return self
-            .font(self.uiContext.fonts.get(18, weight: .bold).asFont)
-            .foregroundColor(self.uiContext.colors.title.asColor)
+            .font(self.theme.fonts.get(18, weight: .bold).asFont)
+            .foregroundColor(self.theme.colors.title.asColor)
     }
 }
 

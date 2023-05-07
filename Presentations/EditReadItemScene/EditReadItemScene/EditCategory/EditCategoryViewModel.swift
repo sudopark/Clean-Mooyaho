@@ -15,6 +15,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 public protocol SuggestingCategoryCellViewModelType {
@@ -67,7 +68,7 @@ public struct SuggestMakeNewCategoryCellViewMdoel: SuggestingCategoryCellViewMod
 
 // MARK: - EditCategoryViewModel
 
-public protocol EditCategoryViewModel: AnyObject {
+public protocol EditCategoryViewModel: AnyObject, Sendable {
 
     // interactor
     func prepareCategoryList()
@@ -92,7 +93,7 @@ public protocol EditCategoryViewModel: AnyObject {
 
 // MARK: - EditCategoryViewModelImple
 
-public final class EditCategoryViewModelImple: EditCategoryViewModel {
+public final class EditCategoryViewModelImple: EditCategoryViewModel, @unchecked Sendable {
     
     private let categoryUsecase: ReadItemCategoryUsecase
     private let suggestUsecase: SuggestCategoryUsecase
@@ -119,7 +120,7 @@ public final class EditCategoryViewModelImple: EditCategoryViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let latestCategories = BehaviorRelay<[ItemCategory]>(value: [])
         let suggestedCategories = BehaviorRelay<SuggestCategoryCollection?>(value: nil)

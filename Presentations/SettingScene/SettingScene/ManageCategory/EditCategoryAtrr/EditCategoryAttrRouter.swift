@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditCategoryAttrRouting: Routing {
+public protocol EditCategoryAttrRouting: Routing, Sendable {
     
     func selectNewColor(_ stratWith: String)
     
@@ -43,15 +43,17 @@ extension EditCategoryAttrRouter {
     
     public func selectNewColor(_ stratWith: String) {
         
-        let dependency = SelectColorDepedency(startWithSelect: stratWith,
-                                              colorSources: ItemCategory.colorCodes)
-        guard let next = self.nextScenesBuilder?
-                .makeColorSelectScene(dependency, listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            let dependency = SelectColorDepedency(startWithSelect: stratWith,
+                                                  colorSources: ItemCategory.colorCodes)
+            guard let next = self.nextScenesBuilder?
+                    .makeColorSelectScene(dependency, listener: self.currentInteractor)
+            else {
+                return
+            }
+            
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func alertNameDuplicated(_ name: String) {

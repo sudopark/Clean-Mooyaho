@@ -11,6 +11,7 @@ import Foundation
 import RxSwift
 import Prelude
 import Optics
+import Extensions
 
 // MARK: - SharedEvent + signIn status
 
@@ -19,7 +20,7 @@ public enum UserSignInStatusChangeEvent: SharedEvent {
     case signOut(_ auth: Auth)
 }
 
-public protocol AuthUsecase {
+public protocol AuthUsecase: Sendable {
     
     func loadLastSignInAccountInfo() -> Maybe<(auth: Auth, member: Member?)>
     

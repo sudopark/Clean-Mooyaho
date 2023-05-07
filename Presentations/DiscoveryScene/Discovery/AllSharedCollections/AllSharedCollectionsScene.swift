@@ -16,9 +16,9 @@ import CommonPresenting
 
 // MARK: - AllSharedCollectionsScene Interactable & Listenable
 
-public protocol AllSharedCollectionsSceneInteractable { }
+public protocol AllSharedCollectionsSceneInteractable: Sendable { }
 
-public protocol AllSharedCollectionsSceneListenable: AnyObject { }
+public protocol AllSharedCollectionsSceneListenable: AnyObject, Sendable { }
 
 
 // MARK: - AllSharedCollectionsScene
@@ -40,7 +40,7 @@ extension AllSharedCollectionsViewModelImple: AllSharedCollectionsSceneInteracta
 
 extension AllSharedCollectionsViewController {
 
-    public var interactor: AllSharedCollectionsSceneInteractable? {
+    public nonisolated var interactor: AllSharedCollectionsSceneInteractable? {
         return self.viewModel as? AllSharedCollectionsSceneInteractable
     }
 }

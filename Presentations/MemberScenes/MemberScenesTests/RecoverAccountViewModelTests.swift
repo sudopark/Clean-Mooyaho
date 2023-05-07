@@ -18,7 +18,6 @@ import UsecaseDoubles
 
 import MemberScenes
 
-
 class RecoverAccountViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
@@ -123,7 +122,7 @@ extension RecoverAccountViewModelTests {
 
 extension RecoverAccountViewModelTests {
     
-    class SpyRouter: RecoverAccountRouting {
+    final class SpyRouter: RecoverAccountRouting, @unchecked Sendable {
      
         var didShowToast: Bool?
         func showToast(_ message: String) {
@@ -137,7 +136,7 @@ extension RecoverAccountViewModelTests {
         }
     }
     
-    class SpyListener: RecoverAccountSceneListenable {
+    final class SpyListener: RecoverAccountSceneListenable, @unchecked Sendable {
         
         var didAccountRecovered: Bool?
         func recoverAccount(didCompleted recoveredMember: Member) {

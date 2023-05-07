@@ -11,6 +11,7 @@ import RxSwift
 import RxRelay
 
 import Domain
+import Extensions
 
 
 
@@ -136,15 +137,17 @@ public protocol FCMService {
 extension FirebaseServiceImple: FCMService {
     
     public func setupFCMService() {
-        Messaging.messaging().delegate = self
-        UNUserNotificationCenter.current().delegate = self
-        self.prepareNotificationPermission()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { [weak self] grant in
-                self?.notificationAuthorizationGranted.onNext(grant)
-                UIApplication.shared.registerForRemoteNotifications()
-            })
-            .disposed(by: self.disposeBag)
+        Task { @MainActor in
+            Messaging.messaging().delegate = self
+            UNUserNotificationCenter.current().delegate = self
+            self.prepareNotificationPermission()
+                .observe(on: MainScheduler.instance)
+                .subscribe(onSuccess: { [weak self] grant in
+                    self?.notificationAuthorizationGranted.onNext(grant)
+                    UIApplication.shared.registerForRemoteNotifications()
+                })
+                .disposed(by: self.disposeBag)
+        }
     }
     
     public func apnsTokenUpdated(_ token: Data) {

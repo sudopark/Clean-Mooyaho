@@ -29,6 +29,6 @@ public final class BaseTableViewHeaderView: BaseUIView, Presenting {
     }
     
     public func setupStyling() {
-        _ = self.titleLabel |> self.uiContext.decorating.header
+        _ = self.titleLabel |> { self.uiContext.decorating.header($0) }
     }
 }

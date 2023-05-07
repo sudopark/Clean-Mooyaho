@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol UserDataMigrateRepository {
+public protocol UserDataMigrateRepository: Sendable {
     
     func checkMigrationNeed() -> Maybe<Bool>
     

@@ -15,11 +15,12 @@ import UIKit
 
 import Domain
 import CommonPresenting
+import Extensions
 
 
 // MARK: - Routing
 
-public protocol ReadCollectionRouting: Routing {
+public protocol ReadCollectionRouting: Routing, Sendable {
     
     func showItemSortOrderOptions(_ currentOrder: ReadCollectionItemSortOrder,
                                   selectedHandler: @escaping (ReadCollectionItemSortOrder) -> Void)
@@ -50,7 +51,7 @@ public typealias ReadCollectionRouterBuildables = AddItemNavigationSceneBuilable
 
 public final class ReadCollectionItemsRouter: Router<ReadCollectionRouterBuildables>, ReadCollectionRouting {
     
-    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    @MainActor private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
     public weak var navigationListener: ReadCollectionNavigateListenable?
 }
 
@@ -68,98 +69,114 @@ extension ReadCollectionItemsRouter {
     
     public func moveToSubCollection(collectionID: String) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeReadCollectionItemScene(collectionID: collectionID,
-                                             navigationListener: self.navigationListener)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeReadCollectionItemScene(collectionID: collectionID,
+                                                 navigationListener: self.navigationListener)
+            else {
+                return
+            }
+            self.currentScene?.navigationController?.pushViewController(next, animated: true)
         }
-        self.currentScene?.navigationController?.pushViewController(next, animated: true)
     }
     
     public func showLinkDetail(_ link: ReadLink) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeInnerWebViewScene(link: link, isEditable: true, listener: nil)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeInnerWebViewScene(link: link, isEditable: true, listener: nil)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true)
         }
-        self.currentScene?.present(next, animated: true)
     }
     
     public func routeToMakeNewCollectionScene(at collectionID: String?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeEditReadCollectionScene(parentID: collectionID,
-                                             editCase: .makeNew,
-                                             listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditReadCollectionScene(parentID: collectionID,
+                                                 editCase: .makeNew,
+                                                 listener: self.currentInteractor) else {
+                return
+            }
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func routeToEditCollection(_ collection: ReadCollection) {
-        guard let next = self.nextScenesBuilder?
-                .makeEditReadCollectionScene(parentID: collection.parentID,
-                                             editCase: .edit(collection),
-                                             listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditReadCollectionScene(parentID: collection.parentID,
+                                                 editCase: .edit(collection),
+                                                 listener: self.currentInteractor) else {
+                return
+            }
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func routeToAddNewLink(at collectionID: String?, startWith url: String?) {
-        guard let next = self.nextScenesBuilder?
-                .makeAddItemNavigationScene(at: collectionID, startWith: url, self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeAddItemNavigationScene(at: collectionID, startWith: url, self.currentInteractor) else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func routeToEditReadLink(_ link: ReadLink) {
         
-        guard let next = self.nextScenesBuilder?.makeEditLinkItemScene(.edit(item: link),
-                                                                       collectionID: link.parentID,
-                                                                       listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeEditLinkItemScene(.edit(item: link),
+                                                                           collectionID: link.parentID,
+                                                                           listener: self.currentInteractor) else {
+                return
+            }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func roueToEditCustomOrder(for collectionID: String?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeEditItemsCustomOrderScene(collectionID: collectionID, listener: nil) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditItemsCustomOrderScene(collectionID: collectionID, listener: nil) else {
+                return
+            }
+            
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func routeToSetupRemind(for item: ReadItem) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeEditReadRemindScene(.edit(item), listener: self.currentInteractor)
-        else { return }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditReadRemindScene(.edit(item), listener: self.currentInteractor)
+            else { return }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func returnToParent() {
-        DispatchQueue.main.async {
+        Task { @MainActor in
             self.currentScene?.navigationController?.popViewController(animated: true)
         }
     }

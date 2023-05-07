@@ -18,7 +18,6 @@ import UsecaseDoubles
 
 import ReadItemScene
 
-
 class FavoriteItemsViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
@@ -115,7 +114,7 @@ extension FavoriteItemsViewModelTests {
 
 extension FavoriteItemsViewModelTests {
     
-    class SpyRouter: FavoriteItemsRouting {
+    final class SpyRouter: FavoriteItemsRouting, @unchecked Sendable {
         
         var didShowLinkDetail: Bool?
         func showLinkDetail(_ link: ReadLink) {
@@ -123,7 +122,7 @@ extension FavoriteItemsViewModelTests {
         }
     }
     
-    class SpyListener: FavoriteItemsSceneListenable {
+    final class SpyListener: FavoriteItemsSceneListenable, @unchecked Sendable {
         
         var didJumpRequested: Bool?
         func favoriteItemsScene(didRequestJump collectionID: String?) {

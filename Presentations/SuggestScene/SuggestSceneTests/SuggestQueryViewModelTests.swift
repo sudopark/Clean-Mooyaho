@@ -13,6 +13,8 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
+
 import UnitTestHelpKit
 import UsecaseDoubles
 
@@ -126,7 +128,7 @@ extension SuggestQueryViewModelTests {
 
 extension SuggestQueryViewModelTests {
     
-    class SpyRouterAndLister: SuggestQueryRouting, SuggestQuerySceneListenable {
+    final class SpyRouterAndLister: SuggestQueryRouting, SuggestQuerySceneListenable, @unchecked Sendable {
         
         var didSearchRequested: Bool?
         func suggestQuery(didSelect searchQuery: String) {

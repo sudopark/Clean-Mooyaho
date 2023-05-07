@@ -52,6 +52,7 @@
 		F66E81412655328000682625 /* MessagingRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E81402655328000682625 /* MessagingRemote+Firebase.swift */; };
 		F67848DC265123D20074C344 /* RemotePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67848DB265123D20074C344 /* RemotePolicy.swift */; };
 		F68B209B26A5D2B200DB30CC /* FCM+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */; };
+		F69F16B12878891600DF2481 /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69F16B02878891600DF2481 /* Extensions.framework */; };
 		F6A8CE4B271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */; };
 		F6BA7DAD278147CD0020B430 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F6BA7DA8278147CD0020B430 /* GoogleSignIn.bundle */; };
 		F6BA7DAF278147CD0020B430 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BA7DAA278147CD0020B430 /* AppAuth.xcframework */; };
@@ -165,6 +166,7 @@
 		F66E81402655328000682625 /* MessagingRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagingRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F67848DB265123D20074C344 /* RemotePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePolicy.swift; sourceTree = "<group>"; };
 		F68B209A26A5D2B200DB30CC /* FCM+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FCM+Firebase.swift"; sourceTree = "<group>"; };
+		F69F16B02878891600DF2481 /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6A8CE4A271205F100CA6D3D /* ItemCategoryRemote+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCategoryRemote+Firebase.swift"; sourceTree = "<group>"; };
 		F6BA7DA8278147CD0020B430 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleSignIn.bundle; sourceTree = "<group>"; };
 		F6BA7DAA278147CD0020B430 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AppAuth.xcframework; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 			files = (
 				2B8AC3DD263BB229002BA1AC /* FirebaseFirestore.xcframework in Frameworks */,
 				2B8AC3FD263C57C6002BA1AC /* FirebaseCrashlytics.xcframework in Frameworks */,
+				F69F16B12878891600DF2481 /* Extensions.framework in Frameworks */,
 				2B8AC3E2263BB229002BA1AC /* BoringSSL-GRPC.xcframework in Frameworks */,
 				2B8AC3ED263BB229002BA1AC /* GoogleAppMeasurement.xcframework in Frameworks */,
 				2B8AC3E5263BB229002BA1AC /* GTMSessionFetcher.xcframework in Frameworks */,
@@ -282,6 +285,7 @@
 		2B39E19026386F0E003EE954 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F69F16B02878891600DF2481 /* Extensions.framework */,
 				2BD54F86263DD42A004B3EB0 /* Common3rdParty.framework */,
 				2BD54F60263D4B14004B3EB0 /* Common3rdParty.framework */,
 				2BD54F5E263D4B09004B3EB0 /* UnitTestHelpKit.framework */,
@@ -812,6 +816,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/FirebaseService/FirebaseFrameworks/module.modulemap\"";
@@ -843,6 +848,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.FirebaseService;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/FirebaseService/FirebaseFrameworks/module.modulemap\"";

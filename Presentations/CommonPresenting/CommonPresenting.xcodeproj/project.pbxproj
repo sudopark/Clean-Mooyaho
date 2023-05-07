@@ -35,6 +35,7 @@
 		F610148A2657A6C300D32E38 /* Rx+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61014892657A6C300D32E38 /* Rx+Extensions.swift */; };
 		F620518E272771E9009CA975 /* SimpleReadItemCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518D272771E9009CA975 /* SimpleReadItemCells.swift */; };
 		F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */; };
+		F6311A262870048B005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A252870048B005C8FCB /* Extensions.framework */; };
 		F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */; };
 		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
 		F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* ThumbnailImageView.swift */; };
@@ -61,6 +62,7 @@
 		F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65215AC26755626000CAB4B /* ApplicationStatus.swift */; };
 		F66248FA275940C100D4FC74 /* CategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248F9275940C100D4FC74 /* CategoryLabelView.swift */; };
 		F66248FC2759424F00D4FC74 /* BaseTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66248FB2759424F00D4FC74 /* BaseTableViewHeaderView.swift */; };
+		F6627E112981881700D45155 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = F6627E102981881700D45155 /* WebView */; };
 		F663E6E62763C7FE00EE8152 /* Builders+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F663E6E52763C7FE00EE8152 /* Builders+Member.swift */; };
 		F6646F3F26903F3E00E5A53B /* UIScrollViwe+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6646F3E26903F3E00E5A53B /* UIScrollViwe+Extension.swift */; };
 		F665A64526FB0A0500E866B7 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F665A64426FB0A0500E866B7 /* SwiftUI+Extension.swift */; };
@@ -91,8 +93,12 @@
 		F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */; };
 		F6BBF17627084EAB00420A49 /* Builders+EditReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */; };
 		F6BBF178270851A100420A49 /* Builders+ReadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BBF177270851A100420A49 /* Builders+ReadItem.swift */; };
+		F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B1291D56BE005E4393 /* ProgressLineView.swift */; };
+		F6C252B6291D5916005E4393 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B5291D5916005E4393 /* View+Extension.swift */; };
+		F6C252B8292139CE005E4393 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C252B7292139CE005E4393 /* VisualEffectView.swift */; };
 		F6C97B1727091D2500990019 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B1627091D2500990019 /* ShimmerView.swift */; };
 		F6C97B192709278D00990019 /* KeyAndLabeledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */; };
+		F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */; };
 		F6CB43492713560900F26508 /* ColorSelectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43442713560900F26508 /* ColorSelectRouter.swift */; };
 		F6CB434A2713560900F26508 /* ColorSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43452713560900F26508 /* ColorSelectViewController.swift */; };
 		F6CB434B2713560900F26508 /* ColorSelectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CB43462713560900F26508 /* ColorSelectBuilder.swift */; };
@@ -174,6 +180,7 @@
 		F61014892657A6C300D32E38 /* Rx+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Extensions.swift"; sourceTree = "<group>"; };
 		F620518D272771E9009CA975 /* SimpleReadItemCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleReadItemCells.swift; sourceTree = "<group>"; };
 		F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionInverseNavigationCoordinator.swift; sourceTree = "<group>"; };
+		F6311A252870048B005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputView.swift; sourceTree = "<group>"; };
 		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
 		F637205526650B440089D0B3 /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
@@ -229,8 +236,12 @@
 		F6BBF1672708408600420A49 /* Scenes+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scenes+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF17527084EAB00420A49 /* Builders+EditReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+EditReadItem.swift"; sourceTree = "<group>"; };
 		F6BBF177270851A100420A49 /* Builders+ReadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Builders+ReadItem.swift"; sourceTree = "<group>"; };
+		F6C252B1291D56BE005E4393 /* ProgressLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressLineView.swift; sourceTree = "<group>"; };
+		F6C252B5291D5916005E4393 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		F6C252B7292139CE005E4393 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		F6C97B1627091D2500990019 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		F6C97B182709278D00990019 /* KeyAndLabeledValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyAndLabeledValueView.swift; sourceTree = "<group>"; };
+		F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHeightObserver.swift; sourceTree = "<group>"; };
 		F6CB43442713560900F26508 /* ColorSelectRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectRouter.swift; sourceTree = "<group>"; };
 		F6CB43452713560900F26508 /* ColorSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectViewController.swift; sourceTree = "<group>"; };
 		F6CB43462713560900F26508 /* ColorSelectBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectBuilder.swift; sourceTree = "<group>"; };
@@ -275,8 +286,10 @@
 			files = (
 				F6E9F7822781718800FF992F /* Toaster in Frameworks */,
 				F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */,
+				F6311A262870048B005C8FCB /* Extensions.framework in Frameworks */,
 				2B39E28D26387C14003EE954 /* Domain.framework in Frameworks */,
 				F6E51B6F273F628800CBE310 /* ISEmojiView in Frameworks */,
+				F6627E112981881700D45155 /* WebView in Frameworks */,
 				2B39E28526387BEC003EE954 /* Common3rdParty.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,6 +380,7 @@
 		2B39E28326387BEC003EE954 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A252870048B005C8FCB /* Extensions.framework */,
 				F6025FEC26A9CFD2007A1AA8 /* UsecaseDoubles.framework */,
 				F6F52ED126885329006D37F3 /* StubUsecases.framework */,
 				F6F29596266D1BB800CDF980 /* Common3rdParty.framework */,
@@ -389,6 +403,7 @@
 				F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */,
 				F6D2BD27278C99AC00420837 /* FeedbackImapctStyle.swift */,
 				F60CCE6C27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift */,
+				F6CABE4D29195DB200E4999B /* KeyboardHeightObserver.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -454,6 +469,7 @@
 				F6ED41F22743F71A0082DE18 /* ItemCategory+Extensions.swift */,
 				F63A520B27B2DCB7008542E2 /* SwiftUI+Extensions.swift */,
 				F63A520D27B7569E008542E2 /* Combine+Extensions.swift */,
+				F6C252B5291D5916005E4393 /* View+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -482,6 +498,7 @@
 		F6502DC6266A0CA20027800F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F6C252B0291D56AC005E4393 /* Components+SwiftUI */,
 				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
 				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
@@ -554,6 +571,15 @@
 			path = ViewUsecases;
 			sourceTree = "<group>";
 		};
+		F6C252B0291D56AC005E4393 /* Components+SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				F6C252B1291D56BE005E4393 /* ProgressLineView.swift */,
+				F6C252B7292139CE005E4393 /* VisualEffectView.swift */,
+			);
+			path = "Components+SwiftUI";
+			sourceTree = "<group>";
+		};
 		F6CB4343271355EE00F26508 /* ColorSelect */ = {
 			isa = PBXGroup;
 			children = (
@@ -617,6 +643,7 @@
 				F637205A26650ECC0089D0B3 /* Kingfisher */,
 				F6E51B6E273F628800CBE310 /* ISEmojiView */,
 				F6E9F7812781718800FF992F /* Toaster */,
+				F6627E102981881700D45155 /* WebView */,
 			);
 			productName = CommonPresenting;
 			productReference = 2B39E24F26387B6A003EE954 /* CommonPresenting.framework */;
@@ -671,6 +698,7 @@
 				F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */,
 				F6E9F7802781718800FF992F /* XCRemoteSwiftPackageReference "Toaster" */,
+				F6627E0F2981881700D45155 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */,
 			);
 			productRefGroup = 2B39E25026387B6A003EE954 /* Products */;
 			projectDirPath = "";
@@ -714,11 +742,14 @@
 				F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */,
 				F6A3A0BA27521D2A00336E4F /* ReadItemCellViewModels.swift in Sources */,
 				F6DA564226889A6000032348 /* Notification+Extensions.swift in Sources */,
+				F6C252B2291D56BE005E4393 /* ProgressLineView.swift in Sources */,
 				2B39E27D26387BCB003EE954 /* BaseViewController.swift in Sources */,
 				F6E279C326F6E82600957AC4 /* Scenes+ReadItem.swift in Sources */,
 				F6CB434A2713560900F26508 /* ColorSelectViewController.swift in Sources */,
+				F6CABE4E29195DB200E4999B /* KeyboardHeightObserver.swift in Sources */,
 				F6D8731928420E45009CAD55 /* BaseFloatingButton.swift in Sources */,
 				F610147F26578D6700D32E38 /* PushSlideTransitionManager.swift in Sources */,
+				F6C252B8292139CE005E4393 /* VisualEffectView.swift in Sources */,
 				F6DA564026889A4100032348 /* InputKeyboardHandlable.swift in Sources */,
 				F6E51B78273F62B500CBE310 /* SelectEmojiBuilder.swift in Sources */,
 				F61014762657211200D32E38 /* Theme.swift in Sources */,
@@ -754,6 +785,7 @@
 				F66EF6AF2719EFD000AC0DAB /* RoundImageButton.swift in Sources */,
 				F67DDE9D26FE1E63004BC542 /* ItemLabelView.swift in Sources */,
 				F6775B282781FA0F00D2DCD2 /* EasyTipView..swift in Sources */,
+				F6C252B6291D5916005E4393 /* View+Extension.swift in Sources */,
 				F637205F2665135B0089D0B3 /* BaseTableViewCell.swift in Sources */,
 				F6BBF1682708408600420A49 /* Scenes+EditReadItem.swift in Sources */,
 				F65215AD26755626000CAB4B /* ApplicationStatus.swift in Sources */,
@@ -976,10 +1008,13 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-warn-concurrency";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.CommonPresenting;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1002,9 +1037,12 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-warn-concurrency";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.CommonPresenting;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1086,7 +1124,15 @@
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
+				minimumVersion = 7.6.2;
+			};
+		};
+		F6627E0F2981881700D45155 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sudopark/SwiftUI-WebView.git";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 		F6E51B6D273F628800CBE310 /* XCRemoteSwiftPackageReference "ISEmojiView" */ = {
@@ -1112,6 +1158,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F637205926650ECC0089D0B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		F6627E102981881700D45155 /* WebView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6627E0F2981881700D45155 /* XCRemoteSwiftPackageReference "SwiftUI-WebView" */;
+			productName = WebView;
 		};
 		F6E51B6E273F628800CBE310 /* ISEmojiView */ = {
 			isa = XCSwiftPackageProductDependency;

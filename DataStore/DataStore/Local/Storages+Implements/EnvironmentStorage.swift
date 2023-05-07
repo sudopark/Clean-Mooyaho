@@ -20,7 +20,7 @@ public enum EnvironmentDataScope {
     case perDevice
 }
 
-public protocol EnvironmentStorage {
+public protocol EnvironmentStorage: Sendable {
     
     func fetchReadItemIsShrinkMode() -> Maybe<Bool?>
     
@@ -61,7 +61,7 @@ var environmentStorageKeyPrefix: String?
 
 // MARK: - EnvironmentStorageKeys
 
-enum EnvironmentStorageKeys {
+enum EnvironmentStorageKeys: @unchecked Sendable {
     
     case pendingPlaceInfo(_ memberID: String)
     case readItemIsShrinkMode
@@ -134,6 +134,7 @@ enum EnvironmentStorageKeys {
     }
 }
 
+extension UserDefaults: @unchecked Sendable { }
 
 extension UserDefaults: EnvironmentStorage {
     

@@ -16,16 +16,16 @@ import CommonPresenting
 
 // MARK: - ShareMainScene Interactable & Listenable
 
-public protocol ShareMainSceneInteractable: EditLinkItemSceneListenable { }
+public protocol ShareMainSceneInteractable: EditLinkItemSceneListenable, Sendable { }
 
-public protocol ShareMainSceneListenable: AnyObject { }
+public protocol ShareMainSceneListenable: AnyObject, Sendable { }
 
 
 // MARK: - ShareMainScene
 
 public protocol ShareMainScene: Scenable {
     
-    var interactor: ShareMainSceneInteractable? { get }
+    @MainActor var interactor: ShareMainSceneInteractable? { get }
 }
 
 
@@ -40,7 +40,7 @@ extension ShareMainViewModelImple: ShareMainSceneInteractable {
 
 extension ShareMainViewController {
 
-    public var interactor: ShareMainSceneInteractable? {
+    @MainActor public var interactor: ShareMainSceneInteractable? {
         return self.viewModel as? ShareMainSceneInteractable
     }
 }

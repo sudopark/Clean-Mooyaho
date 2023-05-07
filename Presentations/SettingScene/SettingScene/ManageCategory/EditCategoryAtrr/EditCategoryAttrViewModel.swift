@@ -19,13 +19,14 @@ import CommonPresenting
 
 // MARK: - EditCategoryAttrViewModel
 
-public protocol EditCategoryAttrViewModel: AnyObject {
+public protocol EditCategoryAttrViewModel: AnyObject, Sendable {
 
     // interactor
     func enter(name: String)
     func selectNewColor()
     func delete()
     func confirmSaveChange()
+    func close()
     
     // presenter
     var initialName: String { get }
@@ -36,7 +37,7 @@ public protocol EditCategoryAttrViewModel: AnyObject {
 
 // MARK: - EditCategoryAttrViewModelImple
 
-public final class EditCategoryAttrViewModelImple: EditCategoryAttrViewModel {
+public final class EditCategoryAttrViewModelImple: EditCategoryAttrViewModel, @unchecked Sendable {
     
     private let category: ItemCategory
     private let categoryUsecase: ReadItemCategoryUsecase
@@ -59,7 +60,7 @@ public final class EditCategoryAttrViewModelImple: EditCategoryAttrViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         
         let pendingNewName = BehaviorRelay<String?>(value: nil)
         let pendingNewColorCode = BehaviorRelay<String?>(value: nil)
@@ -150,6 +151,10 @@ extension EditCategoryAttrViewModelImple {
         return UpdateCategoryAttrParams(uid: self.category.uid)
             |> \.newName .~ newName
             |> \.newColorCode .~ self.subjects.pendingNewColorCode.value
+    }
+    
+    public func close() {
+        self.router.closeScene(animated: true, completed: nil)
     }
 }
 

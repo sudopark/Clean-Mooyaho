@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditReadCollectionRouting: Routing {
+public protocol EditReadCollectionRouting: Routing, Sendable {
     
     func selectPriority(startWith: ReadPriority?)
     
@@ -52,50 +52,59 @@ extension EditReadCollectionRouter {
     
     public func selectPriority(startWith: ReadPriority?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeSelectPriorityScene(startWithSelected: startWith,
-                                         listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeSelectPriorityScene(startWithSelected: startWith,
+                                             listener: self.currentInteractor) else {
+                return
+            }
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func selectCategories(startWith: [ItemCategory]) {
         
-        guard let next = self.nextScenesBuilder?.makeEditCategoryScene(
-            startWith: startWith,
-            listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?.makeEditCategoryScene(
+                startWith: startWith,
+                listener: self.currentInteractor)
+            else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func updateRemind(_ editCase: EditRemindCase) {
             
-        guard let next = self.nextScenesBuilder?
-                .makeEditReadRemindScene(editCase, listener: self.currentInteractor)
-        else { return }
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditReadRemindScene(editCase, listener: self.currentInteractor)
+            else { return }
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func selectParentCollection(statrWith parent: ReadCollection?,
                                        withoutSelect unselectableCollection: ReadCollection?) {
         
-        guard let parent = parent else {
-            self.showNavigationSceneWithoutJump(withoutSelect: unselectableCollection)
-            return
+        Task { @MainActor in
+            guard let parent = parent else {
+                self.showNavigationSceneWithoutJump(withoutSelect: unselectableCollection)
+                return
+            }
+            
+            self.showNavigationSceneWithJump(parent, withoutSelect: unselectableCollection)
         }
-        
-        self.showNavigationSceneWithJump(parent, withoutSelect: unselectableCollection)
     }
     
+    @MainActor
     private func showNavigationSceneWithoutJump(withoutSelect unselectableCollection: ReadCollection?) {
         
         guard let root = self.nextScenesBuilder?
@@ -109,6 +118,7 @@ extension EditReadCollectionRouter {
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
+    @MainActor
     private func showNavigationSceneWithJump(_ parent: ReadCollection,
                                              withoutSelect unselectableCollection: ReadCollection?) {
         
@@ -131,6 +141,7 @@ extension EditReadCollectionRouter {
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
+    @MainActor
     private func prepareInverseCoordinator(_ navigationController: UINavigationController,
                                            withoutSelect unselectableCollection: ReadCollection?) {
         

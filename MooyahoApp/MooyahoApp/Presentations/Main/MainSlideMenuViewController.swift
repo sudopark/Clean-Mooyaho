@@ -17,22 +17,22 @@ import CommonPresenting
 
 // MARK: - MainSlideMenuScene
 
-public protocol MainSlideMenuSceneInteractor: SettingMainSceneListenable, DiscoveryMainSceneListenable { }
+public protocol MainSlideMenuSceneInteractor: Sendable, SettingMainSceneListenable, DiscoveryMainSceneListenable { }
 
-public protocol MainSlideMenuSceneListenable: AnyObject {
+public protocol MainSlideMenuSceneListenable: AnyObject, Sendable {
     
     func mainSlideMenuDidRequestSignIn()
 }
 
 public protocol MainSlideMenuScene: Scenable, PangestureDismissableScene {
     
-    var interactor: MainSlideMenuSceneInteractor? { get }
-    var discoveryContainerView: UIView { get }
+    nonisolated var interactor: MainSlideMenuSceneInteractor? { get }
+    @MainActor var discoveryContainerView: UIView { get }
 }
 
 extension MainSlideMenuViewController {
     
-    public var interactor: MainSlideMenuSceneInteractor? {
+    public nonisolated var interactor: MainSlideMenuSceneInteractor? {
         return self.viewModel as? MainSlideMenuSceneInteractor
     }
 }

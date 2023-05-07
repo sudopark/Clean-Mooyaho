@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol FavoriteReadItemUsecas {
+public protocol FavoriteReadItemUsecas: Sendable {
     
     func refreshFavoriteIDs() -> Observable<[String]>
     

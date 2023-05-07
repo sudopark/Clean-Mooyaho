@@ -25,21 +25,12 @@ public final class LoadingView: BaseUIView {
         if isLoading {
             self.showIsLoading()
         } else {
-            self.removeAllAnimation()
             self.isHidden = true
         }
-    }
-    
-    deinit {
-        self.removeAllAnimation()
     }
 }
 
 extension LoadingView: CAAnimationDelegate {
-    
-    private func removeAllAnimation() {
-        
-    }
     
     private func setupLoadinLayer() {
         
@@ -62,7 +53,6 @@ extension LoadingView: CAAnimationDelegate {
     }
     
     private func showIsLoading() {
-        self.removeAllAnimation()
         self.setupLoadinLayer()
         
         self.isHidden = false
@@ -176,13 +166,11 @@ extension Views {
     
     public struct LoadingView: View {
         
-        @Binding var isLoading: Bool
         @State private var percent: CGFloat = 0
         private let layerColor: Color
         
-        public init(_ layerColor: Color, isLoading: Binding<Bool>) {
+        public init(_ layerColor: Color) {
             self.layerColor = layerColor
-            self._isLoading = isLoading
         }
         
         public var body: some View {
@@ -251,11 +239,11 @@ extension Views {
         private var messageLabel: some View {
             Text("Wait please..".localized)
                 .foregroundColor(.white.opacity(0.8))
-                .font(self.uiContext.fonts.get(15, weight: .medium).asFont)
+                .font(self.theme.fonts.get(15, weight: .medium).asFont)
         }
         
         private var loadingView: some View {
-            Views.LoadingView(.white, isLoading: $isLoading)
+            Views.LoadingView(.white)
                 .frame(width: 50, height: 50)
         }
     }

@@ -13,11 +13,12 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
 
 
 // MARK: - DataModelStorageGateWay
 
-public protocol DataModelStorageGateway: AnyObject {
+public protocol DataModelStorageGateway: AnyObject, Sendable {
     
     func openAnonymousStorage() -> Maybe<Void>
     
@@ -65,7 +66,7 @@ extension DataModelStorageGateway {
 
 // MARK: - DataModelStorageGateWayImple
 
-public final class DataModelStorageGatewayImple: DataModelStorageGateway {
+public final class DataModelStorageGatewayImple: DataModelStorageGateway, @unchecked Sendable {
     
     private let anonymousStoragePath: String
     private let makeAnonymousStorage: () -> DataModelStorage

@@ -8,6 +8,7 @@
 import UIKit
 
 
+@MainActor
 public struct BottomSlideAnimationConstants {
     
     let animationDuration: TimeInterval

@@ -31,7 +31,7 @@ public enum SuggestingAction: Equatable {
 
 // MARK: - MainSlideMenuViewModel
 
-public protocol MainSlideMenuViewModel: AnyObject {
+public protocol MainSlideMenuViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -48,7 +48,7 @@ public protocol MainSlideMenuViewModel: AnyObject {
 
 // MARK: - MainSlideMenuViewModelImple
 
-public final class MainSlideMenuViewModelImple: MainSlideMenuViewModel {
+public final class MainSlideMenuViewModelImple: MainSlideMenuViewModel, @unchecked Sendable {
     
     fileprivate final class Subjects {
         // define subjects

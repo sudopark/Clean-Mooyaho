@@ -9,7 +9,7 @@
 import Foundation
 
 import RxSwift
-import SwiftLinkPreview
+@preconcurrency import SwiftLinkPreview
 
 import Domain
 

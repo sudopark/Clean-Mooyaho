@@ -8,7 +8,7 @@
 
 import XCTest
 
-open class BaseTestCase: XCTestCase {
+open class BaseTestCase: XCTestCase, @unchecked Sendable {
     
     public var timeout: TimeInterval = 10 * 0.001
     public var timeout_long: TimeInterval = 100 * 0.001

@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol EditLinkItemRouting: Routing {
+public protocol EditLinkItemRouting: Routing, Sendable {
     
     func requestRewind()
     
@@ -53,56 +53,67 @@ extension EditLinkItemRouter {
     // EditLinkItemRouting implements
     public func requestRewind() {
         
-        guard let navigation = self.currentScene?.navigationController?.parent as? AddItemNavigationScene else {
-            return
+        Task { @MainActor in
+            guard let navigation = self.currentScene?.navigationController?.parent as? AddItemNavigationScene else {
+                return
+            }
+            navigation.interactor?.requestpopToEnrerURLScene()
         }
-        navigation.interactor?.requestpopToEnrerURLScene()
     }
     
     public func editPriority(startWith priority: ReadPriority?) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeSelectPriorityScene(startWithSelected: priority, listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeSelectPriorityScene(startWithSelected: priority, listener: self.currentInteractor) else {
+                return
+            }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func editCategory(startWith categories: [ItemCategory]) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeEditCategoryScene(startWith: categories, listener: self.currentInteractor) else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditCategoryScene(startWith: categories, listener: self.currentInteractor) else {
+                return
+            }
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
     
     public func editRemind(_ editCase: EditRemindCase) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeEditReadRemindScene(editCase, listener: self.currentInteractor)
-        else { return }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
-        self.currentScene?.present(next, animated: true, completion: nil)
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditReadRemindScene(editCase, listener: self.currentInteractor)
+            else { return }
+            
+            next.modalPresentationStyle = .custom
+            next.transitioningDelegate = self.bottomSliderTransitionManager
+            next.setupDismissGesture(self.bottomSliderTransitionManager.dismissalInteractor)
+            self.currentScene?.present(next, animated: true, completion: nil)
+        }
     }
     
     public func editParentCollection(_ parent: ReadCollection?) {
         
-        guard let parent = parent else {
-            self.showNavigationSceneWithoutJump()
-            return
-        }
+        Task { @MainActor in
+            guard let parent = parent else {
+                self.showNavigationSceneWithoutJump()
+                return
+            }
 
-        self.showNavigationSceneWithJump(parent)
+            self.showNavigationSceneWithJump(parent)
+        }
     }
     
+    @MainActor
     private func showNavigationSceneWithoutJump() {
         
         guard let root = self.nextScenesBuilder?
@@ -116,6 +127,7 @@ extension EditLinkItemRouter {
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
+    @MainActor
     private func showNavigationSceneWithJump(_ current: ReadCollection) {
         
         let sheetController = NavigationEmbedSheetViewController()
@@ -136,6 +148,7 @@ extension EditLinkItemRouter {
         self.currentBaseViewControllerScene?.presentPageSheetOrFullScreen(sheetController, animated: true)
     }
     
+    @MainActor
     private func prepareInverseCoordinator(_ navigationController: UINavigationController) {
         
         let makeParent: (CollectionInverseParentMakeParameter) -> UIViewController?

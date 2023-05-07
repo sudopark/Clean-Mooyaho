@@ -54,7 +54,7 @@ public struct WebPageLoadParams {
     public var lastReadPosition: LastReadPositionInfo?
 }
 
-public protocol InnerWebViewViewModel: AnyObject {
+public protocol InnerWebViewViewModel: AnyObject, Sendable {
 
     // interactor
     func prepareLinkData()
@@ -78,7 +78,7 @@ public protocol InnerWebViewViewModel: AnyObject {
 
 // MARK: - InnerWebViewViewModelImple
 
-public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
+public final class InnerWebViewViewModelImple: InnerWebViewViewModel, @unchecked Sendable {
     
     private let itemSource: LinkItemSource
     public let isEditable: Bool
@@ -120,7 +120,7 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
     
     fileprivate typealias ItemAndLastReadInfo = (ReadLink, WebPageLoadParams.LastReadPositionInfo?)
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let itemAndLastReadInfo = BehaviorRelay<ItemAndLastReadInfo?>(value: nil)
         let currentPageURL = BehaviorRelay<String?>(value: nil)
         let isToggling = BehaviorRelay<Bool>(value: false)
@@ -135,9 +135,8 @@ public final class InnerWebViewViewModelImple: InnerWebViewViewModel {
         let prepareItem = self.itemSource.item.map { Observable.just($0) }
             ?? self.readItemUsecase.loadReadLink(itemID)
         
-        let thenLoadLastReadInfo: (ReadLink) async throws -> ItemAndLastReadInfo? = { [weak self] item in
-            guard let self = self else { return nil }
-            let lastReadPosition = try await self.readingOptionUsecase
+        let thenLoadLastReadInfo: @Sendable (ReadLink) async throws -> ItemAndLastReadInfo? = { [weak self] item in
+            let lastReadPosition = try await self?.readingOptionUsecase
                 .lastReadPosition(for: item.uid).value ?? nil
             return lastReadPosition
                 .map { WebPageLoadParams.LastReadPositionInfo($0) }
@@ -234,10 +233,13 @@ extension InnerWebViewViewModelImple {
     }
     
     public func saveLastReadPositionIfNeed(_ position: Double) {
+        
         guard let item = self.subjects.itemAndLastReadInfo.value?.0,
-              let encodedURL = item.link.asURL()?.absoluteString,
-              encodedURL == self.subjects.currentPageURL.value
-        else { return }
+              let currentPageLink = self.subjects.currentPageURL.value?.escapeIfNeed(),
+                item.link.escapeIfNeed() == currentPageLink
+        else {
+            return
+        }
         
         self.readingOptionUsecase
             .updateLastReadPositionIsPossible(for: item.uid, position: position)

@@ -18,7 +18,6 @@ import UsecaseDoubles
 
 @testable import MemberScenes
 
-
 class EditProfileViewModelTests: BaseTestCase, WaitObservableEvents {
     
     var disposeBag: DisposeBag!
@@ -418,7 +417,7 @@ extension EditProfileViewModelTests {
 
 extension EditProfileViewModelTests {
     
-    class SpyRouter: EditProfileRouting, Mocking {
+    final class SpyRouter: EditProfileRouting, Mocking, @unchecked Sendable {
         
         var capturedListener: TextInputSceneListenable?
         func editText(mode: TextInputMode, listener: TextInputSceneListenable) {

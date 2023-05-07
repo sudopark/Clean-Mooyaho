@@ -18,6 +18,7 @@ import CommonPresenting
 
 // MARK: - Builder + DependencyInjector Extension
 
+@MainActor
 public protocol FeedbackSceneBuilable {
     
     func makeFeedbackScene(listener: FeedbackSceneListenable?) -> FeedbackScene

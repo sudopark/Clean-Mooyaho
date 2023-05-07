@@ -60,7 +60,7 @@ public struct MemberCellSection: Equatable {
 
 // MARK: - MemberProfileViewModel
 
-public protocol MemberProfileViewModel: AnyObject {
+public protocol MemberProfileViewModel: AnyObject, Sendable {
 
     // interactor
     func refresh()
@@ -73,7 +73,7 @@ public protocol MemberProfileViewModel: AnyObject {
 
 // MARK: - MemberProfileViewModelImple
 
-public final class MemberProfileViewModelImple: MemberProfileViewModel {
+public final class MemberProfileViewModelImple: MemberProfileViewModel, @unchecked Sendable {
     
     private let memberID: String
     private let memberUsecase: MemberUsecase
@@ -96,7 +96,7 @@ public final class MemberProfileViewModelImple: MemberProfileViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let member = BehaviorRelay<Member?>(value: nil)
     }
     

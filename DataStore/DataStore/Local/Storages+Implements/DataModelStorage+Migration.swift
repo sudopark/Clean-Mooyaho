@@ -12,6 +12,7 @@ import RxSwift
 import SQLiteService
 
 import Domain
+import Extensions
 
 
 // MARK: - DataModelStorageImpl + Migration

@@ -113,13 +113,85 @@ open class BaseFloatingButton: BaseUIView, Presenting {
 
 public extension Reactive where Base: BaseFloatingButton {
     
+    @MainActor
     func throttleTap() -> Observable<Void> {
         return base.backgroundButton.rx.tap.throttle(.milliseconds(500), scheduler: MainScheduler.instance)
     }
     
+    @MainActor
     func closeTap() -> Observable<Void> {
         return base.closeImageView.rx.addTapgestureRecognizer()
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .map { _ in }
+    }
+}
+
+
+// MARK: - swiftUI baseFloatingButton
+
+import SwiftUI
+
+extension Views {
+    
+    public struct BaseFloatingButton: View {
+        
+        @State public var title: String
+        @State public var description: String
+        
+        public init(title: String, description: String) {
+            self.title = title
+            self.description = description
+        }
+        
+        public var mainActionHandler: () -> Void = { }
+        public var closeActionHandler: () -> Void = { }
+        
+        public var body: some View {
+            HStack {
+                
+                Spacer()
+                
+                Button {
+                    self.mainActionHandler()
+                } label: {
+                    VStack(spacing: 5) {
+                        Text(self.title)
+                            .font(self.theme.fonts.get(15, weight: .medium).asFont)
+                            .foregroundColor(self.theme.colors.text.asColor)
+                        Text(self.description)
+                            .font(self.theme.fonts.get(12, weight: .regular).asFont)
+                            .foregroundColor(self.theme.colors.secondaryTitle.asColor)
+                    }
+                }
+                
+                Spacer()
+                
+                Button {
+                    self.closeActionHandler()
+                } label: {
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(self.theme.colors.text.asColor)
+                }
+            }
+            .padding([.top, .bottom], 8)
+            .padding([.leading, .trailing], 12)
+            .background(
+                Views.RoundShadowView(
+                    customBackgroundColor: self.theme.colors.appSecondBackground.asColor,
+                    cornerRadidus: 15.0
+                )
+            )
+        }
+    }
+}
+
+class BaseFloatingButtonPreviewProvider: PreviewProvider {
+    
+ 
+    static var previews: Views.BaseFloatingButton {
+        return Views.BaseFloatingButton(title: "reading-option-ask-last-position".localized, description: "some")
     }
 }

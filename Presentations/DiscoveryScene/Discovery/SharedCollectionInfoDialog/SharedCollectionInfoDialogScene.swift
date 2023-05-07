@@ -25,7 +25,7 @@ extension SharedCollectionInfoDialogViewModelImple: SharedCollectionInfoDialogSc
 
 extension SharedCollectionInfoDialogViewController {
 
-    public var interactor: SharedCollectionInfoDialogSceneInteractable? {
+    public nonisolated var interactor: SharedCollectionInfoDialogSceneInteractable? {
         return self.viewModel as? SharedCollectionInfoDialogSceneInteractable
     }
 }

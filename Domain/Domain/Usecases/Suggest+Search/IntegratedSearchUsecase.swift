@@ -16,7 +16,7 @@ import Optics
 
 // MARK: - SearchReadItemUsecase
 
-public protocol SearchReadItemUsecase {
+public protocol SearchReadItemUsecase: Sendable {
     
     func search(query: String) -> Maybe<[SearchReadItemIndex]>
 }

@@ -16,16 +16,16 @@ import CommonPresenting
 
 // MARK: - ManageAccountScene Interactable & Listenable
 
-public protocol ManageAccountSceneInteractable { }
+public protocol ManageAccountSceneInteractable: Sendable { }
 
-public protocol ManageAccountSceneListenable: AnyObject { }
+public protocol ManageAccountSceneListenable: AnyObject, Sendable { }
 
 
 // MARK: - ManageAccountScene
 
 public protocol ManageAccountScene: Scenable {
     
-    var interactor: ManageAccountSceneInteractable? { get }
+    nonisolated var interactor: ManageAccountSceneInteractable? { get }
 }
 
 
@@ -40,7 +40,7 @@ extension ManageAccountViewModelImple: ManageAccountSceneInteractable {
 
 extension ManageAccountViewController {
 
-    public var interactor: ManageAccountSceneInteractable? {
+    public nonisolated var interactor: ManageAccountSceneInteractable? {
         return self.viewModel as? ManageAccountSceneInteractable
     }
 }

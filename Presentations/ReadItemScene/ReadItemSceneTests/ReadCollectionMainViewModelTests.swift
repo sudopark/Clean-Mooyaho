@@ -68,7 +68,7 @@ extension ReadCollectionMainViewModelTests {
 }
 
 
-extension ReadCollectionMainViewModelTests: ReadCollectionMainRouting {
+extension ReadCollectionMainViewModelTests: ReadCollectionMainRouting, @unchecked Sendable {
     
     func addNewReadLinkItem(using url: String) {
         

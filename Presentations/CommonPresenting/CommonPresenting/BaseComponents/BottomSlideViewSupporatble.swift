@@ -10,6 +10,7 @@ import UIKit
 
 // MARK: - BottomSlideViewSupporatble
 
+@MainActor
 public protocol BottomSlideViewSupporatble {
     
     var bottomSlideMenuView: BaseBottomSlideMenuView { get }
@@ -38,7 +39,7 @@ extension BottomSlideViewSupporatble where Self: BaseViewController {
         
         self.bottomSlideMenuView.rx.addTapgestureRecognizer()
             .subscribe(onNext: { [weak self] _ in
-                self?.view.endEditing(true)
+                _ = self?.view.endEditing(true)
             })
             .disposed(by: self.disposeBag)
     }

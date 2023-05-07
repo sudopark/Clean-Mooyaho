@@ -16,16 +16,16 @@ import CommonPresenting
 
 // MARK: - FeedbackScene Interactable & Listenable
 
-public protocol FeedbackSceneInteractable { }
+public protocol FeedbackSceneInteractable: Sendable { }
 
-public protocol FeedbackSceneListenable: AnyObject { }
+public protocol FeedbackSceneListenable: AnyObject, Sendable { }
 
 
 // MARK: - FeedbackScene
 
 public protocol FeedbackScene: Scenable {
     
-    var interactor: FeedbackSceneInteractable? { get }
+    nonisolated var interactor: FeedbackSceneInteractable? { get }
 }
 
 
@@ -40,7 +40,7 @@ extension FeedbackViewModelImple: FeedbackSceneInteractable {
 
 extension FeedbackViewController {
 
-    public var interactor: FeedbackSceneInteractable? {
+    public nonisolated var interactor: FeedbackSceneInteractable? {
         return self.viewModel as? FeedbackSceneInteractable
     }
 }

@@ -13,6 +13,7 @@ import Optics
 
 import Domain
 import CommonPresenting
+import Extensions
 import UnitTestHelpKit
 import UsecaseDoubles
 
@@ -146,7 +147,7 @@ extension MemberProfileViewModelTests {
 
 extension MemberProfileViewModelTests {
     
-    class SpyRouter: MemberProfileRouting {
+    final class SpyRouter: MemberProfileRouting, @unchecked Sendable {
         
         var didAlertForConfirm: Bool?
         func alertForConfirm(_ form: AlertForm) {

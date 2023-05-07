@@ -43,7 +43,7 @@ public enum FilePath {
 }
 
 
-public protocol FileHandleService {
+public protocol FileHandleService: Sendable {
     
     func checkIsExists(_ path: FilePath) -> Bool
     
@@ -65,6 +65,8 @@ extension FileHandleService {
     public func deletFile(_ path: FilePath) -> Maybe<Void> { return .empty() }
 }
 
+
+extension FileManager: @unchecked Sendable { }
 
 extension FileManager: FileHandleService {
     

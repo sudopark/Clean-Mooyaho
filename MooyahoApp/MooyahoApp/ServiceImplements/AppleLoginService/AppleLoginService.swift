@@ -15,6 +15,7 @@ import RxSwift
 import Domain
 
 
+@preconcurrency @MainActor
 final class AppleLoginService: NSObject, OAuthService, OAuthServiceProviderTypeRepresentable {
     
     private var handleResult: ((Result<String, Error>) -> Void)?

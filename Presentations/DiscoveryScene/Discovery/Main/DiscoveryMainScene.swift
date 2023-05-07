@@ -25,7 +25,7 @@ extension DiscoveryMainViewModelImple: DiscoveryMainSceneInteractable {
 
 extension DiscoveryMainViewController {
 
-    public var interactor: DiscoveryMainSceneInteractable? {
+    public nonisolated var interactor: DiscoveryMainSceneInteractable? {
         return self.viewModel as? DiscoveryMainSceneInteractable
     }
 }

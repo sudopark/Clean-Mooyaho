@@ -12,7 +12,7 @@ import Domain
 import CommonPresenting
 
 
-public protocol ApplicationRootRouting: Routing {
+public protocol ApplicationRootRouting: Routing, Sendable {
     
     func routeMain(auth: Auth)
     
@@ -20,7 +20,7 @@ public protocol ApplicationRootRouting: Routing {
     
     func showSharedReadCollection(_ collection: SharedReadCollection)
     
-    func showRemindItem(_ itemID: String) -> Bool
+    @MainActor func showRemindItem(_ itemID: String) -> Bool
 }
 
 // MARK: - builders
@@ -31,7 +31,7 @@ public typealias ApplicationRootRouterBuildables = MainSceneBuilable
 
 public final class ApplicationRootRouter: Router<ApplicationRootRouterBuildables>, ApplicationRootRouting {
 
-    private var window: UIWindow!
+    @MainActor private var window: UIWindow!
     private weak var mainInteractor: MainSceneInteractable?
 }
 
@@ -40,15 +40,19 @@ extension ApplicationRootRouter {
     
     public func routeMain(auth: Auth) {
         
-        self.cleanUpWindowIfNeed()
-        
-        guard let main = self.nextScenesBuilder?.makeMainScene(auth: auth) else { return }
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window.rootViewController = main
-        self.window.makeKeyAndVisible()
-        self.mainInteractor = main.interactor
+        Task { @MainActor in
+            self.cleanUpWindowIfNeed()
+            
+            guard let main = self.nextScenesBuilder?.makeMainScene(auth: auth) else { return }
+            guard AppEnvironment.isTestBuild == false else { return }
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            self.window.rootViewController = main
+            self.window.makeKeyAndVisible()
+            self.mainInteractor = main.interactor
+        }
     }
     
+    @MainActor
     private func cleanUpWindowIfNeed() {
         guard self.window != nil else { return }
         self.window.rootViewController?.removeFromParent()
@@ -67,7 +71,9 @@ extension ApplicationRootRouter {
         interactor.showSharedReadCollection(collection)
     }
     
+    @MainActor
     public func showRemindItem(_ itemID: String) -> Bool {
+        
         guard let root = self.window?.rootViewController,
               self.mainInteractor != nil
         else {

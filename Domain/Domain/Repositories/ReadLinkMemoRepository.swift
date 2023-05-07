@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 
-public protocol ReadLinkMemoRepository {
+public protocol ReadLinkMemoRepository: Sendable {
     
     func requestLoadMemo(for linkItemID: String) -> Observable<ReadLinkMemo?>
     

@@ -42,4 +42,25 @@ public extension View {
             RoundedCorner(radius: radius, corners: corners)
         )
     }
+    
+    func endEditing() {
+        Task {
+            await MainActor.run {
+                UIApplication.shared.sendAction(
+                    #selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil
+                )
+            }
+        }
+    }
+}
+
+
+public extension Spacer {
+    
+    func backgroundSpaceTapGesture(_ tapped: @escaping () -> Void) -> some View {
+        ZStack {
+            Color.black.opacity(0.001).onTapGesture(perform: tapped)
+            Spacer()
+        }
+    }
 }

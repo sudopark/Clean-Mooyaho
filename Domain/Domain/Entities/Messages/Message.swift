@@ -11,4 +11,4 @@ import Foundation
 
 // MARK: - base message protocol
 
-public protocol Message { }
+public protocol Message: Sendable { }

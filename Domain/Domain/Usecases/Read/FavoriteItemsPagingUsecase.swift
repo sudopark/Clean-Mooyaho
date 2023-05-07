@@ -16,7 +16,7 @@ import Optics
 
 // MARK: - FavoriteItemsPagingUsecase
 
-public protocol FavoriteItemsPagingUsecase {
+public protocol FavoriteItemsPagingUsecase: Sendable {
     
     func reloadFavoriteItems()
     
@@ -85,7 +85,7 @@ public struct FavoriteItemsResultCollection: SuggestResultCollectionType {
 }
 
 
-public final class FavoriteItemsPagingUsecaseImple: FavoriteItemsPagingUsecase {
+public final class FavoriteItemsPagingUsecaseImple: FavoriteItemsPagingUsecase, @unchecked Sendable {
     
     private let favoriteItemsUsecase: FavoriteReadItemUsecas
     private let readItemLoadUsecase: ReadItemLoadUsecase

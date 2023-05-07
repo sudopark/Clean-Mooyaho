@@ -12,9 +12,9 @@ import Domain
 
 // MARK: - InnerWebViewScene Interactor & Listener
 
-public protocol InnerWebViewSceneInteractable: LinkMemoSceneListenable { }
+public protocol InnerWebViewSceneInteractable: Sendable, LinkMemoSceneListenable { }
 
-public protocol InnerWebViewSceneListenable: AnyObject {
+public protocol InnerWebViewSceneListenable: Sendable, AnyObject {
     
     func innerWebView(reqeustJumpTo collectionID: String?)
 }
@@ -24,15 +24,15 @@ public protocol InnerWebViewSceneListenable: AnyObject {
 
 public protocol InnerWebViewScene: Scenable {
     
-    var interactor: InnerWebViewSceneInteractable? { get }
+    nonisolated var interactor: InnerWebViewSceneInteractable? { get }
 }
 
 
 // MARK: - LinkMemoScene Interactable & Listenable
 
-public protocol LinkMemoSceneInteractable { }
+public protocol LinkMemoSceneInteractable: Sendable { }
 
-public protocol LinkMemoSceneListenable: AnyObject {
+public protocol LinkMemoSceneListenable: Sendable, AnyObject {
     
     func linkMemo(didUpdated newVlaue: ReadLinkMemo)
     
@@ -42,7 +42,7 @@ public protocol LinkMemoSceneListenable: AnyObject {
 
 // MARK: - LinkMemoScene
 
-public protocol LinkMemoScene: Scenable, PangestureDismissableScene {
+public protocol LinkMemoScene: Scenable {
     
-    var interactor: LinkMemoSceneInteractable? { get }
+    nonisolated var interactor: LinkMemoSceneInteractable? { get }
 }

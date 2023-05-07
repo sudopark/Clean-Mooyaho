@@ -12,6 +12,7 @@
 		F620518B27276E1F009CA975 /* NavigateCollectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518627276E1F009CA975 /* NavigateCollectionScene.swift */; };
 		F620518C27276E1F009CA975 /* NavigateCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */; };
 		F620519027277D75009CA975 /* NavigateCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620518F27277D75009CA975 /* NavigateCollectionViewModelTests.swift */; };
+		F6311A2E2870050E005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A2D2870050E005C8FCB /* Extensions.framework */; };
 		F64EE40A26F5219200CFA357 /* ReadItemScene.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE40026F5219200CFA357 /* ReadItemScene.framework */; };
 		F64EE41126F5219200CFA357 /* ReadItemScene.h in Headers */ = {isa = PBXBuildFile; fileRef = F64EE40326F5219200CFA357 /* ReadItemScene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F64EE41C26F521D700CFA357 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64EE41B26F521D700CFA357 /* Common3rdParty.framework */; };
@@ -58,6 +59,7 @@
 		F620518627276E1F009CA975 /* NavigateCollectionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionScene.swift; sourceTree = "<group>"; };
 		F620518727276E1F009CA975 /* NavigateCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewModel.swift; sourceTree = "<group>"; };
 		F620518F27277D75009CA975 /* NavigateCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		F6311A2D2870050E005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE40026F5219200CFA357 /* ReadItemScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReadItemScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64EE40326F5219200CFA357 /* ReadItemScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadItemScene.h; sourceTree = "<group>"; };
 		F64EE40426F5219200CFA357 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6311A2E2870050E005C8FCB /* Extensions.framework in Frameworks */,
 				F64EE42326F521DF00CFA357 /* Domain.framework in Frameworks */,
 				F64EE42026F521DB00CFA357 /* CommonPresenting.framework in Frameworks */,
 				F64EE41C26F521D700CFA357 /* Common3rdParty.framework in Frameworks */,
@@ -175,6 +178,7 @@
 		F64EE41A26F521D700CFA357 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A2D2870050E005C8FCB /* Extensions.framework */,
 				F64EE42926F5220200CFA357 /* UnitTestHelpKit.framework */,
 				F64EE42726F521FA00CFA357 /* Common3rdParty.framework */,
 				F64EE42526F521F400CFA357 /* UsecaseDoubles.framework */,
@@ -525,6 +529,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.ReadItemScene;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -549,6 +554,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.ReadItemScene;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

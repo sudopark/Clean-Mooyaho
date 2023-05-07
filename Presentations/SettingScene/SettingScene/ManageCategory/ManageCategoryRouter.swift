@@ -19,7 +19,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol ManageCategoryRouting: Routing {
+public protocol ManageCategoryRouting: Routing, Sendable {
     
     func moveToEditCategory(_ category: ItemCategory)
 }
@@ -31,7 +31,7 @@ public typealias ManageCategoryRouterBuildables = EditCategoryAttrSceneBuilable
 
 public final class ManageCategoryRouter: Router<ManageCategoryRouterBuildables>, ManageCategoryRouting {
     
-    private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
+    @MainActor private let bottomSliderTransitionManager = BottomSlideTransitionAnimationManager()
 }
 
 
@@ -44,14 +44,14 @@ extension ManageCategoryRouter {
     
     public func moveToEditCategory(_ category: ItemCategory) {
         
-        guard let next = self.nextScenesBuilder?
-                .makeEditCategoryAttrScene(category: category, listener: self.currentInteractor)
-        else {
-            return
+        Task { @MainActor in
+            guard let next = self.nextScenesBuilder?
+                    .makeEditCategoryAttrScene(category: category, listener: self.currentInteractor)
+            else {
+                return
+            }
+            
+            self.currentScene?.present(next, animated: true, completion: nil)
         }
-        
-        next.modalPresentationStyle = .custom
-        next.transitioningDelegate = self.bottomSliderTransitionManager
-        self.currentScene?.present(next, animated: true, completion: nil)
     }
 }

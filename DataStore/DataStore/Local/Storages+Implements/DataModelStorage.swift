@@ -15,11 +15,12 @@ import Prelude
 import Optics
 
 import Domain
+import Extensions
 
 
 // MARK: - DataModelStorage
 
-public protocol DataModelStorage {
+public protocol DataModelStorage: Sendable {
     
     var dbPath: String { get }
     
@@ -131,7 +132,7 @@ public protocol DataModelStorage {
 
 // MARK: - DataModelStorageImple
 
-public final class DataModelStorageImple: DataModelStorage {
+public final class DataModelStorageImple: DataModelStorage, @unchecked Sendable {
     
     let sqliteService: SQLiteService
     
@@ -362,10 +363,9 @@ extension DataModelStorageImple {
         
         let fetchCollections = self.fetchReadCollections(collectionQuery).catchAndReturn([])
         
-        let thenLoadLinksAndMerge: ([ReadCollection]) async throws -> [ReadItem]?
+        let thenLoadLinksAndMerge: @Sendable ([ReadCollection]) async throws -> [ReadItem]?
         thenLoadLinksAndMerge = { [weak self] collections in
-            guard let self = self else { return nil }
-            let links = try await self.fetchReadLinks(linksQuery).value
+            let links = try await self?.fetchReadLinks(linksQuery).value
             return collections + (links ?? [])
         }
         
@@ -378,12 +378,11 @@ extension DataModelStorageImple {
         _ collectionQuery: DeleteQuery<ReadCollectionTable>
     ) -> Maybe<Void> {
      
-        let runRemove: () async throws -> Void? = { [weak self] in
-            guard let self = self else { return nil }
-            try await self.sqliteService.async.run {
+        let runRemove: @Sendable () async throws -> Void? = { [weak self] in
+            try await self?.sqliteService.async.run {
                 try $0.delete(ReadLinkTable.self, query: linkQuery)
             }
-            try await self.sqliteService.async.run {
+            try await self?.sqliteService.async.run {
                 try $0.delete(ReadCollectionTable.self, query: collectionQuery)
             }
             return ()
@@ -494,7 +493,7 @@ extension DataModelStorageImple {
         
         let findLikeCustomNames = self.findReadLinkByCustomName(like: name).catchAndReturn([])
         
-        let thenFindLikePreviewTitleAndMerge: ([ReadLink]) async throws -> ([ReadLink], [ReadLink])?
+        let thenFindLikePreviewTitleAndMerge: @Sendable ([ReadLink]) async throws -> ([ReadLink], [ReadLink])?
         thenFindLikePreviewTitleAndMerge = { [weak self] linksLikeCustomName in
             guard let self = self else { return nil }
             let linksLikePreviewTitle = try? await self.findReadLinkByPreviewTitle(like: name).value

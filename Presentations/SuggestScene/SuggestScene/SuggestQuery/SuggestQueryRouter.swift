@@ -18,7 +18,7 @@ import CommonPresenting
 
 // MARK: - Routing
 
-public protocol SuggestQueryRouting: Routing { }
+public protocol SuggestQueryRouting: Routing, Sendable { }
 
 // MARK: - Routers
 

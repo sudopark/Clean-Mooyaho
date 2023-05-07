@@ -10,12 +10,12 @@ import UIKit
 import Domain
 
 
-public protocol AddItemNavigationSceneInteractable: EditLinkItemSceneListenable {
+public protocol AddItemNavigationSceneInteractable: Sendable, EditLinkItemSceneListenable {
     
     func requestpopToEnrerURLScene()
 }
 
-public protocol AddItemNavigationSceneListenable: AnyObject {
+public protocol AddItemNavigationSceneListenable: Sendable, AnyObject {
     
     func addReadLink(didAdded newItem: ReadLink)
 }
@@ -24,7 +24,7 @@ public protocol AddItemNavigationSceneListenable: AnyObject {
 
 public protocol AddItemNavigationScene: Scenable, PangestureDismissableScene {
     
-    var interactor: AddItemNavigationSceneInteractable? { get }
+    nonisolated var interactor: AddItemNavigationSceneInteractable? { get }
     
     var navigationdContainerView: UIView { get }
 }
@@ -32,25 +32,25 @@ public protocol AddItemNavigationScene: Scenable, PangestureDismissableScene {
 
 // MARK: - EnterLinkURLScene Input & Output
 
-public protocol EnterLinkURLSceneInput { }
+public protocol EnterLinkURLSceneInput: Sendable { }
 
-public protocol EnterLinkURLSceneOutput { }
+public protocol EnterLinkURLSceneOutput: Sendable { }
 
 
 // MARK: - EnterLinkURLScene
 
 public protocol EnterLinkURLScene: Scenable {
     
-    var input: EnterLinkURLSceneInput? { get }
+    nonisolated var input: EnterLinkURLSceneInput? { get }
 
-    var output: EnterLinkURLSceneOutput? { get }
+    nonisolated var output: EnterLinkURLSceneOutput? { get }
 }
 
 // MARK: - EditLinkItemScene interactor
 
-public protocol EditLinkItemSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable, NavigateCollectionSceneListenable { }
+public protocol EditLinkItemSceneInteractable: Sendable, ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable, NavigateCollectionSceneListenable { }
 
-public protocol EditLinkItemSceneListenable: AnyObject {
+public protocol EditLinkItemSceneListenable: Sendable, AnyObject {
     
     func editReadLink(didEdit item: ReadLink)
     
@@ -66,16 +66,16 @@ extension EditLinkItemSceneListenable {
 
 public protocol EditLinkItemScene: Scenable, PangestureDismissableScene {
     
-    var interactor: EditLinkItemSceneInteractable? { get }
+    nonisolated var interactor: EditLinkItemSceneInteractable? { get }
     
-    func setupUIForShareExtension()
+    nonisolated func setupUIForShareExtension()
 }
 
 // MARK: - EditReadCollectionScene Input & Output
 
-public protocol EditReadCollectionSceneInteractable: ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable, NavigateCollectionSceneListenable { }
+public protocol EditReadCollectionSceneInteractable: Sendable, ReadPrioritySelectListenable, EditCategorySceneListenable, EditReadRemindSceneListenable, NavigateCollectionSceneListenable { }
 
-public protocol EditReadCollectionSceneListenable: AnyObject {
+public protocol EditReadCollectionSceneListenable: Sendable, AnyObject {
     
     func editReadCollection(didChange collection: ReadCollection)
 }
@@ -84,15 +84,15 @@ public protocol EditReadCollectionSceneListenable: AnyObject {
 
 public protocol EditReadCollectionScene: Scenable, PangestureDismissableScene {
     
-    var interactor: EditReadCollectionSceneInteractable? { get }
+    nonisolated var interactor: EditReadCollectionSceneInteractable? { get }
 }
 
 
 // MARK: - EditCategoryScene Interactable & Listenable
 
-public protocol EditCategorySceneInteractable: ColorSelectSceneListenable { }
+public protocol EditCategorySceneInteractable: Sendable, ColorSelectSceneListenable { }
 
-public protocol EditCategorySceneListenable: AnyObject {
+public protocol EditCategorySceneListenable: Sendable, AnyObject {
     
     func editCategory(didSelect categories: [ItemCategory])
 }
@@ -102,30 +102,30 @@ public protocol EditCategorySceneListenable: AnyObject {
 
 public protocol EditCategoryScene: Scenable {
     
-    var interactor: EditCategorySceneInteractable? { get }
+    nonisolated var interactor: EditCategorySceneInteractable? { get }
 }
 
 
 // MARK: - EditItemsCustomOrderScene Interactable & Listenable
 
-public protocol EditItemsCustomOrderSceneInteractable { }
+public protocol EditItemsCustomOrderSceneInteractable: Sendable { }
 
-public protocol EditItemsCustomOrderSceneListenable: AnyObject { }
+public protocol EditItemsCustomOrderSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - EditItemsCustomOrderScene
 
 public protocol EditItemsCustomOrderScene: Scenable {
     
-    var interactor: EditItemsCustomOrderSceneInteractable? { get }
+    nonisolated var interactor: EditItemsCustomOrderSceneInteractable? { get }
 }
 
 
 // MARK: - EditReadRemindScene Interactable & Listenable
 
-public protocol EditReadRemindSceneInteractable { }
+public protocol EditReadRemindSceneInteractable: Sendable { }
 
-public protocol EditReadRemindSceneListenable: AnyObject {
+public protocol EditReadRemindSceneListenable: Sendable, AnyObject {
     
     func editReadRemind(didSelect time: Date?)
     
@@ -144,12 +144,12 @@ extension EditReadRemindSceneListenable {
 
 public protocol EditReadPriorityScene: Scenable, PangestureDismissableScene {
     
-    var interactor: EditReadPrioritySceneInteractable? { get }
+    nonisolated var interactor: EditReadPrioritySceneInteractable? { get }
 }
 
 // MARK: - EditReadRemindScene
 
 public protocol EditReadRemindScene: Scenable, PangestureDismissableScene {
     
-    var interactor: EditReadRemindSceneInteractable? { get }
+    nonisolated var interactor: EditReadRemindSceneInteractable? { get }
 }

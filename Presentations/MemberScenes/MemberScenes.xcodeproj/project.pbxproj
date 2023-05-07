@@ -21,6 +21,7 @@
 		F62DFFAE266185F200C4A080 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAA266185F200C4A080 /* SignInViewController.swift */; };
 		F62DFFB0266185F200C4A080 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFAC266185F200C4A080 /* SignInViewModel.swift */; };
 		F62DFFB22661863900C4A080 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB12661863900C4A080 /* SignInView.swift */; };
+		F6311A2A287004D4005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A29287004D4005C8FCB /* Extensions.framework */; };
 		F637206526654BA10089D0B3 /* EditProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637206426654BA10089D0B3 /* EditProfileViewModelTests.swift */; };
 		F6472E75278AA96200B11815 /* RecoverAccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E70278AA96200B11815 /* RecoverAccountRouter.swift */; };
 		F6472E76278AA96200B11815 /* RecoverAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6472E71278AA96200B11815 /* RecoverAccountViewController.swift */; };
@@ -69,6 +70,7 @@
 		F62DFFAA266185F200C4A080 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		F62DFFAC266185F200C4A080 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		F62DFFB12661863900C4A080 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		F6311A29287004D4005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F637206426654BA10089D0B3 /* EditProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModelTests.swift; sourceTree = "<group>"; };
 		F6472E70278AA96200B11815 /* RecoverAccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountRouter.swift; sourceTree = "<group>"; };
 		F6472E71278AA96200B11815 /* RecoverAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAccountViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6311A2A287004D4005C8FCB /* Extensions.framework in Frameworks */,
 				F62DFF98266184FD00C4A080 /* CommonPresenting.framework in Frameworks */,
 				F62DFF95266184F700C4A080 /* Common3rdParty.framework in Frameworks */,
 				F62DFF91266184EF00C4A080 /* Domain.framework in Frameworks */,
@@ -159,6 +162,7 @@
 		F62DFF8F266184EF00C4A080 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F6311A29287004D4005C8FCB /* Extensions.framework */,
 				F6025FF026A9CFED007A1AA8 /* UsecaseDoubles.framework */,
 				F6025FEE26A9CFE3007A1AA8 /* UsecaseDoubles.framework */,
 				F62DFF9E2661851800C4A080 /* UnitTestHelpKit.framework */,
@@ -509,6 +513,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.MemberScenes;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -533,6 +538,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sudo.park.MemberScenes;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

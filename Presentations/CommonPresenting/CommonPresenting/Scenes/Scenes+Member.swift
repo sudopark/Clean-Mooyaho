@@ -15,49 +15,49 @@ import Domain
 
 // MARK: - SignInScene
 
-public protocol SignInSceneInteractable { }
+public protocol SignInSceneInteractable: Sendable { }
 
-public protocol SignInSceneListenable: AnyObject {
+public protocol SignInSceneListenable: Sendable, AnyObject {
     
     func signIn(didCompleted member: Member)
 }
 
 public protocol SignInScene: Scenable, PangestureDismissableScene {
     
-    var interactor: SignInSceneInteractable? { get }
+    nonisolated var interactor: SignInSceneInteractable? { get }
 }
 
 
 // MARK: - EditProfileScene
 
-public protocol EditProfileSceneInteractable: ImagePickerSceneListenable, SelectEmojiSceneListenable { }
+public protocol EditProfileSceneInteractable: Sendable, ImagePickerSceneListenable, SelectEmojiSceneListenable { }
 
 public protocol EditProfileScene: Scenable {
     
-    var interactor: EditProfileSceneInteractable? { get }
+    nonisolated var interactor: EditProfileSceneInteractable? { get }
 }
 
 
 // MARK: - MemberProfileScene Interactable & Listenable
 
-public protocol MemberProfileSceneInteractable { }
+public protocol MemberProfileSceneInteractable: Sendable { }
 
-public protocol MemberProfileSceneListenable: AnyObject { }
+public protocol MemberProfileSceneListenable: Sendable, AnyObject { }
 
 
 // MARK: - MemberProfileScene
 
 public protocol MemberProfileScene: Scenable {
     
-    var interactor: MemberProfileSceneInteractable? { get }
+    nonisolated var interactor: MemberProfileSceneInteractable? { get }
 }
 
 
 // MARK: - RecoverAccountScene Interactable & Listenable
 
-public protocol RecoverAccountSceneInteractable { }
+public protocol RecoverAccountSceneInteractable: Sendable { }
 
-public protocol RecoverAccountSceneListenable: AnyObject {
+public protocol RecoverAccountSceneListenable: Sendable, AnyObject {
     
     func recoverAccount(didCompleted recoveredMember: Member)
 }
@@ -66,6 +66,6 @@ public protocol RecoverAccountSceneListenable: AnyObject {
 // MARK: - RecoverAccountScene
 
 public protocol RecoverAccountScene: Scenable {
-    
-    var interactor: RecoverAccountSceneInteractable? { get }
+
+   nonisolated var interactor: RecoverAccountSceneInteractable? { get }
 }

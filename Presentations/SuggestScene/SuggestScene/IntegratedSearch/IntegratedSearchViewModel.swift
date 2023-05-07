@@ -89,7 +89,7 @@ public struct SearchResultSection: Equatable {
 
 // MARK: - IntegratedSearchViewModel
 
-public protocol IntegratedSearchViewModel: AnyObject {
+public protocol IntegratedSearchViewModel: AnyObject, Sendable {
 
     // interactor
     func setupSubScene()
@@ -106,7 +106,7 @@ public protocol IntegratedSearchViewModel: AnyObject {
 
 // MARK: - IntegratedSearchViewModelImple
 
-public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
+public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel, @unchecked Sendable {
     
     private let searchUsecase: IntegratedSearchUsecase
     private let categoryUsecase: ReadItemCategoryUsecase
@@ -134,7 +134,7 @@ public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
         LeakDetector.instance.expectDeallocate(object: self.subjects)
     }
     
-    fileprivate final class Subjects {
+    fileprivate final class Subjects: Sendable {
         let isSuggestSceneShowing = BehaviorRelay<Bool>(value: false)
         let searchedIndexes = BehaviorRelay<[SearchReadItemIndex]?>(value: nil)
         let categoriesMap = BehaviorRelay<[String: ItemCategory]>(value: [:])
@@ -167,8 +167,10 @@ public final class IntegratedSearchViewModelImple: IntegratedSearchViewModel {
 extension IntegratedSearchViewModelImple {
     
     public func setupSubScene() {
-        self.suggestInteractor = self.router.setupSuggestScene()
-        self.requestSuggest(with: "")
+        Task { @MainActor in
+            self.suggestInteractor = self.router.setupSuggestScene()
+            self.requestSuggest(with: "")
+        }
     }
     
     public func requestSuggest(with text: String) {
