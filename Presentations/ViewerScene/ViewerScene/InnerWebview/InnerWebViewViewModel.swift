@@ -233,10 +233,13 @@ extension InnerWebViewViewModelImple {
     }
     
     public func saveLastReadPositionIfNeed(_ position: Double) {
+        
         guard let item = self.subjects.itemAndLastReadInfo.value?.0,
-              let encodedURL = item.link.asURL()?.absoluteString,
-              encodedURL == self.subjects.currentPageURL.value
-        else { return }
+              let currentPageLink = self.subjects.currentPageURL.value?.escapeIfNeed(),
+                item.link.escapeIfNeed() == currentPageLink
+        else {
+            return
+        }
         
         self.readingOptionUsecase
             .updateLastReadPositionIsPossible(for: item.uid, position: position)
