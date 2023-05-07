@@ -11,10 +11,12 @@ import Combine
 
 import RxSwift
 import RxCocoa
+import Prelude
 
 import Domain
 import CommonPresenting
 import WebView
+import Extensions
 
 
 final class InnerWebViewState: ObservableObject {
@@ -27,6 +29,7 @@ final class InnerWebViewState: ObservableObject {
     @Published var urlPageTitle: String = ""
     @Published var isMarkAsRead: Bool = false
     @Published var hasMemo: Bool = false
+    @Published var suggestMoveToLastReadPosition: WebPageLoadParams.LastReadPositionInfo?
     
     @Published var progress: CGFloat = 0.0
     func updatProgress(_ progress: CGFloat) {
@@ -53,7 +56,7 @@ final class InnerWebViewState: ObservableObject {
     }
     
     private let disposeBag = DisposeBag()
-    private var bindScrolling: AnyCancellable?
+    private var cancellables: Set<AnyCancellable> = []
     private var resetProgressWithDelay: Disposable?
     private var didBind = false
     
@@ -106,12 +109,48 @@ final class InnerWebViewState: ObservableObject {
             return isDragging && new > threshold ? isDown : nil
         }
         
-        self.bindScrolling = scrollYChanges
+        scrollYChanges
             .compactMap(filterWhenEnoughScrollDown)
             .removeDuplicates()
             .sink(receiveValue: { [weak self] isDown in
                 self?.isScrollDown = isDown
             })
+            .store(in: &self.cancellables)
+        
+        let lastReadPosition = self.$startLoadWebPage.compactMap { $0 }.first()
+        let firstLoadDone = self.$progress.filter { $0 >= 1.0 }.first()
+        Publishers.CombineLatest(
+            lastReadPosition, firstLoadDone
+        )
+        .sink(receiveValue: { [weak self] params, _ in
+            if let info = params.lastReadPosition {
+                self?.suggestMoveToLastReadPosition = info
+                logger.print(level: .debug, "will show suggest move to last read position, offset: \(info.position)")
+            }
+            
+            self?.bindLastScrollOffset(viewModel)
+        })
+        .store(in: &self.cancellables)
+    }
+    
+    private func bindLastScrollOffset(_ viewModel: InnerWebViewViewModel) {
+        
+        let filterIsEnoughScrolled: (CGFloat) -> CGFloat? = { [weak self] y in
+            guard let frameHeight = self?.webviewStore.webView.scrollView.frame.size.height,
+                    y > frameHeight
+            else { return nil }
+            return y
+        }
+        
+        self.$scrollContentOffset
+            .map { $0.y }
+            .compactMap(filterIsEnoughScrolled)
+            .removeDuplicates()
+            .throttle(for: 5.0, scheduler: RunLoop.main, latest: true)
+            .sink(receiveValue: { offsetY in
+                viewModel.saveLastReadPositionIfNeed(offsetY)
+            })
+            .store(in: &self.cancellables)
     }
 }
 
@@ -155,50 +194,60 @@ public struct InnerWebView_SwiftUI: View {
                         self.updateWebViewNavigationButtons()
                     }
                 
-                VStack {
-                    Spacer()
-                    
+                GeometryReader { metrics in
                     VStack {
-                        Divider()
+                        Spacer()
                         
-                        InnerWebViewToolbarInfoSection(
-                            title: $state.urlPageTitle,
-                            isEditable: $state.isEditable,
-                            progress: $state.progress,
-                            isShrinkMode: $state.isScrollDown
-                        )
-                        .eventHandler(\.editHandlerWithCopyURL, viewModel.managePageDetail(withCopyURL:))
-                        .eventHandler(\.refreshHandler) {
-                            guard self.state.webviewStore.webView.isLoading == false else { return }
-                            self.state.webviewStore.webView.reload()
+                        VStack(alignment: .center) {
+                            if let lastPosition = self.state.suggestMoveToLastReadPosition {
+                                self.moveToLastReadPositionView(lastPosition)
+                                    .frame(width: metrics.size.width * 0.7)
+                            }
+                         
+                            VStack {
+                                
+                                Divider()
+                                
+                                InnerWebViewToolbarInfoSection(
+                                    title: $state.urlPageTitle,
+                                    isEditable: $state.isEditable,
+                                    progress: $state.progress,
+                                    isShrinkMode: $state.isScrollDown
+                                )
+                                .eventHandler(\.editHandlerWithCopyURL, viewModel.managePageDetail(withCopyURL:))
+                                .eventHandler(\.refreshHandler) {
+                                    guard self.state.webviewStore.webView.isLoading == false else { return }
+                                    self.state.webviewStore.webView.reload()
+                                }
+                                .padding(.top, 4)
+                                .padding(.horizontal, 16)
+                                
+                                InnerWebViewToolbarControlSection(
+                                    isEditable: $state.isEditable,
+                                    isJumpable: $state.isJumpable,
+                                    isRewindable: $state.isBackwardable,
+                                    isForwardable: $state.isForwardable,
+                                    isMarkAsRead: $state.isMarkAsRead,
+                                    hasNote: $state.hasMemo
+                                )
+                                .eventHandler(\.backwardHandler) {
+                                    guard self.state.webviewStore.webView.canGoBack == true else { return }
+                                    self.state.webviewStore.webView.goBack()
+                                }
+                                .eventHandler(\.forwardHandler) {
+                                    guard self.state.webviewStore.canGoForward == true else { return }
+                                    self.state.webviewStore.webView.goForward()
+                                }
+                                .eventHandler(\.markAsReadHandler, viewModel.toggleMarkAsRed)
+                                .eventHandler(\.noteHandler, viewModel.editMemo)
+                                .eventHandler(\.jumpHandler, viewModel.jumpToCollection)
+                                .eventHandler(\.safariHandler, viewModel.openPageInSafari)
+                            }
+                            .background(VisualEffectView().ignoresSafeArea(edges: [.bottom]))
                         }
-                        .padding(.top, 4)
-                        .padding(.horizontal, 16)
-                        
-                        InnerWebViewToolbarControlSection(
-                            isEditable: $state.isEditable,
-                            isJumpable: $state.isJumpable,
-                            isRewindable: $state.isBackwardable,
-                            isForwardable: $state.isForwardable,
-                            isMarkAsRead: $state.isMarkAsRead,
-                            hasNote: $state.hasMemo
-                        )
-                        .eventHandler(\.backwardHandler) {
-                            guard self.state.webviewStore.webView.canGoBack == true else { return }
-                            self.state.webviewStore.webView.goBack()
-                        }
-                        .eventHandler(\.forwardHandler) {
-                            guard self.state.webviewStore.canGoForward == true else { return }
-                            self.state.webviewStore.webView.goForward()
-                        }
-                        .eventHandler(\.markAsReadHandler, viewModel.toggleMarkAsRed)
-                        .eventHandler(\.noteHandler, viewModel.editMemo)
-                        .eventHandler(\.jumpHandler, viewModel.jumpToCollection)
-                        .eventHandler(\.safariHandler, viewModel.openPageInSafari)
+                        .offset(.init(width: 0, height: self.state.toolbarBottomOffset))
+                        .animation(.easeIn(duration: 0.4), value: self.state.toolbarBottomOffset)
                     }
-                    .background(VisualEffectView().ignoresSafeArea(edges: [.bottom]))
-                    .offset(.init(width: 0, height: self.state.toolbarBottomOffset))
-                    .animation(.easeIn(duration: 0.4), value: self.state.toolbarBottomOffset)
                 }
             }
             .padding(.top, 4)
@@ -215,6 +264,34 @@ public struct InnerWebView_SwiftUI: View {
         let backwardCount = state.webviewStore.webView.backForwardList.backList.count
         self.state.isBackwardable = backwardCount > 0
         self.state.isForwardable = forwardCount > 0
+    }
+    
+    private func moveToLastReadPositionView(
+        _ info: WebPageLoadParams.LastReadPositionInfo
+    ) -> some View {
+        return Views.BaseFloatingButton(
+            title: "reading-option-ask-last-position".localized,
+            description: info.savedAt
+        )
+        .eventHandler(\.mainActionHandler) {
+            self.moveScrollToLastReadPosition(info.position)
+        }
+        .eventHandler(\.closeActionHandler) {
+            withAnimation {
+                self.state.suggestMoveToLastReadPosition = nil
+            }
+        }
+    }
+    
+    private func moveScrollToLastReadPosition(_ offset: Double) {
+        logger.print(level: .debug, "will move to last read position to: \(offset) and webView content size: \(self.state.webviewStore.webView.scrollView.contentSize)")
+        
+        let lastPoint = CGPoint(x: 0, y: CGFloat(offset))
+        self.state.webviewStore.webView.scrollView
+            .setContentOffset(lastPoint, animated: false)
+        withAnimation {
+            self.state.suggestMoveToLastReadPosition = nil
+        }
     }
 }
 
