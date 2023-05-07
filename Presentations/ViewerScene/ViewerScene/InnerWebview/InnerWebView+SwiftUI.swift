@@ -146,6 +146,9 @@ public struct InnerWebView_SwiftUI: View {
                     }
                     .onReceive(state.webviewStore.webView.publisher(for: \.estimatedProgress)) { progress in
                         self.state.updatProgress(progress)
+                        if progress >= 1.0 {
+                            self.updateWebViewNavigationButtons()
+                        }
                     }
                     .onReceive(state.webviewStore.webView.publisher(for: \.url)) { url in
                         if let urlPath = url?.absoluteString { self.viewModel.pageLoaded(for: urlPath) }
