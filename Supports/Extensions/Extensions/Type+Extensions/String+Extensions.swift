@@ -27,8 +27,20 @@ extension String {
         return predicate.evaluate(with: self)
     }
     
+    public func isEscaped() -> Bool {
+        return self.removingPercentEncoding != self
+    }
+    
+    public func escapeIfNeed(_ allowCharSet: CharacterSet = .urlQueryAllowed) -> String {
+        return self.isEscaped()
+            ? self
+            : self.addingPercentEncoding(withAllowedCharacters: allowCharSet) ?? self
+    }
+    
     public func asURL(withEncoding allowCharSet: CharacterSet = .urlQueryAllowed) -> URL? {
-        let path = self.addingPercentEncoding(withAllowedCharacters: allowCharSet) ?? self
+        let path = self.isEscaped()
+            ? self
+            : self.addingPercentEncoding(withAllowedCharacters: allowCharSet) ?? self
         return URL(string: path)
     }
     
