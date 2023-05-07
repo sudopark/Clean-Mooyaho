@@ -30,7 +30,19 @@ final class InnerWebViewState: ObservableObject {
     
     @Published var progress: CGFloat = 0.0
     func updatProgress(_ progress: CGFloat) {
-        self.progress = progress >= 1.0 ? 0.0 : progress
+        self.cancelResetProgressWithDelay()
+        
+        self.progress = progress
+        guard progress >= 1.0 else { return }
+        self.resetProgressWithDelay = Observable<Int>
+            .timer(.milliseconds(300), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.progress = 0.0
+            })
+    }
+    
+    private func cancelResetProgressWithDelay() {
+        self.resetProgressWithDelay?.dispose()
     }
     
     @ObservedObject var webviewStore: WebViewStore = .init()
@@ -42,6 +54,7 @@ final class InnerWebViewState: ObservableObject {
     
     private let disposeBag = DisposeBag()
     private var bindScrolling: AnyCancellable?
+    private var resetProgressWithDelay: Disposable?
     private var didBind = false
     
     func bind(_ viewModel: InnerWebViewViewModel) {
