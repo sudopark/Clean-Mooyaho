@@ -327,9 +327,9 @@ private struct InnerWebViewToolbarControlSection: View {
         } label: {
             Image(systemName: "chevron.backward")
                 .foregroundColor(isRewindable ? theme.colors.accentColor.asColor : theme.colors.raw.lightGray.asColor)
+                .frame(width: 40, height: 40)
         }
         .disabled(!self.isRewindable)
-        .frame(width: 40, height: 40)
     }
     
     private var forwardButton: some View {
@@ -338,9 +338,9 @@ private struct InnerWebViewToolbarControlSection: View {
         } label: {
             Image(systemName: "chevron.right")
                 .foregroundColor(isForwardable ? theme.colors.accentColor.asColor : theme.colors.raw.lightGray.asColor)
+                .frame(width: 40, height: 40)
         }
         .disabled(!self.isForwardable)
-        .frame(width: 40, height: 40)
     }
     
     private var readMarkButton: some View {
@@ -348,8 +348,8 @@ private struct InnerWebViewToolbarControlSection: View {
             self.markAsReadHandler()
         } label: {
             Image(systemName: isMarkAsRead ? "checkmark.circle.fill" : "checkmark.circle")
+                .frame(width: 40, height: 40)
         }
-        .frame(width: 40, height: 40)
     }
     
     private var jumpButton: some View {
@@ -357,8 +357,8 @@ private struct InnerWebViewToolbarControlSection: View {
             self.jumpHandler()
         } label: {
             Image(systemName: "folder")
+                .frame(width: 40, height: 40)
         }
-        .frame(width: 40, height: 40)
     }
     
     private var memoButton: some View {
@@ -366,8 +366,8 @@ private struct InnerWebViewToolbarControlSection: View {
             self.noteHandler()
         } label: {
             Image(systemName: hasNote ? "note.text" : "note.text.badge.plus")
+                .frame(width: 40, height: 40)
         }
-        .frame(width: 40, height: 40)
     }
     
     private var safariButton: some View {
@@ -375,8 +375,8 @@ private struct InnerWebViewToolbarControlSection: View {
             self.safariHandler()
         } label: {
             Image(systemName: "safari")
+                .frame(width: 40, height: 40)
         }
-        .frame(width: 40, height: 40)
     }
 }
 
