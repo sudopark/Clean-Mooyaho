@@ -44,6 +44,9 @@
 		F62271F5273C728D00AF76C1 /* SettingScene.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62271F3273C728D00AF76C1 /* SettingScene.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6279EB02870189C00B970C9 /* Local.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EAF2870189C00B970C9 /* Local.framework */; };
 		F6279EB12870189C00B970C9 /* Local.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EAF2870189C00B970C9 /* Local.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F629CD5B2D1BD067006E3CDA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F629CD5A2D1BD067006E3CDA /* PrivacyInfo.xcprivacy */; };
+		F629CD5D2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F629CD5C2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy */; };
+		F629CD5E2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F629CD5C2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy */; };
 		F62DFFB4266188C800C4A080 /* MemberScenes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; };
 		F62DFFB5266188C800C4A080 /* MemberScenes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F62DFFB3266188C800C4A080 /* MemberScenes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F62DFFB726621BC000C4A080 /* EmptyRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DFFB626621BC000C4A080 /* EmptyRemote.swift */; };
@@ -242,6 +245,8 @@
 		F617F10E2768F37E00D88F9C /* IOSDeviceInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSDeviceInfoService.swift; sourceTree = "<group>"; };
 		F62271F3273C728D00AF76C1 /* SettingScene.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SettingScene.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279EAF2870189C00B970C9 /* Local.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Local.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F629CD5A2D1BD067006E3CDA /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F629CD5C2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F62DFFB3266188C800C4A080 /* MemberScenes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MemberScenes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F62DFFB626621BC000C4A080 /* EmptyRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRemote.swift; sourceTree = "<group>"; };
 		F6311A4528700786005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -475,6 +480,7 @@
 				2B79FC54262B640F0006291F /* Assets.xcassets */,
 				2B79FC56262B640F0006291F /* LaunchScreen.storyboard */,
 				2BA276ED263CFCF000C0393E /* Info.plist */,
+				F629CD5A2D1BD067006E3CDA /* PrivacyInfo.xcprivacy */,
 			);
 			path = MooyahoApp;
 			sourceTree = "<group>";
@@ -648,6 +654,7 @@
 				F68B730E2728653400DD5456 /* DependencyInjector+ShareExtension.swift */,
 				F68B731E272A026800DD5456 /* DependencyInjector+ShareExtension+Scenes.swift */,
 				F6BE6BBD272846FD00F5C544 /* Info.plist */,
+				F629CD5C2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy */,
 			);
 			path = ReadReminderShareExtension;
 			sourceTree = "<group>";
@@ -807,6 +814,7 @@
 				F6832FCF27776F2300EFB99A /* Localizable.strings in Resources */,
 				F6AF0BE0277B6B4D006748EF /* InfoPlist.strings in Resources */,
 				F643D40F278210C0006793A9 /* appicon-readmind.png in Resources */,
+				F629CD5B2D1BD067006E3CDA /* PrivacyInfo.xcprivacy in Resources */,
 				2B79FC58262B640F0006291F /* LaunchScreen.storyboard in Resources */,
 				F66E813D2655282500682625 /* dummy in Resources */,
 				2B79FC55262B640F0006291F /* Assets.xcassets in Resources */,
@@ -828,6 +836,7 @@
 			files = (
 				F6832FD027776F2300EFB99A /* Localizable.strings in Resources */,
 				F68B7326272A06D300DD5456 /* secrets.json in Resources */,
+				F629CD5D2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy in Resources */,
 				F6811333276B9537005065E9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -836,6 +845,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F629CD5E2D1BD0A5006E3CDA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

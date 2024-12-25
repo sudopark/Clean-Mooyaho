@@ -19,6 +19,7 @@
 		F6279EC428711D4C00B970C9 /* EnvironmentStorageImples.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */; };
 		F6279EC6287872B500B970C9 /* Common3rdParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC5287872B500B970C9 /* Common3rdParty.framework */; };
 		F6279EC8287872C900B970C9 /* UnitTestHelpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */; };
+		F629CD572D1BCFBD006E3CDA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F629CD562D1BCFBD006E3CDA /* PrivacyInfo.xcprivacy */; };
 		F653A6DA28ABD9E500423EA2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653A6D928ABD9E500423EA2 /* Extensions.swift */; };
 		F69F16B52878939300DF2481 /* EnvironmentStorageImpleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */; };
 		F6AD85DB2878988300B01D32 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6AD85DA2878988300B01D32 /* SecureStorage.swift */; };
@@ -49,6 +50,7 @@
 		F6279EC328711D4C00B970C9 /* EnvironmentStorageImples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorageImples.swift; sourceTree = "<group>"; };
 		F6279EC5287872B500B970C9 /* Common3rdParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common3rdParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6279EC7287872C900B970C9 /* UnitTestHelpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnitTestHelpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F629CD562D1BCFBD006E3CDA /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F653A6D928ABD9E500423EA2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F69F16B42878939300DF2481 /* EnvironmentStorageImpleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentStorageImpleTests.swift; sourceTree = "<group>"; };
 		F6AD85DA2878988300B01D32 /* SecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorage.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				F6AD85D92878985A00B01D32 /* SecureStorage */,
 				F6279E9128700E9400B970C9 /* Local.h */,
 				F653A6D928ABD9E500423EA2 /* Extensions.swift */,
+				F629CD562D1BCFBD006E3CDA /* PrivacyInfo.xcprivacy */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F629CD572D1BCFBD006E3CDA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

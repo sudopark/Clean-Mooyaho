@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -40,6 +40,7 @@
 		F6260919274D3DE5003C9577 /* RepositoryTests+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6260918274D3DE5003C9577 /* RepositoryTests+Search.swift */; };
 		F626091B274D4027003C9577 /* LatestSearchQueryTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */; };
 		F626091D274D420E003C9577 /* LocalStorageTests+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */; };
+		F629CD592D1BD02C006E3CDA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F629CD582D1BD02C006E3CDA /* PrivacyInfo.xcprivacy */; };
 		F62DEFCB27538968008D50D1 /* FavoriteItemIDTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62DEFCA27538968008D50D1 /* FavoriteItemIDTable.swift */; };
 		F6311A1E28700367005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A1D28700367005C8FCB /* Extensions.framework */; };
 		F633212726557873000D7456 /* RepositoryImple+Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = F633212626557873000D7456 /* RepositoryImple+Member.swift */; };
@@ -139,6 +140,7 @@
 		F6260918274D3DE5003C9577 /* RepositoryTests+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryTests+Search.swift"; sourceTree = "<group>"; };
 		F626091A274D4027003C9577 /* LatestSearchQueryTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestSearchQueryTable.swift; sourceTree = "<group>"; };
 		F626091C274D420E003C9577 /* LocalStorageTests+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalStorageTests+Search.swift"; sourceTree = "<group>"; };
+		F629CD582D1BD02C006E3CDA /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F62DEFCA27538968008D50D1 /* FavoriteItemIDTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemIDTable.swift; sourceTree = "<group>"; };
 		F6311A1B2870035E005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6311A1D28700367005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -356,6 +358,7 @@
 				2B9F27652633E60B00FEBCE3 /* Local */,
 				2BF00BE2262B7E1300E235C0 /* DataStore.h */,
 				2BF00BE3262B7E1300E235C0 /* Info.plist */,
+				F629CD582D1BD02C006E3CDA /* PrivacyInfo.xcprivacy */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F629CD592D1BD02C006E3CDA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
