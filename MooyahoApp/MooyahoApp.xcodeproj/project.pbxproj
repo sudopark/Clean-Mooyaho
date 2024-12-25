@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -682,7 +682,6 @@
 				2B79FC45262B640C0006291F /* Frameworks */,
 				2B79FC46262B640C0006291F /* Resources */,
 				2BF00BFD262B872A00E235C0 /* Embed Frameworks */,
-				2B4ED8B5263D022B004B8C88 /* Run FB crashlytics */,
 				F6BE6BC1272846FD00F5C544 /* Embed App Extensions */,
 			);
 			buildRules = (
@@ -843,24 +842,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2B4ED8B5263D022B004B8C88 /* Run FB crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run FB crashlytics";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ ${CONFIGURATION} != \"Test\" ]; then\n    echo \"🎯 run Crashlytics script\"\n    \"${SRCROOT}/../FirebaseService/FirebaseService/run\"\nfi\n\n";
-		};
 		F6D7BE8327803EE900C71637 /* copy google service info */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

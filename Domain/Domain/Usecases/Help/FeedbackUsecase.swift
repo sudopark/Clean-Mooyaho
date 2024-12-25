@@ -50,13 +50,13 @@ extension FeedbackUsecaseImple {
             isiOSAppOnMac = nil
         }
         
-        let feedback = Feedback(userID: userID)
-            |> \.appVersion .~ pure(self.deviceInfoService.appVersion())
-            |> \.osVersion .~ pure(self.deviceInfoService.osVersion())
-            |> \.deviceModel .~ pure(self.deviceInfoService.deviceModel())
-            |> \.message .~ pure(message)
-            |> \.contract .~ pure(contract)
-            |> \.isiOSAppOnMac .~ isiOSAppOnMac
+        var feedback = Feedback(userID: userID)
+        feedback.appVersion = self.deviceInfoService.appVersion()
+        feedback.osVersion = self.deviceInfoService.osVersion()
+        feedback.deviceModel = self.deviceInfoService.deviceModel()
+        feedback.message = message
+        feedback.contract = contract
+        feedback.isiOSAppOnMac = isiOSAppOnMac
         return self.helpRepository.leaveFeedback(feedback)
     }
 }
