@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -37,7 +37,6 @@
 		F62F11EC2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */; };
 		F6311A262870048B005C8FCB /* Extensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6311A252870048B005C8FCB /* Extensions.framework */; };
 		F631DE7C27020A4F003948C2 /* SingleLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */; };
-		F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */; };
 		F637205626650B440089D0B3 /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205526650B440089D0B3 /* ThumbnailImageView.swift */; };
 		F637205826650E8B0089D0B3 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */; };
 		F637205B26650ECC0089D0B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F637205A26650ECC0089D0B3 /* Kingfisher */; };
@@ -182,7 +181,6 @@
 		F62F11EB2748D61E00CA9DB5 /* CollectionInverseNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionInverseNavigationCoordinator.swift; sourceTree = "<group>"; };
 		F6311A252870048B005C8FCB /* Extensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Extensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F631DE7B27020A4F003948C2 /* SingleLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputView.swift; sourceTree = "<group>"; };
-		F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiInputTextFiled.swift; sourceTree = "<group>"; };
 		F637205526650B440089D0B3 /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
 		F637205726650E8B0089D0B3 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		F637205C266511570089D0B3 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -499,7 +497,6 @@
 			isa = PBXGroup;
 			children = (
 				F6C252B0291D56AC005E4393 /* Components+SwiftUI */,
-				F6372053266508CF0089D0B3 /* EmojiInputTextFiled.swift */,
 				F637205526650B440089D0B3 /* ThumbnailImageView.swift */,
 				F6502DE8266CB3A00027800F /* LoadingView.swift */,
 				F6502DEA266CB6F80027800F /* ConfirmButton.swift */,
@@ -736,7 +733,6 @@
 				F63A520C27B2DCB7008542E2 /* SwiftUI+Extensions.swift in Sources */,
 				F60CCE6D27C0F38600EC4BC0 /* ScrollBottomHitThrottling.swift in Sources */,
 				F6F249192655887C00AE7A8B /* BaseNavigationController.swift in Sources */,
-				F6372054266508CF0089D0B3 /* EmojiInputTextFiled.swift in Sources */,
 				2BE978BA263AE5D10000C0C6 /* LeakDetector.swift in Sources */,
 				2B39E27B26387BCB003EE954 /* Sceneable.swift in Sources */,
 				F6EAC61D271AB1EA005C0C2F /* RoundShadowView.swift in Sources */,

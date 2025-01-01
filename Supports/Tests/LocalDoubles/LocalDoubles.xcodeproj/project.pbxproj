@@ -16,6 +16,7 @@
 		F6257DD32890581600A9D2DA /* MockSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6257DD22890581600A9D2DA /* MockSecureStorage.swift */; };
 		F6257DD928905C8700A9D2DA /* TestSQLiteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6257DD828905C8700A9D2DA /* TestSQLiteStorage.swift */; };
 		F6257DDB28905E1900A9D2DA /* TestEnvironmentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6257DDA28905E1900A9D2DA /* TestEnvironmentStorage.swift */; };
+		F629CD552D1BCE7F006E3CDA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F629CD542D1BCE7F006E3CDA /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		F6257DD22890581600A9D2DA /* MockSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSecureStorage.swift; sourceTree = "<group>"; };
 		F6257DD828905C8700A9D2DA /* TestSQLiteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSQLiteStorage.swift; sourceTree = "<group>"; };
 		F6257DDA28905E1900A9D2DA /* TestEnvironmentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironmentStorage.swift; sourceTree = "<group>"; };
+		F629CD542D1BCE7F006E3CDA /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				F6257DD22890581600A9D2DA /* MockSecureStorage.swift */,
 				F6257DD828905C8700A9D2DA /* TestSQLiteStorage.swift */,
 				F6257DDA28905E1900A9D2DA /* TestEnvironmentStorage.swift */,
+				F629CD542D1BCE7F006E3CDA /* PrivacyInfo.xcprivacy */,
 			);
 			path = LocalDoubles;
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F629CD552D1BCE7F006E3CDA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
